@@ -1,0 +1,96 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 8 Sep 2008 21:08:18 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m88J8Cod013751
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 8 Sep 2008 21:08:13 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m88J3LVv006764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 8 Sep 2008 21:03:21 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m88EGNnw014594;
+	Mon, 8 Sep 2008 21:03:14 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 23231 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 8 Sep
+          2008 21:03:14 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m88J3EgG004426 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 8 Sep 2008 21:03:14 +0200
+Received: from anchor-post-37.mail.demon.net (anchor-post-37.mail.demon.net
+          [194.217.242.87]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m88J2wZp006195 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 8 Sep 2008 21:03:04 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-37.mail.demon.net with esmtp (Exim 4.69) id
+          1Kcm0o-0001ly-NL for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 08 Sep
+          2008 19:02:58 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48C443A3.4040405@morningstar2.co.uk>
+            <859ec5630809080431g1c5b01d9r742a738ac28791d4@mail.gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <48C576D6.1020207@morningstar2.co.uk>
+Date:         Mon, 8 Sep 2008 20:02:46 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Counts and counters/\clist_map_break:w
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <859ec5630809080431g1c5b01d9r742a738ac28791d4@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Sep 2008 19:08:18.0208 (UTC) FILETIME=[40AE3A00:01C911E6]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5244
+
+Morten Høgholm wrote:
+
+>> Question 1. The various counter-creation macros in expl3 work like
+>> \newcount.  There doesn't seem to be anything like \newcounter, for
+>> creating something with a user-facing \the<counter>.  Should counters
+>> that go near the user stick with \newcounter for the moment, or should
+>> one define \c@<counter> and \the<counter> "by hand" so that things look
+>> the same for the user?  I guess this is partly a philosophical question!
+> 
+> LaTeX counters (\newcounter) are document level. The expl3 counters
+> are so far low-level only. I think it is important that you write your
+> low-level code separate from the user interface, e.g., use xparse or
+> similar to map between document usage and low-level.
+
+Okay, I shall "try the exercise again"!
+
+>> Question 2. Why is \clist_map_break:w "weird"?  It doesn't take an
+>> argument from a use point of view, so I'd have expected \clist_map_break:.
+> 
+> I think the original reasoning was that the user had to know exactly
+> where it could be used (\if level) but that of course applies to many
+> things... I recently added (but did not yet check in I think) two
+> variant forms, namely, as you say, \clist_map_break: and also
+> \clist_map_break:n. The latter will carry an argument to the end of
+> the loop, typically something involving the last value found. Same for
+> other loop types. The l3prg case-switches use something like this.
+
+This seems to make sense.
+
+>> Do tell me to stop if I'm asking too much!
+> 
+> Not at all. The reason expl3 has grown so much over the past years is
+> because it was discussed and used. So keep 'em coming!
+
+Will do!
+-- 
+Joseph Wright
+

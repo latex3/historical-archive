@@ -1,0 +1,93 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 5 Mar 2006 16:47:36 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k25FlOoE010671
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 5 Mar 2006 16:47:25 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k25Fjqvj019668;
+	Sun, 5 Mar 2006 16:45:53 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k23JSbGa029011;
+	Sun, 5 Mar 2006 16:43:18 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1403132 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 5 Mar
+          2006 16:43:17 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k25FhHBH006345 for <latex-l@listserv.uni-heidelberg.de>;
+          Sun, 5 Mar 2006 16:43:17 +0100
+Received: from mail.gmx.net (mail.gmx.net [213.165.64.20]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with SMTP id k25Fh52D020846
+          for <latex-l@listserv.uni-heidelberg.de>; Sun, 5 Mar 2006 16:43:08
+          +0100
+Received: (qmail invoked by alias); 05 Mar 2006 15:36:25 -0000
+Received: from p54BE968D.dip0.t-ipconnect.de (EHLO minerva.localnet.invalid)
+          [84.190.150.141] by mail.gmx.net (mp036) with SMTP; 05 Mar 2006
+          16:36:25 +0100
+X-Authenticated: #1020641
+User-Agent: KMail/1.7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+X-Y-GMX-Trusted: 0
+Message-ID:  <200603051636.22982.lehman@gmx.net>
+Date:         Sun, 5 Mar 2006 16:36:22 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Philipp Lehman <lehman@GMX.NET>
+Subject: poor man's namespace protection
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Mar 2006 15:47:36.0359 (UTC) FILETIME=[1FF76370:01C6406C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4929
+
+Here's a suggestion for a poor man's "namespace" protection with 
+Latex. I figured I'd post it here before filing it as a feature 
+suggestion.
+
+When writing a class or a package, it's not feasible to use 
+\newcommand all over the place. What most authors do is pick a prefix 
+and hope for the best. So the foobar package might use internal 
+macros like \fb@foo and \fb@bar while the barfoo package would use 
+\bf@foo etc. If there is a conflict, things will likely go wrong in 
+ways which are not transparent to the end-user.
+
+How about having something like the following in the kernel:
+
+\def\ReserveNamespace#1#2{%
+  \@ifundefined{ltx@resrvd@#1}
+    {\@namedef{ltx@resrvd@#1}{#2}}
+    {\@latex@error
+      {Namespace `#1' already reserved by `\@nameuse{ltx@resrvd@#1}'}
+      {The namespace `#1', claimed by `#2', has already
+       been reserved by `\@nameuse{ltx@resrvd@#1}'.}}}
+\ReserveNamespace{ltx}{LaTeX}
+
+This will permit class/package authors do do the following:
+
+\ReserveNamespace{FB}{foobar}
+\def\FB@foo{...}
+\newif\ifFB@bar
+\newcount\FB@cnt
+
+...giving them namespace protection comparable to \newcommand, but in 
+a much more efficient and general way. It may also be worthwhile to 
+integrate that into \ProvidesClass and \ProvidesPackage:
+
+\ProvidesPackage[FB]{foobar}[2006/03/05 v1.0 The foobar package]
+\def\FB@foo{...}
+\newif\ifFB@bar
+\newcount\FB@cnt
+
+That's probably only relevant for Latex 3...
+
+-- 
+Philipp Lehman <lehman@gmx.net>
+

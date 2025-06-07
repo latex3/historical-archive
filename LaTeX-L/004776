@@ -1,0 +1,327 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Mon, 26 Apr 2004 12:09:49 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i3QA9Qlo006008 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 26 Apr 2004 12:09:34 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i3QA3fll007047; Mon, 26 Apr 2004 12:03:42 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C42B76.9B9B5480"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i3OIP1qJ021722; Mon, 26 Apr 2004 12:02:00 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 148016 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 26 Apr 2004 12:01:59 +0200
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i3QA1xDn032447 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 26 Apr 2004 12:01:59 +0200
+Received:  from mmp1.student.cbs.dk (student.cbs.dk [130.226.47.78]) by          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i3QA2siF027325 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 26 Apr          2004 12:02:54 +0200 (MET DST)
+Received:  from conversion-daemon.mmp1.student.cbs.dk by mmp1.student.cbs.dk          (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003)) id          <AH6I08P01WMKAR07YJ@mmp1.student.cbs.dk> for          LATEX-L@listserv.uni-heidelberg.de; Mon, 26 Apr 2004 11:53:42 +0200          (W. Europe Daylight Time)
+Received:  from noname ([62.79.111.222]) by mmp1.student.cbs.dk (iPlanet          Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003)) with ESMTPA id          <AVP908P0LPH8AR07ZF@mmp1.student.cbs.dk> for          LATEX-L@listserv.uni-heidelberg.de; Mon, 26 Apr 2004 11:53:42 +0200          (W. Europe Daylight Time)
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 26 Apr 2004 10:09:49.0524 (UTC) FILETIME=[9BEB4940:01C42B76]
+User-Agent: Opera7.23/Win32 M2 build 3227
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Experiences with templates and internal syntax
+Date: Mon, 26 Apr 2004 11:03:20 +0100
+Message-ID: A<opr6157ujzlz63g6@mail.student.cbs.dk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Experiences with templates and internal syntax
+Thread-Index: AcQrdpwThcWuXBx5QV69boxo6QxJTQ==
+From: =?iso-8859-15?Q?Morten_H=F8gholm?= <moho01ab@STUDENT.CBS.DK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4776
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C42B76.9B9B5480
+Content-Type: text/plain;
+	charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+Recently I've been playing with templates and the new internal syntax. =
+One
+thing I did think about with the internal syntax was the ability to turn
+it off again at will. One reason was that I needed to load amsmath and =
+be
+able to pass options to it, so I couldn't say
+
+\ProvidesPackage{test}
+\RequirePackage{ldcsetup}
+\RequirePackage{amsmath}
+\InternalSyntaxOn
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{amsmath}}
+\ProcessOptions\relax
+\endinput
+
+as this wouldn't pass the options, but instead had to do it with
+
+\ProvidesPackage{test}
+\RequirePackage{ldcsetup}
+\InternalSyntaxOn
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{amsmath}}
+\ProcessOptions\relax
+\RequirePackage{amsmath}
+\endinput
+
+Unfortunately this results in an infinite loop created by \GenericInfo
+ from amstext (\iffirstchoice@ is equal to \iftrue by default and this =
+goes
+horribly wrong).
+
+In order to work around this I decided to do things a little =
+differently:
+
+%%%%%%%%%%%
+\def\InternalSyntaxError{\errmessage{Invalid use of command}}
+\let\InternalSyntaxOff\InternalSyntaxError
+\def\InternalSyntaxOn{
+   \ifx\InternalSyntaxOff\InternalSyntaxError
+     \edef\InternalSyntaxOff{%
+       \catcode`\noexpand\~=3D\the\catcode`\~\relax
+       \catcode`\noexpand\ =3D\the\catcode`\ \relax
+       \catcode`\noexpand\^^I=3D\the\catcode`\^^I\relax
+       \catcode`\noexpand\@=3D\the\catcode`\@\relax
+       \catcode`\noexpand\:=3D\the\catcode`\:\relax
+       \catcode`\noexpand\_=3D\the\catcode`\_\relax
+       \endlinechar=3D\the\endlinechar\relax
+       \let\noexpand\InternalSyntaxOff\noexpand\InternalSyntaxError
+     }%
+     \catcode`\~=3D10\relax
+     \catcode`\ =3D9\relax
+     \catcode`\^^I=3D9\relax
+     \makeatletter
+     \catcode`\_=3D11\relax
+     \catcode`\:=3D11\relax
+     \endlinechar=3D` %
+     \relax
+   \else
+     \InternalSyntaxError
+   \fi
+}
+%%%%%%%%%%%%%%%%%%
+
+This way I got a pair of commands I could use to turn the internal =
+syntax
+on and off, sort of like for \makeatletter and \makeatother, only this =
+new
+set is able to restore the original meaning of catcodes and provides =
+error
+checking, so that you don't put two \InternalSyntaxOn after each other =
+and
+similar stupidities. I think the off-switch
+     \ifx\InternalSyntaxOff\InternalSyntaxError
+     \else
+       \InternalSyntaxOff
+     \fi
+could easily be integrated into \@onefilewithoptions and somewhere in
+\document just so that package authors and hackers don't have to =
+remember
+to switch it off themselves.
+
+Any comments on this (pros and cons)?
+--
+Morten H=F8gholm
+
+------_=_NextPart_001_01C42B76.9B9B5480
+Content-Type: text/html;
+	charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-15">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Experiences with templates and internal syntax</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hi all,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Recently I've been playing with templates and the new =
+internal syntax. One</FONT>
+
+<BR><FONT SIZE=3D2>thing I did think about with the internal syntax was =
+the ability to turn</FONT>
+
+<BR><FONT SIZE=3D2>it off again at will. One reason was that I needed to =
+load amsmath and be</FONT>
+
+<BR><FONT SIZE=3D2>able to pass options to it, so I couldn't say</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\ProvidesPackage{test}</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{ldcsetup}</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{amsmath}</FONT>
+
+<BR><FONT SIZE=3D2>\InternalSyntaxOn</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{amsmath}}<=
+/FONT>
+
+<BR><FONT SIZE=3D2>\ProcessOptions\relax</FONT>
+
+<BR><FONT SIZE=3D2>\endinput</FONT>
+</P>
+
+<P><FONT SIZE=3D2>as this wouldn't pass the options, but instead had to =
+do it with</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\ProvidesPackage{test}</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{ldcsetup}</FONT>
+
+<BR><FONT SIZE=3D2>\InternalSyntaxOn</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{amsmath}}<=
+/FONT>
+
+<BR><FONT SIZE=3D2>\ProcessOptions\relax</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{amsmath}</FONT>
+
+<BR><FONT SIZE=3D2>\endinput</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Unfortunately this results in an infinite loop created =
+by \GenericInfo</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;from amstext (\iffirstchoice@ is equal to =
+\iftrue by default and this goes</FONT>
+
+<BR><FONT SIZE=3D2>horribly wrong).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In order to work around this I decided to do things a =
+little differently:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>\def\InternalSyntaxError{\errmessage{Invalid use of =
+command}}</FONT>
+
+<BR><FONT SIZE=3D2>\let\InternalSyntaxOff\InternalSyntaxError</FONT>
+
+<BR><FONT SIZE=3D2>\def\InternalSyntaxOn{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\ifx\InternalSyntaxOff\InternalSyntaxError</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\edef\InternalSyntaxOff{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\~=3D\the\catcode`\~\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\ =3D\the\catcode`\ \relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\^^I=3D\the\catcode`\^^I\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\@=3D\the\catcode`\@\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\:=3D\the\catcode`\:\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\noexpand\_=3D\the\catcode`\_\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\endlinechar=3D\the\endlinechar\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\let\noexpand\InternalSyntaxOff\noexpand\InternalSyntaxError</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\~=3D10\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \catcode`\ =3D9\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\^^I=3D9\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \makeatletter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\_=3D11\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\catcode`\:=3D11\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \endlinechar=3D` %</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \InternalSyntaxError</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This way I got a pair of commands I could use to turn =
+the internal syntax</FONT>
+
+<BR><FONT SIZE=3D2>on and off, sort of like for \makeatletter and =
+\makeatother, only this new</FONT>
+
+<BR><FONT SIZE=3D2>set is able to restore the original meaning of =
+catcodes and provides error</FONT>
+
+<BR><FONT SIZE=3D2>checking, so that you don't put two \InternalSyntaxOn =
+after each other and</FONT>
+
+<BR><FONT SIZE=3D2>similar stupidities. I think the off-switch</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifx\InternalSyntaxOff\InternalSyntaxError</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\InternalSyntaxOff</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>could easily be integrated into \@onefilewithoptions =
+and somewhere in</FONT>
+
+<BR><FONT SIZE=3D2>\document just so that package authors and hackers =
+don't have to remember</FONT>
+
+<BR><FONT SIZE=3D2>to switch it off themselves.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Any comments on this (pros and cons)?</FONT>
+
+<BR><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>Morten H=F8gholm</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C42B76.9B9B5480--
+

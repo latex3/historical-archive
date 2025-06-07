@@ -1,0 +1,84 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2359" "Fri" "28" "January" "1994" "12:09:54" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" "<199401281212.AA09335@mail.cs.tu-berlin.de>" "51" "Re: form and content" "^Date:" nil nil "1" "1994012812:09:54" "form and content" (number " " mark "     David Carlisle    Jan 28   51/2359  " thread-indent "\"Re: form and content\"\n") "<9401281144.AB27125@m1.cs.man.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA14440; Fri, 28 Jan 94 13:13:10 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA10026; Fri, 28 Jan 94 13:12:08 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA09335
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 28 Jan 1994 13:12:01 +0100
+Message-Id: <199401281212.AA09335@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1937; Fri, 28 Jan 94 13:12:00 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1936; Fri,
+ 28 Jan 1994 13:12:00 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3974; Fri,
+ 28 Jan 1994 13:11:34 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9401281144.AB27125@m1.cs.man.ac.uk> (message from Philip TAYLOR
+              on Fri, 28 Jan 1994 11:35:59 GMT)
+Date:         Fri, 28 Jan 1994 12:09:54 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: form and content
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1340
+
+>>>>> "Philip" == Philip TAYLOR <CHAA006@vax.rhbnc.ac.uk> writes:
+
+Philip> This must be a unique occasion; I don't think I've _ever_
+Philip> agreed with Mike Piff before!  But when he writes:
+
+>> Some thoughts on what should go between \begin{document} and
+>> \end{document}.
+
+>> This is a problem that has troubled me greatly over the years I
+>> have used LaTeX.  I am coming more and more to the conclusion that
+>> *only* commands that the user defines in the preamble should be
+>> used between \begin{document} and \end{document}.
+
+Philip> I complete concur: in fact, this is exactly the style of
+Philip> markup which I teach to first-time Plain TeX users, and which
+Philip> I strongly encourage them to continue to use as they become
+Philip> more and more advanced.  I teach them to mark up a TeX
+Philip> document, \stress {using their own terms}, and only then teach
+Philip> them how to implement their chosen markup through the medium
+Philip> of TeX macros.
+
+For plain TeX this is reasonable and in fact necessary because plain
+does not give you any other choice if you want any kind of logical
+markup.
+
+For LaTeX the situation is slightly different. I think we would all
+agree that font changes, explicit spacing and the like should always
+be hidden behind logical markup, however Mike's statement of *only*
+user-defined commands is too strong I think.
+
+LaTeX *does* provide a set of commands for logically marking up a
+document: \section \begin{enumerate} etc.
+By using these standard tags to denote this logical markup, your
+document is much more easily portable. For instance latex2html
+converters can usually recognise this markup and do the right thing,
+but if you use \MyLevelTwoSectionStart, where this is defined in a
+local style in terms of arbitrary TeX commands, then there is no
+chance of anything parsing your document structure, except TeX.
+
+Where one draws the line between those commands that should and
+should not be used in the document body is difficult.
+
+Most people on this list might agree that \bf should not occur in
+document bodies. If we had modified latex2e so this was impossible, I
+think that there would have been `a few' complaints raised from the vast
+majority of LaTeX users.
+
+David
+
+Of course \bf is *undefined* in LaTeX2e, but that is another story,
+and the standard styles re-define it to keep existing users happy.
+

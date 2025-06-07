@@ -1,0 +1,124 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4047" "Mon" "15" "November" "93" "21:07:40" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "97" "setting up fonts (decision on names)" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA18871; Mon, 15 Nov 93 21:08:49 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00529; Mon, 15 Nov 93 21:08:46 +0100
+Message-Id: <9311152008.AA00529@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5465; Mon, 15 Nov 93 21:07:18 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5814;
+ Mon, 15 Nov 93 21:07:03 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5811;
+ Mon, 15 Nov 93 21:07:00 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 15 Nov 93 21:07:40 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      setting up fonts (decision on names)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1169
+
+
+
+> The situation is worse than this. Unfortunately some people use
+> \LaTeX{} to produce documents that must comply with highly
+> ill-conceived document formats. For instance, I know one example of a
+> style which mandates that the document is typeset entirely in
+> Helvetica. Should the helvetica font be set up as \rm or \sf?
+
+it should probably set up as \rm (and \sf). however such a style
+should do it directly if it is the layout requirement not by hoping
+that the user adds helvet or whatever to the option list.
+
+> Another document format I use mandates Bembo as a Roman font, and
+> Frutiger as a Sans-Serif font. Unfortunately the NFSS2 style file
+> nfbembo.sty uses Optima as the Sans-Serif font.
+
+again, i don't see your problem, if you need such a style then it only
+needs two or three lines (like nfbembo) to set it up. All these styles
+like times etc are only suggestions for the user if a general standard
+document class file is used. if you producing a tailored layout for
+some type of publication you don't want the user to mess with your
+font setup anyway.
+
+> Thus there is a degree of arbitrarity (sic) in any `standard' style
+> file which loads a font. Thus I am not convinced that we can expect the
+> majority of people to use standard font style options, as they will not
+> meet their needs. Instead we should make the font customisation process as
+> easy to use as possible, and let people customise at will.
+
+it should be easy enough since
+
+\renewcommand{\rmdefault}{ptm}  % set up times for \rm
+
+and two more lines for whatever you want as \sf and \tt basically do
+the job.
+
+> of fonts loaded. In order that a document be portable, it should use a
+> standard style option, or Computer Modern.
+
+the question here is what you mean by portable. you you just mean
+processable to produce output without errors, it is definitely
+indepent of the fonts used. If you mean by portable truely the same on
+both ends then you better declare the internal/external font
+correspondence inside the document completely. LaTeX was never fully
+font compatible in this respect, not even with computer modern
+(however it was possible to produce a document on an amr
+installation). I don't expect that this will be better with the whole
+world of fonts at your command now. How can you prevent that somebody
+at the installation changed a standard or non-standard .fd file?
+
+
+> At the moment, it is quite difficult to reconfigure the font setup
+> files.
+
+if you talk about NFSS than i don't think so
+
+> I think that in order for my suggestion to work there needs to
+> be some on-line (i.e. free) documentation that explains how anyone can
+> write a times.sty file without detailed knowledge of the \LaTeXe
+> innards.
+
+It will be all in the Companion, and it is also (but not in that
+detail) in the NFSS documentation; but can you tell me why it needs to
+be free?
+
+In case you don't know, half of the royalties of The Companion go
+directly to the LaTeX3 project where they are used to pay other
+peoples travel expences or hotel bills, if the come to work with me in
+Mainz.
+
+Believe me, even if you pay for the book you will never be able to pay
+back the time and effort spent on NFSS/LaTeX2e+LaTeX3
+
+----------------------
+
+to finish the discussion on prefix/postfix nofix: I've decided to
+revert to the original names, ie to times, helvet ...
+
+There are points in favor of both and I'm sure that any decision will
+make somebody happy and somebody else unhappy. But one decision was
+necessary and the above was it. (By the way, the last two chapters of
+the Companion are since midnight sunday with the final proof reader)
+
+you might be interested about the result of the poll:
+
+ keep       22
+ scratch    63
+ don't care 39
+ invalid     9    (8 don't care one keep inside the body not the subject line)
+
+i noticed that even most site maintainers are for scratch or don't
+care. thanks for sending your vote in although it is a bit depressing
+that we (just like in politics only reached a bit more than half of
+the reader of the list).
+
+cheers
+Frank
+

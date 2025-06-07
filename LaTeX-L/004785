@@ -1,0 +1,216 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Sat, 15 May 2004 16:24:26 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i4FEOMlo002202 for <rainer.schoepf@PROTEOSYS.COM>; Sat, 15 May 2004 16:24:23 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i4FEKLD6022448; Sat, 15 May 2004 16:20:22 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C43A88.5341C900"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i4E1Rh83005625; Sat, 15 May 2004 16:18:37 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 208090 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 15 May 2004 16:18:36 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i4FE8ZUZ028000 for          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 15 May 2004 16:08:35 +0200
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i4FE9jD6020672 for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 15 May          2004 16:09:46 +0200 (MET DST)
+Received:  from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org          with esmtp (Exim 4.34) id 1BOzrD-0001gS-7W for          LATEX-L@listserv.uni-heidelberg.de; Sat, 15 May 2004 10:09:43 -0400
+In-Reply-To:  <16550.4621.526207.509473@istrati.mittelbach-online.de>
+Lines: 46
+References: <16549.4057.399610.750080@istrati.mittelbach-online.de>            <x5sme2vwu3.fsf_-_@lola.goethe.zz>            <16550.4621.526207.509473@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 15 May 2004 14:24:26.0414 (UTC) FILETIME=[5380F4E0:01C43A88]
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3.50
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: Why don't we do just the following:
+Date: Sat, 15 May 2004 15:09:42 +0100
+Message-ID: A<x5brkpvl21.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Why don't we do just the following:
+Thread-Index: AcQ6iFOfvn3iTJxPQRuPQm4j8Zenew==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4785
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C43A88.5341C900
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> \documentclass{article}
+>
+> \makeatletter
+> \def\@float#1{%
+>   \def\@currentlabel{\@latexerr{ref to misplaced label}{explain}}%
+>   \@ifnextchar[%
+>     {\@xfloat{#1}}%
+>     {\edef\reserved@a{\noexpand\@xfloat{#1}[\csname =
+fps@#1\endcsname]}%
+>      \reserved@a}}
+>
+> \makeatother
+>
+> \begin{document}
+>
+> \begin{figure} \label{foo} \end{figure}
+>
+> Hallo \ref{foo}
+>
+> \end{document}
+>
+>  > Or does _anybody_ know of _any_ intentional use
+>  > of a \label _inside_ of a figure, _not_ referring to the figure but
+>  > to its section?
+>
+> no and any env or command that would allow for labels would change
+> \@currentlabel anyway
+
+Ok, your proposal has the disadvantage that the error occurs only when
+referring to the label (and at the point of reference instead of
+definition).  And it has the advantage that if you are only out for a
+\pageref in the first place, this will still be legal.
+
+>  > I mean, this must be the candidate for the most frequently asked
+>  > question on LaTeX, ever.
+>
+> well it keeps people busy
+>
+> any suggestion for a good text?
+
+\label{whatever} without preceding or enclosing \caption.
+Labels must follow the item they are referencing.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C43A88.5341C900
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: Why don't we do just the following:</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach =
+&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; \documentclass{article}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \makeatletter</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \def\@float#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; \def\@currentlabel{\@latexerr{ref to =
+misplaced label}{explain}}%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; \@ifnextchar[%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {\@xfloat{#1}}%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\edef\reserved@a{\noexpand\@xfloat{#1}[\csname =
+fps@#1\endcsname]}%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\reserved@a}}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \makeatother</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \begin{figure} \label{foo} \end{figure}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Hallo \ref{foo}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \end{document}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; Or does _anybody_ know of _any_ =
+intentional use</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; of a \label _inside_ of a figure, =
+_not_ referring to the figure but</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; to its section?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; no and any env or command that would allow for =
+labels would change</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \@currentlabel anyway</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ok, your proposal has the disadvantage that the error =
+occurs only when</FONT>
+
+<BR><FONT SIZE=3D2>referring to the label (and at the point of reference =
+instead of</FONT>
+
+<BR><FONT SIZE=3D2>definition).&nbsp; And it has the advantage that if =
+you are only out for a</FONT>
+
+<BR><FONT SIZE=3D2>\pageref in the first place, this will still be =
+legal.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; I mean, this must be the candidate for =
+the most frequently asked</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; question on LaTeX, ever.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; well it keeps people busy</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; any suggestion for a good text?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\label{whatever} without preceding or enclosing =
+\caption.</FONT>
+
+<BR><FONT SIZE=3D2>Labels must follow the item they are =
+referencing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C43A88.5341C900--
+

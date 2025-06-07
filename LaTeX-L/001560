@@ -1,0 +1,71 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1325" "Tue" "15" "February" "1994" "18:39:30" "+0000" "Martyn Johnson" "Martyn.Johnson@cl.cam.ac.uk" nil "38" "Query about \\textheight computation" "^Date:" nil nil "2" nil nil nil nil])
+Return-Path: <owner-latex-2e%VM.URZ.UNI-HEIDELBERG.DE@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA01138; Wed, 16 Feb 94 15:05:29 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA23902; Wed, 16 Feb 94 15:04:28 +0100
+Received: from opal.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA27853
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Wed, 16 Feb 1994 14:53:49 +0100
+Received: from tubvm.cs.tu-berlin.de by opal.cs.tu-berlin.de with SMTP id AA03484
+  (5.65c8/IDA-1.4.4(fallback.m4[1.7]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 16 Feb 1994 13:48:16 +0100
+Message-Id: <199402161248.AA03484@opal.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1056; Wed, 16 Feb 94 13:45:47 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1054; Wed,
+ 16 Feb 1994 13:45:47 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3806; Tue,
+ 15 Feb 1994 19:40:18 +0000
+Reply-To: Mailing list for the LaTeX2e Betatest <LATEX-2E@DHDURZ1.BITNET>
+Date:         Tue, 15 Feb 1994 18:39:30 +0000
+From: Martyn Johnson <Martyn.Johnson@cl.cam.ac.uk>
+Sender: Mailing list for the LaTeX2e Betatest <LATEX-2E@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-2E <LATEX-2E@DHDURZ1.BITNET>
+Subject:      Query about \textheight computation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1560
+
+One of our LaTeX2e users remarked today:
+
+--------------------------------------------------------------------
+The code that computes \textheight bothers me slightly - why use
+1.5in for headers and footers, when the actual values are
+available ?
+
+...
+  \setlength\@tempdima{\paperheight}
+  \addtolength\@tempdima{-2in}
+  \addtolength\@tempdima{-1.5in}
+  \divide\@tempdima\baselineskip
+  \@tempcnta=\@tempdima
+  \setlength\textheight{\@tempcnta\baselineskip}
+\fi
+\advance\textheight by \topskip
+
+I know that the slack is taken up by \topmargin, as calculated
+below, but for 12pt text on a4 paper this comes to about 40pt
+(20pt above and below the text) which is more than the rounding
+needed to get a whole number of \baselineskip's.
+
+  \setlength\topmargin{\paperheight}
+  \addtolength\topmargin{-2in}
+  \addtolength\topmargin{-\headheight}
+  \addtolength\topmargin{-\headsep}
+  \addtolength\topmargin{-\textheight}
+  \addtolength\topmargin{-\footskip}     % this might be wrong!
+  \addtolength\topmargin{-.5\topmargin}
+--------------------------------------------------------------------
+
+The local maintainers can't see why it's done like that either,
+and the commented version doesn't explain it.  Can anybody shed
+any light on this?
+
+Martyn Johnson      maj@cl.cam.ac.uk
+University of Cambridge Computer Lab
+Cambridge UK
+

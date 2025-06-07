@@ -1,0 +1,204 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Tue, 29 Mar 2005 23:13:31 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j2TLDTNi010145 for <rainer.schoepf@PROTEOSYS.COM>; Tue, 29 Mar 2005 23:13:29 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j2TL7CtL026331; Tue, 29 Mar 2005 23:07:12 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C534A4.28940F80"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j2SM0g8L029065; Tue, 29 Mar 2005 23:05:03 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 187405 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 29 Mar 2005 23:05:02 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id j2TL52Yd024151 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 29 Mar 2005 23:05:02 +0200
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          j2TL6ktL026234 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 29 Mar          2005 23:06:46 +0200 (MET DST)
+Received:  from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org          with esmtp (Exim 4.34) id 1DGNuC-0007nF-Qm for          LATEX-L@listserv.uni-heidelberg.de; Tue, 29 Mar 2005 16:05:45 -0500
+In-Reply-To:  <5.1.0.14.0.20050329205524.024722b0@pop3.web.de> (              =?iso-8859-1?q?Uwe_L=FCck's_message_of?= "Tue, 29 Mar 2005              21:23:32 +0200")
+References: <5.1.0.14.0.20050329205524.024722b0@pop3.web.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 29 Mar 2005 21:13:31.0846 (UTC) FILETIME=[29152660:01C534A4]
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id j2TL52Yd024152
+X-Scanned-By: MIMEDefang at proteosys.com
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: \@reinserts, \holdinginserts
+Date: Tue, 29 Mar 2005 22:05:45 +0100
+Message-ID: A<x5ekdyxivq.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: \@reinserts, \holdinginserts
+Thread-Index: AcU0pClJO2Qe6ffURyibqT2mnH3ZNA==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4847
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C534A4.28940F80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Uwe L=FCck <uwe.lueck@WEB.DE> writes:
+
+> 1. I have solved my practical problem. I still don't know
+> what exactly happened before -- I don't care. As a hint:
+> It has worked since I have run \outputpenalty=3D-10004
+> with \holdinginserts>0 (I reported before that otherwise
+> the \footins box isn't empty with the ensuing
+> \outputenalty=3D-10002, in spite of \holdinginserts>0).
+>
+> 2. With simply switching \holdinginserts as sketched
+> before, you create another bug (well, wait:). \@specialoutput
+> measures the \footins box ..., so in adding floats it doesn't
+> take account of any footnotes after \holdinginserts>0.
+
+If you set \holdinginserts, of course you should not pass the page
+data on to the "real" output routine: it will wack up all its
+accounting.  Special penalties are a problem.  Strictly speaking, they
+need to get reinserted, then the whole list reprocessed without
+holdinginserts, the special routine called, and the holdinginserts
+reapplied.
+
+> I have made an example giving an awkward outcome
+> -- guess: a float that better should have waited for footnotes,
+> but one may wonder how real-life this is, I am preparing
+> something perhaps more digestible, may be for CTAN or
+> what someone suggests ...
+
+You must _only_ _ever_ use \holdinginserts with _identical_ page
+parameters, in particular the same \vsize as when doing the real run.
+If you don't, the decisions which inserts to float and which ones to
+split (and where) would differ.
+
+> however, this seems to favour what Frank Mittelbach (at least some
+> frank from latex-bugs...)  expressed in latex/3370: the rewriting
+> will be done for LaTeX3, not 2e.
+
+Frank will be glad to hear that, I am sure.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C534A4.28940F80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: \@reinserts, \holdinginserts</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Uwe L=FCck &lt;uwe.lueck@WEB.DE&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; 1. I have solved my practical problem. I still =
+don't know</FONT>
+
+<BR><FONT SIZE=3D2>&gt; what exactly happened before -- I don't care. As =
+a hint:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; It has worked since I have run =
+\outputpenalty=3D-10004</FONT>
+
+<BR><FONT SIZE=3D2>&gt; with \holdinginserts&gt;0 (I reported before =
+that otherwise</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the \footins box isn't empty with the =
+ensuing</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \outputenalty=3D-10002, in spite of =
+\holdinginserts&gt;0).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 2. With simply switching \holdinginserts as =
+sketched</FONT>
+
+<BR><FONT SIZE=3D2>&gt; before, you create another bug (well, wait:). =
+\@specialoutput</FONT>
+
+<BR><FONT SIZE=3D2>&gt; measures the \footins box ..., so in adding =
+floats it doesn't</FONT>
+
+<BR><FONT SIZE=3D2>&gt; take account of any footnotes after =
+\holdinginserts&gt;0.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If you set \holdinginserts, of course you should not =
+pass the page</FONT>
+
+<BR><FONT SIZE=3D2>data on to the &quot;real&quot; output routine: it =
+will wack up all its</FONT>
+
+<BR><FONT SIZE=3D2>accounting.&nbsp; Special penalties are a =
+problem.&nbsp; Strictly speaking, they</FONT>
+
+<BR><FONT SIZE=3D2>need to get reinserted, then the whole list =
+reprocessed without</FONT>
+
+<BR><FONT SIZE=3D2>holdinginserts, the special routine called, and the =
+holdinginserts</FONT>
+
+<BR><FONT SIZE=3D2>reapplied.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I have made an example giving an awkward =
+outcome</FONT>
+
+<BR><FONT SIZE=3D2>&gt; -- guess: a float that better should have waited =
+for footnotes,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; but one may wonder how real-life this is, I am =
+preparing</FONT>
+
+<BR><FONT SIZE=3D2>&gt; something perhaps more digestible, may be for =
+CTAN or</FONT>
+
+<BR><FONT SIZE=3D2>&gt; what someone suggests ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>You must _only_ _ever_ use \holdinginserts with =
+_identical_ page</FONT>
+
+<BR><FONT SIZE=3D2>parameters, in particular the same \vsize as when =
+doing the real run.</FONT>
+
+<BR><FONT SIZE=3D2>If you don't, the decisions which inserts to float =
+and which ones to</FONT>
+
+<BR><FONT SIZE=3D2>split (and where) would differ.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; however, this seems to favour what Frank =
+Mittelbach (at least some</FONT>
+
+<BR><FONT SIZE=3D2>&gt; frank from latex-bugs...)&nbsp; expressed in =
+latex/3370: the rewriting</FONT>
+
+<BR><FONT SIZE=3D2>&gt; will be done for LaTeX3, not 2e.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank will be glad to hear that, I am sure.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C534A4.28940F80--
+

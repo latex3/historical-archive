@@ -1,0 +1,83 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 23 Feb 90 21:54:00 MET
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+From: "Nico (Poppelier@Hutruu51.Bitnet)" <POPPELIER@HUTRUU51.bitnet>
+Subject:      Suggestions from Utrecht (II)
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 26
+
+Meta-styles for LaTeX 2.10 (or 3.0)
+
+
+What we should start with, I think, is a description of common classes
+of documents in terms of their constituent elements. One of the ways
+of doing this is giving document type definitions or dtd's: the SGML
+way of looking at documents. I will give one example, using the
+following notation:
+
+   ? = optional (0 or 1)
+   + = 1 or more
+   * = 0 or more
+   , = all must occur, in given order
+   & = all must occur, in any order
+   | = one and only one must occur
+
+I'm thinking of the following document types (classes)
+
+7. proceedings (multi-author book; 1 overall editor, every chapter
+   its own author, possibly each chapter its own toc)
+
+   book       = (front, body, back?)
+   body       = (chapter|section)+
+   chapter    = (chapter_title, chapter_author, toc?, text*, section+)
+   section    = (section_title, text*, subsection+)
+   subsection = (subsection_title, text*, subsubsection+)
+   text       = ...
+
+   front      = (titlepage & details* & toc? & lof? & lot? & prelim*)
+   prelim     = (preface|foreword|acknowl|other)
+   titlepage  = (title & (author|editor)* & abstract? & date?)
+   title      = (title_line+, subtitle)
+
+   back       = ((appendix|glossary|biblio|other)* & index?)
+   appendix   = (chapter|section)+
+
+6. book (single-author book)
+
+5. report
+   (a definition like the one above should clearly differentiate
+    between reports and books, something I've never understood.
+    Maybe Leslie could comment on this?)
+
+4. journal
+   (consists of 1 or more articles, each with the same components
+    as article; journal has title page, author index, table of contents)
+
+3. article
+   (existing style lacks
+    - address-author differentiation
+    - a construction for author list followed by address list
+      with references from the first to the latter)
+
+2. memo
+
+1. letter
+
+
+In other words: I propose (as end of part II)
+
+  - to define document classes in terms of dtd's
+  - to translate elements of the dtd into LaTeX commands
+    (most of them already exist)
+  - implement one or more styles for each class; for instance ARTICLE
+    and ARTIKEL1 are instances of the article class (meta-style)
+
+
+Nico
+
+

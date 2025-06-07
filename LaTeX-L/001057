@@ -1,0 +1,142 @@
+X-VM-VHeader: ("Date:" "Resent-Date:" "From:" "Sender:" "Resent-From" "Originally-From:" "Originally-To:" "To:" "Apparently-To:" "Cc:" "Subject:") nil
+X-VM-Bookmark: 1
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["4939" "Fri" "6" "August" "93" "17:55:07" "BST" "Paul Taylor" "pt@DOC.IC.AC.UK" nil "113" "\\mathsf etc" nil nil nil "8"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA26570; Fri, 6 Aug 93 19:08:56 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA16168; Fri, 6 Aug 93 19:08:53 +0200
+Message-Id: <9308061708.AA16168@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 6080; Fri, 06 Aug 93 19:05:58 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5863;
+ Fri, 06 Aug 93 19:05:50 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5860;
+ Fri, 06 Aug 93 19:05:46 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 6 Aug 93 17:55:07 BST
+From: Paul Taylor <pt@DOC.IC.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      \mathsf etc
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1057
+
+
+A colleague with above average LaTeX experience has just come in to my
+office to ask
+"how can I define a macro for a maths keyword which will appear in sans serif?".
+
+My answer was
+   \ifx\mathsf\undefined\def\mathsf#1{{\sf{#1}}}\fi
+   \def\id{{\mathsf{id}}}
+to which he made a gesture like a goldfish.
+
+Why is this complicated piece of code necessary?
+
+If his document is run through traditional LaTeX, \mathsf is not defined,
+so we'd better define it. Arguably one of both of the pairs of braces
+can be omitted.
+
+Using traditional LaTeX, or NFSS with \unbracefonts@ alias nomargid.sty
+alias oldlfont.sty, \mathsf behaves like traditional \sf and so needs to
+be surrounded by braces.
+
+Using AMS-LaTeX, ie NFSS with \bracefonts@ alias margid alias newlfont,
+it takes an argument, so the text must be braced instead.
+
+Either way, if he types A^\id (as may well occur, this being category theory)
+the outer braces are needed to ensure that the whole thing is treated as
+the superscript, as intended, and not just the \mathsf macro itself.
+
+Now, to anticipate the arguments that the "margid" interpretation, inherited
+from amstex, is more logical, let me say that I agree entirely. I also want
+to state for the record, lest there be any doubt about this, that I have
+a very high opinion of all of the Mainz code and design principles, and
+look forward to the day when I can delete lfonts.tex latex 2.09 et al from
+my disk.
+
+However I do wish to re-iterate the serious criticism that the principles
+of reverse compatibility are very important and have been disregarded.
+It's all very well to say "this is a better design", but if it conflicts
+with the existing documents and code a barrier is erected which effectively
+prevents people from adopting the better design. I know from my own
+experience (and remarks have been made on this list by others) how
+reluctant many (most) users are to update their software even when it is
+completely reverse compatible.  They prefer to keep the old version ---
+even when it has obvious bugs like 10pt bold or AMS symbols in subscripts
+and on slides --- rather than risk any incompatibilty at all. All possible
+benefit of the new design or version is then completely lost, and the poor sod
+who has to maintain the local software and deal with users' questions
+is left with a big headache.
+
+PLEASE Frank, Rainer, Chris, and the rest of the LaTeX 3 team, PLEASE
+take note of this criticism, and PLEASE make your code reverse compatible.
+
+You must be well aware of this problem in Germany at the moment, as you are
+adopting new telephone and postal codes.  I don't know the details there,
+but in Britain the practice is: implement the new code in virgin namespace,
+advertise the change on a particular date, intercept calls to the old numbers
+with recorded messages telling people the new numbers, and after than make
+them "unobtainable". For example the long-standing 01 code for London was
+replaced with 071 and 071 three years ago, and the 01 prefix is being reserved
+for a further two years (until we all get a superfluous 1 inserted in our
+numbers). The Germans are supposed to be better organised than the British,
+so I'm sure you know how to do it!
+
+The particular problem I mention is even now not insuperable. (The official
+solution, margid/nomargid or oldlfont/newlfont is *NOT* reverse compatible,
+but it is *VERY CONFUSING*.)
+
+For compatibility,
+    \mathsf and friends should have their AMS-LaTeX (margid) meaning.
+    \sf etc should have their traditional LaTeX meaning (nomargid)
+    \Bbb and \frak should have their amstex meaning (margid)
+
+The only way I found to implement this without replacing huge parts of NFSS
+was as follows:
+
+\def\math@ungroup#1{%
+  \let\save@math@bgroup\math@bgroup
+  \let\save@math@egroup\math@egroup
+  \let\math@bgroup\@empty
+  \let\math@egroup\@empty
+  #1%
+  \let\math@bgroup\save@math@bgroup
+  \let\math@egroup\save@math@egroup
+}%
+
+% do a LaTeX font change in the old way
+\def\oldLaTeX@fontchange#1#2#3#4{\relax
+  \ifmmode
+     \math@ungroup#1%
+  \else
+     \fontfamily{#2}\fontseries{#3}\fontshape{#4}\selectfont
+  \fi}
+
+\def\psf{\oldLaTeX@fontchange\mathsf\sfdefault\default@series\default@shape}%
+etc
+
+You'll find a complete replacement for oldlfont.sty on these principles
+in /tex/contrib/Taylor/tex/oldlfont-pt.sty
+at theory.doc.ic.ac.uk (146.169.2.27)
+
+With this change and a file full of definitions of \tenrm etc using NFSS,
+version 2.10 of LaTeX using NFSS, as promised in "The New Font Family
+Selection - User Interface to Standard LaTeX" could be released without
+causing much trouble to users.
+
+It would also make the lives of the people in charge of TeX at their sites
+a good deal easier.
+
+Paul Taylor
+
+PS Chris Rowley asked me a few weeks ago to air on this list the issues which
+arise from the "volonteer tasks" concerned with graphics applications.
+I haven't forgotten this, but I do try to ration the amount of my time
+I spend doing TeX things!
+

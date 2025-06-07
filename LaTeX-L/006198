@@ -1,0 +1,109 @@
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id nBDAur2v015981
+	for <rainer@rainer-schoepf.de>; Sun, 13 Dec 2009 11:56:54 +0100
+Received: (qmail 15850 invoked by alias); 13 Dec 2009 10:56:48 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 13 Dec 2009 10:56:47 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx071) with SMTP; 13 Dec 2009 11:56:47 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nBDAtHwA010761
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 13 Dec 2009 11:55:17 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nBD9Jon3023227;
+	Sun, 13 Dec 2009 11:55:05 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 368209 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 13 Dec
+          2009 11:55:04 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nBDAt4wB028957 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 13 Dec 2009 11:55:04 +0100
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id nBDAsraw016077 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 13 Dec 2009 11:54:56 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1NJm6G-0006wp-dk for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 13 Dec
+          2009 10:54:53 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.1.5)
+            Gecko/20091204 Thunderbird/3.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4B24C7FB.1040604@morningstar2.co.uk>
+Date:         Sun, 13 Dec 2009 10:54:51 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \peek_ ... in tables
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6syHa+enbzd/b5QpiTL63sMCHpoyqHo9wFZmxhIo+8ZRplqeT
+ 4o9SCuzfBaXAT8ruzStiGu2WdcGpI21o9adW7Ibgs9k3HTFzt5JcaZ/rppp5HSWeLCrKqjECu96A
+ QPytQ==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+X-Scanned-By: MIMEDefang 2.63 on 85.214.41.38
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6198
+
+Hello all,
+
+I've been working on some code to do peek-ahead stuff in tables. It 
+looks to me as though the \peek_...:NTF functions are broken in this 
+context:
+
+\documentclass{article}
+\usepackage{array,expl3}
+\begin{document}
+\ExplSyntaxOn
+\cs_new:Npn \CollectTokens {
+   \peek_meaning:NTF \ignorespaces { } { }
+}
+\ExplSyntaxOff
+
+\begin{tabular}{>{\CollectTokens}cc}
+   a & \\
+     & \\
+       \\
+\end{tabular}
+
+\ExplSyntaxOn
+\cs_set:Npn \CollectTokens {
+   \cs_set_eq:NN \l_peek_search_token \ignorespaces
+   \tl_set:Nn \l_peek_true_tl  { }
+   \tl_set:Nn \l_peek_false_tl { }
+   \peek_after:NN \peek_execute_branches_meaning:
+}
+\ExplSyntaxOff
+
+\begin{tabular}{>{\CollectTokens}cc}
+   a & \\
+     & \\
+       \\
+\end{tabular}
+
+\end{document}
+
+The second version here omits the \group_align_safe_(begin/end): 
+functions which the standard \peek_meaning:NTF, etc., functions add.
+
+Any ideas what is up? Am I getting something wrong?
+--
+Joseph Wright
+

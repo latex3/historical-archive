@@ -1,0 +1,215 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7200" "Sat" "27" "November" "1999" "12:15:27" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "176" "Classes -- a generalization of templates" "^Date:" nil nil "11" nil "Classes -- a generalization of templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA15259
+	for <schoepf@UNI-MAINZ.DE>; Sat, 27 Nov 1999 12:15:39 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.9148C17B@mail.listserv.gmd.de>; Sat, 27 Nov 1999 12:15:33 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445377 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Nov 1999 12:15:07 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id MAA24410 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 27 Nov
+          1999 12:15:06 +0100 (MET)
+Received: from musse.tninet.se (musse.tninet.se [195.100.94.12]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id MAA21681 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 27 Nov 1999 12:15:34 +0100 (MET)
+Received: (qmail 26477 invoked from network); 27 Nov 1999 12:15:30 +0100
+Received: from du138-226.ppp.su-anst.tninet.se (HELO ?195.100.226.138?)
+          (195.100.226.138) by musse.tninet.se with SMTP; 27 Nov 1999 12:15:30
+          +0100
+X-Sender: haberg@pop.matematik.su.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b464c47986e9@[195.100.226.134]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 27 Nov 1999 12:15:27 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Classes -- a generalization of templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3441
+
+Here is a possible generalization of the templates in the
+http://www.latex-project.org/talks/tug99.pdf document to classes. The point
+with the class dogma is that one has data with certain structure that one
+wants to describe, and that it helps that description (as it lessens
+programming errors, diminishes the need for repetitive low-level
+programming, etc).
+
+Classes, as used in the C++ paradigm, is a collection of data and functions
+(also called methods). A derived class D of a class C has the same data and
+methods as that of C, but one is allowed to add data and new method, and
+also to override the methods in C by supplying a new definition.
+
+There is also the notion of an abstract class, sometimes also called
+abstract data type (ADT), or interface. This is merely a class which cannot
+be instantiated. In C++ one creates such an abstract class by indicating
+that at least one method should not have a definition. The only way to
+produce runtime code via such a class is to derive a non-abstract class,
+and then instantiate it. (I skip the C++ polymorphic stuff here, as it
+seems to have no analog in TeX.)
+
+It seems me that the above ideas can be used in TeX. I do not however claim
+that LaTeX should have it -- I leave it to THEM (the LaTeX gurus) to decide.
+
+On page 46 in the document mentioned above, we have the following syntax
+
+\DeclareTemplateType{<type>}{<arg-no>}
+
+\DeclareTemplate{<type>}{<name>}{<arg-no>}{
+  <key-name 1>=<key-type 1> <optional-default 1> <storage-bin 1>,
+  <key-name 2>=<key-type 2> <optional-default 2> <storage-bin 2>,
+   ...
+}
+{
+  <initial-code>
+  \DoParameterAssignments
+  <action-code>
+}
+
+When translating to classes, it seems me that ``templates'' is the same as
+a root class (one which is not derived from another class), and the LaTeX
+``name'' is a derived class. Then the number arguments an instantiation of
+a class should have is the sum of the arguments indicated in the class
+definitions of the class itself and the classes it is derived from.
+
+A syntax might look like
+
+\new{class}{<name>}{<arg-no>}{
+  <key-name 1>=<key-type 1> <optional-default 1> <storage-bin 1>,
+  <key-name 2>=<key-type 2> <optional-default 2> <storage-bin 2>,
+   ...
+}
+{
+  <initial-code>
+  \DoParameterAssignments
+  <action-code>
+}
+
+
+\new{derived-class}{<name1>}{<name2>}{<add-arg-no>}{
+  <key-name 1>=<key-type 1> <optional-default 1> <storage-bin 1>,
+  <key-name 2>=<key-type 2> <optional-default 2> <storage-bin 2>,
+   ...
+}
+[
+  <initial-code>
+  \DoParameterAssignments
+  <action-code>
+]
+
+
+The meaning of the optional argument in the ``derived-class'' definition is
+that if it is present, it overrides the definition of the derived class,
+otherwise the definition of the class it is derived from is used. The
+parameter part
+{
+  <key-name 1>=<key-type 1> <optional-default 1> <storage-bin 1>,
+  <key-name 2>=<key-type 2> <optional-default 2> <storage-bin 2>,
+   ...
+}
+is just added to the parameter part of the class it is derived from. The
+\DoParameterAssignments command just executes them in sequence.
+
+One can think of creating abstract classes by merely using a command
+\AbstractClass command which issues an error in an instantiation unless
+overridden by a derived class.
+
+Then the relation with templates is roughly like this:
+
+Instead of
+  \DeclareTemplateType{<type>}{<arg-no>}
+one might write
+  \new{class}{<name>}{...}{\AbstractClass}
+This ensures that the class cannot be instantiated, but one can still add
+parameter in the {...} clause. One variation might be that one writes
+  \new{class}{<name>}{
+   <key-name 1>=<key-type 1> <optional-default 1> \AbstractClass,
+   ...
+  }{...}
+but one then will have to figure out how to override this in a derived class.
+
+Anyway, we see from [loc cit] that the intended LaTeX template types should
+have a semantics. For example, on p 43, the list type should set up a list
+environment. By playing around with these ideas, one might be able to get a
+list abstract class which is doing that setup in actual code which then
+needs not be repeated in derived classes. By analyzing such cases, one
+might thus be able to find a good way to introduce abstract classes in
+LaTeX.
+
+The use of a class derivation and instantiation would then in the case of
+the ``list'' example above be something like
+  \new{class}{list}{3}{...}{...}  % with the \AbstractClass command somewhere
+  \new{derived-class}{enumerate}{0} % 0 here, as no more arguments are used.
+  {...}{...}
+
+The instantiations would be somewhat different than LaTeX templates if
+traditional class dogma should be used. So instead of LaTeX
+  \UseInstance{list}{enumerate} \NoValue \NoValue \BooleanFalse}
+as on p 45, one would write
+  \use{enumerate} \NoValue \NoValue \BooleanFalse
+With the ideas of objects I posted here, this is not so difficult to
+implement, as \new{derived-class}{enumerate} will create an ``enumerate''
+object which will have a command named ``enumerate/use''. The latter will
+in its turn be invoked by the command \use{enumerate}.
+
+So here is a difference between LaTeX templates and classes: With classes,
+once one has made a derivation ``enumerate'' from ``list'', it is a new
+independent entity which do not any longer carry its origin (that is,
+``list'') explicitly with it when called. Instead, if the class it is
+derived from (or base class) is needed, one should add a variable
+\BaseClass which every class has.
+
+It is easier to see the connection between classes and modules than between
+LaTeX templates and modules:
+
+Suppose we have modules ``TeX'' and ``std'' which both have their internal
+``enumerate'' classes. The object names should then be
+  TeX/enumerate
+  std/enumerate
+The normal way to call these would be to write
+  \use{TeX}{enumerate}
+  \use{std}{enumerate}
+or perhaps
+  \use{TeX/enumerate}
+  \use{std/enumerate}
+But suppose we agree on using the ``TeX'' module only, then one might have
+a command
+  \use{module}{TeX}
+or perhaps
+  \use{TeX}
+which redefines \use to expand to \use/TeX, so that \use{enumerate} expands
+to \use/TeX{enumerate} (but if is unwise to redefine \use, one might use
+something else, say \Use, instead).
+
+Suppose now that one has loaded the TeX module, that it does not have the
+``enumerate'' class, and that we want to take that only form std. One way
+would be to use the long name explicitly
+  \use{std}{enumerate}
+Because the ``TeX'' and ``std'' modules have different namespaces, there is
+no problem in loading them both. But if one should shorten this name, then
+one could have command something like
+  \import{std}{enumerate}
+and henceforth be able to write
+  \use{enumerate}
+instead of the long command. Again, it is not so difficult to do that with
+the object model I presented, because \import{std}{enumerate} needs only to
+define a command \enumerate/use which expands to \std/enumerate/use
+(besides from checking if the name ``enumerate/use'' is in use).
+
+OK. This was an input. I leave it to THEM and YOU to decide if it is useful
+for LaTeX in some form or another.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

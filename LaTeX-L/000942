@@ -1,0 +1,93 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2926" "Sat" "6" "February" "93" "10:15:37" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "66" "Grid layout" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA23030; Sat, 6 Feb 93 10:23:35 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA28511; Sat, 6 Feb 93 10:23:33 +0100
+Message-Id: <9302060923.AA28511@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 8567; Sat, 06 Feb 93 10:24:30 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7924;
+ Sat, 06 Feb 93 10:24:29 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7922;
+ Sat, 06 Feb 93 10:24:27 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sat, 6 Feb 93 10:15:37 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Grid layout
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 942
+
+
+oh well, the system doesn't like me, so let's try again ...
+From:	MZDMZA::MITTELBACH   "Frank Mittelbach"  5-FEB-1993 20:32:14.07
+To:	TOLTX
+CC:	MITTELBACH
+Subj:	Grid layout
+
+Peter and SPQR fighting about grid layout :-)
+Here are my comments, I guess I made some of them before.
+
+> I think that is should be possible for rubber space to be introduced in
+> the whitespace of headings/images so that baselines remain aligned.
+
+It is sort of hard to introduce `rubber space' that jumps in discrete
+values, anybody ever had a try at this? (if so I would like to see it, please)
+
+> Are there any plans for this feature?
+
+yes, as I think grid based layouts are very important we will support
+this in LaTeX3, but it isn't easy.
+
+> I use (in this context) A5 pages with 2 columns and point size 9 on 9.67.
+> Therefore when I include an image of say 50mm, I can accept a small amount of
+> whitespace above or below to ensure the baselines of the two columns are
+> aligned.
+
+you can help yourself by turing off every rubber space measuring the
+your boxes and insert the missing space yourself after finding out
+what is needed. I did this once for the E-TeX paper but this only
+solves a restricted class of problems.
+
+> I accept that there are wider issues but would like to think that LaTeX3
+> could address the general principle of providing aligned baselines
+> (perhaps as on option which can be switched on/off).
+
+we will, but I don't think a switch will make much sense.
+
+> In the general case, LaTeX *does* allow aligned baselines. its up to
+> the style designer to use fixed space, not variable bits of rubber,
+> between items. since TeX plonks rectangular boxes on the page very
+> precisely, its an ideal tool for building aligned baselines. I dont
+> quite see what the LaTeX 3 *kernel* needs to add. An example 2 column
+> style file with a good implementation of aligned baselines is
+> another matter, and it would be lovely to have it.
+
+Well, TeX isn't that ideal for it, for example any large object in a
+paragraph throws you out of your grid. As far as the kernel is
+concerned, we need to provide the appropriate data structures to make
+it possible (and hopefully not too difficult) to achieve such effects.
+In general TeX is missing additional alignment points on boxes (and
+the TeXbook says why: because Don didn't saw enough applications for
+it, sigh) and this means a lot of programming to get it right.
+
+> Would it be possible for an option to be provided in multicol (or whichever
+> style file is relevant) such that baselines can be aligned when using
+> 2 coumn mode and including images (or other boxes) which are NOT exact
+> multiples of baselinskip size?
+
+this is not a question of something like multicol, it have to be
+tackled from the other end, ie the stuff that may come in arbitrary.
+Eg the figure env, display math, etc have to take care of what they
+pass on.
+
+And yes, we will tackle it (one day :-)
+
+Frank
+

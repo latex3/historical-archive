@@ -1,0 +1,345 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.46B02674@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:01 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.46B02674"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: RE: Should tables expand to width of text-column?
+Date: Sat, 7 Sep 1991 01:00:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE59B@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <CHAA006@VAX.RHBNC.ac.uk>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 380
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.46B02674
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+[Taylor's pragmatic approach: ``never mind what the design gurus say ---
+ here's some code that does what is required ...'']
+
+\newif \iferrornegative
+
+\newcount \percentage
+
+\newdimen \width
+\newdimen \deltatablewidth
+\newdimen \deltatabcolsep
+\newdimen \resultingerror
+
+\def \fractionof {0.618} % the default case
+
+\def \tabularstart #1\tabularstop #2%
+{\begingroup
+ \ifdim \hsize < \textwidth
+        \let \datum =3D \hsize
+ \else
+        \let \datum =3D \textwidth
+ \fi
+ \message {T}
+ \setbox 0 =3D \hbox {\hbadness =3D \maxdimen \starttabular =
+#1\stoptabular #2}%
+ \width =3D \wd 0
+ \deltatabcolsep =3D 1 sp
+ \advance \tabcolsep by \deltatabcolsep
+ \ifdim \wd 0 > \fractionof \datum
+%
+        \loop
+%
+                \setbox 0 =3D \hbox {\hbadness =3D \maxdimen
+                                        \starttabular #1\stoptabular =
+#2}%
+                \deltatablewidth =3D \wd 0
+                \advance \deltatablewidth by -\width
+                \width =3D \wd 0
+                \resultingerror =3D \width
+                \advance \resultingerror by -\datum
+                \ifdim   \resultingerror < 0 pt
+                         \resultingerror =3D -\resultingerror
+                         \errornegativetrue
+                \else
+                         \errornegativefalse
+                \fi
+        \ifdim  \resultingerror > \hfuzz
+                \iferrornegative
+                        \message {-}
+                        \resultingerror =3D -\resultingerror
+                \else
+                        \message {+}
+                \fi
+                \divide \deltatablewidth by \deltatabcolsep
+                \divide \resultingerror by \deltatablewidth
+                \deltatabcolsep =3D -\resultingerror
+                \advance \tabcolsep by \deltatabcolsep
+        \repeat
+\else
+        \begingroup
+                \percentage =3D \wd 0
+                \divide \datum by 100
+                \divide \percentage by \datum
+        \endgroup
+\fi
+\ifdim  \tabcolsep < 1 \jot
+        \message {WARNING: \noexpand \tabcolsep less than 1 \noexpand =
+\jot
+                        at line: \the \inputlineno \space (\the =
+\tabcolsep)}
+\fi
+\starttabular #1\stoptabular #2 %%% And this line sets the table
+\endgroup
+#2}
+
+\def \tabularstop {\stoptabular}
+
+
+
+------_=_NextPart_001_01C19443.46B02674
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>RE: Should tables expand to width of text-column?</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>[Taylor's pragmatic approach: ``never mind what the =
+design gurus say ---</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;here's some code that does what is required =
+...'']</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newif \iferrornegative</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcount \percentage</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newdimen \width</FONT>
+
+<BR><FONT SIZE=3D2>\newdimen \deltatablewidth</FONT>
+
+<BR><FONT SIZE=3D2>\newdimen \deltatabcolsep</FONT>
+
+<BR><FONT SIZE=3D2>\newdimen \resultingerror</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def \fractionof {0.618} % the default case</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def \tabularstart #1\tabularstop #2%</FONT>
+
+<BR><FONT SIZE=3D2>{\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifdim \hsize &lt; \textwidth</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \let =
+\datum =3D \hsize</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \let =
+\datum =3D \textwidth</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\message {T}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\setbox 0 =3D \hbox {\hbadness =3D \maxdimen =
+\starttabular #1\stoptabular #2}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\width =3D \wd 0</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\deltatabcolsep =3D 1 sp</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\advance \tabcolsep by \deltatabcolsep</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifdim \wd 0 &gt; \fractionof \datum</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\loop</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \setbox 0 =3D \hbox {\hbadness =3D =
+\maxdimen</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; \starttabular #1\stoptabular #2}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \deltatablewidth =3D \wd 0</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \advance \deltatablewidth by -\width</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \width =3D \wd 0</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \resultingerror =3D \width</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \advance \resultingerror by -\datum</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \ifdim&nbsp;&nbsp; \resultingerror &lt; 0 =
+pt</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; \resultingerror =3D -\resultingerror</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; \errornegativetrue</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; \errornegativefalse</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifdim&nbsp; \resultingerror &gt; \hfuzz</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \iferrornegative</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; \message {-}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; \resultingerror =3D -\resultingerror</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; \message {+}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \divide \deltatablewidth by =
+\deltatabcolsep</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \divide \resultingerror by =
+\deltatablewidth</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \deltatabcolsep =3D -\resultingerror</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \advance \tabcolsep by \deltatabcolsep</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\repeat</FONT>
+
+<BR><FONT SIZE=3D2>\else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begingroup</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \percentage =3D \wd 0</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \divide \datum by 100</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \divide \percentage by \datum</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\endgroup</FONT>
+
+<BR><FONT SIZE=3D2>\fi</FONT>
+
+<BR><FONT SIZE=3D2>\ifdim&nbsp; \tabcolsep &lt; 1 \jot</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \message =
+{WARNING: \noexpand \tabcolsep less than 1 \noexpand \jot</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; at line: \the \inputlineno \space (\the \tabcolsep)}</FONT>
+
+<BR><FONT SIZE=3D2>\fi</FONT>
+
+<BR><FONT SIZE=3D2>\starttabular #1\stoptabular #2 %%% And this line =
+sets the table</FONT>
+
+<BR><FONT SIZE=3D2>\endgroup</FONT>
+
+<BR><FONT SIZE=3D2>#2}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def \tabularstop {\stoptabular}</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.46B02674--
+

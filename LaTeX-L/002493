@@ -1,0 +1,91 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2047" "Mon" "20" "October" "1997" "22:25:36" "-0400" "Michael John Downes" "mjd@MATH.AMS.ORG" nil "48" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id EAA02083;
+	Tue, 21 Oct 1997 04:25:58 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.E44B93DB@listserv.gmd.de>; Tue, 21 Oct 1997 4:25:57 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 219037 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 21 Oct 1997 04:25:47 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id EAA15073 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 21 Oct 1997 04:25:40
+          +0200 (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 21 Oct 1997
+          02:25:38 UT
+Received: from epsilon.ams.org by AXP14.AMS.ORG (PMDF V5.1-8 #1) with SMTP id
+          <01IP1NV2LRI8000RQ6@AXP14.AMS.ORG> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Oct 1997 22:25:37 EST
+Received: by epsilon.ams.org; (5.65v3.2/1.1.8.2/12Oct95-1155AM) id AA18697;
+          Mon, 20 Oct 1997 22:25:37 -0400
+X-Mailer: Gnus v5.3/Emacs 19.34
+Lines: 48
+References: <971020150418.a6ec@vms.rhbnc.ac.uk>
+            <199710201909.UAA17653@frank.zdv.uni-mainz.de>
+Message-ID:  <pcd8kzc0nz.fsf@epsilon.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  Frank Mittelbach's message of Mon, 20 Oct 1997 20:09:58 +0100
+Date:         Mon, 20 Oct 1997 22:25:36 -0400
+From: Michael John Downes <mjd@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2493
+
+Philip Taylor writes:
+>  > No idea how Frank does it, but at successful completion I close A and B,
+>  > open B for input and A for output, and copy B to A in a robust environment
+>  > (sorry, not the LaTeX sense of "robust" but then I don't speak LaTeX!).
+
+To which Frank Mittelbach replies:
+> that is more or less what i did implement as well if i remember
+> correctly. my idea was to provide for doing the copying within LaTeX
+> (the slow but portable variant) but also allow to set things up that
+> the copying is done by some OS script wrapper outside LaTeX instead.
+
+How about seeking to avoid the copying altogether? According to a small
+experiment I just did it seems it might be possible to do this, with a
+slight cost: using three extensions aux, auy, auz instead of just two.
+(But in the case of a book with multiple \include statements the
+subordinate files never use the .aux extension; only \jobname.au[xyz]
+uses all three.)
+
+Don't know if I've overlooked some critical impediment, but the method I
+tried was
+
+\jobname.aux contains only one line:
+
+  \auxselect{y}{...}% first arg is y or z
+
+\jobname.auy, \jobname.auz: alternate output streams for aux data
+
+At end-document:
+
+---If a complete .auy file was successfully written, write
+\auxselect{y}{...} to the \jobname.aux.
+
+---If a complete .auz file was successfully written, write
+\auxselect{z}{...} to the \jobname.aux.
+
+If \enddocument is not executed (probably the LaTeX run ended
+prematurely with an error), \jobname.aux will automatically be left in
+its previous state, so that the next LaTeX run will again select the
+last complete (set of) auxiliary file(s).
+
+As for the second arg of \auxselect, I thought it would be useful to
+write there something to indicate whether any aux data changed (meaning
+another run is necessary). Then external OS scripts that want to test
+whether another run is necessary could look only at the first line of
+the .aux file instead of diffing .auy and .auz (maybe a bit of a pain
+for a multi-\include document).
+
+Michael Downes, mjd@ams.org
+

@@ -1,0 +1,107 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p087bjQr007857
+	for <rainer@rainer-schoepf.de>; Sat, 8 Jan 2011 08:37:47 +0100
+Received: (qmail 10899 invoked by alias); 8 Jan 2011 07:37:40 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 08 Jan 2011 07:37:39 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx043) with SMTP; 08 Jan 2011 08:37:39 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p087ZpBm030423
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 8 Jan 2011 08:35:51 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p07N16cs015485;
+	Sat, 8 Jan 2011 08:35:41 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 801902 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 8 Jan
+          2011 08:35:41 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+          by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id
+          p07N16cm015485; Sat, 8 Jan 2011 08:25:36 +0100
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id p087PaG2019925
+Message-ID:  <7255173980814043.WA.blflatexgmail.com@listserv.uni-heidelberg.de>
+Date:         Sat, 8 Jan 2011 08:25:36 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Verbatim and xparse (yet again :)
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6v/Sb97LojnDtMgfETrECMLUO9erHzOJe+OynZRhvlGqb5A0X
+ bbiCt2rAnnct/NAlbHMvoAL6GY+23tB3khNK7avqRsgMMVBwlWgrgcyEiCy6eQ7DbfhonniFyqTI
+ PpJNA==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6549
+
+Dear all,
+
+As those who have followed the list for some time know, there were 
+discussions of introducing verbatim arguments in xparse. This was rejected
+for a very good reason: if the verbatim-like commands are not having the 
+first look at the argument, then comment characters and spaces have been 
+lost irretrievably. Thus, the user has to be made aware that nesting is a 
+problem for verbatim. The proposal I describe below forces the user to 
+explicitly indicate that the command that he is using will contain verbatim 
+text.
+
+
+Namely, in the package `cprotect.dtx`, I introduced the command 
+`\cprotect` that acts somehow like a prefix: the argument of the 
+following macro is read verbatim, and `\scantoken`ed when it 
+is used. A typical example of use is
+
+\cprotect \section { Title \cprotect \footnote { Foot \verb|^^|. } }
+
+This will put the expected verbatim in a footnote attached to the section 
+called "Title". This works in moving arguments (e.g. Table of Contents). 
+So far, the implementation (is dirty and) only works for one argument. I 
+plan to extend it to any command declared using xparse.
+
+
+It might be possible to do error checking: each `\cprotect` should check 
+somehow that it is "at the top" (i.e., it is the first one to look at its 
+argument), or that it is within a `\cprotect`ed command. 
+   Any idea how to do that?
+If the error checking fails, throw an error, and try to recover by using the
+harmless character sequences mentionned a few times in the past on this
+list.
+
+
+For the syntax, the naive thing is to simply get `\cprotect` to  grab all 
+the arguments verbatim, and reread them when needed, but for 
+performance reasons, it could be better to say explicitly for each 
+argument whether it needs `\cprotect`ion. Any suggestions for the 
+syntax in this case? 
+
+
+Best regards,
+Bruno Le Floch,
+new to the list.
+
+
+PS: Also, a small crazy idea (I see no practical application for that):
+In LaTeX3, we can generate variants of macros with different types 
+of arguments (using \cs_generate_variant:Nn). Could/should the 
+same thing be done at the layer above? In other words, should it be 
+possible to take a DocumentCommand, and change the delimiters, or 
+change an argument from being optional to being mandatory, or from 
+being mandatory to being  optional with default, ...?
+

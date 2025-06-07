@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1061" "Fri" "7" "March" "1997" "13:47:37" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "44" "TeX backtracking" "^Date:" nil nil "3" nil "TeX backtracking" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id NAA22647; Fri, 7 Mar 1997 13:46:06 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.5DC51DF7@listserv.gmd.de>; Fri, 7 Mar 1997 13:46:05 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 110034 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 7 Mar 1997 13:45:59 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id NAA11022 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 7 Mar 1997 13:45:55 +0100
+          (MET)
+Received: from [130.237.37.72] (sl52.modempool.kth.se [130.237.37.72]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id NAA28846 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 7 Mar 1997 13:45:47 +0100
+          (MET)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130501af45b97ebf93@[130.237.37.140]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 7 Mar 1997 13:47:37 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      TeX backtracking
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1867
+
+  This relates to stuff discussed earlier in this group, on how to make TeX
+backtrack, in order to enable LaTeX to do certain things, like typesetting
+certain music scores, producing helpfiles and reading those in one run,
+etc.
+
+  One way to do this backracking, is having TeX inputing the file needed to
+be worked several times, but I want to point out that it is possible having
+the file itself doing that input:
+
+  With the code (put in the file named "thisfile.tex", typeset in PlainTeX)
+
+\def\inputonce#1 {%
+  \expandafter\ifx\csname #1/read\endcsname\relax%
+    \expandafter\def\csname #1/read\endcsname{true}%
+    \input #1 %
+  \else%
+    \relax%
+  \fi}
+
+\inputonce thisfile.tex
+
+Test Text.
+
+\def\endbacktrack{%
+  \ifx\endit\undefined%
+    \let\endit\relax%
+    \endinput%
+  \else%
+    \relax%
+  \fi}%
+
+\endbacktrack
+
+More stuff.
+
+\end
+
+The "Test Text" is typeset exactly twice, whereas the "More stuff" is
+typeset once.
+
+-- It looks as though that one might fiddle around with this idea, to
+produce more controlled forms of back-tracking.
+
+  Hans Aberg
+

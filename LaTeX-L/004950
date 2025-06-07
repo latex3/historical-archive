@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 8 May 2006 18:07:42 +0200
+Received: by mail.proteosys.com (8.12.11.20060308/8.12.2) with ESMTP id k48G7TRg023646
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 8 May 2006 18:07:30 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k48G6jvj028569;
+	Mon, 8 May 2006 18:06:46 +0200 (MET DST)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k489tn0p022323;
+	Mon, 8 May 2006 18:02:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1307354 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 8 May
+          2006 18:02:46 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k48G2kAR007535 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 8 May 2006 18:02:46 +0200
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          k48G64vj028417 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 8 May
+          2006 18:06:05 +0200 (MET DST)
+Received: from remote129-158.home.uni-freiburg.de ([132.230.129.158]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.60) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1Fd8Bs-0005qn-9s for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 08 May 2006 18:02:33 +0200
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id F00FC37223; Mon,  8 May 2006 17:25:33 +0200 (CEST)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <20060505040640.GA3369@irwin.vpn.uni-freiburg.de>
+            <20060505.180617.71093230.wl@gnu.org>
+            <20060506222319.GA3507@irwin.vpn.uni-freiburg.de>
+            <20060507.072044.155818689.wl@gnu.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <20060508152533.GA12904@irwin.vpn.uni-freiburg.de>
+Date:         Mon, 8 May 2006 17:25:33 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LaTeX Release 2005/12/01
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20060507.072044.155818689.wl@gnu.org>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 May 2006 16:07:46.0266 (UTC) FILETIME=[8B908BA0:01C672B9]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4950
+
+Hello,
+
+On Sun, May 07, 2006 at 07:20:44AM +0200, Werner LEMBERG wrote:
+
+> > > Hmm, the text in fixltx2e.pdf misses the `fl' ligature...
+> > 
+> > I could see this on page 5 with xpdf 3.00 only.  Then I tried AR
+> > 7/Linux, gs8.50: fl is present.  Afterwards I went back to xpdf 3.00
+> > and suddenly the fl appeared mysteriously and I cannot reproduce the
+> > problem.
+
+I was just too tired.
+
+> On my GNU/Linux box, xpdf 3.00, Acroread 7.0.1, and gs 8.53 fail to
+> display the `fl' ligature in this document.  Even after conversion to
+> PS with pdftops (from xpdf 3.00) the ligature is missing.  In
+> fixltx2e.ps, the `fi' ligature (which displays fine) in font
+> BBZAHZ+CMR10 has glyph index \014, and `fl' is glyph index \015 -- the
+> original cmr10.pfb has the same positions.  But in the text strings
+> the `fl' ligature is accessed with glyph index \012, which is wrong!
+
+The error was in my tool for optimizing page streams:
+"fl" was written as byte with ascii code 13 ('\r', '\015').
+Then Multivalent (or acroread/ghostscript, but not xpdf 3.00) have
+read the pdf specification. The '\r' is interpreted as end of
+line marker and gets normalized to '\n'.
+
+I have updated all zip files:
+http://www.informatik.uni-freiburg.de/~oberdiek/tmp/latex-tds/index.html
+
+Many thanks for your bug-report.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

@@ -1,0 +1,120 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2089" "Wed" "18" "June" "1997" "14:37:21" "+0200" "Frank Mittelbach" "fmitte01@EDS.DE" nil "67" "Re: [Bug Report] Problem with INPUTENC package and TOC files." "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from VZDMZY.ZDV.UNI-MAINZ.DE (vzdmzy.zdv.Uni-Mainz.DE [134.93.178.25])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA02529; Wed, 18 Jun 1997 14:58:23 +0200 (MET DST)
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V5.0-4 #22141)
+ id <01IK805KN5R4H8JZL0@MZDMZA.ZDV.UNI-MAINZ.DE>; Wed,
+ 18 Jun 1997 14:59:12 +0100
+Received: from listserv.gmd.de (listserv.gmd.de) by MZDMZA.ZDV.UNI-MAINZ.DE
+ (PMDF V5.0-4 #22141) id <01IK7ZTGQ34WH640LG@MZDMZA.ZDV.UNI-MAINZ.DE>; Wed,
+ 18 Jun 1997 14:51:26 +0100
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de
+ (LSMTP for OpenVMS v1.1a) with SMTP id <8.B52BC20D@listserv.gmd.de>; Wed,
+ 18 Jun 1997 14:38:10 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+ (LISTSERV-TCP/IP release 1.8b)
+ with spool id 155269 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed,
+ 18 Jun 1997 14:38:05 +0200
+Received: from gate.eds.de (gate.eds.de [204.71.114.5])
+ by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id OAA21349 for
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed,
+ 18 Jun 1997 14:37:50 +0200 (MET DST)
+Received: from ew160061.nets.de.eds.com by gate.eds.de with SMTP id AA04024
+ (InterLock SMTP Gateway 3.0 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>); Wed,
+ 18 Jun 1997 12:37:22 +0000 (GMT)
+Received: from n15ux24.nets.de.eds.com
+ (n15ux24.nets.de.eds.com [206.122.103.15]) by ew160061.nets.de.eds.com
+ (8.7.5/8.7.3) with ESMTP id MAA00063 for
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 18 Jun 1997 12:37:21 +0000 (GMT)
+Received: by n15ux24.nets.de.eds.com (1.37.109.16/16.2) id AA054397441; Wed,
+ 18 Jun 1997 14:37:21 +0200
+In-reply-to: <33A7A882.21A4B63D@vvv.vsu.ru>
+Reply-to: Mailing list for the LaTeX3 project
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Message-id: <199706181237.MAA00063@ew160061.nets.de.eds.com>
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+References: <m0wdxiT-000OVnC@dcarlisle.demon.co.uk>
+ <33A7A882.21A4B63D@vvv.vsu.ru>
+Date: Wed, 18 Jun 1997 14:37:21 +0200
+From: Frank Mittelbach <fmitte01@EDS.DE>
+Sender: Mailing list for the LaTeX3 project
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject: Re: [Bug Report] Problem with INPUTENC package and TOC files.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2101
+
+Vladimir
+
+ > I'd like to thank you all for the help.
+ > I'd like to ask, what is the `phylosophy' of using <text-settings>
+ > and <math-settings> in a \DeclareFontEncoding command?
+ > Do these settings remain globally defined after changing the encoding?
+ > If so, may be it would be good to provive additional arguments
+ > to \DeclareFontEncoding, like <restore-text-settings> and
+ > <restore-math-settings>?
+
+they are mainly a historical mistake and of no much use (and not much
+used). yes one could think of a complexer syntax that would be more
+reasonable but there will be no change to NFSS2 on the syntax
+level. In other words as far as LaTeX2e is concerned there will not be
+incompatible changes of any such kind.
+
+as to the exact meaning of the commands argument, fntguide.tex says
+
+
+\begin{decl}
+|\DeclareFontEncoding| \arg{encoding} \arg{text-settings}
+                       \arg{math-settings}
+\end{decl}
+
+Declares a new encoding scheme \m{encoding}.
+
+The \m{text-settings} are
+declarations which are executed every time |\selectfont| changes the
+encoding to be \m{encoding}.
+
+The \m{math-settings} are similar but are for math alphabets. They
+are executed whenever a math alphabet with this encoding is
+called.
+
+Spaces within the arguments are ignored to avoid surplus
+spaces in the document. If a real space is necessary
+use |\space|.
+
+------------------------------------------
+
+as you notice there is no restoration other then the one via grouping
+
+
+ > David Carlisle wrote:
+ >
+ > > \DeclareTextSymbol{\CYRV}{LCY}{198}
+ >
+ > BTW, why not to write \DeclareTextSymbol\CYRV{LCY}{198}, i.e. without
+ > unnecessary braces?
+ > I do not like to type unnecessary characters in my texts. :-)
+
+it is good style ;-)
+
+yes it has its uses as it allows to parse stuff in an
+easier way.  for example if you do
+
+\newcommand\foo{}
+
+then latex2html will not parse it correctly.
+
+but i personally also prefer leaving the braces out in this case
+(don't tell anybody :-)
+
+also it has one big advantage of being uniform, you can learn as a new
+user that arguments have braces (simple :-)
+
+frank
+

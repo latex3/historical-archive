@@ -1,0 +1,96 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p1I4Msr2012227
+	for <rainer@rainer-schoepf.de>; Fri, 18 Feb 2011 05:22:55 +0100
+Received: (qmail 25486 invoked by alias); 18 Feb 2011 04:22:49 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 18 Feb 2011 04:22:48 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx046) with SMTP; 18 Feb 2011 05:22:48 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p1I4JWkD020716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 18 Feb 2011 05:19:32 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p1HN14BA009081;
+	Fri, 18 Feb 2011 05:19:21 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1205862 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 18 Feb
+          2011 05:19:21 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p1I4JKaM032539 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 18 Feb 2011 05:19:20 +0100
+Received: from mail-gx0-f177.google.com (mail-gx0-f177.google.com
+          [209.85.161.177]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id p1I4JE6J020604 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 18 Feb
+          2011 05:19:19 +0100
+Received: by gxk21 with SMTP id 21so1673750gxk.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 17 Feb 2011 20:19:14 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.151.83.7 with SMTP id k7mr423256ybl.68.1298002754034; Thu, 17
+          Feb 2011 20:19:14 -0800 (PST)
+Received: by 10.146.86.8 with HTTP; Thu, 17 Feb 2011 20:19:13 -0800 (PST)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <AANLkTikP4qMZiiQhF5+vKg36BVuvuHnexsPgnX0bbdw6@mail.gmail.com>
+Date:         Thu, 17 Feb 2011 23:19:13 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Fully expandable "x" argument (was "expandable \uppercase...")
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p6i75npGen84eVAEFK/syJmiNoEBJhgjYKpglu1TZLLw7xMZnJMXwBFy+Sxe
+ D/AUQGQOurK3ezVJqUBFH0uN5pjmWoMfpyHp50EZ60/Y6hM43eiKLTaE/W0dI7nIn8+pr4SzneyH
+ Jeytg==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6608
+
+Hello,
+
+> Put all of the stuff you've written together with some documentation,
+> sticking to expl3 conventions, and send it to the list
+
+As Joseph asked, I wrote some documentation.
+    http://users.aims.ac.za/~bruno/LaTeX/.l3ctab/l3ctab.pdf
+(and the usual .ins, .dtx, .sty) I hope that naming it "l3..." is not an issue.
+
+I ended up defining a new data structure: "conversion table" (ctab),
+which behaves somewhat like a property list, plus a bunch of special
+methods (for brace groups, etc.). For efficiency reasons, I went for
+the "one macro per token" approach. This can be changed later.
+
+Since the code leads to an expandable version of the "x" argument
+specifier, I took the liberty of defining a *new argument type*, "e"
+(for expandable x), via \::e. See Sections 2.5.5 and 2.5.4 for
+details.
+
+Various things are coded:
+- \Lowercase, \Uppercase, \NoCaseChange, which detect math mode ($ and $$)
+- \tl_flip:n (I didn't want to overwrite \tl_reverse:n), \tl_token_count:n
+- \exp_some:n{ .... \exp_this:N <token> ..... } will expand <token>
+before anything else. Multi-expansion variants are also given.
+- \exp_after:nN, expanding after a group
+- Full expansion, and the possibility of having an "e" argument specifier.
+
+@Joseph: I will take a look at how xparse grabs arguments.
+
+-- 
+Regards,
+Bruno
+

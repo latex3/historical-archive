@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3722" "Wed" "3" "February" "93" "23:13:46" "+0100" "kris@DIKU.DK" "kris@DIKU.DK" nil "78" "Re: document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA16124; Wed, 3 Feb 93 23:15:57 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA22778; Wed, 3 Feb 93 23:15:54 +0100
+Message-Id: <9302032215.AA22778@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4985; Wed, 03 Feb 93 23:16:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3775;
+ Wed, 03 Feb 93 23:16:55 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3773;
+ Wed, 03 Feb 93 23:16:52 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Comments:     Warning -- original Sender: tag was kris@CS.CHALMERS.SE
+In-Reply-To:  <9302032103.AA16626@odin.diku.dk>
+Date:         Wed, 3 Feb 93 23:13:46 +0100
+From: kris@DIKU.DK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 923
+
+
+> The key question is why is numbering style part of the logical
+> structure?
+
+It seems to me that there is a *general* concept missing in what users
+should specify in their documents: constraints.  I think this provides
+a solution to the logical vs. presentation structure dilemma.
+
+Here are some examples that maybe stress the point further than I
+should, but it is my experience as an author that the difficult thing
+is to *realise* where your assumptions are in conflict with the
+publisher (or other)'s requirement:
+
+Michael Downes writes
+
+  (a) Exercises in a textbook numbered like an enumerate environment. At
+  the beginning of each exercise section the instructions say "Answers
+  for odd-numbered exercises are found in Appendix~\ref{answ}." If a
+  different documentstyle is substituted that changes the default
+  numbering style for "list of exercises" from arabic numerals to
+  alphabetic, the adjective "odd-numbered" will no longer make sense.
+
+this is the constraint "numeric exercises".
+
+  (b) A mathematics article is full of a particular notation that uses
+  lots of asterisks. The numbering style for footnotes is arabic
+  numerals. If a different documentstyle changes the numbering style to
+  \fnsymbol, it might be a disservice to the reader because of confusion
+  between math asterisks and footnote asterisks.
+
+this is "not symbolic footnotemarkers".
+
+And Don Hosek:
+
+  There's a certain point at which we have to accept that simply
+  changing the \documentstyle cannot do everything for us. It won't
+  change a text which is written using the US style of
+    ``this.''
+  to Viking Penguin's house requirement of
+    `this'.
+  (note change in quotes and movement of period). Or consider the
+  fact that grammatical statements which make sense with one
+  citation format will be different for another.
+
+This is exactly right...which means that either writer should write
+"\quote{this}.", using the style specific quoting.  Or they add the
+constraints "double inner quotes" or "single outer quotes" if the
+semantics of the writing depends on one or the other.
+
+With respect to cross references, these should ideally be packaged
+logically (as in the texinfo.tex format).  I once had a problem with
+having references to subsections and then the publisher did not number
+subsections at all!  The point here is that something like
+"\fullref{...}" (with companion "\Fullref{...}" for capitalisation)
+which would generate the entire reference *including* "section",
+"item", ... (and, correspondingly, "Section", "Item", ...) would have
+provided what I needed.  The context information is available where it
+is possible to specify \label!
+
+  I used the passive voice for a reason: somebody should check, but
+  it's not necessariily clear who. In an ideal world, the author
+  prepares the manuscript using a style which is as close as is
+  practical to the final style. He or she can then do the checking
+  before submission. At the very least, hard references should be
+  marked with comments in the input (which is what we did on the
+  book I referred to in my previous message). Most changes to refs,
+  though will occur in the author's work (and the particular book
+  was a nightmare because the authors kept changing the text).
+
+And since we do not live in an ideal world then LaTeX3 should
+encourage paying special attention to the aspects of writing that
+might need attention in the typesetting phase!
+
+--Kristoffer
+______________________________________________________________________
+Kristoffer H{\o}gsbro ROSE                     Internet: kris@diku.dk
+Chalmers Tekniska H{\"o}gskola, Datalogi       Voice: +46 (031)7725019
+412 96 G{\"o}teborg, SWEDEN                    Fax:   +46 (031) 165655
+

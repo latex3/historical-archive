@@ -1,0 +1,102 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3045" "Thu" "4" "February" "93" "08:53:44" "-0800" "lamport@SRC.DEC.COM" "lamport@SRC.DEC.COM" nil "71" "Re: document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA17652; Thu, 4 Feb 93 17:55:30 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA25715; Thu, 4 Feb 93 17:55:27 +0100
+Message-Id: <9302041655.AA25715@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 6052; Thu, 04 Feb 93 17:56:25 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8268;
+ Thu, 04 Feb 93 17:56:23 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8266;
+ Thu, 04 Feb 93 17:56:20 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Message of Thu,
+              4 Feb 93 09:27:02 EST from Mailing list for the LaTeX3 project
+              <LATEX-L%DHDURZ1.BITNET@vm.gmd.de><9302041506.AA14104@
+              inet-gw-1.pa.dec.com>
+Date:         Thu, 4 Feb 93 08:53:44 -0800
+From: lamport@SRC.DEC.COM
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 933
+
+
+
+The series of messages on this topic have been discussing particular
+instances of the basic problem of generating the appropriate textual
+representation from a specification of logical content.  Below is a
+note of mine, which I believe appeared in TeXHaX in April 1988, that
+addresses this problem.  I hope its relevance to the current
+discussion is clear.
+
+Leslie Lamport
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+I have had numerous requests from foreign users of LaTeX to make it
+easier to produce documents in languages other than English.  After
+much thought, I decided that this was a reasonable request.  Moreover,
+as long as I was going to make it easier to produce an entire document
+in another language, it was a small step to add the extra flexibility of
+producing a document in which only selected parts are in another
+language.
+
+The kind of transformations required are difficult to program in TeX.
+Working from my specifications, Nero Kinshutup has written a Web
+program called LeXTeX that is used in conjunction with LaTeX.  Here's
+how it works.  Suppose the input file is named myfile.tex.  This
+file includes a \language declaration, such as
+
+     \language{french}
+
+in the preamble.  Material that is to appear in French is enclosed in a
+`lexedtext' environment.  The user first runs the file through LaTeX,
+which causes LaTeX to produce the file myfile.lex, containing the
+necessary information extracted from the input.  The user then runs the
+LeXTeX program by typing something like
+
+    lextex myfile
+
+LeXTeX produces the file myfile.lxt, which is read the next time
+LaTeX is run on the file myfile.tex.  This produces output in which
+all the text in the `lexedtext' environments has been translated into
+French.  For example, if the input file contains
+
+   Sartre revealed his feelings towards de Beauvoir when he said,
+   in a conversation with Camus:
+     \begin{lexedtext}
+        ``Simone is a remarkably sensitive and intelligent woman.''
+     \end{lexedtext}
+
+then the output will look something like
+
+      Sartre revealed his feelings  towards de Beauvoir when he
+      said, in a conversation with Camus: <<Simone est une nana
+               ,
+      bien roulee.>>
+
+Note the French-style quotation marks.  Of course, being a computer
+program, LeXTeX will occasionally make small mistakes in the
+translation.  You can correct these in the .lxt file.
+
+The introduction of LeXTeX represents a major step towards LaTeX's goal
+of freeing the user to concentrate on content without being distracted
+by form.  He need not concern himself with petty details of font
+selection, spacing, syntax, or vocabulary.  This will be of special
+benefit to foreigners, who need no longer wrestle with the complicated
+tenses and declensions of their native tongue, but can instead
+write in English, which is so much simpler.
+
+Currently available language styles are: french, german, russian, and
+japanese.  The following should be available soon: cantonese, british,
+navaho, rap, and ameslan.
+
+

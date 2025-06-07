@@ -1,0 +1,98 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 6 Nov 2008 09:41:16 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mA68f9OG011256
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 6 Nov 2008 09:41:09 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mA68Z6wA030020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 6 Nov 2008 09:35:07 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mA5N16aZ021272;
+	Thu, 6 Nov 2008 09:34:58 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 96355 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 6 Nov
+          2008 09:34:58 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mA68YwXn030797 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 6 Nov 2008 09:34:58 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.249])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mA68Yr0R010372 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 6 Nov
+          2008 09:34:57 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so492437rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 06 Nov 2008 00:34:52 -0800
+          (PST)
+Received: by 10.141.177.10 with SMTP id e10mr1023116rvp.21.1225960492668; Thu,
+          06 Nov 2008 00:34:52 -0800 (PST)
+Received: from ?129.127.15.244? ([129.127.15.244]) by mx.google.com with ESMTPS
+          id k2sm3097519rvb.1.2008.11.06.00.34.50 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Thu, 06 Nov 2008 00:34:51 -0800 (PST)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v929.2)
+X-Mailer: Apple Mail (2.929.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+Date:         Thu, 6 Nov 2008 19:04:47 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Some implementation details of \let:XX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Nov 2008 08:41:16.0332 (UTC) FILETIME=[6EAAC6C0:01C93FEB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5417
+
+Hello,
+
+Taking a look at how \let:NN and friends are implemented strongly  
+tempted my "clean up" urge. Rather than delay it for the "big future  
+refactor" that's going to happen at some stage, I thought it small  
+enough to address immediately.
+
+(Also, I'm using this public list since I'm not entirely sure that  
+conducting the expl3 business "in the dark" isn't one of the reasons  
+that the project has attracted less interest than we possibly would  
+have liked.)
+
+Here's the offending code:
+
+\def_protected_long_new:Npn \let:NN #1{\let:NwN #1=~}
+\def_new:Npn\let:cN #1 {\exp_after:NN\let:NN\cs:w#1\cs_end:}
+\def_new:Npn\let:Nc{\exp_args:NNc\let:NN}
+\def_new:Npn\let:cc{\exp_args:Ncc\let:NN}
+
+Yielding concerns:
+  - Why is \let:NN long?
+  - Shouldn't the variants be protected as well?
+  - I'd be surprised if \let:cN *really* needs to be hand-optimised,  
+given the definition of \exp_args:Nc :
+
+     \def_long_new:Npn \exp_args:Nc #1#2{\exp_after:NN#1\cs:w#2\cs_end:}
+
+I'd like to propose this change:
+
+\def_protected_new:Npn \let:NN #1 { \let:NwN #1=~ }
+\def_protected_new:Npn \let:cN { \exp_args:Nc  \let:NN }
+\def_protected_new:Npn \let:Nc { \exp_args:NNc \let:NN }
+\def_protected_new:Npn \let:cc { \exp_args:Ncc \let:NN }
+
+Any comments?
+
+Cheers,
+Will
+

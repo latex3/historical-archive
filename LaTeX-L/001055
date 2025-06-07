@@ -1,0 +1,82 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2475" "Mon" "21" "June" "93" "12:16:46" "BST" "P.TAYLOR@RHBNC.AC.UK" "P.TAYLOR@RHBNC.AC.UK" nil "55" "RE: adding fake registers to ltx3" "^Date:" nil nil "6"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA21825; Mon, 21 Jun 93 13:22:22 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA11581; Mon, 21 Jun 93 13:22:20 +0200
+Message-Id: <9306211122.AA11581@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5078; Mon, 21 Jun 93 13:20:42 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7988;
+ Mon, 21 Jun 93 13:20:38 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7986;
+ Mon, 21 Jun 93 13:20:34 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 21 Jun 93 12:16:46 BST
+From: P.TAYLOR@RHBNC.AC.UK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      RE: adding fake registers to ltx3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1055
+
+
+[Additional registers in LaTeX-3]
+
+I understand Frank's response (which I will not cite here in order to keep
+length down), and I thank him for explaining current policy in such detail.
+But I wonder if there is any merit in a scheme such as the following:
+
+	Reserve $n$ registers for `normal' use;
+	Associate the remaining registers with a potentially infinite
+		set of `structures', as in:
+
+	\newstruct \myregisters %%% associates the `pooled' registers with
+	      			%%% \myregisters, providing a fast store/recall
+	      			%%% mechanism.
+
+	\with \myregisters 	%%% \myregisters becomes `current \with context'
+	\do   \begin		%%% pre-loads from `current \with context'
+	       ...		%%% everything you'd normally do with registers
+	      \end		%%% save register set in `current \with context'
+
+
+This could allow very elegant module implementation, but a means would need
+to be provided to permit intermodule communication.  In effect, one would
+want to be able to write:
+
+	      \myregisters.\skip 19 = \hisregisters.\skip 21
+
+and, of course, far more complex variants thereof, including the standard
+TeX features of implicit multiplication for <factor><skip or dimen> and
+implicit concatenation for <prefix><count>.  But to accomplish this would
+require pre-loading and post-storing of the selected registers in the register
+pool associated with \myregisters and \hisregisters respectively, and this
+would interfere with the assignments in a totally destructive way; therefore
+I suggest we probably need a \assign command which would parse the expression,
+evaluate the terms, and then perform the necessary loads, assignments and
+stores, as in:
+
+	      \assign {\myregisters.\skip 19 = \hisregisters.\skip 21}
+
+One could also imagine a more efficient form of the \newstruct declaration which
+would allow only a limited number of registers associated with the structure
+variable, and perhaps type-restricted structures for even further efficiency.
+For example, rather than reserve space for a full set of registers of all types,
+one could list the registers to be associated with a particular structure:
+
+	      \newstruct \myregisters {\toppageskip, \itemcount, \margindimen}
+
+The \with ... \begin ... \end construct would then only need to restore and
+save the named registers.
+
+All of these are very tentative ideas, and I openly confess I have not fully
+thought them through; but do others think there might be any merit in so doing?
+
+	      				Philip Taylor, RHBNC
+
+

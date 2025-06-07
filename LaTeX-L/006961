@@ -1,0 +1,84 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id pAEAL3Gh025678
+	for <rainer@rainer-schoepf.de>; Mon, 14 Nov 2011 11:21:04 +0100
+Received: (qmail 2390 invoked by alias); 14 Nov 2011 10:20:58 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 14 Nov 2011 10:20:30 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx038) with SMTP; 14 Nov 2011 11:20:30 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id pAEAIDIi003866
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 14 Nov 2011 11:18:14 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id pAE9fMjC021765;
+	Mon, 14 Nov 2011 11:18:13 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1934706 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 14 Nov
+          2011 11:18:13 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+          by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id
+          pAE9fMiS021765; Mon, 14 Nov 2011 11:08:13 +0100
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id pAEA8D7M026359
+Message-ID:  <7579514189374361.WA.brentlongborough.org@listserv.uni-heidelberg.de>
+Date:         Mon, 14 Nov 2011 11:08:13 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Brent Longborough <brent@LONGBOROUGH.ORG>
+Subject: Re: Feature suggestions for XCoffins
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6961
+
+Hi, Will,
+Thank you for that.
+
+Here's what I currently do for measuring (99.5% of the credit to
+@egreg). In this case, I have a logo image, 10 points of space, and a
+rule to fill the rest of the measure horizontally:
+
+	\usepackage{xparse}
+	\ExplSyntaxOn
+	\NewDocumentCommand{\WidthOfCoffin}{m}{ \box_wd:N #1 }
+	\NewDocumentCommand{\HeightOfCoffin}{m}{ \box_ht:N #1 }
+	\NewDocumentCommand{\DepthOfCoffin}{m}{ \box_dp:N #1 }
+	\ExplSyntaxOff
+
+	\NewCoffin \ruleh
+	\newlength{\worki}
+	\setlength{\worki}{\textwidth}
+	\addtolength{\worki}{-10pt}
+	\addtolength{\worki}{-\WidthOfCoffin{\logo}}
+	\SetHorizontalCoffin \ruleh {\color{blue}\rule{\worki}{1pc}}
+
+Of course, I could have done this by simply measuring the image in the
+\logo coffin, or even prescribing its width by other means
+...[width=1in]..., but doing all my copyfitting and layout with coffins
+makes for nice, uniform code (and therefore, I suspect, easier to
+maintain --- just following the layout of the elementare typographie
+cover page made my brain hurt! [No criticism intended other than of my
+own limitations!]).
+
+Cheers,
+Brent
+

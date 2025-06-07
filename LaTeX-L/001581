@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1184" "Wed" " 2" "March" "1994" "11:57:43" "+0100" "Tim Van Zandt" "tvz@core.ucl.ac.be" nil "43" "A footnote environment" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08368; Wed, 2 Mar 94 12:33:38 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA07913; Wed, 2 Mar 94 12:32:50 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA13317
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 2 Mar 1994 12:32:47 +0100
+Message-Id: <199403021132.AA13317@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9363; Wed, 02 Mar 94 12:32:16 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9360; Wed,
+ 2 Mar 1994 12:32:14 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5959; Wed,
+ 2 Mar 1994 12:11:43 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 2 Mar 1994 11:57:43 +0100
+From: Tim Van Zandt <tvz@core.ucl.ac.be>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      A footnote environment
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1581
+
+Hello!
+
+I would hope that the LaTeX3 is written so that any box
+command can easily have an equivalent environment. This
+is the only convenient way to include verbatim commands
+and environments.
+
+The obstacle to writing a verbatim environment for
+LaTeX2.09 or LaTeX2e is that the \@makefntext command
+takes as an argument all the footnote text. In practice,
+at least in all the standard styles, the definition of
+\@makefntext is something like:
+
+
+  \def\@makefntext#1{%
+    \parindent 1em\noindent\hbox to1.8em{\hss$\m@th^{\@thefnmark}$}#1}
+
+So it is possible to make a verbatim environment that goes something
+like this:
+
+  \def\Footnote{%
+    ...
+    \insert\footins\bgroup
+    ...
+    \@makefntext{}\rule{\z@}{\footnotesep}\ignorespaces}
+  \def\endFootnote{\strut\egroup}
+
+But definitions of \@makefntext that insert something after
+the footnote text will break this.
+
+Perhaps \@makefntext should be split into
+
+  \begin@makefntext
+  \end@makefntext
+
+without arguments?
+
+Tim
+---
+Timothy Van Zandt <tvz@Princeton.EDU>
+Department of Economics, Princeton University
+1993-1994: Center for Operations Research and Econometrics (CORE)
+           Universite Catholique de Louvain, Belgium
+

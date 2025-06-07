@@ -1,0 +1,145 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 9 Sep 2007 23:24:16 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l89LO8Vd017473
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 9 Sep 2007 23:24:08 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l89LIpQG004408
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 9 Sep 2007 23:18:51 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l88M13EF031362;
+	Sun, 9 Sep 2007 23:18:37 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 116064 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 9 Sep
+          2007 23:18:37 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l89LIamk028141 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 9 Sep 2007 23:18:37 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id l89LIUmh004067 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 9 Sep 2007 23:18:35 +0200
+Received: from p54A9B68C.dip0.t-ipconnect.de [84.169.182.140]
+          (helo=morse.mittelbach-online.de) by mrelayeu.kundenserver.de
+          (node=mrelayeu0) with ESMTP (Nemesis),
+          id 0MKwh2-1IUUAp1c0B-0000oA; Sun, 09 Sep 2007 23:18:31 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 9DD9C135CB; Sun,  9 Sep 2007 23:18:30 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <87wsv6odr8.fsf@buckbeak.hogwarts>
+            <18141.38684.704361.46277@morse.mittelbach-online.de>
+            <op.tx4553qyjli536@newhost71-038.imm.dtu.dk>
+            <87sl5uno7u.fsf@buckbeak.hogwarts>
+            <18141.51596.255158.574401@morse.mittelbach-online.de>
+            <87ir6qng8e.fsf@buckbeak.hogwarts>
+            <18142.20142.549886.908550@morse.mittelbach-online.de>
+            <op.tx6qpyb7jli536@wnn24194.wireless.dtu.dk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+DXviOU8A+yLDWA7ho4mTppvH2et1o08XsQ31
+              3OPe7H4VjsAJOmUzR2Gn8/E2IK21PUC9Um6fS4Dtk0nxD2+wDQ
+              55g50avi5ygynHnTvk3JUi4mDC3Exmo
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18148.25382.129327.738753@morse.mittelbach-online.de>
+Date:         Sun, 9 Sep 2007 23:18:30 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: l3prop -- syntax and functionality change
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <op.tx6qpyb7jli536@wnn24194.wireless.dtu.dk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 09 Sep 2007 21:24:16.0354 (UTC) FILETIME=[C689C420:01C7F327]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5056
+
+The recent discussions about documentation / typos and bugs in l3prop got us
+thinking again about the syntax and semantics of that module.
+
+previously the key in a property list was supposed to be a single token,
+typically a csname, e.g.,
+
+\prop_new:N  \l_foo_prop
+
+\prop_put:NNn \l_foo_prop \bar {baz}
+
+making \bar the key and "baz" its value. Now while fixing the bugs introduced
+recently in this module, we started to wonder if it wouldn't be much better if
+the key would be allowed to be an arbitrary token list (well, sort of
+arbitrary) which would then allow to use natural language strings as keys with
+is a pain if not outright impossible if you have to press them into a csname
+first.
+
+so bottom line is that Morten and I reimplemented the module to us "n" instead
+of "N" for the key argument, so
+
+\prop_put:Nnn \l_foo_prop {catch} {22}
+
+etc. Quite likely I broke something along the way (and other modules need
+updating as well ... not done tonight) so if anybody feels like producing a
+more devilish test file than I could think of so far, please give it a wirl.
+
+'night
+frank
+
+ps there is one function in that module (well at least one) that doesn't seem
+to make any sense \prop_if_eq:NNF at least not the way it is currently
+implemented (since it actually compares on the toks level, but in a property
+list order should be irrelevant as it is changed whenever keys are updated.
+
+below is an approach to do the comparison without taking order into account
+(not finished) ... perhaps somebody has a better idea?
+
+\prop_new:N \l_prop_eq_test_prop
+
+% check if key/val #1/#2 is in \l_prop_eq_test_prop
+% set \l_prop_tmpb_tlp to #1 if not or with different val and call
+% \prop_map_break:w to jump out of \prop_map_function:NN call
+
+\def:Npn \prop_in_B:nn #1#2 {
+  \prop_get:NnN \l_prop_eq_test_prop {#1} \l_prop_tmpa_tlp
+  \quark_if_no_value:NTF \l_prop_tmpa_tlp
+    { \typeout{key~ \exp_not:n{#1}~ not ~found} 
+      \tlp_set:Nn \l_prop_tmpb_tlp {#1}
+      \prop_map_break:w }
+    { 
+      \typeout{key:~ \exp_not:n{#1}~ found}
+      \exp_args:No \tlist_if_eq:nnTF \l_prop_tmpa_tlp {#2}
+        { \typeout{... value~ ok} }
+        { \typeout{not~ equal} 
+          \tlp_set:Nn \l_prop_tmpb_tlp {#1}
+          \prop_map_break:w }
+    }
+} 
+
+% test if all key/val from one prop is in the other and if yes try the other
+% way around
+% \l_prop_tmpb_tlp used to signal failure (= non-empty)
+
+\def:Npn \prop_if_eq:NN #1#2 {
+  \prop_set_eq:NN \l_prop_eq_test_prop #2
+  \tlp_clear:N    \l_prop_tmpb_tlp 
+  \prop_map_function:NN #1 \prop_in_B:nn
+  \tlp_if_empty:NTF \l_prop_tmpb_tlp 
+      {
+       \typeout{...~ checking~ opposite~ direction~ ...}
+       \prop_set_eq:NN \l_prop_eq_test_prop #1
+       \prop_map_function:NN #2 \prop_in_B:nn
+      }
+      {}
+}
+

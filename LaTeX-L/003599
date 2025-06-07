@@ -1,0 +1,313 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 20 Sep 2000 09:49:46 +0200 (MEST)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id JAA05315 for <schoepf@mail.uni-mainz.de>; Wed, 20 Sep 2000 09:49:45 +0200 (MEST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C022D7.583BC900"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id e8K7njU04729 for <schoepf@UNI-MAINZ.DE>; Wed, 20 Sep 2000 09:49:45 +0200 (MET DST)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.91FA0FCC@mail.listserv.gmd.de>; Wed, 20 Sep 2000 9:49:45 +0200
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 471248 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 20 Sep 2000 09:46:58 +0200
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id JAA18859 for <latex-l@relay.urz.uni-heidelberg.de>; Wed, 20          Sep 2000 09:46:46 +0200 (MET DST)
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id JAA22704 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 20 Sep          2000 09:46:36 +0200
+Received:  from epsilon.dynaweb.de (epsilon.dynaweb.de [195.88.176.162]) by          relay2.uni-heidelberg.de (8.9.3+Sun/8.9.3) with SMTP id JAA05209 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 20 Sep 2000 09:46:07 +0200 (MET          DST)
+Received:  (qmail 73443 invoked from network); 20 Sep 2000 07:44:35 -0000
+Received:  from p3e9b8e45.dip.t-dialin.net (HELO servus) (62.155.142.69) by          epsilon.dynaweb.de with SMTP; 20 Sep 2000 07:44:35 -0000
+Organization: Art & Satz
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Baseline grid alignment after headings
+Date: Wed, 20 Sep 2000 08:42:57 +0100
+Message-ID:  <008b01c022d6$71d4efa0$78e2fea9@servus>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Ulrich Dirr" <ud@ART-SATZ.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3599
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C022D7.583BC900
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Hi.
+
+As Chris Rowley (from the latex-project.org) has suggested to me I'll
+sending my last two mails (seperately) to this list ...
+
+
+May be this is interesting for you (unfortunately I wasn't able to test =
+the
+new OR because I first have to setup another TeX system that supports
+pdftex).
+
+In the book I'm recently working on there's material which needs special
+treatment so that the main text aligns on a baseline grid. For most of =
+the
+material I've solved this more or less quick and dirty. But now I'm =
+facing a
+new problem which I wasn't able to solve:
+
+Headings and grid alignment! Headings with one line, two, or even three
+lines and in a different type size (and leading) than the body type. One
+point is the problematic \topskip. It's always difficult to align some
+special material "on top", say in a two column document together with =
+text.
+May be it would be helpful if -- and what is in the AFM files -- to
+incorporate the ascender/cap height into the TFM (and let TeX know about
+that), so that one could align special material with respect to the
+ascender/cap heigth. The other point is -- when I was trying to solve =
+the
+heading problem -- that if I put the heading inside a box to measure it =
+(and
+calculating the n+1 baseline skips at least needed) it seems that the
+following material "sticks" with its top at the bottom of the heading =
+box.
+
+Probably I haven't understood the mechanism correctly. Do you have an =
+idea
+what could be the right direction to solve this problem?
+
+Regards,
+Ulrich
+
+
+Postscriptum:
+I solved the heading problem again quick and dirty!
+
+The main point is that I put the material on the page via PSTricks's =
+\rput
+which don't use any space and where I can control placement (like [Bl] =
+for
+"baseline left" alignment (probably the same as with \vbox to0pt?)). I =
+put
+the material into a \vbox measure it, divide it by \baselineskip, add an
+additional line, and finally instruct a \vspace command to put this
+calculated space.
+
+But it works only if after the heading "normal" text is typeset. If e.g. =
+a
+minipage environment follows (for example to typeset a special formatted
+motto together with a picture in EPS format; though I've tried to use an
+exact height of n\baselineskip together with the [s] parameter and
+stretchable space inside) then everything gets wrong again ...
+
+BTW if lettrine.sty is used to typeset an initial one has to manually
+compensate the parameter "loversize" with negative \vspace; this is not =
+the
+case for xinitials(!).
+
+
+
+
+
+
+
+
+
+
+
+--
+Art & Satz
+Ulrich Dirr
+Arnimstra=DFe 9
+81369 M=FCnchen
+Germany/Deutschland
+--
+fon (+49 89) 743 30 60
+fax (+49 89) 743 30 61
+email ud@art-satz.de
+--
+-=3D*:-)
+
+------_=_NextPart_001_01C022D7.583BC900
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3DWindows-1252">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Baseline grid alignment after headings</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hi.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As Chris Rowley (from the latex-project.org) has =
+suggested to me I'll</FONT>
+
+<BR><FONT SIZE=3D2>sending my last two mails (seperately) to this list =
+...</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>May be this is interesting for you (unfortunately I =
+wasn't able to test the</FONT>
+
+<BR><FONT SIZE=3D2>new OR because I first have to setup another TeX =
+system that supports</FONT>
+
+<BR><FONT SIZE=3D2>pdftex).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the book I'm recently working on there's material =
+which needs special</FONT>
+
+<BR><FONT SIZE=3D2>treatment so that the main text aligns on a baseline =
+grid. For most of the</FONT>
+
+<BR><FONT SIZE=3D2>material I've solved this more or less quick and =
+dirty. But now I'm facing a</FONT>
+
+<BR><FONT SIZE=3D2>new problem which I wasn't able to solve:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Headings and grid alignment! Headings with one line, =
+two, or even three</FONT>
+
+<BR><FONT SIZE=3D2>lines and in a different type size (and leading) than =
+the body type. One</FONT>
+
+<BR><FONT SIZE=3D2>point is the problematic \topskip. It's always =
+difficult to align some</FONT>
+
+<BR><FONT SIZE=3D2>special material &quot;on top&quot;, say in a two =
+column document together with text.</FONT>
+
+<BR><FONT SIZE=3D2>May be it would be helpful if -- and what is in the =
+AFM files -- to</FONT>
+
+<BR><FONT SIZE=3D2>incorporate the ascender/cap height into the TFM (and =
+let TeX know about</FONT>
+
+<BR><FONT SIZE=3D2>that), so that one could align special material with =
+respect to the</FONT>
+
+<BR><FONT SIZE=3D2>ascender/cap heigth. The other point is -- when I was =
+trying to solve the</FONT>
+
+<BR><FONT SIZE=3D2>heading problem -- that if I put the heading inside a =
+box to measure it (and</FONT>
+
+<BR><FONT SIZE=3D2>calculating the n+1 baseline skips at least needed) =
+it seems that the</FONT>
+
+<BR><FONT SIZE=3D2>following material &quot;sticks&quot; with its top at =
+the bottom of the heading box.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Probably I haven't understood the mechanism correctly. =
+Do you have an idea</FONT>
+
+<BR><FONT SIZE=3D2>what could be the right direction to solve this =
+problem?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Regards,</FONT>
+
+<BR><FONT SIZE=3D2>Ulrich</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Postscriptum:</FONT>
+
+<BR><FONT SIZE=3D2>I solved the heading problem again quick and =
+dirty!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The main point is that I put the material on the page =
+via PSTricks's \rput</FONT>
+
+<BR><FONT SIZE=3D2>which don't use any space and where I can control =
+placement (like [Bl] for</FONT>
+
+<BR><FONT SIZE=3D2>&quot;baseline left&quot; alignment (probably the =
+same as with \vbox to0pt?)). I put</FONT>
+
+<BR><FONT SIZE=3D2>the material into a \vbox measure it, divide it by =
+\baselineskip, add an</FONT>
+
+<BR><FONT SIZE=3D2>additional line, and finally instruct a \vspace =
+command to put this</FONT>
+
+<BR><FONT SIZE=3D2>calculated space.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But it works only if after the heading =
+&quot;normal&quot; text is typeset. If e.g. a</FONT>
+
+<BR><FONT SIZE=3D2>minipage environment follows (for example to typeset =
+a special formatted</FONT>
+
+<BR><FONT SIZE=3D2>motto together with a picture in EPS format; though =
+I've tried to use an</FONT>
+
+<BR><FONT SIZE=3D2>exact height of n\baselineskip together with the [s] =
+parameter and</FONT>
+
+<BR><FONT SIZE=3D2>stretchable space inside) then everything gets wrong =
+again ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>BTW if lettrine.sty is used to typeset an initial one =
+has to manually</FONT>
+
+<BR><FONT SIZE=3D2>compensate the parameter &quot;loversize&quot; with =
+negative \vspace; this is not the</FONT>
+
+<BR><FONT SIZE=3D2>case for xinitials(!).</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>Art &amp; Satz</FONT>
+
+<BR><FONT SIZE=3D2>Ulrich Dirr</FONT>
+
+<BR><FONT SIZE=3D2>Arnimstra=DFe 9</FONT>
+
+<BR><FONT SIZE=3D2>81369 M=FCnchen</FONT>
+
+<BR><FONT SIZE=3D2>Germany/Deutschland</FONT>
+
+<BR><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>fon (+49 89) 743 30 60</FONT>
+
+<BR><FONT SIZE=3D2>fax (+49 89) 743 30 61</FONT>
+
+<BR><FONT SIZE=3D2>email ud@art-satz.de</FONT>
+
+<BR><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>-=3D*:-)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C022D7.583BC900--
+

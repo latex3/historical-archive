@@ -1,0 +1,187 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f1CBYH918332 for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:34:17 +0100
+Received:  by webgate.proteosys.de (8.11.0/8.11.0) with ESMTP id f1CBYHd28920 . for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:34:17 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C094E7.BB790280"
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1CBYGM26345 for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:34:16 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA28056 for <schoepf@mail.uni-mainz.de>; Mon, 12 Feb 2001 12:34:15 +0100 (MET)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1CBYE708563 for <schoepf@UNI-MAINZ.DE>; Mon, 12 Feb 2001 12:34:15 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.8E520CAC@mail.listserv.gmd.de>; Mon, 12 Feb 2001 12:34:07 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 488013 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 12 Feb 2001 12:34:10 +0100
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id MAA04729 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 12          Feb 2001 12:34:09 +0100 (MET)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id MAA26390 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 12 Feb          2001 12:34:10 +0100
+Received:  from nag.co.uk (openmath.nag.co.uk [62.232.54.144]) by          relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id          f1CBY9u28432 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 12 Feb 2001          12:34:09 +0100 (MET)
+Received:  (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id          LAA18236; Mon, 12 Feb 2001 11:33:39 GMT
+In-Reply-To:  <200102112146.QAA04933@hilbert.math.albany.edu>              (hammond@CSC.ALBANY.EDU)
+References:  <200102112146.QAA04933@hilbert.math.albany.edu>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Content-class: urn:content-classes:message
+Subject:      Re: LaTeX's internal char prepresentation (UTF8 or Unicode?)
+Date: Mon, 12 Feb 2001 12:33:39 +0100
+Message-ID:  <200102121133.LAA18236@nag.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "David Carlisle" <davidc@NAG.CO.UK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3843
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C094E7.BB790280
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> Such use of the byte sequence "EF BB BF" is a hack.  It has
+> probability $2^{-24}$ as the initial three byte sequence in a stream
+> of random bytes.
+
+The equivalent in UTF 16 isn't a hack as that mandates that the BOM
+appearing as the first two characters is always an encoding indicator.
+(If you actually want to start with those characters you have to prepend
+the byte order mark to the file). I've a feeling that utf8 has recently
+been changed to similarly indicate that it isn't legal utf8 to have
+those characters (as character data) at the start of the file.
+This makes it a lot safer to "recognise" a UTF8 BOM as a BOM rather
+than character data.
+
+> Under the rules non-conforming XHTML
+If you know it's XML then you know the encoding anyway, in particular it
+is UTF8 unless you find an encoding declaration giving a different
+encoding (or a UTF16 byte order mark). (ignoring complications like the
+fact that the encoding can be specified in the transport, eg mime
+headers, rather than in the file)
+
+> <?xml ... encoding=3D"utf-8"?>
+as I say, utf-8 is the default encoding so that isn't necessary.
+Also probably worth noting that XMl (unlike latex) does not enforce that
+encodings have ascii characters in ascii positions, so it may be that
+the above line will not be recognised at all (in cases where it is a non
+standard encoding rather than utf8). An XML system might have to read
+byte by byte to see if recognises the byte stream as the characters
+<?xml
+in any encoding that it knows about.
+
+> or (some day) \usepackage[utf8]{inputenc}
+typing utf8 inputenc latex into http://www.google.com indicates that you
+can do that today, if you want. (not tried it though)
+
+David
+
+------_=_NextPart_001_01C094E7.BB790280
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: LaTeX's internal char prepresentation (UTF8 or =
+Unicode?)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; Such use of the byte sequence &quot;EF BB =
+BF&quot; is a hack.&nbsp; It has</FONT>
+
+<BR><FONT SIZE=3D2>&gt; probability $2^{-24}$ as the initial three byte =
+sequence in a stream</FONT>
+
+<BR><FONT SIZE=3D2>&gt; of random bytes.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The equivalent in UTF 16 isn't a hack as that mandates =
+that the BOM</FONT>
+
+<BR><FONT SIZE=3D2>appearing as the first two characters is always an =
+encoding indicator.</FONT>
+
+<BR><FONT SIZE=3D2>(If you actually want to start with those characters =
+you have to prepend</FONT>
+
+<BR><FONT SIZE=3D2>the byte order mark to the file). I've a feeling that =
+utf8 has recently</FONT>
+
+<BR><FONT SIZE=3D2>been changed to similarly indicate that it isn't =
+legal utf8 to have</FONT>
+
+<BR><FONT SIZE=3D2>those characters (as character data) at the start of =
+the file.</FONT>
+
+<BR><FONT SIZE=3D2>This makes it a lot safer to &quot;recognise&quot; a =
+UTF8 BOM as a BOM rather</FONT>
+
+<BR><FONT SIZE=3D2>than character data.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Under the rules non-conforming XHTML</FONT>
+
+<BR><FONT SIZE=3D2>If you know it's XML then you know the encoding =
+anyway, in particular it</FONT>
+
+<BR><FONT SIZE=3D2>is UTF8 unless you find an encoding declaration =
+giving a different</FONT>
+
+<BR><FONT SIZE=3D2>encoding (or a UTF16 byte order mark). (ignoring =
+complications like the</FONT>
+
+<BR><FONT SIZE=3D2>fact that the encoding can be specified in the =
+transport, eg mime</FONT>
+
+<BR><FONT SIZE=3D2>headers, rather than in the file)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &lt;?xml ... =
+encoding=3D&quot;utf-8&quot;?&gt;</FONT>
+
+<BR><FONT SIZE=3D2>as I say, utf-8 is the default encoding so that isn't =
+necessary.</FONT>
+
+<BR><FONT SIZE=3D2>Also probably worth noting that XMl (unlike latex) =
+does not enforce that</FONT>
+
+<BR><FONT SIZE=3D2>encodings have ascii characters in ascii positions, =
+so it may be that</FONT>
+
+<BR><FONT SIZE=3D2>the above line will not be recognised at all (in =
+cases where it is a non</FONT>
+
+<BR><FONT SIZE=3D2>standard encoding rather than utf8). An XML system =
+might have to read</FONT>
+
+<BR><FONT SIZE=3D2>byte by byte to see if recognises the byte stream as =
+the characters</FONT>
+
+<BR><FONT SIZE=3D2>&lt;?xml</FONT>
+
+<BR><FONT SIZE=3D2>in any encoding that it knows about.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; or (some day) \usepackage[utf8]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>typing utf8 inputenc latex into <A =
+HREF=3D"http://www.google.com">http://www.google.com</A> indicates that =
+you</FONT>
+
+<BR><FONT SIZE=3D2>can do that today, if you want. (not tried it =
+though)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>David</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C094E7.BB790280--
+

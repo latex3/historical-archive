@@ -1,0 +1,108 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 15 Nov 2005 18:50:08 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id jAFHo45f022545
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 15 Nov 2005 18:50:05 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id jAFHjaM0018047;
+	Tue, 15 Nov 2005 18:45:36 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id jAF303sm028447;
+	Tue, 15 Nov 2005 18:45:06 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 843612 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 15 Nov
+          2005 18:45:05 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id jAFHZ53Z003378 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 15 Nov 2005 18:35:05 +0100
+Received: from mail.umu.se (jazz.umdac.umu.se [130.239.8.31]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          jAFHZAM0015871 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 15 Nov
+          2005 18:35:11 +0100 (MET)
+Received: from [130.239.119.53] (dator24.math.umu.se [130.239.119.53]) by
+          mail.umu.se (8.13.1/8.13.1) with ESMTP id jAFHYwvY086003 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 15 Nov 2005 18:34:58 +0100
+          (MET)
+X-Sender: lars+residenset.net@residenset.net
+References: <17267.14888.849329.473348@isostar.informatik.uni-stuttgart.de>
+            <88ED1D30-FF25-423D-B73B-485982A3CB69@guerilla.net.au>
+            <5.1.0.14.0.20051110085835.024b6700@pop3.web.de>
+            <20051110100945.GA3265@m0A023274.vpn.uni-freiburg.de>
+            <17267.14888.849329.473348@isostar.informatik.uni-stuttgart.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id jAFHZ53Z003379
+Message-ID:  <l03102801bf9fc8d0c748@[130.239.119.53]>
+Date:         Tue, 15 Nov 2005 18:36:41 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <lars.hellstrom@RESIDENSET.NET>
+Subject: Re: LaTeX3 access, pdfTeX extensions, &c.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <8BDE465E-4169-40F3-A72C-60A331A9092C@guerilla.net.au>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Nov 2005 17:50:12.0701 (UTC) FILETIME=[073F98D0:01C5EA0D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4898
+
+At 07.25 +0100 2005-11-13, Will Robertson wrote:
+>But is there a reason that the stream
+>of tokens (or at least the last couple) couldn't, in some
+>hypothetical TeX extension, be "remembered" for possible analysis?
+>
+>Say there are tokens t1, t2, .... Obviously the node that t2 builds
+>can't be queried by t1. My proposal is that after t1 was processed,
+>it would be held in \previoustoken (say) while t2 was being
+>processed, and so on.
+>
+>The token stream won't change retrospectively, so in theory it should
+>be able to be examined. Or at least, that's what my thinking was. It
+>would seem to be useful for when xTeX is performing calculations, but
+>not actually typesetting anything yet, since in this case you don't
+>have (useful) previous nodes to compare to anything. I admit I can't
+>think of an example off the top of my head.
+
+One problem with this, if one wants to do some linguistic processing in
+reasonable amount of work, is that want begins as a simple token sometimes
+ends up as a rather complicated construction when typeset (consider for
+example the non-composite definitions of \c and \k). The aim should
+therefore be to capture the token(s) at roughly the LICR stage, not when
+they are being consumed by the stomach.
+
+One way to do this (as we right now allow ourselves to invent new
+primitives) could be to have a command, say,
+
+  \semanticunit{<nominal material>}{<actual material>}
+
+which would behave as <actual material> (typesetting it and such), but
+append the <nominal material> to some list of "previous tokens" that can be
+examined afterwards. An example:
+
+  \semanticunit{\"{a}}{\accent127 a} % Don't recall if it's 127 in
+                                     % OT1 right now, so don't worry.
+
+Some notes:
+
+Ordinary tokens would behave as a \semanticunit with themselves in both
+arguments, so that these get inserted properly.
+
+\semanticunit's should be nestable, so that whatever is appended inside the
+<actual material> should get stripped off again when we're done executing
+it.
+
+If \semanticunit is unexpandable, but handled in the "inner loop", then
+this could provide a neat way to handle various protection issues (TeX
+expanding ahead too long): Just protect anything fragile by putting inside
+one of these things. (e-TeX probably provides an alternative mechanism for
+this, but it's anyway an application.)
+
+Lars Hellström
+

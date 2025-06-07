@@ -1,0 +1,690 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Fri, 7 Mar 2003 14:58:09 +0100
+Received:  by mail.proteosys.com (8.12.3/8.12.2) with ESMTP id h27Dw6a9009829 for <rainer.schoepf@PROTEOSYS.COM>; Fri, 7 Mar 2003 14:58:07 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay.uni-heidelberg.de (8.12.8/8.12.8) with ESMTP id h27DkY0j013943; Fri, 7 Mar 2003 14:46:34 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2E4B1.95996E80"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.3/8.12.3/SuSE Linux 0.6) with ESMTP id h270Rl74028465; Fri, 7 Mar 2003 14:46:12 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 7072 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 7 Mar 2003 14:46:12 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.3/8.12.3/SuSE          Linux 0.6) with ESMTP id h27DkCwE001542 for          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 7 Mar 2003 14:46:12 +0100
+Received:  from nic.lth.se (nic.lth.se [130.235.20.3]) by          relay2.uni-heidelberg.de (8.12.8/8.12.8) with ESMTP id h27DkEle020982          for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 7 Mar 2003 14:46:14          +0100 (MET)
+Received:  from [130.235.3.161] (mathcent81.maths.lth.se [130.235.3.161]) by          nic.lth.se (8.12.8/8.12.8) with ESMTP id h27DkDmm028336 for          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 7 Mar 2003 14:46:14 +0100          (MET)
+In-Reply-To:  <15976.35571.591332.566230@istrati.mittelbach-online.de>
+References: <l03102802ba8e19c1fac0@[130.235.3.161]>            <l03102800ba891a184d86@[130.235.3.161]>            <630BE70C8320D6118D240002A589ABB204A95102@DERUM201>            <l03102802ba8e19c1fac0@[130.235.3.161]>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 07 Mar 2003 13:58:09.0843 (UTC) FILETIME=[961A1030:01C2E4B1]
+X-Sender: lars@abel.math.umu.se
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id h27DkCwE001543
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -1.3 () IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01
+Content-class: urn:content-classes:message
+Subject:      Re: algorithm for \addvspace
+Date: Fri, 7 Mar 2003 14:46:52 +0100
+Message-ID: A<l03102803ba8e4b369975@[130.235.3.161]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: algorithm for \addvspace
+Thread-Index: AcLksZY9TJ7FTW+HTUWur46ephmo/Q==
+From: =?iso-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4569
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2E4B1.95996E80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 13.05 +0100 2003-03-07, Frank Mittelbach wrote:
+>Lars,
+>
+> > Yes, that makes perfect sense (although the name does not).
+>
+>yes, kind of, but this is really history and we can't change that name =
+for 2e
+>not even the semantics i would guess (unless put into fixltx2e).
+
+Yes (you wouldn't have had to tell _me_ that; I know it is much too late =
+to
+change such behaviour in the 2e core).
+
+> > >i actually one in a sequence
+> > >
+> > >        \addpenalty\@beginparpenalty
+> > >        \addvspace\@topsep
+> > >        \addvspace{-\parskip}%
+> > >
+> > >and the net effect of \topsep-\parskip is normally positive.
+> >
+> > Yes, but then it should have been
+> >
+> >     \addpenalty\@beginparpenalty
+> >     \@tempskipb=3D\@topskip
+> >     \advance \@tempskipb -\parskip
+> >     \addvspace\@tempskipb
+> >
+> > because otherwise the net results will be wrong (less than =
+\lastskip) when
+> >
+> >     \topsep-\parskip < \lastskip < \topsep
+>
+>yes again. but this is from around 1986 i fear. so you can claim it is =
+not
+>wrong but strange
+
+I do claim that it is wrong, but cannot be fixed in the 2e core. It =
+could
+be another candidate for fixltx2e.sty.
+
+> > >well, how could a simpler command look like?
+> >
+> > A first approximation would be like this:
+> >
+> > \def\MinimalVspace#1{%
+> >    \ifvmode
+> >       \if@minipage \else
+> >          \ifdim \lastskip =3D\z@
+> >             \vskip #1\relax
+> >          \else
+> >             \@tempskipb#1\relax
+> >             \ifdim \lastskip<\@tempskipb
+> >                \vskip-\lastskip
+> >                \vskip\@tempskip
+> >             \fi
+> >          \fi
+> >       \fi
+> >    \else
+> >       \@noitemerr
+> >    \fi
+> > }
+>
+>what precisely does this gain you? if used with positive skips nothing =
+as it
+>is identical to \addvspace and this is what \addvspace is used for (or =
+should
+>be used for, the strange usage in list is something i wouldn't count =
+here)
+
+Cleans up the code, and removes questionable behaviour (discontinuity,
+nonmonotonicity).
+
+>the logic is still as strange as before in the case \lastskip is =
+negative and
+>skip positive.
+
+I presume you meant to say something different here. The \lastskip < 0 <
+SKIP case was never questioned.
+
+> > It is quite possible that the special code for \lastskip=3D\z@ =
+should also be
+> > removed, but with \parskip =3D 0pt plus 1pt being quite common, that =
+change
+> > could actually be noticable.
+>
+>haven't thought of that before, indeed, this is different from using =
+the
+>maximum of \lastskip,SKIP, hmmm
+>
+>the if minipage flag is necessary or else you get strange and unwanted =
+effects
+>at the beginning of a box, you really don't want to start there with a =
+space
+>(normally)
+
+OK, I can't claim I have ever learnt what these flags signify anyway. If
+it's a "beginning of minipage" flag then it makes perfect sense.
+
+> > As for the name, I think this would be more intuitive. The user (or =
+perhaps
+> > rather class designer) is requesting that at least this amount of =
+vspace
+> > should appear at this point.
+>
+>but you could document \addvspace clearer and have the same.
+>
+>
+> > >i can see how to define a user command for corrective actions =
+always
+> > >adjusts the space in either direction, the only problem is that its
+> > >natural name (addvspace) is already taken
+> >
+> > Well, there's always
+> >
+> > \def\AddVspace#1{% Or maybe \reallyaddvspace
+> >    \ifvmode
+> >       \if@minipage \else
+> >          \@tempskipb#1\relax
+> >          \advance \@tempskipb \lastskip
+> >          \vskip-\lastskip
+> >          \vskip\@tempskip
+> >       \fi
+> >    \else
+> >       \@noitemerr
+> >    \fi
+> > }
+>
+>i take my remark back from last night, I don't see how to easily define =
+the
+>corrective action command. the above doesn't do the job (i think)
+
+We're thinking about different things, but I can see that your
+\correctspace would be more useful. I was merely thinking about =
+preserving
+the "invariant" that \lastskip is the effective total amount of vertical
+glue since the last non-discardable item, which is what \addvspace and
+\addvpentalty rely on.
+
+>reason: typical situation is like this
+>
+>
+>\addvspace{8pt}       % from the end of some object
+>\correctspace{2pt}    % what to put here to change the spacing???????
+>\addvspace{10pt}       % from the beginning of a new object
+>
+>eg end of list followed by \section
+>
+>now the place where the user can put in his/her correction command is =
+between
+>the two \addvspace commands. so if one things the space is too small =
+and wants
+>to change that, eg add 2pts then
+>
+>nothin there    will give us 10pt total, ie  max(8pt,10pt)
+>\vspace{2pt}    will give us 18pt total, ie 8pt + max(2pt,10pt)
+>\AddVspace{2pt} will give us 10pt total, ie max(max(8pt,2pt),10pt)
+
+Don't you mean:                              max(   8pt+2pt,  10pt) ?
+
+>
+>\vspace{-2pt} by the way will also give 18pt which is really the beauty =
+of
+>thescheme :-)
+>
+>but if 8pt and 10pt are in the opposite places then
+>\AddVspace{2pt} suddenly works
+>
+>so i think this needs a far more complex integration between \addvspace =
+(or
+>whatever the name is for the thing to be used at the border of objects) =
+and
+>the corrective command for use in documents
+
+How about
+
+\def\correctvspace#1{%
+   \relax % Won't hurt, and might help.
+   \ifvmode
+      \@tempskipb=3D\lastskip
+      \vskip-\@tempskipb
+      \vskip #1%
+      \vskip\@tempskipb
+   \else
+      \@noitemerr
+   \fi
+}
+
+?  There is a slight imperfection in that if the break is taken at a
+penalty abve the correction then it will disappear, whereas it will not
+disappear if the break is taken at a penalty below the correction, but I
+think that is reasonable behaviour. One could also provide for inserting =
+a
+penalty just before the correction skip.
+
+Lars Hellstr=F6m
+
+------_=_NextPart_001_01C2E4B1.95996E80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: algorithm for \addvspace</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 13.05 +0100 2003-03-07, Frank Mittelbach =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;Lars,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; Yes, that makes perfect sense (although the =
+name does not).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;yes, kind of, but this is really history and we =
+can't change that name for 2e</FONT>
+
+<BR><FONT SIZE=3D2>&gt;not even the semantics i would guess (unless put =
+into fixltx2e).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes (you wouldn't have had to tell _me_ that; I know =
+it is much too late to</FONT>
+
+<BR><FONT SIZE=3D2>change such behaviour in the 2e core).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &gt; &gt;i actually one in a sequence</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\addpenalty\@beginparpenalty</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \addvspace\@topsep</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\addvspace{-\parskip}%</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;and the net effect of \topsep-\parskip =
+is normally positive.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; Yes, but then it should have been</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+\addpenalty\@beginparpenalty</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@tempskipb=3D\@topskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp; \advance =
+\@tempskipb -\parskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+\addvspace\@tempskipb</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; because otherwise the net results will be =
+wrong (less than \lastskip) when</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp; \topsep-\parskip =
+&lt; \lastskip &lt; \topsep</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;yes again. but this is from around 1986 i fear. =
+so you can claim it is not</FONT>
+
+<BR><FONT SIZE=3D2>&gt;wrong but strange</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I do claim that it is wrong, but cannot be fixed in =
+the 2e core. It could</FONT>
+
+<BR><FONT SIZE=3D2>be another candidate for fixltx2e.sty.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &gt; &gt;well, how could a simpler command look =
+like?</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; A first approximation would be like =
+this:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; \def\MinimalVspace#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \ifvmode</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\if@minipage \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \ifdim =
+\lastskip =3D\z@</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; \vskip #1\relax</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; \@tempskipb#1\relax</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; \ifdim \lastskip&lt;\@tempskipb</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; \vskip-\lastskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp; \vskip\@tempskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@noitemerr</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; }</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;what precisely does this gain you? if used with =
+positive skips nothing as it</FONT>
+
+<BR><FONT SIZE=3D2>&gt;is identical to \addvspace and this is what =
+\addvspace is used for (or should</FONT>
+
+<BR><FONT SIZE=3D2>&gt;be used for, the strange usage in list is =
+something i wouldn't count here)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Cleans up the code, and removes questionable behaviour =
+(discontinuity,</FONT>
+
+<BR><FONT SIZE=3D2>nonmonotonicity).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;the logic is still as strange as before in the =
+case \lastskip is negative and</FONT>
+
+<BR><FONT SIZE=3D2>&gt;skip positive.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I presume you meant to say something different here. =
+The \lastskip &lt; 0 &lt;</FONT>
+
+<BR><FONT SIZE=3D2>SKIP case was never questioned.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &gt; It is quite possible that the special code =
+for \lastskip=3D\z@ should also be</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; removed, but with \parskip =3D 0pt plus 1pt =
+being quite common, that change</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; could actually be noticable.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;haven't thought of that before, indeed, this is =
+different from using the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;maximum of \lastskip,SKIP, hmmm</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;the if minipage flag is necessary or else you get =
+strange and unwanted effects</FONT>
+
+<BR><FONT SIZE=3D2>&gt;at the beginning of a box, you really don't want =
+to start there with a space</FONT>
+
+<BR><FONT SIZE=3D2>&gt;(normally)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>OK, I can't claim I have ever learnt what these flags =
+signify anyway. If</FONT>
+
+<BR><FONT SIZE=3D2>it's a &quot;beginning of minipage&quot; flag then it =
+makes perfect sense.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &gt; As for the name, I think this would be more =
+intuitive. The user (or perhaps</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; rather class designer) is requesting that =
+at least this amount of vspace</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; should appear at this point.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;but you could document \addvspace clearer and =
+have the same.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;i can see how to define a user command =
+for corrective actions always</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;adjusts the space in either direction, =
+the only problem is that its</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;natural name (addvspace) is already =
+taken</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; Well, there's always</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; \def\AddVspace#1{% Or maybe =
+\reallyaddvspace</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \ifvmode</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\if@minipage \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@tempskipb#1\relax</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \advance =
+\@tempskipb \lastskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip-\lastskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip\@tempskip</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@noitemerr</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; }</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;i take my remark back from last night, I don't =
+see how to easily define the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;corrective action command. the above doesn't do =
+the job (i think)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>We're thinking about different things, but I can see =
+that your</FONT>
+
+<BR><FONT SIZE=3D2>\correctspace would be more useful. I was merely =
+thinking about preserving</FONT>
+
+<BR><FONT SIZE=3D2>the &quot;invariant&quot; that \lastskip is the =
+effective total amount of vertical</FONT>
+
+<BR><FONT SIZE=3D2>glue since the last non-discardable item, which is =
+what \addvspace and</FONT>
+
+<BR><FONT SIZE=3D2>\addvpentalty rely on.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;reason: typical situation is like this</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;\addvspace{8pt}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % from =
+the end of some object</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\correctspace{2pt}&nbsp;&nbsp;&nbsp; % what to =
+put here to change the spacing???????</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;\addvspace{10pt}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % from =
+the beginning of a new object</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;eg end of list followed by \section</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;now the place where the user can put in his/her =
+correction command is between</FONT>
+
+<BR><FONT SIZE=3D2>&gt;the two \addvspace commands. so if one things the =
+space is too small and wants</FONT>
+
+<BR><FONT SIZE=3D2>&gt;to change that, eg add 2pts then</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;nothin there&nbsp;&nbsp;&nbsp; will give us 10pt =
+total, ie&nbsp; max(8pt,10pt)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\vspace{2pt}&nbsp;&nbsp;&nbsp; will give us 18pt =
+total, ie 8pt + max(2pt,10pt)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\AddVspace{2pt} will give us 10pt total, ie =
+max(max(8pt,2pt),10pt)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Don't you =
+mean:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max(&nbsp;&nbsp; 8pt+2pt,&nbsp; 10pt) =
+?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\vspace{-2pt} by the way will also give 18pt =
+which is really the beauty of</FONT>
+
+<BR><FONT SIZE=3D2>&gt;thescheme :-)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;but if 8pt and 10pt are in the opposite places =
+then</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\AddVspace{2pt} suddenly works</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;so i think this needs a far more complex =
+integration between \addvspace (or</FONT>
+
+<BR><FONT SIZE=3D2>&gt;whatever the name is for the thing to be used at =
+the border of objects) and</FONT>
+
+<BR><FONT SIZE=3D2>&gt;the corrective command for use in =
+documents</FONT>
+</P>
+
+<P><FONT SIZE=3D2>How about</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\correctvspace#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \relax % Won't hurt, and might =
+help.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \ifvmode</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@tempskipb=3D\lastskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip-\@tempskipb</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \vskip #1%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip\@tempskipb</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \@noitemerr</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>?&nbsp; There is a slight imperfection in that if the =
+break is taken at a</FONT>
+
+<BR><FONT SIZE=3D2>penalty abve the correction then it will disappear, =
+whereas it will not</FONT>
+
+<BR><FONT SIZE=3D2>disappear if the break is taken at a penalty below =
+the correction, but I</FONT>
+
+<BR><FONT SIZE=3D2>think that is reasonable behaviour. One could also =
+provide for inserting a</FONT>
+
+<BR><FONT SIZE=3D2>penalty just before the correction skip.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Lars Hellstr=F6m</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2E4B1.95996E80--
+

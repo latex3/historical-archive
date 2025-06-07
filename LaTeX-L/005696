@@ -1,0 +1,186 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 3 Mar 2009 00:23:42 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n22NNe8J013293
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 3 Mar 2009 00:23:40 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n22NHIYA004809
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 3 Mar 2009 00:17:18 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n22N1IOr025009;
+	Tue, 3 Mar 2009 00:17:12 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 183364 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 3 Mar
+          2009 00:17:12 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n22N4aac025417 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 3 Mar 2009 00:04:36 +0100
+Received: from mail.math.utah.edu (mail.math.utah.edu [155.101.98.135]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n22N4FX9000960
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 3 Mar 2009 00:04:20
+          +0100
+Received: from psi.math.utah.edu (psi.math.utah.edu [155.101.96.19]) by
+          mail.math.utah.edu (8.13.6/8.13.6) with ESMTP id n22N4DVQ020292; Mon,
+          2 Mar 2009 16:04:13 -0700 (MST)
+Received: from psi.math.utah.edu (localhost [127.0.0.1]) by psi.math.utah.edu
+          (8.13.6/8.13.6) with ESMTP id n22N4DcX006371; Mon, 2 Mar 2009
+          16:04:13 -0700 (MST)
+Received: (from beebe@localhost) by psi.math.utah.edu (8.13.6/8.13.6/Submit) id
+          n22N4DFt006370; Mon, 2 Mar 2009 16:04:13 -0700 (MST)
+X-US-Mail: "Department of Mathematics, 110 LCB, University of Utah,
+           155 S 1400 E RM 233, Salt Lake City, UT 84112-0090, USA"
+X-Telephone: +1 801 581 5254
+X-FAX: +1 801 585 1640, +1 801 581 4148
+X-URL: http://www.math.utah.edu/~beebe
+X-Greylist: Sender IP whitelisted,
+            not delayed by milter-greylist-2.0 (mail.math.utah.edu
+            [155.101.98.135]); Mon, 02 Mar 2009 16:04:13 -0700 (MST)
+Message-ID:  <CMM.0.95.0.1236035053.beebe@psi.math.utah.edu>
+Date:         Mon, 2 Mar 2009 16:04:13 -0700
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Subject: Re: \includegraphics, eps, pdf, and \write18
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <200903021910.n22JAUL17749@f7.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 02 Mar 2009 23:23:42.0491 (UTC) FILETIME=[ECF47EB0:01C99B8D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5696
+
+I agree with Karl that a simple solution for the current inability of
+PDFTeX to import EPS files would be helpful.
+
+However, in my substantial (and long) experience with PostScript and
+PDF, one of the thorny issues is that of the image \emph{bounding
+box}.
+
+PostScript supports it only as a comment:
+
+	%%BoundingBox: llx lly urx ury
+
+where ll is lower-left, ur is upper-right, and the four values are in
+PostScript's big points (72bp == 1in = 25.4mm)).  
+
+PDF has at least five such boxes:
+
+	/ArtBox
+	/BleedBox
+	/CropBox
+	/MediaBox
+	/TrimBox
+
+Most PostScript- and PDF-producing software get these values wrong,
+including Adobe's own PostScript-to-PDF conversion tool, Distiller.
+
+The bounding box is an essential piece of information needed by TeX
+and DVI drivers to scale and position EPS files correctly in typeset
+documents.
+
+Several years ago, at my request, L. Peter Deutsch, the originator and
+chief architect of ghostscript (now retired from that job) added a
+feature to ghostscript to compute an exact bounding box from the
+actual bitmap image created by the PostScript conversion.  I've used
+the facilty for many years in a little Unix shell script given at the
+end of this message.
+
+Distiller also has a nasty bug wherein it arbitrarily rotates EPS
+figures by 90 degrees, making it impossible to use reliably on large
+batches of EPS files.  I posted a bug report to Adobe several years
+ago that showed differing rotation behavior between two short test
+files that differed only in a comment line!  Since there has never
+been a newer version of Distiller for Unix systems, any fix that might
+be available in the Windows & Mac worlds is inaccessible to me.
+
+Another problem is that PostScript-to-PDF conversion, whether by Adobe
+Distiller, Ghostscript ps2pdf, or Frank Siegert's PStill, sometimes
+results in significant file expansion, or downsampling of image
+resolution.  While control of these features is available via
+command-line options, it is difficult for most users to get right.
+
+% cat mod-autobbox.sh
+#! /bin/sh -
+# Run Adobe Acrobat Distiller and Exchange to clean up one or more
+# PostScript files, and then use ghostscript to compute an exact
+# bounding box which is automatically inserted into the file.
+# 
+# The original input files are preserved with an extension .original,
+# and the new versions replace the original ones.
+#
+# The new output files use Level 2 PostScript, for compactness.
+# They may not be printable on older PostScript devices.
+#
+# This version works with gs-5.40 or later.
+#
+# Usage:
+#	./mod-autobbox.sh PostScript-file(s)
+#
+# [09-Dec-1998] : MODIFIED VERSION: Suppresses distill/acroexch step, and inserts
+#                 generated bounding box comments after first line of each file
+# [22-Sep-1998]
+
+bindir=/usr/local/bin
+
+# [03-Jul-2003] Make ghostscript version selectable at run time
+# gs bug report #686892 notes failure of the bbox device in 8.10,
+# so we default the most recent working version, sigh...
+GS=${GS:-$bindir/gs-8.00.01}
+
+sedscript=/tmp/autobbox.sed.$$
+pdffile=/tmp/autobbox.pdf.$$
+trap "rm -f $pdffile $sedscript" 0 1 2 3 15
+
+for f in "$@"
+do
+	g=`echo $f | sed -e 's/[.][^.]*$//'`
+	echo ==================== $g
+	mv $f $f.original
+
+	# We need a filtering step to remove three kinds of DSC lines
+	# whose presence would otherwise influence distiller.  In
+	# addition, the system defaults file,
+	# /usr/local/sys/adobe/Acrobat3/Distillr/Startup/Example.ps,
+	# and symlinks to it from versions 3.01, 3.02, ... has been
+	# modified to add the line
+	# << /AutoRotatePages /None >> setdistillerparams
+	# just before the end.  This is still not sufficient to
+	# prevent autorotation of some images: while it stops distill
+	# from doing it, acroexch will do it.
+
+	$GS -sDEVICE=bbox -dNOPAUSE $f.original quit.ps 2>&1 | $bindir/gawk '
+/%%BoundingBox:/	{ printf("2i\\\n%s\\\n",$0) }
+/%%HiResBoundingBox:/	{ print ; exit(0) }
+' >$sedscript
+	chmod +x $sedscript
+	if $bindir/sed -f $sedscript < $f.original > $f
+	then
+		true
+	else
+		echo "Output failure at file $f : is the disk full???"
+		rm -f $sedscript
+		exit 1
+	fi
+done
+
+-------------------------------------------------------------------------------
+- Nelson H. F. Beebe                    Tel: +1 801 581 5254                  -
+- University of Utah                    FAX: +1 801 581 4148                  -
+- Department of Mathematics, 110 LCB    Internet e-mail: beebe@math.utah.edu  -
+- 155 S 1400 E RM 233                       beebe@acm.org  beebe@computer.org -
+- Salt Lake City, UT 84112-0090, USA    URL: http://www.math.utah.edu/~beebe/ -
+-------------------------------------------------------------------------------
+

@@ -1,0 +1,84 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2218" "Thu" "6" "August" "1998" "12:42:18" "-0400" "Michael John Downes" "mjd@AMS.ORG" nil "44" "expl3: parameter access letters" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id SAA13127;
+	Thu, 6 Aug 1998 18:43:32 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.89212D55@listserv.gmd.de>; Thu, 6 Aug 1998 18:43:15 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 394263 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 6 Aug 1998 18:43:08 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id SAA04550 for
+          <latex-l@relay.urz.uni-heidelberg.de>; Thu, 6 Aug 1998 18:43:01 +0200
+          (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 6 Aug 1998
+          16:42:42 UT
+Received: from sun06.pvd (SUN06.AMS.ORG) by AXP14.AMS.ORG (PMDF V5.1-8 #30286)
+          with SMTP id <01J0A8173QKW0003GU@AXP14.AMS.ORG> for
+          latex-l@relay.urz.uni-heidelberg.de; Thu, 6 Aug 1998 12:42:28 EDT
+Received: by sun06.pvd (SMI-8.6/SMI-SVR4) id MAA16965; Thu, 06 Aug 1998
+          12:42:19 -0400
+X-Mailer: Gnus v5.5/Emacs 20.2
+Lines: 44
+Message-ID:  <r0hfzqhxjp.fsf@sun06.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 6 Aug 1998 12:42:18 -0400
+From: Michael John Downes <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      expl3: parameter access letters
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2667
+
+The set of parameter access letters (c l g C L G R) may need
+amending. I was putting together a one-page "quick reference" for
+LaTeX3 conventions, and I wanted to put in some examples of variables
+that have the different kinds of access. I could not think of any
+example for C "constant and TeX will not allow you to change it", and
+further investigation still did not turn up anything, unless C was
+intended for things like \badness; but I think \badness and similar
+are the intended recipients of the R designation, since they are not
+constant throughout a TeX run, although they are truly read-only.
+
+So I think the "C" should be discarded, leaving c l g R L G.
+
+Furthermore, the following question should probably be addressed in
+the documentation of the access types. It came up during my current
+attempts to convert an existing package to LaTeX3 form. I have a
+variable, let us pretend that it is called \g_parindent, that is
+supposed to have a "global" value that prevails throughout an entire
+document. But it is not "constant" because it is OK for the
+documentclass to change this variable, or it might be changed
+"globally" for some subdocument context such as a footnote, a float,
+or an appendix.
+
+And there is a companion variable \l_parindent that is the
+current value of this parameter for the current local context.
+However---and here is the problem---because of the way that this
+variable is used, \l_parindent must sometimes be assigned globally.
+So the "l" access specifier appears to be wrong.
+
+I guess the best approach would be to use "g" for both forms of the
+variable and use the description part of the name to indicate their
+relative meaning:
+
+  \g_master_parindent
+  \g_cur_parindent
+
+or something along those lines. So then the list of access letters
+does not need to be extended. But this issue seems important enough
+that it would be helpful to have it mentioned in the documentation
+about the access letters.
+
+And finally, the documentation should probably point out that some of
+the TeX primitive parameters are only pseudo-global: The current value
+extends beyond the end of the current group but not beyond the end of
+the current box. Examples are \prevgraf, \prevdepth, \spacefactor.
+

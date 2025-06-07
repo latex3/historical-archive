@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3374" "Thu" "10" "February" "1994" "14:35:48" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" "<199402101338.AA20986@mail.cs.tu-berlin.de>" "82" "The difference between option and packages in 2e" "^Date:" nil nil "2" "1994021013:35:48" "The difference between option and packages in 2e" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA14190; Thu, 10 Feb 94 14:38:19 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA01667; Thu, 10 Feb 94 14:38:11 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA20986
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 10 Feb 1994 14:38:09 +0100
+Message-Id: <199402101338.AA20986@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3969; Thu, 10 Feb 94 14:37:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3968; Thu,
+ 10 Feb 1994 14:37:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9928; Thu,
+ 10 Feb 1994 14:37:19 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Thu, 10 Feb 1994 14:35:48 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      The difference between option and packages in 2e
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1514
+
+Mike asked about the difference between options and packages.
+
+> Actually, I expected more feedback on the distinction between "package" and
+> "option", but nobody seems to have latched onto the reason why
+> "philosophical" appeared in the subject line. Perhaps Paul has hit on a
+> possible distinction.  That [size=12pt] is an option, but a4 is a package?
+> Please enlighten me someone!
+
+from a pragmatic point of view we have the following simple difference:
+
+  an options is something the class (or package) knows about
+  a package is something the class doesn't know about
+
+as a consequence a class can do the right things (in the right order)
+if several options are specified but this may not be possible for
+packages which may or may not work together (or only i a special
+order).
+
+However, this is not the philosophical part of it.
+The option mechanism tries to capture the following:
+
+  Documents should be useable with or without the options to a package
+  or to a class, ie options conceptually should only modify appearance
+  but not adding new strutures.
+
+
+therefore a4paper is an option and so is leqno but array is not as it
+adds new preamble options to tabular and array. [if somebody now
+points out that makeidx should therefore be a package and not an
+option (as it defines \see) please note that this was an oversight
+which is corrected]
+
+the next question is fleqn: is this an option, or a package (since it
+defines a new parameter \mathindent). I think it should be considered
+an option and the above statement should be extended to
+
+  Documents should be useable with or without the options to a package
+  or to a class, ie options conceptually should only modify appearance
+  but not adding new strutures. It is acceptable that options define
+  additional layout parameters so that the removal or adding of
+  options needs adjustments in the preamble of the document (adding or
+  removing parameter settings).
+
+That leaves the question of code that only changes the layout but does
+not add structure. Eg something that changes article.cls written by
+somebody.
+
+Here we do have two possibilities:
+
+- one is to produce a new class file that loads article and modifies
+what is necessary, - the other is to write a package nevertheless
+although that has the danger that people try to use it with some other
+class where it doesn't work.
+
+
+-------------------------------
+
+however, nothing of this is enforced. It is only suggested. We can't
+and wont prevent people to write class/package files with options that
+define additional structure but we hope that the general idea will be
+picked up and not widely misused.
+
+
+-------------------------------
+
+Paul said in response to Mike's question
+
+> I don't think it's very natural to call packages .sty.
+
+I do agree and originally we thought of calling them pkg (you can find
+traces of this in the docclass code i think :-) However we finally
+decided to keep .sty for the simple reason that probably 99% of 209
+style options (that define new structure or change layout or both) can
+be used unchanged as packages in 2e.  It would have made compatibility
+with 209 very very difficult if we had changed that. In case of class
+files we decided to switch because of the confusion in 209 that some
+files are document styles and some aren't but there wasn't a
+distinction.
+
+hope that answers the question a bit
+
+frank
+

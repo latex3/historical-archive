@@ -1,0 +1,159 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3896" "Fri" "21" "August" "92" "17:25:25" "BST" "CA_ROWLEY@VAX.ACS.OPEN.AC.UK" "CA_ROWLEY@VAX.ACS.OPEN.AC.UK" nil "131" "Re: heading names and question" "^Date:" nil nil "8"])
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/6.5.92 )
+	id AA09005; Fri, 21 Aug 92 18:28:34 +0200
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA03232; Fri, 21 Aug 92 18:28:10 +0200
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA00525
+  (5.65c8/IDA-1.4.4(mail.m4[1.11]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Fri, 21 Aug 1992 18:28:08 +0200
+Message-Id: <199208211628.AA00525@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP R1.2.2MX) with BSMTP id 0471; Fri, 21 Aug 92 18:28:12 +02
+Received: from DEARN by TUBVM.CS.TU-BERLIN.DE (Mailer R2.07B) with BSMTP id
+ 0470; Fri, 21 Aug 92 18:28:11 +0200
+Received: from DEARN by DEARN (Mailer R2.08) with BSMTP id 5819; Fri, 21 Aug 92
+ 18:26:28 MET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Date:         Fri, 21 Aug 92 17:25:25 BST
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: Multiple recipients of <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Subject:      Re: heading names and question
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 732
+
+
+> I would invite you to suggest a set of parameters describing ``display
+> headings'' + giving an algorithm for using the parameters in various
+> circumstances. With display heading I mean headings which are
+> separated by vertical skips from preceding and following text.
+>
+> Answers?
+>
+> Frank
+
+
+Here is something I found in one of our production system files.
+
+It is an outline of how to set up various levels of head and specify
+the formatting, within very narrow bounds.
+
+It covers run-in as well as `display headings'.
+
+I hope that it serves to get the discussion going.
+
+
+chris
+
+% DOCUMENTATION of OUSECS.STY
+%
+Many of these details need not concern anyone except the designer (not that
+others cannot take an interest!).
+
+
+%     *****************************************
+%     *              SECTION HEADS            *
+%     *****************************************
+%
+
+%%%%%%%%%%%%%%%%%%%%%%
+% From LATEX.TEX:
+% \@hangfrom{TEXT} : Puts TEXT in a box, and makes a hanging indentation
+%    of the following material up to the first \par.  Should be used
+%    in vertical mode.
+%
+%\def\@hangfrom#1{\setbox\@tempboxa=\hbox{#1}%
+%      \hangindent 1\wd\@tempboxa\noindent\box\@tempboxa}
+
+% Initializations
+%  From LATEX.TEX:
+%
+% \def\sectionmark#1{}
+% \def\subsectionmark#1{}
+% \def\subsubsectionmark#1{}
+% \def\paragraphmark#1{}
+% \def\subparagraphmark#1{}
+
+
+Interface:
+
+The designer interface consists of two commands, here are
+   examples: they define \section and \finale as commands whose syntax
+   is identical to the sectioning commands in standard LaTeX 2.09:
+
+\designverthead{section}{\@aboveheadbtobskip 6pc plus 2pc minus 1.5pc
+                         \@belowheadbtobskip 24pt
+                         \def \@headbreak {\minpagespace{0.2\textheight}}
+                         \def \@headstyle {\size{20}{24pt} \defaultheadfont}}
+
+\designrunonhead{finale}{\@aboveheadbtobskip 18pt plus 6pt
+                         \@afterrunonheadsep 1pc
+                         \let \@headbreak \relax
+                         \def \@headstyle {\bf}}
+
+
+% These need setting for all Heads:
+
+  % This space deliberately empty!
+
+% These need setting (unless default values OK):
+
+defs-or-lets:
+ \@headprenumbertext % if any: ie default is "no text before number"
+
+ \@headbreak         % controls page-breaking before head
+
+ \@headstyle         % title font and size
+ \@headpretitlefont  % if not same as title font
+
+lengths:
+ \@aboveheadbtobskip % rubber length ---
+		     % this is used via \btobminvspace, so it is the
+		     % minimum space above the head.
+ \@afternumbersep    % rubber length
+ \@pretitlesep       % rubber length
+
+numbering: default is arabic numbering of non-starred versions---
+           numbering can be turned off completely (\nonumbers)---
+           all numbering and pretitle decisions can be over-ridden in
+           \@headstyle if necessary: but take care!
+
+toc and marks: default is toc-entry only for non-starred versions
+                   (changed by explicit \addcontentsline or by
+                    redefining \...tocentry)
+               but no marks (changed by explicit \markboth or by
+                             redefining \...mark)
+
+
+% These need setting for Vertical Heads (unless default values OK):
+
+lengths:
+ \@belowheadbtobskip % rubber length
+
+% These need setting for Runon Heads (unless default values OK):
+
+lengths:
+ \@afterrunonheadsep % rubber length
+
+
+% Further customising (do this only under supervision):
+
+These can be redefined to produce different layouts for the
+  "pre-title" part of the head:
+
+\@setpretitle
+
+These can be redefined to give greater flexibility (eg to make them
+   distinct):
+
+\@headtype      : this is #1 unless reset in #2 (used by TOC etc)
+
+\@headcounter   : this is #1 unless reset in #2 (used for numbering)
+                    ---any alternative counter must be declared
+                       by \newcounter
+
+
+

@@ -1,0 +1,551 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Fri, 24 Jan 2003 17:06:33 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0OG6U6C017476 for <rainer.schoepf@PROTEOSYS.COM>; Fri, 24 Jan 2003 17:06:31 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C3C2.90310A80"
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0OFjNtt026418; Fri, 24 Jan 2003 16:45:23 +0100 (MET)
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0O3PCNp014696; Fri, 24 Jan 2003 16:38:07 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 9105 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 24 Jan 2003 16:38:07 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0OFc75f021274 for          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 24 Jan 2003 16:38:07 +0100
+Received:  from mailrelay1.lrz-muenchen.de (mailrelay1.lrz-muenchen.de          [129.187.254.101]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with          ESMTP id h0OFjMXM016195 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;          Fri, 24 Jan 2003 16:45:22 +0100 (MET)
+Received:  from pc-e21-23.frm2.tu-muenchen.de by mailrelay1.lrz-muenchen.de with          ESMTP for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 24 Jan 2003          16:44:49 +0100
+Received:  from localhost (localhost [127.0.0.1]) by          pc-e21-23.frm2.tu-muenchen.de (8.11.6/8.10.1/SuSE Linux 8.9.3-0.1)          with ESMTP id h0OFi8x22156 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;          Fri, 24 Jan 2003 16:44:08 +0100
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 24 Jan 2003 16:06:33.0250 (UTC) FILETIME=[90573020:01C2C3C2]
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 0.2 () SPAM_PHRASE_00_01,USER_AGENT_PINE
+Content-class: urn:content-classes:message
+Subject:      [LATEX3] endless loop in xmarks with book classs minimal example
+Date: Fri, 24 Jan 2003 16:44:08 +0100
+Message-ID: A<Pine.LNX.4.33.0301241639370.22127-100000@pc-e21-23.frm2.tu-muenchen.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      [LATEX3] endless loop in xmarks with book classs minimal example
+Thread-Index: AcLDwpCAwK/vMAlTS4GwsujpIGJSjw==
+From: "Bjoern Pedersen" <Bjoern.Pedersen@FRM2.TUM.DE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4493
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C3C2.90310A80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Dear all,
+
+here is the promised minimal example for the endless loop problem:
+
+\documentclass{book}
+\newif\ifxor
+%%%%% new output routine
+\xortrue
+%\xorfalse
+\ifxor%
+\usepackage{xoutput}
+\usepackage{xo-grid}
+%\tracingall
+\DeclareFloatSequenceClass{figure}
+\DeclareFloatSequenceClass{table}
+\DeclareFloatType{figure}
+  {
+   sequence-class-id  =3D figure,
+   toc-extension      =3D lof,
+   caption-text       =3D \figurename,
+   numbered-boolean   =3D true,
+   numbered-id        =3D figure,
+   numbered-within-id =3D section,
+   numbered-action    =3D \thesection.\arabic{figure},
+   body-decls        =3D \footnotesize,
+  }
+
+\DeclareFloatType{table}
+  {
+   sequence-class-id  =3D table,
+   toc-extension      =3D lot,
+   caption-text       =3D \tablename,
+   numbered-boolean   =3D true,
+   numbered-id        =3D table,
+   numbered-within-id =3D section,
+   numbered-action    =3D \thesection.\arabic{table},
+   body-decls        =3D \footnotesize,
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% DECLARING FLOAT AREAS
+%
+% \DeclareFloatArea defines a float area (which can be referenced in
+%   pagesetup2 instances below)
+%
+% Ensure that partial overlapping areas close each other!
+%
+% The example is for three columns.
+%
+% Actually, don't try to use additional float areas unless you update
+% the currently hardwired \top@areas and \bot@areas lists (in xo-new)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% spanning all three columns
+\DeclareInstance{footnotesetup}{mainmatterstyle}{std}{}
+
+
+\setlength\topskip{\baselineskip}  % for grid layout make this =3D
+\baselineskip
+                          % there is some bug which will otherwise show =
+up
+
+
+\ShowGridfalse
+
+\DeclareInstance{pagesetup2}{normal}{std}{
+%%%%%%%%%%%%%%%%%%%%%%
+% setting up columns:
+%
+   column-num    =3D 3,
+   column-width  =3D 136pt,
+   column-sep    =3D 25pt,
+   column-height =3D 652pt,
+%%%%%%%%%%%%%%%%%%%%%%
+% constraining the float placement:
+%
+   float-callout-constraint         =3D after,
+   bottom-float-footnote-constraint =3D forbidden,
+   flush-float-callout-constraint   =3D column,
+   max-float-num =3D10,
+%%%%%%%%%%%%%%%%%%%%%%
+% list should pick from the above:
+%
+   area-list =3D {},
+%%%%%%%%%%%%%%%%%%%%%%
+% footnote placement:
+%
+   footnote-setup =3D mainmatterstyle,
+%%%%%%%%%%%%%%%%%%%%%%
+% grid points?
+    grid-point-sep =3D 12pt,
+  }
+%%%%%%%%
+\fi
+\begin{document}
+\ifxor%
+\UseInstance{pagesetup2}{normal}%
+\fi%
+\chapter{A Chapters}
+\end{document}
+
+%%%%%%%%%%%
+From the log file:
+.....
+\prop@get@NNN #1#2->\prop@split@aux@NNn #1#2\prop@get@aux@w
+#1<-\botmark
+#2<-\mark@table
+
+\prop@split@aux@NNn #1#2#3->\def \tmp@w ##1#2##2##3\q@stop
+{#3{##1}{##2}{##3}}\
+expandafter \tmp@w #1#2\q@no@value \q@stop
+#1<-\botmark
+#2<-\mark@table
+#3<-\prop@get@aux@w
+{\def}
+{\expandafter}
+{\botmark}
+\mark->{\protect \MakeUppercase  {Chapter\ 1. \ A Chapters}}{}
+
+\tmp@w #1\mark@table #2#3\q@stop ->\prop@get@aux@w {#1}{#2}{#3}
+#1<-{\protect \MakeUppercase  {Chapter\ 1. \ A Chapters}}{}
+#2<-\q@no@value
+#3<-
+
+\prop@get@aux@w #1#2#3#4->\def #4{#2}
+#1<-{\protect \MakeUppercase  {Chapter\ 1. \ A Chapters}}{}
+#2<-\q@no@value
+#3<-
+#4<-\@tempa
+{\def}
+{\count24}
+
+\@tempa ->\q@no@value
+
+\q@no@value ->\q@no@value
+
+\q@no@value ->\q@no@value
+
+\q@no@value ->\q@no@value
+ .....
+until control-c
+
+
+I can of cause post the complete logfile upon request.
+
+ Bj=F6rn
+
+
+--
+Bjoern Pedersen                         Lichtenbergstr.1
+Technische Universitaet Muenchen        D-85747 Garching
+ZBE Instrumentierung FRM-II
+ Tel. + 49 89 289-14707 Fax -14666
+
+------_=_NextPart_001_01C2C3C2.90310A80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     [LATEX3] endless loop in xmarks with book classs minimal =
+example</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Dear all,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>here is the promised minimal example for the endless =
+loop problem:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentclass{book}</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifxor</FONT>
+
+<BR><FONT SIZE=3D2>%%%%% new output routine</FONT>
+
+<BR><FONT SIZE=3D2>\xortrue</FONT>
+
+<BR><FONT SIZE=3D2>%\xorfalse</FONT>
+
+<BR><FONT SIZE=3D2>\ifxor%</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{xoutput}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{xo-grid}</FONT>
+
+<BR><FONT SIZE=3D2>%\tracingall</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareFloatSequenceClass{figure}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareFloatSequenceClass{table}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareFloatType{figure}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; sequence-class-id&nbsp; =3D =
+figure,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+toc-extension&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D lof,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+caption-text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D \figurename,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-boolean&nbsp;&nbsp; =3D =
+true,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+numbered-id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D figure,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-within-id =3D section,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-action&nbsp;&nbsp;&nbsp; =3D =
+\thesection.\arabic{figure},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+body-decls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D =
+\footnotesize,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\DeclareFloatType{table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; sequence-class-id&nbsp; =3D =
+table,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+toc-extension&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D lot,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+caption-text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D \tablename,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-boolean&nbsp;&nbsp; =3D =
+true,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+numbered-id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D table,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-within-id =3D section,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; numbered-action&nbsp;&nbsp;&nbsp; =3D =
+\thesection.\arabic{table},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+body-decls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D =
+\footnotesize,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% DECLARING FLOAT AREAS</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \DeclareFloatArea defines a float area (which can =
+be referenced in</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; pagesetup2 instances below)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Ensure that partial overlapping areas close each =
+other!</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% The example is for three columns.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Actually, don't try to use additional float areas =
+unless you update</FONT>
+
+<BR><FONT SIZE=3D2>% the currently hardwired \top@areas and \bot@areas =
+lists (in xo-new)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT =
+SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% spanning all three columns</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareInstance{footnotesetup}{mainmatterstyle}{std}{}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\setlength\topskip{\baselineskip}&nbsp; % for grid =
+layout make this =3D</FONT>
+
+<BR><FONT SIZE=3D2>\baselineskip</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; % there is some bug which will otherwise show up</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\ShowGridfalse</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\DeclareInstance{pagesetup2}{normal}{std}{</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>% setting up columns:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; column-num&nbsp;&nbsp;&nbsp; =3D =
+3,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; column-width&nbsp; =3D 136pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; column-sep&nbsp;&nbsp;&nbsp; =3D =
+25pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; column-height =3D 652pt,</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>% constraining the float placement:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+float-callout-constraint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3D after,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; bottom-float-footnote-constraint =3D =
+forbidden,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+flush-float-callout-constraint&nbsp;&nbsp; =3D column,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; max-float-num =3D10,</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>% list should pick from the above:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; area-list =3D {},</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>% footnote placement:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; footnote-setup =3D =
+mainmatterstyle,</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>% grid points?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; grid-point-sep =3D 12pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>\fi</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>\ifxor%</FONT>
+
+<BR><FONT SIZE=3D2>\UseInstance{pagesetup2}{normal}%</FONT>
+
+<BR><FONT SIZE=3D2>\fi%</FONT>
+
+<BR><FONT SIZE=3D2>\chapter{A Chapters}</FONT>
+
+<BR><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%%%%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>From the log file:</FONT>
+
+<BR><FONT SIZE=3D2>.....</FONT>
+
+<BR><FONT SIZE=3D2>\prop@get@NNN #1#2-&gt;\prop@split@aux@NNn =
+#1#2\prop@get@aux@w</FONT>
+
+<BR><FONT SIZE=3D2>#1&lt;-\botmark</FONT>
+
+<BR><FONT SIZE=3D2>#2&lt;-\mark@table</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\prop@split@aux@NNn #1#2#3-&gt;\def \tmp@w =
+##1#2##2##3\q@stop</FONT>
+
+<BR><FONT SIZE=3D2>{#3{##1}{##2}{##3}}\</FONT>
+
+<BR><FONT SIZE=3D2>expandafter \tmp@w #1#2\q@no@value \q@stop</FONT>
+
+<BR><FONT SIZE=3D2>#1&lt;-\botmark</FONT>
+
+<BR><FONT SIZE=3D2>#2&lt;-\mark@table</FONT>
+
+<BR><FONT SIZE=3D2>#3&lt;-\prop@get@aux@w</FONT>
+
+<BR><FONT SIZE=3D2>{\def}</FONT>
+
+<BR><FONT SIZE=3D2>{\expandafter}</FONT>
+
+<BR><FONT SIZE=3D2>{\botmark}</FONT>
+
+<BR><FONT SIZE=3D2>\mark-&gt;{\protect \MakeUppercase&nbsp; {Chapter\ 1. =
+\ A Chapters}}{}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\tmp@w #1\mark@table #2#3\q@stop -&gt;\prop@get@aux@w =
+{#1}{#2}{#3}</FONT>
+
+<BR><FONT SIZE=3D2>#1&lt;-{\protect \MakeUppercase&nbsp; {Chapter\ 1. \ =
+A Chapters}}{}</FONT>
+
+<BR><FONT SIZE=3D2>#2&lt;-\q@no@value</FONT>
+
+<BR><FONT SIZE=3D2>#3&lt;-</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\prop@get@aux@w #1#2#3#4-&gt;\def #4{#2}</FONT>
+
+<BR><FONT SIZE=3D2>#1&lt;-{\protect \MakeUppercase&nbsp; {Chapter\ 1. \ =
+A Chapters}}{}</FONT>
+
+<BR><FONT SIZE=3D2>#2&lt;-\q@no@value</FONT>
+
+<BR><FONT SIZE=3D2>#3&lt;-</FONT>
+
+<BR><FONT SIZE=3D2>#4&lt;-\@tempa</FONT>
+
+<BR><FONT SIZE=3D2>{\def}</FONT>
+
+<BR><FONT SIZE=3D2>{\count24}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\@tempa -&gt;\q@no@value</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\q@no@value -&gt;\q@no@value</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\q@no@value -&gt;\q@no@value</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\q@no@value -&gt;\q@no@value</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;.....</FONT>
+
+<BR><FONT SIZE=3D2>until control-c</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>I can of cause post the complete logfile upon =
+request.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;Bj=F6rn</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>Bjoern =
+Pedersen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp; Lichtenbergstr.1</FONT>
+
+<BR><FONT SIZE=3D2>Technische Universitaet =
+Muenchen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D-85747 =
+Garching</FONT>
+
+<BR><FONT SIZE=3D2>ZBE Instrumentierung FRM-II</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Tel. + 49 89 289-14707 Fax -14666</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C3C2.90310A80--
+

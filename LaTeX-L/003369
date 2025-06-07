@@ -1,0 +1,96 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1650" "Fri" "29" "October" "1999" "20:03:52" "+0200" "Marcel Oliver" "oliver@UNI-TUEBINGEN.DE" nil "54" "Re: section heading templates" "^Date:" nil nil "10" nil "section heading templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA28049
+	for <schoepf@UNI-MAINZ.DE>; Fri, 29 Oct 1999 20:03:50 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.34B84397@mail.listserv.gmd.de>; Fri, 29 Oct 1999 20:04:01 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445332 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 29 Oct 1999 20:03:58 +0200
+Received: from na.uni-tuebingen.de (root@na.mathematik.uni-tuebingen.de
+          [134.2.161.64]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id UAA09396 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 29 Oct
+          1999 20:03:55 +0200 (MET DST)
+Received: from uni-tuebingen.de (na6 [134.2.161.170]) by na.uni-tuebingen.de
+          (8.8.8+Sun/8.8.8) with ESMTP id UAA21575 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 29 Oct 1999 20:03:53 +0200 (MET
+          DST)
+X-Mailer: Mozilla 4.6 [en] (X11; U; SunOS 5.6 sun4m)
+X-Accept-Language: en
+MIME-Version: 1.0
+References: <199910011527.LAA04020@hilbert.math.albany.edu>
+            <199910281728.SAA15046@mimosa.csv.warwick.ac.uk>
+            <14361.49815.612920.201449@n15ux24.nets.de.eds.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <3819E188.5C84682@uni-tuebingen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 29 Oct 1999 20:03:52 +0200
+From: Marcel Oliver <oliver@UNI-TUEBINGEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3369
+
+Frank Mittelbach wrote:
+>  \DeclareDocumentCommand \chapter { s o s o s m o }
+>    {
+>      \UseInstance{heading}{chapter}
+>          {#1} {#3} {#5} {#6} {#2} {#4} {#7}
+>    }
+>
+> this may look like madness :-) but there is some logic behind it:
+>
+>  *   means no number
+>  []  the text for the toc
+>  *   don't put text in toc
+>  []  text for runhead
+>  *   don't put text in runhead
+>  {}  main heading text
+>  []  motto if any
+
+What I would really like to see at the user level is the possibility
+of relative sectioning commands.  One requirement should be that one
+can mix absolute and relative sectioning in a natural way.  To explain
+what I mean by this, suppose that the optional argument of \section
+and friends was not not already used for the TOC title.
+
+Now I have a document with structure
+
+  \section{AAA}
+  \section{BBB}
+  \subsection{CCC}
+  \section{DDD}
+
+and I decide that BBB with all of its sub- and lower level sections
+should
+really be a subsection to AAA.  I'd like to be able to write
+
+  \section{AAA} \label{aaa}
+  \section[aaa]{BBB}
+  \subsection{CCC}
+  \section{DDD}
+
+which makes BBB relative to AAA, i.e. a subsection, and CCC consequently
+a
+subsubsection, while DDD remains at the section level.
+
+I guess the functionality should be implementable via an .aux file
+mechanism
+(I am sure the experts will know if there are any pitfalls), but
+anything like this will also further overload the argument structure
+of sectioning commands.
+
+The only clean solution that I see is the use of keyval syntax, but it
+looks like this will seriously break existing end-user code, and also
+bypass all this nice new xparse stuff...
+
+Marcel
+

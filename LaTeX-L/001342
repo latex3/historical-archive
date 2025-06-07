@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3622" "Fri" "28" "January" "1994" "13:32:35" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199401281408.AA12561@mail.cs.tu-berlin.de>" "67" "Re: form and content" "^Date:" nil nil "1" "1994012813:32:35" "form and content" (number " " mark "     Mike Piff         Jan 28   67/3622  " thread-indent "\"Re: form and content\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA14866; Fri, 28 Jan 94 15:09:58 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA10791; Fri, 28 Jan 94 15:08:56 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA12561
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 28 Jan 1994 15:08:54 +0100
+Message-Id: <199401281408.AA12561@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 2652; Fri, 28 Jan 94 15:08:44 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 2651; Fri,
+ 28 Jan 1994 15:08:44 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 4870; Fri,
+ 28 Jan 1994 15:08:12 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 28 Jan 1994 13:32:35 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: form and content
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1342
+
+From:  David Carlisle <carlisle@computer-science.manchester.ac.uk>
+
+%>For LaTeX the situation is slightly different. I think we would all
+%>agree that font changes, explicit spacing and the like should always
+%>be hidden behind logical markup, however Mike's statement of *only*
+%>user-defined commands is too strong I think.
+%>
+%>LaTeX *does* provide a set of commands for logically marking up a
+%>document: \section \begin{enumerate} etc.
+%>By using these standard tags to denote this logical markup, your
+%>document is much more easily portable.
+
+The problem is, to change the appearance of a list, you are forced then to
+hack a way at the meanings of standard LaTeX commands such as \enumerate or
+\item, or even worse, non-standard ones like \@noparitem. I agree with Phil
+here, the reasoning still applies to LaTeX. What LaTeX provides is a richer
+array of constructs which can be mapped to ones own markup.
+
+One problem with LaTeX is that it is not consistent in the way commands and
+environments are used. Thus one says \begin{enumerate}, but not \begin{item},
+and not \begin{section}. I see the environment as the main markup tool of
+LaTeX, and feel that most declarative commands should disappear. If you say
+\section, for instance, it is much more difficult to do something at the end
+of the section, and indeed it is sometimes impossible from the markup
+to tell when the logical section has ended. Whereas \end{section} tells you
+*exactly* when it is ended and what to do there, eg, output horizontal line,
+change headers and footers, output a blank page or even output a set of
+solutions which have been written to another file during that section.
+It would be interesting to know Lamport's design decisions in implementing
+LaTeX this way, apart from saving extra layers of grouping.
+[One often sees the practice too, of \begin{enumerate} being replaced by \be
+and \end{enumerate} by \ee, and then \enumerate has been bound into an
+environment which starts a grouping, and is then re-replaced by a single, and
+less meaningful, command!]
+
+%>                                        For instance latex2html
+%>converters can usually recognise this markup and do the right thing,
+%>but if you use \MyLevelTwoSectionStart, where this is defined in a
+%>local style in terms of arbitrary TeX commands, then there is no
+%>chance of anything parsing your document structure, except TeX.
+%>
+\be and \ee would destroy that capability anyway. But I thought that this was
+the point about markup, that the whole complicated layout of a document could
+be described by a few commands in the preamble, and changed by changing those
+commands. This is one reason why WYSYWYG TeX systems are so difficult to come
+by. Change line 2 then  move to page 312, and watch the delay as the whole
+document is reformatted.
+
+%>Where one draws the line between those commands that should and
+%>should not be used in the document body is difficult.
+%>
+Agreed! Who would wish to have to type \begin{em}...\end{em} everywhere?
+
+%>Most people on this list might agree that \bf should not occur in
+%>document bodies. If we had modified latex2e so this was impossible, I
+%>think that there would have been `a few' complaints raised from the vast
+%>majority of LaTeX users.
+%>
+
+I am not one of the normative group who would suggest directives like that.
+
+
+Mike Piff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,89 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p27HKik6031857
+	for <rainer@rainer-schoepf.de>; Mon, 7 Mar 2011 18:20:45 +0100
+Received: (qmail 5525 invoked by alias); 7 Mar 2011 17:20:39 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 07 Mar 2011 17:20:39 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx041) with SMTP; 07 Mar 2011 18:20:39 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p27HITQO006947
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 7 Mar 2011 18:18:29 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p27Dp34Q009675;
+	Mon, 7 Mar 2011 18:18:17 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1226024 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 7 Mar
+          2011 18:18:17 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p27HIHmI027330 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 7 Mar 2011 18:18:17 +0100
+Received: from mail-gw0-f46.google.com (mail-gw0-f46.google.com [74.125.83.46])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          p27HICYE013101 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 7 Mar
+          2011 18:18:16 +0100
+Received: by gwj20 with SMTP id 20so2650089gwj.33 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 07 Mar 2011 09:18:11 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.147.158.16 with SMTP id k16mr6057972yao.22.1299518290899; Mon,
+          07 Mar 2011 09:18:10 -0800 (PST)
+Received: by 10.147.169.4 with HTTP; Mon, 7 Mar 2011 09:18:10 -0800 (PST)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <AANLkTinmM6Kwd42k-CZHdHwCwR_hFFVqDDse8R03tt_s@mail.gmail.com>
+Date:         Mon, 7 Mar 2011 12:18:10 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Bug in \tl_replace_in:Nnn and friends
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4WX0t+AtsdW2ORvUlAfcdSIdQlIL3FTSFQDxQiodii41fjuqHQd8jenp0+N
+ dNY0CcAB8WAv7r3OtvsaDOOiC4T8TWFW3c0h9kbMpE0/ou/MWvK8X//VR9J5RqCotAZER8h4O06e
+ mC19Q==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6645
+
+Hello,
+
+I'm not sure whether this is the right place to send a bug report on
+l3tl. The following code causes a runaway argument. I didn't look yet
+at the implementation, but if needed, I can propose a bug fix some
+time this week.
+
+\RequirePackage{expl3}
+\ExplSyntaxOn
+\tl_new:Nn \g_my_tl {aabono}
+\tl_replace_in:Nnn \g_my_tl {bonobo} {whatever}
+
+Basically what happens is that the string we are looking for is put
+directly after the `\g_my_tl`, forming `bonobo`. This `bonobo` is
+replaced, and then the termination tries to remove the extra
+`bonobo\q_stop` which was added. This fails. The only way out is
+apparently to use two markers. It has been done a couple of times
+before (stringstring, perhaps?), so I just need to hunt for the
+reference.
+
+aabono -> aabonobonobo\q_stop -> aawhatevernobo\q_stop -> BOOM!
+
+-- 
+Regards,
+Bruno Le Floch
+

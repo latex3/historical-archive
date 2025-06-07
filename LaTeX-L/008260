@@ -1,0 +1,485 @@
+Return-Path: <rainer.schoepf@gmx.net>
+Delivered-To: rainer
+Received: from h2774747.stratoserver.net
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by h2774747.stratoserver.net (Dovecot) with LMTP id U1qGJqu8fmBQbgAA4+3H6A
+	for <rainer>; Tue, 20 Apr 2021 13:36:11 +0200
+Return-Path: <rainer.schoepf@gmx.net>
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	by h2774747.stratoserver.net (8.15.2/8.15.2/Debian-3) with ESMTP id 13KBaAqb028238
+	for <rainer@rainer-schoepf.de>; Tue, 20 Apr 2021 13:36:11 +0200
+Received: from relay2.uni-heidelberg.de ([129.206.119.212]) by mx-ha.gmx.net
+ (mxgmx115 [212.227.17.5]) with ESMTP (Nemesis) id 1MaK7x-1l3Cvq42Ef-00WRj7
+ for <rainer.schoepf@gmx.net>; Tue, 20 Apr 2021 13:36:04 +0200
+Received: from listserv.uni-heidelberg.de ([129.206.100.94])
+  by relay2.uni-heidelberg.de with ESMTP; 20 Apr 2021 13:35:59 +0200
+Received: from listserv (localhost [127.0.0.1])
+	by listserv.uni-heidelberg.de (Postfix) with ESMTP id 6DCDA12806F;
+	Tue, 20 Apr 2021 13:35:51 +0200 (CEST)
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 17.0) with
+          spool id 47057710 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 20 Apr
+          2021 13:35:51 +0200
+Delivered-To: LATEX-L@listserv.uni-heidelberg.de
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.119.212]) by listserv.uni-heidelberg.de (Postfix) with ESMTP
+          id 4422C12806F for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 20 Apr
+          2021 13:35:51 +0200 (CEST)
+X-IronPort-MID: 104729009
+X-IronPort-RemoteIP: 93.17.128.211
+X-IronPort-SenderGroup: UNKNOWNLIST
+X-IronPort-MailFlowPolicy: $ACCEPTED
+X-IronPort-Reputation: 2.5
+X-IPAS-Result: =?us-ascii?q?A0BNAADau35gfdOAEV1QChkBAQEBAQEBAQEBAQEBAQEBA?=
+               =?us-ascii?q?QESAQEBAQEBAQEBAQEBQIFSgiR+WRMVBAsxjUeGUoIfA4EJjh+NSgEBAQEBA?=
+               =?us-ascii?q?QEBAQcBAR0PBgIEAQGGRgIdBwEENBMCAwEBAQMCAwEBAQEBBQEBAQIBAwMEF?=
+               =?us-ascii?q?AEBboVQDYZEAQEBAgEBAQEqDgYBATgECwsHES4USAEtgliCZiUBCqdZd4E0H?=
+               =?us-ascii?q?mOCBAEBBoEzAYUGgSUJE4EnAYVoEz+EdIImJxyCC4ETgXtxNj6CSRcBAQEBG?=
+               =?us-ascii?q?IEQCYNyCIIrgkwGKA4+BA8rAQIDCAg7NRMsFQUlYg8CAZA2MItMnR+BFItsg?=
+               =?us-ascii?q?RKMcIYmAjGDTz2BAY8kM5AeoQ+SZAQSDYRGAgQGBQIWNYE2IYFbcFCCaQlHG?=
+               =?us-ascii?q?Q6OHwwWg06BPoNWhUtBMAIJLQIGCgEBAwlbjDQBAQ?=
+IronPort-PHdr: A9a23:AtoSHBWuY841kXehxHsXD+OmyHHV8KzRUDF92vIco5tTbqSu+YjjN
+               0XD5PJryWXERpjf9+kso/Dbt6nxAyod55fEsH0DfJFIXRIfhoMakl9oG9aLXGv8KvOidCkmB
+               IJaTlYw43WyK09TFMvWf1rWs3uv6HgZHRCsfRFtKLHNE5XJx9+yy/j0/pTSZwtSgz/ofbNzI
+               Q+svEPVv9MRh4dvAr0/0F3HuCgAYPxYkEVvI1/bhBPg/oGw8ZpkpjxXoO4k/tVcXL/SZKEkV
+               eYGSi8rKX4078Dw8wLNV02B/BM0aGgdnxtWDgSA1ynUNr/XtS33/qpn1S2TLJewULY1HDSv7
+               qtmTBXlkihBOzNruGfQwtd9iq5WunfD71R23pLUbYeJNfF/YrKVfNUUQnBEV9pQUCoJC521b
+               o8GBe4MdehCqIy1q1wLpBq4TQ6iYYGngiNMj2Xx26E3+/wmFRDAwQlmFNUL8TzVoNjzKKYOQ
+               LWt1qCbhT7Hbv5QxXL88N2ZKVZ4/rfVB+I2K5OImixNX0vfg16dqJLoJWaP2+AEojLd8uxhE
+               OKiimIqrwt8uDfpysp/7+uBzo8T1F3A8j10hYgvItjtAlJ7YNO+CooWsyiAMI16T+s5TXsut
+               jxwmdhk8darOTMHzpgq3UuVd/iOaY+O7h/LTOGVMDFlgTRuf7f11HPQuQCwj+b7UMezylNDq
+               CFIx8LNun463BvW8sGbS/F58y+J4zuE2gHN5+0BGnga/YLjIoU6iv4qm54aoB6FAyn33UX7j
+               aObck8p4Ofu5+m1Krnho5adMcdzhGSceuwyms2yG/4pdAwHRW+d9emUz7P5u0PjCLlHlfw5l
+               KDFvYuSdJ9d//H/WlUFlNx6sl62FH++3c4dnGUbIV4gGlrPlIXvN1zUYbj5Afq5n1WwgWJuz
+               vHCMKfmB8aFJXzCnbH9OLdlvh8HjlNsi4kFt9QOU+hSRZC7ElX8v9HZEBIjZha5x+/2UpNg0
+               IJbWW+ODqKdOq7IvhmE67FKQaHEaYkLtTL6M/Vg6eTpiCpzhV8ccLOzzN0TYWq/GPhrC16Xe
+               zzimJ1SdAVC9hp7V+HshFCYBHRPZ3e/RbgtoDUyEoWgAYrrXY63xrKblnTefNUediVNDVaCF
+               m3tfoOPVqIXaS6cFcRmlyQNSbmrT4JynQHrrgLxzKBra/bF4iBN/4y2z8B7vqeA8HN6vSwxF
+               cmW1HuBCn15jn9dDSFjx7hx+AR80gvRgPM+2qMeTIYDoasOCFtyNIaAnbUrW5aoHFuRIZHXF
+               zPECp2nGW1jE4h3mIFIOhwiXY/+3ljCx3b4U+FTyeDNXsVstPmU3mCtdZYjjSiakvN41x97J
+               6kHfWy+2vwvqU6NW8iTyh3fzvfidLxAjn6TsjnfizDX5AcHAUZxSfmXDS5ZOBeQ942hoBqfF
+               NrMQfwmKlcTmZDEdPcMMISxywwbGL/iIIiMOjPs3TnqQ0nVgOrSK9C7M2Qb1yHABEVWlgkS+
+               XmbM045HCjEwSqWDTplEU/jbhH36ec4rXq6Sk0500eBaEgp1ry+/gMZiK6HU/1KmKkKomEvs
+               X0jFVK5lbr+MdeLqgt/cakZWusTiH9h0mTU/0xnM5ipPvokm1gfNgR6vk/j0x96EIoGncV45
+               HUthBF/L66VyjYjP3uRwIzwN7vLK2Lz4AHnaqjY3Uvb2cqX/aFH4eoxqlHqtgWkXkQ49HAv3
+               95Q2nqarpLEaWhaGYr2SVoy/gNmqqvyeSwh/9mKk2ZhK7e1uTLZncknHq0r0FfofttSNr+FC
+               B6nE8AeAJvLSqRikFyoYxQYeeFKof9veZr5MaLciOjxZb8z1CirhmlG/o1nh1iB8yNtEKjV2
+               ZdAw/yZ0gaDXTrmgxGtv5OS+8gMaDcME2640SWhCpRWY/g4YYYKBH20Mouzz895gZLgc2VW7
+               hitHRlVva3hMQrXdFH70QBKgA4Ppme7nCKj0zFuuyossrLFgmrVzv78dREKIShQSnMkg02mc
+               u3Wx5gKGUOvaQYujh6s4033krNaqKpIJG7WWU5UfiLyIglKYu6LrrOHJvV3xtYtuCRTXv67Z
+               DiyUbDn5RUAgXqLN1sb/ygycnSRgru8nxF+jwq1N3NvtCCHP9p93wne79HHA+VfxHwIXnsg4
+               RHnQ2OkNtzsxu260o/Zu4iWT2WlR5tOdG/gyobS7EOG
+IronPort-HdrOrdr: A9a23:kjTlHat5mod89qNCtn1wiBbN7skDhdV00zAX/kB9WHVpW+afkN
+                  2jm+le6A/shF8qKRQdsP2JJaXoexLh3LFv5415B8bAYCDDmE+FaL5v9pHjxTqIIUfD38pQz7
+                  1pfaQ7KPCYNzZHpP336gW5DNosqePvmJyAv+vYwnt3JDsLV4hb8wx7BgyHe3caeCB6A/MCf6
+                  a0145kqza4Q3gRc62AakUtbqzmh/nmqYnvaxxuPW9E1CC+yReh6Lv3CHGjsSsjbw==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.82,236,1613430000";  d="scan'208";a="104729009"
+X-MGA-submission: =?us-ascii?q?MDFfbGYhoG40NdWy8rhGjTNtaRmjRHLxK8a3Fi?=
+                  =?us-ascii?q?BOPhk8Hy3Q5LIipPe+WuuTP93ulbM9FN5cdPPy00A0fxd4E86rxXnUr3?=
+                  =?us-ascii?q?eqp3+rX/Hzp3wm1QwRO4vuqxLQ335ydtOqYvycSVYcJ5rDOzFQ/89TQg?=
+                  =?us-ascii?q?xUditgIYPdPhj/VWaHXutKwQ=3D=3D?=
+Received: from smtp26.services.sfr.fr ([93.17.128.211]) by
+          relay2.uni-heidelberg.de with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+          20 Apr 2021 13:35:50 +0200
+Received: from cauchy.polynum.local (89.121.198.77.rev.sfr.net [77.198.121.89])
+          (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+          bits)) (No client certificate requested) by msfrf2634.sfr.fr (SMTP
+          Server) with ESMTPS id 44B8D1C000818 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 20 Apr 2021 13:35:50 +0200
+          (CEST)
+X-mail-filterd: 1.0.0
+X-sfr-mailing: LEGIT
+X-sfr-spamrating: 36
+X-sfr-spam: not-spam
+Received: from cauchy.polynum.local (89.121.198.77.rev.sfr.net [77.198.121.89])
+          by msfrf2634.sfr.fr (SMTP Server) with ESMTP id 1268B1C000816 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 20 Apr 2021 13:35:50 +0200
+          (CEST)
+Received: from cauchy.polynum.local (89.121.198.77.rev.sfr.net [77.198.121.89])
+          (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+          bits)) (No client certificate requested) by msfrf2634.sfr.fr (SMTP
+          Server) with ESMTPS for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 20
+          Apr 2021 13:35:49 +0200 (CEST)
+Received: from cauchy.polynum.local (localhost [127.0.0.1]) by
+          cauchy.polynum.local (8.15.2/8.15.2) with ESMTPS id 13KBZmZ2004755
+          (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 20 Apr 2021 13:35:48
+          +0200 (CEST)
+Received: (from tlaronde@localhost) by cauchy.polynum.local
+          (8.15.2/8.14.9/Submit) id 13KBZmr6004634 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 20 Apr 2021 13:35:48 +0200
+          (CEST)
+X-Authentication-Warning: cauchy.polynum.local: tlaronde set sender to
+                         thierry.laronde@sfr.fr using -f
+References: <20210420080026.GA823@polynum.com>
+            <0127509d-02b8-daa7-a49f-6bf459e75cd7@morningstar2.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+Message-ID:  <20210420113548.GA5053@polynum.com>
+Date:         Tue, 20 Apr 2021 13:35:48 +0200
+Reply-To:     Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender:       Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From:         LARONDE Thierry <tlaronde@POLYNUM.COM>
+Subject: Re: LaTeX required primitives: some questions
+To:           LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <0127509d-02b8-daa7-a49f-6bf459e75cd7@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+Envelope-To: <rainer.schoepf@gmx.net>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+X-UI-Filterresults: notjunk:1;V03:K0:hP/tVDJ7G54=:lzZnYeojqMKGVxVSDnJHTUH3bN
+ x7BqOs3yaKuz3K6X41iaohyW7wlh7d3b5xes4uWBVnA7kKh/wKOf285HWfU333+LGKkin+eLt
+ L1IPtt8Aso+gTpbQbzSj9hkQZH1NRqJ66CPp9XoqtCeHTOLJeX8s8soWvRGfxslio1c3WActc
+ Oo7erIEt2xnTsLuBHz3lRqOnI23Jn4R05NDe9yQl7etQvi6nH1jSSWsnKTQ6IUp8ClhG878aV
+ zCQuXhNjXq41ze+w2c3xgNeYDhXIFKbRSgmNSgc3ZF6wFb7UD0AheML8Z+CM0l1LOtM85d2Ei
+ p+tD8T2cdkVTbrF5ORKXUIXBTyvQoJO6s1vj3bsfeYKSZloX8e+d0VnfGEYJsh79dzePCmF4j
+ bPKtW2vrcRiJWIehDfw3gZa5QnSrlc92j3j9GHIsDugcuX677f9hgwAIJCSj5Eoc1+m/PpCZu
+ re4U3yKQv5df1DVWDolmMOzdPagSk7D9tteNEVzvaHxL4n61BRUMMI2HPTqgs8dI3ZjQL6GF+
+ wIOWBa0G9B05nZQCiqpybRRLLcrnF74TuFswvO23jzjznen4+aB91pNq/LOX1H6DWT/ov4QKg
+ Uo4FC1/LkDsfsTV/Pyk/3Bu0gvpq7c4zBiyAMwKYTouWI89kXSr6JAFUONn5qnLPcCHtgtQYy
+ kWpsrj+rpMO2GhM5xPrMXbpaN4FEuAvrRsXm7vLxf1XumGKSCyvIRBU5rLUQTbH7fKC0YtMvC
+ NuEsurdmnuwdIMQl1i7sMAu2rU1vw4RAxMgQLPnexBHFPs6QSG1xksqDcBVzca8wIe2oKGxbp
+ J+T+fbKqFZdcixXF7MbEan1RX8wUHE77I+SdjFC5v7bNiLPLFORARaTC2R4sYzv4aP4fkxeGo
+ tdlP0MtkNoSfeWE3Ifj7xytP9/gkzFYoM02YNzpv3chRXJw/Z47T2d5KifrEjv+PtyUThIOTN
+ OWkROxQyMVMPyeRg6npPne9X/v1SsI85g/t1Fvq+JE3oa76kfMW/CMm6eseWbktzJHathzVa/
+ ivwv7U0GVI6cmtrJMZQjT7lW2KOfmGXlHu3g0dHbvi1Gh/LWVjS/ReAFiMK6BJ1YQ2Lh+D8JC
+ oPLWabJFO44dH3GOLSfRd23jqeVWRWe58TzQnMWk+IO9SEs2ThL2Xo0q/Ae47nqtRnbaVLFIe
+ ecbYp9uXCU0wXKjY88uZ8sRMUiE7ufrhgZAMvFP2qSt9Oj30q7EZTX2BYhHHTt54RhalUqTbF
+ EhUaZSpcKTDLFrbLUT+GJMgjTii3hChJU1DpcDhPB02YETCABSkQ+1wvmw3fDers9h4ISa4of
+ +SP03Zzceme4Fh59Niyv49B2jsJhmwZEDVEV6ROJx1QDpjEzdPBCNJ1um6niZAqW7VWCNHNzh
+ 26xCJw5x62Pak+9KJBDdVnqtMEfEC+WZQEveJw5GDiawAzJlxVsY9ve5kaIcltiREcaO+Qloq
+ qzchqlwPCzx/Aev17ddLh5A8CF1BkUVSEWNmBz/A5C9Tjd5xVZaSh0a9GhmWkK5CQEFepBAqz
+ FxwwVo/A5hqHK6yrI3+zwxMSlK5tGJcnmng1sdxDdhYYvuXSMexE/yMw37ceH3DGD8+din2tc
+ u3U5fTxf73U2BoE9NiEtNFrs2T+8AM2G1Y7smxkfC6sE0GArZ++KW8q2EApPixzW0nT9RQchY
+ jQArYVzkOoWaHrnfmgoudKqdjfPtgy6KwaQhybZVrmdLMoXigswXPfUSfWxyMauaW4yxeO/In
+ zRwpE+SLM2vrOaXLHwC8XaHfucvGTRabAP055ycs1sKlhtopHJhCoj8ZET68+9t9JZZim/OAk
+ F7SkppufBQAIFBHXTDLA7biIiwUCyon2yJqLa5ljGJBVu84sCC1PugsZwLGodIZpUcS8LbnOr
+ NHya6wu0TJXSZ9WzA44TqbDLYC5lQcQc7uTqvlLeG93lu+ftAgNF+GgIdYnW2xfCqX7vKvzA9
+ xYoqf5DgeiAwkx7DfdbwcRXeyz7Fxd4O4kFORdPjsD+6SuT1skHHnvNibr/uH8rB7y00Nsrqa
+ kR4VRmjqpTfYnPOU5E3b+nLa6LFTcqOVCczz+TKgXKKalDbNSESDYalsf845865ALqUCuwnD8
+ +LR8XP+QUTmN4S5shJH4nux2/xik+5WJGFERlbl3hETdIgsHD81mA0xaYL3BnW1pgf5vYzwDv
+ aBQ0JjLoct2XJ3HML6iwt9IbALE6fnnEC/M5jPhqPnhKvn2b64LE8ZAWO1U0K6MeSwdy9eqWJ
+ huSjfTKb/8RdPu8bpiBWo8OGbIobr4gIIbAYd7QCVe7x1dedPxSNeS/Q80kwTZ6lzkIkShcw3
+ tmCtXFlvZr0SDqPzjiL0VKDxnkt3Hzrc/OIjCxYyNsRTSSCUOcREMl/6fhXXKul/i49H6tGFw
+ Y6ynpyCxBp+ou2P58eQt8d6Su+eHUfS7s47bmuXBAlvZEOQ1YsGOdY8HrD6qDbFLDq7TDfBny
+ H92dxXxx7WTG8MGYdoZLwM3Aj/8zbyw+Tbhtjx2u6+UwJnjvdzfQNTGci/lxkpq9gQyqNznpM
+ r25TG8AczkPyrH2C+8BPh/fKj+WbQJxfYE1iMlV4jTLm8mYMYIV83vh0xLDdUrreuvB8R6Lr7
+ Uom3S2qdJfSM9w+KcJSE6k1cA297uCi5x7CkAFHmDk6H1fWrUrR6uAkqTPr2N7lX1TlNcViEG
+ qnA0h4ORBdYIv7kNuKzY8ebza9d9j4ZlZHA3k0kc5MORau896iNOmtCqgRsyrU8yTkNuKBv+J
+ wX1bm7+TaYVWoZDGzZbxRkaDdH6Qk6KWbm2JbH94O4it2K6DunZs9wlT+vPOQkGgum19c7hE/
+ CGaGI7VjRty2ROGHVov5ORyP3+E17Bp63Ug1zJOcAx3WiKdfDk6xtmh16KI5U+F5GSO6I2X9B
+ 1qIbL3RBaJZ4N9oYeGkKjOp+dS9yGYU6rcR2Te4pXMmQjWt/77nB/a53Q5VLZ+sTfw+6Wc0rz
+ e5VKTgYUN/dcLtMby2MbN8yrP8YH60pdFBYDwVY45VNfIADmaflr3s6QqC4Kn8o5Bx1PASkhT
+ bYrjqE2poL5CEm129m2ScUREVdzFAGTbpuAmFle1XXRkFsQq9DBgaI+RiPYfvFGbPF56JI+kM
+ 7ECxmxl4LwqhHZZPvH51dqhSzC7tgJ9fToUGa71y4YKnBInmTwQW7ayGPDJ5QLRpGvoFEWKZR
+ CBjTsJA8Qz3NG4e4eDOssF5Q9K6WpTmTfVg7uWZUx1AAzNQLQmrI8qMHXtRsD6hjNVhIB68k2
+ I9QhujIEHKSIfVuDUB+0IpMvK6oWNADac6MQZNo+uPJ89YBpQjM55FBPdM/taJTkRdS6WOzXD
+ 374CQ7h9jFuLtf3RgrCnuCxsJCZ/taztEJEYclFTbxZWh/yj8Sp06GbEwAqjjuNgWDCSkggLr
+ rt8A6oZILl7YAXTfD0d9WuyOKdbQu7V387bzNHhvWJk5PCC0dnqb9iL/l+8PO3VGwg3d5Wjpj
+ KgZVfJv0iWxtbBBObxhWm09mpVzNjsH6eNucqc6xn+Z8PAawPPZ2KKCEShWQQQhYQF80ovq1k
+ ZY+TNm+XKaEVho4p+NcxgvxCwA9/q7zuM17t1oRPNWzMD2y7Q8nE9HVJBrouT673N2uZGol3N
+ HwdsanOwglaQj/Te7l7njs1Da0qI39oXVIDvLfqclqX+59eaDDsQ3XNs+aVzt0eBaOyqsLDMx
+ czW/F5pKtCvXyC4Wfn18PNPii1o0DooXJib2+/YPcX0Sdx+L8JLNRsX5HApB4BelXOVSRwt6H
+ JQQ5n7Pm6pIHJ6x9e5KpoSZgDwcJxmXC5HTMDJBOTwQc9DuAanhVBatJPjkKu8b2eM75JAawN
+ FvSSPy+Qk7q23oh0uthuxf/zCJUIlG8Yxkynupxbn09DGc81gLr9Q/vLqVmD1TRUg9h7WRdVv
+ n5X+NHm1foM/No84Z5KBS5cbCrAsVl5OClPrmLko1pwpz0siXTectsVAbdbRcxj9EbATF5IXJ
+ Iy2qdsXW3dleBlXQzvWRXqyNGOcdl93p22NlQ+LTl+LlvItfnoeeNhQOzUJJKUbQmOtAyarNI
+ /gV4co678KWPyeXRlmTJYNr012X6IYayLjsriXZEatGT242KPLGvF1kprp42Gyg5elWEK2gDI
+ R7hA6bIfdWn7WZWZRevKHILoR4Jga+cEaWZ90g0qNOfXjNfhfxKJVYiBAhzahgO4CsMjOb3mE
+ JCKYMXZLZ8Un3x6RWvc75o1CSYuz/kjTeQdnUyTsWimgvo+XDjjTbBLABRnIJo+qK6Lu0xkW8
+ n2lP+3w30mnvlYYdtvRTLvW/vVwlEaDC2j+3dsalEPN9Tjdyy6rUwMQ4HQBGCBz8jsqPYpnWK
+ uHy1b87+KoMED2VyeYAV1h9nX8VOUA+TfhXW+uKB0nDDsVueBInbttfeSPWGYJKgrGmpksWIT
+ 0i1QMf16bgkCIp6R3d+/hd2zvh1vFIes55aC4Cg/NlVwWTeQsR8Os+v9o4+egbb+Xy5ylR//G
+ DxhfaErkYF18tsZQYbwmr/tOXxeKPCMfbLeRdOW87kpm3p81zENyIH5fTlTbzqFVvl0/sPhYF
+ JSH1HUTZfBUn4sm5M0dxVH3JbEgQ1zImvpS8h1WWbv2LICrBo+sOfa3OGMWHWiraPGv49YNoX
+ 0qqWx3PeWTZxoi+u/qA+AtRyHBDBNQTdjd0MGNse/p/Ipq7F0JtP8Kc1wkf13BkduBBJxaWZd
+ xBXRQG442NGhDaBIzlgZe2xK9Ui6qj7UAhvQWnNvLEpKDLSJRr797/aifvAz0XmIX+cZUkkuR
+ Wz1TqhnoHddWCZfXoa2UzqZs+67IjFosW0+r1jCsJCH2rUXx+n051ZI03DoDr6FbUpT9T2nLN
+ zffrpJJ6okuGkPSTbmv5TqzY7WTv8WSAcX35cxB7pqfGM4qyOIp73+m+HAzLTQMS2xTfoWU23
+ uAz+3wA7ipAIYDfMGFJCh4AVIqjpIFZYGzIleuyHnA0dCQDH0UELfmrSMXVXAPZ5NAFZnkFEE
+ brh+e+8mbQsUsvPllbbPEeVV/FetqRx+Y9mpLxA/paUFtTk+Yfxvy+LBsIlao+DyxtW7or/Ge
+ nvrcFB70/SvNRfhTIY3JIc6XEVmIS0a+tQMiTPID5ta87Q4LrF7n+UL35BYLg/8F80iI/BqHd
+ HFymT8Gy1hhzbhbqEKfkyCaPXRdsxICXE3HlwvaOTiXwaCc+rRCjpRJ3o6njhihAhnad5bvIS
+ UP9WzOj5gEsFUpY6JuDd3hVRZaoTHHKH6KMA1ckYbIFmjpi7WmHHsQXo7lTYMecaHO64unnUm
+ ZstlNCUoAzJSljmIcClq/IuegdQguO5XJSHQ4rj4MNqO7ZN8PeIOhvHspRrEXjW2/E7RkqWZG
+ GmFGw5ltWg6Nx1Tw31l1sQbdK05lET5qDTDogpRBkdFN5Qe5lp1MBkURzLINhxeEuTlmVlMto
+ JQcc/lJQvozB+A6krjcCkTTGf98kA9TFRoW30Ld3K7qoVAXKbM6gDhSbNSNxbnfr5EDdzVuXk
+ 0uaK+IaQeGXW97teOjKQUZ0iqqFVz+QvbZPsFR4BY5YL9In6gpBvP0khUjf9fW/Z1LWsF5HQU
+ hDNuYNjGVmTQo3xkMdHHXNvgjQSoP8W9cwMMEVgOi112TEDDBFmjnERo+JVh5YnNyF+pCcioM
+ Uks8yThJwOcezJZym+7JLXf6xnfKPz1IEpxoKr5qy/rq+lYjQbPVwFjotJ6HvFOM9Em8pbhp7
+ zKgTkr2uSQ9v7xwHlbMB6l3XTChTwi56CWu8ets/CTaEba2on8V407kr4OciogsD++/6MPcwZ
+ yxoYKbD54aUsFB/MyLjdShEsEaL5HTitmaokzBcpIFBTOsxYYjjWHU4b0LQX05BS28naIYlxs
+ fXkaKK4kjXKPnL9VHsO7A7VJWAqHd5to6EqhovtzO2kebKBpV7DOlke95pjVGIeGHzeBgkc7b
+ nFzsxuf5bOWtCnNkdjJNfZobgcka/8pYtF/9es6H7ZYUNhjh1hkeUBbyUaVXX06+gkUowZiAm
+ ZLd4zIVIWgE0R/6v+SDrPjaCqT2nuyYVFAYy4qcTk0CptjoupipqxqwPfE/CkKLV3B/vH46TY
+ +Ma3eGnEczCMznwur/x9WgAKFJQdl3YbkvfGUXiDXEWZRx/t4N/0Xykq7IPpsj2uNaF5hFmKH
+ IgDWg0AKdiRn/cHVmAV3Iqh78c6cf7D6TGFDBN54Q0Swe69NpB9NuC2dv8/nlzeWFxmqavLss
+ BmAe4bqQ3Vf9xf1v0eHrb/VhfB1PlbmTDa2g60T6vCNxu+cvLNuaR2hVR2nklh5JYM1MeAAMR
+ 8LXNKBYB3FqYeMXLfJCSah498ONxRv0nnPS+rVtoe4HTDMy80iGFI9K9u56nLau8r8blHz76E
+ fBupuj36LHx9qq9S9Z49eD0XmcV8nTEMeg3YYOdFznRPvvJKSUGpQS31pPp9ho14Xk+VNhF3R
+ xMGan/kLkSMN2JRbhsPKvCg0M/WMsAOF9B3CEIv5ayxCxzw/5bylByU4MPB/aZs4TseV/qnpF
+ BfRG+W9jVlf5bl0go4z2j8qHeSb2K7/dzm1sEDPe+PF8V23Js6aNQ26B9Aa1vsvty2yPOrUhX
+ qtxUOpkhKOpy2lejXiCz+rtcisPaSp6esXvVD1e2nQCJL50gAdMBklUQkK/GeOVsSwazRB9WV
+ FXoHYIkN8MRd2jqW2vPuxeLo4MTm+eAcVT+uahn+yR+cyEMKWHptqe3rUqpWWvPXaSUjBtGVe
+ Y99/Y2VmXfCs0QxqdIE9pI7VoWgmZ0E3nvO+WBWsOHu7hbOrOgr8umRJh88j4yKvxOkYY5nmv
+ zH/crAEe3tw+L8ND5gbZOIe64aPg1dD29imeIWbaeaL0zwgNJ9MoSQaouLMfUFlpSG0FsZop+
+ 6ik/9OSuGOIeBPfi/GVK3Zv6VzDZoJCyeguMT9mcFRXUR4ANLGjCUFcYcFuXgA3dY71k8IziV
+ LJb3YGDh8zOzvI8dSQ/ANMNI9otLhnR91S420du1Tye3F2X7D7DbS+0sTgJqIU+TWGE9dakaa
+ c64cTQf6ak/I8o96U+dE362rTR/lPi5oceCNuk+UxNCW6sKT4I9vsMT8YlX5ZVfmqBP1B7vyP
+ YRc6BBrzjYBNEnTHXRrO411fuxb8iYnJt5yM3OGXrVONUhW0FG9IZS8jAIqYjhS3+SnHTBCCh
+ HMUrbmeXCQFL30wYgxNl4BeK0Qmttbk1SLGnVpdelLhk8+biIEsKtGY1pZMUbNimPuQq064qy
+ LWwwJH5uR3AMs6D9BwFqb/bFCaf6BCoxts
+X-UI-Loop:V01:sRle8SQTDCU=:/iZPF6AF7UFD1J/h3k3pOj8ea+w6E/E4uhDRGnxvjJ0=
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:S5CSGUY9tcA=:qjA0vBnyuoou18r73cr/Bt
+ zwR6geC6D/uLm0QUyUSWd+5sYSmQMneIfdTXjap0ghlLDV4yaKkW0RrYozBV1nEK8rdGDbp9y
+ /UBOy21+eMX2lyPnKijfpwvMI7RdE+EczPxjdaqK+0sxZ+DFjDHroRBT4e30BypkF6Siz/j62
+ ADaAcZn7rFF2UL3LpIf85JGWQ2JI87tuljzv2TgykWq6Yedg41U6fWqz4yC/Nt1HCUoOcWRhi
+ oxKDf0t1xYWZFMX5zl1A3ka4A2asYqIGS50wEq3G6jnYC8T6M8KIYA/x42X3TXDI2wh/6RyxC
+ 8ScNl8Kvt8V4qR+X2LkJyYcG+lM9DbZ88B9Y1fqu9yFMstJWsn4fQLHpYeys+w/ljJQZGA0KL
+ tfAoDACmqp35QaEJnFjECyTvoLgg7orGXILvvW6Udli/TYwdN8jPJayuYMUKtMhgg5LhuirRs
+ 3sO0cBmIylKykkkegNgybm5ECDnWP5uzO57AlAOe4liuv6kmS9CnWW9TEAFzDZ+wNlznFEPXB
+ IWIuOcBbVYKyp7GnGjnEESwfhAoFSyLoFodzDMBbeQBsr9/bLDQPJuMsfM4Y5FONlZq8xYzQC
+ w09XEigSsTgkYVFlunlhdN2vmwIi9e75M3MMx9ZbFpTlSmvEJfWC2FPw==
+X-Scanned-By: MIMEDefang 2.78 on 81.169.212.23
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 8260
+
+Hello,
+
+On Tue, Apr 20, 2021 at 11:36:57AM +0100, Joseph Wright wrote:
+> Hello,
+> 
+> >I have started to look at the implementation of the LaTeX required
+> >primitives supplementary to TeX + e-TeX ones and I have some questions.
+> >
+> >Note: I work with the definitions found in the pdfTeX manual and will
+> >not look at the code since it is GPL'ed one and I don't want someone
+> >later to claim that my code shall be released under GPL because my eyes
+> >have touched GPL code.
+> 
+> If you want to avoid the source of pdfTeX, you are likely best starting with
+> descriptions of the 'cross engine' primitives that have been implemented by
+> other engines.
+> 
+> I would start with:
+> 
+> - l3names. This makes copies of all primitives from all engines supported by
+> expl3 into a single namespace. What's important here is that we've worked
+> hard to identify which \pdf... primitives are actually PDF-related. Only
+> those that relate to PDFs rtain the 'pdf' part of the name (*). See lines
+> 605 onward of the current file (https://github.com/latex3/latex3/blob/5b6e6f30397930ba96a2b6744171263b370504d5/l3kernel/l3names.dtx#L605)
+> 
+> (*) The 'version' primitives \pdftexbanner, \pdftexrevision and
+> \pdftexversion  retain 'pdftex' in their names when saved.
+> 
+> - The XeTeX manual. As XeTeX doesn't directly product PDF output,
+>   any primitives it provides are not PDF-specific, naming
+>   notwithstanding. (Newer additions to XeTeX omit the \pdf..., older
+>   ones do not)
+> 
+> - The e-pTeX setup in https://www.tug.org/svn/texlive/trunk/Build/source/texk/web2c/eptexdir/pdfutils.ch?view=log,
+> which provides the 'utility' primitive. (There is code in this file, but the
+> first ~30 lines are purely descriptive)
+> 
+> >PDF only primitives that I will not implement (correct?):
+> >
+> >\pdfpageheight
+> >\pdfpagewidth
+> 
+> These work (no error) in DVI mode with pdfTeX, but more importantly in XeTeX
+> write information of xdvipdfmx to the XDV file. I would suggest having them
+> at least as no-ops.
+
+OK.
+
+> 
+> >Primitives that seem highly linked to PDF and that, to be implemented,
+> >would need to draw in not ISO C routines but POSIX or MS specific
+> >because they are linked to filesystems:
+> >
+> >\pdfcreationdate
+> 
+> This one is linked to the PDF, but not the file system: it's what is written
+> to the PDF for /CreationDate.
+
+OK, so it will not be implemented.
+
+> 
+> >\pdffilemoddate
+> 
+> This extracts data about a general file from the file system: it's not
+> linked to PDF at all. It might be used for example to check on an image or
+> data file.
+
+Yes, but the format is the same as the one emitted by \pdfcreationdate...
+(it's not an ISO date).
+
+> 
+> >Primitives that seem highly linked to PDF but that can be implemented
+> >using ISO C routines:
+> >
+> >\pdffiledump
+> >\pdfmdfivesum
+> >\pdffilesize ? (size can be more than integer accepted by TeX)
+> 
+> Again, these are not linked to PDF at all: they all work in DVI mode. You
+> could look at the Lua implementation of these used by expl3 - that avoids
+> any GPL code. (We want the same *output* as pdfTeX gives, not the same
+> implementation.)
+
+Well, the output seems simple enough that it should not be a problem.
+
+> 
+> I don't think I've ever seen a test of what happens if \pdffilesize is used
+> on a truly massive file.
+> 
+> >Primitives whose output seem unclear:
+> >
+> >\pdfnormaldeviate
+> >\pdfuniformdeviate
+> >
+> >said to generate "an integer" and, afterwards said to expand "to a list
+> >of tokens". Do they provide, on each call, one integer with the defined
+> >property or a series of a defined cardinal of such integers or an
+> >infinite series of such integers until interrupted?
+> 
+> Each use gives one integer. For example, if I do
+> 
+>     \pdfsetrandomseed 1234
+>     \message{
+>       \pdfuniformdeviate 1000\space\space
+>       \pdfuniformdeviate 1000\space\space
+>       \pdfuniformdeviate 1000\space\space
+>       \pdfnormaldeviate \space
+>       \pdfnormaldeviate \space
+>       \pdfnormaldeviate \space
+>     }
+> 
+> I get "555 3 641 34071 -99169 33759".
+> 
+> Note that the code for the RNG here comes from MetaPost, and was lightly
+> modified to put it into pdfTeX. *Exactly* the same implementation is used by
+> XeTeX, pTeX, upTeX and LuaTeX, means that with the same random seed the same
+> series of values is obtained independent of the engine used. I would
+> strongly urge you to look at the original MetaPost code (I believe not GPL).
+
+Yes, I have seen this and these are implementations of D.E.K's
+algorithms. So I will simply use the (adapted to fit) MetaPost's code
+too.
+
+> 
+> >The pdf prefix exists because the primitives were added to TeX in pdfTeX
+> >but it is unfortunate because it seems to link the primitives to the
+> >PDF format. I'd like to implement them without the pdf prefix and
+> >provide simply a file for compatibility with \let statements. Would it
+> >be OK?
+> 
+> As noted, XeTeX has adopted a 'no \pdf...' approach for newer stuff, e.g.
+> \strcmp rather than \pdfstrcmp. That works fine provided the names are not
+> too generic.
+> 
+
+OK.
+
+> >\engine: a read-only ASCII token identifying the engine: ex.: e-TeX;
+> 
+> This is a very generic name. Moreover, the established pattern is that
+> engine define \<name>version and \<name>revision, which can then be used as
+> markers for the specific engine. Note that upTeX doesn't do that, and that
+> makes identifying that engine more tricky already.
+> 
+
+OK, I will use this scheme.
+
+> >\apimajor: a positive or nul integer identifying a definite list of
+> >	primitives provided;
+> >
+> >\apiminor: a positive or nul integer identifying a definite behavior
+> >	(nature, parameters, output, errors) of the primitives;
+> >
+> >\apirevision: a positive or nul integer identifying an implementation
+> >	of the (major, minor) combination---the major and minor identify a
+> >	contract; the revision identifies a modification of the
+> >	implementation of the contract including a correction because the
+> >	implementation didn't actually provide the contract. I.e.: bug
+> >	fixes, optimizations etc. without any contract modification. The
+> >	contract is theoretical.
+> 
+> Again, this just feels like \<engine>version/\<engine>revision: see for
+> example how older pdftex.def used to check for available features.
+> (Standardisation of engine features over recent years means that this is
+> generally not needed.)
+>
+
+OK, this will be the above.
+
+> >\outfmtlist: a series of ASCII tokens identifying the output format
+> >	supported by the engine. Ex.: DVI1.0 (traditional DVI), PDF1.3 etc.
+> >	The default format shall be listed first. (Note: I plan, some day,
+> >	to extend DVI.)
+> 
+> pdfTeX already defines \pdfoutput, which is 0 for DVI and 1 for PDF. LuaTeX
+> renames that to \outputmode but with the same numerical values. The version
+> of PDF written by pdfTeX/LuaTeX is set separately using (in pdfTeX)
+> \pdfminorversion/\pdfmajorversion, as this is really a separate concept to
+> whether PDF or DVI is in use.
+> 
+> There is very little use at the macro level for the DVI level.
+
+For now ;-) Since I plan to add code pages (256 blocks) extensions to be
+able, at least, to have a MetaDVI and be able to bypass PostScript and
+PDF...
+
+>The PDF level
+
+> does have some impact on output features but in a simply 'Sorry, not doable'
+> sense.  Note that XeTeX uses XDV, which is a version of DVI dedicated to
+> this engine. It's not necessary to test the DVI version at the macro level:
+> what's important is for example which method to include imagines, which uses
+> an engine test.
+> 
+> >\outfmtset: setting the output format, that shall be amongst the formats
+> >	supported. If not, it returns an error and set the output format to
+> >	the default one. Shall be set before \shipout and errors if used
+> >	after output has started.
+> >
+> >\outfmt: a token identifying the current output format.
+> 
+> See above: data in the same format as other engines is strongly preferred.
+
+Well, since there is no real consensus and these are not amongst the
+required---and with the identification of the engine, one could \input 
+ad hoc macros---I will for now stick to my proposal.
+
+> 
+> I notice you don't mention a large number of the other utility primitives.
+
+This is only because I don't have questions about the others :-)
+
+
+> A full list of those assumed by LaTeX in an engine-neutral sense is listed in
+> https://www.latex-project.org/news/latex2e-news/ltnews31.pdf. See in
+> particular that \pdfpage(height|width) are included.
+> 
+
+
+Thanks for the informations!
+-- 
+        Thierry Laronde <tlaronde +AT+ polynum +dot+ com>
+                     http://www.kergis.com/
+                    http://kertex.kergis.com/
+                       http://www.sbfa.fr/
+Key fingerprint = 0FF7 E906 FBAF FE95 FD89  250D 52B1 AE95 6006 F40C
+

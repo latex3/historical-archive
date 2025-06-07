@@ -1,0 +1,96 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p4SHB2vl020302
+	for <rainer@rainer-schoepf.de>; Sat, 28 May 2011 19:11:03 +0200
+Received: (qmail 29997 invoked by alias); 28 May 2011 17:10:57 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 28 May 2011 17:10:56 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx063) with SMTP; 28 May 2011 19:10:56 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p4SH8Kna004278
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 28 May 2011 19:08:20 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p4RM17Gq002144;
+	Sat, 28 May 2011 19:08:19 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1212862 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 28 May
+          2011 19:08:19 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p4SH8JTW015514 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 28 May 2011 19:08:19 +0200
+Received: from mail-gx0-f177.google.com (mail-gx0-f177.google.com
+          [209.85.161.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p4SH8ECj004260 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 28 May
+          2011 19:08:18 +0200
+Received: by gxk2 with SMTP id 2so1659447gxk.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 28 May 2011 10:08:13 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.236.185.74 with SMTP id t50mr4199621yhm.243.1306602491866; Sat,
+          28 May 2011 10:08:11 -0700 (PDT)
+Received: by 10.147.39.17 with HTTP; Sat, 28 May 2011 10:08:11 -0700 (PDT)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <BANLkTikRG2ycqYTu+BbwDinMuisXQRyhtA@mail.gmail.com>
+Date:         Sat, 28 May 2011 13:08:11 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: xparse, "while" argument type
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p6HRL9CJLUCw+qCfRO7IcZXXDnW2pw6KrJ+cTo1kbnKMYgmEytfgB3aa5opU
+ VsnIvot+4lp+aS6LAYBzzm4ZZ08Ya0FR9pnz6Or3Rfegutb59ZCBRWyRss0bOe7K0My1HkORjNDf
+ alB3o8fSw3ecsf2kaCa9Uw5sc+vpkvqiGNxpxZ7HX6E99f3ck/Ura05HmxY95MjdpQGEA==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6769
+
+Hello all,
+
+on the TeX.stackexchange Q&A website [1], was asked the following
+question: how do I get with xparse a macro with three optional
+arguments: <any number of *> <any number of '> <any positive integer>
+(without the <>). This can be achieved by providing a new argument
+type, which collects tokens as long as they obey a user-defined
+condition. Namely,
+
+\DeclareDocumentCommand{\X}
+  {
+    W { \token_if_eq_meaning:NNTF * }
+    W { \token_if_eq_meaning:NNTF ' }
+    W { \token_if_digit:NTF }
+  }
+  { \tl_show:n { #1 | #2 | #3 | #4 } }
+
+would declare \X to first grab tokens as long as they are equal in
+meaning to *, then grab tokens as long as they are equal in meaning to
+', and finally grab digit tokens.
+
+Do you think that it would be useful to add yet another argument type
+for that? (In the code I have now, I decided that the argument
+grabbing would stop at the first { or space or }, or implicit such
+token.)
+
+Regards,
+Bruno
+
+
+
+[1] http://tex.stackexchange.com/questions/19177/how-can-i-create-an-oddly-delimited-macro-using-xparse
+

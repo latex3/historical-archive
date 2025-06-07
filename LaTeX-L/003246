@@ -1,0 +1,95 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1958" "Thu" "28" "January" "1999" "13:26:02" "-0500" "Michael J. Downes" "mjd@AMS.ORG" nil "49" "Re: preamble declarations wanted" "^Date:" nil nil "1" nil nil nil nil nil]
+	nil)
+Received: from kralle.zdv.Uni-Mainz.DE (root@kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA12648;
+	Thu, 28 Jan 1999 19:27:38 +0100 (MET)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA11166;
+	Thu, 28 Jan 1999 19:27:36 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.9A25B1FA@listserv.gmd.de>; Thu, 28 Jan 1999 19:26:44 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 420316 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 28 Jan 1999 19:26:08 +0100
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id TAA17755 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 28 Jan 1999 19:26:06 +0100 (MET)
+Received: from sun06.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 28 Jan 1999
+          18:26:03 UT
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0F6A005018JEK7@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;
+          Thu, 28 Jan 1999 13:26:02 -0500 (EST)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 49
+References: <199901281617.LAA17312@hilbert.math.albany.edu>
+Message-ID:  <199901281826.TAA17755@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  "William F. Hammond"'s message of Thu, 28 Jan 1999 11:17:11 -0500
+Date:         Thu, 28 Jan 1999 13:26:02 -0500
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: preamble declarations wanted
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3246
+
+"William F. Hammond" <hammond@CSC.ALBANY.EDU> writes:
+
+> 1.  "\noblankpars": In using a program to translate another markup to
+> LaTeX, if one wants to have a reasonable level of human readability in
+...
+> blank line as a new-paragraph command under LaTeX is a pass-through to
+> "TeX", I do not know whether this could be done.
+
+\catcode\endlinechar=10
+
+> 2.  "\commandend{;}":  LaTeX practice such as
+>
+>                        "\LaTeX{} is great"
+>
+> does not always leave quite the right space after the first word.
+
+You are mistaken. It leaves a normal interword space. Unless you are
+talking about some macro that you have yourself defined without paying
+sufficient attention to spacefactor or something. Try looking at the
+LaTeX definition of \TeX (not the plain TeX definition, which is
+inferior).
+
+Or unless you are talking about math mode. In math mode the "{}"
+should certainly be omitted or it will tend to screw up the standard
+inter-symbol spacing. But your converter probably had better be aware
+of whether it is in math mode or not anyway, since (for example) you
+should be translating &ohat; to \^{o} in text but \hat{o} in math.
+
+If you really want a 100% consistent command terminator that you can use
+in all contexts I suggest \+:
+
+\def\+{}
+
+... \LaTeX\+ is great ...
+
+That is only for commands that take no arguments. For commands whose
+first argument is a mandatory argument the { is a sufficient
+terminator; for commands whose first argument is optional (like
+\pagebreak or \\) you cannot put anything in there without screwing up
+the lookahead. For that I suggest defining your own variants that use
+mandatory arguments.
+
+> 3.  "\strictargoptsyntax":  In auto-generating lists, a programmer
+> either needs to check that the first character of item content is not
+> '[' or else routinely generate "\item[{}]", filling in the braces when
+> appropriate.
+
+\item{} will give you the automatic number and ignore any
+following "[" character.
+

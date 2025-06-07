@@ -1,0 +1,104 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3077" "Sun" "28" "June" "1998" "20:25:50" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "59" "Re: Modules" "^Date:" nil nil "6" nil "Modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id UAA19331;
+	Sun, 28 Jun 1998 20:26:35 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.84BCABC1@listserv.gmd.de>; Sun, 28 Jun 1998 20:26:39 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372960 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 28 Jun 1998 20:26:34 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id UAA10982 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 20:26:32
+          +0200 (MET DST)
+Received: from [130.237.37.83] (sl63.modempool.kth.se [130.237.37.83]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id UAA12731 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 20:26:29
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <v03110701b1bbd09a78ca@[130.237.37.112]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+            <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+            <v03110701b1bbd09a78ca@[130.237.37.112]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b1bc30d2e3e0@[130.237.37.112]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806281358.XAA16592@ricetub.anu.edu.au>
+Date:         Sun, 28 Jun 1998 20:25:50 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2606
+
+  I have not really have much to add to what Richard Walker wrote. I can
+repeat the basic ideas:
+
+  The idea with the modules concept is to generalize, open doors, and not
+to close any. If long names or submodules are not of any use for low level
+development, do not use that in that programming. But adding ideas like
+submodules and more sophisticated module processing can be difficult if one
+does not consider certain snags at this point (like not mixing up module
+and word separators).
+
+  The principle of a module defining its behaviour via a command \<module
+name>/ (with an ending "/"), I arrived at by doing such module programming.
+The parsing I showed was only an illustration how such an idea might be
+used: After all, adding such a command does not burden TeX much, and if it
+is too slow in some modules, it needs not to be used, one can still call
+the names directly.
+
+  However, the point is that such a principle might allow for solutions
+that otherwise might not be possible: Sometimes a slow solution is
+preferred over none at all.
+
+  Also, not all developing takes place by first knocking out optimized
+code: Often one first writes something that one is sure to work, and then
+is doing the optimization. One example in TeX might be the use of
+definitions with optional arguments: It is possible to make definition
+commands that produce fairly general commands with LaTeX style optional
+arguments that work in fairly general situations, but which are slow and do
+not work in the perfect generality one would want for a built in LaTeX
+command. But one could speed up developing by using such a definition
+command, and if the command is not used often, it is no point for say an
+user or casual developer to sit down trying to figure out how to do LaTeX
+style low level parsing.
+
+> >   Speed perhaps: If a document can be processed in less than one second
+> > instead of ten, that will always be a great advantage.
+>
+>It is a sobering experience to run any of DEK's stuff (articles etc.)
+>through plain TeX.  If only LaTeX ran that fast . . . .
+
+  LaTeX already has several very slow commands with slow parsing, for
+example the variations of "new" with the LaTeX special style of defining
+arguments. One way to speed up LaTeX would be a command "define" which
+still checks if the command has been defined before, but otherwise uses TeX
+style parameters.
+
+>(or according to Hans - I need more convincing):
+>
+>  \hierarchical/path/to/module/perhaps_with_underscores/macro_name:argspec:
+
+  The only point with a terminating ":" would be to make it easier to know
+where the argspec ends if one processes the command name. This could be
+done otherwise by a convention that the argspec can only occupy one letter,
+or if that does not give sufficiently many combinations, that if the first
+letter is uppercase it is a two letter argspec, or something.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

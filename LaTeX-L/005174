@@ -1,0 +1,143 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 7 Mar 2008 21:32:50 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m27KWlHt032111
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 7 Mar 2008 21:32:47 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m27KTIAC001212
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 7 Mar 2008 21:29:18 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m27G09ES016170;
+	Fri, 7 Mar 2008 21:29:15 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 220843 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 7 Mar
+          2008 21:29:15 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m27KTFlc027840 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 7 Mar 2008 21:29:15 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m27KORos030475 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 7 Mar 2008 21:24:31 +0100
+Received: from morse.mittelbach-online.de (p4FD4726A.dip.t-dialin.net
+          [79.212.114.106]) by mrelayeu.kundenserver.de (node=mrelayeu7) with
+          ESMTP (Nemesis) id 0ML2xA-1JXjBm12Sz-000317; Fri, 07 Mar 2008
+          21:29:10 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 6A83562ECA; Fri,  7 Mar 2008 21:29:07 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <85wsoeto1k.fsf@lola.goethe.zz>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18MhBIVPdqz2jkkhnspe7J0oJJBmwz5A7wUyl8
+              3G+dYohyBABOhaeNCQ22tPVNgrsRovERbmJmCerg2YaaJMraxC
+              mP+XNI1FgAChlXd6ZBblXhg3pptXd81
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18385.42387.268037.81145@morse.mittelbach-online.de>
+Date:         Fri, 7 Mar 2008 21:29:07 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: A really, really bad bug.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <85wsoeto1k.fsf@lola.goethe.zz>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.307 () BAYES_00,FORGED_RCVD_HELO,HOT_NASTY,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Mar 2008 20:32:50.0595 (UTC) FILETIME=[69A34F30:01C88092]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5174
+
+David Kastrup writes:
+ > Ok, I get bombed out with save stack size exceeded in a large document.
+ > 
+ > At the end of the document.  Here is an example (bombs out with a save
+ > stack size of 5000, adjust the number for other binaries):
+ > 
+ > \documentclass{minimal}
+ > \begin{document}
+ > \leavevmode
+ > \newcount\xxx
+ > \loop
+ > \label{xxx\number\xxx}
+ > \advance\xxx1
+ > \ifnum\xxx<10000
+ > \repeat
+ > \end{document}
+ > 
+ > Bombs out only when run with an empty .aux file.  What is the problem?
+ > At the end of the document,
+ > \@ifdefined{something}
+ > is run within a local group for all labels.  This replaced the undefined
+ > label _locally_ with \relax and pushes the outer "undefined" value onto
+ > the save stack.
+
+nice one. that goes back to 2.09 or earlier.
+
+ > This is idiotic.  
+
+well more an oversight I woudl say. Leslie clearly has been aware of the save
+stack problem as such which is one of the reasons why the document environment
+explicitly cancels its environment group
+
+ > Of course, by far the easiest solution is
+ > \ifx\ifcsname\@undefined
+ >   make a definition that first checks with \ifcsname, and only if that
+ >   does not yield undefined, checks against \relax
+ > \else
+ >   the old definition
+ > \fi
+ > 
+ > This is incompatible in that it does not have the sideeffect of turning
+ > an undefined macro locally into \relax.
+ > 
+ > This is the solution I prefer.  It will avoid save stack buildup (and
+ > sideeffects I don't consider useful) elsewhere, too.
+
+on the 2e level I wouldn't be surprised if the side effect is actually in use
+in places.
+
+ > Another possibilities are to remove the grouping from the end of
+ > document action testing the labels. 
+
+from briefly staring at the code I see no reason why this group is needed at
+all. Does anybody see one why it could make a difference?
+
+ >  Yet another is to perform the
+ > \@ifdefined test within a group of its own, namely as
+ > 
+ > \begingroup \@ifdefined{xxx}{\endgroup...}{\endgroup...}
+ > 
+ > This will also not have the side effect of changing the label internal
+ > to \relax and will avoid save stack buildup.  So it keeps the changed
+ > side effect to a very small area and does not depend on eTeX.  One could
+ > also implement both (which would help with non-eTeX as well), but I
+ > don't think that supporting large documents on non-eTeX that previously
+ > did not work is much of a priority.
+ > 
+ > What is your take?  I find it clearly unsatisfactory to have LaTeX eat
+ > up save stack for newly defined labels like that at the end of the
+ > document.
+
+well, you seem to be the first person getting into trouble with this, but that
+doesn't mean one shouldn't fix it.
+
+I don't really mind either of the three solutions (provided none of the kills
+the regression tests for 2e) but personally I would simply drop the group
+unless somebody can give me a good reason why it could be needed in a certain
+situation.
+
+frank
+

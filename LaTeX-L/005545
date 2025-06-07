@@ -1,0 +1,102 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 24 Dec 2008 02:13:41 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mBO1DbL4008153
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 24 Dec 2008 02:13:40 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mBO1AIuJ032100
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 24 Dec 2008 02:10:18 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mBNN1xSX003268;
+	Wed, 24 Dec 2008 02:10:09 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 182032 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 24 Dec
+          2008 02:10:08 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mBO1A8V8013416 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Wed, 24 Dec 2008 02:10:08 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.249])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mBO19u28029658 for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 24 Dec
+          2008 02:10:00 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so3514385rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 23 Dec 2008 17:09:56 -0800
+          (PST)
+Received: by 10.140.139.3 with SMTP id m3mr3976882rvd.270.1230080996521; Tue,
+          23 Dec 2008 17:09:56 -0800 (PST)
+Received: from ?10.0.1.102? (114-30-104-171.ip.adam.com.au [114.30.104.171]) by
+          mx.google.com with ESMTPS id l31sm19458154rvb.2.2008.12.23.17.09.54
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Tue, 23 Dec 2008 17:09:55 -0800
+          (PST)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v929.2)
+References: <495160FA.8000004@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.929.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <9EECA5EE-12A7-4C01-8311-7658BD3E8E04@gmail.com>
+Date:         Wed, 24 Dec 2008 11:39:51 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: \tlist_if_eq:nn
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <495160FA.8000004@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Dec 2008 01:13:41.0656 (UTC) FILETIME=[DBDC6980:01C96564]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5545
+
+On 24/12/2008, at 8:36 AM, Joseph Wright wrote:
+
+> I was reading through part of l3tlp, and I came across:
+>
+> \def_long_test_function:npn{tlist_if_eq:nn}#1#2{
+>  \tlp_set:Nx \l_testa_tlp {\exp_not:n{#1}}
+>  \tlp_set:Nx \l_testb_tlp {\exp_not:n{#2}}
+>  \if_meaning:NN\l_testa_tlp \l_testb_tlp
+> }
+>
+> Why is this \tlp_set:Nx plus \exp_not:n, rather than just \tlp_set:Nn?
+
+I think that's to guard against # tokens. Since arbitrary token lists  
+could be being used in this function, you can't assume (as tlp's  
+usually do) that there won't be any #'s.
+
+Took me a second to think about this, though, before I realised we're  
+dealing with unrestricted token lists. (Maybe this is a key difference  
+between a tlp and a tlist that I overlooked in my previous discussion  
+for them.) I'll add some text to the documentation for this function.
+
+   \documentclass[12pt]{article}
+   \begin{document}
+
+   \def\testa#1{%
+     \edef\x{\unexpanded{#1}}%
+   }
+   \def\testb#1{%
+     \def\x{#1}%
+   }
+   \testa{a#b}
+   \show\x
+   \testb{a#b}
+   \show\x
+
+   \end{document}
+
+Cheers,
+Will
+

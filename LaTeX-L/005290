@@ -1,0 +1,84 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 11 Sep 2008 09:35:10 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8B7Z5Pg004714
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 11 Sep 2008 09:35:06 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8B7V8dm025190
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 11 Sep 2008 09:31:08 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AM1FGQ017495;
+	Thu, 11 Sep 2008 09:31:04 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 29686 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 11 Sep
+          2008 09:31:03 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8B7V3VJ025023 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 11 Sep 2008 09:31:03 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.241])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          m8B7Uo2f024936 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 11 Sep
+          2008 09:30:54 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so232940rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 11 Sep 2008 00:30:49 -0700
+          (PDT)
+Received: by 10.141.141.3 with SMTP id t3mr1501044rvn.124.1221118249961; Thu,
+          11 Sep 2008 00:30:49 -0700 (PDT)
+Received: by 10.141.26.19 with HTTP; Thu, 11 Sep 2008 00:30:49 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <48C8BAD5.9000003@morningstar2.co.uk>
+Message-ID:  <859ec5630809110030y52a639c6x1138b529afa2bcff@mail.gmail.com>
+Date:         Thu, 11 Sep 2008 09:30:49 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: Setting tlp via toks: is there a better way than ...
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48C8BAD5.9000003@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 11 Sep 2008 07:35:10.0693 (UTC) FILETIME=[EBD44950:01C913E0]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5290
+
+On Thu, Sep 11, 2008 at 8:29 AM, Joseph Wright
+<joseph.wright@morningstar2.co.uk> wrote:
+> Hi,
+>
+> I'm currently replacing
+>
+> \toks@{stuff including "#1"}
+> \edef\myvar{\the\toks@}
+>
+> by
+>
+> \toks_set:No \l_tmpa_toks {stuff including "#1"}
+
+\toks_set:Nn I think you mean.
+
+> \tlp_set:Nx \l_my_tlp {\toks_use:N\l_tmpa_toks}
+>
+> Is there a pre-coded function for this (I may have misunderstood somewhere).
+
+Not exactly precoded but what you usually do is
+  \tlp_set:Nx \l_my_tlp {\exp_not:n{unexpanded #1}}
+The at first sight weird looking \exp_not:o and \exp_not:f start
+becoming more useful in this context.
+-- 
+Morten
+

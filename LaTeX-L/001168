@@ -1,0 +1,139 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4820" "Mon" "15" "November" "93" "21:07:29" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "112" "NFSS math handling suggestion (was puzzle)" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA18866; Mon, 15 Nov 93 21:08:23 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00526; Mon, 15 Nov 93 21:08:21 +0100
+Message-Id: <9311152008.AA00526@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5462; Mon, 15 Nov 93 21:06:54 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5800;
+ Mon, 15 Nov 93 21:06:38 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5798;
+ Mon, 15 Nov 93 21:06:35 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 15 Nov 93 21:07:29 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      NFSS math handling suggestion (was puzzle)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1168
+
+
+
+> >  > The puzzle is: All the user intended to use was 7 + 8 + 8 + 8 =31
+> >  > fonts. Why is it that NFSS assigns so many when nobody asked it to?
+> >  > Wasn't the idea that all fonts were assigned "on demand"?
+> >
+> > They are. But all math fonts need to be loaded before math mode is
+> > entered, remember? So, you are effectively asking for a much larger
+> > set of fonts, namely (9 + 9) * (1 + number of math fonts per size).
+>
+> No Rainer, you haven't done your homework. Math fonts need not,
+> repeat, NOT be assigned BEFORE you enter math mode.
+>
+> > Sorry, but we are using TeX here and have to be content with what it
+> > offers.
+>
+> I am positive that this is a limitation of NFSS and not
+> of TeX.
+
+I wouldn't call it a limitation but a design decision of NFSS. This is
+the old question of time versus space (mostly, but see below).
+
+If you compare the number of fonts loaded in lfonts.tex with those
+loaded in NFSS running on a document written for lfonts.tex you will
+find that the fonts loaded are in fact smaller (provided you haven't
+preloaded everything beforehand).
+
+TeX is a turing machine and thus you don't even need the mathchardefs
+but if you don't use them you have to program around that filling up
+main memory quite fast. I assume that you don't disagree with me so
+far.
+
+This means that every symbol font needs to be loaded when you start
+math mode since you can't predict if it is going to be used and in
+what size unless you disable mathchardefs. However, you can of course
+supress the setup until the point you actually typeset math (which, I
+agree is not done).
+
+As for the math alphabet, we decided not to preload them, however, if
+a math alphabet is used it will then automatically be useable in other
+sizes. This again is a time decision. If we start up the machinery of
+turning an unassigned math alphabet into a font assigning math
+alphabet everytime it is used the speed you go done very much. Keeping
+tables of the sizes in which it is assigned and in which not is not
+very promising either. Without changing that decision (which i think
+is correct) you can still save by defering the setup until math is
+actually used.
+
+> the solution is plain and clear here: Use \everymath and \everydisplay
+> I agree that about four math families need to be assigned
+> (families 2 and 3 are a must) even if they are not used,
+> but this is a far cry from what NFSS does, namely assign
+> all fonts that are currently in the "math alphabet" every time
+> one changes sizes, even when one does NOT enter math mode.
+
+this is certainly a possibility. however, it can have strange side
+effects some packages use \everymath for their own purposes. thus one
+has to be a bit careful and needs to provide NFSS with a private
+version of those tokenregs that can't be clobbered by other packages, eg
+something like
+
+\let\nfss@everymath\everymath
+\newtoks\everymath
+
+\nfss@everymath={<some code>\the\everymath}
+
+this is certainly a possibility could be in fact produce better
+results in terms of both in time and space. but i don't think that one
+should alter the other design decisions of NFSS, ie
+
+- load all symbol fonts declared
+- load all alphabets used
+
+as they would produce worse limitations.
+
+> Well, that's like saying what do you care how big a program is.
+> For starters, there are only 255 TFM files that any document van load,
+> and for anybody who knows how to count, the number that NFSS actually
+> uses comes dangerously close to the limit.
+
+I'm a bit surprised that you claim to reach this limit (which does not
+mean that the above suggestion isn't valid). The only type of
+application where this is likely is the direct use of \fontsize for
+arbitrary sizes using ps fonts or starting with a large number of
+preloaded fonts in the first place.
+
+>  In fact, with the
+> "small" implementations of TeX, that test document cannot be
+> processed, because the limit is 128. I'd say that's a problem
+> but our friend Joachim doesn't think so.
+
+well, my implementation runs this with
+
+ 35814 words of font info for 121 fonts, out of 90000 for 255
+
+granted that this close to the limit of 128 (and worse than it could
+be) it it is not above and it is certainly not near 255. but it is
+already quite a heavy document as far as the number of math alphabets
+used is concerned.  even by adding another six alphabets i don't get
+to the limit (well, except the tex limit of 16 fams):
+
+ 72703 words of font info for 187 fonts, out of 90000 for 255
+
+so, there is something wrong with your setup.
+
+nevertheless, the suggestion is worth trying out, however, probably
+not before next year, ie not for the first release of LaTeX2e. While I
+think that this actually improve things in several directions I don't
+consider the type of test document really a problem requiring
+immediate action.
+
+Frank Mittelbach
+

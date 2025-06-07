@@ -1,0 +1,172 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5564" "Tue" "16" "November" "1999" "22:29:30" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "129" "Re: various comments on templates" "^Date:" nil nil "11" nil "various comments on templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA00708
+	for <schoepf@UNI-MAINZ.DE>; Tue, 16 Nov 1999 22:59:18 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.AAD25FD8@mail.listserv.gmd.de>; Tue, 16 Nov 1999 22:59:14 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446414 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 16 Nov 1999 22:58:57 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id WAA29684 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov
+          1999 22:58:39 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id WAA28068 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov 1999 22:58:58 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin385.zdv.Uni-Mainz.DE
+          [134.93.175.85]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA23340 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov 1999
+          22:58:55 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          WAA00574; Tue, 16 Nov 1999 22:29:30 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <14384.19380.269695.118363@Wincenty.nowhere.edu.pl>
+Message-ID:  <199911162129.WAA00574@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <14384.19380.269695.118363@Wincenty.nowhere.edu.pl>
+Date:         Tue, 16 Nov 1999 22:29:30 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: various comments on templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3421
+
+Marcin and all,
+
+ > I've just read all the templates related mail from the last month, and
+ > I'd like to make some comments.  Sorry for being so late.
+
+no need. it is moving and thats good (hope i find some time to finish more of
+it soon)
+
+ > As for the ``sequence of footnotes'' issue:
+ > -------------------------------------------
+ > If you seriously think of supporting sequences of footnotes (which I
+ > btw find a very annoying habit) you should provide a template type for
+
+i agree that it is not really my style at all either but it is an accepted
+aproach and as such providing for it seems a good idea, or not?
+
+ > a sequence of note marks and not for a single mark.  If sequences are
+ > allowed, single footnote mark is not a self-contained entity.
+ > Consider e.g. a template that puts a frame around the footnote
+ > mark(s).  Now to put the frame around 1,2 you have to have it in hand
+ > as a whole.
+
+i don't really want to dispute this. but are there seriously layouts that
+treat this as units? perhaps there are and perhaps it is the wrong question
+anyway since if one provides this functionality one should probably provide it
+all way through.
+
+
+so assuming we intend to provide it all way through what would be a sensible
+template type for it? the main problem i see right now is that the tempate
+types as currently defined do only work with a fixed set of arguments. this
+would allow for three courses to take:
+
+ - say that this is not flexible enough and there is the need to allow
+   (somehow) for a varying number of arguments to templates --- the course i
+   don't like much for obvious reasons :-)
+
+ - consider (on the LaTeX level) a syntax like
+     \begin{footnotegroup} \footnote{..}\footnote{..} ... \end{footnotegroup}
+   and map the footnotegroup env somehow into an environment template which
+   somehow modifies the behaviour of the inner \footnote's
+
+ - consider to provide for structured arguments to templates, eg
+   (comma-separated lists) or something like that. --- the latter may in fact
+   be necessary in other circumstances anyway (supporting \cite comes to
+   mind). how this is actually then mapped to syntax is a different matter and
+   i must confess i have no immediate idea that seems appealing.
+
+any thoughts?
+
+
+ > Section heads
+ > -------------
+ > The template type seems all right (at least I agree with all you've
+ > said), but I think the document syntax is still a problem.
+
+agreed too
+
+ > According to my experience the need for short version of the title for
+ > running head is common.  On the other hand I have never typeset any
+ > document with titles in the toc different than in the text.  With the
+
+i have (a lot) not necessarily actually different text but for example with
+fine tuning of a publication you often have to provide line breaking
+information to the various incarnations of the title.
+
+oups: but this is bloody visual formatting and shouldn't be done anyway,
+should it? :-) but the fact remains that most of those optional arguments are
+precisely for such reasons there and not (only) to support some abstract
+document model better
+
+
+ > syntax you proposed, to specify short text for the running head only
+ > one has to repeat the long title as toc text (or use hacks with
+ > \NoValue).  If two optional parameters were exchanged I would be
+ > perfectly happy.
+
+your idea sounds perfectly correct for the major applications and i will use
+it when i write up the heading template stuff.
+and even if:
+
+ > But then probably some application with thousands of
+ > sections with alternative toc entries and no running head would
+ > emerge. :-)
+
+that would not really be a problem, would it? if it is a one off document then
+the writer will have to do the extra work in adding all the optional arguments
+containing the same text, but if it is a real major application then having
+extra tags or your own variations is no problem. after all with xparse
+reordering is not that difficult and could be done for large jobs even in the
+preamble
+
+ > Expansion
+ > ---------
+ > A very inspiring mail of M.J. Downes about avoiding expansion of
+ > user-supplied text didn't seem to cause any response.  Since I always
+ > felt that avoiding expansion is the right way to go, I'd like to ask
+ > what is the opinion of The LaTeX Team in that matter.  This would be
+
+his post is in some sense the result of some internal Team disucssion
+(though developed by Michael to keep the record of originally straight)
+
+ > too much of a change for LaTeX 2e, but in the LaTeX 3 context the idea
+ > seems perfectly feasible.
+
+yes and i would be very glad if his ideas would be taken further and really
+tested (even in the 2e context) by first providing a package and somebody
+really trying to test it against a large number of documents and see how far
+we get.
+
+right now i don't want to concentrate personally on any of these more
+technically issues but rather on getting finally a design interface to LaTeX
+the way i always hoped it would possible, but i do consider the protection
+issue an important one and, yes it would be nice if his post would interest
+some people to get interested enough to work on this further with him (and by
+the way, he is one of THEM as well:-)
+
+ > ----------
+ > Shouldn't \DelayedEvaluation be rather named \DelayEvaluation or
+
+shouldn't it? i thought it was named \DelayEvaluation when we put it out;
+must gave got another "ed" traveling to your country :-)
+
+ > \EvalOnUse (I mean in a more procedural spirit)?
+
+sounds to me like a better name, thanks. will think about it.
+
+good night
+frank
+

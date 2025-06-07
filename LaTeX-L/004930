@@ -1,0 +1,143 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 5 Mar 2006 21:37:14 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k25KbBoE012405
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 5 Mar 2006 21:37:11 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k25KY4vj011753;
+	Sun, 5 Mar 2006 21:34:04 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k23JSbMa029011;
+	Sun, 5 Mar 2006 21:31:28 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1405015 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 5 Mar
+          2006 21:31:28 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k25KVRwe013246 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 5 Mar 2006 21:31:28 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.171]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with
+          ESMTP id k25KXXvj011650 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 5 Mar 2006 21:33:33 +0100 (MET)
+Received: from [84.169.143.76] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu7) with ESMTP (Nemesis),
+          id 0ML2Dk-1FFzsa34QN-0001F3; Sun, 05 Mar 2006 21:31:13 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 48B6C4341D; Sun,  5 Mar 2006 21:30:59 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <20060304161541.GA23818@irwin.vpn.uni-freiburg.de>
+            <D65EA020-ABC3-11DA-B480-0003930D5AB6@residenset.net>
+            <20060304222628.GA28832@irwin.vpn.uni-freiburg.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: kundenserver.de abuse@kundenserver.de
+              login:923c546e49b26a7485eda6910e23f403
+Message-ID:  <17419.19074.277514.24682@morse.mittelbach-online.de>
+Date:         Sun, 5 Mar 2006 21:30:58 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: LICR objects
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20060304222628.GA28832@irwin.vpn.uni-freiburg.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Mar 2006 20:37:14.0660 (UTC) FILETIME=[963DAE40:01C64094]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4930
+
+Heiko,
+
+ > I don't, but this is used in next.def, where 0xFE and 0xFF isn't
+ > part of the NextStep encoding:
+ >   \DeclareInputText{254}{}
+ >   \DeclareInputText{255}{}
+ > Thus actually an empty "LICR" is used here.
+
+as i said, mistake by the person contributing that encoding and harmless
+anyway --- removed by now
+
+ > > >Thus the entry for U+02C6 in utf8enc.dfu is not really correct:
+ > > >  \DeclareUnicodeCharacter{02C6}{\textasciicircum}
+ > > >  U+02C6 MODIFIER LETTER CIRCUMFLEX ACCENT
+ > > >"\^" would be more correct, except that grabbing the
+ > > >argument isn't too trivial in case of utf-8 characters
+ > > >consisting of several bytes.
+ > > 
+ > > Aren't you thinking of the COMBINING circumflex accent here?
+ > 
+ > Yes.
+ > 
+ > > MODIFIER characters are more phonetic alphabet thingies.
+ > 
+ > Thanks.
+
+but the combining don't work in TeX either, as unicode defines them as
+following the base char an TeX requires them to precede the base char. in
+short you can't turn unicode with combining chars into TeX/LaTeX code without
+a preprocess as you can't make base chars act on following input
+
+that is not to say that  the line 
+
+ > > >  \DeclareUnicodeCharacter{02C6}{\textasciicircum}
+
+is probably wrong it should be most likely
+
+  \DeclareUnicodeCharacter{005E}{\textasciicircum}
+
+and several others have similar defects.  would be good if that got checked.
+
+But if you do that remember the direction of check.
+
+one has to start from what the font encoding provides, eg \textasciicircum in
+that case. then one has to find the UC code for that and that is what should
+show up in the font encoding dfu.
+
+ > > >What is the LICR of "fi"?
+ > > >  U+FB01 LATIN SMALL LIGATURE FI
+ > > >The ligature mechanism depends on the used fonts, "fi" is not
+ > > >always available. What is better?
+ > > >  \DeclareUnicodeCharacter{FB01}{\textfi}
+ > > >  \ProvideTextCommandDefault{\textfi}{fi}
+ > > >vs.
+ > > >  \DeclareUnicodeCharacter{FB01}{fi}
+ > > 
+ > > Definitely the latter. As I understand it, these ligatures are in 
+ > > unicode mostly for compatibility with legacy encodings (and perhaps for 
+ > > font designers who need to assign something to these glyphs). At least 
+ > > as far as TeX is concerned, "fi" doesn't carry any semantic information 
+ > > different from "f" "i".
+ > 
+ > Example: Assuming there is a word "deaffish" and the
+ > author does not want a ligature ffi spanning both word parts.
+ > Therefore, having a good editor, he uses the Unicode sequence
+ > U+0066 U+FB01 to specify the correct and desired ligature.
+ > Using the later case of \DeclareUnicodeCharacter{FB01}
+ > TeX would get "ffi" and then form the wrong ligature.
+
+wrong example in my opinion. as Lars said: fi or ffi ligature ended up in
+unicode as legacy codes because they were in legacy 8-bit encodings. million
+other ligatures are not available as "chars" because UC like most other
+standards are heavily influenced by what is right for certain countries but
+not others. using "fi" in this way is like using tables in html to position
+elements on the page, ie it works for that example but ...
+
+so the right thing is not to use fi at all here but would be to a generic
+method to denote subword boundaries or whatever to allow the formatter not to
+use the ligature. TeX's method would be \textcompwordmark ... but unicode
+never thought that such encoding of lgoical information is the task of the
+standard.
+
+some of Chris' and my musing on this subject can be found in the paper we gave
+at the unicode conf in 1996:
+
+http://www.latex-project.org/papers/unicode5.pdf
+
+frank
+

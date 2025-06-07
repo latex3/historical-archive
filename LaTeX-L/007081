@@ -1,0 +1,79 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q650XfuP027832
+	for <rainer@rainer-schoepf.de>; Thu, 5 Jul 2012 02:33:42 +0200
+Received: (qmail 17073 invoked by alias); 5 Jul 2012 00:33:36 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 05 Jul 2012 00:33:36 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx069) with SMTP; 05 Jul 2012 02:33:36 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id q650V7iZ028653
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 5 Jul 2012 02:31:07 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id q64M17h0028678;
+	Thu, 5 Jul 2012 02:31:06 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1988788 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 5 Jul
+          2012 02:31:06 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id q650V6wn006777 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 5 Jul 2012 02:31:06 +0200
+Received: from mail-vb0-f49.google.com (mail-vb0-f49.google.com
+          [209.85.212.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id q650U8NK001801 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 5 Jul
+          2012 02:31:06 +0200
+Received: by vbbfo1 with SMTP id fo1so6726934vbb.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 04 Jul 2012 17:30:08 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.220.107.136 with SMTP id b8mr8851276vcp.26.1341448208578; Wed,
+          04 Jul 2012 17:30:08 -0700 (PDT)
+Received: by 10.220.166.75 with HTTP; Wed, 4 Jul 2012 17:30:08 -0700 (PDT)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <CANQYN6yDDPn+H4XUWqQDBpv4S9gGLZ0J01Z9ChMY=E_35OQPkg@mail.gmail.com>
+Date:         Thu, 5 Jul 2012 02:30:08 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Deprecated scratch register
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7081
+
+Hello all,
+
+The following variable has been deprecated with no replacement, and
+will be removed after 2012-12-31:
+
+  \l_tmpc_int
+
+It should be replaced by a variable specific to the module which uses
+it.  A review of the local and global scratch registers (such as
+\l_tmpa_tl) across l3kernel has revealed some inconsistencies.  We
+have settled for providing 2 local and 2 global registers of each
+type.  For most datatypes, this meant adding a couple of scratch
+registers.  Integers provided more scratch registers, hence
+\l_tmpc_int had to be pruned.
+--
+Bruno Le Floch
+

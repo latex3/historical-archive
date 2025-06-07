@@ -1,0 +1,85 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1616" "Sun" "22" "June" "1997" "01:12:14" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "49" "Re: another problem with Russian typesetting" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id CAA29679; Sun, 22 Jun 1997 02:30:58 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.C721E3CA@listserv.gmd.de>; Sun, 22 Jun 1997 2:30:56 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 157653 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 22 Jun 1997 02:30:51 +0200
+Received: from punt-2.mail.demon.net (relay-13.mail.demon.net [194.217.242.21])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id CAA07735
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Sun, 22 Jun 1997 02:30:48
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id ab1229225; 22 Jun 97 1:10 BST
+Received: by dcarlisle.demon.co.uk id m0wfaGM-000OVvC (Debian Smail-3.2
+          1996-Jul-4 #2); Sun, 22 Jun 1997 01:12:14 +0100 (BST)
+Message-ID:  <m0wfaGM-000OVvC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <Pine.GSO.3.96.970621232052.683B-100000@uxp1.hrz.uni-dortmund.de>
+              (message from Werner Lemberg on Sat, 21 Jun 1997 23:29:15 +0200)
+Date:         Sun, 22 Jun 1997 01:12:14 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: another problem with Russian typesetting
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2163
+
+> \chardef\newCYRA=128
+> \chardef\newCYRB=129
+> \chardef\newCYRV=130
+>
+> $\cyrmathit{\newCYRA\newCYRB\newCYRV}$  % this works well
+
+Are you sure that works?
+\chardef'ed tokens always pick up the current *text* font, they do not
+follow the \mathgroup (ie \fam) settings, unlike explicit or implicit
+character tokens.
+
+
+\documentclass{article}
+
+\begin{document}
+\mathchardef\xx`\e
+\let\yy=f
+
+$ \mathsf{abc d \xx\yy} abcd\xx\yy$
+
+\end{document}
+
+
+
+See \xx always makes a roman d, unlike \yy
+which makes an e in the current math group (sans serif, or math italic
+in the example)
+
+A further complication for Cyrillic is that in order to reliably work
+with math alphabets having different encodings, the LaTeX math
+alphabet switches ought to leave more information about the current
+encoding. Unlike the text font changes that do this, the \mathxxx
+switches essentially just do a primitive \fam switch (after possibly
+loading the font on demand) and do not leave any record of the current
+alphabet and encoding in a form that may be easily tested. In other
+words you want
+$\cyrmathit{\newCYRA\newCYRB\newCYRV}$
+to work, but $\newCYRA\newCYRB\newCYRV$ to generate a sensible
+error rather than just putting primitive
+Missing character: There is no ^^a4 in font cmr10!
+messages in the log file.
+
+Supporting encoding-specific commands in math mode *is* a reasonable
+request, but it is something that latex does not currently do, and
+adding it would likely need extensions to the basic math font handling
+in the format, it is not something that can simply be added with a few
+lines of package code, as far as I can see.
+
+David
+

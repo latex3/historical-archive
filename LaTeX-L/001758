@@ -1,0 +1,222 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6840" "Mon" "8" "July" "1996" "19:24:16" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "182" "Re: latex/2192: \\DeclareFont{Family,Shape} behave unexpectedly" "^Date:" nil nil "7" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id TAA00842 for <schoepf@UNI-MAINZ.DE>; Mon, 8 Jul 1996 19:48:01 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.D1916B5F@listserv.gmd.de>; Mon, 8 Jul 1996 19:47:54 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 103722 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 8 Jul 1996 19:38:36 +0200
+Received: from ix.urz.uni-heidelberg.de (root@aixterm1.urz.uni-heidelberg.de
+          [129.206.119.41]) by relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with
+          SMTP id TAA04032 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 8
+          Jul 1996 19:38:35 +0200 (MET DST)
+Received: from kralle.zdv.Uni-Mainz.DE by ix.urz.uni-heidelberg.de (AIX 3.2/UCB
+          5.64/4.03aixterm1) id AA46625; Mon, 8 Jul 1996 19:38:33 +0200
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.7.5/8.6.12) with UUCP id TAA13451; Mon, 8
+          Jul 1996 19:31:43 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          TAA00623; Mon, 8 Jul 1996 19:24:16 +0200
+References: <199607060957.LAA02857@frank.zdv.uni-mainz.de>
+            <199607080855.KAA03520@c210.edvz.uni-linz.ac.at>
+Message-ID:  <199607081724.TAA00623@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199607080855.KAA03520@c210.edvz.uni-linz.ac.at>
+Date:         Mon, 8 Jul 1996 19:24:16 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: latex/2192: \DeclareFont{Family,Shape} behave unexpectedly
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1758
+
+[ to latex-l subscribers:
+
+I cc'ed this to latex-l as i think parts of it is of general interest
+if you want to see the original discussion please look up the pr in
+the latex bug database.
+
+also please note that if you cc back to latex-bugs@... please keep the subject line
+otherwise you start a new thread in the database
+
+this addresses two questions:
+
+input/output encodings what is what ...
+
+and: do we need a hook that is called whenever a font shape changes
+     and if so what interfaces are needed to make such a hook is
+     generally usable
+]
+
+
+
+Werner,
+
+ > The article appeared in Die TeXnische Komoedie.
+
+ah yes
+
+ > An example: the character code 0xC5C5 used in GB (simplified Chinese) leads
+ > to a different glyph than the character 0xC5C5 in JIS (Japanese). This is a
+ > criterion of different font encodings, isn't it?
+
+well, no (imho). that sounds like an input encoding difference to me:
+
+eg if i press
+                 GB
+<char 0xC5C5>   --->   <char foo wanted on printed page>
+
+                 JIS
+<char 0xC5C5>   --->   <char bar wanted on printed page>
+
+
+now the LaTeX concept is the following:
+
+           inp enc                outp enc
+<key baz>  ------->  <glyph foo>   ------->  <slot x>
+
+
+so GB and JIS are input encodings and the output encoding can be
+arbitrary as long as you have an abstract internal name
+
+eg what we do for currently is
+
+<somekey> ------->  \"a --------> \char xyz
+                        --------> \char abc
+                        --------> \accent ...
+
+thus \"a is not a typesetting instruction but an abstract concept
+(btw, this is by the way the reason why i don't want the OT5 encoding
+file the way it is now but want to develop a sound "internal
+representation for glyphs with two diacritals but this is a different
+issue---anyway you will get a separate mail on that i implemented
+something for a dicsussion but need to write it up first)
+
+conceptually it should be possible to change the position of <glyph
+foo> (or even the generation) to an arbitrary slot. in practice we do
+a little less as we say that most of the lower 7bit plane is passed
+through this interface without change, eg if you type `a' then the
+internal representation is `a' and you also get that slot (ie the
+ascii number of `a')
+
+but this is because a-zA-Z plays a double role in TeX (forming also
+the interface to the commands)
+
+anyway, it looks to me as if you have moved what is the inputencoding
+question actually to the fontencoding and there making more or less
+the same mistake Don made originally when he designed TeX and had this
+pass through ascii concept idea
+
+maybe i'm wrong but this is sooooo difficult a subject, it took us
+literally months to just understand at what points we made basic
+assumptions that were not true in general ....
+
+
+ > > and as i said i don't think that the misuse of the loading interfaces
+ > > into a calling interface is the right approach (see also below).
+ >
+ > Maybe it's the wrong way now. But can you offer any other solution? I need
+ > this feature, and if you introduce some new features I will immediately
+ > update. Theoretically I could check whether \selectfont has been modified by
+ > any other package...
+
+you should do that definitely for all internal commands you modify, it
+will help you to maintain your stuff and avoids some of the hard to find bugs
+
+ > > I'm not sure that i understand that statement. at some point during
+ > > processing, ie just before you apply your poor man bold \the\font must
+ > > point to the font that you are actually going to use for
+ > > typesetting. thus if that font contains the fontdimen setting then at
+ > > that point you can test for it.
+ >
+ > The problem is not the checking, it's the setting. If I load a CJK font,
+ > a family of subfonts is defined. To make the system workable I had to modify
+ > \pickup@font (and no other command---\selectfont is only modified for the
+ > new bold feature): each time the macro \CJK@plane is defined \pickup@font
+ > appends \CJK@plane to the font name (\CJK@plane usually contains two digits,
+ > the subfont) and checks whether this font is defined. If not,
+ > \define@newfont is called, else \font@name is redefined with \CJK@plane
+ > appended. I've never seen a case where this fails. You never access the
+ > subfonts directly, you always use my CJK macros.
+ >
+ > Thus \DeclareFontFamily and \DeclareFontShape are executed only once for the
+ > whole set of CJK subfonts. Maybe you have time or interest to take a look
+ > into my package :-)
+
+i guess i have interest but no time soon.
+
+without reading a bit more about it there is not much point in
+discussing this further although my feeling is that my approach would
+work maybe not as simple minded as i sketched it
+
+
+
+ > > it still has the problem of not working in a situation with nested
+ > > font calls
+ >
+ > Maybe this is off topic but I'm interested to see such an example.
+
+well: an abstract example. if you turn on feature A on at code \foo
+but it should be off at \bar then how do you achieve that without
+modification for all \bar(s) of the universe written by others?
+
+   {\foo {\bar x } y }
+
+if we only provide what you want then you would need to put "feature A
+off" into any \DeclareFontShape and perhaps even in those already
+loaded.
+
+this is like the babel language problem. there is is solved by always
+returning to a base language and then setting things up again from
+scratch (even if this means resetting feature A from on -> off -> on)
+
+that's one approach there are others but in any case they are more
+complicated than the one you propose.
+
+and again: yes for an application that is special and does not work
+with other packages etc together your solution might be good enough,
+but once there smaller applications than chines typesetting will start
+to use it and then .....
+
+
+ > I didn't forget it. I just talked about a clean interface:-)
+
+okay, but ... :-)
+
+ > >  > PS: Is the Greek problem mentioned above in the LaTeX bugs-database?
+ > >  >     I'm interested in this topic.
+ > >
+ > > could be that this is part of the database before it went public. i
+ > > can't check right now. perhaps David or Rainer can. In any case it
+ > > might make sense to contact David Kastrup directly.
+
+i think it is pr/1025 don't know if that is online
+
+ > Please send me his email address.
+
+David Kastrup, Goethestr. 20, D-52064 Aachen        Tel: +49-241-72419
+David Kastrup        dak@pool.informatik.rwth-aachen.de
+
+
+might be old
+
+
+ > Thank you for discussing with me this quite interesting topic.
+
+keep tuned --- more to come on latex-l especially on vietnamese enc
+
+are you on this list by now?
+
+i would like to discuss general issues on that list rather than on
+latex-bugs (the original mail was proper as you reported "a bug" or
+whatever thingie actually was but we now drift into design discussions)
+
+frank
+

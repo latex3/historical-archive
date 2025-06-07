@@ -1,0 +1,100 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 13 Nov 2005 07:30:22 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id jAD6UI5f020513
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 13 Nov 2005 07:30:19 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id jAD6QQM0018872;
+	Sun, 13 Nov 2005 07:26:26 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id jAD0K6Nj023540;
+	Sun, 13 Nov 2005 07:25:49 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 833068 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 13 Nov
+          2005 07:25:48 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id jAD6Pm5u017166 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 13 Nov 2005 07:25:48 +0100
+Received: from dogmatix.mecheng.adelaide.edu.au
+          (dogmatix.mecheng.adelaide.edu.au [129.127.14.1]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          jAD6PlM0018820 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 13 Nov
+          2005 07:25:49 +0100 (MET)
+Received: (from uucp@localhost) by dogmatix.mecheng.adelaide.edu.au
+          (8.8.7/8.8.7) id QAA18889 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 13 Nov 2005 16:58:32 +1030
+Received: from UNKNOWN(129.127.14.10),
+          claiming to be "watt.mecheng.adelaide.edu.au" via SMTP by
+          dogmatix.mecheng.adelaide.edu.au,
+          id smtpda18887; Sun Nov 13 16:58:24 2005
+Received: from WATT/SpoolDir by watt.mecheng.adelaide.edu.au (Mercury 1.44); 13
+          Nov 05 16:55:28 -9:30
+Received: from SpoolDir by WATT (Mercury 1.44); 13 Nov 05 16:55:04 -9:30
+Received: from [10.0.1.2] (129.127.14.244) by watt.mecheng.adelaide.edu.au
+          (Mercury 1.44) with ESMTP; 13 Nov 05 16:55:02 -9:30
+Mime-Version: 1.0 (Apple Message framework v746.2)
+References: <88ED1D30-FF25-423D-B73B-485982A3CB69@guerilla.net.au>
+            <5.1.0.14.0.20051110085835.024b6700@pop3.web.de>
+            <20051110100945.GA3265@m0A023274.vpn.uni-freiburg.de>
+            <17267.14888.849329.473348@isostar.informatik.uni-stuttgart.de>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.746.2)
+Message-ID:  <8BDE465E-4169-40F3-A72C-60A331A9092C@guerilla.net.au>
+Date:         Sun, 13 Nov 2005 16:55:02 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <will@GUERILLA.NET.AU>
+Subject: Re: LaTeX3 access, pdfTeX extensions, &c.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17267.14888.849329.473348@isostar.informatik.uni-stuttgart.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Nov 2005 06:30:23.0091 (UTC) FILETIME=[B9EB8C30:01C5E81B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4891
+
+Hello all,
+
+I'm glad to have provoked such a level of response; and obviously  
+this discussion  has happened several times in the past.
+
+On 10/11/2005, at 10pm, Bernd Raichle wrote:
+
+>  a) TeX is reading _characters_ from files/stdin which get converted
+>     to _tokens_.
+>
+>  b) When these tokens are dealt with by TeX's main control loop where
+>     the typesetting is done, the _tokens_ are triggering the building
+>     of _nodes_.
+> <snip>
+>  - If you want to look backward, you access _nodes_.
+
+Thanks for this explanation, it certainly helped me think about the  
+details properly. What isn't so clear to me is why, in principle,  
+previously processed tokens that have already triggered nodes cannot  
+be queried.
+
+Obviously, in eTeX they can't. But is there a reason that the stream  
+of tokens (or at least the last couple) couldn't, in some  
+hypothetical TeX extension, be "remembered" for possible analysis?
+
+Say there are tokens t1, t2, .... Obviously the node that t2 builds  
+can't be queried by t1. My proposal is that after t1 was processed,  
+it would be held in \previoustoken (say) while t2 was being  
+processed, and so on.
+
+The token stream won't change retrospectively, so in theory it should  
+be able to be examined. Or at least, that's what my thinking was. It  
+would seem to be useful for when xTeX is performing calculations, but  
+not actually typesetting anything yet, since in this case you don't  
+have (useful) previous nodes to compare to anything. I admit I can't  
+think of an example off the top of my head.
+
+Will
+

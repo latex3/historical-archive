@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2334" "Tue" "9" "March" "93" "16:41:17" "+0100" "rolf.lindgren@USIT.UIO.NO" "rolf.lindgren@USIT.UIO.NO" nil "47" "Re: Fonts and LaTeX 3" "^Date:" nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA14885; Tue, 9 Mar 93 16:43:56 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA07026; Tue, 9 Mar 93 16:43:53 +0100
+Message-Id: <9303091543.AA07026@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5292; Tue, 09 Mar 93 16:43:31 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2145;
+ Tue, 09 Mar 93 16:43:25 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2143;
+ Tue, 09 Mar 93 16:43:22 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <"alf.uib.no.846:09.02.93.08.33.18"@uib.no>
+Date:         Tue, 9 Mar 93 16:41:17 +0100
+From: rolf.lindgren@USIT.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Fonts and LaTeX 3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1012
+
+
+Malcolm Clark writes:
+ > good to see the postscript wars bubbling up again.
+ > just how many angels can you get on the pinhead this time?
+ >
+
+How many angels you can get on a pinhead depends on how much they like
+each other.
+
+An easy way around the PS wars is to decide that we forget about PCL and
+PS and let the device driver people decide what to support. The question
+about how flexible font managment should be, however, can be viewed as a
+matter of how many different pk font families you want to merge into one
+document. You get the same kind of problems as with PS and PCL fonts.
+Point is that HP softfonts and PS are both part of the world, and provide
+possibilities that LaTeX 3 should not place restrictions upon.
+
+x heights provide some heuristics as to leading, of course the document
+designer has to have the option to override whichever heuristic a font
+option decides.
+
+Leading should be specified according to the base font of the document. If
+you use several font on one line, you don't change leading. That's one of
+the reasons why, in mixing fonts, it's wise to use fonts of about the same
+x height, or the same x height/X height ratio and then do some scaling of
+the additional font. (I hate it when PS style files scale the point size
+to fit the x height of the cm math fonts. It's the cm math fonts that
+should be scaled. I'd like to have LaTeX 3 provide a way to scale the math
+fonts for the benefit of those of us who use scalable (e.g. PS) math fonts.)
+
+One thing that I've quite forgotten - some characters are
+built as macros and don't get substitued with real glyphs automatically
+when another font is used, like \ldots which you have to _know_ to
+substitute with a proper ellipsis if the chosen font supports it. It's
+curently all a matter of hacking lfonts.tex, but I'd like it to be made
+more convenient to change the definitions of which macros expand to what
+characters according to whether the chosen font supports it or not. This,
+I suppose, might be brought about by a properly constructed encoding
+macro if it knows what characters a DC font can be assumed to have, what
+characters the current cm fonts have, what characters HP softfonts have,
+etc. (Just for this reason it's good if LaTeX 3 designers know a little
+about the standards that exist).
+
+ > malcolm
+
+-roffe
+rolf.lindgren@usit.uio.no
+

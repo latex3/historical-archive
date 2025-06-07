@@ -1,0 +1,112 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3802" "Tue" "21" "May" "1996" "09:20:33" "-0400" "Michael Downes" "MJD@MATH.AMS.ORG" nil "76" "Re: More on fontdimensions" "^Date:" nil nil "5" nil "More on fontdimensions" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id PAA04507; Tue, 21 May 1996 15:51:21 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.BF4137B7@listserv.gmd.de>; Tue, 21 May 1996 15:50:49 +0200
+Received: from URZINFO.URZ.UNI-HEIDELBERG.DE by URZINFO.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 95733 for
+          LATEX-L@URZINFO.URZ.UNI-HEIDELBERG.DE; Tue, 21 May 1996 15:20:50 +0200
+Received: from axp14.ams.org (AXP14.AMS.ORG [130.44.1.14]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with ESMTP id PAA03755 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 21 May 1996 15:20:39
+          +0200 (MET DST)
+Received: from AXP14.AMS.ORG by AXP14.AMS.ORG (PMDF V4.3-10 #7286) id
+          <01I4YJXTN0JK0001PB@AXP14.AMS.ORG>; Tue, 21 May 1996 09:20:33 -0500
+          (EST)
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Mail-System-Version: <MultiNet-MM(369)+TOPSLIB(158)+PMDF(4.3)@MATH.AMS.ORG>
+Message-ID:  <832684833.315163.MJD@MATH.AMS.ORG>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+In-Reply-To:  <199605192340.JAA09537@axiom.maths.uq.oz.au>
+Date:         Tue, 21 May 1996 09:20:33 -0400
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Subject:      Re: More on fontdimensions
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1744
+
+> J"org Knappen <KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE> writes:
+>
+> > I have now a test implementation with the additional fontdimensions above
+> > Nr. 22. Unfortunately, this causes the tfm files and the space needed in
+> > the font memory to grow more then necessary, because all empty
+> > fontdimensions are automatically set to zeroes.
+> >
+> > Therefore I'd like to ask, if this waste of space is tolerable, or whether
+>                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Ken Smith:]
+> Surely today we don't need to worry about wasted space on hard disks,
+> and the speed of modern machines is such that scanning a tfm file for
+> the relevant dimension(s) adds a negligible amount of time in processing.
+
+Yes, that's true, but the question that should be answered first is
+whether there is *any reason at all* for wasting the space. I don't
+think there is. The only motivation that I can recall from earlier
+discussions was some idea of avoiding overloading of the fontdimens
+8--22. But that doesn't sound very reasonable to me, since 8--13 are
+already overloaded anyway: cmsy and cmex type fonts use them for
+different purposes.
+
+So in order to show that an additional fontdimen should go in position
+23 or above, it seems necessary to argue that the fontdimen might be
+useful for a math symbol font such as cmsy. I would say none of the ones
+in J"org's list qualify
+
+> 23: font_cap_height      % Height of non-accented caps
+> 24: font_ascender_height % Height of lowercase letter with ascenders
+> 25: font_accented_cap_height % (Maximal) Height of accented caps
+> 26: font_descender_depth     % (Maximal) Depth of lowercase letters
+> 27: font_max_height   % Height of the highest object in the font
+> 28: font_max_depth    % Depth of the deepest object in the font
+> 29: font_digit_width  % Width of the widest digit
+> 30: font_cap_stem     % Breadth of the stem of capital I
+
+because they make sense only for text fonts. All of the symbols in the
+cmsy encoding are designed for use as individual objects in a math
+formula; therefore measurements across a group of symbols for cap
+height, max depth, etc ... well, they may be interesting but they are
+never going to be needed for use in TeX macros!
+
+(Furthermore, if you really want cap height, etc for the calligraphic
+alphabet that is embedded in cmsy, the right approach IMHO is to move it
+to a different font, not to go further down the road of making fonts
+such as cmsy serve simultaneously as symbol fonts and text fonts. Is not
+the embedding of the calligraphic letters in cmsy plainly artificial?
+The font handling constraints that Knuth was working with back in 1980
+or so induced him to pack as many math symbols as possible into four
+fonts of 128 chars each. But the alphabet clearly has no design traits
+in common with the rest of the font. The same could be said of the
+blackboard bold alphabet in msbm.)
+
+However:
+
+Although font_cap_stem doesn't make sense, as defined, for a math symbol
+font, it might be worth having under its real intent as a measure of
+`absolute boldness'.
+
+You could also argue that font_max_height and font_max_depth might prove
+useful somehow for a math symbol font. But I would like to see someone
+give an example of a real application first.
+
+> I recently installed emTeX on a Pentium for students in this Department.
+> The machine has a 1.2 Gb disk, and each of the tfm files took up 32 kb
+> since DOS doesn't allow more than $2^{16}$ files in any partition, and
+> the disk was configured as a single partition.  With files taking up
+> this much space I don't think you need worry about some extra dimensions
+> in some fonts "wasting" space.
+
+The whole purpose of emTeX's .fli files is to save the accumulated
+wasted space at the end of large numbers of small files.
+
+Michael Downes
+mjd@ams.org
+

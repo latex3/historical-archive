@@ -1,0 +1,220 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7887" "Thu" "10" "February" "1994" "20:32:37" "+1100" "Kristoffer H. Rose" "kris@DIKU.DK" "<199402101205.AA18279@mail.cs.tu-berlin.de>" "187" "\"Syntax for Diagrams\" task CORRECTED." "^Date:" nil nil "2" "1994021009:32:37" "\"Syntax for Diagrams\" task CORRECTED." nil "<\"swan.doc.i.112:07.01.94.21.21.28\"@doc.ic.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA13945; Thu, 10 Feb 94 13:06:05 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00906; Thu, 10 Feb 94 13:06:03 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18279
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 10 Feb 1994 13:05:58 +0100
+Message-Id: <199402101205.AA18279@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3296; Thu, 10 Feb 94 13:05:45 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3291; Thu,
+ 10 Feb 1994 13:05:45 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9567; Thu,
+ 10 Feb 1994 12:44:48 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Comments:     Warning -- original Sender: tag was kris@ZEUS.MPCE.MQ.EDU.AU
+In-Reply-To:  <"swan.doc.i.112:07.01.94.21.21.28"@doc.ic.ac.uk>
+Date:         Thu, 10 Feb 1994 20:32:37 +1100
+From: "Kristoffer H. Rose" <kris@DIKU.DK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      "Syntax for Diagrams" task CORRECTED.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1505
+
+Dear Paul and the diagram and LaTeX3 volunteers,
+
+ [Here is the correct message---again I'm sorry for any inconveience
+  the incomplete message might have caused...now I know how reactive
+  Emacs is :-| :-]
+
+The ``LaTeX3 Syntax for Commutative Diagrams'' task has been silent
+for a while and there seems to be some doubt as to whether it serves a
+worthwhile purpose.  I feel this is the right time for me to explain
+what crucial purpose I feel it serves!  [I am sending this to the list
+because it raises several fundamental issues about markup for non-text
+in documents and thus might have the interest of other volunteers].
+
+You write:
+> Regarding the diagrams task, my feeling is that it has nothing to do with
+> LaTeX.  It is a very specific application.  Probably you agree with me
+> there.
+
+I suppose this is where we have misunderstood each other. IMO a
+discussion of how mathematical diagrams (of all sorts) can be
+specified in textual form is very much in the spirit of LaTeX.  Let me
+justify this:
+
+LaTeX emphasises on `standardising logical markup' for documents.
+This encourages authors to structure their documents using predefined
+entities, e.g., \section{TITLE}, etc., and discourages `physical' (and
+ad hoc) markup, e.g., \medbreak\noindent{\bf TITLE}\smallskip.
+
+The important point here is that DIFFERENT DOCUMENT CLASSES ARE
+ENTERED USING DIFFERENT MARKUP NOTATIONS.  I think it is right to
+claim that it is this design principle that has made LaTeX the most
+popular format for TeX.
+
+However, this is not true for pictures!  The native picture mode for
+LaTeX is *very* ``low-level'': you specify what the output should look
+like and not the structure of the picture in your mind.
+
+Although your's and mine and Francis's and ... packages are at a
+slightly higher level of abstraction this is still true for those:
+they are notations for what the output should look like rather than
+ways of expressing the structure of diagrams.  The only package I have
+seen that approached commutative diagrams in a slightly more
+``high-level'' manner is that of Mike Barr although it is still at a
+low abstraction level, IMHO (in that it involves absolute
+coordinates).
+
+Yes, Barr's package is *very* specialised towards category theory (as
+used in teh Barr&Welsh book) but that is *exactly* the point -- it
+should be!  Because
+
+* Even if entering a diagram from scratch takes the same time using a
+  structural notation and a physical one (as I believe you have
+  demonstrated on several occasions on the categories list) then
+  *altering* and *composing* already entered diagrams is much easier
+  with a structural notation.
+
+* A structural notation is a help when *communicating* diagrams and
+  ideas electronically by email within a research group because it can
+  be read directly from the `source'.
+
+Thus I believe that the logical markup principle should be carried
+over to mathematical diagrams with this motto: EACH DIAGRAM CLASS
+SHOULD BE ENTERED USING A SPECIALISED NOTATION.
+
+To give you an idea of what I have in mind: I would like to specify
+the diagram that we both use as an example in our manuals, namely
+(slightly simplified):
+
+                      U --.
+                      |\   `--.
+                      | \      `--.
+                      |  \         `--.
+                      |   v            `--v
+                      |  {X *_Z Y} ------> X
+                      |      |      p      |
+                      |      |             |
+                      \    q |             | f
+                       \     |             |
+                        \    v      g      v
+                         \-> Y ----------> Z
+
+like this (from scratch but such that the used structure is available
+for other diagrams later):
+
+  % A {square} component typesets
+  %
+  %
+  %     #1 ----#2--->  #3
+  %      |              |
+  %      |              |
+  %      #5             #4
+  %      |              |
+  %      v              v
+  %     #6 ----#7--->  #8
+  %
+  \newcomponent{square}[8]{ []#1, ( [r]#3 #2, [d]#8="last" #4 ),
+                                  ( [d]#6 #5, "last" #7 )        }
+
+  % A {pull3} component typesets
+  %
+  %          #1 -.
+  %          / \  `-.
+  %        #2   #4  `-.
+  %        /     \     `#6.
+  %       v       v        `-v
+  %       #3      #5          #7
+  %
+  % where the locations of #3, #5, and #7 are unspecified.
+  %
+  \newcommand{pull3}[6]{[ul]#1, ( #3 #2 ),
+                                ( #5 #4 ),
+                                ( #7 #6 ) }
+
+  \begin{cd}
+   @{square}{{X *_Z Y}="xy"}{_p}{X}{^f}{_q}{Y}{^g}{Z},
+   @{pull3}{U}{}{"Y"}{}{"xy"}{}{"X"}
+  \end{cd}
+
+where this notation uses the special conventions:
+
+* An <entry> is either [<hop>]<text> for new entries located the <hop>
+  relative to the last location (<hop> is a l(eft) / r(right) / u(p) /
+  d(own) move), [<hop>]<text>="<name>" for entries so complex they
+  should be called something other than their <text>, or just "<name>"
+  to refer to an already typeset entry.  An entry becomes the `current
+  location' after it has been read.
+
+* An <arrow> is specified as <entry> <labels> where the <labels> are
+  sub/superscripts in the usual TeX sense (that suffices here because
+  all the arrows are `standard' ---> ones).
+
+* Parenthesis denote `excursions', i.e., the current location at the
+  opening parenthesis is reinstalled at the closing parenthesis.
+
+> Where perhaps we disagree is that I think your "core  xypic" is
+> also unsuitable as a part of standard LaTeX.
+
+I have no opinion as to whether XY-pic should be part of ``standard
+LaTeX'' but I *will* provide it as a *package* as soon as the
+guidelines for how to do that has reached me.  And I *am* building
+special input notations for at least the kind of diagrams above and
+for braids/strings, and trees (actually `nested structures'). (In fact
+I am visiting Maquarie U, Sydney, until May, funded by an ARC grant
+with the purpose of ``researching the principles which govern the
+structure of diagrams used to express technical concepts''.)
+
+> Nowadays we tend to think of C as machine code: any program which is written
+> in pure straightforward C runs in essentially no time. TeX does take an
+> appreciable length of time to run, and by the stage of programming on
+> top of LaTeX things are getting pretty slow, even on quite fast machines.
+
+I disagree here as well: even though TeX is slow -- often painfully so
+-- I find that time spent by the computer is better than time spent by
+me!
+
+> The "task" was to consider suitable syntax for specifying diagrams.
+> As I think I told you, I tried to raise this question on the categories
+> list but was unable to persuade people to concentrate on the kind of
+> diagrams I had in mind. They knew perfectly well what I meant by
+> "mainstream commutative diagrams" but made out that I was trying to
+> limit their reseach or the extent of category theory. In other words
+> it wasn't a very successful piece of market research.
+
+Perhaps the fact that no agreement was reached indicates that several
+notations are indeed needed?
+
+> I still haven't stretched my diagonals. Other things are priority,
+> such as research.
+
+I suppose I'm very fortunate being a computer scientist doing research
+within the ``semantics of programming languages'' area.  To me
+investigating how people like to express formal ideas *is* research!
+:-)
+                                - o -
+
+In hope of continuos discussions of "Syntax for Commutative Diagrams"
+(and other mathematical diagrams), and with my apologies for the first
+somewhat crippled posting of this letter,
+
+Regards,
+        Kristoffer
+--
+Kristoffer Hxgsbro ROSE                         Internet: kris@diku.dk
+DIKU, U of Copenhagen, Universitetsparken 1, 2100 Kxbenhavn X, DANMARK
+phone: +45 35321400       direct: +45 35321420       fax: +45 35321401
+--
+World Wide Web URL:   file://ftp.diku.dk/diku/users/kris/WWW/home.html
+

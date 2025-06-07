@@ -1,0 +1,104 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2792" "Wed" "17" "November" "1999" "12:40:40" "+0100" "Marcin Wolinski" "wolinski@MIMUW.EDU.PL" nil "58" "Re: various comments on templates" "^Date:" nil nil "11" nil "various comments on templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA01096
+	for <schoepf@UNI-MAINZ.DE>; Wed, 17 Nov 1999 12:50:49 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.D3DBF2E7@mail.listserv.gmd.de>; Wed, 17 Nov 1999 12:50:45 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445534 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 17 Nov 1999 12:50:27 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id MAA02068 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 17 Nov
+          1999 12:49:48 +0100 (MET)
+Received: from duch.mimuw.edu.pl (duch.mimuw.edu.pl [193.0.96.2]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id MAA11612 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 17 Nov 1999 12:50:02 +0100 (MET)
+Received: (qmail 27838 invoked from network); 17 Nov 1999 11:47:25 -0000
+Received: from pa116.warszawa.ppp.tpnet.pl (HELO Wincenty.nowhere.edu.pl)
+          (marcin@212.160.52.116) by duch.mimuw.edu.pl with SMTP; 17 Nov 1999
+          11:47:25 -0000
+Received: (from marcin@localhost) by Wincenty.nowhere.edu.pl
+          (8.9.3/8.9.3/Debian/GNU) id MAA13398; Wed, 17 Nov 1999 12:40:41 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <14384.19380.269695.118363@Wincenty.nowhere.edu.pl>
+            <199911162129.WAA00574@istrati.zdv.uni-mainz.de>
+X-Mailer: VM 6.62 under Emacs 19.34.1
+Message-ID:  <14386.37944.484104.416928@Wincenty.nowhere.edu.pl>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199911162129.WAA00574@istrati.zdv.uni-mainz.de>
+Date:         Wed, 17 Nov 1999 12:40:40 +0100
+From: Marcin Wolinski <wolinski@MIMUW.EDU.PL>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: various comments on templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3424
+
+Frank Mittelbach pisze:
+>  > As for the ``sequence of footnotes'' issue:
+>  > -------------------------------------------
+>  > ...
+>  > a sequence of note marks and not for a single mark.  If sequences are
+>  > allowed, single footnote mark is not a self-contained entity.
+>
+> i don't really want to dispute this. but are there seriously layouts that
+> treat this as units? perhaps there are and perhaps it is the wrong question
+> anyway since if one provides this functionality one should probably provide it
+> all way through.
+
+Precisely.  For the footnotes this is a border case.  But with
+multiple \cite's it is easier to expect a need for putting sth
+different between the last but one and the last item than between
+others (like [X, Y, Z, and T]).  That would make three different kinds
+of \cite's.  In this case passing a sequence is much cleaner.
+
+> so assuming we intend to provide it all way through what would be a sensible
+> template type for it? the main problem i see right now is that the tempate
+> types as currently defined do only work with a fixed set of arguments. this
+> would allow for three courses to take:
+>
+> ...
+>
+>  - consider to provide for structured arguments to templates, eg
+>    (comma-separated lists) or something like that. --- the latter may in fact
+>    be necessary in other circumstances anyway (supporting \cite comes to
+>    mind). how this is actually then mapped to syntax is a different
+>    matter and
+>    i must confess i have no immediate idea that seems appealing.
+
+I feel the template here has fixed number of arguments but one of them
+happens to be a sequence (the elements of this sequence are in a way
+homogenous, you know).  This opens the issue of processing sequences
+(just passing them doesn't seem to be a problem, could sequences be
+written {in}{a}{more TeXy}{way} instead to be comma delimited? This
+would relive us from enclosing in a group elements already containing
+a comma).
+
+Probably a kind of an abstract data type for sequences should be
+defined.  Common needs inside template code would probably be taking
+the first/last element of a sequence (shortening the sequence) and a
+foreach loop.  Of these foreach loop is easy.  On the other hand
+destructive operations are a problem since the sequence is passed as
+an argument and not a named storage bin.  Some \BuildQueue{name}{#3}
+could be introduced, but this is just plain ugly.
+
+
+>  > ----------
+>  > Shouldn't \DelayedEvaluation be rather named \DelayEvaluation or
+>
+> shouldn't it? i thought it was named \DelayEvaluation when we put it out;
+> must gave got another "ed" traveling to your country :-)
+
+I would swear I've seen it written this way somewhere, but generally
+oops on my side.  From that you can easily guess that I haven't
+actually written any template.:-)
+

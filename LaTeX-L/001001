@@ -1,0 +1,87 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["2892" "Mon" "8" "March" "93" "13:33:33" "+0100" "rolf.lindgren@USIT.UIO.NO" "rolf.lindgren@USIT.UIO.NO" nil "59" "Re: Fonts and LaTeX 3" nil nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA13157; Mon, 8 Mar 93 13:36:30 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA03725; Mon, 8 Mar 93 13:36:11 +0100
+Message-Id: <9303081236.AA03725@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3472; Mon, 08 Mar 93 13:36:19 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5100;
+ Mon, 08 Mar 93 13:36:07 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5098;
+ Mon, 08 Mar 93 13:36:03 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <"alf.uib.no.033:08.02.93.11.29.40"@uib.no>
+Date:         Mon, 8 Mar 93 13:33:33 +0100
+From: rolf.lindgren@USIT.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Fonts and LaTeX 3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1001
+
+
+spqr@MINSTER.YORK.AC.UK writes:
+ >  > A solution to some of this is to write a program, say, xfm2sty, that takes
+ >  > a font metric file (or a bunch of metric files of the same font family)
+ >  > and writes a macro that contains commands to manipulate fonts. Say, Adobe
+ >  > Garamond gives rise to a macro \AdobeGaramond that switches to Adobe
+ >  > Garamond Regular at \family{garamond}\selectfont\rm, SemiBold at \bf, etc.
+ > i think a "program" is overkill. a Makefile, perhaps? its just a
+ > question of tacking the appropriate tools together, isn't it?
+
+I don't think it is, because:
+
+	a) Most TeX users can't run Makefiles (because they run emtex on
+	DOS-machines).
+	b) Most TeX users can't use PS fonts (because they use HP
+	LaserJets or dot matrix printers).
+
+So I want a program that can operate on HP softfonts (of which I truly
+know nothing: I assume that there exists some metric format for them) as
+well as PS fonts.
+
+Something that runs DC encoding isn't necessarily good enough: Sometimes I
+want to use ligatures from expert fonts and have to use my own encoding
+because there isn't room in the DC encoding for, say, fj and ffj
+ligatures.  On the other hand, only six of Adobes' fonts come with expert
+fonts, I won't die if I prepare them by hand. But if I had a program that
+could read the tfm files (and/or the vf files) it could create the
+appropriate encoding command as well because it would know where I had
+used nonstandard positions. On the other hand, I know that too... perhaps
+it's altogether fitting and proper that advanced font hacking should
+require advanced thinking and little automization.
+
+Now, to approximate proper leading for a PS font, you have to look in the
+afm file for the line where the x height is given.  A Makefile can find
+this by calling some variant of grep (1) I suppose.  But, say, a style
+file that sets up things for Futura, of which there are 20 variants,
+should know to separate Futura from Futura-Condensed. How can even a
+complex Makefile read all the 20 Futura afm's, look into them, and decide
+whether there should be one style file for Futura and one for
+Futura-Condensed, or a style file for both, and set up the style file with
+commands to allow swithcing between the 20 Futuras? (and create style
+files with 8-character names!)
+
+Now if there were such a thing as a standard repository of style files for
+_all_ the font families of the Adobe PS library (1265 fonts for ca. 400
+families at last count). Then these ~400 style files would constitute a de
+facto standard for font handling, and standards is a good thing to have.
+Good standards is even better to have :-) But I envision that creating
+these style files might reqire more care and thought than what a Makefile
+can provide.
+
+ >
+ > sebastian
+ >
+ >
+ > [1] tools available from
+ > ftp.tex.ac.uk:pub/archive/fonts/postscript/dcps, but don't use the
+ > font names there
+ >
+

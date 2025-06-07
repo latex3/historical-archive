@@ -1,0 +1,39 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 17 Jul 90 15:22:55 bst
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Sebastian Rahtz <spqr@ECS.SOTON.AC.UK>
+Subject:      Re: two-column output
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 192
+
+LaTeX-L Mailing list <LATEX-L@DHDURZ1.EARN> writes:
+
+ >
+ > 3. the lefthand column contains a sectional unit heading and is
+ > flushbottom; the beforeskip has >0 stretch.
+ >
+ > The result is unequal columns, which doesn't look good in a
+ > two-column journal.
+yes, write yourself a `retrieve situtation macro' which inserts enough
+vertical space to get back onto a multiple of the baselineskip. call
+it frequently, like after sections. I append some code I started to
+write, with advice from Phil Taylor and Chris Rowley, but I got
+depressed and stopped. so all you gurus dont laugh, OK?
+
+\newdimen\desired
+\newcount\xlines
+\def\resynch{
+\xlines=0\desired=\topskip
+\loop\advance\xlines by 1\advance\desired by \baselineskip
+\ifnum \desired < \pagetotal\repeat
+\advance\desired by -\pagetotal
+\typeout{\the\pagetotal-----> \the\desired}
+\vskip\desired}
+
+sebastian
+
+

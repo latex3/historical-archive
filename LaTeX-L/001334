@@ -1,0 +1,108 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2883" "Fri" "28" "January" "1994" "10:06:59" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199401281011.AA05568@mail.cs.tu-berlin.de>" "77" "patterns" "^Date:" nil nil "1" "1994012810:06:59" "patterns" (number " " mark "     Mike Piff         Jan 28   77/2883  " thread-indent "\"patterns\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA14119; Fri, 28 Jan 94 11:12:05 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA09406; Fri, 28 Jan 94 11:11:03 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA05568
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 28 Jan 1994 11:11:01 +0100
+Message-Id: <199401281011.AA05568@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 0854; Fri, 28 Jan 94 11:11:01 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 0853; Fri,
+ 28 Jan 1994 11:11:01 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3158; Fri,
+ 28 Jan 1994 11:10:34 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 28 Jan 1994 10:06:59 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      patterns
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1334
+
+Thought I would forward this from NTS-L, as it seems relevant to the
+discussions here about languages, and whether the language could be decided
+in the document rather than in the format, at great expense in time.
+
+Mike Piff
+
+------- Forwarded Message Follows -------
+
+Date:          Fri, 28 Jan 1994 00:07:30 -0500
+Reply-to:      NTS-L Distribution list <NTS-L@DHDURZ1.EARN>
+From:          Laurent Siebenmann <laurent@MATH.TORONTO.EDU>
+Subject:       patterns
+X-To:          NTS-L@DHDURZ1.bitnet
+To:            Multiple recipients of list NTS-L <NTS-L@DHDURZ1.EARN>
+
+
+patterns
+
+     Peter Breitenlohner stated (Thu Jan 27)
+
+ > Initex can load patterns (cumulative with TeX3)
+ > only if
+ >    1. no .fmt is loaded
+ >    2. no paragraph has been typeset
+
+     I want to thank Peter for thus confirming an
+assertion (part 1.) that I recently made in TUGboat (Oct93).
+Unfortunately it is FALSE (!!)  I had better
+grab this opportunity to undo my mischief while you are all
+listening.
+
+     Peter's qualitative explanation is roughly correct:
+
+ > When the first paragraph is typeset or a \dump occurs
+ > the patterns are brought to their final compacted
+ > form.  And when initex reads a .fmt file it gets the
+ > compacted patterns from that file. Once this has
+ > happened even initex can not load additional
+ > patterns, instead one gets a "Too late" error message.
+
+What gives? Look closely and you see a loophole big enough for
+a pregnant donkey.  When a format is compiled with no
+patterns, then no patterns are compacted and no obstruction is
+created to the assimilation of further patterns!
+
+      This loophole has recently been of great service to me
+when playing with patterns, and I am sure some of you will want
+to use it until e-TeX does better. I compile my favorite format
+with no patterns at all and then dump it, say to my.fmt.  Then
+
+initex &my.fmt  mypatterns.tex \dump <return>
+
+produces a format "mypatterns.fmt" in a big hurry and I use it
+under  virtex  to test patterns introduced in mypatterns.tex.
+
+     Whether this loophole is of much use to non-gourous
+inder TeX 3 is moot.
+
+      Correct me if the following is still inaccurate :
+
+ (*) Initex (version 3.xx) can load patterns
+  if and only if no patterns have been compacted on that
+  run, and no compacted patterns exist in the format
+  (if any) that initex loads.
+
+     Bernd Raichle commented (TeX-Euro list 1993) that
+TeX only compacts pending patterns loaded by
+\patterns when it REALLY needs the hyphenation trie.
+Thus (sorry Peter), NEITHER 1. NOR 2. is a necessary
+condition for loading patterns.
+
+      Laurent S
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

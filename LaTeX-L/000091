@@ -1,0 +1,90 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 2 May 90 19:42:22 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: "Nelson H. F. Beebe" <Beebe@SCIENCE.UTAH.EDU>
+Subject:      Blank lines in math, array, eqnarray, et al
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 91
+
+While helping a student solve some thesis formatting
+problems yesterday, I was reminded of what I view as a LaTeX
+design problem that might be possible to eliminate in your
+redesign.
+
+In TeX, white space (blanks, tabs, newlines) is ignored
+almost anywhere, in the sense that 2 or more white space
+characters are equivalent to 1 white space character.
+However, in LaTeX, this is not true in math, array, and
+eqnarray environments.
+
+For example,
+
+  \begin{eqnarray}
+a & = & b + c \\
+  & = & e + f
+  \end{eqnarray}
+
+formats without error, but
+
+  \begin{eqnarray}
+
+a & = & b + c \\
+
+  & = & e + f
+
+  \end{eqnarray}
+
+generates a long sequence of confusing errors of the form:
+
+! Missing $ inserted.
+<inserted text>
+                $
+<to be read again>
+                   \par
+l.15
+
+?
+! Missing } inserted.
+<inserted text>
+                }
+<to be read again>
+                   $
+<to be read again>
+                   \par
+l.15
+
+?
+! Missing } inserted.
+
+...
+
+I argue that array and eqnarray are inherently complex
+environments, and it is important for the typist to be able
+to freely format them for readability; otherwise the typein
+can be very difficult to read.  While empty comment lines
+can be used to get extra vertical separation to improve
+readability, users often forget to do so, and the error
+messages that arise from blank lines are not at all obvious
+to non-expert users.
+
+Also, in array and eqnarray, the \\ is already there to tell
+LaTeX where the current row ends, so it seems that it should
+be straightforward to skip whitespace following a \\.  In
+the math environment, the situation may be more complex,
+since there is no explicit \\, but it is still not obvious
+why a blank line should generate an error.
+
+Curiously, blank lines are harmless in tabular environments,
+so I would argue there is `prior art' in LaTeX for
+eliminating any special significance of blank lines (or \par
+breaks, since I suppose that is what raises the error) in
+math, eqnarray, array, and anywhere else they raise errors.
+
+Comments, anyone?
+-------
+
+

@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1689" "Tue" " 8" "February" "1994" "11:51:12" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402081223.AA13656@mail.cs.tu-berlin.de>" "42" "Re: register usage" "^Date:" nil nil "2" "1994020811:51:12" "register usage" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08337; Tue, 8 Feb 94 13:24:55 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA17602; Tue, 8 Feb 94 13:23:53 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA13656
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 13:23:51 +0100
+Message-Id: <199402081223.AA13656@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6067; Tue, 08 Feb 94 13:23:41 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6066; Tue,
+ 8 Feb 1994 13:23:38 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2258; Tue,
+ 8 Feb 1994 13:23:04 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 8 Feb 1994 11:51:12 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: register usage
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1458
+
+Phil Taylor writes:
+%>But when you go on to suggest that registers themselves are unnecessary
+%>for values sucgh as \headheight, I think I would disagree; users will
+%>need to access these in a transparent manner, whilst the \new... registers
+%>are unused except by programmers (qua programmers).
+%>
+
+Actually, LaTeX provides a \newcounter{abc} command which I think uses
+internal counter \c@abc. It can only be accessed by users with
+\setcounter{abc}{2), \addtocounter{abc}{5}, etc. In fact, you say
+\setcounter{page}{20} rather than \page=20 or \count\page=20 or whatever.
+Thus this usage could presumably be done entirely using macros. Also same
+with "length" instead of "counter", except that you say
+\newlength{\abc}
+rather than
+\newlength{abc}
+
+Another problem is that not enough facilities are provided in LaTeX to
+manipulate these registers. There is an \addtocounter, but not a
+\multiplycounter or \dividecounter, for instance. I bought The TeXbook
+shortly after Lamport's book when I discovered this limitation!
+
+Even worse is the fact that some numbers, like \arraystretch *have* to be set
+as commands, rather than assigned to. You thus get three different ways that
+numbers/lengths can be manipulated: (at least?)
+
+-- As registers  \textheight
+-- As implicit registers using \newcounter etc  page
+-- As macros.  \arraystretch
+
+Very confusing for the user.
+
+Mike Piff
+
+
+
+The main problem with
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

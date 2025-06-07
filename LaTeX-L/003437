@@ -1,0 +1,135 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3310" "Wed" "24" "November" "1999" "12:48:50" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "96" "Re: xcontents" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA24624
+	for <schoepf@UNI-MAINZ.DE>; Wed, 24 Nov 1999 12:49:46 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.D25AA54C@mail.listserv.gmd.de>; Wed, 24 Nov 1999 12:49:34 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445515 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 24 Nov 1999 12:49:08 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id MAA27873 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 24 Nov
+          1999 12:49:06 +0100 (MET)
+Received: from ssmtp01.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id MAA19577 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 24 Nov 1999 12:49:31 +0100 (MET)
+Received: from [195.5.71.184] ([195.5.71.184]) by ssmtp01.arrakis.isp (Netscape
+          Messaging Server 4.1 Nov  4 1999 17:02:49) with SMTP id FLPA5600.J4J
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 24 Nov 1999 12:48:42 +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199911241149.MAA19577@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 24 Nov 1999 12:48:50 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3437
+
+> > It so happens that I'm working in a new release of a package for
+> > formatting of toc entries which already provides such a kind of
+> > indexes in the currently available version. However, adapting
+>
+>may i (we have a look) at the 2e version of this package? i don't mind it
+>being in a non-distributable/working state as long as the underlying ideas
+>can be looked at without too much trouble
+>
+>nevertheless i'm eager to see you trying to produce a template or two for it
+>since only this way we can see where the template concept needs corrections
+
+Perhaps the main difference is that both the label and the page are not
+automatically placed by the corresponding command but they should
+be given explicitly. I finally became conviced that something like
+ ...
+ { (\textit{\theconstentspage})}
+ ...
+was easier to understand and modify than two arguments with the
+pre- and postcode:
+ ...
+ { (\begingroup\itshape}
+ ...
+ {\endgroup)}
+ ...
+or a command for formatting the page (with an implicit argument):
+
+ \def\tocpagefmt#1{ (\textit{#1})}
+ ...
+ {\tocpagefmt}
+ ...
+but no doubt there are other views on that. template
+provides a more readable version of the latter:
+
+number-format = \ (\textit{#1}),
+
+but my implementation will follow the first procedure for
+comparison purposes.
+
+Another difference is how the text is shaped: the text and leaders
+are in a rectangular block, with hanging label and page (provided
+the usual format is used).
+
+The original package provides a single command which only performs
+code related to how entries are placed in the toc,
+leaving the format of the entry itself to some hooks where
+you may use a few extra commands with the page number, the
+label, the leaders, paragraph format, etc.
+
+Of course, this approach has some disavantages, for example the
+necessity of defining *all* of parameters when redefining a toc
+entry; but, as I say in the documentation, it is not intended to
+just readjust the current format by a casual user. Now, here
+templates can help, because some few templates can provide
+the basic formats (sharing the same code) and creating new
+templates could be easier.
+
+However implementing new packages could be more complex, because
+a level of evaluation is added. The following trivial example
+illustrates what I mean. The usual way is:
+
+\def\defineit#1{%
+  \def\it{#1}}
+
+The template way is (very, very simplified)
+
+\def\defineit#1{%
+  \def\@it{#1}
+  \def\it{\@it}}
+
+This extra level has many implications, because we cannot
+define \it literally (ie, exactly as given by the argument) and
+protection becomes a critical point:
+
+\def\defineit{%
+  \def\@it{#1}
+  \protected@xdef\it{\@it}}
+
+Temporary variables also become our daily bread. Will this extra
+level of complexity pays? How will it affect the memory usage?
+
+> > it to the suggested templates is turning out to be more difficult
+> > as I expected because most of things are handled in a quite
+> > different way. The same applies to partial tocs. However,
+>
+>can you try to explain why or how partial tocs are a problem or handled quite
+>differently in your approach? (not that they are yet really handled in
+>xcontents at all
+
+Mmmm... Perhaps the main difference is that xcontents doesn't handle
+them at all! :-)
+
+More thoughs when I send the package (probably next week).
+
+\bye
+Javier Bezos
+

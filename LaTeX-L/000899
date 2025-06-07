@@ -1,0 +1,115 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["4821" "Sat" "5" "December" "92" "19:57:32" "+0100" "Lutz Birkhahn" "lutz@BISUN.NBG.SUB.ORG" nil "87" "Re: default paper sizes" nil nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA17270; Sun, 6 Dec 92 06:22:16 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA04380; Sun, 6 Dec 92 06:22:13 +0100
+Message-Id: <9212060522.AA04380@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2728; Sun, 06 Dec 92 06:22:37 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2322;
+ Sun, 06 Dec 92 06:22:33 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2320;
+ Sun, 06 Dec 92 06:22:29 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Paul Taylor's message of "Thu, 26 Nov 92 12:27:41 +0100."
+Date:         Sat, 5 Dec 92 19:57:32 +0100
+From: Lutz Birkhahn <lutz@BISUN.NBG.SUB.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: default paper sizes
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 899
+
+
+> The hypothesis was that we have a CD rom with 15000 documents on it [in source].
+> FTP archives give rise to a similar situation. In this case I don't care how
+> the documents are typeset - I just want to be able to see as quickly as possible
+> what's in the collection. Maybe later I'll want to print a few of them
+> "perfectly".
+
+OK, perhaps my view was too much that of a perfectionist. There are several
+different "perfection levels" of documents: at the one end of the range is
+the real work of art, where every dimension is carefully determined, every
+paragraph tuned to come out well, and so on.
+
+On the other side there is the "every-day work", e.g. technical reports or
+similar document types, where the main goal is to have a usable output that is
+at least readable and correct (in a technical sense), but not much more. Here
+it doesn't matter much if e.g. the paper size is "letter" or A4, if the inter-
+word space is large (very loose lines) or not, nor where the text is positioned
+on the paper (i.e. left and top margins).
+
+I can imagine several approaches to deal with these different "perfection
+levels". For example, there could be a declaration at the beginning of the
+document, stating whether this is a "piece of art" or not. Perhaps it could be
+more concrete, e.g. in the sense of
+
+   "this document is fine tuned to be printed on A4 paper size, don't try
+   to use different paper size, if ever possible. Give a severe warning to
+   the user if he wants to use a different paper size (like e.g. the "over-
+   full hboxes" messages), using some drastic words. But if the user really
+   wants to, accept his own size specifications."
+
+The thousands of documents that are on your CD will probably not have this
+"high quality tag", so you can specify any paper size you want without
+having TeX to complain about every document. One sort of "low quality tag"
+in LaTeX2 is the \sloppy declaration. Unfortunately its effects are very bad:
+people often wonder why there are some lines with only two words in it and
+a huge amount of white space between them (a consequence of the infinite
+\tolerance). Clearly this is an error that should be corrected in LaTeX3,
+which should be no problem with the new \emergencystretch parameter of
+TeX 3.x.
+
+> Increasing the page width is in fact likely to reduce the number of
+> over-full \hbox'es.
+
+... and likely to reduce legibility, by the way. At least in some cases. Only
+to remind you that page size is *not only* a question of economy or paper size.
+
+> So, I think the original suggestion, that the paper size should be settable by
+> some external method (such as looking for "paper-size.sty") is reasonable.
+
+Given the above, I agree that it could be fine in *some* circumstances to
+have the ability to specify some document parameters without changing the
+document itself. My main objection concerned Tarjei T. Jensen's proposal to
+solve this with a (operating system dependent!) specified order of different
+styles with the same name, but from different dircetories. Besides, I think
+LaTeX3 should work with today's TeX3, not (only) with NTS (New Typesetting
+System, sort of successor to TeX) or whatever it's name will be. And today's
+TeX3 does not read multiple styles with the same name, although some imple-
+mentations (but not all!!) allow you to specify more than one directory where
+to look for files.
+
+With today's TeX there might be some solutions: one mentioned by Paul Taylor
+is a "paper-size.sty" (for portability reasons, the name should be shorter
+and without a hyphen, if possible) or something like a "local.sty" or
+"local.tex". A second possibility could be TeX commands given in the command
+line, e.g. in Un*x
+
+   latex '\papersize=a4 \input document'
+
+then the style could check that \papersize variable (and spit out a warning
+if needed). I'm not sure if this solution still meets the portability criterion.
+
+A third solution could be some actions in the \everyjob token list, e.g.
+loading some file, although I see no advantages over the first solution.
+
+I'd favor the second solution, if it proves to be portable. I dislike solu-
+tions that change the paper size automagically, since I think that document
+distortions at least should be specified *explicitly*. One of the main reasons
+that most DTP documents look so bad is that all bad things are as easy to
+do as the good ones (sometimes even easier). TeX and LaTeX should continue to
+select the best quality by default, even if used as a formatter of "every-day
+documents".
+
+--
+Lutz Birkhahn (Germany)   email: lutz@bisun.nbg.sub.org (don't use another!)
+F"urther Str. 6          +--------------------------------------------------
+D-W-8501 Cadolzburg 2    | "It is an error to not have enough arguments"
+Voice: 09103 / 2886      |                         (Hype Programmer's Guide)
+

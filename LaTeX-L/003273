@@ -1,0 +1,414 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["18820" "Fri" "5" "March" "1999" "17:48:45" "+0100" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "370" "Re: some thoughts on glyph collections" "^Date:" nil nil "3" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA22039;
+	Fri, 5 Mar 1999 17:48:56 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.E477DAFA@listserv.gmd.de>; Fri, 5 Mar 1999 17:48:51 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 428171 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 5 Mar 1999 17:48:49 +0100
+Received: from mail.math.umu.se (root@abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA00172 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 5 Mar 1999 17:48:47 +0100 (MET)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          mail.math.umu.se (8.8.5/8.8.5) with ESMTP id RAA18151 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 5 Mar 1999 17:48:45 +0100 (MET)
+X-Sender: lars@abel.math.umu.se
+References: <l03102800b30428d7423f@[130.239.20.144]>
+            <199903021825.TAA13628@mozart.ujf-grenoble.fr>
+            <199902281535.QAA14126@mozart.ujf-grenoble.fr>
+            <l03102800b301c74fc00f@[130.239.20.144]>
+            <199903032215.XAA01431@istrati.zdv.uni-mainz.de>
+            <l03102800b30428d7423f@[130.239.20.144]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id RAA00178
+Message-ID:  <l03102805b305c73db5a2@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199903042219.XAA02007@istrati.zdv.uni-mainz.de>
+Date:         Fri, 5 Mar 1999 17:48:45 +0100
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: some thoughts on glyph collections
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3273
+
+Since Frank and I seem mainly to have been discussing terminology lately, I
+suppose the rest of the recipients of this list might well feel a bit left
+out. Furthermore since I guess quite a few of you haven't bothered (I don't
+think I would) to download my main text on the subject (the relenc package
+documentation), I thought it better if I did this for you. What follows
+below is an excerpt with the most relevant part.
+
+Lars Hellström
+
+\documentclass[a4paper]{ltxdoc}
+
+\newcommand\B{\penalty300\relax}
+\newcommand\package[1]{\textsf{#1}}
+
+\title{The \package{relenc} package}
+\author{Lars Hellstr\"om%
+  \thanks{E-mail: \texttt{Lars.Hellstrom@math.umu.se}}%
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Motivation}
+\label{Motivation}
+%
+This paper is about some shortcomings that, in my humble opinion,
+exists in the way \LaTeX\ handles fonts. I also point out a way in
+which these shortcomings can be overcome.
+
+The primary problem is ligatures, but as there are a few different
+ligature concepts that are of interest, let me begin with specifying
+my terms. A \emph{ligature} is a sequence of characters
+(almost always letters) that have been given an appearance somewhat
+different from the one the characters would have if simply put side to
+side, almost always because they would otherwise not look very
+pleasing to the eye. Despite this difference in appearence, it is
+still meant to be read as the entire character sequence, not as a
+completely new character. The canonical example of this is the `fi'
+ligature.
+
+In \TeX\ fonts, there is a special mechanism to implement this, and
+everything that is implemented using this mechanism will be
+called \emph{font ligatures}. It is almost always the case however,
+that some font ligartures are not ligatures as defined above, but
+simply a handy way to type characters that are hard or impossible to
+type using a standard keyboard; the canonical example of this is the
+`\texttt{--}' (two hyphens) to `--' (endash) conversion that is
+present in most \TeX\ fonts. Such nonproper ligatures will be called
+\emph{syntactic ligatures}, and proper ligatures will sometimes be
+called \emph{aestetic ligatures} to stress their origin.
+
+A \emph{font-dependent command} in \LaTeX\ is a command whose
+actions depend directly or indirectly on which font is the current. (I
+would not consider a command |\foo| defined by
+\begin{verbatim}
+  \def\foo{\char65 }
+\end{verbatim}
+as a font-dependent command since it always does the same thing.
+The results need not always be identical, but that is because
+the command is executed under different conditions.) An example of a
+font-dependent command is |\"|, which is (roughly) |\accent 127| when
+the current font is \texttt{OT1}-encoded and |\accent 4| when the
+current font is \texttt{T1}-encoded. (The dependence is indirect since
+the command directly depends on a macro which is set during the font
+selection process, but there is a dependence.)
+
+For the purposes of this paper, if would also suffice to define a
+font-dependent command as a command that is defined by some of the
+commands |\DeclareTextCommand|, |\ProvideTextCommand|,
+|\DeclareTextSymbol|, |\Declare|\B|Text|\B|Command|\B|Default|,
+|\Provide|\B|Text|\B|Command|\B|Default|, or |\Declare|\B|TextAccent|.
+\LaTeX\ documentation uses the term `encoding-specific command' for
+these, but for reasons that will soon be appearent, that term would be
+somewhat inappropriate here.
+
+Thus, with these definitions taken care of, it is now time to get to
+the point.
+
+The recommended latin font encoding these days is the
+\texttt{T1}/`Cork'\slash`Extended \TeX\ text'
+encoding, and this is rightfully so. It is clearly superior to the old
+\texttt{OT1} encoding, as it adds more than a hundred accented
+characters to those which can be used to form a word that \TeX\ can
+automatically hyphenate, but there is at least one case in which the
+\texttt{OT1} encoding is preferable. This case is when the font has many
+ligatures.
+
+In the \texttt{T1} encoding, there are seven slots available
+for ligatures, and these have been assigned to the `ff', `fi', `fl',
+`ffi', `ffl', `IJ', and `ij' ligatures. Since all slots have been
+assigned to something, there is no place to put an additional ligature,
+even if it is needed. Thus the conclusion is that if a font is to be
+\texttt{T1} encoded, it cannot contain any ligatures in addition to the
+aforemensioned; to put it the other way, if a font design requires the
+presence of a ligature other than the aforemensioned, it cannot be
+\texttt{T1} encoded.
+
+In the \texttt{OT1} encoding, there are only five slots assigned to
+ligatures, but there are 128 unassigned slots that can be used for
+anything the font designer wants. Thus having more than five ligatures
+in an \texttt{OT1} encoded font is no problem, but a recourse to using
+\texttt{OT1} is not a very good option, as it leaves the hyphenation
+problem unsolved. The solution, then, would seem to be the creation of
+a new encoding, and part of it will, but this will not be quite
+sufficient for reasons I will shortly describe.
+
+For the moment though, let us, as an intellectual experiment, assume
+that we shall solve this problem with \texttt{T1} having too few slots
+for ligatures by creating a new encoding for a hypothetical font that
+would need more than seven ligatures. Let us also assume that the new
+encoding shall be a modified version of the \texttt{T1} encoding, where
+some accented characters will have been left out to make room for the
+ligatures. Finally, let us assume that we want to be as international
+as possible and include as many of the accented characters as we can
+squeeze in. These are three simple assumptions, and there are good
+reasons for all of them.
+
+How \emph{many} slots do we need to assign to ligatures, then? This
+varies, of course, between different font families, but it might vary
+\emph{even more} between fonts in the same family. The \texttt{it}
+shapes might need a few more than the \texttt{n} shapes, while the
+\texttt{sc} shapes might not need any at all (`\textsc{fi}' (|fi|) and
+`\textsc{f{}i}' (|f{}i|) look exactly the same in most font families).
+Instead, there are some accents which are harder to put on in the
+\texttt{sc} shapes (in many font families the ring on \textsc{a} in
+\textsc{\r{a}} should touch the main letter; this is not what the
+default definition does), so it appears that the optimal thing to do
+would be to have slightly different encodings for different fonts, even
+if they belong to the same family. This is theoretically no problem;
+\TeX's macro facilities are flexible enough to allow user level
+commands that do different things in different fonts. It becomes,
+however, a problem to do this in a reasonably universal way, so that
+the macros produced work in general and not only for a single font
+family.
+
+Standard \LaTeX\ has a mechanism for doing precisely this. Using the
+commands |\DeclareTextCommand|, |\DeclareTextSymbol|,
+|\DeclareTextAccent|, or one of their relatives, one can give a
+definition of a command that is used with one particular font encoding
+and not with any other. The problem with using this mechanism here is
+that one might have to have the normal and italic variants declared
+as having different encoding attributes (as well as different
+shapes), so one would have to either device a whole new set of font
+changing commands or redefine \LaTeX's own high-level font changing
+commands (such as |\textit|) to change encoding as well as shape or
+series. Neither alternative is good, and one can expect several
+incompability problems to arise for both of them.
+
+A better solution starts with recognizing that there are actually two
+different `encoding' concepts that can be found here. One is the
+attribute by which fonts are selected in \LaTeX, the other is the
+actual layout of a font. I will call this latter concept a
+\emph{coding scheme} and reserve \emph{encoding} for the former.
+(Formally, one may start by defining a \emph{slot} to be an integer in
+the range 0--255 and a \emph{glyph} to be a pattern (usually
+recognizable as a letter, digit, punctuation mark, or some other part
+of written language, but it need not always be). A coding scheme can
+then be defined as a mapping of slots to classes of glyphs%
+\footnote{The reason a coding scheme maps to classes of glyphs, rather
+than just to glyphs, is that a glyph is defined as a pattern and
+there are usually many patterns which serve equally well as, for
+example, the letter `a'. The class for `a' contains all a's in all
+fonts. One would furthermore expect it to contain all A's (for the
+sake of all-caps fonts) and all Asmall's (for the sake of c\&sc fonts).}.
+A font complies to a particular coding scheme if, for every slot $n$ in
+the domain of the coding scheme, the glyph occupying slot $n$ of the font
+is a member of the class that the encoding scheme maps $n$ to. But I
+digress.) As far as I know, there is no strict defintion of what an
+encoding is, apart from the operational given in \cite{fntguide} as
+something that is part of the specification of a font. (The canonical
+source for such a definition would be \cite{encguide}, but that paper
+is, according to its author, ``still in an embryo state''.) In font
+discussions, an encoding is often taken to imply a specific coding
+scheme, and many encoding definition files seem to be all about listing
+the coding scheme, but is this implication suitable? I would claim that
+in this case, it is not.
+
+A more constructive definition would be to see an encoding as a
+specification of which font-dependent commands are available to the
+author. An encoding definition file, on the other hand, is a
+specification of the interface between \LaTeX\ macros and the
+information in a \TeX\ font. It does not matter to the author whether
+\H{o} is |\char174| of the current font, generated as |\accent125o|
+by \TeX, or whatever. The only thing that matters is that when the
+author types |Erd\H{o}s|, it comes out as Erd\H{o}s.
+
+Consequently, there is really no need for the font-dependent commands in
+\LaTeX\ to do the same thing for any two fonts with the same encoding
+attribute, it is merely the case that standard \LaTeX\ does not offer
+an interface for defining font-dependent commands in any other way. The
+natural remedy for this then, would be to write a package which offers
+such an interface. This is what I have done; the package is called
+\package{relenc} and this paper is its documentation. Its usage and
+implementation are described in the following sections, and the
+appendices describe some accompanying files.
+
+I shall however conclude this section by an attempt to elaborate the
+above view on what an encoding is, or perhaps rather, what it should be.
+
+The encoding property of a font is a set of rules that determines how
+the author's manuscript is interpreted---the input character
+\texttt{q} for example has not the same interpretation in a
+\texttt{T1} encoded font (where it is the letter `q') as in an
+\texttt{OT2} encoded font (where it is a cyrillic letter whose closest
+latin equivalent is the Czech `\v{c}'). An encoding specification should
+therefore be a formalization of an agreement between the font designer
+on one hand and the author on the other---it specifies which rules each
+side must comply with and which results that can then be expected. An
+example of the author's rules may be to refrain from writing \TeX\ code
+like |\char 166|, because the font designer may have an option on what
+to put in that slot. If the author breaks the rules, he or she may find
+that the manuscript produced contains text whose meaning is not the same
+if typeset with two different fonts even if they do have the same
+encoding property. In practice, the author's rules for the standard text
+encodings are pretty much the same as the rules on how write \TeX\ code
+we find in every elementary book on the subject, so they are hardly new
+to us.
+
+An example of the font designer's rules may be to put an exclamation
+mark in slot 33, so that \texttt{!} actually print as one, or to
+include a font ligature that converts two consequtive hyphens to an
+endash, so that |--| actually will print as an endash, which the
+author by tradition expects it to do. If the font designer breaks the
+rules then authors who follow their rules might find that they do not
+get the right results anyway and such a font designer is likely to get
+complaints from authors about this. In practice however, the font
+designer rules are often vaugely specified if specified at all and
+hence there are gray areas for most encodings where there are no rights
+and wrongs. The \texttt{OT1} encoding is probably the one most plauged
+by these; the dollar versus sterling problem (an excellent example of
+how changing the glyph of a single slot may completely alter the
+interpretation of a text) is a classic. One of my intentions with
+writing this text is to work for that these gray areas are shrunken
+or even completely eliminated, although I do not think there is
+anything that can be done for the \texttt{OT1} encoding---its
+irregularities are much too well known and exploited.
+
+Now if an encoding is (a formalization of) an agreement, how do the
+parties agree to it? On the font designer's side this happens when
+the font designer gives a font a specific encoding by writing a font
+definition file that defines that font with that encoding. On the
+author's side this happens when the author selects a font with that
+encoding property.
+
+So far the informal description, now it is time to get to the
+formalization. Which exactly are the rules for the author and for the
+font designer? This varies between different encodings, but only in
+the details. The areas the encoding specification must cover can be
+listed and are:
+\begin{itemize}
+  \item
+    Which input characters that can be used directly to produce
+    some of the font's glyphs in the output and what they will
+    generate. This pertains to the author, who shouldn't use other
+    input characters. The allowed ones do however have well-defined
+    results.
+  \item
+    Which coding scheme the font must comply with. The pertains to
+    the font designer. There are no direct restrictions on the use of
+    slots not listed in this coding scheme.\footnote{There may be
+    indirect restrictions, see below.}
+  \item
+    Which the required syntactic ligatures are. This pertains to both
+    author and font designer. The author cannot trust any in addition
+    to these, the font designer must include them.\footnote{It could
+    well be that there \emph{should not} be any syntactic ligatures
+    in addition to these. I know of no situation where there would be
+    an advantage in adding syntactic ligatures.}
+  \item
+    Which the font-dependent commands are and what they will generate.
+    This pertains to the author in the same manner as does the input
+    character rules.
+  \item
+    Which the required font dimensions are and what they stand for.
+    This pertains to both the author and the font designer in the same
+    manner as does the syntactic ligature rules.\footnote{Even though
+    very few physical authors access any font dimensions, the same
+    does not hold for packages, and these also count as authors in
+    this context.}
+\end{itemize}
+After these have been specified, the grey areas should be very small
+indeed! There are however a few additional twists that must be sorted
+out.
+
+If the required coding scheme listed in the encoding specification does
+not cover all the 256 slots, then one must be aware that in particular
+the required syntactic ligatures, but also the font-dependent commands,
+may impose some restrictions on the font's coding scheme in
+addition to those expressed by the given coding scheme that the font
+must comply with. These restrictions are then of the form that a
+glyph from a specific class must be assigned to some slot, but the
+font designer may freely choose exactly which slot. Thus any single
+slot not specified by the required coding scheme may be used for just
+about anything.
+
+The use of the \package{relenc} package requires that the following
+area has to be added the ones listed above.
+\begin{itemize}
+  \item
+    The font designer must see to that for every combination of a
+    variable command and a font, there is a variant that will give the
+    specified result.\footnote{The terms \emph{variable command} and
+    \emph{variant} are explained in the complete documentation.}
+\end{itemize}
+Hyphentation patterns do also offer theoretical problems to the use of
+the \package{relenc} package, as these refer explicitly to the coding
+scheme of the font. Problems with these can however not result in
+anything worse than bad hyphenation, so the interpretation of a text
+should not be affected. It is furthermore the case that in practice
+the problems can often be avoided (the complete documentation treats
+this topic in more detail).
+
+Finally, there are two font parameters---|\hyphenchar| and
+|\skewchar|---that do explicitly relate to the coding scheme of the
+font and which are not stored in the font itself. It is possible that
+the value of at least one of these should be specified in an
+encoding specification, but that particular question is not of
+immediate interest to the \package{relenc} package, as \LaTeX\ itself
+already provides the font designer with the ability to set these for
+each font individually (using the sixth argument of
+|\Declare|\B|Font|\B|Shape|).
+
+
+
+\section{Usage}
+
+\subsection{Author usage}
+
+All the author has to do to use fonts with a relaxed encoding, as
+opposed to fonts with for example the \texttt{T1} encoding, is to
+include the command
+\begin{verbatim}
+  \usepackage{relenc}
+\end{verbatim}
+in the preamble and load the encoding definition file, for example
+using the \package{fontenc} package. It is however important that the
+\package{relenc} package is loaded \emph{before} the encoding
+definition file, as the latter uses commands defined in the former.
+
+
+
+\begin{thebibliography}{99}
+%
+\bibitem{ltoutenc}
+  Johannes Braams, David Carlisle, Alan Jeffrey, Frank Mittelbach,
+  Chris Rowley, Rainer Sch\"opf: \texttt{ltoutenc.dtx} (part of the
+  \LaTeXe\ base distribution).
+%
+\bibitem{fontinst}
+  Alan Jeffrey, Rowland McDonnell (manual), Sebastian Rahtz,
+  Ulrik Vieth: \emph{The fontinst utility} (v\,1.8),
+  \texttt{fontinst.dtx}, in CTAN at \texttt{ftp:/\slash
+  ftp.tex.ac.uk\slash tex-archive\slash fonts\slash utilities\slash
+  fontinst\slash}\textellipsis
+%
+\bibitem{fntguide}
+  \LaTeX3 Project Team: \emph{\LaTeXe\ font selection},
+  \texttt{fntguide.tex} (part of the \LaTeXe\ base distribution).
+%
+\bibitem{encguide}
+  Frank Mittelbach [et al. ?]: \texttt{encguide.tex}. To appear as
+  part of the \LaTeXe\ base distribution. Sometime. Or at least, that
+  is the intention.
+%
+\end{thebibliography}
+
+
+\end{document}
+

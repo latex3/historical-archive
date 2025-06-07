@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 18 Apr 2005 01:25:19 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j3HNPGqc027476
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 18 Apr 2005 01:25:17 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j3HNLrtL004834;
+	Mon, 18 Apr 2005 01:21:53 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j3HM3at2020761;
+	Mon, 18 Apr 2005 01:19:33 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 209396 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 18 Apr 2005 01:19:32 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j3HNJVrw030874 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 18 Apr 2005 01:19:32 +0200
+Received: from smtp08.web.de (smtp08.web.de [217.72.192.226]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j3HNL5fK015055 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 18 Apr
+          2005 01:21:05 +0200 (MET DST)
+Received: from [212.144.146.72] by smtp08.web.de with smtp (WEB.DE 4.104 #268)
+          id 1DNJ34-0001di-00; Mon, 18 Apr 2005 01:19:31 +0200
+X-Sender: uwe.lueck@pop3.web.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+References: <yfiekd9oea0.fsf@triumf.ca>
+            <5.1.0.14.0.20050417104145.0247e860@pop3.web.de>
+            <yfiekd9oea0.fsf@triumf.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+X-Sender: uwe.lueck@web.de
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j3HNJWrw030875
+Message-ID:  <5.1.0.14.0.20050417201522.00abd380@pop3.web.de>
+Date:         Sun, 17 Apr 2005 20:54:50 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Uwe =?iso-8859-1?Q?L=FCck?= <uwe.lueck@WEB.DE>
+Subject: Re: \output trick; Re: lineno.sty question
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <85hdi5ej28.fsf@gnu.org>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0.68 () DATE_IN_PAST_03_06
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 17 Apr 2005 23:25:19.0097 (UTC) FILETIME=[B8052690:01C543A4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4860
+
+At 13:31 17.04.05, David Kastrup wrote:
+>Donald Arseneau <asnd@TRIUMF.CA> writes:
+>
+> > Uwe Lück <uwe.lueck@WEB.DE> writes:
+> >
+> >> After a \newtoks\output,
+> >
+> > And, for the output routine, I think that itself is the mistake!  I
+> > opine that for \output one should "bite the bullet" and do
+> > \output=\expandafter{\expandafter\mymacro\the\output}
+> >
+>
+>The problem is that you sometimes need to call the old behavior, and
+>sometimes not.  In particular, if you have inserted a special penalty
+>yourself, then you will deal with it yourself, not passing anything on
+>and not actually calling the original output routine.
+
+Another point: For calling the old output routine only if it is
+appropriate, something like
+     \edef\previous@output{\the\output}
+     \output{...\previous@output...}
+could be a compromise. Yet as I understand Stephan Boettcher's
+(the former maintainer's) lineno.sty documentation, the purpose
+seemed to have been to "come earlier" than the output routine that
+multicol.sty (and longtable.sty etc.?) defines through \output{...}
+-- even when it is loaded after lineno.sty. Indeed, multicol.sty would
+give an error message when it would see a special penalty from
+lineno. The same applies to revtex.cls + longtable.sty. And longtable
+would give an error message with two of lineno's special penalties
+(these admittedly were my choices, perhaps I could have avoided
+the conflict). -- This could be repaired by a few additional code lines
+in multicol and longtable, so the \output trick is mainly a tribute to
+the littleness of hope that Standard LaTeX Packages would care
+about "contrib" packages. And as soon multicol or longtable would
+use the \output trick themselves, lineno could only work together
+with them if loaded earlier (another bit of evidence that the \output
+trick mainly is to ensure compatibility with some Standard LaTeX
+packages).
+
+-- Uwe Lueck.
+

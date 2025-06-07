@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 1 Aug 2009 11:00:47 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7190kKB015074
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 1 Aug 2009 11:00:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n718trZB003877
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 1 Aug 2009 10:55:54 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n6VM2DNH013729;
+	Sat, 1 Aug 2009 10:55:41 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 286265 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 1 Aug
+          2009 10:55:40 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n718teoq028792 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 1 Aug 2009 10:55:40 +0200
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n718tTji003781 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 1 Aug 2009 10:55:32 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.2]) by
+          anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1MXANF-0007fo-no for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 01 Aug
+          2009 08:55:29 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A720566.80504@morningstar2.co.uk>
+            <5BD2F1CD-3A4D-4204-889D-7E7CDA38F364@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A740307.5000703@morningstar2.co.uk>
+Date:         Sat, 1 Aug 2009 09:55:35 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \tl_add_braces:N ?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <5BD2F1CD-3A4D-4204-889D-7E7CDA38F364@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 Aug 2009 09:00:47.0293 (UTC) FILETIME=[8F523ED0:01CA1286]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5803
+
+Will Robertson wrote:
+> What sort of circumstances are you running into this? (Just out of
+> curiousity.)
+
+This tends to be when constructing a list of tokens to possibly be added
+to something like \frac or sub/superscripted.  The token list is built
+up, then I need to wrap it up in braces so that whatever function I'm
+applying to it works correctly.  As far as possible, I'm keen to make
+the token lists I use end up the same as if they'd been done by hand: it
+makes debugging a lot easier.   For example:
+
+\tl_set:Nn \l_tmpa_tl { abc }
+\tl_set:Nn \l_tmpb_tl { def }
+\tl_put_right:NV \l_tmpa_tl \l_tmpb_tl
+\tl_set:No \l_tmpa_tl {
+  \exp_after:wN { \l_tmpa_tl }
+}
+\tl_put_left:Nn \l_tmpa_tl { 10 ^ }
+
+to end up with 10^{abcdef} in \l_tmpa_tl.
+
+> In general I guess I'm not opposed to adding *anything* to the expl3
+> code while we're playing around with it. But I suppose every time that
+> we write a new module we'll come across the same situation, and it's
+> always harder to remove functions than to add them.
+
+That's why I thought I'd ask.  If no-one else needs this type of thing,
+I'll leave well alone. (The context here is writing siunitx version 2,
+where I need to build fractions, superscripts and so on from input on a
+token-by-token basis).
+-- 
+Joseph Wright
+

@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1920" "Fri" "11" "February" "1994" "10:16:02" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" "<199402111018.AA18557@mail.cs.tu-berlin.de>" "45" "Re: On compatibility in LaTeX2e [was: Re: keyed options lis" "^Date:" nil nil "2" "1994021110:16:02" "On compatibility in LaTeX2e [was: Re: keyed options lis" nil "<9402110936.AA26673@m1.cs.man.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20797; Fri, 11 Feb 94 11:19:49 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA06824; Fri, 11 Feb 94 11:18:48 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18557
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 11 Feb 1994 11:18:45 +0100
+Message-Id: <199402111018.AA18557@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1917; Fri, 11 Feb 94 11:18:33 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1915; Fri,
+ 11 Feb 1994 11:18:33 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3121; Fri,
+ 11 Feb 1994 11:17:55 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9402110936.AA26673@m1.cs.man.ac.uk> (message from Mike Piff on
+              Fri, 11 Feb 1994 09:27:43 LCL)
+Date:         Fri, 11 Feb 1994 10:16:02 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: On compatibility in LaTeX2e [was: Re: keyed options lis
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1536
+
+Mike,
+
+I had sworn not to respond to any more of these messages, as you dont
+appear to read any of the replies, but one last go.
+
+> [verbatim] I am pretty sure that few people would have anyway
+
+Ha. How many times have we said `few people would have done that'.
+Take an example you ought to know well: A certain register that was
+never used by LaTeX, but which was allocated, presumably left over from
+an early trial version. `few people would have used that'
+It was only a few days before several people reported the missing
+register. (\footheight)
+
+> Were the spacing problems [in array] insurmountable?
+It is not a problem. It is a deliberate and documented difference in
+the way it treats vertical rules. All tables with vertical rules end
+up being wider, which can affect the spacing of the rest of document,
+it won't in 99% of the cases, but that is not the point.
+
+> Hours probably wasted, in that the problem would never have arisen
+> if this
+
+False. the compatibily mode does not only affect the package handling.
+It (potentially) affects all the commands we have altered. Read the
+documentation. If we get bug reports that some of the changes affect
+existing documents, then *more* stuff can go into the compatability
+file to ensure better compatibility.
+
+> The implication is that \documentclass will take over from
+> \documentstyle, and that new styles will have to conform to the
+> [\documentclass] format.  With hard-wired limited options?
+
+classes do not have hard wired limited options. They just have to
+declare what options they can handle.
+
+The standard classes are only designed to deal with a range of page
+sizes, but if you want write a class that will handle any string as a
+valid option, loading the file `option.piffclass' then all you have to
+do is declare in piffclass.cls that you have written this wonderfully
+generic code by going:
+
+\DeclareOption*{\input{\CurrentOption.piffclass}}
+
+David
+

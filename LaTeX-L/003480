@@ -1,0 +1,110 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1869" "Wed" "29" "December" "1999" "11:56:02" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "64" "Re: A couple of TOC templates (1)" "^Date:" nil nil "12" nil "A couple of TOC templates (1)" nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 29 Dec 1999 11:58:51 +0100 (MET)
+Received: from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56])
+	by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id LAA10257
+	for <schoepf@mail.uni-mainz.de>; Wed, 29 Dec 1999 11:58:50 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id LAA14793
+	for <schoepf@UNI-MAINZ.DE>; Wed, 29 Dec 1999 11:58:50 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.79EA8782@mail.listserv.gmd.de>; Wed, 29 Dec 1999 11:58:25 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446638 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 29 Dec 1999 11:56:12 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id LAA07227 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec
+          1999 11:56:11 +0100 (MET)
+Received: from ssmtp02.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id LAA00842 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec 1999 11:57:00 +0100 (MET)
+Received: from [212.59.206.64] ([212.59.206.64]) by ssmtp02.arrakis.isp
+          (Netscape Messaging Server 4.1 Nov 19 1999 19:47:43) with SMTP id
+          FNI11G05.JGY for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec 1999
+          11:56:04 +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199912291057.LAA00842@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 29 Dec 1999 11:56:02 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: A couple of TOC templates (1)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3480
+
+(Continues.)
+
+Replace the body code in JB1 (but not in JB2) by:
+
+ {\IfNoValueTF{#4}
+   {\let\thecontentslabel\@empty
+    \ttl@numsecfalse}
+   {\gdef\thecontentslabel{#4}
+    \ttl@numsectrue}
+  \gdef\thecontentspage{#7}
+  \DoParameterAssignments
+  \global\let\COpost@action\COpost@action
+  \global\let\COobject@decl\COobject@decl
+  \global\@tempdimd\@tempdimd
+  \global\@tempdime\@tempdime
+  \global\@tempdimb\@tempdimb
+  \global\let\COnumber@format\COnumber@format
+  \global\@tempdima\@tempdima
+  \global\let\COtitle@format\COtitle@format
+  \global\let\COtitle@format@nolbl\COtitle@format@nolbl
+  \global\let\COpnum@format\COpnum@format
+  \global\let\COleaders@action\COleaders@action
+  \global\@tempdimc\@tempdimc
+  \ttl@tocentry
+   {\@ne}
+   {#3}
+   {\@tempdimd}
+   {\contentsmargin[\@tempdimb]{\@tempdime}
+    \COpre@action
+    \COobject@decl}
+   {
+     {\contentslabel[\COnumber@format]{\@tempdima}\COtitle@format}
+     {\hspace*{-\@tempdima}\COtitle@format@nolbl}
+   }
+   {\titlerule*[\@tempdimc]{\COleaders@action}
+    \contentspage[\COpnum@format{\thecontentspage}]}
+   {\COpost@action}
+   {#5}
+   {}}
+
+As you can see, the code is the same but with a series of global
+assignments right after \DoParameterAssignments. Here is an example:
+
+\DeclareInstance{contentsobject}{section}{JB1}{
+  pre-action       = \DelayEvaluation{\addvspace{1pc plus 1pt}},
+  right-adjust     = 3pt,
+  title-format     = \textbf{#1},
+  label-format     = \textbf{\thecontentslabel},
+  left-margin      = \DelayEvaluation{2.5em},
+  label-width      = \DelayEvaluation{2.5em},
+  page-format      = \textbf{\hfil#1},
+  leaders-text     = }
+
+
+\DeclareInstance{contentsobject}{subsection}{JB2}{
+    pre-action     = \addvspace{3pt plus .2pt},
+    decls          = \itshape,
+    left-margin    = \DelayEvaluation{2.5em},
+    punct-sep      = {;\ },
+    punct-end      = .
+    }
+
+\bye
+Javier
+

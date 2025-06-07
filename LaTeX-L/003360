@@ -1,0 +1,124 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2956" "Mon" "25" "October" "1999" "20:40:02" "+0200" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "85" "Re: Robustness (was Re: Expandable templates)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA15623
+	for <schoepf@UNI-MAINZ.DE>; Mon, 25 Oct 1999 22:20:13 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.8F0FC090@mail.listserv.gmd.de>; Mon, 25 Oct 1999 22:20:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445893 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 25 Oct 1999 22:18:21 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA03365
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 25 Oct 1999 22:18:18 +0200
+          (MET DST)
+Received: from istrati.zdv.uni-mainz.de (root@dialin353.zdv.Uni-Mainz.DE
+          [134.93.175.53]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA28933 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 25 Oct 1999
+          22:20:03 +0200 (MET DST)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          UAA00488; Mon, 25 Oct 1999 20:40:02 +0200
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199910221624.SAA19785@relay.urz.uni-heidelberg.de>
+Message-ID:  <199910251840.UAA00488@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910221624.SAA19785@relay.urz.uni-heidelberg.de>
+Date:         Mon, 25 Oct 1999 20:40:02 +0200
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Robustness (was Re: Expandable templates)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3360
+
+Javier,
+
+ > The "expandability" of \add@accent has not changed. It is still
+ > expandable, if its definition is:
+ >
+ > \def\add@accent#1#2{{%
+ >    \setbox\@tempboxa\hbox{#2%
+ >       \global\mathchardef\accent@spacefactor\spacefactor}%
+ >    \accent#1 #2}\spacefactor\accent@spacefactor}
+ >
+ > The problem is that \accent@spacefactor is not yet defined in \edef's
+ > prior to an actual use of any accent. That is a LaTeX bug which can be
+ > fixed by letting \accent@spacefactor to \relax or by defining
+ > it with \mathchardef (in both cases it expands into itself).
+
+this is an interesting point (what you are saying is some assignments are
+harmless as they do not fail horribly even though they do not expand really
+and all we have to do in that particular case is making sure that we keep the
+status of that macro expansion this way).
+
+agreed, but as you will be aware this wasn't really the point that i was trying
+to make (and it doesn't make my point invalid either). the point was that
+there are macros containing dangerous assignments (mostly internal \def's or
+\let's) which will die horribly if put into an \edef
+
+and my claim is that without the LaTeX protection mechanism (which essentially
+prohibits the use of \edef everywhere where the content of \edef is not fully
+controlled by the macro writer) there is no cure for this problem:
+
+ a) you need macros containing dangerous assignments (containing \let say)
+
+ b) current coding practice in TeX does need the functionality of \edef
+
+now the LaTeX solution right now is to say: don't use edef use \protected@edef
+and friends and all is well.
+
+my question was, are there better approaches?
+
+ (the plain TeX approach by the way is: know your macros and don't use them in
+ a way that you end up expanding such a dangerous beast inside an \edef :-)
+
+
+coming back to your example:
+
+ > Example:
+ >
+ > \documentclass{minimal}
+ >
+ > \edef\agrave{\`a}  % Doesn't work
+ > \setbox0\hbox{\`a} % We use an accent
+ > \edef\agrave{\`a}  % Now it does work (but \agrave looks horrible! :-) )
+
+run like that it unfortunately doesn't show your point but rather shows mine
+
+as you will get:
+
+[ some tracing omitted ]
+
+\?\` ->\UseTextAccent {OT1}\`
+
+\UseTextAccent #1#2#3->\let \@curr@enc \cf@encoding \@use@text@encoding {#1}#2{
+\@use@text@encoding \@curr@enc #3}\@use@text@encoding \@curr@enc
+#1<-OT1
+#2<-\`
+#3<-\fi
+{undefined}
+! Undefined control sequence.
+\UseTextAccent #1#2#3->\let \@curr@enc
+                                       \cf@encoding \@use@text@encoding {#1}...
+
+
+in other words we never reach the case of the \accent@spacefactor but die in
+\UseTextAccent which already contains a \let and does expand in this way if
+used in \edef in contrast to \protected@edef (where it would behave correctly)
+
+
+so i think my questions are still valid and i wonder if i get some more
+feedback
+
+best
+frank
+
+ps which does not mean that we shouldn't fix the kernel to have a definition
+for \accent@spacefactor
+

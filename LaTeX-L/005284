@@ -1,0 +1,107 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Sep 2008 23:42:43 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8ALgbgY022570
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Sep 2008 23:42:38 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8ALcKXm000490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Sep 2008 23:38:20 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AI4G9s030740;
+	Wed, 10 Sep 2008 23:38:18 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 33623 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 23:38:18 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8ALcIg7014650 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 23:38:18 +0200
+Received: from anchor-post-35.mail.demon.net (anchor-post-35.mail.demon.net
+          [194.217.242.85]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m8ALc9t5002279 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 23:38:13 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-35.mail.demon.net with esmtp (Exim 4.67) id
+          1KdXO5-0002Z7-Hx for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 21:38:09 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48C57767.9030602@morningstar2.co.uk>
+            <18632.13756.225135.207821@morse.mittelbach-online.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48C83E32.2080608@morningstar2.co.uk>
+Date:         Wed, 10 Sep 2008 22:37:54 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Something like \patchcmd
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18632.13756.225135.207821@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Sep 2008 21:42:43.0437 (UTC) FILETIME=[280379D0:01C9138E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5284
+
+Frank Mittelbach wrote:
+> Joseph,
+> 
+>  > I've been trying to work out if the current expl3 has anything like
+>  > \patchcmd from etoolbox.  
+> 
+> the current expl3 doesn't have something comparible to \patchcmd, not on that
+> level of complexity / generality
+> 
+> 
+>  > Will suggested looking at the various \tlp_
+>  > ... macros.  However, even a simple two-part test in this way fails:
+>  > 
+>  > \documentclass{article}
+>  > \usepackage{expl3}
+>  > \CodeStart
+>  > \cs_if_really_exist:cT{thanks}{
+>  >   \tlp_if_in:NnT\thanks{\footnotemark}{
+>  >     % Do something
+>  >   }
+>  >   \tlp_if_in:NnT\thanks{\footnotetext}{
+>  >     % Also do something
+>  >   }
+>  > }
+>  > \CodeStop
+>  > \begin{document}
+>  > \end{document}
+>  > 
+>  > I guess I'm abusing the functions.  So have I missed something obvious?
+> 
+> well, one thing obvious is \thanks is not a "tlp" variable is it?
+
+No.  The original context of the suggestion was that I couldn't see a
+replacement for \g@addto@macro (I may of course have missed it).  Here,
+using one of the \tlp_put functions does work.  So I was extrapolating!
+I'm guessing that something like \g@addto@macro will be needed, in the end.
+
+ > The \patchcmd does detokenization (loosing catcodes) and then
+rebuilds the
+> code using "current" catcodes, so it is kind of dangerous in situations
+
+At least in the context I was thinking of, this would not be an issue.
+I'd imagine that stuff with funny catcodes wouldn't typically be where a
+simple find-and-replace would apply.
+
+I'll stick with redefining \thanks for the moment, then.
+-- 
+Joseph Wright
+

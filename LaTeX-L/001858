@@ -1,0 +1,166 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4520" "Mon" "3" "March" "1997" "22:31:36" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "126" "Customizing language tag semantics" "^Date:" nil nil "3" nil "Customizing language tag semantics" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA19814 for <schoepf@UNI-MAINZ.DE>; Mon, 3 Mar 1997 22:56:31 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.94ABD344@listserv.gmd.de>; Mon, 3 Mar 1997 22:56:23 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108190 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 22:56:16 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id WAA26352
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 22:54:45
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id WAA02942 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 22:53:50 +0100
+          (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA05475; Mon, 3 Mar 1997 22:31:36 +0100
+References: <v02130504af40643c1f39@[130.237.37.43]>
+Message-ID:  <199703032131.WAA05475@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v02130504af40643c1f39@[130.237.37.43]>
+Date:         Mon, 3 Mar 1997 22:31:36 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Customizing language tag semantics
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1858
+
+the thoughts (and in parts a first draft proposal) below are about
+"semantics" not syntax please keep that in mind when you think about
+them.  In other words, if any such scheme gets implemented one day
+there are many questions that have to be answered and one has to find
+a sensible syntax etc but right now i do not care much about that aspect.
+
+instead what i would like you to think about are the underlying ideas,
+eg are there levels missing that are important, are there levels which
+do lie outside the proposed hierarchical structure (that would allow
+inheritance), etc
+
+comments welcome
+
+frank
+
+
+
+% 97/03/03
+
+\documentclass{article}
+
+
+\usepackage{shortvrb}
+\MakeShortVerb{\|}
+
+
+\begin{document}
+
+
+\section{Customization of language tag semantics}
+
+As examples show, actions that need to be carried out by a formatter
+when encountering a language tag are, perhaps with the exception of
+selecting the correct hyphenation rules, not (necessarily) globally
+bound to the language tags but can depend on the current position in
+the document (e.g., languages nested within each other) as well as the
+document type (e.g., a truly multi-lingual document with equal status
+for each language versus a document written in a base language with
+embedded language fragments from other languages).
+
+In most cases it is a style component deciding which choice to take in
+border cases (e.g., are English quotations with French text typeset
+using rules employed for the rest of the text or \ldots).
+This style might be strongly influenced by traditional typesetting
+conventions for the base language of the document but from the inside
+\LaTeX{} no actions should be forced upon the user.
+
+\subsection{Customization levels}
+
+For this reason customization possibilities for the following cases
+are suggested (explained in more detail below):
+\begin{enumerate}
+\item
+\label{document-lang}
+  complete document
+\item
+\label{bg-lang}
+  background language (and change of background language)
+\item
+\label{frag-bg-lang}
+  language fragment within background language
+\item
+\label{frag-frag-lang}
+  language fragment within language fragment
+\end{enumerate}
+
+Case~\ref{document-lang} describes the language used for the whole
+document. This can be different from the background language, for
+example one might to have all chapter titles being headed "Chapter"
+even if one chapter or section is written in a language other than
+english (and thus would contain a change of background
+language).\footnote{Right now I don't offer any suggestion how this
+document language could be specified.}
+
+Case~\ref{bg-lang} refers to the major language being used for text.
+In most documents there exist only a single background language and
+all other elements are language fragments embedded into the background
+language.
+
+Case~\ref{frag-lang} refers to the case where a language fragment is
+embedded in text of the background language and
+case~\ref{frag-frag-lang} second or higher order embeddings.
+
+\subsection{Attaching language items to levels}
+
+Each language dependent item gets a definition associated with a
+language label (the syntax is irrelevant at the moment), e.g.,
+\begin{verbatim}
+\DeclareLanguageCommand{\chaptername}{german}{Kapitel}
+\DeclareLanguageCommand{\chaptername}{usenglish}{Chapter}
+...
+\end{verbatim}
+
+In addition for each such command its activation in the above cases,
+e.g.,
+\begin{verbatim}
+\ApplyLanguageCommand{\chaptername}{background}
+\end{verbatim}
+changes the meaning of |\chaptername| whenever the background language
+changes.
+
+The above cases have a natural order that can be used for inheritance,
+e.g., if |\Quote{...}| would produce\footnote{This command does not
+exist and is meant as an abitrary example.} proper quotation
+characters and if that command would be defined at
+level~\ref{frag-bg-lang} then an embedded French quotation inside a
+German text would be using french quotation marks but if the German
+text would be embedded in an English document (making this a second
+order fragment) then German quotes would be used. On the other hand it
+would be used also if the background language would change to French.
+
+
+\subsection{The role of language initialization files}
+
+Language initialization files (comparable with the language files
+provided by Babel) would offer defaults allowing out of the box
+usage\footnote{Even for australian users :-)} but at the same time
+offer easy customization in class files or in the preamble of a
+document.
+
+
+\subsection{Discussion}
+
+  [ your comments ]
+
+\end{document}
+

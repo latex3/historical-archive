@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1616" "Tue" "23" "June" "1998" "09:33:36" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "35" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id KAA02329;
+	Tue, 23 Jun 1998 10:27:33 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.FE482238@listserv.gmd.de>; Tue, 23 Jun 1998 10:27:31 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 368221 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 23 Jun 1998 10:27:27 +0200
+Received: from nag.co.uk (andover.nag.co.uk [192.156.217.113]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id KAA26084 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 23 Jun 1998 10:27:25
+          +0200 (MET DST)
+Received: (from davidc@localhost) by nag.co.uk (8.8.7/8.8.7) id JAA07311; Tue,
+          23 Jun 1998 09:33:36 +0100
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+Message-ID:  <199806230833.JAA07311@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806230127.LAA12452@ricetub.anu.edu.au> (message from Richard
+              Walker on Tue, 23 Jun 1998 11:27:29 +1000)
+Date:         Tue, 23 Jun 1998 09:33:36 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2589
+
+> Developers use the long names to make it easier to write; these get
+> translated by docstrip/doc.sty into short names to minimize format
+> size and control sequence usage.
+> Still no word from the Team as to whether this matters for LaTeX3.
+
+Some of the team are on holiday, or preparing for June 1st, or...
+However I am sure we are all saving these messages and will reply
+later.
+
+Partly is probably good to let others comment first, and give initial
+reactions (as you and Hans have been doing) rather than just getting the
+`official line'.
+
+However to comment on your point about format size that you've made a
+couple of times. The long command names don't really affect format size too
+much. Of course if you call a command \foo_bar_baz:nnn instead of \foo
+then the format entry for that command is larger by 12 characters,
+but that is the only difference in the format. No matter how many times
+the command is used, the comand tokens are always the same size, just
+having an index to the table that has the print name of the command
+sequence.
+
+Note that this one important reason why the module names and argument
+spec is part of the command _name_. If instead you had \foo_bar_baz{nnn}
+(or any other such syntax) then you have switched from one token to 6
+tokens every time you use the command, and your format is suddenly many
+many times larger.
+
+> making sure that implementors and package-writers keep to the `rules'
+> (i.e. like always using \newcommand instead of \def).
+
+Of course one way to do that is if the format has \let\def\@undefined
+Experience with latex2 shows that may be the only way.
+
+David
+

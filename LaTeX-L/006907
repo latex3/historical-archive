@@ -1,0 +1,147 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p9AFAONc009294
+	for <rainer@rainer-schoepf.de>; Mon, 10 Oct 2011 17:10:25 +0200
+Received: (qmail 21796 invoked by alias); 10 Oct 2011 15:10:15 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 10 Oct 2011 15:10:15 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx048) with SMTP; 10 Oct 2011 17:10:15 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p9AF7Kqq025979
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 10 Oct 2011 17:07:21 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p9AF3fGB001513;
+	Mon, 10 Oct 2011 17:07:20 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1765604 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 10 Oct
+          2011 17:07:19 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p9AF7J12015550 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 10 Oct 2011 17:07:19 +0200
+Received: from mail-gx0-f177.google.com (mail-gx0-f177.google.com
+          [209.85.161.177]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id p9AF7DeV025925 (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 10 Oct
+          2011 17:07:19 +0200
+Received: by ggnm2 with SMTP id m2so6425263ggn.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 10 Oct 2011 08:07:13 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.223.75.137 with SMTP id y9mr32861499faj.14.1318259232991; Mon,
+          10 Oct 2011 08:07:12 -0700 (PDT)
+Received: by 10.152.23.67 with HTTP; Mon, 10 Oct 2011 08:07:12 -0700 (PDT)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <CANQYN6xiwms0LdCgW-6AQ9Pok9qbtc6k0ZgN40z6RK9+a=RdWg@mail.gmail.com>
+Date:         Mon, 10 Oct 2011 11:07:12 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Strings, and regular expressions
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6907
+
+Hello all,
+
+We just added on CTAN two related modules: l3str (string manipulation)
+and l3regex (regular expression matching and replacement). This is a
+request for comments on what (?:is needed|would be nice to have) in
+this general area. I will explain what is currently there, and
+hopefully you can tell me I got everything wrong (in what I covered,
+and in the doc). Example:
+
+\str_input:Nn \l_foo_str { Hello, \ \#\$\% \x20 world! }
+\regex_replace_all:nnN { \b (\w)+ \b } { (\0:\1) } \l_foo_str
+
+results in \l_foo_str containing "(Hello:o), #$% (world:d)!"
+
+
+The l3str module provides functions to get the length of a string,
+extract substrings or individual characters, testing for string
+equality (the curent \str_if_eq:nnTF). Some support for encodings is
+provided: percent encoding, conversion from utf-8 to a string of
+bytes, and most functions of Heiko Oberdiek's pdfescape package.
+
+The approach taken in l3str is that any user input is \detokenize-d
+before the string function is used. Each function has ':n' and ':N'
+variants accepting any token list (or token list variable) as an
+input, escaping spaces for internal use, and applying the operation,
+as well as an "ignore_spaces" variant which does not escape spaces.
+For instance, \str_length:N and \str_length:n count the number of
+characters in the results of \tl_to_str:N and \tl_to_str:n, while
+\str_length_ignore_spaces:n counts non-space characters (and is
+faster).
+
+An input function is provided, where any non-letter character can be
+escaped, and some sequences such as \n or \x{0A} are recognized (both
+happen to be the new-line character ^^J).
+
+- The names of the conversion functions are quite bad.
+- Most encoding functions (as opposed to decoding) could be made
+expandable. Is it worth it?
+- There may be need to support other encodings. Which ones?
+- It is not clear how utf-8 input/output should be treated in pdftex.
+- Missing functions? What would you wish for?
+- Some day I may add printf-like string formatting. Is that useful?
+
+
+The l3regex module allows for testing if a string matches a given
+regular expression, counting matches, extracting submatches, splitting
+at occurrences of a regular expression, and doing replacement (see
+documentation for function names).
+
+Speed requirements forbid a back-tracking approach, hence
+back-references cannot be supported. Only "truly regular" features are
+implemented. The syntax is identical to PCRE (except for space
+handling), hence very similar to perl and to POSIX regular
+expressions. Details on the syntax can be found in the doc.
+
+If a regular expression is used a lot, a precompiled version of that
+expression can be stored in a token list. In principle, that can be
+written to a file, but it is not a very compact notation, so if that
+turns out to be useful, we can improve it.
+
+- Newlines. Currently, "." matches every character; in perl and PCRE
+it should not match new lines. As you know, the situation with new
+lines in TeX is a little bit odd, since they are converted to the
+\endlinechar upon reading, and normally not tokenized, simply giving
+rise to a space or a \par. Should we still decide that "." does not
+match the CR nor LF characters? Or should it simply no match the
+\endlinechar?
+
+- I had the idea of providing # as a shorthand for .*? (arbitrary
+sequence of characters, lazy), mimicking what TeX does when finding a
+macro parameter. Is it useful?
+
+- Same question for caseless matching, and for look-ahead/look-behind
+assertions.
+
+- A facility for matching a balanced group (e.g., as xparse does for
+optional arguments)? That is non-regular, and is difficult to
+implement, so I will only look at it if it is really needed.
+
+
+Comments, feature requests, bug reports etc. are all highly welcome.
+Thanks for reading so far :).
+-- 
+Bruno Le Floch
+

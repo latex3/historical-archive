@@ -1,0 +1,285 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Feb 2008 00:18:38 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m14NIa8P024495
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 5 Feb 2008 00:18:36 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m14NE37l004612
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 5 Feb 2008 00:14:03 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m14N19Nj007816;
+	Tue, 5 Feb 2008 00:14:03 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 207361 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 5 Feb
+          2008 00:14:03 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m14NE3Xp008517 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 5 Feb 2008 00:14:03 +0100
+Received: from mail.umu.se (jazz.umdac.umu.se [130.239.8.31]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m14N9vHb005115
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:10:02
+          +0100
+Received: from [IPv6:::1] (abel.math.umu.se [130.239.119.5]) by mail.umu.se
+          (8.13.6/8.13.1) with ESMTP id m14NDBCL051958 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:13:40 +0100
+          (MET)
+Mime-Version: 1.0 (Apple Message framework v624)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-Mailer: Apple Mail (2.624)
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id m14NE3Xp008518
+Message-ID:  <6f4b8856c0e1b6eccbd84ad71e1b7899@residenset.net>
+Date:         Tue, 5 Feb 2008 00:13:44 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: xparse and xdoc -- technical issues
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Feb 2008 23:18:38.0664 (UTC) FILETIME=[45EE2C80:01C86784]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5156
+
+This mail discusses details of the implementation of the xdoc2l3 
+\NewDocumentCommand command, and issues with these.
+
+First a bit of context: In my old code, all argument grabbers were 
+being expanded in the context
+
+   <grabber> <subsequent grabbers> \XD@endgrab <next argument> ...
+
+A grabber would do whatever it had to do to grab the <next argument>, 
+and was then supposed to append it to \toks@; thereafter the 
+\XD@endgrab macro expanded to \the\toks@. Xparse does roughly the same 
+thing, but has an explicit \toks_use:N\l_xparse_grabbed_args_toks 
+instead of the \XD@endgrab macro and uses \l_xparse_grabbed_args_toks 
+as the token marking the beginning of arguments.
+
+Implementing processors in this context was actually very easy, as all 
+they had to do was to grab the <next argument>, do something to it, and 
+then put the result back as a mandatory argument after \XD@endgrab, 
+where the next processor would expect it. I'm a bit worried that the 
+xparse construction, exposing the implementation detail of 
+\l_xparse_grabbed_args_toks, in the long run will be restrictive; 
+processors don't need to know the name of the token register (or even 
+that there is one), but they do need to know the name of the mark 
+token.
+
+*Example.*  The x{<bool>}{<pre>}{<post>} specifier compiles into the 
+processor \XD@gp@expanded{<bool>}{<pre>}{<post>}, which is simply 
+defined as
+
+\def\XD@gp@expanded#1#2#3#4\XD@endgrab#5{%
+    \protected@edef\@tempa{{%
+       \IfBooleanTF{#1}{#2{#5}#3}{#2#5#3}%
+    }}%
+    \expandafter\XD@gh@put \expandafter{\@tempa}{#4}%
+}
+\def\XD@gh@put#1#2{#2\XD@endgrab#1} % Generic helper macro
+
+---shovelling things around a bit, but quite straightforward. The 
+(possibly less roundabout) approach of not throwing a processed 
+argument back to the other side of the \XD@endgrab marker has the 
+disadvantage that it forces a distinction between different types of 
+processors and thus increases the complexity of the system.
+
+
+Two things in xparse which I didn't implement are the P and W 
+specifiers. In the case of W this is mostly because the LaTeX2e 
+\@ifnextchar gobbles spaces, and I didn't feel like rolling my own; I 
+have however encountered cases where I would have wanted an "o" 
+specifier that didn't gobble spaces, so I certainly see the need for 
+it. In the case of P, I was simply lazy; I don't think xdoc will need 
+\long arguments anyway, and they increase the complexity quite 
+considerably.
+
+However, while thinking about the matter, it occurred to me that the 
+status for some grabber/processor of being non-\long implies that one 
+cannot use \par in the <default> for an O argument, even if that 
+argument itself is \long; the reason being that such a \par token then 
+appears within the <subsequent grabbers>. This issue should at least be 
+remarked upon in xparse.dtx.
+
+
+One *new* thing I did in this implementation is that I used groups to 
+isolate processing of different arguments and also the argument 
+grabbing procedure as a whole. Concretely the latter was just the 
+matter of changing the defitions
+
+\def\XD@grab@arguments#1#2{%
+    \toks@={#1}%
+    #2\XD@endgrab
+}
+\def\XD@endgrab{\the\toks@}
+
+(as found in current xdoc2) to
+
+\def\XD@grab@arguments#1#2{%
+    \bgroup
+    \toks@={#1}%
+    #2\XD@endgrab
+}
+\def\XD@endgrab{\expandafter\egroup \the\toks@}
+
+As for the per-argument groups, if you look at xdoc2l3test.dvi you'll 
+see that each argument grabber begins with an explicit \bgroup, whereas 
+the matching \egroup is hidden in the ending \XD@ge@parameter or 
+\XD@ge@store. At least that the g{<assignment>} processors should 
+affect tokenisation and be possible to combine with optional-argument 
+type processors requires that things are done this way. There are 
+however at least two problems with doing it in general:
+
+  1. If there is an error when TeX is grabbing arguments, then the
+     macro simply disappears, along with all text grabbed so far. Such
+     errors arise easily as typos, and would in this case cause the
+     closing \egroups to disappear, throwing off the nesting of groups.
+
+Seeking to limit the damage caused by this, I chose to use \bgroup and 
+\egroup so that at least the nest end of an environment would get 
+things back on track, but that causes a new problem.
+
+  2. In math mode, \bgroup\egroup is far from invisible.
+
+For xdoc this is acceptable, since the commands defined are anyway 
+mostly for use in vertical or horizontal mode, but xparse should be 
+able to define general commands and thus cannot accept this.
+
+\begin{TeX-extension-idea}
+   It occurs to me that it would be useful to have groups that nest even
+   weaker than \bgroup-\egroup, and which do not contribute anything to
+   math lists.
+\end{TeX-extension-idea}
+
+The existing alternative is to use \begingroup and \endgroup, but then 
+one must guard against getting these mismatched. I have one idea for 
+this, but I haven't tried it out yet:
+
+\def\XD@gh@insure#1{%
+    \let\reserved@a=#1%
+    \expandafter\futurelet \expandafter\@let@token
+      \expandafter\XD@gh@insure@
+}
+\def\XD@gh@insure@{%
+    \ifx \reserved@a\@let@token \else \egroup\egroup \fi
+}
+
+The idea is to instead of a naked macro (like \XD@gp@expanded) that 
+processes material after \XD@endgrab write
+
+   \XD@gh@insure{\protected@edef}\XD@gp@expanded
+
+where \protected@edef is the first token in the expected expansion of 
+\XD@gp@expanded. If that is not what lies ahead, then apparently 
+expansion of \XD@gp@expanded failed, and it is necessary to insert some 
+emergency \egroups to get the nesting back to normal.
+
+  3. Adding groups makes the command non-mouth-expandable.
+     In particular, it will throw TeX out of the inner loop
+     (disrupt kerning etc.)
+
+Again, this is something I can live with in xdoc, but if the LaTeX3 
+\NewDocumentCommand is going to replace \newcommand, then there will 
+probably be cases where one wants to define a command that is really 
+just a macro. This is probably doable, if \NewDocumentCommand only 
+introduces the groups if they're really needed -- using a simpler 
+implementation for the nice cases, similar to that for the tail of m 
+arguments in current xparse -- but could lead to a rather complex 
+codebase. Still, making the distinction be between "commands with only 
+`m' arguments" and "all other commands" wouldn't need to make the code 
+any more complicated than it is today. The only disruption that one 
+would then get by starting and ending groups as part of argument 
+grabbing is between an \accent and its base character, but perhaps that 
+is acceptable.
+
+However, I couldn't help dreaming a bit... If one was allowed to add 
+one new TeX primitive, for the purpose of solving the issues above, 
+then what should that be? Much of our problems stem from the 
+restriction that TeX does not allow assignments while expanding things 
+(even though the mouth is Turing-complete), so my choice would be to 
+offer an escape from this restriction.
+
+\begin{TeX-extension-idea}
+   Add an \emph{expandable} primitive that allows for some commands
+   (primarily assignments) to be \emph{executed} and affect the 
+expansion.
+   The syntax could be
+     \expandedwith{<text>}{<commands>}
+   and the semantics could be as follows:
+   \begin{enumerate}
+     \item
+        A new group is begun.
+     \item
+        The <commands> are executed.
+     \item
+        The <text> is expanded (as discussed regarding
+        new \expanded primitive). The result of this will
+        be the one-step expansion of the entire \expandedwith.
+     \item
+        The new group is closed.
+   \end{enumerate}
+   With this, a non-spacebypassing \@ifnextchar could be conservatively
+   implemented as
+   \begin{verbatim}
+     \long\def\@ifnextchar#1#2#3{%
+        \expandedwith{%
+           \ifx\@let@token\reserved@d
+              \noexpand\@firstoftwo
+           \else
+              \noexpand\@secondoftwo
+           \fi
+           \the\toks@
+        }{%
+           \let\reserved@d=#1%
+           \toks@={{#2}{#3}}%
+           \futurelet\@let@token
+        }%
+     }
+   \end{verbatim}
+   (it would look as if the \@ifnextchar<char> is replaced by
+   \@firstoftwo or \@secondoftwo in one expansion step).
+
+   More relevant here is however that \XD@grab@arguments could be
+   implemented as
+   \begin{verbatim}
+     \def\XD@grab@arguments#1#2{%
+        \expandedwith{\the\toks@}{\iffalse}\fi
+        \toks@={#1}%
+        #2\XD@endgrab
+     }
+     \def\XD@endgrab{\iffalse{\fi}}
+   \end{verbatim}
+   ---certainly a braintwister, but everything in this area tends
+   to be. \emoticon{:-)}
+
+   Implementation-wise, I would try making a procedure which is
+   like a simplified main_control and have \expandedwith work
+   primarily by calling this to execute the <commands>. Since most
+   of the complexity of main_control seems to lie in the "inner loop"
+   spaghetti, this might actually be straightforward. In terms of
+   the traditional TeX anatomy, this would (sensitive readers beware)
+   amount to fitting TeX's mouth with an auxiliary stomach that's
+   severely ostomized; anything solid (such as ordinary text characters)
+   mistakenly fed down it should throw errors, but invisible stuff not
+   involving typesetting should be OK.
+\end{TeX-extension-idea}
+
+
+Such dreaming aside, I think the Big Issue is whether argument grabbers 
+should operate in a group or not.
+
+Lars Hellström
+

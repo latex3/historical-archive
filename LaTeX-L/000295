@@ -1,0 +1,3499 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.3E56336C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:47 +0100
+Return-Path: <LATEX-L@DHDURZ1.bitnet>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.3E56336C"
+x-vm-v5-data: ([nil nil nil nil nil nil t t nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-vheader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+x-vm-bookmark: 1
+Content-class: urn:content-classes:message
+Subject: Citations and reference-lists
+Date: Fri, 1 Mar 1991 22:35:59 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE545@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Sender: </PN=David#l#u#r#Rhead/OU=VME/OU=CCC/O=NOTTINGHAM/PRMD=UK.AC/C=GB/@x400-gate>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 295
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.3E56336C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+%  You probably don't remember my mail of 9th October, in which I said
+%        there might need to be separate interfaces for "reference by
+%        number", author-date and "short form".  [I'll have a go
+%        at suggesting what these might be in a future message.]
+%  Well, this is the "future message" containing "the go".  Sorry for =
+the
+%  delay.
+%
+%  This is a LaTeX 2.09 input file partly because its rather long, and =
+partly
+%  so that Malcolm can lift it for TeXline if he's still on the lookout =
+for
+%  articles (and doesn't mind a long one).  Hence, some of the wording =
+is aimed
+%  at a possible TeXline audience.
+%
+%  Comments are particularly invited from people who have practical
+%  experience of the "short form" scheme, since I've not used that =
+scheme
+%  seriously myself.
+%
+%  David Rhead
+%  (JANET: d.rhead@uk.ac.nottingham.ccc.vme)
+%
+\documentstyle[11pt]{article}
+
+\newcommand{\itlatex}
+    {L\kern-.30em\raise.3ex\hbox{\footnotesize\it A}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}       %  For italic =
+in refs
+\newcommand{\BibTeX}
+    {{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\newcommand{\ttbackslash}{\symbol{92}}
+
+\begin{document}
+
+\title{How might \LaTeX\ 3.0 deal with citations and reference-lists?}
+\author{David Rhead \\
+      Nottingham University}
+\date{}
+\maketitle
+
+\tableofcontents
+
+\sloppy
+
+
+\section{Introduction}
+
+Since there are now plans for a new version of \LaTeX\
+\cite{lamport,mittelbach}, this may be a good time to consider
+how a future version should deal with citations and reference-lists.
+
+My viewpoint is that of an advisor to authors who use \LaTeX\ 2.09.
+As such, I'm often in the position of having to decide whether \LaTeX\
+acts inappropriately or whether an  author is asking for something
+inappropriate.  Generally, I have the impression that \LaTeX\ 2.09 =
+sometimes
+makes it unnecessarily difficult for people to comply with the =
+conventions that
+are standard in \lq\lq academic publishing''.
+
+In making the suggestions that follow, I do realise that it's easier for =
+me
+to suggest that the volunteers developing \LaTeX\ 3.0 might provide some =
+new
+facilities than it is for a volunteer to find time to do the work!
+
+I assume that the reader is familiar with the relevant sections of
+\cite{lamport}.
+
+\section{Conventions to be supported}
+\label{conventions}
+
+\subsection{Citation schemes}
+\label{basic-schemes}
+
+In mainstream publishing
+\cite{bs-5605,bs-6371,butcher,chicago,gibaldi,huth,inter,iso-690,oconnor,=
+page},
+there seem to be three basic schemes for citations and the corresponding
+reference-lists:
+\begin{description}
+\item[reference by number]  In this scheme, citations are normally =
+numbered in
+      order of first citation.  In particular, \lq\lq order of first =
+citation''
+      is used by over 300 biomedical journals \cite{huth,inter}, and is
+      specified in the ISO standard \cite{iso-690}.  (Thus, in \BibTeX\ =
+terms,
+      the usual numbering sequence is that given by {\tt unsrt}.)  The =
+number
+      is used as a \lq\lq label'' in the reference-list.
+\item[author-date] There are two main forms of citation, depending on =
+whether
+      or not the cited author's name occurs naturally in a sentence.  In =
+the
+      first case, the citation is of the form \lq\lq\ \dots\ (1972)
+      \dots\ '', whereas in the second case it is of the form \lq\lq\ =
+\dots\
+      (Crane, 1972) \dots\ ''.  There are no \lq\lq labels'' in the
+      reference-list, which is arranged in alphabetical order of =
+authors'
+      surnames (with supplementary rules for \lq\lq tie-breaking'').
+\item[short form] The \lq\lq short form'' scheme is often used when =
+citations
+      occur in footnotes.  Typically, the first citation (or the first
+      citation in the current chapter) gives a fairly full reference but
+      subsequent citations use a short form.  The \lq\lq short form'' =
+may be
+      introduced within the first citation, or given in a table of
+      abbreviations.  There are no \lq\lq labels'' in the =
+reference-list,
+      which may be subdivided by \lq\lq type of cited document''.
+      The scheme is common in the humanities, but also seems to be used =
+by
+      some software-houses when referring to their own publications =
+(see, for
+      example, \cite{norusis}).
+\end{description}
+I think that, in order to make it straightforward to achieve, with =
+\LaTeX,
+the effects that people routinely achieve with traditional publishing
+procedures, it is desirable that \LaTeX\ should provide explicit support =
+for
+all three citation schemes.
+
+Notice that:
+\begin{itemize}
+\item It is not, in general, possible to convert a document from one =
+scheme
+      to another (e.g., from \lq\lq reference by number'' to =
+author-date)
+      automatically.  Some re-writing is required.
+\item The number of items of information that need to be available
+      differ between the schemes.  For a \lq\lq reference by number''
+      citation, it is only necessary to keep track of one item
+      (the number), whereas for the other schemes it is necessary to =
+keep
+      track of more than one item (i.e., the author and the date, or the
+      \lq\lq fairly full form'' and the \lq\lq short form'')
+      so that they can be used separately.
+\item Occasionally, two different schemes may be used in parallel
+      within the same document. (For example, in \cite{norusis},
+      a software-house seems to use \lq\lq short form'' when citing
+      its own publications, but author-date when citing other =
+publications.)
+\end{itemize}
+Thus, it seems to me that the three schemes are best regarded as =
+logically
+distinct.
+
+However, within a particular scheme, there are variations of =
+punctuation, etc.,
+that can be regarded as matters of \lq\lq house style''.
+For example, some journals that have adopted a \lq\lq reference by =
+number''
+scheme use bracketed numerals for citations, while others use =
+superscripts.
+Such variations can be accomodated by differences between style files.
+
+\subsection{Additional references}
+\label{support-additional}
+
+In addition to a list of \lq\lq works cited'', some documents
+have an additional reference-list that specifies \lq\lq further =
+reading''
+or \lq\lq all sources consulted'' (see \cite[pp.\ 182 \& 192]{butcher},
+\cite[p.\ 40]{huth} and \cite[p.\ 22]{bs-4821}).  There needs to be some
+provision for typesetting such additional lists.
+
+
+\section{Deficiencies in \LaTeX\ 2.09}
+\label{2.09-problems}
+
+\subsection{Citations}
+\label{2.09-citations}
+
+When used in conjunction with \BibTeX\ and =
+\verb+\bibliographystyle{unsrt}+,
+\LaTeX\ 2.09 makes a good job of organising citations (and sorting the
+corresponding reference-list) according to the \lq\lq reference by =
+number''
+scheme as required by many journals.
+
+Generally, however, \LaTeX\ 2.09 does not provide the breadth or depth
+of facilities needed to support the variety of requirements for
+mainstream publishing:
+\begin{itemize}
+\item It is unfortunate that the \lq\lq reference by number'' sequence =
+obtained
+      most naturally by the do-it-yourself-er \cite[p.\ 73]{lamport} =
+from
+      \LaTeX\ 2.09 (\lq\lq order of appearance within {\tt =
+thebibliography}'')
+      is unlikely to be what the do-it-yourself-er's journal-editor =
+requires
+      (which will usually be \lq\lq order of first citation'').  The
+      do-it-yourself-er is given no warning (either in \cite{lamport} or =
+by
+      the software) that sorting is likely to be needed.
+\item Although one can use style-options such as {\tt apalike} and
+      {\tt aaai} to re-define \verb+\cite+ and {\tt thebibliography}
+      for an author-date scheme, there are many obstacles placed in the
+      user's way:
+      \begin{itemize}
+      \item The existence of the style-options is not documented in
+            \cite{lamport}.
+      \item If one finds a style-option  in a (software) archive, it
+            may need modification to produce the precise effect =
+required.
+      \item It is not obvious how one should refer separately to two
+            items (author and date) supplied via a \verb+\bibitem+ =
+argument
+            originally designed for one.  The do-it-yourself-er might
+            have to study style files such as {\tt aaai.sty} and {\tt =
+bbl}
+            files such as those produced by {\tt aaai-named.bst} to
+            deduce how to do this.
+      \end{itemize}
+\item The \lq\lq short form'' scheme seems unsupported.
+\item At certain points in a document, an author my need to cite
+      several works at once.  It may be necessary to specify a
+      page (or section, etc\@.) for each work.  For instance,
+      \cite[p.\ 404]{chicago} suggests references of the form
+      \lq\lq (Kelley 1896a, 10; Kelley 1896b; Kelley 1907, 3)''.
+      This is not easy in \LaTeX\ 2.09, since \verb+\cite+'s
+      optional argument applies to the citation as a whole.  The
+      author cannot supply a separate \lq\lq optional argument''
+      for each work.  (By contrast, {\sf EndNote}'s analogous facilities
+      \cite[p.\ 58]{endnote} seem to allow each individual work
+      to be given its own \lq\lq additional text''.)
+\item It does not seem easy to use different schemes in parallel
+      within the same document.  If \verb+\cite+ and
+      {\tt thebibliography} are defined as required for one scheme,
+      they will usually be unsuitable for any other.
+\end{itemize}
+
+\subsection{Additional references}
+\label{2.09-additional}
+
+As stated in section \ref{support-additional} an author may need to
+typeset a list of \lq\lq further reading'' etc., in addition to
+the usual list of \lq\lq works cited''.
+
+If using the {\tt thebibliography} environment from one of \LaTeX\
+2.09's standard styles for such additional references, an author will be
+faced with the following problems:
+\begin{itemize}
+\item the title will be the same as that for the list of \lq\lq works
+      cited'', namely \lq\lq References'' for {\tt article} and
+      \lq\lq Bibliography'' for {\tt report} and {\tt book}
+\item the \lq\lq labels'' (which may be appropriate in the list
+      of \lq\lq works cited'', particularly for the \lq\lq reference
+      by number'' scheme) will also appear in the
+      additional list (where they are inappropriate), because
+      both lists use the same definition of \verb+\bibitem+
+\item by default, the \lq\lq labels'' will not be unique, since
+      the \lq\lq works cited'' list and the \lq\lq additional =
+references''
+      list will both be numbered from one
+\item it will be necessary to supply dummy {\it cite-key\/}s,
+      purely to satisfy the syntax required for a \verb+\bibitem+.
+\end{itemize}
+
+\subsection{Other problems}
+\label{2.09-other}
+
+The definitions of the {\tt thebibliography} environment in \LaTeX\
+2.09's standard styles:
+\begin{itemize}
+\item issue either a \verb+\section*+ or a \verb+\chapter*+ command,
+      using a {\it heading} of \lq\lq References'' for {\tt article}
+      and \lq\lq Bibliography'' for {\tt report} and {\tt book}
+\item set {\it left-head\/} and {\it right-head\/} to either
+      \lq\lq REFERENCES'' or \lq\lq BIBLIOGRAPHY''
+\item do not arrange for a table-of-contents entry.
+\end{itemize}
+These definitions can cause problems when the {\it heading}, etc.\
+supplied by the standard style is inappropriate, or when a =
+table-of-contents
+entry is desired.
+Admittedly, anyone who doesn't like the standard styles is free to
+take copies of the style files and modify them to suit their =
+requirements.
+However, I have the impression that:
+\begin{itemize}
+\item among people who are competent to modify style files,
+      modification of these aspects of the standard styles is \lq\lq the
+      rule'' rather than \lq\lq the exception''
+\item those \LaTeX\ users who aren't particularly computer-literate
+      find the whole business mysterious, and seek out support staff
+      who have to modify these aspects of the style files for them.
+\end{itemize}
+Overall, this seems to be an area where \LaTeX\ 2.09 is failing to
+\lq\lq free people from formatting concerns to allow them to
+concentrate on writing'' \cite[p.\ 8]{lamport}.
+
+An associated problem is that modified style files may no longer be
+compatible with standard utilities such as {\tt lablst}.
+
+\section{Introduction of new facilities}
+\label{new-facils}
+
+It has been decided \cite{mittelbach} that \LaTeX\ 3.0 will be =
+compatible with
+\LaTeX\ 2.09 input files.  Thus, in particular, \LaTeX\ 3.0 must define
+\verb+\cite+ and \verb+thebibliography+ so that they have the same =
+effect on
+\LaTeX\ 2.09 input files as the \LaTeX\ 2.09 definitions do.  This =
+implies that
+it would be difficult for \LaTeX\ 3.0 to (for example) define =
+\verb+\cite+
+so that there can be an optional argument for each work in a multiple =
+citation
+and define \verb+\bibitem+ so that it can have an \lq\lq author'' =
+argument and
+a \lq\lq date'' argument.
+
+It therefore seems best to provide duplicates of the \LaTeX\ 2.09 =
+facilities
+in \LaTeX\ 3.0 (for \lq\lq backwards compatibility'') but to attempt to
+provide new commands/environments in parallel so as to provide the =
+required
+functionality.  The new facilities would be regarded as the \lq\lq =
+normal''
+facilities, would be described in the body of the successor to =
+\cite{lamport},
+ and
+would be the natural choice for new users.  The old facilities would be
+regarded as \lq\lq deprecated'' and relegated to an appendix of the =
+successor
+to \cite{lamport}.
+
+Thus we can have both backwards compatibility and improved facilities
+for the future.
+
+\section{Division of labour}
+\label{div-of-labour}
+
+\subsection{Details needed for document \lq\lq as a whole''}
+
+The three basic citation schemes mentioned in section =
+\ref{basic-schemes}
+determine certain details of a document \lq\lq as a whole''.  For each
+citation, there must be an entry in a reference-list.  Each entry in
+the relevant reference-list must have associated information that can be
+used in citations.
+
+\subsection{Details needed for reference-list, etc.}
+
+There are a lot of other details that need to be resolved.
+
+The information within each reference-list entry will probably need
+formatting according to certain rules of \lq\lq house style''.
+The information given in citations needs organising in a consistent way
+(particularly for the \lq\lq short form'' scheme).
+
+Different people may want to assemble their reference-lists in different =
+ways.
+Some people may wish to \lq\lq do it themselves'' \cite[p.\ 73]{lamport} =
+from
+a physical card-index, while some may prefer to use \BibTeX\ to get =
+details
+>from a {\tt bib} file.  In some disciplines, proprietary systems such =
+as
+{\tt EndNote} \cite{endnote} seem popular (because they help the user to =
+search
+a database for literature to cite, as well as helping the user
+incorporate details of the literature into a document).
+Researchers may also wish to incorporate material obtained by searching
+details held on a {\sc cd-rom}.
+
+A reference-list generally needs sorting into a particular order.  Since =
+the
+list may occupy several pages, I assume that any sorting is best done =
+outside
+\LaTeX, either by other software (e.g., \BibTeX) or manually by the =
+author.
+
+\subsection{\LaTeX\ and other software}
+
+It seems best to regard the movement of text-strings (e.g., an author's
+surname) within the \lq\lq document as a whole'' as a task that is =
+distinct
+>from the arrangement of details within the text-strings, and to assume =
+a
+\lq\lq division of labour'' in which the former task is performed by =
+\LaTeX\
+while the latter is performed by some other software or manually by the =
+author.
+The \lq\lq division of labour'' between \LaTeX\ 2.09 and \BibTeX\ seems =
+to set
+a good precedent.
+
+This division of labour will lead to modular software.  Once the
+interface between a reference-list and the rest of the document has
+been defined, people can use \LaTeX\ for the body of their document,
+but can:
+\begin{itemize}
+\item experiment with different software (\BibTeX, {\sf EndNote})
+      for formatting the details of their reference-lists
+\item enhance the other software (e.g., \BibTeX) independently
+      of enhancements to \LaTeX.
+\item lay their reference-lists out manually if they prefer.
+\end{itemize}
+
+\section{\protect\LaTeX\ 3.0: A possible user interface?}
+\label{what-to-do}
+
+\subsection{Specifications and names}
+
+If the reasoning given in sections \ref{conventions}, \ref{new-facils}
+and \ref{div-of-labour} is accepted, consideration needs to be given to
+the form that new commands/environments should take in order to support =
+the
+three basic citation schemes, and to provide facilities for \lq\lq =
+additional
+references''.  In particular, it will be necessary to choose
+names other than \verb+\cite+, {\tt thebibliography} and \verb+\bibitem+ =
+(since
+these names will be kept for the facilities provided for compatibility =
+with
+\LaTeX\ 2.09).
+
+
+\subsection{Four sets of commands/environments}
+\label{4-sets}
+
+It seems to me that it would probably be convenient to have three sets =
+of
+commands/environments for dealing with citations and the corresponding
+reference-lists, each set specifically designed to implement a =
+particular
+citation scheme.  Having three such sets gives scope for taking proper
+account of the peculiarities of each scheme, without having one scheme
+adversely affected by the peculiarities of another.
+
+To avoid the difficulties mentioned in section \ref{2.09-additional},
+it might also be worth having a specific environment for
+\lq\lq additional references''.
+
+\LaTeX\ 3.0 might, for example, have commands/environments as specified
+in the following table.
+
+\begin{center}
+\begin{footnotesize}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lccccccc}
+\hline
+                    &  Citation        & Environment for & Entry in      =
+     \\
+                    &                  & reference-list  & =
+reference-list     \\
+\hline
+Reference by number &  \verb+\numcite+ & {\tt numrefs}   & =
+\verb+\numentry+
+ \\
+\hline
+Author-date         &  \verb+\dcite+
+                                       & {\tt adrefs}    & =
+\verb+\adentry+    \\
+                    &  \verb+\adcite+ &                 &                =
+ \\
+\hline
+Short form          &  \verb+\firstcite+  & {\tt sfrefs}    & =
+\verb+\sfentry+
+  \\
+                    &  \verb+\sfcite+&              &                    =
+ \\
+\hline
+Additional references&    ---         &  {\tt morerefs} & =
+\verb+\moreentry+ \\
+\hline
+{\it Analogue at 2.09} &  \verb+\cite+ & {\tt thebibliography}
+                                                          & =
+\verb+\bibitem+   \\
+\hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+
+Here it is assumed that:
+\begin{itemize}
+\item \verb+\numcite+ and \verb+\numentry+ have {\it key-list} and
+      {\it cite-key} (respectively) as their only mandatory arguments.
+\item \verb+\dcite+ and \verb+\adcite+ have {\it key-list} as argument.
+      \verb+\dcite+ gives a citation of the form (1972),
+      while \verb+\adcite+ gives a citation of the form (Crane, 1972).
+      \verb+\adentry+ has three arguments: the {\it cite-key},
+      the author (e.g., Crane), and the date (e.g., 1972).
+\item \verb+\firstcite+ and \verb+\sfcite+ have {\it key-list} as =
+argument.
+      \verb+\firstcite+ gives the form of citation to be used when a =
+work
+      is first mentioned.  \verb+\sfcite+ gives the short form
+      to be used in subsequent citations.
+      \verb+\sfentry+ might have 3 arguments: the {\it cite-key}, the =
+form
+      of reference to be used at the first citation, and the short form
+      to be used subsequently.
+\end{itemize}
+
+Although it would be desirable for the successors to the ``standard =
+styles''
+to define facilities for all three citation schemes, other
+\verb+\documentstyle+s need not define facilities for all three.  For =
+example,
+a journal that wants its authors to use the author-date scheme would =
+supply a
+style file that only provides author-date facilities.
+
+\subsection{Further details}
+\label{further-details}
+
+\subsubsection{Reference by number}
+
+The \verb+\numcite+ and \verb+\numentry+ commands might take the form
+\verb+\numcite{+{\it key-list}\verb+}+ and
+\verb+\numentry{+{\it cite-key}\verb+}+.  Notice that, since =
+\verb+\numentry+
+is specifically designed for \lq\lq reference by number'', there is no =
+need to
+allow an optional {\it label} argument like that for \verb+\bibitem+.
+
+To conform to the ISO specification \cite{iso-690}, the successors to =
+the
+``standard styles'' would arrange for \verb+\numcite+ to give a citation =
+of the
+ form (24)
+and for \verb+\numentry+ to give a reference-list entry of the form
+\begin{description}
+\item[{\rm 24.}] {\sc Crane, D.} {\it Invisible colleges.} \dots
+\end{description}
+
+Perhaps \LaTeX\ 3.0 could use the {\tt aux} file to refine an initial =
+estimate
+of the width of the final \verb+\numentry+'s \lq\lq label'', so that the
+do-it-yourself-er wouldn't need to supply a {\it widest-label\/} =
+argument.
+
+\subsubsection{Author-date}
+
+The commands \verb+\dcite+, \verb+\adcite+ and \verb+\adentry+ might
+be defined to have the forms \verb+\dcite{+{\it key-list}\verb+}+,
+\verb+\adcite{+{\it key-list}\verb+}+ and
+\verb+\adentry{+{\it cite-key}\verb+}{+{\it author}\verb+}{+{\it =
+date}\verb+}+.
+The {\tt adrefs} environment would {\it not} have a {\it widest-label}
+argument, since in this scheme entries in the reference-list are =
+unlabelled.
+
+If such a definition of \verb+\adentry+ was documented in the successor =
+to
+\cite{lamport}, a do-it-yourself-er would be able to use the author-date
+system just as easily as the \lq\lq reference by number'' system.
+
+To conform to the ISO specification \cite{iso-690}, the successors to =
+the
+``standard styles'' would arrange for \verb+\dcite+ to give a citation =
+of
+the form (1972), for \verb+\adcite+ to give a citation of the form
+(Crane, 1972), and for \verb+\adentry+ to give a reference-list entry =
+with no
+label.
+
+\subsubsection{Short form}
+
+The \verb+\firstcite+, \verb+\sfcite+ and \verb+\sfentry+ commands might
+be defined as \verb+\firstcite{+{\it key-list}\verb+}+,
+\verb+\sfcite{+{\it key-list}\verb+}+ and
+\verb+\sfentry{+{\it cite-key}\verb+}[+{\it
+      fairly-full-form}\verb+]{+{\it short-form}\verb+}+.
+Such  definitions would, in effect, automate Butcher's manual method of
+ensuring consistency \cite[p.\ 178]{butcher}.  Since, in some =
+situations, a
+reference is given in full when it is first cited \cite[p.\ =
+407]{chicago},
+the default {\it fairly-full-form} would be the full reference  as
+put in the reference-list by \verb+\sfentry+.
+The {\tt sfrefs} environment would {\em not} have a {\it widest-label}
+argument.
+
+The successors to the ``standard styles'' would arrange for =
+\verb+\firstcite+
+to produce the {\it fairly-full-form} and \verb+\sfcite+ to produce the
+{\it short-form}.%
+\footnote{%
+This makes the pessimistic assumption that \LaTeX\ can not itself =
+determine
+whether a citation is the \lq\lq first citation'' of a particular work.
+If someone was ingenious enough to produce code that determined whether =
+a
+citation is a \lq\lq first citation'', {\tt\ttbackslash firstcite} would =
+be
+unnecessary (except, perhaps, for the construction of tables of =
+abbreviations
+\cite[p.\ 414]{chicago}.)%
+}
+To conform to the ISO specification \cite{iso-690}, neither
+\verb+\firstcite+ nor \verb+\sfcite+
+would add any punctuation (but, for example, a style file that =
+implemented
+the MLA conventions would have to add brackets \cite[ch.\ 5]{gibaldi}).
+In the successors to the ``standard styles'',
+the \verb+\sfentry+ would produce an entry with no label.
+
+People producing other style files would be free to implement other
+conventions \cite[p.\ 168]{butcher}.
+
+Some works may have no bibliography or may have just a \lq\lq select
+bibliography'' \cite[p.\ 168]{butcher}.  For such works, it will still
+be necessary to supply the details for use by \verb+\firstcite+ and
+\verb+\sfcite+.  It may therefore be worth allowing a form of
+{\tt sfrefs} (e.g., \verb+\begin{sfrefs}[null]+)
+that holds details of cited works but does no typesetting.
+
+\subsubsection{Additional references}
+\label{3.0-additional}
+
+Since the entries in an \lq\lq additional list'' will not be cited as =
+such
+(although an \lq\lq all sources consulted'' list may contain a duplicate =
+of
+a cited entry in a \lq\lq works cited'' list), the list will be typeset
+without \lq\lq labels''.  Even in a document that uses the \lq\lq =
+reference by
+number'' citation scheme (and so needs \lq\lq labels'' in the {\tt =
+numrefs}
+list), there will be no \lq\lq labels'' for the entries in an additional =
+list.
+
+It therefore seems likely that the {\tt morerefs} environment could
+be implemented as a variation of {\tt adrefs} or {\tt sfrefs}, the main =
+changes
+being:
+\begin{itemize}
+\item a change of title (but see section \ref{reflist-scope})
+\item absence of
+      {\it cite-key, author, date, fairly-full-form} and {\it =
+short-form}
+      arguments.
+\end{itemize}
+
+\subsection{Order within the reference-list}
+
+As stated in section \ref{div-of-labour}, it is probably best to leave
+any sorting of the reference-list to some other software, or to the =
+author.
+
+However, it might be possible for \LaTeX\ to provide a warning if a
+reference-list is obviously in the wrong order.  Perhaps:
+\begin{itemize}
+\item although there may be no easy alternative to numbering
+      \verb+\numcite+s in order of appearance within {\tt numrefs}
+      (even though \lq\lq order of first citation'' is usually what
+      is required), \LaTeX\ could give a warning if a \verb+\numcite+
+      gave a number that exceeded the \lq\lq biggest number produced
+      by \verb+\numcite+ so far'' by more than one.
+\item there could be a warning if an \verb+\adentry+ had an
+      {\it author} whose first letter came before the first letter of =
+the
+      preceding \verb+\adentry+'s {\it author} in the alphabet.
+\end{itemize}
+
+\subsection{Citation of a specific division}
+\label{division}
+
+As stated in section \ref{2.09-citations}, provision needs to be made =
+for
+the citation of a particular division (e.g., page, section, chapter,
+equation) of another work.  The syntax of citation commands should
+not only allow several works to be cited simultaneously, but should also
+allow the relevant division of each work to be specified.
+
+From the author's point-of-view, there would be a variety of =
+satisfactory
+ways to specify citations that are to appear as
+``[4, p.\ 10; 5; 6, p.\ 3]'', e.g.
+\begin{verbatim}
+    \numcite{smith[p. 10],brown,jones[p. 3]}
+    \numcite{smith, p. 10; brown; jones, p. 3}
+    \numcite{smith & p. 10; brown; jones & p. 3}
+\end{verbatim}
+The precise syntax would have to take
+account of the practicalities of programming a command that has to be =
+able
+to accept pairs of arguments, where the second member of each pair is =
+optional.
+
+Analogous facilities would be needed for author-date and \lq\lq short =
+form''
+citations.
+
+Incidentally, since abbreviations such as p., ch., sec., and fig.\ are
+common when such divisions are specified, I think that citation commands
+should arrange for the optional arguments to be typeset with
+\verb+\frenchspacing+.
+
+\section{Details of reference-lists}
+
+\subsection{Variations within mainstream publishing practice}
+\label{mainstream-lists}
+
+Although many academic and technical publications involve only a single
+undivided reference-list, some such publications involve:
+\begin{description}
+\item[more than one list]
+      This situation can arise:
+      \begin{itemize}
+      \item when there is a list of \lq\lq further reading'' etc.,
+            as well as the list of \lq\lq works cited''.
+            This case has been covered in sections =
+\ref{support-additional},
+            \ref{2.09-additional}, \ref{4-sets} and =
+\ref{3.0-additional}.
+      \item when conference proceedings are produced, since each
+            contribution may have its own reference-list.
+      \item in manuals for software.  For example, in \cite{norusis}, a
+            software house's own publications are introduced in the =
+preface
+            and cited (in effect) using a \lq\lq short form'' scheme, =
+while
+            other people's publications are listed at the end of the =
+manual
+            and are cited using the author-date scheme.
+      \end{itemize}
+\item[subdivisions within a list]
+      Some reference-lists, particularly in the humanities, are =
+subdivided
+      according to the source of the cited documents (see
+      \cite[p.\ 183]{butcher}, \cite[p.\ 425]{chicago} and
+      \cite[p.\ 88]{gibaldi}).
+\end{description}
+
+In some cases, an author may wish to add explanatory paragraphs =
+describing,
+for example, how material was chosen for a \lq\lq select bibliography''
+\cite[fig.\ 15.11]{chicago} or information about access to (document)
+archives \cite[fig.\ 15.16]{chicago}.
+
+\subsection{\protect\LaTeX\ 2.09}
+
+\LaTeX\ 2.09 can cope with documents that have more than one
+{\tt thebibliography} environment, and seems to deal satisfactorily
+with a situation in which some \verb+\cite+ commands are to
+one {\tt thebibliography} and some are to another (provided that
+the {\it cite-key\/}s are unique).  The default effect is
+to give {\it label\/}s that are not unique, which will be acceptable
+when each contribution to a \lq\lq conference proceedings'' has its
+references numbered from one, but not if \lq\lq works cited''
+and \lq\lq additional references'' are both numbered from one
+(see section \ref{2.09-additional}).
+
+The specification of {\tt thebibliography} \cite[p.\ 187]{lamport}
+does not allow anything other than \verb+\bibitem+s within a
+{\tt thebibliography} environment.  Hence, it is not clear
+how one can introduce subheadings within a reference-list.
+(In practice, a \verb+\section*+ seems to work between
+\verb+\bibitem+s, but I suspect that it puts \LaTeX\ 2.09 into a loop
+if placed before the first \verb+\bibitem+.)
+
+Anyone trying to add explanatory paragraphs (as in \cite[fig.\ =
+15.11]{chicago}
+and \cite[fig.\ 15.16]{chicago}) will probably find that \LaTeX\ 2.09
+objects that \lq\lq{\verb+Something's wrong--perhaps a missing =
+\item+}''.
+
+\subsection{\protect\LaTeX\ 3.0}
+
+Ideally, in order to provide support for the conventions that are =
+routine
+in mainstream publishing practice, \LaTeX\ 3.0 should be able to cope =
+with
+all the variations outlined in section \ref{mainstream-lists}.
+
+\subsubsection{Multiple lists}
+
+The suggestions made in section \ref{what-to-do} would probably cater =
+for most
+situations where a document has more than one reference-list.
+
+The distinction between {\tt morerefs} and the other environments for
+reference-lists would take care of situations where there is a list of
+\lq\lq additional references'' as well as a list of \lq\lq works =
+cited''.
+The distinction between the \lq\lq short form'' commands/environment
+and the other commands/environments would take care of situations where =
+a
+software house uses \lq\lq short form'' for its own publications
+and some other scheme for other publications.  Conference proceedings
+will be able to have \lq\lq a reference-list for each contribution''
+if \LaTeX\ 3.0 follows the \LaTeX\ 2.09 precedent that allows
+more than one {\tt thebibliography} in a document.
+
+\subsubsection{Subdivisions and explanatory paragraphs}
+
+I have the impression that, because the sciences have different =
+conventions
+>from the humanities, people using the \lq\lq reference by number'' =
+citation
+scheme are unlikely to want the options of subdividing their =
+reference-list
+and inserting explanatory paragraphs.  Therefore, it would be legitimate =
+to
+say (for example) \lq\lq subdivisions and explanatory paragraphs are =
+supported
+within {\tt adrefs}, {\tt sfrefs} and {\tt morerefs} but not within
+{\tt numrefs}'', if this made the programming task easier.
+
+For example, it might be convenient to implement {\tt numrefs} as
+a \lq\lq list-making environment'' (as in \LaTeX\ 2.09) but to implement
+the other environments in some other way.  Lack of support for =
+subdivisions
+and explanatory paragraphs is unlikely to matter in {\tt numrefs}; the
+\lq\lq other way'' (more like \verb+\paragraph+, perhaps?) might make it
+easier to implement support for these facilities in the other =
+environments.
+
+\subsubsection{Other problems}
+\label{reflist-scope}
+
+One approach to some of the problems mentioned in section =
+\ref{2.09-other}
+is for the standard styles to define the heading for the reference-list =
+by,
+for example, \verb+\def\numrefsheading{References}+, so that anyone who =
+wants
+to change the heading can do so by issuing a \verb+\renewcommand+ =
+command
+somewhere before the start of their reference-list.
+
+Another approach is to work in terms of the standard publishing industry
+concept of \lq\lq back matter'' \cite[p.\ 4]{chicago}.  Instead of =
+having to
+understand where the {\it heading}, {\it left-head}, {\it right-head} =
+and
+table-of-contents entry (or lack of it) originate for units such as the
+glossary (if any), the reference-list(s) and the index (if any)
+{\em separately}, an author would only have to understand how these =
+features
+are treated {\em consistently} within \lq\lq back matter''.
+
+Although the \lq\lq back matter'' approach could be used if environments
+such as {\tt numrefs} followed the {\tt thebibliography} precedent and =
+issued
+commands such as \verb+\chapter+ or \verb+\section+ themselves, authors
+might find the way that {\it heading}, {\it left-head}, {\it right-head} =
+and
+table-of-contents entry materialize less mysterious if it was just the =
+same
+for a reference-list as for (say) a glossary.  This would imply that
+{\tt numrefs}, {\tt adrefs}, {\tt sfrefs} and {\tt morerefs} should
+not issue commands like \verb+\chapter+ or \verb+\section+ themselves.
+As a bonus, it would then be possible for an author to insert an =
+explanatory
+paragraph before the reference-list, and to arrange for subdivisions.
+
+For example, if there was a {\tt backmatter} environment within which
+\verb+\chapter+ was treated as defining a unit of \lq\lq back matter'',
+an author's file might contain commands such as
+\begin{verbatim}
+\begin{backmatter}
+   \chapter{Glossary}
+      ...
+   \chapter{References}
+      \section{Primary sources}
+      \begin{sfrefs}
+      ...
+      \end{sfrefs}
+      \section{Secondary sources}
+      \begin{sfrefs}
+      ...
+      \end{sfrefs}
+   \chapter{Further reading}
+      \begin{morerefs}
+      ...
+      \end{morerefs}
+\end{backmatter}
+\end{verbatim}
+
+\section{Conclusion}
+
+\LaTeX\ has a large number of users, and potential users, who wish to =
+produce
+documents that conform to the conventions that are standard in academic
+publishing.  One element of their requirement is the need to conform to =
+the
+conventions for citations and reference-lists that are usual in their
+disciplines.
+
+The choice for \LaTeX\ 3.0 may be between:
+\begin{enumerate}
+\item having more facilities for citations and reference-lists than
+      \LaTeX\ 2.09, perhaps as suggested in section \ref{what-to-do}.
+      This would imply an increase in:
+      \begin{itemize}
+      \item the amount of code needed to implement the facilities, and
+            the guru time needed for writing the code
+      \item the number of pages needed, in the successor to =
+\cite{lamport},
+            to describe the facilities --- perhaps 8 pages rather than
+            the 2 pages in \cite{lamport}.
+      \end{itemize}
+\item no significant increase in the facilities provided for citations
+      and reference-lists.  Contrary to the idea of \lq\lq freeing =
+people
+      from formatting concerns to allow them to concentrate on writing''
+      \cite[p.\ 8]{lamport}, many authors (perhaps most authors) would =
+be
+      wasting time:
+      \begin{itemize}
+      \item hacking at style-files
+      \item searching (software) archives for ready made solutions
+      \item taking up support staff's time in the search for advice =
+(with the
+ support staff
+            in turn taking up gurus' time in their search for =
+solutions).
+      \end{itemize}
+      Moreover, most of this time would be wasted by (or on behalf of) =
+authors
+      who don't want anything at all exotic; they just want to conform
+      to the conventions that are standard in traditional academic =
+publishing.
+\end{enumerate}
+I'm inclined to think that the first option would be the lesser of the
+two evils.
+
+\section*{Appendix: Interface with \protect\BibTeX}
+\addcontentsline{toc}{section}{Appendix: Interface with \protect\BibTeX}
+
+The preceding sections make some suggestions for a \LaTeX\ 3.0 user
+interface that would enable the do-it-yourself-er to conform to
+the conventions that are usual in academic publishing.
+It is also necessary to consider the implications for the interface to
+\BibTeX.
+
+\subsection*{Single reference-list}
+
+Inspecting {\tt bst} files gives me the impression that, if it
+was decided to adopt a scheme such as that described in section
+\ref{what-to-do}, it would be fairly easy to produce new {\tt bst} files
+to supersede existing ones.  For example, a {\tt bst} file
+that implemented a \lq\lq reference by number'' scheme would write
+\verb+\numentry+ commands rather than \verb+\bibitem+ commands.
+
+If {\tt bst} files were created in this way, they would be able to
+deal with the straightforward situation when there is a single
+reference-list that contains all works cited (plus, possibly,
+any works specified by a command like \verb+\nocite+).
+
+\subsection*{Multiple reference-lists, all with the same style}
+
+More complicated situations can arise in which a document involves
+several reference-lists.  For example:
+\begin{itemize}
+\item The editor of the proceedings of a conference might want the
+      published proceedings to have a reference-list at the end of each
+      chapter.
+\item If, as suggested in section \ref{reflist-scope}, {\tt sfrefs} was
+      implemented in a way that allowed a sequence of {\tt sfrefs} =
+environments
+      to each be preceded by a \verb+\section+ command, then, as far as
+      \BibTeX\ is concerned, each {\tt sfrefs} environment might be a =
+separate
+      reference-list.
+\end{itemize}
+
+In both these examples, the document would involve several =
+reference-lists,
+but each reference-list would need to be typeset in a common style.
+I assume that the main problems would be in arranging:
+\begin{itemize}
+\item to have multiple {\tt bbl} files, or distinct divisions of a =
+single
+      {\tt bbl} file
+\item that each reference-list takes its entries from the correct {\tt =
+bbl}
+      file, or from the correct division of a single {\tt bbl} file.
+\end{itemize}
+
+\subsection*{Two reference-lists, each with a different style}
+
+People producing documents that have a second reference-list (e.g.,
+\lq\lq further reading'') in addition to the list of \lq\lq works =
+cited''
+might want the first list typeset in one style and the second
+list typeset in another.  (In particular, if the \lq\lq reference by =
+number''
+scheme is used, the first list will have \lq\lq labels'' but the second
+list will have no \lq\lq labels''.)  If the commands/environments =
+suggested
+in section \ref{what-to-do} were implemented, the first list would use
+{\tt numrefs}, {\tt adrefs} or {\tt sfrefs}, while the second list would
+use {\tt morerefs}.
+
+In this situation, it would be necessary to communicate to \BibTeX\
+that two lists are required, but that they are to be typeset in =
+different
+styles.  Since the second list is to contain \lq\lq works {\em not\/}
+cited'', it will also be necessary to specify the works to be shown in =
+the
+second list.
+
+If it is decided to extend the interface between \LaTeX\ and \BibTeX\ to
+cater for such situations, it will probably be necessary to consider
+defining alternatives to \LaTeX\ 2.09's \verb+\bibliography+ and
+\verb+\bibliographystyle+ commands, since it seems unlikely that the =
+syntax
+of the \LaTeX\ 2.09 commands could be extended so as to pass the =
+necessary
+information.  One might, for example, consider syntax such as
+\verb+\bibtexcites[+{\it cites-style}\verb+]{+{\it bib-files}\verb+}+
+and
+\verb+\bibtexmore[+{\it more-style}\verb+]{+{\it bib-files}\verb+}{+{\it
+      key-list}\verb+}+.
+Here, it is assumed that:
+\begin{itemize}
+\item the \verb+\documentstyle+ would set defaults for the {\it =
+cites-style}
+      and {\it more-style} that are to be passed to \BibTeX, but the =
+user
+      can over-ride the defaults via the optional arguments to
+      \verb+\bibtexcites+ and \verb+\bibtexmore+
+\item \verb+\bibtexmore+'s {\it key-list} argument would be used to
+      specify the works to be included in the list of \lq\lq additional
+      references''.
+\end{itemize}
+
+If it is not practicable to extend the \LaTeX/\BibTeX\ interface to =
+cater for
+these situations automatically, it would presumably be a matter of
+some \lq\lq human intervention'':
+\begin{itemize}
+\item to prepare a {\tt bbl} file for the \lq\lq additional references''
+\item to \verb+\input+ the {\tt bbl} file.
+\end{itemize}
+
+\begin{thebibliography}{00}
+\bibitem{lamport} {\sc Leslie Lamport.}
+      {\it \itlatex: A document preparation system.}
+      Addison-Wesley, 1986.
+\bibitem{mittelbach} {\sc Frank Mittelbach and Rainer Sch\"{o}pf.}
+      With \LaTeX\ into the ninties.
+      {\it TUGboat,}   1989, {\bf 10}, 681--690.
+\bibitem{bs-5605}
+      {\it Citing publications by bibliographical references.}
+      BS 5605.  British Standards Institution, 1978.
+\bibitem{bs-6371}
+      {\it Citation of unpublished documents.}
+      BS 6371.  British Standards Institution, 1983.
+\bibitem{butcher}
+      {\sc Judith Butcher.}
+      {\it Copy-editing.}
+      Cambridge University Press, 1981.
+\bibitem{chicago}
+      {\it The Chicago manual of style.}
+      Chicago University Press, 1982.
+\bibitem{gibaldi}
+      {\sc Joseph Gibaldi and Walter S. Achert.}
+      {\it MLA handbook for writers of research papers.}
+      Modern Language Association of America, 1988.
+\bibitem{huth}
+      {\sc Edward J. Huth.}
+      {\it Medical style and format.}
+      ISI Press, 1987.
+\bibitem{inter}
+      {\sc International Committee of Medical Journal Editors.}
+      Uniform requirements for manuscripts submitted to biomedical
+            journals.
+      {\it British Medical Journal,}   1988, {\bf 296}, 401--405.
+\bibitem{iso-690}
+      {\it Documentation --- bibliographic references
+            --- content, form and structure.}
+      ISO 690.  International Organization for Standardization, 1987.
+\bibitem{oconnor}
+      {\sc Maeve O'Connor.}
+      {\it Editing scientific books and journals.}
+      Pitman Medical, 1978.
+\bibitem{page}
+      {\sc Gillian Page, Robert Campbell and Jack Meadows.}
+      {\it Journal publishing: principles and practice.}
+      Butterworths, 1987.
+\bibitem{norusis}
+      {\sc Marija J. Noru\v{s}is.}
+      {\it SPSS-X Introductory Statistics Guide for Release^3.}
+      SPSS Inc., 1988.
+\bibitem{bs-4821}
+      {\it Presentation of theses and dissertations.}
+      BS 4821.  British Standards Institution, 1990.
+\bibitem{endnote}
+      {\it EndNote:  A reference database and bibliography maker.}
+      Berkeley: Niles \& Associates, Inc., 1989.
+\end{thebibliography}
+
+\end{document}
+
+
+
+------_=_NextPart_001_01C19443.3E56336C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Citations and reference-lists</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>%&nbsp; You probably don't remember my mail of 9th =
+October, in which I said</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; there =
+might need to be separate interfaces for &quot;reference by</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+number&quot;, author-date and &quot;short form&quot;.&nbsp; [I'll have a =
+go</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at =
+suggesting what these might be in a future message.]</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Well, this is the &quot;future message&quot; =
+containing &quot;the go&quot;.&nbsp; Sorry for the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; delay.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; This is a LaTeX 2.09 input file partly =
+because its rather long, and partly</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; so that Malcolm can lift it for TeXline if =
+he's still on the lookout for</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; articles (and doesn't mind a long one).&nbsp; =
+Hence, some of the wording is aimed</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; at a possible TeXline audience.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Comments are particularly invited from people =
+who have practical</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; experience of the &quot;short form&quot; =
+scheme, since I've not used that scheme</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; seriously myself.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; David Rhead</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; (JANET: =
+d.rhead@uk.ac.nottingham.ccc.vme)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[11pt]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\itlatex}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+{L\kern-.30em\raise.3ex\hbox{\footnotesize\it A}\kern-.15em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; %&nbsp; For italic in refs</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\BibTeX}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; {{\rm B\kern-.05em{\sc =
+i\kern-.025em b}\kern-.08em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\ttbackslash}{\symbol{92}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{How might \LaTeX\ 3.0 deal with citations and =
+reference-lists?}</FONT>
+
+<BR><FONT SIZE=3D2>\author{David Rhead \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nottingham =
+University}</FONT>
+
+<BR><FONT SIZE=3D2>\date{}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\tableofcontents</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\sloppy</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\section{Introduction}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Since there are now plans for a new version of =
+\LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>\cite{lamport,mittelbach}, this may be a good time to =
+consider</FONT>
+
+<BR><FONT SIZE=3D2>how a future version should deal with citations and =
+reference-lists.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My viewpoint is that of an advisor to authors who use =
+\LaTeX\ 2.09.</FONT>
+
+<BR><FONT SIZE=3D2>As such, I'm often in the position of having to =
+decide whether \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>acts inappropriately or whether an&nbsp; author is =
+asking for something</FONT>
+
+<BR><FONT SIZE=3D2>inappropriate.&nbsp; Generally, I have the impression =
+that \LaTeX\ 2.09 sometimes</FONT>
+
+<BR><FONT SIZE=3D2>makes it unnecessarily difficult for people to comply =
+with the conventions that</FONT>
+
+<BR><FONT SIZE=3D2>are standard in \lq\lq academic publishing''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In making the suggestions that follow, I do realise =
+that it's easier for me</FONT>
+
+<BR><FONT SIZE=3D2>to suggest that the volunteers developing \LaTeX\ 3.0 =
+might provide some new</FONT>
+
+<BR><FONT SIZE=3D2>facilities than it is for a volunteer to find time to =
+do the work!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I assume that the reader is familiar with the relevant =
+sections of</FONT>
+
+<BR><FONT SIZE=3D2>\cite{lamport}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Conventions to be supported}</FONT>
+
+<BR><FONT SIZE=3D2>\label{conventions}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Citation schemes}</FONT>
+
+<BR><FONT SIZE=3D2>\label{basic-schemes}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In mainstream publishing</FONT>
+
+<BR><FONT =
+SIZE=3D2>\cite{bs-5605,bs-6371,butcher,chicago,gibaldi,huth,inter,iso-690=
+,oconnor,page},</FONT>
+
+<BR><FONT SIZE=3D2>there seem to be three basic schemes for citations =
+and the corresponding</FONT>
+
+<BR><FONT SIZE=3D2>reference-lists:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[reference by number]&nbsp; In this scheme, =
+citations are normally numbered in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; order of first =
+citation.&nbsp; In particular, \lq\lq order of first citation''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is used by over 300 =
+biomedical journals \cite{huth,inter}, and is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; specified in the ISO =
+standard \cite{iso-690}.&nbsp; (Thus, in \BibTeX\ terms,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the usual numbering =
+sequence is that given by {\tt unsrt}.)&nbsp; The number</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is used as a \lq\lq =
+label'' in the reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>\item[author-date] There are two main forms of =
+citation, depending on whether</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or not the cited =
+author's name occurs naturally in a sentence.&nbsp; In the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; first case, the =
+citation is of the form \lq\lq\ \dots\ (1972)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \dots\ '', whereas in =
+the second case it is of the form \lq\lq\ \dots\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Crane, 1972) \dots\ =
+''.&nbsp; There are no \lq\lq labels'' in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference-list, which =
+is arranged in alphabetical order of authors'</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; surnames (with =
+supplementary rules for \lq\lq tie-breaking'').</FONT>
+
+<BR><FONT SIZE=3D2>\item[short form] The \lq\lq short form'' scheme is =
+often used when citations</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; occur in =
+footnotes.&nbsp; Typically, the first citation (or the first</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citation in the =
+current chapter) gives a fairly full reference but</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; subsequent citations =
+use a short form.&nbsp; The \lq\lq short form'' may be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; introduced within the =
+first citation, or given in a table of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; abbreviations.&nbsp; =
+There are no \lq\lq labels'' in the reference-list,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; which may be =
+subdivided by \lq\lq type of cited document''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The scheme is common =
+in the humanities, but also seems to be used by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; some software-houses =
+when referring to their own publications (see, for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; example, =
+\cite{norusis}).</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+
+<BR><FONT SIZE=3D2>I think that, in order to make it straightforward to =
+achieve, with \LaTeX,</FONT>
+
+<BR><FONT SIZE=3D2>the effects that people routinely achieve with =
+traditional publishing</FONT>
+
+<BR><FONT SIZE=3D2>procedures, it is desirable that \LaTeX\ should =
+provide explicit support for</FONT>
+
+<BR><FONT SIZE=3D2>all three citation schemes.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Notice that:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item It is not, in general, possible to convert a =
+document from one scheme</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to another (e.g., from =
+\lq\lq reference by number'' to author-date)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; automatically.&nbsp; =
+Some re-writing is required.</FONT>
+
+<BR><FONT SIZE=3D2>\item The number of items of information that need to =
+be available</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; differ between the =
+schemes.&nbsp; For a \lq\lq reference by number''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citation, it is only =
+necessary to keep track of one item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (the number), whereas =
+for the other schemes it is necessary to keep</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; track of more than one =
+item (i.e., the author and the date, or the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq fairly full =
+form'' and the \lq\lq short form'')</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; so that they can be =
+used separately.</FONT>
+
+<BR><FONT SIZE=3D2>\item Occasionally, two different schemes may be used =
+in parallel</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; within the same =
+document. (For example, in \cite{norusis},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a software-house seems =
+to use \lq\lq short form'' when citing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; its own publications, =
+but author-date when citing other publications.)</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>Thus, it seems to me that the three schemes are best =
+regarded as logically</FONT>
+
+<BR><FONT SIZE=3D2>distinct.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, within a particular scheme, there are =
+variations of punctuation, etc.,</FONT>
+
+<BR><FONT SIZE=3D2>that can be regarded as matters of \lq\lq house =
+style''.</FONT>
+
+<BR><FONT SIZE=3D2>For example, some journals that have adopted a \lq\lq =
+reference by number''</FONT>
+
+<BR><FONT SIZE=3D2>scheme use bracketed numerals for citations, while =
+others use superscripts.</FONT>
+
+<BR><FONT SIZE=3D2>Such variations can be accomodated by differences =
+between style files.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Additional references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{support-additional}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In addition to a list of \lq\lq works cited'', some =
+documents</FONT>
+
+<BR><FONT SIZE=3D2>have an additional reference-list that specifies =
+\lq\lq further reading''</FONT>
+
+<BR><FONT SIZE=3D2>or \lq\lq all sources consulted'' (see \cite[pp.\ 182 =
+\&amp; 192]{butcher},</FONT>
+
+<BR><FONT SIZE=3D2>\cite[p.\ 40]{huth} and \cite[p.\ =
+22]{bs-4821}).&nbsp; There needs to be some</FONT>
+
+<BR><FONT SIZE=3D2>provision for typesetting such additional =
+lists.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\section{Deficiencies in \LaTeX\ 2.09}</FONT>
+
+<BR><FONT SIZE=3D2>\label{2.09-problems}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Citations}</FONT>
+
+<BR><FONT SIZE=3D2>\label{2.09-citations}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>When used in conjunction with \BibTeX\ and =
+\verb+\bibliographystyle{unsrt}+,</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 2.09 makes a good job of organising citations =
+(and sorting the</FONT>
+
+<BR><FONT SIZE=3D2>corresponding reference-list) according to the \lq\lq =
+reference by number''</FONT>
+
+<BR><FONT SIZE=3D2>scheme as required by many journals.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Generally, however, \LaTeX\ 2.09 does not provide the =
+breadth or depth</FONT>
+
+<BR><FONT SIZE=3D2>of facilities needed to support the variety of =
+requirements for</FONT>
+
+<BR><FONT SIZE=3D2>mainstream publishing:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item It is unfortunate that the \lq\lq reference by =
+number'' sequence obtained</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; most naturally by the =
+do-it-yourself-er \cite[p.\ 73]{lamport} from</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \LaTeX\ 2.09 (\lq\lq =
+order of appearance within {\tt thebibliography}'')</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is unlikely to be what =
+the do-it-yourself-er's journal-editor requires</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (which will usually be =
+\lq\lq order of first citation'').&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do-it-yourself-er is =
+given no warning (either in \cite{lamport} or by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the software) that =
+sorting is likely to be needed.</FONT>
+
+<BR><FONT SIZE=3D2>\item Although one can use style-options such as {\tt =
+apalike} and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt aaai} to =
+re-define \verb+\cite+ and {\tt thebibliography}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for an author-date =
+scheme, there are many obstacles placed in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user's way:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item The existence of =
+the style-options is not documented in</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \cite{lamport}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item If one finds a =
+style-option&nbsp; in a (software) archive, it</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; may need modification to produce the precise effect required.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item It is not =
+obvious how one should refer separately to two</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; items (author and date) supplied via a \verb+\bibitem+ =
+argument</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; originally designed for one.&nbsp; The do-it-yourself-er might</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; have to study style files such as {\tt aaai.sty} and {\tt bbl}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; files such as those produced by {\tt aaai-named.bst} to</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; deduce how to do this.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item The \lq\lq short form'' scheme seems =
+unsupported.</FONT>
+
+<BR><FONT SIZE=3D2>\item At certain points in a document, an author my =
+need to cite</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; several works at =
+once.&nbsp; It may be necessary to specify a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page (or section, =
+etc\@.) for each work.&nbsp; For instance,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite[p.\ =
+404]{chicago} suggests references of the form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq (Kelley 1896a, =
+10; Kelley 1896b; Kelley 1907, 3)''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is not easy in =
+\LaTeX\ 2.09, since \verb+\cite+'s</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; optional argument =
+applies to the citation as a whole.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; author cannot supply a =
+separate \lq\lq optional argument''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for each work.&nbsp; =
+(By contrast, {\sf EndNote}'s analogous facilities</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite[p.\ 58]{endnote} =
+seem to allow each individual work</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to be given its own =
+\lq\lq additional text''.)</FONT>
+
+<BR><FONT SIZE=3D2>\item It does not seem easy to use different schemes =
+in parallel</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; within the same =
+document.&nbsp; If \verb+\cite+ and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt thebibliography} =
+are defined as required for one scheme,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; they will usually be =
+unsuitable for any other.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Additional references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{2.09-additional}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As stated in section \ref{support-additional} an =
+author may need to</FONT>
+
+<BR><FONT SIZE=3D2>typeset a list of \lq\lq further reading'' etc., in =
+addition to</FONT>
+
+<BR><FONT SIZE=3D2>the usual list of \lq\lq works cited''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If using the {\tt thebibliography} environment from =
+one of \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>2.09's standard styles for such additional =
+references, an author will be</FONT>
+
+<BR><FONT SIZE=3D2>faced with the following problems:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item the title will be the same as that for the list =
+of \lq\lq works</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cited'', namely \lq\lq =
+References'' for {\tt article} and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq Bibliography'' =
+for {\tt report} and {\tt book}</FONT>
+
+<BR><FONT SIZE=3D2>\item the \lq\lq labels'' (which may be appropriate =
+in the list</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of \lq\lq works =
+cited'', particularly for the \lq\lq reference</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; by number'' scheme) =
+will also appear in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; additional list (where =
+they are inappropriate), because</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; both lists use the =
+same definition of \verb+\bibitem+</FONT>
+
+<BR><FONT SIZE=3D2>\item by default, the \lq\lq labels'' will not be =
+unique, since</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the \lq\lq works =
+cited'' list and the \lq\lq additional references''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list will both be =
+numbered from one</FONT>
+
+<BR><FONT SIZE=3D2>\item it will be necessary to supply dummy {\it =
+cite-key\/}s,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; purely to satisfy the =
+syntax required for a \verb+\bibitem+.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Other problems}</FONT>
+
+<BR><FONT SIZE=3D2>\label{2.09-other}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The definitions of the {\tt thebibliography} =
+environment in \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>2.09's standard styles:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item issue either a \verb+\section*+ or a =
+\verb+\chapter*+ command,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; using a {\it heading} =
+of \lq\lq References'' for {\tt article}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and \lq\lq =
+Bibliography'' for {\tt report} and {\tt book}</FONT>
+
+<BR><FONT SIZE=3D2>\item set {\it left-head\/} and {\it right-head\/} to =
+either</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq REFERENCES'' or =
+\lq\lq BIBLIOGRAPHY''</FONT>
+
+<BR><FONT SIZE=3D2>\item do not arrange for a table-of-contents =
+entry.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>These definitions can cause problems when the {\it =
+heading}, etc.\</FONT>
+
+<BR><FONT SIZE=3D2>supplied by the standard style is inappropriate, or =
+when a table-of-contents</FONT>
+
+<BR><FONT SIZE=3D2>entry is desired.</FONT>
+
+<BR><FONT SIZE=3D2>Admittedly, anyone who doesn't like the standard =
+styles is free to</FONT>
+
+<BR><FONT SIZE=3D2>take copies of the style files and modify them to =
+suit their requirements.</FONT>
+
+<BR><FONT SIZE=3D2>However, I have the impression that:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item among people who are competent to modify style =
+files,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modification of these =
+aspects of the standard styles is \lq\lq the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule'' rather than =
+\lq\lq the exception''</FONT>
+
+<BR><FONT SIZE=3D2>\item those \LaTeX\ users who aren't particularly =
+computer-literate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; find the whole =
+business mysterious, and seek out support staff</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; who have to modify =
+these aspects of the style files for them.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>Overall, this seems to be an area where \LaTeX\ 2.09 =
+is failing to</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq free people from formatting concerns to allow =
+them to</FONT>
+
+<BR><FONT SIZE=3D2>concentrate on writing'' \cite[p.\ =
+8]{lamport}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>An associated problem is that modified style files may =
+no longer be</FONT>
+
+<BR><FONT SIZE=3D2>compatible with standard utilities such as {\tt =
+lablst}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Introduction of new facilities}</FONT>
+
+<BR><FONT SIZE=3D2>\label{new-facils}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It has been decided \cite{mittelbach} that \LaTeX\ 3.0 =
+will be compatible with</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 2.09 input files.&nbsp; Thus, in particular, =
+\LaTeX\ 3.0 must define</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\cite+ and \verb+thebibliography+ so that they =
+have the same effect on</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 2.09 input files as the \LaTeX\ 2.09 =
+definitions do.&nbsp; This implies that</FONT>
+
+<BR><FONT SIZE=3D2>it would be difficult for \LaTeX\ 3.0 to (for =
+example) define \verb+\cite+</FONT>
+
+<BR><FONT SIZE=3D2>so that there can be an optional argument for each =
+work in a multiple citation</FONT>
+
+<BR><FONT SIZE=3D2>and define \verb+\bibitem+ so that it can have an =
+\lq\lq author'' argument and</FONT>
+
+<BR><FONT SIZE=3D2>a \lq\lq date'' argument.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It therefore seems best to provide duplicates of the =
+\LaTeX\ 2.09 facilities</FONT>
+
+<BR><FONT SIZE=3D2>in \LaTeX\ 3.0 (for \lq\lq backwards compatibility'') =
+but to attempt to</FONT>
+
+<BR><FONT SIZE=3D2>provide new commands/environments in parallel so as =
+to provide the required</FONT>
+
+<BR><FONT SIZE=3D2>functionality.&nbsp; The new facilities would be =
+regarded as the \lq\lq normal''</FONT>
+
+<BR><FONT SIZE=3D2>facilities, would be described in the body of the =
+successor to \cite{lamport},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;and</FONT>
+
+<BR><FONT SIZE=3D2>would be the natural choice for new users.&nbsp; The =
+old facilities would be</FONT>
+
+<BR><FONT SIZE=3D2>regarded as \lq\lq deprecated'' and relegated to an =
+appendix of the successor</FONT>
+
+<BR><FONT SIZE=3D2>to \cite{lamport}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus we can have both backwards compatibility and =
+improved facilities</FONT>
+
+<BR><FONT SIZE=3D2>for the future.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Division of labour}</FONT>
+
+<BR><FONT SIZE=3D2>\label{div-of-labour}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Details needed for document \lq\lq as a =
+whole''}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The three basic citation schemes mentioned in section =
+\ref{basic-schemes}</FONT>
+
+<BR><FONT SIZE=3D2>determine certain details of a document \lq\lq as a =
+whole''.&nbsp; For each</FONT>
+
+<BR><FONT SIZE=3D2>citation, there must be an entry in a =
+reference-list.&nbsp; Each entry in</FONT>
+
+<BR><FONT SIZE=3D2>the relevant reference-list must have associated =
+information that can be</FONT>
+
+<BR><FONT SIZE=3D2>used in citations.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Details needed for reference-list, =
+etc.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There are a lot of other details that need to be =
+resolved.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The information within each reference-list entry will =
+probably need</FONT>
+
+<BR><FONT SIZE=3D2>formatting according to certain rules of \lq\lq house =
+style''.</FONT>
+
+<BR><FONT SIZE=3D2>The information given in citations needs organising =
+in a consistent way</FONT>
+
+<BR><FONT SIZE=3D2>(particularly for the \lq\lq short form'' =
+scheme).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Different people may want to assemble their =
+reference-lists in different ways.</FONT>
+
+<BR><FONT SIZE=3D2>Some people may wish to \lq\lq do it themselves'' =
+\cite[p.\ 73]{lamport} from</FONT>
+
+<BR><FONT SIZE=3D2>a physical card-index, while some may prefer to use =
+\BibTeX\ to get details</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from a {\tt bib} file.&nbsp; In some disciplines, =
+proprietary systems such as</FONT>
+
+<BR><FONT SIZE=3D2>{\tt EndNote} \cite{endnote} seem popular (because =
+they help the user to search</FONT>
+
+<BR><FONT SIZE=3D2>a database for literature to cite, as well as helping =
+the user</FONT>
+
+<BR><FONT SIZE=3D2>incorporate details of the literature into a =
+document).</FONT>
+
+<BR><FONT SIZE=3D2>Researchers may also wish to incorporate material =
+obtained by searching</FONT>
+
+<BR><FONT SIZE=3D2>details held on a {\sc cd-rom}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A reference-list generally needs sorting into a =
+particular order.&nbsp; Since the</FONT>
+
+<BR><FONT SIZE=3D2>list may occupy several pages, I assume that any =
+sorting is best done outside</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX, either by other software (e.g., \BibTeX) or =
+manually by the author.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\LaTeX\ and other software}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It seems best to regard the movement of text-strings =
+(e.g., an author's</FONT>
+
+<BR><FONT SIZE=3D2>surname) within the \lq\lq document as a whole'' as a =
+task that is distinct</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from the arrangement of details within the =
+text-strings, and to assume a</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq division of labour'' in which the former task =
+is performed by \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>while the latter is performed by some other software =
+or manually by the author.</FONT>
+
+<BR><FONT SIZE=3D2>The \lq\lq division of labour'' between \LaTeX\ 2.09 =
+and \BibTeX\ seems to set</FONT>
+
+<BR><FONT SIZE=3D2>a good precedent.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This division of labour will lead to modular =
+software.&nbsp; Once the</FONT>
+
+<BR><FONT SIZE=3D2>interface between a reference-list and the rest of =
+the document has</FONT>
+
+<BR><FONT SIZE=3D2>been defined, people can use \LaTeX\ for the body of =
+their document,</FONT>
+
+<BR><FONT SIZE=3D2>but can:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item experiment with different software (\BibTeX, =
+{\sf EndNote})</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for formatting the =
+details of their reference-lists</FONT>
+
+<BR><FONT SIZE=3D2>\item enhance the other software (e.g., \BibTeX) =
+independently</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of enhancements to =
+\LaTeX.</FONT>
+
+<BR><FONT SIZE=3D2>\item lay their reference-lists out manually if they =
+prefer.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{\protect\LaTeX\ 3.0: A possible user =
+interface?}</FONT>
+
+<BR><FONT SIZE=3D2>\label{what-to-do}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Specifications and names}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If the reasoning given in sections \ref{conventions}, =
+\ref{new-facils}</FONT>
+
+<BR><FONT SIZE=3D2>and \ref{div-of-labour} is accepted, consideration =
+needs to be given to</FONT>
+
+<BR><FONT SIZE=3D2>the form that new commands/environments should take =
+in order to support the</FONT>
+
+<BR><FONT SIZE=3D2>three basic citation schemes, and to provide =
+facilities for \lq\lq additional</FONT>
+
+<BR><FONT SIZE=3D2>references''.&nbsp; In particular, it will be =
+necessary to choose</FONT>
+
+<BR><FONT SIZE=3D2>names other than \verb+\cite+, {\tt thebibliography} =
+and \verb+\bibitem+ (since</FONT>
+
+<BR><FONT SIZE=3D2>these names will be kept for the facilities provided =
+for compatibility with</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 2.09).</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\subsection{Four sets of commands/environments}</FONT>
+
+<BR><FONT SIZE=3D2>\label{4-sets}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It seems to me that it would probably be convenient to =
+have three sets of</FONT>
+
+<BR><FONT SIZE=3D2>commands/environments for dealing with citations and =
+the corresponding</FONT>
+
+<BR><FONT SIZE=3D2>reference-lists, each set specifically designed to =
+implement a particular</FONT>
+
+<BR><FONT SIZE=3D2>citation scheme.&nbsp; Having three such sets gives =
+scope for taking proper</FONT>
+
+<BR><FONT SIZE=3D2>account of the peculiarities of each scheme, without =
+having one scheme</FONT>
+
+<BR><FONT SIZE=3D2>adversely affected by the peculiarities of =
+another.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To avoid the difficulties mentioned in section =
+\ref{2.09-additional},</FONT>
+
+<BR><FONT SIZE=3D2>it might also be worth having a specific environment =
+for</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq additional references''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\LaTeX\ 3.0 might, for example, have =
+commands/environments as specified</FONT>
+
+<BR><FONT SIZE=3D2>in the following table.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\renewcommand{\arraystretch}{1.25}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tabular}{lccccccc}</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&nbsp; =
+Citation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; Environment for =
+&amp; Entry =
+in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; reference-list&nbsp; &amp; =
+reference-list&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Reference by number &amp;&nbsp; \verb+\numcite+ &amp; =
+{\tt numrefs}&nbsp;&nbsp; &amp; \verb+\numentry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT =
+SIZE=3D2>Author-date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp; \verb+\dcite+</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp; &amp; {\tt adrefs}&nbsp;&nbsp;&nbsp; &amp; =
+\verb+\adentry+&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&nbsp; =
+\verb+\adcite+ =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Short =
+form&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&nbsp; =
+\verb+\firstcite+&nbsp; &amp; {\tt sfrefs}&nbsp;&nbsp;&nbsp; &amp; =
+\verb+\sfentry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&nbsp; =
+\verb+\sfcite+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Additional references&amp;&nbsp;&nbsp;&nbsp; =
+---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;&nbsp; {\tt =
+morerefs} &amp; \verb+\moreentry+ \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>{\it Analogue at 2.09} &amp;&nbsp; \verb+\cite+ &amp; =
+{\tt thebibliography}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+\verb+\bibitem+&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+
+<BR><FONT SIZE=3D2>\end{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\end{center}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here it is assumed that:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\numcite+ and \verb+\numentry+ have {\it =
+key-list} and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it cite-key} =
+(respectively) as their only mandatory arguments.</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\dcite+ and \verb+\adcite+ have {\it =
+key-list} as argument.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\dcite+ gives a =
+citation of the form (1972),</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while \verb+\adcite+ =
+gives a citation of the form (Crane, 1972).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\adentry+ has =
+three arguments: the {\it cite-key},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the author (e.g., =
+Crane), and the date (e.g., 1972).</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\firstcite+ and \verb+\sfcite+ have {\it =
+key-list} as argument.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\firstcite+ =
+gives the form of citation to be used when a work</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is first =
+mentioned.&nbsp; \verb+\sfcite+ gives the short form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to be used in =
+subsequent citations.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\sfentry+ might =
+have 3 arguments: the {\it cite-key}, the form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of reference to be =
+used at the first citation, and the short form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to be used =
+subsequently.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although it would be desirable for the successors to =
+the ``standard styles''</FONT>
+
+<BR><FONT SIZE=3D2>to define facilities for all three citation schemes, =
+other</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\documentstyle+s need not define facilities for =
+all three.&nbsp; For example,</FONT>
+
+<BR><FONT SIZE=3D2>a journal that wants its authors to use the =
+author-date scheme would supply a</FONT>
+
+<BR><FONT SIZE=3D2>style file that only provides author-date =
+facilities.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Further details}</FONT>
+
+<BR><FONT SIZE=3D2>\label{further-details}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Reference by number}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \verb+\numcite+ and \verb+\numentry+ commands =
+might take the form</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\numcite{+{\it key-list}\verb+}+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\numentry{+{\it cite-key}\verb+}+.&nbsp; Notice =
+that, since \verb+\numentry+</FONT>
+
+<BR><FONT SIZE=3D2>is specifically designed for \lq\lq reference by =
+number'', there is no need to</FONT>
+
+<BR><FONT SIZE=3D2>allow an optional {\it label} argument like that for =
+\verb+\bibitem+.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To conform to the ISO specification \cite{iso-690}, =
+the successors to the</FONT>
+
+<BR><FONT SIZE=3D2>``standard styles'' would arrange for \verb+\numcite+ =
+to give a citation of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;form (24)</FONT>
+
+<BR><FONT SIZE=3D2>and for \verb+\numentry+ to give a reference-list =
+entry of the form</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[{\rm 24.}] {\sc Crane, D.} {\it Invisible =
+colleges.} \dots</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Perhaps \LaTeX\ 3.0 could use the {\tt aux} file to =
+refine an initial estimate</FONT>
+
+<BR><FONT SIZE=3D2>of the width of the final \verb+\numentry+'s \lq\lq =
+label'', so that the</FONT>
+
+<BR><FONT SIZE=3D2>do-it-yourself-er wouldn't need to supply a {\it =
+widest-label\/} argument.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Author-date}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The commands \verb+\dcite+, \verb+\adcite+ and =
+\verb+\adentry+ might</FONT>
+
+<BR><FONT SIZE=3D2>be defined to have the forms \verb+\dcite{+{\it =
+key-list}\verb+}+,</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\adcite{+{\it key-list}\verb+}+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\adentry{+{\it cite-key}\verb+}{+{\it =
+author}\verb+}{+{\it date}\verb+}+.</FONT>
+
+<BR><FONT SIZE=3D2>The {\tt adrefs} environment would {\it not} have a =
+{\it widest-label}</FONT>
+
+<BR><FONT SIZE=3D2>argument, since in this scheme entries in the =
+reference-list are unlabelled.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If such a definition of \verb+\adentry+ was documented =
+in the successor to</FONT>
+
+<BR><FONT SIZE=3D2>\cite{lamport}, a do-it-yourself-er would be able to =
+use the author-date</FONT>
+
+<BR><FONT SIZE=3D2>system just as easily as the \lq\lq reference by =
+number'' system.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To conform to the ISO specification \cite{iso-690}, =
+the successors to the</FONT>
+
+<BR><FONT SIZE=3D2>``standard styles'' would arrange for \verb+\dcite+ =
+to give a citation of</FONT>
+
+<BR><FONT SIZE=3D2>the form (1972), for \verb+\adcite+ to give a =
+citation of the form</FONT>
+
+<BR><FONT SIZE=3D2>(Crane, 1972), and for \verb+\adentry+ to give a =
+reference-list entry with no</FONT>
+
+<BR><FONT SIZE=3D2>label.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Short form}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \verb+\firstcite+, \verb+\sfcite+ and =
+\verb+\sfentry+ commands might</FONT>
+
+<BR><FONT SIZE=3D2>be defined as \verb+\firstcite{+{\it =
+key-list}\verb+}+,</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\sfcite{+{\it key-list}\verb+}+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\sfentry{+{\it cite-key}\verb+}[+{\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+fairly-full-form}\verb+]{+{\it short-form}\verb+}+.</FONT>
+
+<BR><FONT SIZE=3D2>Such&nbsp; definitions would, in effect, automate =
+Butcher's manual method of</FONT>
+
+<BR><FONT SIZE=3D2>ensuring consistency \cite[p.\ 178]{butcher}.&nbsp; =
+Since, in some situations, a</FONT>
+
+<BR><FONT SIZE=3D2>reference is given in full when it is first cited =
+\cite[p.\ 407]{chicago},</FONT>
+
+<BR><FONT SIZE=3D2>the default {\it fairly-full-form} would be the full =
+reference&nbsp; as</FONT>
+
+<BR><FONT SIZE=3D2>put in the reference-list by \verb+\sfentry+.</FONT>
+
+<BR><FONT SIZE=3D2>The {\tt sfrefs} environment would {\em not} have a =
+{\it widest-label}</FONT>
+
+<BR><FONT SIZE=3D2>argument.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The successors to the ``standard styles'' would =
+arrange for \verb+\firstcite+</FONT>
+
+<BR><FONT SIZE=3D2>to produce the {\it fairly-full-form} and =
+\verb+\sfcite+ to produce the</FONT>
+
+<BR><FONT SIZE=3D2>{\it short-form}.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{%</FONT>
+
+<BR><FONT SIZE=3D2>This makes the pessimistic assumption that \LaTeX\ =
+can not itself determine</FONT>
+
+<BR><FONT SIZE=3D2>whether a citation is the \lq\lq first citation'' of =
+a particular work.</FONT>
+
+<BR><FONT SIZE=3D2>If someone was ingenious enough to produce code that =
+determined whether a</FONT>
+
+<BR><FONT SIZE=3D2>citation is a \lq\lq first citation'', =
+{\tt\ttbackslash firstcite} would be</FONT>
+
+<BR><FONT SIZE=3D2>unnecessary (except, perhaps, for the construction of =
+tables of abbreviations</FONT>
+
+<BR><FONT SIZE=3D2>\cite[p.\ 414]{chicago}.)%</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>To conform to the ISO specification \cite{iso-690}, =
+neither</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\firstcite+ nor \verb+\sfcite+</FONT>
+
+<BR><FONT SIZE=3D2>would add any punctuation (but, for example, a style =
+file that implemented</FONT>
+
+<BR><FONT SIZE=3D2>the MLA conventions would have to add brackets =
+\cite[ch.\ 5]{gibaldi}).</FONT>
+
+<BR><FONT SIZE=3D2>In the successors to the ``standard styles'',</FONT>
+
+<BR><FONT SIZE=3D2>the \verb+\sfentry+ would produce an entry with no =
+label.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>People producing other style files would be free to =
+implement other</FONT>
+
+<BR><FONT SIZE=3D2>conventions \cite[p.\ 168]{butcher}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Some works may have no bibliography or may have just a =
+\lq\lq select</FONT>
+
+<BR><FONT SIZE=3D2>bibliography'' \cite[p.\ 168]{butcher}.&nbsp; For =
+such works, it will still</FONT>
+
+<BR><FONT SIZE=3D2>be necessary to supply the details for use by =
+\verb+\firstcite+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\sfcite+.&nbsp; It may therefore be worth =
+allowing a form of</FONT>
+
+<BR><FONT SIZE=3D2>{\tt sfrefs} (e.g., =
+\verb+\begin{sfrefs}[null]+)</FONT>
+
+<BR><FONT SIZE=3D2>that holds details of cited works but does no =
+typesetting.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Additional references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{3.0-additional}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Since the entries in an \lq\lq additional list'' will =
+not be cited as such</FONT>
+
+<BR><FONT SIZE=3D2>(although an \lq\lq all sources consulted'' list may =
+contain a duplicate of</FONT>
+
+<BR><FONT SIZE=3D2>a cited entry in a \lq\lq works cited'' list), the =
+list will be typeset</FONT>
+
+<BR><FONT SIZE=3D2>without \lq\lq labels''.&nbsp; Even in a document =
+that uses the \lq\lq reference by</FONT>
+
+<BR><FONT SIZE=3D2>number'' citation scheme (and so needs \lq\lq =
+labels'' in the {\tt numrefs}</FONT>
+
+<BR><FONT SIZE=3D2>list), there will be no \lq\lq labels'' for the =
+entries in an additional list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It therefore seems likely that the {\tt morerefs} =
+environment could</FONT>
+
+<BR><FONT SIZE=3D2>be implemented as a variation of {\tt adrefs} or {\tt =
+sfrefs}, the main changes</FONT>
+
+<BR><FONT SIZE=3D2>being:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item a change of title (but see section =
+\ref{reflist-scope})</FONT>
+
+<BR><FONT SIZE=3D2>\item absence of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it cite-key, author, =
+date, fairly-full-form} and {\it short-form}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arguments.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Order within the reference-list}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As stated in section \ref{div-of-labour}, it is =
+probably best to leave</FONT>
+
+<BR><FONT SIZE=3D2>any sorting of the reference-list to some other =
+software, or to the author.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, it might be possible for \LaTeX\ to provide a =
+warning if a</FONT>
+
+<BR><FONT SIZE=3D2>reference-list is obviously in the wrong order.&nbsp; =
+Perhaps:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item although there may be no easy alternative to =
+numbering</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\numcite+s in =
+order of appearance within {\tt numrefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (even though \lq\lq =
+order of first citation'' is usually what</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is required), \LaTeX\ =
+could give a warning if a \verb+\numcite+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gave a number that =
+exceeded the \lq\lq biggest number produced</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; by \verb+\numcite+ so =
+far'' by more than one.</FONT>
+
+<BR><FONT SIZE=3D2>\item there could be a warning if an \verb+\adentry+ =
+had an</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it author} whose =
+first letter came before the first letter of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; preceding =
+\verb+\adentry+'s {\it author} in the alphabet.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Citation of a specific division}</FONT>
+
+<BR><FONT SIZE=3D2>\label{division}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As stated in section \ref{2.09-citations}, provision =
+needs to be made for</FONT>
+
+<BR><FONT SIZE=3D2>the citation of a particular division (e.g., page, =
+section, chapter,</FONT>
+
+<BR><FONT SIZE=3D2>equation) of another work.&nbsp; The syntax of =
+citation commands should</FONT>
+
+<BR><FONT SIZE=3D2>not only allow several works to be cited =
+simultaneously, but should also</FONT>
+
+<BR><FONT SIZE=3D2>allow the relevant division of each work to be =
+specified.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;From the author's point-of-view, there would be a =
+variety of satisfactory</FONT>
+
+<BR><FONT SIZE=3D2>ways to specify citations that are to appear =
+as</FONT>
+
+<BR><FONT SIZE=3D2>``[4, p.\ 10; 5; 6, p.\ 3]'', e.g.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \numcite{smith[p. =
+10],brown,jones[p. 3]}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \numcite{smith, p. 10; brown; =
+jones, p. 3}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \numcite{smith &amp; p. 10; brown; =
+jones &amp; p. 3}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The precise syntax would have to take</FONT>
+
+<BR><FONT SIZE=3D2>account of the practicalities of programming a =
+command that has to be able</FONT>
+
+<BR><FONT SIZE=3D2>to accept pairs of arguments, where the second member =
+of each pair is optional.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Analogous facilities would be needed for author-date =
+and \lq\lq short form''</FONT>
+
+<BR><FONT SIZE=3D2>citations.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Incidentally, since abbreviations such as p., ch., =
+sec., and fig.\ are</FONT>
+
+<BR><FONT SIZE=3D2>common when such divisions are specified, I think =
+that citation commands</FONT>
+
+<BR><FONT SIZE=3D2>should arrange for the optional arguments to be =
+typeset with</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\frenchspacing+.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Details of reference-lists}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Variations within mainstream publishing =
+practice}</FONT>
+
+<BR><FONT SIZE=3D2>\label{mainstream-lists}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although many academic and technical publications =
+involve only a single</FONT>
+
+<BR><FONT SIZE=3D2>undivided reference-list, some such publications =
+involve:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[more than one list]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This situation can =
+arise:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item when there is a =
+list of \lq\lq further reading'' etc.,</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; as well as the list of \lq\lq works cited''.</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; This case has been covered in sections =
+\ref{support-additional},</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \ref{2.09-additional}, \ref{4-sets} and \ref{3.0-additional}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item when conference =
+proceedings are produced, since each</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; contribution may have its own reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item in manuals for =
+software.&nbsp; For example, in \cite{norusis}, a</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; software house's own publications are introduced in the =
+preface</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; and cited (in effect) using a \lq\lq short form'' scheme, =
+while</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; other people's publications are listed at the end of the =
+manual</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; and are cited using the author-date scheme.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item[subdivisions within a list]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Some reference-lists, =
+particularly in the humanities, are subdivided</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; according to the =
+source of the cited documents (see</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite[p.\ =
+183]{butcher}, \cite[p.\ 425]{chicago} and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite[p.\ =
+88]{gibaldi}).</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In some cases, an author may wish to add explanatory =
+paragraphs describing,</FONT>
+
+<BR><FONT SIZE=3D2>for example, how material was chosen for a \lq\lq =
+select bibliography''</FONT>
+
+<BR><FONT SIZE=3D2>\cite[fig.\ 15.11]{chicago} or information about =
+access to (document)</FONT>
+
+<BR><FONT SIZE=3D2>archives \cite[fig.\ 15.16]{chicago}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\protect\LaTeX\ 2.09}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\LaTeX\ 2.09 can cope with documents that have more =
+than one</FONT>
+
+<BR><FONT SIZE=3D2>{\tt thebibliography} environment, and seems to deal =
+satisfactorily</FONT>
+
+<BR><FONT SIZE=3D2>with a situation in which some \verb+\cite+ commands =
+are to</FONT>
+
+<BR><FONT SIZE=3D2>one {\tt thebibliography} and some are to another =
+(provided that</FONT>
+
+<BR><FONT SIZE=3D2>the {\it cite-key\/}s are unique).&nbsp; The default =
+effect is</FONT>
+
+<BR><FONT SIZE=3D2>to give {\it label\/}s that are not unique, which =
+will be acceptable</FONT>
+
+<BR><FONT SIZE=3D2>when each contribution to a \lq\lq conference =
+proceedings'' has its</FONT>
+
+<BR><FONT SIZE=3D2>references numbered from one, but not if \lq\lq works =
+cited''</FONT>
+
+<BR><FONT SIZE=3D2>and \lq\lq additional references'' are both numbered =
+from one</FONT>
+
+<BR><FONT SIZE=3D2>(see section \ref{2.09-additional}).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The specification of {\tt thebibliography} \cite[p.\ =
+187]{lamport}</FONT>
+
+<BR><FONT SIZE=3D2>does not allow anything other than \verb+\bibitem+s =
+within a</FONT>
+
+<BR><FONT SIZE=3D2>{\tt thebibliography} environment.&nbsp; Hence, it is =
+not clear</FONT>
+
+<BR><FONT SIZE=3D2>how one can introduce subheadings within a =
+reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>(In practice, a \verb+\section*+ seems to work =
+between</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\bibitem+s, but I suspect that it puts \LaTeX\ =
+2.09 into a loop</FONT>
+
+<BR><FONT SIZE=3D2>if placed before the first \verb+\bibitem+.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Anyone trying to add explanatory paragraphs (as in =
+\cite[fig.\ 15.11]{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>and \cite[fig.\ 15.16]{chicago}) will probably find =
+that \LaTeX\ 2.09</FONT>
+
+<BR><FONT SIZE=3D2>objects that \lq\lq{\verb+Something's wrong--perhaps =
+a missing \item+}''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\protect\LaTeX\ 3.0}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ideally, in order to provide support for the =
+conventions that are routine</FONT>
+
+<BR><FONT SIZE=3D2>in mainstream publishing practice, \LaTeX\ 3.0 should =
+be able to cope with</FONT>
+
+<BR><FONT SIZE=3D2>all the variations outlined in section =
+\ref{mainstream-lists}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Multiple lists}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The suggestions made in section \ref{what-to-do} would =
+probably cater for most</FONT>
+
+<BR><FONT SIZE=3D2>situations where a document has more than one =
+reference-list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The distinction between {\tt morerefs} and the other =
+environments for</FONT>
+
+<BR><FONT SIZE=3D2>reference-lists would take care of situations where =
+there is a list of</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq additional references'' as well as a list of =
+\lq\lq works cited''.</FONT>
+
+<BR><FONT SIZE=3D2>The distinction between the \lq\lq short form'' =
+commands/environment</FONT>
+
+<BR><FONT SIZE=3D2>and the other commands/environments would take care =
+of situations where a</FONT>
+
+<BR><FONT SIZE=3D2>software house uses \lq\lq short form'' for its own =
+publications</FONT>
+
+<BR><FONT SIZE=3D2>and some other scheme for other publications.&nbsp; =
+Conference proceedings</FONT>
+
+<BR><FONT SIZE=3D2>will be able to have \lq\lq a reference-list for each =
+contribution''</FONT>
+
+<BR><FONT SIZE=3D2>if \LaTeX\ 3.0 follows the \LaTeX\ 2.09 precedent =
+that allows</FONT>
+
+<BR><FONT SIZE=3D2>more than one {\tt thebibliography} in a =
+document.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Subdivisions and explanatory =
+paragraphs}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I have the impression that, because the sciences have =
+different conventions</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from the humanities, people using the \lq\lq =
+reference by number'' citation</FONT>
+
+<BR><FONT SIZE=3D2>scheme are unlikely to want the options of =
+subdividing their reference-list</FONT>
+
+<BR><FONT SIZE=3D2>and inserting explanatory paragraphs.&nbsp; =
+Therefore, it would be legitimate to</FONT>
+
+<BR><FONT SIZE=3D2>say (for example) \lq\lq subdivisions and explanatory =
+paragraphs are supported</FONT>
+
+<BR><FONT SIZE=3D2>within {\tt adrefs}, {\tt sfrefs} and {\tt morerefs} =
+but not within</FONT>
+
+<BR><FONT SIZE=3D2>{\tt numrefs}'', if this made the programming task =
+easier.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For example, it might be convenient to implement {\tt =
+numrefs} as</FONT>
+
+<BR><FONT SIZE=3D2>a \lq\lq list-making environment'' (as in \LaTeX\ =
+2.09) but to implement</FONT>
+
+<BR><FONT SIZE=3D2>the other environments in some other way.&nbsp; Lack =
+of support for subdivisions</FONT>
+
+<BR><FONT SIZE=3D2>and explanatory paragraphs is unlikely to matter in =
+{\tt numrefs}; the</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq other way'' (more like \verb+\paragraph+, =
+perhaps?) might make it</FONT>
+
+<BR><FONT SIZE=3D2>easier to implement support for these facilities in =
+the other environments.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Other problems}</FONT>
+
+<BR><FONT SIZE=3D2>\label{reflist-scope}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One approach to some of the problems mentioned in =
+section \ref{2.09-other}</FONT>
+
+<BR><FONT SIZE=3D2>is for the standard styles to define the heading for =
+the reference-list by,</FONT>
+
+<BR><FONT SIZE=3D2>for example, \verb+\def\numrefsheading{References}+, =
+so that anyone who wants</FONT>
+
+<BR><FONT SIZE=3D2>to change the heading can do so by issuing a =
+\verb+\renewcommand+ command</FONT>
+
+<BR><FONT SIZE=3D2>somewhere before the start of their =
+reference-list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Another approach is to work in terms of the standard =
+publishing industry</FONT>
+
+<BR><FONT SIZE=3D2>concept of \lq\lq back matter'' \cite[p.\ =
+4]{chicago}.&nbsp; Instead of having to</FONT>
+
+<BR><FONT SIZE=3D2>understand where the {\it heading}, {\it left-head}, =
+{\it right-head} and</FONT>
+
+<BR><FONT SIZE=3D2>table-of-contents entry (or lack of it) originate for =
+units such as the</FONT>
+
+<BR><FONT SIZE=3D2>glossary (if any), the reference-list(s) and the =
+index (if any)</FONT>
+
+<BR><FONT SIZE=3D2>{\em separately}, an author would only have to =
+understand how these features</FONT>
+
+<BR><FONT SIZE=3D2>are treated {\em consistently} within \lq\lq back =
+matter''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although the \lq\lq back matter'' approach could be =
+used if environments</FONT>
+
+<BR><FONT SIZE=3D2>such as {\tt numrefs} followed the {\tt =
+thebibliography} precedent and issued</FONT>
+
+<BR><FONT SIZE=3D2>commands such as \verb+\chapter+ or \verb+\section+ =
+themselves, authors</FONT>
+
+<BR><FONT SIZE=3D2>might find the way that {\it heading}, {\it =
+left-head}, {\it right-head} and</FONT>
+
+<BR><FONT SIZE=3D2>table-of-contents entry materialize less mysterious =
+if it was just the same</FONT>
+
+<BR><FONT SIZE=3D2>for a reference-list as for (say) a glossary.&nbsp; =
+This would imply that</FONT>
+
+<BR><FONT SIZE=3D2>{\tt numrefs}, {\tt adrefs}, {\tt sfrefs} and {\tt =
+morerefs} should</FONT>
+
+<BR><FONT SIZE=3D2>not issue commands like \verb+\chapter+ or =
+\verb+\section+ themselves.</FONT>
+
+<BR><FONT SIZE=3D2>As a bonus, it would then be possible for an author =
+to insert an explanatory</FONT>
+
+<BR><FONT SIZE=3D2>paragraph before the reference-list, and to arrange =
+for subdivisions.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For example, if there was a {\tt backmatter} =
+environment within which</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\chapter+ was treated as defining a unit of =
+\lq\lq back matter'',</FONT>
+
+<BR><FONT SIZE=3D2>an author's file might contain commands such =
+as</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{backmatter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \chapter{Glossary}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \chapter{References}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \section{Primary =
+sources}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{sfrefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{sfrefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \section{Secondary =
+sources}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{sfrefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{sfrefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \chapter{Further reading}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{morerefs}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{morerefs}</FONT>
+
+<BR><FONT SIZE=3D2>\end{backmatter}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Conclusion}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\LaTeX\ has a large number of users, and potential =
+users, who wish to produce</FONT>
+
+<BR><FONT SIZE=3D2>documents that conform to the conventions that are =
+standard in academic</FONT>
+
+<BR><FONT SIZE=3D2>publishing.&nbsp; One element of their requirement is =
+the need to conform to the</FONT>
+
+<BR><FONT SIZE=3D2>conventions for citations and reference-lists that =
+are usual in their</FONT>
+
+<BR><FONT SIZE=3D2>disciplines.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The choice for \LaTeX\ 3.0 may be between:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item having more facilities for citations and =
+reference-lists than</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \LaTeX\ 2.09, perhaps =
+as suggested in section \ref{what-to-do}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This would imply an =
+increase in:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item the amount of =
+code needed to implement the facilities, and</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; the guru time needed for writing the code</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item the number of =
+pages needed, in the successor to \cite{lamport},</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; to describe the facilities --- perhaps 8 pages rather than</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; the 2 pages in \cite{lamport}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item no significant increase in the facilities =
+provided for citations</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and =
+reference-lists.&nbsp; Contrary to the idea of \lq\lq freeing =
+people</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from formatting =
+concerns to allow them to concentrate on writing''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite[p.\ 8]{lamport}, =
+many authors (perhaps most authors) would be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wasting time:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item hacking at =
+style-files</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item searching =
+(software) archives for ready made solutions</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item taking up =
+support staff's time in the search for advice (with the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;support staff</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; in turn taking up gurus' time in their search for solutions).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Moreover, most of this =
+time would be wasted by (or on behalf of) authors</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; who don't want =
+anything at all exotic; they just want to conform</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to the conventions =
+that are standard in traditional academic publishing.</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>I'm inclined to think that the first option would be =
+the lesser of the</FONT>
+
+<BR><FONT SIZE=3D2>two evils.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section*{Appendix: Interface with =
+\protect\BibTeX}</FONT>
+
+<BR><FONT SIZE=3D2>\addcontentsline{toc}{section}{Appendix: Interface =
+with \protect\BibTeX}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The preceding sections make some suggestions for a =
+\LaTeX\ 3.0 user</FONT>
+
+<BR><FONT SIZE=3D2>interface that would enable the do-it-yourself-er to =
+conform to</FONT>
+
+<BR><FONT SIZE=3D2>the conventions that are usual in academic =
+publishing.</FONT>
+
+<BR><FONT SIZE=3D2>It is also necessary to consider the implications for =
+the interface to</FONT>
+
+<BR><FONT SIZE=3D2>\BibTeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection*{Single reference-list}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Inspecting {\tt bst} files gives me the impression =
+that, if it</FONT>
+
+<BR><FONT SIZE=3D2>was decided to adopt a scheme such as that described =
+in section</FONT>
+
+<BR><FONT SIZE=3D2>\ref{what-to-do}, it would be fairly easy to produce =
+new {\tt bst} files</FONT>
+
+<BR><FONT SIZE=3D2>to supersede existing ones.&nbsp; For example, a {\tt =
+bst} file</FONT>
+
+<BR><FONT SIZE=3D2>that implemented a \lq\lq reference by number'' =
+scheme would write</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\numentry+ commands rather than \verb+\bibitem+ =
+commands.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If {\tt bst} files were created in this way, they =
+would be able to</FONT>
+
+<BR><FONT SIZE=3D2>deal with the straightforward situation when there is =
+a single</FONT>
+
+<BR><FONT SIZE=3D2>reference-list that contains all works cited (plus, =
+possibly,</FONT>
+
+<BR><FONT SIZE=3D2>any works specified by a command like =
+\verb+\nocite+).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection*{Multiple reference-lists, all with the =
+same style}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>More complicated situations can arise in which a =
+document involves</FONT>
+
+<BR><FONT SIZE=3D2>several reference-lists.&nbsp; For example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item The editor of the proceedings of a conference =
+might want the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; published proceedings =
+to have a reference-list at the end of each</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chapter.</FONT>
+
+<BR><FONT SIZE=3D2>\item If, as suggested in section =
+\ref{reflist-scope}, {\tt sfrefs} was</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; implemented in a way =
+that allowed a sequence of {\tt sfrefs} environments</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to each be preceded by =
+a \verb+\section+ command, then, as far as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \BibTeX\ is concerned, =
+each {\tt sfrefs} environment might be a separate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In both these examples, the document would involve =
+several reference-lists,</FONT>
+
+<BR><FONT SIZE=3D2>but each reference-list would need to be typeset in a =
+common style.</FONT>
+
+<BR><FONT SIZE=3D2>I assume that the main problems would be in =
+arranging:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item to have multiple {\tt bbl} files, or distinct =
+divisions of a single</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt bbl} file</FONT>
+
+<BR><FONT SIZE=3D2>\item that each reference-list takes its entries from =
+the correct {\tt bbl}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file, or from the =
+correct division of a single {\tt bbl} file.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection*{Two reference-lists, each with a =
+different style}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>People producing documents that have a second =
+reference-list (e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq further reading'') in addition to the list of =
+\lq\lq works cited''</FONT>
+
+<BR><FONT SIZE=3D2>might want the first list typeset in one style and =
+the second</FONT>
+
+<BR><FONT SIZE=3D2>list typeset in another.&nbsp; (In particular, if the =
+\lq\lq reference by number''</FONT>
+
+<BR><FONT SIZE=3D2>scheme is used, the first list will have \lq\lq =
+labels'' but the second</FONT>
+
+<BR><FONT SIZE=3D2>list will have no \lq\lq labels''.)&nbsp; If the =
+commands/environments suggested</FONT>
+
+<BR><FONT SIZE=3D2>in section \ref{what-to-do} were implemented, the =
+first list would use</FONT>
+
+<BR><FONT SIZE=3D2>{\tt numrefs}, {\tt adrefs} or {\tt sfrefs}, while =
+the second list would</FONT>
+
+<BR><FONT SIZE=3D2>use {\tt morerefs}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In this situation, it would be necessary to =
+communicate to \BibTeX\</FONT>
+
+<BR><FONT SIZE=3D2>that two lists are required, but that they are to be =
+typeset in different</FONT>
+
+<BR><FONT SIZE=3D2>styles.&nbsp; Since the second list is to contain =
+\lq\lq works {\em not\/}</FONT>
+
+<BR><FONT SIZE=3D2>cited'', it will also be necessary to specify the =
+works to be shown in the</FONT>
+
+<BR><FONT SIZE=3D2>second list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If it is decided to extend the interface between =
+\LaTeX\ and \BibTeX\ to</FONT>
+
+<BR><FONT SIZE=3D2>cater for such situations, it will probably be =
+necessary to consider</FONT>
+
+<BR><FONT SIZE=3D2>defining alternatives to \LaTeX\ 2.09's =
+\verb+\bibliography+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\bibliographystyle+ commands, since it seems =
+unlikely that the syntax</FONT>
+
+<BR><FONT SIZE=3D2>of the \LaTeX\ 2.09 commands could be extended so as =
+to pass the necessary</FONT>
+
+<BR><FONT SIZE=3D2>information.&nbsp; One might, for example, consider =
+syntax such as</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\bibtexcites[+{\it cites-style}\verb+]{+{\it =
+bib-files}\verb+}+</FONT>
+
+<BR><FONT SIZE=3D2>and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\bibtexmore[+{\it more-style}\verb+]{+{\it =
+bib-files}\verb+}{+{\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+key-list}\verb+}+.</FONT>
+
+<BR><FONT SIZE=3D2>Here, it is assumed that:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item the \verb+\documentstyle+ would set defaults =
+for the {\it cites-style}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and {\it more-style} =
+that are to be passed to \BibTeX, but the user</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; can over-ride the =
+defaults via the optional arguments to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\bibtexcites+ =
+and \verb+\bibtexmore+</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\bibtexmore+'s {\it key-list} argument =
+would be used to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; specify the works to =
+be included in the list of \lq\lq additional</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; references''.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If it is not practicable to extend the \LaTeX/\BibTeX\ =
+interface to cater for</FONT>
+
+<BR><FONT SIZE=3D2>these situations automatically, it would presumably =
+be a matter of</FONT>
+
+<BR><FONT SIZE=3D2>some \lq\lq human intervention'':</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item to prepare a {\tt bbl} file for the \lq\lq =
+additional references''</FONT>
+
+<BR><FONT SIZE=3D2>\item to \verb+\input+ the {\tt bbl} file.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{thebibliography}{00}</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{lamport} {\sc Leslie Lamport.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it \itlatex: A =
+document preparation system.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Addison-Wesley, =
+1986.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{mittelbach} {\sc Frank Mittelbach and Rainer =
+Sch\&quot;{o}pf.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; With \LaTeX\ into the =
+ninties.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+TUGboat,}&nbsp;&nbsp; 1989, {\bf 10}, 681--690.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-5605}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Citing =
+publications by bibliographical references.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS 5605.&nbsp; British =
+Standards Institution, 1978.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-6371}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Citation of =
+unpublished documents.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS 6371.&nbsp; British =
+Standards Institution, 1983.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{butcher}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Judith =
+Butcher.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+Copy-editing.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cambridge University =
+Press, 1981.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it The Chicago =
+manual of style.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Chicago University =
+Press, 1982.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{gibaldi}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Joseph Gibaldi =
+and Walter S. Achert.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it MLA handbook for =
+writers of research papers.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modern Language =
+Association of America, 1988.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{huth}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Edward J. =
+Huth.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Medical style and =
+format.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISI Press, =
+1987.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{inter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc International =
+Committee of Medical Journal Editors.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Uniform requirements =
+for manuscripts submitted to biomedical</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; journals.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it British Medical =
+Journal,}&nbsp;&nbsp; 1988, {\bf 296}, 401--405.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{iso-690}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Documentation --- =
+bibliographic references</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; --- content, form and structure.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISO 690.&nbsp; =
+International Organization for Standardization, 1987.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{oconnor}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Maeve =
+O'Connor.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Editing =
+scientific books and journals.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pitman Medical, =
+1978.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{page}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Gillian Page, =
+Robert Campbell and Jack Meadows.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Journal =
+publishing: principles and practice.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Butterworths, =
+1987.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{norusis}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\sc Marija J. =
+Noru\v{s}is.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it SPSS-X =
+Introductory Statistics Guide for Release^3.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPSS Inc., =
+1988.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-4821}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it Presentation of =
+theses and dissertations.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS 4821.&nbsp; British =
+Standards Institution, 1990.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{endnote}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it EndNote:&nbsp; A =
+reference database and bibliography maker.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Berkeley: Niles \&amp; =
+Associates, Inc., 1989.</FONT>
+
+<BR><FONT SIZE=3D2>\end{thebibliography}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.3E56336C--
+

@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1321" "Fri" "22" "October" "1999" "18:25:59" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "41" "Re: Robustness (was Re: Expandable templates)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id SAA04147
+	for <schoepf@UNI-MAINZ.DE>; Fri, 22 Oct 1999 18:26:25 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.67F8B4E0@mail.listserv.gmd.de>; Fri, 22 Oct 1999 18:26:22 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445311 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 22 Oct 1999 18:24:38 +0200
+Received: from ssmtp02.arrakis.isp ([212.59.199.83]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA19785 for
+          <LATEX-L@urz.uni-heidelberg.de>; Fri, 22 Oct 1999 18:24:35 +0200 (MET
+          DST)
+Received: from [195.5.70.74] ([195.5.70.74]) by ssmtp02.arrakis.isp (Netscape
+          Messaging Server 4.1) with SMTP id FK0IYS04.I03 for
+          <LATEX-L@urz.uni-heidelberg.de>; Fri, 22 Oct 1999 18:25:40 +0200
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199910221624.SAA19785@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 22 Oct 1999 18:25:59 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Robustness (was Re: Expandable templates)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3359
+
+Frank,
+
+>Bernard,
+>
+> >  >The new definition of add@accent is supposed to keep correct
+> >  >spacefactor's after accented uppercase letters. The cost is
+> >  >that a command like \edef\agrave{\`a} will not work as
+> >  >expected (with respect to spacefactors).
+> >  >More importantly, this makes the babel package fail,
+> >  >and possibly others.
+[...]
+>within standard LaTeX the new defnition of \` and friends still work
+>perfectly
+>in all circumstances. the fact that inside babel \edef was used in a place
+>where \protected@edef should have been used was an oversight and is
+>corrected.
+
+The "expandability" of \add@accent has not changed. It is still
+expandable, if its definition is:
+
+\def\add@accent#1#2{{%
+   \setbox\@tempboxa\hbox{#2%
+      \global\mathchardef\accent@spacefactor\spacefactor}%
+   \accent#1 #2}\spacefactor\accent@spacefactor}
+
+The problem is that \accent@spacefactor is not yet defined in \edef's
+prior to an actual use of any accent. That is a LaTeX bug which can be
+fixed by letting \accent@spacefactor to \relax or by defining
+it with \mathchardef (in both cases it expands into itself).
+
+Example:
+
+\documentclass{minimal}
+
+\edef\agrave{\`a}  % Doesn't work
+\setbox0\hbox{\`a} % We use an accent
+\edef\agrave{\`a}  % Now it does work (but \agrave looks horrible! :-) )
+
+Regards
+Javier Bezos
+

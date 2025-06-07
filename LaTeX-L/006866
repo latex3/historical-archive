@@ -1,0 +1,82 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p8I8r15X001839
+	for <rainer@rainer-schoepf.de>; Sun, 18 Sep 2011 10:53:03 +0200
+Received: (qmail 4045 invoked by alias); 18 Sep 2011 08:52:56 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 18 Sep 2011 08:52:56 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx078) with SMTP; 18 Sep 2011 10:52:56 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p8I8oGlq011626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 18 Sep 2011 10:50:16 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p8HM14U7032401;
+	Sun, 18 Sep 2011 10:50:15 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1593904 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 18 Sep
+          2011 10:50:15 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p8I8oFbE028117 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 18 Sep 2011 10:50:15 +0200
+Received: from mail-ew0-f44.google.com (mail-ew0-f44.google.com
+          [209.85.215.44]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p8I8o6co011807 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 18 Sep
+          2011 10:50:10 +0200
+Received: by ewy6 with SMTP id 6so286000ewy.31 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 18 Sep 2011 01:50:06 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.213.26.155 with SMTP id e27mr359147ebc.140.1316335806235; Sun,
+          18 Sep 2011 01:50:06 -0700 (PDT)
+Received: by 10.213.9.147 with HTTP; Sun, 18 Sep 2011 01:50:05 -0700 (PDT)
+References: <4E692829.2000003@morningstar2.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+Message-ID:  <CAArVCkRdSyDDjKjS=yXrMZ+h+Pr0OQFJ1ZrW-Hdh3j-687QPKw@mail.gmail.com>
+Date:         Sun, 18 Sep 2011 10:50:05 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Philipp Stephani <p.stephani2@GOOGLEMAIL.COM>
+Subject: Re: Removal of previously-notified functions
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4E692829.2000003@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6866
+
+2011/9/8 Joseph Wright <joseph.wright@morningstar2.co.uk>:
+> Hello all,
+>
+> As part of the work to re-arrange LaTeX3 code into l3kernel, l3packages
+> and l3experimental, a number of functions were marked as deprecated.
+> This information was posted to the list some time ago.
+
+It's probably too late, but I'm quite sure that the removal of
+\tl_new:Nn, \ior_new:N and \iow_new:N should be reverted. It is
+universally considered good style to combine declaration and
+initialization of variables, and having two different commands for
+declaration and setting leads to awkward duplication. Regarding
+\io[rw]_new, without them it is is impossible to check for overwriting
+of stream names. Just like with all other variable types, these should
+be declared before usage.
+Also a \cs_new:N command is missing which reserves a "function" name
+without assigning it. Both \io[rw]_new:N and \cs_new:N can essentially
+be aliases for \chk_if_free_cs.
+

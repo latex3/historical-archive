@@ -1,0 +1,309 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 23 Mar 90 19:09:40 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: bbeeton <BNB@MATH.AMS.COM>
+Subject:      theorems
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 59
+
+at the request of frank mittelbach, i'm forwarding some correspondence
+between him and mike downes.
+                        --------------------
+Date: Thu 22 Mar 90 18:01:46-EST
+From: Michael Downes <MJD@VAX01.AMS.COM>
+To: pzf5hz@drueds2.bitnet
+Subject: Theorems
+
+Dear Frank,
+
+Barbara Beeton forwarded to me a copy of your remarks about
+theorem environments.  I'd like to answer some of them:
+
+<< During my time at the University Mainz I spent a long time
+<< thinking about a proper interface to include a generic theorem
+<< environment into LaTeX which is both suitable for the author
+<< and for the publisher.
+<< The result of this work was described in TUGboat 10#3 I think.
+<< I do not believe that a level scheme as proposed by Michael would
+<< be flexible enough to handle even the standard cases.
+
+I have started working on a prototype that I think will convince you
+otherwise.  I am not going to try to handle everything, just the
+normal styles used at the AMS, with all their complications.  Several
+weeks ago I studied your article about theorem.sty to see what I could
+find there, but the differences between AMS style and Mainz style are
+so extensive that I did not think it would be easy to adapt
+theorem.sty to our needs.  At least not in a way that would
+be consistent with the logic of what you had done so far.
+
+<< On the other hand inside one document one will normally only need
+<< a few different layout.
+<<
+<<
+<< Here are some comments to Michaels notes:
+<<
+<<   .....  At the AMS one recent innovation from the
+<<   editors that gave us some headaches was to require
+<<   that if a proof followed immediately after a theorem
+<<   the intervening space would be less than if the proof
+<<   followed something else (perhaps a remark, say):
+<<   \smallskipamount instead of \medskipamount.
+<<
+<<   Other than having a few different levels, the
+<<   flexibility that I would like to see added to
+<<   theorem-type environments is as follows:
+<<
+<<   1. Allow theorem-type environments to be unnumbered,
+<<   either individual instances, or all instances of a
+<<   given class (e.g., corollary, proof, or remark).
+<<
+<< The numbering scheme can adjusted easily by the standard
+<< \newtheorem (for all instances of a class), ...
+
+I don't understand this, unless you mean that the user should do
+something like
+
+\renewcommand{\thetheorem}{}
+
+after using \newtheorem to define the `theorem' environment.  In that
+case perhaps it is only a shortcoming in the documentation.  I don't
+recall any discussion in the LaTeX book of turning off numbers this
+way, only changing the form of the number, and so I bet that
+the average user would not know how to do it.   But also I think it
+would be easier for the users to have something like
+\newtheorem* to do this.
+
+<<                                  ... for individual instances
+<< one can propose a scheme where \newtheorem{remark}... defines
+<< both a `remark' and a `remark*' environment.
+<<
+<<   2. Allow a name to be used instead of a number:
+<<   ``Disjunctivization Theorem'' instead of ``Theorem
+<<   3.2''.
+<<
+<< This is probably the most critical issue, at the moment I have no idea
+<< for a suitable syntax.
+<<
+<<   3. Allow the numbering to be modified in individual
+<<   cases---for example:  Definition 2.1' in addition to
+<<   Definition 2.1, or Theorems A and B at the beginning
+<<   of a paper with all the other theorems numbered in
+<<   the usual way.  This could probably be done as a
+<<   special case of item 2.
+<<
+<< Logically Definition 2.1' is a subdefinition of Definition 2.1.
+<< ...
+
+If I understand correctly what you mean by subdefinition, in the
+examples that I have seen this is generally not true.  Definition 2.1'
+is more often a complete restatement of Definition 2.1, in modified
+form.  Logically speaking, I don't think it should be a separate
+theorem type.  However for 2.1a, b, ... I could agree with you.
+
+<<   4. Allow the user to suppress the parentheses
+<<   supplied automatically around the optional argument
+<<   of \begin{theorem}.  Or some other way to add
+<<   something such as a \cite and not get
+<<   parentheses---our editorial department would like to
+<<   see ...
+<<
+<< If this is a general decision (and I suppose it is) then there is
+<< no problem in the current LaTeX or the style option I wrote.
+<< Simply redefine \@beginopargtheorem  in your style file or
+<< write some new \theoremstyles for my option.
+
+Actually it is not a general design decision, at the AMS.
+
+Theorem 2.1 (Gelfand)   and     Theorem 2.2 [19]
+
+could occur in the same paper, not to mention in different articles
+within the same issue of a journal (where a common definition of
+\@opargbegintheorem would usually prevail).  These are two
+different kinds of added notes, one a mathematician's name,
+the other a reference.  The possibility
+
+Theorem 2.2 ([19])
+
+seems OK in my personal opinion but as I said the AMS editorial
+department considers the parentheses to be redundant.
+
+<<
+<<   I have one more comment about what seems to be a
+<<   slightly more general issue.  When I started thinking
+<<   about the enunciation question, I went through some
+<<   sample (non-LaTeX) papers from our publications and
+<<   found some unusual numbering schemes that I wouldn't
+<<   know how to do in the current LaTeX. The most
+<<   interesting scheme had theorems and other
+<<   enunciations numbered along with subsections.  Here
+<<   is a sectioning skeleton lifted from a paper that
+<<   appeared in August 1988, with irrelevant information
+<<   removed. (If you classify examples, proofs, and
+<<   remarks as enunciations, then there are practically
+<<   no non-enunciation subsections here.)
+<<
+<< This can be easily done in the LaTeX 2.9, or am I missing something?
+<<
+
+The point I was trying to think about is that maybe according to the
+author's underlying logic the `preskip' amount in this case ought to
+be the subsection preskip rather than the theorem preskip, assuming
+that they are not the same amount.
+
+<< \newtheorem{theorem}{Theorem}[section]
+<< \newtheorem{remark}[theorem]{Remark}
+<< \newtheorem{example}[theorem]{Example}
+<< ... and so on.
+<<
+<<
+<<   While this kind of scheme is rare, it is not
+<<   idiosyncratic to one or two authors.  In two issues
+<<   pulled at random from our library three articles (out
+<<   of 39 total) used such a scheme.  From past
+<<   experience that's pretty much what I expected.  In
+<<   extreme cases some authors even have the displayed
+<<   equations numbered consecutively with everything
+<<   else.  In the example that I looked at, the author
+<<   put parentheses around the numbers for theorems and
+<<   subsections so that they had the same form as the
+<<   equation numbers.
+<<
+<< This is clearly a design decision and a style file could easily
+<< handle such a layout. It is not a question for the user!
+
+I am not sure that I can agree.  To a certain extent the numbering
+system in a document is interdependent with the logic of the author's
+material, and therefore needs to be under the author's control.  And
+the form of the numbers is part of the numbering scheme in the sense
+that it is used to help the reader understand the relations between
+parts.  Isn't this also the philosophy of LaTeX?  Why else does the
+documentation describe how to redefine \thesection and so on?
+
+<< Contrary to the LATeX users, the AMS TEX users tend to format much
+<< too much their documents.
+
+This is true, but depends a lot on the individual author.  And I think
+you'll agree that because of LaTeX's comparatively smaller mathematics
+repertoire, LaTeX authors tend to format the mathematics too much in
+their documents, compared to AMSTeX users.  Thanks to the efforts of
+you and Rainer in the AMS-LaTeX package this situation will be greatly
+helped in the near future.
+
+<<                      ... Since they have to add their numbers
+<< (for example) by hand the step further to add some () around them
+<< is easily done. In LATeX the numbers will be generated automaticly
+<< and the layout will be fixed by the style so that a user might complain
+<< about not being able to put () around something or leave them out,
+<< but he or she will not make the foolish mistake to insert them
+<< manually.
+<< I don't want to say that this is not a possible layout (even if I would
+<< not like it) the mistake is to put this layout decision into the
+<< document instead in the style definition.
+<<
+<<   The chief difficulty of using such a scheme in LaTeX
+<<   is getting the number of a theorem to appear to the
+<<   left of the word ``Theorem'' instead of to the right;
+<<   currently in LaTeX the ordinary user can't get
+<<   ...
+<<
+<< This is handled properly in my style option.
+<<
+<<   ...
+<<   \section{}\begin{theorem}
+<<
+<<   but I'm not sure how this part ought to look.
+<<
+<< As Leslie pointed out, this is clearly not the way one should
+<< those things logically. And the important thing is that the document
+<< should reflect the logical structure of its contents.
+<<
+
+I did not intend to suggest that the input should actually look like
+this, I was trying to bring out the idea of section preskip versus
+theorem preskip using the LaTeX control sequences merely as an
+illustration method.  Also there is an economics idea involved which I
+did not mention explicitly:
+
+7.3.                            <section number---no section text>
+Theorem.
+
+uses up more vertical space than
+
+7.3. Theorem.
+
+and therefore tends to make books and journals more expensive to the
+publisher (and therefore to the readers). I don't know for sure that
+this style is a good idea from LaTeX's logical design point of view
+but I do think that it is worth while to think about it.
+
+<< Conclusion:
+<<
+<< The way LaTeX handles theorem-like environments is basically okay.
+<< The user is able to declare certain logical units and reserve some
+<< specific layout for them. These declarations are at the beginning
+<< of a document so that they could easily changed by a publisher.
+<<
+<< My style option provides further control by allowing things like
+<< \theoremstyle to define a (more or less) arbitary layout. For certain
+<< math journal article styles (like the mentioned amsart) it might be
+<< advisable to predefine certain structures or add a few more
+<< \theoremstyles.
+<<
+<< What is missing is in my opinion a proper syntax to handle special
+<< cases which require a special heading of some sort (like 2.1') or
+<< (blabla Theorem) but follow in other respects the layout convention
+<< of a special class.
+<<
+<< Final remark:
+<< I think that Proofs are not a special class of the theorem-like
+<< meta class. In my opinion to many thinks have to be handled
+<< differently so that I would like to add a proof theorem with
+<< its own logical concepts (like \proofsteps etc.).
+<<
+
+I had read and studied your article about theorem.sty but had partly
+forgotten about the `change' option to switch numbers.  When I said
+that I would not know how to do certain numbering in the current
+LaTeX, I was thinking only of latex.tex plus the standard styles
+article, book, report,....
+
+In reading the theorem.sty article I was puzzled about why you
+provided the `margin' and `break' (and therefore `marginbreak')
+options.  I would consider these to be changes of a kind that
+should be done in the style file, not in the document file.
+
+As I said, I began work on a prototype theorem setup, based mainly on
+the need to provide something in AMSART.STY that handles the
+requirements of the AMS editorial department.  (The current
+\newtheorem-related definitions in AMSART.STY are unsatisfactory.) I
+am hoping that you might be able to take a look at it when I have made
+some progress and see what you think.  You must be awfully busy though
+...
+
+Finally, many thanks for your interesting comments, which helped
+me to think more clearly about several ideas.
+
+Best wishes, Michael
+                --------------------
+Date: 03/23/90 08:17:29 GMT+1
+From: PZF5HZ%RUIPC1E.BITNET@CUNYVM.CUNY.EDU
+To: MJD@MATH.AMS.COM
+Subject: theorem and the like
+
+Michael,
+Barbara told me that she would like to organize a redistribution
+of the LaTeX discussion list among a few people at your site
+(you and Ralph I think). This is okay with me and I would like to
+see your comments on my comments back on the list before I answer
+some of them. Could you see that it is forwarded or should I
+forward it (better you).
+
+Greetings Frank
+-------
+
+

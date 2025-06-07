@@ -1,0 +1,126 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p28DKIJW020293
+	for <rainer@rainer-schoepf.de>; Tue, 8 Mar 2011 14:20:19 +0100
+Received: (qmail 11539 invoked by alias); 8 Mar 2011 13:20:12 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 08 Mar 2011 13:20:12 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx037) with SMTP; 08 Mar 2011 14:20:12 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p28DIA7G023434
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 8 Mar 2011 14:18:11 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p28DBSAI011347;
+	Tue, 8 Mar 2011 14:17:59 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1251085 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 8 Mar
+          2011 14:17:59 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p28DHx6j004248 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 8 Mar 2011 14:17:59 +0100
+Received: from mail-gy0-f177.google.com (mail-gy0-f177.google.com
+          [209.85.160.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p28DHqNt003671 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 8 Mar
+          2011 14:17:58 +0100
+Received: by gyh3 with SMTP id 3so3524132gyh.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 08 Mar 2011 05:17:52 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.150.61.13 with SMTP id j13mr5952299yba.180.1299590272582; Tue,
+          08 Mar 2011 05:17:52 -0800 (PST)
+Received: by 10.147.169.4 with HTTP; Tue, 8 Mar 2011 05:17:49 -0800 (PST)
+References: <AANLkTinmM6Kwd42k-CZHdHwCwR_hFFVqDDse8R03tt_s@mail.gmail.com>
+            <4D7515F9.6080300@morningstar2.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <AANLkTi=T0sUWwaeULFq8VdQnCXzYLFnt_84CCM8RuCvq@mail.gmail.com>
+Date:         Tue, 8 Mar 2011 08:17:49 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Re: Bug in \tl_replace_in:Nnn and friends
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4D7515F9.6080300@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6v/Sb97LojnDtMgfETrECMLUO9erHzOJe+OynZRhvlGqb5A0X
+ bbiCt2rAnnct/NAlbHMvoAL6GY+23tB3khNK7Y6oT1sPizBjJUAOds0oJBO/5TIz9C5741aj9GOJ
+ bE70Q==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6647
+
+Thank you Joseph for the quick bug fix. Let me propose the following
+code for inclusion. The idea is similar to `\prg_new_map_functions`,
+which defines a set of maps, some of which are expandable. Namely,
+
+\tl_gset_replacer:nnn {<name>} {<item1>} {<item2>}
+
+defines expandable replacement functions:
+
+\<name>_replace_aux:nwwn
+\<name>_replace_some:nn
+\<name>_replace_one:n
+\<name>_replace_all:n
+
+which are all `f`-expandable. Usage: `\<name>_replace_some:nn {<int>}
+{<tl>}` will replace the <int> first occurences of <item1> by <item2>
+in <tl> (this happens in two steps). The `_all` version replaces all
+occurences, and the `_one` version replaces only the first occurence
+(both do that in three steps).
+
+The code follows. Sorry that it is made a bit obscure to avoid losing braces.
+
+\cs_new:Npn \quark_use_none_from_mark_to_stop:w #1 \q_mark #2 \q_stop {#1}
+\cs_new_eq:NN \_tl_storage:n \use:n
+\cs_new:Npn \_tl_store:n #1 #2 \_tl_storage:n #3 {
+  #2 \_tl_storage:n {#3#1}
+}
+
+\cs_new:Npn \tl_gset_replacer_aux:Nnn #1 #2 #3 {
+  \cs_gset:Npn #1 ##1 ##2 #2 ##3 \_tl_storage:n {
+    \tl_if_empty:nTF {##3} { %if end, stop.
+      \exp_after:wN \_tl_store:n \exp_after:wN {##2\q_stop}
+      \_tl_storage:n
+    } {
+      \int_compare:nNnTF {##1}={0} { %if 0, stop.
+        \exp_after:wN \_tl_store:n \exp_after:wN {##2 #2 ##3\q_stop}
+        \_tl_storage:n
+      }{
+        \exp_after:wN \_tl_store:n \exp_after:wN {##2 #3}
+        \exp_after:wN #1 \exp_after:wN {
+          \tex_number:D \etex_numexpr:D ##1-1 \tex_relax:D }
+        \c_empty_tl ##3 \_tl_storage:n
+      }
+    }
+  }
+}
+\cs_generate_variant:Nn \tl_gset_replacer_aux:Nnn {cnn}
+
+\cs_new:Npn \tl_gset_replacer:nnn #1 #2 #3 {
+  \cs_gset:cpx {#1_replace_one:n} {\exp_not:c{#1_replace_some:nn} {1}}
+  \cs_gset:cpx {#1_replace_all:n} {\exp_not:c{#1_replace_some:nn} {-1}}
+  \cs_gset:cpn {#1_replace_some:nn} ##1 ##2 {
+    \tex_romannumeral:D 0
+    \use:c {#1_replace_aux:nwwn} {##1}
+    \c_empty_tl ##2
+    \q_mark #2
+    \_tl_storage:n{\quark_use_none_from_mark_to_stop:w \exp_stop_f:}
+  }
+  \tl_gset_replacer_aux:cnn {#1_replace_aux:nwwn} {#2} {#3}
+}
+

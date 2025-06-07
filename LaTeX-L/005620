@@ -1,0 +1,105 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 22 Jan 2009 10:19:09 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0M9J6qV012453
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 22 Jan 2009 10:19:06 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0M9Etbw028729
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Jan 2009 10:14:56 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0LN1Fom015910;
+	Thu, 22 Jan 2009 10:14:52 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 219463 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 10:14:52 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0M9Eq6m014639 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 22 Jan 2009 10:14:52 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de [212.227.17.9])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          n0M9Eodv028666 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 22 Jan
+          2009 10:14:54 +0100
+Received: from morse.mittelbach-online.de (p54A87BC1.dip.t-dialin.net
+          [84.168.123.193]) by mrelayeu.kundenserver.de (node=mrelayeu5) with
+          ESMTP (Nemesis) id 0ML25U-1LPveC1Ymk-0000Pa; Thu, 22 Jan 2009
+          10:14:48 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 5371B4B608; Thu, 22 Jan 2009 10:14:43 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <49758499.5080004@morningstar2.co.uk>
+            <150532.45020.qm@web82002.mail.mud.yahoo.com>
+            <49782F88.9090501@morningstar2.co.uk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+KCveg1nVoKBeeoZWx+t4xOYkBWl/SPvwCyJv
+              MSazDs7yBiHnLmK7cl8DAhZLIWKg7cWiRrRHdRZtCCQda6Dhi9
+              yroUkFHiSWq4XVK40rpBVDgW60B0yYk
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18808.14594.895857.730057@morse.mittelbach-online.de>
+Date:         Thu, 22 Jan 2009 10:14:42 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: changing page dimensions in mid-document (was Re: Key points of LaTex3)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <49782F88.9090501@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Jan 2009 09:19:09.0946 (UTC) FILETIME=[7BA77DA0:01C97C72]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5620
+
+Joseph, Paul
+
+ > > 5) Changing page dimensions in the middle of the document: 
+ > > Middlebach says this can't be done, but I have done it in
+ > > my newlfm macro, and I say "rubbish" to Frank -
+ > > it can be done, and it should be possible.
+ > 
+ > I always thought this was an engine issue.  Shows you what I know!
+
+Joseph, your knowledge is up to date. There is no way to modify horizontal text
+dimensions in TeX in mid document, except in very restricted situations. I
+think we had these discussions before.
+
+The main restricting reasons are
+
+ - paragraph breaking and page breaking are asynconous, i.e. TeX does
+   paragraph shaping before deciding on where to place that paragraph
+
+ - you can't reformat an already broken paragraph into a different shape (as
+   the material lost on the ine breaks is not fully recoverable
+
+As a result any document that has an uncertainty where a particular piece of
+text will fall (which is effectively any document potentially involving
+floats, or documents involving unusually wide displays such as math formulas)
+is suffering from that restriction.
+
+If as you claim you have solved this problem within the boundaries of TeX,
+then there will be more than one person to applaude and I don't mind if you
+say "rubbish" to me.
+
+so I would be very much interested in learning what kind of classes of
+documents you believe you can handle and if so how.
+
+(vertical adjustment is a different matter, nobody contested that ever, even
+though in std LaTeX today that is also not directly possible)
+
+frank
+
+ps Paul, if you want to turn my name into English Middlesprig or Middlecreek
+would come close; Middlebach is a bastard :-) 
+

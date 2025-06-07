@@ -1,0 +1,152 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4936" "Sun" "31" "October" "1999" "20:43:11" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "112" "Re: footnote templates" "^Date:" nil nil "10" nil "footnote templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA07560
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 21:10:46 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.EB2426F9@mail.listserv.gmd.de>; Sun, 31 Oct 1999 21:11:10 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445077 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 22:11:06 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id VAA09955
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 21:11:03 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin403.zdv.Uni-Mainz.DE
+          [134.93.175.103]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          VAA05011 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999
+          21:10:32 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          UAA00728; Sun, 31 Oct 1999 20:43:11 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199910261251.IAA08223@hilbert.math.albany.edu>
+Message-ID:  <199910311943.UAA00728@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910261251.IAA08223@hilbert.math.albany.edu>
+Date:         Sun, 31 Oct 1999 20:43:11 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: footnote templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3377
+
+William F. Hammond writes:
+
+ > > now please don't tell me that \footnote could easily scan for a \footnote
+ > > following. i know, but how do i specify this if we separate frontend (ie
+ > > \footnote declared via something like the xparse package from the
+ > > typesetting
+ > > declaration)
+ >
+ > >From my point of view one wants different types of "macro"
+ > declarations that can be made at various stages, and one wants to have
+ > very clearly laid out rules about what can be done with each.
+
+if i understand you right then you are agreeing with me that the different
+levels, eg user document syntax and the level of formatting eg templates etc
+should be properly separated. but the point is that on the document level i
+sometimes need information from the parsing and that needs to be properly
+propagated (this is much less an issue if one mixes those levels together as
+it is currently done in LaTeX).
+
+so in the case of footnote one might want to parse the document further (in
+there parsing level, eg xparse) to see if another footnote (or footnotemark)
+follows but then one has to pass the information gained to the layout/template
+level.
+
+to give a completely different example. some time ago i worked on templates
+for justification of paragraphs (this isn't yet made public because it depends
+on the galley code which is not finished ...). anyway, the main point was that
+i wanted to be able to specify things like TeX' \leftskip \rightskip
+\parfillskip etc to be able to  denote paragraph justifications like
+"raggedright" or "firstlinecentered" or "justified" etc.
+
+now one thing that became clear was that a template for this needed to specify
+how to produce a "newline-action" that is i need to provide code that can be
+used if the user says \newline or \\ or the like because depending on the
+settings for \parfillskip etc, the code needed is different.
+
+now since \\ in LaTeX supports a * and an optional argument my first
+implementation actually had a key in the template that looked like this:
+
+  newline-action =f0
+
+and was expecting a command name (such as \newline) which in turn was supposed
+to be defined via xparse and accepting  a star and an optional argument.
+
+but then i realised that i was horribly mixing the two levels. by having a key
+which actually wants code that does parsing for a star and some brackets my
+template instance was suddenly no longer independent from the document
+syntax. that is, if i would replace xparse by a frontend that would parse xml
+syntax, say, my template instance would not work any longer since it would
+still require \\*[] for a linebreak
+
+so i changed the specification of the internal galley data structure to carry
+enough information so that i'm now able to specify the stuff without making
+assumptions on the template level about the document level syntax. (as it
+turned out what was needed was to be able to say whether or not a "newline"
+command does fill the current line with white space and if so with how much
+--- you will see this one day)
+
+
+
+back to the question of footnotes in sequence:
+
+ > That said, what about giving the issue to the authors with
+ > something new for this purpose such as \footnotesequence ?
+
+this is a possibility on the front end and it might be the right choice to use
+there. but on the layout-level, i.e. the template side an individual footnote
+mark as so much in common with a footnote mark that is part of a sequence that
+i think it pays off to provide a flag to the template that says this is a mark
+in a sequence or not.
+
+on the user syntax level this could still be provided a different function
+though in that particular case my feeling is that it should not be a different
+command if possible, eg if i have the following case
+
+ text text\footnote{foo} text text
+
+and i decide to add another footnote to this point i think it would be more
+logical to be able to say
+
+ text text\footnote{foo}\footnote{bar} text text
+
+and let the commands sort out that they come in a sequence (see my other post
+on xparse extension --- to be written :-) rather than forcing the user to
+replace the first thing by something like
+
+ text text\begin{footnotesequence} \item foo \item bar\end{footnotesequence}
+ text text
+
+handwaving on the actual syntax. my suggestion some days ago to have
+
+ text text\footnote*{foo}\footnote{bar} text text
+
+has effectively the same defect, only that it is far easier for the user to
+change from one form to the other, but logically speaking the right kind of
+abstract information is already present in the first example with the two
+\footnote commands and in my eyes this is all that should be needed
+(preferably).
+
+A similar case is
+
+ \section{foo} text
+
+compared to
+
+ \section{foo} \subsection{bar} text
+
+where we don't have to tell the subsection command that a section command
+immediately follows. it figures this out by itself and adjusts the spacing
+automatically (no need for manual intervention)
+
+frank
+

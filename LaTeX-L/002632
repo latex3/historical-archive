@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2609" "Wed" "1" "July" "1998" "23:41:22" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "57" "Re: Modules and submodules" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA22965;
+	Wed, 1 Jul 1998 23:58:57 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.AB039A34@listserv.gmd.de>; Wed, 1 Jul 1998 23:58:55 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 376803 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 1 Jul 1998 23:58:49 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA11330
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 1 Jul 1998 23:58:47
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA11093 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 1 Jul 1998
+          23:58:47 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          XAA16984; Wed, 1 Jul 1998 23:41:22 +0200
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+Message-ID:  <199807012141.XAA16984@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806220631.QAA11602@ricetub.anu.edu.au>
+Date:         Wed, 1 Jul 1998 23:41:22 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules and submodules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2632
+
+beside "my please stop mail" i do want to explain why i think that a
+module/submodule concept as suggested by Hans is doomed to failure if
+applied all levels of programming within TeX.
+
+essentially i said this already in my mail a few days ago but perhaps
+it was not clear enough to people not having written large scale
+low-level TeX.
+
+Richard suggested at some point a syntax like \foo/bar_baz:nn and said
+"with catcode 11 for / _ :" now that is beside syntactic sugar exactly
+what we have now (where the statement is: the module name is the first
+word up to an _)
+
+it may be that this is better to read (although i doubt)[1] it but it is
+not functionally offering anything new. and importantly it doesn't
+offer what Hans has in mind (even though in some side remarks it
+sounds as if he thinks one can combine the two)[2]
+
+one of the main arguments for submodules (or class structures in OO
+languages) is the ability to overload functions/procedures
+
+and here is where it stops being usable. if the concept allows for
+this than at runtime! the binding has to be changed and that means:
+
+any expansion text of any macros can't contain something like
+\foo/bar_baz:nn as above (ie a token) but it must contain things that
+live on the module/submodule level ie is looked up by some internally
+programmed module handling interface. and that will bring you to my
+exponential growth in slowness.
+
+i'm not going to repeat the other arguments about loosing the basic
+expansion mechanism etc, which are at the heart of the low-level
+functionality of TeX.
+
+so while i think that the ideas itself are relevant to TeX, i'm
+strongly convinced that they are relevant only to a high-level
+language for producing the user interface, ie the document level.  and
+that level should not at all deal with expand_after stuff or other
+low-level TeX rubbish and consequentially there is no reason that these
+languages should look the same or nearly the same if their concepts
+are completely different.
+
+
+frank
+
+
+[1] and i don't think people should make too fast statements on this
+without actually having worked with the language as is
+
+[2] as i said several times: *prove* me wrong by giving me something
+that i can run through initex which works, ie compiles at least simple
+documents without needing a minute per page --- don't try to prove me
+wrong by using applying gut-feeling from experiences in languages like
+C++, Smalltalk, Java, Modula, you name it. We have heard these
+arguments by now and we agree about their usefulness but we claim
+(from our experience) that they can't and shouldn't be applied to that
+level in TeX.
+

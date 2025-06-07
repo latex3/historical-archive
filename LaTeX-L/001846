@@ -1,0 +1,125 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4351" "Sun" "2" "March" "1997" "18:30:12" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "85" "Re: Shortref mechanism" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id SAA31467 for <schoepf@UNI-MAINZ.DE>; Sun, 2 Mar 1997 18:39:20 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.8085086B@listserv.gmd.de>; Sun, 2 Mar 1997 18:39:19 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 107792 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 2 Mar 1997 18:39:15 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id SAA14393
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 2 Mar 1997 18:39:14
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id SAA31291 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 2 Mar 1997 18:37:46 +0100
+          (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          SAA03952; Sun, 2 Mar 1997 18:30:12 +0100
+References: <v02130504af3f1549422d@[130.237.37.139]>
+Message-ID:  <199703021730.SAA03952@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v02130504af3f1549422d@[130.237.37.139]>
+Date:         Sun, 2 Mar 1997 18:30:12 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1846
+
+Hans Aberg writes:
+ > Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE> wrote:
+ >
+ > >The above means that the shortref mechanism either has to be fully
+ > >expandable or that one can't use it to produce glyphs that might play
+ > >a part in ligature or kerning tables.
+ >
+ >   I cannot follow the details in your reasoning, but I can note that with
+ > deterministic parsing, the method generally used in LaTeX, conditional
+ > parsing have such limits.
+
+well this is a fact of the way TeX behaves, just try
+
+  f\x i
+
+and define \x to contain a non expandable primitive (such as
+\def\x{\let\foo\bar} ) and you will find that even though \x does not
+produce any output it has nevertheless suppressed the ligature between
+f and i. Thus when one tries to peek at the following token (and the
+only way to do this is using \futurelet unless one swallows the token
+using arguments) this side-effect will be the result.
+
+the only way to trick TeX into regenerating the ligature (or the kern)
+is to force a hyphenation pass of the paragraph. however this isn't
+any good either for two reasons
+
+ a) it will only work for words that TeX considers worth hyphenating
+    (which is a subset of all words depending on the settings of
+    \lefthyphenmin, etc)
+
+ b) it will not work for restricted horizontal text, eg \hbox{f\x fi}
+
+ >   But with non-deterministic parsing more general things can be done:
+ >   For example, I just made a definition command that can produce commands
+ > having optional arguments; in this general approach, I had to switch from
+ > LaTeX style deterministic parsing to non-deterministic parsing.
+
+i fear that you do underestimate certain restrictions (like the above)
+posed TeX's highly efficient but somewhat inflexible parser.
+
+ >   A command then picks down a look-ahead portion, like to the next space
+ >     \def\foo#1 {<def text> } %% Putting back the space consumed by the argument.
+ > It then examines this argument, and then has the opportunity of rejecting
+ > whatever non-parsed stuff unaffected, by returning (a part of) the
+ > _original_ look-ahead portion. Certainly, spaces do count in this approach.
+ > If the the only problem is the next character (like a brace) after the
+ > command or active character, perhaps you can combine, doing a simple
+ > one-token look-ahead, before the argument pickup; otherwise, TeX requires
+ > arguments to not have an extra "}", so one cannot enclose such a command in
+ > braces without at least one space occurs within those braces. (So there
+ > must be a look-ahead token that you can ensure to be on the same group
+ > level as the command.)
+
+again that single token lookahead is the killing factor. there is only
+one solution that would avoid that kind of deadlock which is to
+abandom TeX's parsing mechanism completely and writing your own parser
+within TeX (eg by making braces being ordinary characters etc). that
+is possible although incredibly slow even on fast machines and to do
+more than just a prove of concept type implementation you get
+dangerously close to proving that TeX is Turing complete. --- i have
+implemented some way back an SGML interpreter within TeX that was
+reading and interpreting DTD's (although only restricted) as well so i
+think i do know what i'm talking about. In other words this is not
+something that i do seriously consider as an adequate use of TeX the
+program.
+
+ >   Actually, what is needed, is a simple extension of the TeX \def command:
+ >     \def\name<parameter text>{definition text}[exception text]
+ > If a command somehow is unable to process the parameter text, then the
+ > original input text (before the parsing of the parameter text began) is
+ > left unaffected, and the execution passes to the exception text.
+ >   Then stuff like optional commands could be implemented most easily, and
+ > perhaps the stuff you are asking for, too.
+
+well yes, if we would/could modify TeX's parser on the program level
+you certainly could do better. but we are not talking here about
+proposals for NTS or Omega functionality, in other words this is
+unfortunately irrelevant within the TeX framework.
+
+however, perhaps some of the Omega/NTS/e-TeX people listening in might
+find this general idea useful. Nevertheless i would prefer if we stop
+here and don't start a TeX extension discussions as this is not the
+right list for this type of topic.
+
+frank
+

@@ -1,0 +1,184 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6628" "Thu" "21" "October" "1999" "21:01:30" "+0200" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "143" "Robustness (was Re: Expandable templates)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA08924
+	for <schoepf@UNI-MAINZ.DE>; Thu, 21 Oct 1999 22:25:28 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.A021F2DE@mail.listserv.gmd.de>; Thu, 21 Oct 1999 22:25:21 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445447 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 21 Oct 1999 22:23:37 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA02772
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 21 Oct 1999 22:23:34 +0200
+          (MET DST)
+Received: from istrati.zdv.uni-mainz.de (root@dialin374.zdv.Uni-Mainz.DE
+          [134.93.175.74]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA15829 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 21 Oct 1999
+          22:25:13 +0200 (MET DST)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          VAA00546; Thu, 21 Oct 1999 21:01:30 +0200
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199910171448.PAA27438@mimosa.csv.warwick.ac.uk>
+            <199910180907.KAA17744@nag.co.uk>
+Message-ID:  <199910211901.VAA00546@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910180907.KAA17744@nag.co.uk>
+Date:         Thu, 21 Oct 1999 21:01:30 +0200
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Robustness (was Re: Expandable templates)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3358
+
+David Carlisle wrote in reply to James Kilfiger:
+
+ > > but I get errors when I put instances in an \edef.
+ >
+ > The number of commands that work in an edef is vanishingly small;-)
+ > Probably (instances of) templates could be (or perhaps already are!)
+ > robust via the normal latex \protect mechanism, in which case they
+ > should survive the latex equivalent of \edef which is
+ > \protected@edef.
+
+instances of templates should be robust if they are not we should make them or
+at least their call through a standard mechanism like \UseInstance should be
+robust.
+
+this needs checking but is not significantly difficult to provide. more
+difficult might be to make a the use of \UseTemplate robust since that might
+contain arbitary code in its key/value segment.
+
+ > There is no way to make an instance of a template expandable in general
+ > as the key setting in the template call are typically low level register
+ > assignments in TeX, and they are not expandable.
+
+this answer that template instances can't be expandable (with reasonable
+effort --- disregarding that (i think) Alan Jeffrey once proved that one can
+implement everything in TeX's mouth if one is prepared to wait long enough for
+the answer (this is really the turing machine argument to please don't argue
+that machines get faster :-)
+
+but since the question of why does a command that is claimed to be "robust"
+fails in an edef and we had a similar "bug report (pr/3084)" just recently i
+appended my reply back then below since i think this is of some interest.
+
+questions:
+
+ a) anybody having any idea whatsoever to deal with this problem of robustness
+ other than LaTeX currently does? (conceptually i mean)
+
+ b) if the current scheme is basically sound (and i think it is) would be
+ trapping \edef a sensible approach, ie a plain edef would effectively run
+ \protected@edef and a code writer who really would like to use a vanilla
+ \edef for speed reasons would have to use something like \unprotected@edef?
+ This would clearly help in cases like 3084 or in James' usage. but it would
+ slow down processing a lot if packages and the latex kernel are not adjusted
+ accordingly (the kernel currently contains 175 \[xe]def's in places where we
+ thought we know what the input is going to be --- all such places would
+ suddenly no longer run a primitive but a macro which in turn does some
+ additional processing)
+
+ c) there are some theoretical possibilities for a command to find out on its
+ own whether or not it is in a dangerous context (such as \edef) but i haven't
+ figured out a single solution so far that would run in acceptable time
+ (assuming that about every command would need to make this check over an over
+ again this is a significant overhead compared to the current approach where
+ the meaning of \protect is externally changed so that there is no or nearly
+ no penalty for testing the current state for the individual command)
+
+ d) is the current concept okay except for the problem that one needs to
+ educate people better about the use and misuse of \edef compared to
+ \protected@edef ? this is the current approach taken and somewhat the
+ opposite to b)
+
+if somebody would have ideas for a) or more specifically c) which is a
+subclass of a) i guess this would be great.
+
+if somebody would have a heart and would try to test b) on a large number of
+documents that would be great too and report about timing differences and
+failures found; essentially it means running the document with a format that
+contains additionally something like
+
+\let\@@edef\edef
+\def\protected@edef{ <as before but with \@@edef instead of \edef> }
+\let\edef\protected@edef
+
+and ditto for \xdef and \protected@xdef and perhaps a few other commands in
+that part of the kernel
+
+
+if somebody would feel like writing a tugboat article on the current \protect
+i guess the TUB editor would be glad and so would i and probably a lot of
+people since this is a poorly understood concept (there is a bit of intro docu
+written long time ago in ltdefns.dtx but i unfortunately didn't got very far)
+
+have a go ---  ( not just silently listen to this list )
+
+frank
+
+
+---- from pr/3084; see www.latex-project.org for the whole pr
+
+
+Subject: Re: latex/3084: New add@accent definition prohibits \edefs
+Date: Fri, 17 Sep 1999 11:31:38 +0200
+
+Bernard,
+
+ >  >The new definition of add@accent is supposed to keep correct
+ >  >spacefactor's after accented uppercase letters. The cost is
+ >  >that a command like \edef\agrave{\`a} will not work as
+ >  >expected (with respect to spacefactors).
+ >  >More importantly, this makes the babel package fail,
+ >  >and possibly others.
+
+you are right that the new definition of the internal accent handling made
+babel fail or rather made its use inside a straight \edef fail.
+
+problem is that LaTeX *never* supported arbitrary input inside straight
+\edef's.
+
+LaTeX goes a long way to make most commands robust (and if fragile provides
+\protect to protect them). However to make this work, LaTeX commands who
+accepts arbitrary input in their arguments are never allowed to pass them
+straight to an \edef. Instead they have to pass them to \protected@edef which
+defines \protect suitably to make everything work as expected. (note that in a
+straight \edef \protect does not help you as its default definition is
+\relax!)
+
+within standard LaTeX the new defnition of \` and friends still work perfectly
+in all circumstances. the fact that inside babel \edef was used in a place
+where \protected@edef should have been used was an oversight and is corrected.
+
+of course that doesn't help if other packages have commands that receive user
+input and pass it to \edef. but there is nothing that one can do about this
+other than fixing those packages. the fact that the accent commands are now
+failing inside such commands is a pity, but i don't think the conclusion can
+be to keep them broken in other respects just because there are potentially
+some broken packages that do not implement the protect mechanism of LaTeX
+correctly. it is simply a fact that to get the space factor right in case of
+\`A one has to make an assignment and assignments are not expandable in
+TeX. so to make them work you have to avoid putting them into a primitive
+\edef.
+
+and even if they would not have that restriction and would work inside \edef
+there are plenty of other commands that have the same kind of problem inside
+an \edef. so the conclusion can only be:
+
+    DONT USE \edef unless you absolutely control its content.
+
+as i said, babel is now fixed again in this regard.
+
+hope this explains the general problem behind the anomaly you detected.
+
+best wishes
+frank
+

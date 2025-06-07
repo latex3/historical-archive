@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2417" "Fri" "11" "March" "1994" "17:07:42" "+0100" "Peter Dalgaard SFE" "pd@KUBISM.KU.DK" nil "47" "Re: AMS-LaTeX 1.1 patch for LaTeX2e" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA07872; Fri, 11 Mar 94 17:10:10 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA22483; Fri, 11 Mar 94 17:10:09 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA23018
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 11 Mar 1994 17:10:06 +0100
+Message-Id: <199403111610.AA23018@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 4453; Fri, 11 Mar 94 17:09:32 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 4452; Fri,
+ 11 Mar 1994 17:09:32 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3238; Fri,
+ 11 Mar 1994 17:08:24 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 11 Mar 1994 17:07:42 +0100
+From: Peter Dalgaard SFE <pd@KUBISM.KU.DK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: AMS-LaTeX 1.1 patch for LaTeX2e
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1589
+
+> peter dalgaard asks if ams-latex 1.2 will support dc fonts (t1
+> encoding).
+>
+> because the purpose of ams-latex is to set mathematical material,
+> it doesn't make a lot of sense to implement a font system that
+> doesn't yet provide appropriate math fonts.  also, ams has a policy
+> of accepting submissions prepared in ams-latex, and because of the
+> absence of compatible math fonts, or even compatible text fonts for
+> the hardware being used, would not be able to process -- in a
+> production environment -- submissions utilizing dc fonts.
+> for those reasons, i don't believe that version 1.2 will provide
+> a native implementation of the dc fonts.
+
+I'm not sure whether it is appropriate to continue this discussion here,
+but it seems that the T1 encoding and math fonts issue is important
+not just for AMS-LaTeX. A few basic issues
+
+- The DC encoded fonts are currently the only way to get hyphenation to
+  work in languages with accented characters without modifying TeX itself.
+
+- The DC fonts not only adds characters above 128, but shuffles those below
+  32 around as well. This causes the occasional problem with \mathchardef's
+  in .sty files and so on.
+
+- Apart from that, there is NO problem with mixing DC fonts with the good
+  ol' math fonts from the CM and AMS series.
+
+What annoys me is that people seem to believe that it is necessary to have
+256-char math fonts before DC fonts can be used for anything except plain
+text. This simply isn't true, and it confuses me that no-one in Germany
+or France seem to have noticed (German and French has the hyphenation
+problem much worse that Danish, which has only a single accented letter).
+
+Sorry if I sound P'ed off, but the implication of the matter is that I
+feel left with the options of either having to do some of my usual
+nonstandard, half-assed hacking in order to get a decent environment for
+typing mathematical papers in my natural language or postponing the
+installation of LaTeX2e into the indefinite future. I can imagine a rather
+large number of sysadmins being put in a similar dilemma.
+
+BTW. I also don't understand why nobody seems to have found it worthwhile
+to create a set of .vf files implementing the T1 encoding with CM glyphs.
+(Can't be done perfectly, of course, since not all glyphs are there) With
+these in place, it would be possible to process and print papers without
+any additional fonts at all.
+
+        Peter Dalgaard
+

@@ -1,0 +1,217 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Thu, 13 Jan 2000 20:41:08 +0100 (MET)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id UAA09572 for <schoepf@mail.uni-mainz.de>; Thu, 13 Jan 2000 20:41:08 +0100 (MET)
+MIME-Version: 1.0
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA11994 for <schoepf@UNI-MAINZ.DE>; Thu, 13 Jan 2000 20:41:07 +0100 (MET)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF5DFE.2300E200"
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.F2616340@mail.listserv.gmd.de>; Thu, 13 Jan 2000 20:40:52 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 447714 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 13 Jan 2000 20:39:47 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id UAA16339 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 13 Jan          2000 20:39:43 +0100 (MET)
+Received:  from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.1) with SMTP id UAA21778 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 13 Jan 2000 20:40:32 +0100 (MET)
+Received:  (qmail 3544 invoked from network); 13 Jan 2000 20:40:41 +0100
+Received:  from sinclair.tninet.se (195.100.94.101) by knatte.tninet.se with          SMTP; 13 Jan 2000 20:40:41 +0100
+Received:  from  [195.100.226.150] (du134-226.ppp.su-anst.tninet.se          [195.100.226.134]) by tninet.se (BLUETAIL Mail Robustifier1.1.7) with          ESMTP id s4574985t452343-bmr-sinclair for          <LATEX-L@URZ.UNI-HEIDELBERG.DE> ; Thu, 13 Jan 2000 20:40:39 +0100
+In-Reply-To:  <200001131857.SAA07752@mimosa.csv.warwick.ac.uk>
+References: <200001070658.HAA00191@istrati.zdv.uni-mainz.de> from Frank            Mittelbach at "Jan 7, 0 07:58:14 am"
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["1840" "Thu" "13" "January" "2000" "20:39:40" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "42" "Re: environment templates" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+X-Sender: haberg@pop.matematik.su.se
+Content-class: urn:content-classes:message
+Subject:      Re: environment templates
+Date: Thu, 13 Jan 2000 20:39:40 +0100
+Message-ID:  <v03110702b4a3d80bed40@[195.100.226.150]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Hans Aberg" <haberg@MATEMATIK.SU.SE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3498
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF5DFE.2300E200
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 18:57 +0000 2000/01/13, James Kilfiger wrote:
+>> the problem with this and perhaps the problem with the whole =
+mechanism
+>>is that
+>> a lot of people have learned to write environments like this:
+>>
+>> \newenvironment{foo}{...\quote ...}{ ... \endquote ...}
+>>
+>> ie without using \begin/\end internally.
+>>
+>> if all such things like \quote internally use \EndThisEnviornment =
+then guess
+>> what happens. so this needs some thoughts.
+>>
+>>  a) do not allow above usage
+>
+>I don't know how verbatim environments will be implemented in latex3,
+>but the verbatim package requires this short hand.  One posiblity that
+>comes to mind is that there should be a class writer's version of =
+\begin
+>and end (\BeginEnvironment ?) that do not set the current environment,
+>and could perhaps be used with verbatim and other unusual things.
+
+I think that I already implemented (while implementing "environments =
+with
+hooks") what is asked for in this discussion:
+
+In the example above, the environment "quote" would merely execute
+something like \quote/begin (resp \quote/end) when calling \begin{quote}
+(resp \end{quote}).
+
+However, I also kept track of the name "quote" in an extra variable. =
+Thus,
+when it is time to end an environment, one merely needs to end the
+environment on the top of the internal variable stack. This allows for
+commands such as \EndEnvironment, or whatever you want to name it.
+
+Thus, the version
+   \newenvironment{foo}{...\begin{quote} ...}{ ... \EndEnvironment ...}
+   \newenvironment{foo}{...\quote/begin ...}{ ... \EndEnvironment ...}
+would be legal. Or one could have a command \end[quote], with the quote =
+legal.
+
+The trick in the implementation is to keep track of both the defining
+environment ("foo" above), and the currently executing environment =
+(which
+will be "quote" above, when that is executing).
+
+  Hans Aberg
+
+------_=_NextPart_001_01BF5DFE.2300E200
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: environment templates</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 18:57 +0000 2000/01/13, James Kilfiger =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; the problem with this and perhaps the =
+problem with the whole mechanism</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;is that</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; a lot of people have learned to write =
+environments like this:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; \newenvironment{foo}{...\quote ...}{ ... =
+\endquote ...}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; ie without using \begin/\end =
+internally.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; if all such things like \quote internally =
+use \EndThisEnviornment then guess</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; what happens. so this needs some =
+thoughts.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; a) do not allow above usage</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;I don't know how verbatim environments will be =
+implemented in latex3,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;but the verbatim package requires this short =
+hand.&nbsp; One posiblity that</FONT>
+
+<BR><FONT SIZE=3D2>&gt;comes to mind is that there should be a class =
+writer's version of \begin</FONT>
+
+<BR><FONT SIZE=3D2>&gt;and end (\BeginEnvironment ?) that do not set the =
+current environment,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;and could perhaps be used with verbatim and other =
+unusual things.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that I already implemented (while implementing =
+&quot;environments with</FONT>
+
+<BR><FONT SIZE=3D2>hooks&quot;) what is asked for in this =
+discussion:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the example above, the environment =
+&quot;quote&quot; would merely execute</FONT>
+
+<BR><FONT SIZE=3D2>something like \quote/begin (resp \quote/end) when =
+calling \begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>(resp \end{quote}).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, I also kept track of the name =
+&quot;quote&quot; in an extra variable. Thus,</FONT>
+
+<BR><FONT SIZE=3D2>when it is time to end an environment, one merely =
+needs to end the</FONT>
+
+<BR><FONT SIZE=3D2>environment on the top of the internal variable =
+stack. This allows for</FONT>
+
+<BR><FONT SIZE=3D2>commands such as \EndEnvironment, or whatever you =
+want to name it.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus, the version</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \newenvironment{foo}{...\begin{quote} =
+...}{ ... \EndEnvironment ...}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \newenvironment{foo}{...\quote/begin =
+...}{ ... \EndEnvironment ...}</FONT>
+
+<BR><FONT SIZE=3D2>would be legal. Or one could have a command =
+\end[quote], with the quote legal.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The trick in the implementation is to keep track of =
+both the defining</FONT>
+
+<BR><FONT SIZE=3D2>environment (&quot;foo&quot; above), and the =
+currently executing environment (which</FONT>
+
+<BR><FONT SIZE=3D2>will be &quot;quote&quot; above, when that is =
+executing).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; Hans Aberg</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF5DFE.2300E200--
+

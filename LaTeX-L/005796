@@ -1,0 +1,102 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 12 Jun 2009 23:54:33 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n5CLsXPn009890
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 12 Jun 2009 23:54:33 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n5CLo2QY014314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 12 Jun 2009 23:50:02 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n5CIbXgM027684;
+	Fri, 12 Jun 2009 23:49:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 293842 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 12 Jun
+          2009 23:49:46 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n5CLnkhO026183 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 12 Jun 2009 23:49:46 +0200
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n5CLnd7Q014142 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 12 Jun 2009 23:49:43 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1MFEcy-0001fA-is for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 12 Jun
+          2009 21:49:37 +0000
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+MIME-Version: 1.0
+References: <4A2F5FE3.3030205@morningstar2.co.uk>                              
+            <qunzxqiuyjyg.dlg@nililand.de>                                 
+            <4A300B9E.4000608@morningstar2.co.uk>                              
+            <8C8871A5-B9AF-4EF4-8AAA-F282C1D206A0@gmail.com>                   
+            <4A30C022.8000201@morningstar2.co.uk>                      
+            <B1C8F8BF-1502-434F-BF7C-ED27ED50502B@gmail.com>           
+            <4A30E83D.3070902@morningstar2.co.uk>
+            <4A31233E.50801@morningstar2.co.uk>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A32CD74.2040709@morningstar2.co.uk>
+Date:         Fri, 12 Jun 2009 22:49:40 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Key-value input
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A31233E.50801@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Jun 2009 21:54:33.0406 (UTC) FILETIME=[5EC965E0:01C9EBA8]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5796
+
+Joseph Wright wrote:
+> I've also started splitting \keys_manage:n into a \keys_define:n and a
+> \keys_set:n function. For the moment, this is just cosmetic but I may do
+> something more serious later. 
+
+I've taken another look at things, and have completely re-modelled the
+internals of key3.  Things now work as follows. For creating keys:
+
+\keys_define:nn { module } {
+  key-one   .code:n    = {Code, parameter #1, etc.},
+  key-two   .set:N     = \l_module_var_tl,
+  key-two   .value_required:,
+  key-three .set:N     = \g_module_var_int,
+  key-three .default:n = 0,
+  key-four  .generate_choices:nn = {a,b,c,d} {
+    Choice~`\l_keys_choice~tl'~is~number~\int_use:N \l_keys_choice~int
+  }
+}
+
+Then to use them:
+
+\keys_set:nn { module } {
+  key-one   = value,
+  key-two   = value,
+  key-three = 3,
+  key-four  = a
+}
+
+As you can see, I've attempted to simplify the structure, and creating
+keys is now a bit more like the method used in template. On the other
+hand, I've stuck with "properties" and not having them as single tokens.
+I've also kept the multiple choices idea and value required/forbidden.
+
+I've just uploaded the update to CTAN, so I imagine it will wend its way
+around the world over the next 24 hours.
+-- 
+Joseph Wright
+

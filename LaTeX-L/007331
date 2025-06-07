@@ -1,0 +1,119 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id s17KI5Im032654
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Fri, 7 Feb 2014 21:18:05 +0100
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id s17KHrIJ012589;
+	Fri, 7 Feb 2014 21:17:54 +0100
+Received: from smtp2.easily.co.uk (smtp2.easily.co.uk [62.128.146.103])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id s17KHlEu012582
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+ for <latex-team@latex-project.org>; Fri, 7 Feb 2014 21:17:48 +0100
+Received: from [82.132.237.233] (port=14858 helo=palladium.local)
+ by smtp2.easily.co.uk with esmtpa (Exim 4.43) id 1WBrrt-0002GN-II
+ for latex-team@latex-project.org; Fri, 07 Feb 2014 20:17:47 +0000
+Message-ID: <52F53F63.2070501@morningstar2.co.uk>
+Date: Fri, 07 Feb 2014 20:17:39 +0000
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9;
+ rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+MIME-Version: 1.0
+To: List team-latex <latex-team@latex-project.org>
+Subject: Re: Lowercasing, etc. (again)
+References: <52C67A6F.9010401@morningstar2.co.uk>
+ <2C192027-C498-4931-91A1-CAC4B3313D5F@gmail.com>
+ <52EECA61.4030907@morningstar2.co.uk> <52F14615.3020300@latex-project.org>
+ <52F1595B.9010307@morningstar2.co.uk>
+ <C2927E81-30B4-4C3F-B48D-5CCCD34B712A@yahoo.co.uk>
+ <52F1FCBB.5000301@morningstar2.co.uk> <52F23630.4090203@morningstar2.co.uk>
+ <BC6B5150-7748-43C3-99C1-56DC3B885171@yahoo.co.uk>
+ <52F4C4B9.9040206@morningstar2.co.uk> <52F50812.2080300@morningstar2.co.uk>
+ <52F51662.3030808@morningstar2.co.uk> <52F53702.30406@morningstar2.co.uk>
+In-Reply-To: <52F53702.30406@morningstar2.co.uk>
+X-DANTE-Spam-Score: -1.9 () BAYES_00
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7331
+
+[Sorry for the multiple messages: interesting and tricky problem!]
+
+On 07/02/2014 19:41, Joseph Wright wrote:
+> I
+> guess a comprehensive test will be needed, or I could use the list from
+> Unicode to get Lua to do all of the case changes and then use that
+> output for XeTeX: would be self-consistent at least.)
+Definitely a better plan overall, and avoids having to do a mapping at 
+point-of-use in XeTeX for the setup:
+
+     \xetex_if_engine:TF
+       {
+         \group_begin:
+           \etex_everyeof:D { \exp_not:N }
+           \tl_const:Nx \c__tl_act_lowercase_tl
+             { \tex_input:D l3case-lower.def \c_space_tl }
+           \tl_const:Nx \c__tl_act_uppercase_tl
+             { \tex_input:D l3case-upper.def \c_space_tl }
+         \group_end:
+       }
+
+with something like
+
+\cs_new_protected:Npn \__kernel_read_case_data_aux:nn #1#2
+   {
+     \tl_rescan:nn
+       { }
+       {
+         \iow_now:Nx \g_lower_stream
+           {
+             \luatexUchar "#1 \c_space_tl
+             \lua_now_x:n
+               {
+                 tex.sprint
+                   (
+                      unicode["utf8"].lower
+                      ( " \luatexUchar "#1 ~ " )
+                   )
+               }
+           }
+         \iow_now:Nx \g_upper_stream
+           {
+             \luatexUchar "#2 \c_space_tl
+             \lua_now_x:n
+               {
+                 tex.sprint
+                   (
+                      unicode["utf8"].upper
+                      ( " \luatexUchar "#2 ~ " )
+                   )
+               }
+           }
+       }
+   }
+
+in the 'setup' script (I renamed the streams so I can keep a track of 
+things).
+
+Joseph
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

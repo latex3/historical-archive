@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1837" "Sun" "14" "November" "1999" "23:48:56" "+0300" "Vladimir Volovich" "vvv@VVV.VSU.RU" nil "38" "Re: babel 3.7 beta release" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA11764
+	for <schoepf@UNI-MAINZ.DE>; Sun, 14 Nov 1999 21:55:14 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.6261AD0B@mail.listserv.gmd.de>; Sun, 14 Nov 1999 21:55:10 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445428 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 14 Nov 1999 21:54:52 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id VAA18386 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov
+          1999 21:54:50 +0100 (MET)
+Received: from relay2.vsu.ru (mail.vsu.ru [62.76.169.17]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id VAA29267 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999 21:55:06 +0100 (MET)
+Received: by relay2.vsu.ru (Postfix, from userid 5) id C9DCD1911; Sun, 14 Nov
+          1999 23:55:02 +0300 (MSK)
+Received: (from vvv@localhost) by vvv.vsu.ru (8.9.3/8.9.3) id XAA00845; Sun, 14
+          Nov 1999 23:48:56 +0300
+References: <199911140802.JAA11956@craffe.loria.fr>
+Lines: 38
+User-Agent: Gnus/5.070098 (Pterodactyl Gnus v0.98) Emacs/20.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <m3so2894uf.fsf@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  "Denis B. Roegel"'s message of "Sun, 14 Nov 1999 09:02:13 +0100"
+Date:         Sun, 14 Nov 1999 23:48:56 +0300
+From: Vladimir Volovich <vvv@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: babel 3.7 beta release
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3406
+
+"DBR" == Denis B Roegel writes:
+
+ DBR> Among the language attributes, there should IMHO be "default
+ DBR> encodings."  These encodings would be either a pair of < input
+ DBR> encoding, output encoding > or a pair of lists of encoding,
+ DBR> which would enable priorities.  For instance, English should
+ DBR> have as a default < ASCII, OT1 >.  French should have < latin1,
+ DBR> T1 >, Russian could have < koi8-r, X2 >, etc.
+
+For Russian, T2A seems to be much more convenient than X2 (the latter
+encoding does not contain latin chars at all, but they are often used
+inside text in Russian). As for the default input encoding for
+Russian, it is not obvious that koi8-r should be the default. There
+are several really widely used input encodings for Russian. Perhaps,
+specifying the default input encoding for Russian via language
+attributes could help?
+
+ DBR> These encodings would then just be triggered when one writes
+ DBR> \selectlanguage{french}, etc.
+
+I think that one should use the \selectlanguage command with caution:
+it is a "global" command with too many changes (captions, typesetting
+peculiarities, etc, i.e. such things that typically should have the
+only one global value per document), so more "local" triggers like
+\foreignlanguage and \otherlanguage are more appropriate for language
+switching.
+
+I think that it would be good to introduce in BABEL some mechanism
+which will define for (each or some) languages commands like
+\russiantext and \textrussian, so that {\russiantext ...} and
+\textrussian{...} will work as it is common in LaTeX. These commands
+should then change the font and input encodings. BABEL could provide a
+unified mechanism for declaring such commands in language definition
+files.
+
+        Best regards, -- Vladimir.
+--
+Well, O.K.  I'll compromise with my principles because of EXISTENTIAL DESPAIR!
+

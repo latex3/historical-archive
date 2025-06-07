@@ -1,0 +1,117 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 24 Jan 2009 21:28:53 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0OKSp6U010189
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 24 Jan 2009 21:28:52 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0OKOgWv022768
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 24 Jan 2009 21:24:42 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0NN1E5i024137;
+	Sat, 24 Jan 2009 21:24:38 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 176119 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 24 Jan
+          2009 21:24:38 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0OKOc3l031211 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 24 Jan 2009 21:24:38 +0100
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+          [195.173.77.148]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n0OKOW36022661 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 24 Jan 2009 21:24:35 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          lon1-post-1.mail.demon.net with esmtp (Exim 4.69) id 1LQp3N-0004uB-Yo
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 24 Jan 2009 20:24:29
+          +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <B378B7C1-3267-46DE-B864-40EDC369602D@gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <497B7903.4020500@morningstar2.co.uk>
+Date:         Sat, 24 Jan 2009 20:24:35 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: comma lists, semicolon lists, vbar lists
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <B378B7C1-3267-46DE-B864-40EDC369602D@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: 0.401 () BAYES_00,LOCAL_STRANGE_CHEMICALS
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Jan 2009 20:28:53.0096 (UTC) FILETIME=[5F811680:01C97E62]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5637
+
+Will Robertson wrote:
+> The other point of view is that we should allow some flexibility in how
+> users may end up needing to input list-like data, and providing a range
+> of delimited list types will be more convenient for (a)
+> multi-dimensional lists such as used by mlist, and (b) not having to
+> escape the delimiting characters as much; say if the list is likely to
+> contain commas then you can delimit it with vertical bars instead.
+> 
+> I lean towards the second philosophy. My tentative proposal is to rename
+> the clist module to, er, something else, and for it to generalise the
+> functions in clist such that functions for new "delimiter"-lists can be
+> instantiated with a single command.
+> 
+> I.e., the hypothetical command
+>   \def_delimiter_list:nn {clist} {,}
+> would generate the suite of functions that are currently defined in
+> l3clist;
+>   \def_delimiter_list:nn {slist} {;}
+> might then define equivalent commands for dealing with semi-colon
+> delimited lists.
+
+If we take your two cases, lets imagine two modules both of which define
+new list types.  How do you handle the various possibilities:
+1) They choose different prefixes and different delimiters;
+2) They choose different prefixes and the same delimiter;
+3) They choose the same prefix and different delimiters;
+4) They choose the same prefix and the same delimiter?
+
+Also, each of these would have to create a lot of (possibly pointless)
+functions.
+
+On a completely different level, looking at an example definition:
+
+\def_long_test_function_new:npn {clist_if_in:Nn} #1#2 {
+  \def_long:Npn \tmp:w ##1,#2,##2##3 \q_stop {
+    \reverse_if:N \if_meaning:NN \q_no_value ##2
+  }
+  \exp_after:NN \tmp:w \exp_after:NN , #1, #2, \q_no_value \q_stop
+}
+
+Things get much more spaghetti-like very quickly if this needs to be
+done with a variable delimiter.  Not a show-stopper, of course, but I'm
+not sure such a great idea either.
+
+> Alternatively, maybe I'm taking this way too far and all we need is a
+> generalised mapping function that can loop through a token list using an
+> arbitrary substring as a delimiter. That would probably cover the
+> majority of the cases that \def_delimiter_list would be useful for.
+
+This fits it with what Paul has said in his reply (a general "string"
+module, perhaps).
+
+I'd favour sticking with just comma lists (by far the most common type),
+and providing the arbitrary function you describe.  While LaTeX3 is
+supposed to have a good programming base, I'd expect that the
+specialised ideas you suggest are rare enough that they can be handled
+at a module level, not in the kernel.
+
+Joseph
+

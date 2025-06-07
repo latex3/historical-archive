@@ -1,0 +1,140 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q6JMb3dO015941
+	for <rainer@rainer-schoepf.de>; Fri, 20 Jul 2012 00:37:04 +0200
+Received: (qmail 26991 invoked by alias); 19 Jul 2012 22:36:58 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 19 Jul 2012 22:36:58 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx076) with SMTP; 20 Jul 2012 00:36:58 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id q6JMYYId007228
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 20 Jul 2012 00:34:34 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id q6JM3c6G005689;
+	Fri, 20 Jul 2012 00:34:33 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 2079619 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 20 Jul
+          2012 00:34:33 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id q6JMYXfZ008577 for <latex-l@listserv.uni-heidelberg.de>;
+          Fri, 20 Jul 2012 00:34:33 +0200
+Received: from mail-vb0-f49.google.com (mail-vb0-f49.google.com
+          [209.85.212.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id q6JMXcG9017092 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <latex-l@listserv.uni-heidelberg.de>; Fri, 20 Jul
+          2012 00:34:32 +0200
+Received: by vbbfo1 with SMTP id fo1so3196298vbb.22 for
+          <latex-l@listserv.uni-heidelberg.de>; Thu, 19 Jul 2012 15:33:38 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.52.69.42 with SMTP id b10mr2201244vdu.26.1342737218506; Thu, 19
+          Jul 2012 15:33:38 -0700 (PDT)
+Received: by 10.58.191.68 with HTTP; Thu, 19 Jul 2012 15:33:38 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Whitelist: <joelcsalomon@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id q6JMYXfZ008578
+Message-ID:  <CAFUtaNEvBktQbJytj8MhWuZtOBODbT+AQ_eBHqxhh7DXu29BnQ@mail.gmail.com>
+Date:         Thu, 19 Jul 2012 18:33:38 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: "Joel C. Salomon" <joelcsalomon@GMAIL.COM>
+Subject: Peek ahead for next token not in token-list
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7088
+
+Cross-posted to <http://tex.stackexchange.com/q/63971/2966>, modulo
+some details.
+
+I've been developing my xpeek package with lots of help from you
+folks; see <https://github.com/jcsalomon/xpeek>. It’s intended to help
+write commands which, like the familiar `\xspace`, look ahead into the
+input stream and choose what to do based on what follows.  Although
+the interface needs to change, it has enough functionality to
+implement something like xspace, or the intelligent italic-correction
+from LaTeX's \textit.
+
+Which means it has the same familiar limitation as \textit, best
+illustrated by example:
+
+    \textit{foof}\xspace. \textit{foof}\xspace!  % bad italic
+correction before "."
+    \def\nocorrlist{.,\xspace}
+    \textit{foof}\xspace. \textit{foof}\xspace!  % no italic
+correction before "!"
+
+Thinking about the problem, it seems I need the ability to scan ahead
+in the input stream, ignoring tokens from one list while looking for
+tokens from another.  In Expl3 terms, I’m hoping to define something
+like `\peek_inlist_ignore_auxlist:nnTF`.
+
+As an initial step toward this end, I’m trying to simply scan ahead
+for the next input token not on the ignore list. For example:
+
+    \ExplSyntaxOn
+    \tl_const:Nn \ignorelist {~,.;:!}
+    \NewDocumentCommand { \nextnonpunc } { }
+      {
+        \peek_ignore_list:N \ignorelist
+        `\l_peek_token'
+      }
+    \ExplSyntaxOff
+    The next non-punctuation mark is \nextnonpunc.,;:! xyz
+
+yielding
+
+> The next non-punctuation mark is ‘x’.,;:! xyz
+
+But how can I implement `\peek_ignore_list:N`?
+
+The direction I’m considering is to read ahead, consuming tokens. Each
+token read is added to a save-list and compared to the ignore-list. If
+it’s on the ignore-list, continue; otherwise put the save-list back on
+the input stream and stop.
+
+Does this sound reasonable so far?
+
+To consume tokens one-by-one, I built this function:
+
+    \cs_new_protected:Npn \peek_meaning_really_remove:NTF #1 #2 #3
+      {
+        \peek_meaning_remove:NTF #1
+          { #2 }
+          {
+            \peek_meaning_remove:NT \l_peek_token
+              { #3 }
+          }
+      }
+
+(This should be created via \prg_new_conditional, but I haven’t yet
+figured that out.)
+
+On TeX.SX, I just asked for some hand-holding; here, I want to discuss
+the topic.
+
+Is the direction I'm taking appropriate for what I'm trying to do?
+
+Is there some existing functionality that would help that I'm overlooking?
+
+--Joel
+

@@ -1,0 +1,100 @@
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id r0BHr4HS011619
+	for <rainer@rainer-schoepf.de>; Fri, 11 Jan 2013 18:53:05 +0100
+Received: from relay2.uni-heidelberg.de ([129.206.210.211]) by mx-ha.gmx.net
+ (mxgmx002) with ESMTP (Nemesis) id 0LdVMw-1TCRs91TLW-00ihd1 for
+ <rainer.schoepf@GMX.NET>; Fri, 11 Jan 2013 18:52:59 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id r0BHpEIU020021
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 11 Jan 2013 18:51:14 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id r0BHMKcI027202;
+	Fri, 11 Jan 2013 18:51:13 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 6810491 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 11 Jan
+          2013 18:51:13 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id r0BHpDI6002552 for <latex-l@listserv.uni-heidelberg.de>;
+          Fri, 11 Jan 2013 18:51:13 +0100
+Received: from mail-pb0-f44.google.com (mail-pb0-f44.google.com
+          [209.85.160.44]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id r0BHnbJv019387 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <latex-l@listserv.uni-heidelberg.de>; Fri, 11 Jan
+          2013 18:49:43 +0100
+Received: by mail-pb0-f44.google.com with SMTP id uo1so1079452pbc.17 for
+          <latex-l@listserv.uni-heidelberg.de>; Fri, 11 Jan 2013 09:49:37 -0800
+          (PST)
+X-Received: by 10.66.73.68 with SMTP id j4mr26743670pav.84.1357926577031; Fri,
+            11 Jan 2013 09:49:37 -0800 (PST)
+Received: from [192.168.1.101] ([27.9.34.68]) by mx.google.com with ESMTPS id
+          oi2sm3129133pbb.62.2013.01.11.09.49.34 (version=TLSv1
+          cipher=ECDHE-RSA-RC4-SHA bits=128/128); Fri, 11 Jan 2013 09:49:36
+          -0800 (PST)
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130107
+            Thunderbird/17.0.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <50F050A2.3030208@gmail.com>
+Date:         Sat, 12 Jan 2013 01:49:22 +0800
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Qing Lee <sobenlee@GMAIL.COM>
+Subject: Use a stack to manage the allocation of input and output streams.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+Envelope-To: <rainer.schoepf@GMX.NET>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-GMX-Antivirus: 0 (no virus found)
+X-UI-Filterresults: ;V01:K0:EuXNaGHhB28=:4UlUgQKM6VjfHJuTJ/HkHf5+O/0wMjr
+ sdwJQoeR8h3dAQqq2dI/tK8OYVEtdmOHZb1Lom+hd0GU6l4LgrFqXaqP+9qYXY+H5FYgOiz
+ wgD3bQ8hx4BA9Np/GGYryNUG1g6MD1H9f2GcKPQZvFTtF2Hzmwi9+UsYjdwu6Eo9o89r19w
+ XKhu8rbYhANywqZoFIpRVGffFUOi8qBAfsciuiTkpgD0SX28YcGbbCVYcw9S9rITc6wnmkW
+ MzGvmXSXBClHo6G3GOkb6kn7Sam2b3gVvRk59hfU1EhN1QinwW+boFZF04xdkVSemyygsEK
+ 09b9+Q6T5xN0O9dOIUmglUYURDAUYlYnj+XvEVqJ4T+PPJD35i/m2gaXt5od0fi018iBm+b
+ IAxEmYZgFciituK1U5DTsazSRsq/b+5kzkma2A1iNHxIj3Iud7+i6D4V7B9px8AHVee6oSy
+ jp1k2AqHybBfo2x3qXrRogteJn59igDLf4JA2qtacntTRsoja8/5vy7b+a+/IO/wTM0ViQs
+ fO/Rz+yZtA7So/34NxJIFwwbqwETQ4bWrltFEeRWHJwcs1y449DTpHuPf+WYPy9tdJDblj6
+ /MvGZMnXesZHgNaONfHHyDB4q77voP0pOOuUxv1ccWPtAdsN5DDdACVFkGDBSXDpiQ/t/Nd
+ MO71prcqYALvDun3TiyXfTzJtdSisxkVkcPwvHJf/4eYdWB1WuA1k5EF2M9PVQk6Kx8QCDl
+ +pw3QrzatwplvyM4cmGdiXdjU5pa2qMrmOeUvI4CIu9g9MTKHZ57b6hZO8ZV+vd1syrnzMk
+ l2zp3bINOTSIHEAfzPdYgG20mhkMV1zo8fWDecJx3Qfr0V5QNGN9dwxDp5bmXpyM2EIJ0CT
+ LlQw19LCIZ+ZMszT0PuxodQLSpykiVyNBEqSLHe2/DsaeQyygJDdzQQGGF1Vtyu4NFcdQR+
+ wGpqnc0bQOZfqe3RXhOfKcJsTSuP0lJ7kSCiWKzwq8yl8wv17FplEhi+/3RzZaupBde3XtS
+ 5Xn27W1SEx7VoJVLmNXdqJiuPWBoRRuc2764hVRpyBcVDpKfSdi2H3kn4HuZppWLnFPkSnL
+ dct1DIa9h1JqwaMcyaZAOIycq0mZdEXQ9I3j5o/wp3rxPgAPiTZPajg6YL9zhXQEoBlJL2B
+ 3iREWx7/AQhbiTjtT80viybH7A+JuuV+L2fltwLD0HmzX5rG6q6t6cKRek1Lc6eQFLCSAk0
+ xoqvPWFyDIyF9/UUyQLzgV9QALA+zGeNikbg0nampD53HCkjPt+6ruvlweiLf+5SWp7yTS8
+ e7xw34y/OIE+HVuWb5Sh8wHF1lFeOv++yoWU1vpZXIBnPBomv5992ekMaAQZ5YIZE8XO9fW
+ QXxDjeE60wS951k2iIIcGyCs+E2aBJpdniXKL5Qb9RjtZJCCXtR4ERg3TstoOscGs3Qymu8
+ =
+X-UI-Loop:V01:A2ZGXQcnUpY=:VTDCBvaX2MRuMpRNfILwXEEWWqD0l0cMXdUJVOUmaUo=
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7171
+
+Hello,
+
+I would like to provide some code in order to use a stack to manage the 
+allocation of input and output streams.
+
+It is available in https://gist.github.com/4015700 . Please have a look. 
+I think it is more efficient and clearer than the current approach in 
+`l3file`. It is obvious that it is fairly rough. And there is still some 
+more work to be done in `package` module in order to compatible with 
+LaTeX2e.
+
+Best regards,
+-- 
+Qing Lee
+

@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["896" "Mon" "29" "June" "1998" "12:16:23" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "31" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id MAA24047;
+	Mon, 29 Jun 1998 12:19:11 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.9541A8B5@listserv.gmd.de>; Mon, 29 Jun 1998 12:19:10 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 373748 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 29 Jun 1998 12:19:04 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA14174 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 29 Jun 1998 12:19:02
+          +0200 (MET DST)
+Received: from [130.237.37.77] (sl57.modempool.kth.se [130.237.37.77]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id MAA01887 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 29 Jun 1998 12:18:42
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <v03110700b1bc30d2e3e0@[130.237.37.112]>
+            <v03110701b1bbd09a78ca@[130.237.37.112]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+            <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+            <199806281358.XAA16592@ricetub.anu.edu.au>
+            <v03110700b1bc30d2e3e0@[130.237.37.112]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110701b1bd15b63843@[130.237.37.64]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806290700.RAA16896@ricetub.anu.edu.au>
+Date:         Mon, 29 Jun 1998 12:16:23 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2608
+
+Richard Walker wrote:
+>Hans Aberg writes:
+> >   The only point with a terminating ":" would be to make it easier
+> > to know where the argspec ends if one processes the command
+> > name.
+...
+>Hmm . . . at this stage let's say that an argspec can only contain
+>A-Z and a-z.  Then the argspec is the longest contiguous sequence of
+>letters after the colon - easily specified with a regular expression.
+
+  Easier in TeX, that is (like in the example program below). If I am
+allowed to write my own parser, it makes no difference, of course.
+
+-------------------------------------------------------------------
+
+\catcode`\:=11
+\catcode`\@=11
+
+\def\foo:A{foo and A}
+
+\def\getargspec#1{\expandafter\@getargspec\string#1}
+
+\catcode`\:=12
+\def\@getargspec#1#2:#3{Command ``#2'' has argspec #3!}
+
+\catcode`\:=11
+\getargspec\foo:A
+
+\end
+
+-------------------------------------------------------------------
+

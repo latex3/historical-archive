@@ -1,0 +1,45 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["761" "Mon" "20" "October" "1997" "15:04:18" "+0100" "Philip Taylor (RHBNC)" "CHAA006@VMS.RHBNC.AC.UK" nil "15" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id QAA23298;
+	Mon, 20 Oct 1997 16:07:50 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.7F2E989F@listserv.gmd.de>; Mon, 20 Oct 1997 16:05:49 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 218465 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Oct 1997 16:04:19 +0200
+Received: from vms.rhbnc.ac.uk (alpha1.rhbnc.ac.uk [134.219.201.113]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id QAA12465 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 20 Oct 1997 16:04:16
+          +0200 (MET DST)
+Message-ID:  <971020150418.a6ec@vms.rhbnc.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 20 Oct 1997 15:04:18 +0100
+From: "Philip Taylor (RHBNC)" <CHAA006@VMS.RHBNC.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2482
+
+>> If your two aux filenames are A and B, during the first run you read
+>> From A and write to B.  Presuming no errors, during your next run
+>> however you need to read from B and write to A.  How do you keep
+>> track?
+
+No idea how Frank does it, but at successful completion I close A and B,
+open B for input and A for output, and copy B to A in a robust environment
+(sorry, not the LaTeX sense of "robust" but then I don't speak LaTeX!).
+
+It _can_ go wrong during the copy, but only in the event of a machine failure
+or running out of disc space, provided that the environment is sufficiently
+robust.  Since the final record copied can be (e.g.) "%! TeX copy complete",
+one can always search for this on re-opening to ensure that the file is valid.
+
+** Phil.
+

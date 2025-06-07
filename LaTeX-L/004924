@@ -1,0 +1,155 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sat, 4 Mar 2006 18:24:15 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k24HOCoE003857
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 4 Mar 2006 18:24:12 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k24HLUvj027114;
+	Sat, 4 Mar 2006 18:21:30 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k23JSbsO029011;
+	Sat, 4 Mar 2006 18:18:54 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1400723 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 4 Mar
+          2006 18:18:54 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k24HIspo022758 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 4 Mar 2006 18:18:54 +0100
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k24HIcRI020673
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <latex-l@listserv.uni-heidelberg.de>; Sat, 4 Mar 2006 18:18:42
+          +0100
+Received: from remote129-154.home.uni-freiburg.de ([132.230.129.154]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.60) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1FFaOk-0004gm-Iw for
+          latex-l@listserv.uni-heidelberg.de; Sat, 04 Mar 2006 18:18:38 +0100
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 67E8C231FA; Sat,  4 Mar 2006 17:15:41 +0100 (CET)
+Mail-Followup-To: latex-l@listserv.uni-heidelberg.de
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <20060304161541.GA23818@irwin.vpn.uni-freiburg.de>
+Date:         Sat, 4 Mar 2006 17:15:41 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: LICR objects
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Mar 2006 17:24:15.0761 (UTC) FILETIME=[76442810:01C63FB0]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4924
+
+Hello,
+
+I am interested in a mapping Unicode to LICR, therefore I should
+understand what a LICR really is.
+
+Literature:
+[TLC2] Frank Mittelbach et.al., The LaTeX Companion, 2nd edition.
+
+LICR is an abbreviation for "LaTeX internal character representation"
+(TLC2, 7.11.1)
+
+LaTeX is based on TeX, thus is the following assumption correct?
+
+(1) LICR consists of a sequence of one or more TeX tokens.
+
+Conclusion:
+(2) LICR cannot be empty.
+That would mean ignoring characters cannot not be handled
+by an empty LICR.
+
+The variety of TeX tokens is large.
+Are there restrictions?
+
+Starting at the basics:
+
+TLC2, table 7.31 "LICR objects represented with single characters"
+I am sure about:
+
+(3) LICR-letter := A_11, ..., Z_11, a_11, ..., z_11
+This means uppercase and lowercase ASCII letters with catcode 11.
+
+(4) LICR-other := 0_12, ..., 9_12,
+                  ._12, ,_12, ;_12, :_12, ?_12, !_12, '_12, `_12,
+                  *_12, +_12, -_12, =_12,
+                  (_12, )_12, [_12, ]_12, /_12, @_12
+
+Regarding catcodes: TeX does not differentiate between
+A_11 or A_12, if the letter A is typeset. Thus is
+A_12 also a LICR and does "A" has more than one LICR?
+
+I interpret the characters below "Not Represented as Characters"
+are not LICRs for all catcodes:
+(5) LICR <> $, ^, _, {, }, #, &, %, \, ~,
+            <, >, |, "
+There exist other representations of these characters, e.g.
+  $: \textdollar, \$
+  {: \textbraceleft, \{
+  |: \textbar, \mid, \vert
+Are both LICRs or which is? I suspect the \text... vesions.
+
+My guesses in case that a character is mapped to one LICR only:
+  $: \textdollar (U+0024 DOLLAR SIGN)
+  ^: \textasciicircum (U+005E CIRCUMFLEX ACCENT)
+  _: \textunderscore (U+005F LOW LINE)
+  {: \textbraceleft (U+007B LEFT CURLY BRACKET)
+  }: \textbraceright (U+007D RIGHT CURLY BRACKET)
+  #: \# (U+0023 NUMBER SIGN)
+  &: \& (U+0026 AMPERSAND)
+  %: \% (U+0025 PERCENT SIGN)
+  \: \textbackslash (U+005C REVERSE SOLIDUS)
+  ~: \textasciitilde (U+007E TILDE)
+  <: \textless (U+003C LESS-THAN SIGN)
+  >: \textgreater (U+003E GREATER-THAN SIGN)
+  |: \textbar (U+007C VERTICAL LINE)
+
+Thus the entry for U+02C6 in utf8enc.dfu is not really correct:
+  \DeclareUnicodeCharacter{02C6}{\textasciicircum}
+  U+02C6 MODIFIER LETTER CIRCUMFLEX ACCENT
+"\^" would be more correct, except that grabbing the
+argument isn't too trivial in case of utf-8 characters
+consisting of several bytes.
+
+
+Next issue: ligatures, e.g.
+  U+2013 EN DASH
+  utf8enc.dfu: \DeclareUnicodeCharacter{2013}{\textendash}
+What about "--" for the en dash?
+Does the en dash has two LICRs, "\textendash" and "--"?
+
+What is the LICR of "fi"?
+  U+FB01 LATIN SMALL LIGATURE FI
+The ligature mechanism depends on the used fonts, "fi" is not
+always available. What is better?
+  \DeclareUnicodeCharacter{FB01}{\textfi}
+  \ProvideTextCommandDefault{\textfi}{fi}
+vs.
+  \DeclareUnicodeCharacter{FB01}{fi}
+
+
+At last the remaining tokens are:
+(a) commands, short form (\^, \ , \., ...)
+(b) commands with letter names (\c, \textperiodcentered)
+(c) balanced curly braces with standard catcodes 1 and 2 for
+    arguments.
+Is the list complete?
+
+Question for (b). All names I found in utf8enc.dfu or the other
+input encoding files usually use A-Za-z only. The exception
+is \@tabacckludge with "@" in the name. Is this correct for all LICRs?
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

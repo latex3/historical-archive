@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1602" "Mon" "10" "January" "1994" "09:44:56" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" "<199401100946.AA12031@mail.cs.tu-berlin.de>" "47" "Re: latex2e philosophy" "^From:" nil nil "1" "1994011009:44:56" "latex2e philosophy" (number " " mark "     David Carlisle    Jan 10   47/1602  " thread-indent "\"Re: latex2e philosophy\"\n") "<9401091935.AB19383@m1.cs.man.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09838; Mon, 10 Jan 94 10:48:50 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA26066; Mon, 10 Jan 94 10:46:49 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA12031
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 10 Jan 1994 10:46:46 +0100
+Message-Id: <199401100946.AA12031@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 2727; Mon, 10 Jan 94 10:46:46 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 2726; Mon,
+ 10 Jan 1994 10:46:45 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9904; Mon,
+ 10 Jan 1994 10:45:47 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9401091935.AB19383@m1.cs.man.ac.uk> (message from Sebastian
+              Rahtz on Sun, 9 Jan 1994 17:45:21 GMT)
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: latex2e philosophy
+Date:         Mon, 10 Jan 1994 09:44:56 GMT
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1264
+
+Sebastian writes:
+
+> b) i find that the local guide i maintain refers to `sample.tex' and
+> `small.tex' - are these on the team's list to get updated?
+
+Yes, I actually made a start on this once, I wonder where I put it....
+
+> c) suppose i want to write a local article style (localart). i have
+>
+>  three choices:
+>   1. copy all of article.cls and amend accordingly
+>   2. start localart.cls with \LoadPackage{article}, and follow it with
+>      just the changes I want
+>   3. write  a package
+>       \documentclass{article}
+>       \usepackage{localart}
+>    Which is philosophically better? With 1, its hard work maintaining
+>    routine stuff when bugs might get fixed in the original. With 2, I
+>    have to write \DeclareOption commands for all the standard class
+>    options, which is tedious. 3 is easiest, but looks wrong. Its *not* a
+>    package, its changes to article.
+>
+>    The problem with 2 could be fixed if I had an command to say `pass any
+>    options to the article class when I load it'. OK, so I can list them
+>    all explicitly with \PassOptionsToClass, but I want to take advantage
+>    of any additions to article.cls
+
+
+2 is the prefered method.
+
+You do not need to repeat all the option definitions from article.cls
+
+If you just want to add the option xxx, then the following should
+work. The situation you describe above was one of the motivating
+examples for these commands.
+
+
+  \DeclareOption{xxx}{.....}
+  \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+
+  \ProcessOptions
+
+  \LoadClass{article}
+
+  ... other ...new clode .. modifying .. article
+
+David
+

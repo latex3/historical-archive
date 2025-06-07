@@ -1,0 +1,85 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1625" "Wed" "4" "November" "1998" "20:53:35" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "41" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from kralle.zdv.Uni-Mainz.DE (root@kralle.zdv.Uni-Mainz.DE [134.93.178.158])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id LAA32343;
+	Thu, 5 Nov 1998 11:46:29 +0100 (MET)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id LAA05282;
+	Thu, 5 Nov 1998 11:46:23 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.464C21C7@listserv.gmd.de>; Thu, 5 Nov 1998 11:24:11 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407504 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 4 Nov 1998 21:33:09 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (Ufrank@kralle.zdv.Uni-Mainz.DE
+          [134.93.8.158]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id VAA05653 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 4 Nov
+          1998 21:33:08 +0100 (MET)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          VAA16597 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Wed, 4 Nov 1998 21:33:06
+          +0100 (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          UAA29329; Wed, 4 Nov 1998 20:53:35 +0100
+References: <199811030953.JAA04308@nag.co.uk> <98102213123551@man.ac.uk>
+            <199811031653.KAA12001@dcdrjh.fnal.gov>
+            <v03110701b264e9f56400@[130.237.37.58]>
+            <19981104145716.B29267@maths.tcd.ie>
+Message-ID:  <199811041953.UAA29329@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <19981104145716.B29267@maths.tcd.ie>
+Date:         Wed, 4 Nov 1998 20:53:35 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2732
+
+Timothy Murphy writes:
+ > Apologies for asking a very elementary question,
+ > but is the problem in this case that one gets into difficulty
+ > if one says \quote{...\quote{...}...} ?
+ > Would there still be difficulty if one said
+ > \quote{...\inquote{...}...} ?
+ > Ie is it the nesting of \quote that causes the problem ?
+
+essentially what we are trying to explain is that TeX's mechanism of
+\futurelet and its expansion mechanism are not adequate to model
+character stream parsing if those character streams might be hidden
+within commands (expansion) or arbitrary nesting of brace groups can
+intervene.
+
+ in the later case expansion can also screw up simple \futurelet types
+of parsing, eg in
+
+  \textbf{...\quote{...}},
+
+by the time the end of the quote could look forward to see if a ,
+follows it will encounter all kind of expanded internal code coming
+from the fact that \textbf has expanded and placed it there and it has
+no way of dealing with this.
+
+the two mechanisms just don't work together except in very tightly
+controlled cases of which general text is not really part of.
+
+so what is needed for typesetting support on such a level are more
+powerful concepts that better distangle character stream parsing and
+analysing and macro (or other) processing via expansion etc.
+
+Omega's OTPs might be a partial answer to this kind of question
+(though in my understanding they will not be the final answer at least
+not in their present form)
+
+for this reason Chris "homework" suggestion is meant really serious
+and would help a lot more than discussing Godel theorem or what can be
+represented in a computer.
+
+frank
+

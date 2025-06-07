@@ -1,0 +1,225 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date: Fri, 13 Jul 90 15:54 UT+2
+From: POPPELIER@HUTRUU53.bitnet
+Subject: partial TOC; version 1
+To: bk4@DHDURZ1.BITNET
+X-Organization: Medical Faculty, University of Utrecht, The Netherlands
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 179
+
+Rainer,
+
+
+today I finished a first version of the macros for partial table of
+contents. Since at the office I'm the local TeX expert not a day passes
+without several interruptions, so I had to force myself to stay at home
+today and work on the macros there.
+
+Below you find an example and a file toc.sty, which is based on our
+discussion earlier this week. Because I had forgotten that \caption also
+produces \contentsline entries on .lot and .lof files, I didn't see the
+importance of \currentsection commands, but now I do. These instructions
+must appear in all table files -- that's why I maintain a list of
+extensions, so that a write-file command knows to which files it must
+write.
+
+Comments please!
+
+
+Nico
+
+------------------------------ test.tex ------------------------------
+\documentstyle[toc]{letter}
+
+\begin{document} \makeatletter \parindent=0pt \parskip=0pt
+
+\new@level{section}    \def\thesection{\arabic{section}}
+\new@level{subsection} \def\thesubsection{\thesection.\arabic{subsection}}
+\new@level{paragraph}  \def\theparagraph{\thesubsection.\arabic{paragraph}}
+
+% table of contents
+\@partialtabtrue \min@level=1 \max@level=100 \cr@section=2 \cr@subsection=0
+\input test.toc\relax
+
+\end{document}
+
+
+------------------------------ test.toc ------------------------------
+\currentsection{section}{1}
+\contentsline{section}{y}{First section}{11}
+\currentsection{subsection}{1}
+\contentsline{subsection}{y}{First subsection}{12}
+\currentsection{paragraph}{1}
+\contentsline{paragraph}{y}{First paragraph}{13}
+\currentsection{subsection}{2}
+\contentsline{subsection}{y}{Second subsection}{14}
+\currentsection{paragraph}{1}
+\contentsline{paragraph}{y}{First paragraph}{15}
+\currentsection{section}{2}
+\contentsline{section}{y}{Second section}{16}
+\currentsection{subsection}{1}
+\contentsline{subsection}{y}{First subsection}{17}
+\currentsection{paragraph}{1}
+\contentsline{paragraph}{y}{First paragraph}{18}
+\currentsection{subsection}{2}
+\contentsline{subsection}{y}{Second subsection}{19}
+\currentsection{paragraph}{1}
+\contentsline{paragraph}{y}{First paragraph}{20}
+
+
+------------------------------ toc.sty ------------------------------
+%     ****************************************
+%     *       SECTIONAL-UNIT LEVELS          *
+%     ****************************************
+%
+% \new@level{LEVEL}[WITHIN]
+%   - let d = \n@level, then define
+%     \dl@LEVEL == d and \dln@<d> == LEVEL
+%   - allocate an extra counter \cr@LEVEL, to be used for the range
+%     of counter values in partial tables
+%   - \newcounter{LEVEL} is the last part of the macro, so it picks up
+%     the optional argument, if this is present
+
+\newcount\n@level \n@level=-1
+
+\def\new@level#1{\advance\n@level\@ne
+  \expandafter\xdef\csname dl@#1\endcsname{\the\n@level}
+  \expandafter\gdef\csname dln@\the\n@level\endcsname{#1}
+  \expandafter\newcount\csname cr@#1\endcsname
+  \newcounter{#1}}
+
+
+%     ****************************************
+%     *              TABLE FILES             *
+%     ****************************************
+%
+% In the document style, the definitions
+%   \def\ext@figure{lof}
+%   \def\ext@table{lot}
+% are replaced by
+%   \@extension{figure}{lof}
+%   \@extension{table}{lot}
+
+\def\@extension#1#2{\expandafter\gdef\csname ext@#1\endcsname{#2}
+  \xdef\@extlist{\@extlist,#2}}
+
+\def\@extlist{aux}
+
+
+%    ****************************************
+%    *           TABLE OF CONTENTS          *
+%    ****************************************
+%
+% In principle it would be sufficient to change
+%   \contentsline{TYPE}{ENTRY}{PAGE}
+% into
+%   \addcontentsline{TABLE}{TYPE}{ENTRY}
+%   Command for adding an entry to a table of contents, etc.
+%   It adds the entry
+%     \contentsline{TYPE}{NUMBER}{PRINT}{TITLE}{PAGE}
+%   to the .TABLE file.
+%   NUMBER  = the value of the counter corresponding to LEVEL
+%   PRINT   = y: print number of sectional unit in table of contents
+%             n: do not print number
+%   TITLE   = heading of sectional unit
+%   PAGE    = page number
+%
+% Sectioning commands \TYPE call this macro internally.
+%
+% However, this mechanism is shared by sectional units and the captions
+% of float environments, so this doesn't work. What we need is to write
+% information about the current sectional unit (depth + counter) to ALL
+% table files. So, whenever a sectional-unit command TYPE with counter
+% value NUMBER appears in the document, an instruction
+%   \currentsection{TYPE}{NUMBER}
+% must be written to the .toc file, .lot file, .lof file, etc.
+% For the .toc file this means that the \contentsline effectively is
+% split up in two parts
+%   \currentsection{TYPE}{NUMBER}
+%   \contentsline{TYPE}{PRINT}{TITLE}{PAGE}
+% which should immediately follow each other in the .toc file.
+% In the .lot and .lof files the same instruction \contentsline appears,
+% but in that case a \contentsline command need NOT be preceded by a
+% \currentsection command, although in most cases it will be.
+%
+% \addtocontents{TABLE}{TEXT}
+% Command for adding extra instructions to a table of contents, etc.
+% It adds the entry
+%   \contentsextra{TYPE}{ENTRY}
+% to the .TABLE file.
+%
+% Other sectioning commands work similarly.
+%
+% A \caption command in a 'figure' environment writes
+%    \contentsline{figure}{\numberline{NUM}{CAPTION}}{PAGE}
+% on the .lof file, where NUM is the number produced by \thefigure and
+% CAPTION is the figure caption.
+% It works similarly for other float environments.
+%
+% The command \contentsline{NAME} executes \l@NAME.
+% So, to specify the table of contents, we must define \l@chapter,
+% \l@section, \l@subsection, ... ; to specify the list of figures, we must
+% define \l@figure; and so on.
+%
+% If a full table (of contents, of figures, ...) must be produced, we
+% read the entire table file, e.g. JOB.toc or JOB.lof. If a partial table
+% (of contents, of figures, ...) must be produced, we set up a restriction
+% and then read the entire table file, but only execute those entries that
+% satisfy the restriction.
+
+\newcount\cur@level \cur@level=-1
+\newcount\min@level \newcount\max@level
+
+% \currentsection{TYPE}{NUMBER}
+% The counter assignment must be executed inside a group, so that
+% outside the group the counter keep their proper values
+\def\currentsection#1#2{\cur@level=\csname dl@#1\endcsname
+  \csname c@#1\endcsname=#2}
+
+% \if@partialtab indicates whether the table currently being constructed
+% is a partial one (\@partialtabtrue) or a full one (\@partialtabfalse)
+\newif\if@partialtab \@partialtabfalse
+
+% \contentsline{TYPE}{PRINT}{TITLE}{PAGE}
+%   arguments are absorbed, but nothing is done with them
+% Making a partial TOC at level D for counter values (r_0, ..., r_D)
+% means that only those entries are processed for which we have
+%   \min@level <= \cur@level AND
+%   \cur@level <= \max@level AND
+%   (c_0, ..., c_D) = (r_0, ..., r_D)
+% \min@level and D are dependent, since we have: \min@level= D+1.
+%
+% \check@result := true;
+% FOR k := 0 TO d DO
+%   \check@result := \check@result AND (c_k = r_k)
+% OD
+% \check@result := \check@result AND
+%   (\min@level <= \cur@level) AND (\cur@level <= \max@level)
+
+% We translate each of these D+3 conditions to true = 1, false = 0.
+% If the result is 1 we process the entry, if the result is 0 we don't.
+
+\newcount\check@result
+
+\def\@checkentry{\check@result\@ne
+  \ifnum\cur@level<\min@level \check@result\z@ \fi
+  \ifnum\cur@level>\max@level \check@result\z@ \fi
+  \@tempcnta\z@
+  \@whilenum \@tempcnta<\min@level\do
+    {\ifnum \csname c@\csname dln@\the\@tempcnta\endcsname\endcsname=
+           \csname cr@\csname dln@\the\@tempcnta\endcsname\endcsname
+     \else \check@result\z@ \fi \advance\@tempcnta\@ne}}
+
+\def\contentsline#1#2#3#4{\if@partialtab\@checkentry\else\check@result\@ne\fi
+ \ifnum\check@result=\@ne \csname l@#1\endcsname{#2}{#3}{#4}\fi}
+
+\def\@number#1{\leavevmode \hbox to 3em{#1.\hfil}\quad}
+
+\def\l@section#1#2#3{\@number{\thesection} #2 \quad #3\par}
+\def\l@subsection#1#2#3{\@number{\thesubsection} #2 \quad #3\par}
+\def\l@paragraph#1#2#3{\@number{\theparagraph} #2 \quad #3\par}
+
+

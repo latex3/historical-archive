@@ -1,0 +1,107 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 16 Sep 2008 01:01:46 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8FN1eqR028838
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 16 Sep 2008 01:01:41 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8FMthgO017750
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 16 Sep 2008 00:55:44 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8FM144r032032;
+	Tue, 16 Sep 2008 00:55:42 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 39686 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 16 Sep
+          2008 00:55:42 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8FMtgXL004230 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 16 Sep 2008 00:55:42 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.242])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m8FMtbRU017616 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 16 Sep
+          2008 00:55:41 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so2350982rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 15 Sep 2008 15:55:36 -0700
+          (PDT)
+Received: by 10.140.132.8 with SMTP id f8mr5171222rvd.206.1221519336571; Mon,
+          15 Sep 2008 15:55:36 -0700 (PDT)
+Received: from ?10.0.1.102? ( [219.90.212.11]) by mx.google.com with ESMTPS id
+          f42sm23966170rvb.6.2008.09.15.15.55.34 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Mon, 15 Sep 2008 15:55:35 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v928.1)
+References: <48CCBAEE.60703@morningstar2.co.uk>
+            <97AFAC39-1BDF-4EEB-8498-011976315F19@gmail.com>
+X-Mailer: Apple Mail (2.928.1)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <36A84A57-FB7C-4729-AA03-5DBB74246850@gmail.com>
+Date:         Tue, 16 Sep 2008 08:25:31 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Generic quark test
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <97AFAC39-1BDF-4EEB-8498-011976315F19@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Sep 2008 23:01:46.0427 (UTC) FILETIME=[071F10B0:01C91787]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5327
+
+Hi,
+
+I've been thinking more about this.
+Just so we're clear, what you're looking for is a function that can be  
+given a token list and return true or false depending if, without  
+expansion, the list contains a quark.
+
+So:
+
+\def\abc{\q_stop}
+\if_contains_quarks_p:n{hello\abc}     ->  'false'
+\if_contains_quarks_p:n{hello\q_stop}  ->  'true'
+
+Right?
+
+No matter how this function is implemented, it's always going to be  
+slow. One approach might be (in LaTeX2e pseudocode):
+
+\edef\quarktest{\detokenize{\q_}}
+\@ifin{\quarktest}{\detokenize{#1}}
+\in@
+
+But it's not necessarily robust. Maybe some punk will come along and  
+define a whole bunch of \q_ macros that aren't quarks. Or define  
+quarks that don't start with \q_. Or maybe you want to distinguish the  
+case when a quark has been misspelled.
+
+Anyway, an alternative might be to globally record all quarks are  
+they're defined:
+
+\def_new:Npn \quark_new:N #1{
+   \seq_push:Nn \g_all_quarks_seq {#1}
+   \tlp_new:Nn #1{#1}
+}
+
+Then \g_all_quarks_seq can be queried to answer the question "is this  
+token/control sequence actually a quark?". Not fast, but it's more  
+bullet-proof.
+
+  - What do you think?
+  - How necessary is it to be able to answer this question in general?
+    (I.e., when you're not looking for a *specific* quark.)
+
+Will
+

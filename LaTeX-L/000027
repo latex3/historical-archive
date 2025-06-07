@@ -1,0 +1,129 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 23 Feb 90 21:54:00 MET
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+From: "Nico (Poppelier@Hutruu51.Bitnet)" <POPPELIER@HUTRUU51.bitnet>
+Subject:      Suggestions from Utrecht (I)
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 27
+
+Sectional units; table of contents
+
+
+Before I start a short explanation. The reason for sending my previous
+message only to Frank was simple: I just wanted to inform him about a
+reaction in more detail at a later stage. Never mind: here's what I
+had in mind.
+
+In process of digesting a LaTeX document 3 layers can be
+distinguished: the document itself, the macros defined in the document
+style, and the LaTeX macros, what I call the kernel. In the case of
+the sectional units and the toc entries, information goes from left to
+right in the following diagram
+
+     document | style | kernel
+
+     text    -->     -->
+
+The kernel should pass things like numbers back to the style, so that
+the macros defined there can really put the components of the text on
+the page in whatever wild arrangement the designer comes up with.
+
+In the current version information passes from left to right and
+doesn't come back: the kernel decides about the sectional units and
+the table of contents. In other words: commands that handle this
+should be moved to the document style.
+
+
+1. I think that it is clear to everyone on the list that LaTeX's
+\@startsection macro is not generic enough to allow all possible wishes
+a designer might have. I've got two cases to prove my point
+
+- LaTeX standard styles: \part and \chapter are defined
+  without \@startsection
+- NTG styles: Victor had to re-define some latex.tex parts to
+  achieve the desired result
+
+My own work for ESP's journals and book series does not serve as
+proof, since I can't show these to you, but let me assure you that I
+run into the same problems as Victor did with the NTG styles. For the
+last few days I have been thinking about redefining \@startsection in
+the Elsevier styles. But suppose I do that: wouldn't it be better if
+this forum can decide on a better design, one that can be used in the
+styles of both (i) the standard set AND (ii) the NTG AND (iii) Elsevier?
+
+My idea was the following: \@startsection takes care of two things
+
+- embed the sectional unit heading in the vertical list, i.e. add
+  spacing and appropriate penalties
+- generate an entry in the table of contents (I will come back to the
+  table of contents in part 2. of this message)
+
+My version of \@startsection would have the following syntax:
+
+\@startsection{NAME}{LEVEL}{BEFORESKIP}{UNSTAR}{STAR}{AFTERSKIP}
+               *[ARG1]{ARG2}
+
+NAME       as before
+LEVEL      as before
+BEFORESKIP as before, including sign convention
+AFTERSKIP  as before, including sign convention
+UNSTAR     a macro that creates the heading for the unstarred case
+           \def\UNSTAR#1#2{ ... }
+             #1: number of the sectional unit
+             #2: text of sectional unit heading
+
+STAR       a macro that creates the heading for the starred case
+           \def\STAR#1{ ... }
+             #1: number of the sectional unit
+
+The designer sees to it that STAR and UNSTAR create appropriate
+\hbox'es if the heading is run-in, and is a construction such as
+\hangfrom for the other case.
+For the time being, until someone can convince me of the opposite, I
+am convinced that it is
+
+- impossible to foresee what designers want `to do' with sectional
+  unit headings -- Victor gave a few nice examples
+- it is just as impossible to incorporate all possible degrees of
+  freedom in one super-generic definition.
+
+If you would try the latter though, I think TeX's limitation on the
+number of parameters would become a handicap.
+
+I find the idea outlined above attractive because of its simplicity,
+and because of the similarity with the current situation for table
+captions, figure captions, chapter headings and part headings, where
+in all cases separate macros are defined.
+
+
+2. Table of contents
+
+Similar arguments can be given for the table of contents, list of
+figures etc. Again, I think that the macros defined in the file should
+receive NUMBER, TITLE and PAGENUM as arguments and do with these
+components what the designer chooses. In the current approach these
+three are not clearly separated, which makes it hard to typeset each
+in a different font for instance.
+I propose that in the new approach the kernel routines write these
+components to the appropriate files, where they can be `picked up' by
+the macros defined in the document style.
+
+While I'm on the subject, I would like to suggest the addition of a
+few new tools. In some books, Elsevier books but also Martin Bryan's
+SGML book, you found tables of contents per chapter AS WELL AS a table
+of contents in the front of the book. In the current version
+\addcontentsline{toc} means: `write to \jobname.toc'. If you divide
+a document in sub-documents with \include{...}, you could also write
+toc entries to .toc files of the sub-documents.
+
+O.K., that's it: end of part I.
+
+
+Nico
+
+

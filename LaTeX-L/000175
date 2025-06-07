@@ -1,0 +1,242 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:     Tue, 10 Jul 90 10:35 N
+From: <POPPELIE@HUTRUU53.bitnet>
+Subject:  document structure; table of contents
+To: bk4@dhdurz1.uucp
+X-Original-To:  rainer, POPPELIER
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 175
+
+Rainer,
+
+
+you asked me what I think of the idea of \pushlevel and \poplevel
+commands. I think that it is a very good and flexible idea.  Besides,
+I think that the seed for the idea is already present in the current
+method for writing to and reading from the .toc file: the depth --
+although symbolically, i.e. in the form of a name that is not related
+to a number, i.e. the actual depth -- is already an argument to
+\contentsline.
+
+On Thursday and Friday, and also during the weekend I have thought
+about a new approach to document structuring and everything that is
+related to it. My answer to your last message is therefore a bit
+longer than you might have expected.
+
+A disadvantage of the current method of document structuring is that
+the number of a sectional unit is (i) formatted and (ii) part of the
+entry text.  I think that the sectional-unit number part should be
+separated from the text of the entry. Furthermore I think that the
+sectional-unit numbering should be present as n-tuple of counter
+values, not as a string, in other words as a counter representation!
+The mapping to presentation on paper, often an irreversible mapping,
+should be postponed as much as possible.
+
+In the current LaTeX version, the above happens a lot: two pieces of
+information, sometimes even of different type, for example visual and
+structural, are intertwined in an irreversible manner. Another
+example: in the current version there are two versions of a
+sectional-unit command, one with and one without a star. In attribute
+language: a sectional-unit has a two-valued attribute. If the
+attribute has the value 'unnumbered', LaTeX also assumes that this
+sectional unit should be omitted from the table of contents (TOC). I
+propose that every sectional unit command gets an extra argument
+(attribute), and this time a three-valued argument. Having a number
+or not should not be tangled up with appearing in the toc or not.
+Formally we would have two two-valued attributes, 'number' and
+'table' (for 'table of contents'). But since there is no reason for
+omitting a numbered sectional unit from the TOC, one three-valued
+attribute suffices:
+
+  \section[n]{Discussion}       % numbered, referenced in toc
+  \section{Discussion}          % [n] is default
+  \section[r]{Discussion}       % unnumbered, referenced in toc
+  \section[u]{Discussion}       % unnumbered, not referenced in toc
+
+This gives an extra degree of freedom in the document style: should
+we indent the unnumbered entry or not? See the following example:
+
+  1.10 Results       |      1.10 Results
+  1.11 Summary       |      1.11 Summary
+       References    |      References
+
+
+Personally, I would like to keep the look-and-feel of LaTeX 2.10 as
+close to that of 2.09. Your proposal for writing to the .toc file is
+radically different, whereas I think that we should try to accomplish
+it with minimal changes to \contentsline, \addcontentsline and
+\addtocontents.
+
+Attributes are also a radical change, although perhaps a useful one.
+Attributes make the look-and-feel of the new LaTeX a lot different
+and they also require a lot of extra typing. I prefer
+
+  \section[r]{Discussion}
+
+over something like
+
+  \section[number="n",table="y"]{Discussion}
+
+Already, here at ESP, we receive lots of LaTeX manuscripts that
+contain several screens of preamble commands, all of which define
+abbreviations: \be for \begin{equation}, \eea for \end{eqnarray}.
+This makes the job of our desk editors increasingly more difficult.
+If you introduce attributes, i.e. more keystrokes to achieve the same
+thing, lists of a hundred or more abbreviations will become quite
+common I'm afraid, since authors want to type with as few keystrokes
+as possible. That's why typesetting systems -- TeX is an exception --
+use horrible 2- and 3-letter codes.
+
+Next topic: the secnumdepth and tocdepth counters. I propose that
+these are removed. A user should not have to bother about learning
+the numbers that correspond to certain levels in the document
+structure. The various levels should instead be indicated by name. In
+other words, replace
+
+  \setcounter{tocdepth}{3}      and
+  \setcounter{secnumdepth}{3}
+
+by
+
+  \tocdepth{subsection}         and
+  \secnumdepth{subsection}
+
+
+If we look at how a document-style designer would go to work in
+creating a new document style, I think that in order to bring all
+aspects of LaTeX that are related to sectional unit closer together,
+he/she should start by identifying the various levels in the hierarchy
+of the document.
+
+%                                       level name     level number
+\new@level{part}                      % part           0
+\new@level{chapter}                   % chapter        1
+\new@level{section}[chapter]          % section        2
+\new@level{subsection}[section]       % subsection     3
+\new@level{subsubsection}[subsection] % subsubsection  4
+\new@level{paragraph}[subsubsection]  % paragraph      5
+\new@level{subparagraph}[paragraph]   % subparagraph   6
+
+\new@level{TYPE}[WITHIN] ==
+BEGIN
+  \n@level := \n@level + 1
+  \newcounter{TYPE}[RESET];
+  \@dl@TYPE := \n@level
+  \csname @dln@\n@level \endcsname := TYPE
+END
+
+Calls to \new@level establish a hierarchy and relate the various
+sectional-unit commands to each other. Declaring a counter of the
+same name as the sectional unit is only a part of it. The names of
+the sectional units and the corresponding depths could be stored as
+follows (dl = document level):
+
+\dl@part          = 0  \dlname@0 = part
+\dl@chapter       = 1  \dlname@1 = chapter
+\dl@section       = 2  \dlname@2 = section
+\dl@subsection    = 3  \dlname@3 = subsection
+\dl@subsubsection = 4  \dlname@4 = subsubsection
+\dl@paragraph     = 5  \dlname@5 = paragraph
+\dl@subparagraph  = 6  \dlname@6 = subparagraph
+
+If you have this, you can remove argument 1 or 2 from \@startsection.
+In the old LaTeX these two quantities are unrelated, whereas they are
+logically identical -- or should be at least.
+
+  \def\section{\@startsection{section}{1}{\z@}{-3.5ex plus -1ex
+    minus -0.2ex}{2.3ex plus .2ex}{\Large\bf}}
+
+can be replaced by
+
+  \def\section{\@startsection{section}{\z@}{-3.5ex plus -1ex
+    minus -0.2ex}{2.3ex plus .2ex}{\Large\bf}}
+
+or the equivalent of it in Frank's new version.
+
+My first proposal for the TOC macros was this: if you process
+\contentsline{TYPE}{ENTRY}{PAGE} you immediately know the number of
+the level of sectional unit. A sectional unit at level d is uniquely
+identified by the string of counter values from the root up to and
+including its parent, concatenated with its own ordinal number
+Section 1.1.1, for example, is identified by: (1)(1)(1).
+
+On the other hand -- I only consider the .toc file here: \push@level
+and \pop@level are sufficient to calculate the counter values. If you
+define these macros as follows
+
+  \push@level ==
+    \cur@level := \cur@level + 1
+    \cur@name  := EXPAND (\dl@name@ THE\cur@level)
+    \cur@count := \csname c@ \cur@name \endcsname
+    \cur@count := 0
+
+  \pop@level ==
+    \cur@level := \cur@level - 1
+    \cur@name  := EXPAND (\dl@name@ THE\cur@level)
+    \cur@count := \csname c@ \cur@name \endcsname
+
+and let every sectional-unit entry on the .toc file do this
+
+  sectional unit -->
+    \cur@count := \cur@count + 1
+
+you don't need to know the numbers: traversing the tree that
+represents the document structure -- document tree (DT)? --
+automatically gives you these numbers.
+
+                  ------------------------------------
+                  |                                  |
+                  * 1                                * 2
+                  |                                  |
+    -----------------------------      -----------------------------
+    |        |         |        |      |        |         |        |
+    * 1.1    * 1.2     * 1.3    * 1.4  * 2.1    * 2.2     * 2.3    * 2.4
+    |
+    -------------------
+    |        |        |
+    * 1.1.1  * 1.1.2  * 1.1.3
+
+There remain a few things to be solved: un-numbered sectional units
+that have to appear in the TOC. If you don't write \push@level and
+\pop@level to the .toc file, but modified \contentsline commands,
+with counter = 0 for type [r] sectional units, you can infer the
+\push@level and \pop@level commands from the arguments of
+\contentsline. The new \contentsline could have the following
+arguments:
+
+  \contentsline{ACTION}{COUNTER}{TEXT}{PAGE}
+
+where ACTION = '>' (one level deeper), '<' (one level up) or '='
+(next node on same level), and COUNTER is the value of the counter on
+the level of the tree that is reached after executing ACTION. In one
+of his last messages to the LaTeX list Don Hosek wrote that he can do
+the above more or less with the old \contentsline macro.
+
+And what to do with toc material that is not related to a sectional
+unit? Example: vertical spacing.
+
+Because of the presence of the \push@level and \pop@level
+instructions (or '>', '<' and '='), at any time during processing of
+the .toc file the exact position in the document tree is known.
+Therefore, un-labelled material can always be located in the DT, on
+the basis of which one can decide to include it or not.  But then it
+must be included AS THE ARGUMENT OF A MACRO, say, \contentsentry,
+which puts its argument in the input stream or discards it, depending
+on the position in the DT and the type of TOC that is being
+generated.
+
+For the time being these are enough ideas I guess. What I would like
+to do is, as in the \@startsection case, decide on something and go to
+work: first create a new interface and then create new document
+styles with that new interface.
+
+
+Nico Poppelier
+Elsevier Science Publishers, PSED, R&D Department
+Sara Burgerhartstraat 25, 1055 KV Amsterdam, The Netherlands
+Phone: +(20)5862504. Fax: +(20)5862425. Email: n.poppelier@elsevier.nl
+
+

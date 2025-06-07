@@ -1,0 +1,117 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 8 Mar 2008 00:48:32 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m27NmUpn002427
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 8 Mar 2008 00:48:31 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m27NixB7005932
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 8 Mar 2008 00:45:00 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m27N1GOe032112;
+	Sat, 8 Mar 2008 00:44:57 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 209684 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 8 Mar
+          2008 00:44:57 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m27Niv2j000526 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 8 Mar 2008 00:44:57 +0100
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m27Nis3B005765
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 8 Mar 2008 00:44:57
+          +0100
+Received: from remote239-02.home.uni-freiburg.de ([132.230.239.2]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.68) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1JXmFA-0006ii-8o for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 08 Mar 2008 00:44:52 +0100
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 5A81335D9B; Sat,  8 Mar 2008 00:45:56 +0100 (CET)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <85wsoeto1k.fsf@lola.goethe.zz>
+            <18385.42387.268037.81145@morse.mittelbach-online.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Auto-Whitelist: <oberdiek@uni-freiburg.de>
+Message-ID:  <20080307234555.GA6607@irwin.vpn.uni-freiburg.de>
+Date:         Sat, 8 Mar 2008 00:45:56 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: A really, really bad bug.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18385.42387.268037.81145@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Mar 2008 23:48:32.0451 (UTC) FILETIME=[C0545930:01C880AD]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5179
+
+On Fri, Mar 07, 2008 at 09:29:07PM +0100, Frank Mittelbach wrote:
+
+> David Kastrup writes:
+> 
+>  > Another possibilities are to remove the grouping from the end of
+>  > document action testing the labels. 
+> 
+> from briefly staring at the code I see no reason why this group is needed at
+> all. Does anybody see one why it could make a difference?
+
+You mean the following group?
+
+  \def\enddocument{%
+    ...
+    \begingroup
+      ...
+      \input\jobname.aux
+      ...
+    \endgroup
+    ...
+  }
+
+Then it isn't known what .aux files may contain (apart from \newlabel).
+Many packages write definitions and other stuff in the .aux files.
+
+>  >  Yet another is to perform the
+>  > \@ifdefined test within a group of its own, namely as
+>  > 
+>  > \begingroup \@ifdefined{xxx}{\endgroup...}{\endgroup...}
+>  > 
+>  > This will also not have the side effect of changing the label internal
+>  > to \relax and will avoid save stack buildup.  So it keeps the changed
+>  > side effect to a very small area and does not depend on eTeX.  One could
+>  > also implement both (which would help with non-eTeX as well), but I
+>  > don't think that supporting large documents on non-eTeX that previously
+>  > did not work is much of a priority.
+>  > 
+>  > What is your take?  I find it clearly unsatisfactory to have LaTeX eat
+>  > up save stack for newly defined labels like that at the end of the
+>  > document.
+> 
+> well, you seem to be the first person getting into trouble with this, but that
+> doesn't mean one shouldn't fix it.
+> 
+> I don't really mind either of the three solutions (provided none of the kills
+> the regression tests for 2e) but personally I would simply drop the group
+> unless somebody can give me a good reason why it could be needed in a certain
+> situation.
+
+See above, The group is necessary.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

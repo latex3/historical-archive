@@ -1,0 +1,113 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 27 Aug 2009 03:46:08 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7R1k8bW001007
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 27 Aug 2009 03:46:08 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7R1gC2W029911
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 27 Aug 2009 03:42:12 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7QM2A68024430;
+	Thu, 27 Aug 2009 03:42:02 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 292984 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 27 Aug
+          2009 03:42:00 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7R1g0UF008039 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 27 Aug 2009 03:42:00 +0200
+Received: from ey-out-1920.google.com (ey-out-1920.google.com [74.125.78.145])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          n7R1fu5S029743 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 27 Aug
+          2009 03:41:59 +0200
+Received: by ey-out-1920.google.com with SMTP id 3so161806eyh.32 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 26 Aug 2009 18:41:55 -0700
+          (PDT)
+Received: by 10.210.70.3 with SMTP id s3mr8729407eba.79.1251337315865; Wed, 26
+          Aug 2009 18:41:55 -0700 (PDT)
+Received: from ?129.127.15.244? ([129.127.15.244]) by mx.google.com with ESMTPS
+          id 5sm735949eyf.47.2009.08.26.18.41.52 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Wed, 26 Aug 2009 18:41:55 -0700 (PDT)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
+Mime-Version: 1.0 (Apple Message framework v935.3)
+References: <122D1D66-1300-424C-9FBC-11C0B0CCB6C9@gmail.com>
+            <4A9517EA.208@residenset.net>
+X-Mailer: Apple Mail (2.935.3)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id n7R1g0UF008040
+Message-ID:  <7FF23F49-785D-444F-94E0-28498B035A60@gmail.com>
+Date:         Thu, 27 Aug 2009 11:11:50 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: template vs template-alt
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A9517EA.208@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 27 Aug 2009 01:46:08.0695 (UTC) FILETIME=[26017C70:01CA26B8]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6010
+
+On 26/08/2009, at 8:39 PM, Lars Hellström wrote:
+
+> One remark without having looked at template-alt in detail is  
+> however that the signatures above feel as though they're on the  
+> wrong side of the =. That there are two arguments is a property of  
+> number-format; you need to know this when providing a value for this  
+> parameter. The :N signature rather seems like it applies to the  
+> implementation, the details of which are otherwise in the right hand  
+> side.
+
+
+The current interface evolved from pgfkeys; I can't say I disagree  
+with you but I think a simpler scheme might involve a more complex  
+parser.
+
+This is what the current syntax is:
+
+       number-format .set:N = \caption_number_format:nn
+
+The problem in parsing is that spaces are (probably) going to be  
+ignored, so there has to be some token between the key, the signature,  
+and the argument. We could read everything up to the first brace, I  
+suppose:
+
+       number-format = set:N {\caption_number_format:nn}
+
+but I'm not sure this would work so well (after all, an :N type  
+argument wouldn't usually need the braces there). Maybe if the  
+signature was braced as well?
+
+       number-format = {set:N} {\caption_number_format:nn}
+
+Could use another token but I can't see one that works so well:
+
+       number-format = set:N : \caption_number_format:nn
+       number-format = set:N > \caption_number_format:nn
+       number-format = set:N / \caption_number_format:nn
+       number-format = set:N | \caption_number_format:nn
+       number-format = set:N - \caption_number_format:nn
+       number-format = set:N ~ \caption_number_format:nn
+       number-format = set:N @ \caption_number_format:nn
+
+Unless any of these jump out at you or you've got some more radical  
+ideas how to design this interface, I don't think I can see an  
+improvement over what template-alt currently uses.
+
+Cheers,
+Will
+

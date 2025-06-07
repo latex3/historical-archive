@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 23 Feb 90 10:00:13 PST
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+From: Leslie Lamport <lamport@SRC.DEC.COM>
+Subject:      Re: \begin...\end interface
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+In-Reply-To:  Your message of Fri,
+              23 Feb 90 12:38:02 CET. <9002231144.AA01601@decpa.pa.dec.com>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 25
+
+
+   While it is true that if one sticks exclusively to LaTeX as
+   defined in your book, then, yes, \newcommand will catch
+   attempts to redefine any previously-defined macro.  In an
+   ideal world, all LaTeX users would either use LaTeX per the
+   book, or when they made extensions, did so in style files.
+   I try to follow those rules myself, but experience with
+   other users is that they often do not, and lapse into raw
+   TeX in-line.
+
+Apparently, I wrongly accused Beebe of being an "impure" LaTeX user.
+My appologies.  His mistake seems to be an overly strong concern for
+people who misuse LaTeX. I have a firm policy of not looking at any
+alleged LaTeX error produced by a file with a nonLaTeX command.  I
+strongly urge everyone else to follow the same hard-nosed policy, which
+I adopted after spending half a day debugging a proplem that turned out
+to be caused by a \def\or{...} command.  Moreover, I feel that I myself
+have been too indulgent of users who spend too much time worrying about
+format.  (I want to allow style designers to be able to create
+reasonable styles; I don't care about the abiliity of users to
+do everything they want with LaTeX commands.)
+
+   My concern in this posting was that it seemed worthwhile to
+   investigate the effects of the proposal of mapping
+   \begin{xxx} into a name containing an at-sign.
+   P. 86, l. -8 of the LaTeX book mentions in passing that
+   \begin{quote} and \end{quote} refer to \quote and
+   \endquote.  So far today, no one has discovered any other
+   place where this is noted...
+
+   My feeling is that this mapping need not be guaranteed in
+   the future; the question being discussed today is whether
+   such a change would violate the strong desire to retain
+   compatibility with the book as LaTeX evolves; that is,
+   should we view user files that employ \quote, \endquote, et
+   al, outside of style files as conforming to LaTeX (and
+   therefore to not being invalidated by any changes), or
+   deviating from it (in which case the change could be made).
+
+   Perhaps Leslie Lamport, as the original designer, would care
+   to comment.
+
+As I indicated, I have no objection to making \begin{quote} expand to
+\@#@quote.  I would intepret the statement in the book as a guide
+to understanding the style files, not as explanation of a feature.
+However,
+
+   \newcommand{\foo}{...}
+   \begin{foo} ... \end{foo}
+
+still has to be legal.  One would therefore have to define
+\begin{foo} effectively to expand to
+
+   \begingroup
+   IF \@#@foo defined THEN \@#@foo
+                      ELSE \foo
+
+By making \end{foo} expand to \@#@endfoo, the user would now be
+able to define \endfoo.
+
+While I have no objections, my feeling is that the gain is not worth
+the effort.  The only real gain is removing the inelegance of making
+all \end...  commands undefinable.  There could still could not be both
+an environment named `foo' and a command named `\foo' (this would make
+\begin{foo} ambiguous), so it would not give the user any more command
+names.  There is no point protecting the user who writes
+\def\quote{...}, both because he desrves what he gets, and because we
+can't protect him from writing \def\or{...}.
+
+My most serious misgiving about this whole discussion is that I think
+that it displays a lack of perspective.  There are a small number of
+people who are going to be doing the coding, and a lot of things that
+are more important than this very minor enhancement.  Let me suggest
+one such item that I would much rather see people thinking about than
+this sort of trivia.  When writing LaTeX, there were two important
+things that I did not attempt to do properly for lack of time:
+documentation and testing.  Frank and Rainer have invested considerable
+energy into fixing the first problem; I have seen no plans for fixing
+the second.  Version 2.09 has become much more reliable since it was
+introduced in 1985.  People are not going to be very happy if Version
+2.10 takes them back five years in reliability.  Anybody want to
+tackle this problem?
+
+Leslie
+
+

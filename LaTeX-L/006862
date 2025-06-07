@@ -1,0 +1,85 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p83KohZ2003483
+	for <rainer@rainer-schoepf.de>; Sat, 3 Sep 2011 22:50:44 +0200
+Received: (qmail 13112 invoked by alias); 3 Sep 2011 20:50:38 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 03 Sep 2011 20:50:38 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx040) with SMTP; 03 Sep 2011 22:50:38 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p83KmBbK007512
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 3 Sep 2011 22:48:11 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p83FP0kD021288;
+	Sat, 3 Sep 2011 22:48:10 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1607166 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 3 Sep
+          2011 22:48:10 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p83KmA4B010083 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 3 Sep 2011 22:48:10 +0200
+Received: from freefriends.org (b0.f7.net [66.148.120.132]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p83Klu9m001966
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 3 Sep 2011 22:48:00
+          +0200
+X-Envelope-From: karl@freefriends.org
+X-Envelope-To: <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Received: from freefriends.org (sls-af11p1 [127.0.0.1]) by freefriends.org
+          (8.14.4/8.14.4) with ESMTP id p83Klqql017817 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 3 Sep 2011 16:47:55 -0400
+Received: (from nobody@localhost) by freefriends.org (8.14.4/8.14.4/submit) id
+          p83KlqFL017816; Sat, 3 Sep 2011 20:47:52 GMT
+X-Authentication-Warning: localhost.localdomain: nobody set sender to
+                         karl@freefriends.org using -f
+Message-ID:  <201109032047.p83KlqFL017816@freefriends.org>
+Date:         Sat, 3 Sep 2011 20:47:52 GMT
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Karl Berry <karl@FREEFRIENDS.ORG>
+Subject: Re: NFSS bug (!)
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4E61EB56.3020204@latex-project.org>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p7i58X7zz65IL1lyM4q2TvDy6Eh6hSTcRxxIZqoY9aftpGj0G7qRlB1ewo49
+ DBmjoyKr8O5F/NNr1f2HYyadLEZ3qtjK1FvsmsoAf4nUQQZfxacZQy/DskSYsXQLk6FVNOgtORlj
+ AK96DtsJMMgGy5G7GT419YWj3D43y5BUBV5LCcfVHjobQffKpydIuvCkbo=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6862
+
+    > As far as I know writing \global\newcount is the same as \newcount,
+    > so I'll change this in the 2e code.
+
+    it looks like with \alloc@ having \global as part of its definition. 
+
+Yep, looks like it can be safely removed to me too.
+
+    However,I don't think that was always the case 
+
+Thanks to Ulrik V, we can check
+ftp://tug.org/historic/macros/latex-saildart, which shows that \alloc@
+has used \global since at least version 0.90, ca.1983, when it was named
+\allocate ... (in lplain.tex).
+
+    (in plain.tex all these definitions are local for example) 
+
+plain.tex has the same \global at the beginning of \alloc@, and in fact
+the same definition, modulo the token-removal optimizations in ltplain.
+That's also been the case forever as far as I can determine.
+
+karl
+

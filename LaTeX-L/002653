@@ -1,0 +1,82 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1827" "Mon" "6" "July" "1998" "17:57:56" "-0400" "Michael J. Downes" "mjd@AMS.ORG" nil "40" "Neglected \"primitives\"" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA24812;
+	Mon, 6 Jul 1998 23:58:12 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.64DA0737@listserv.gmd.de>; Mon, 6 Jul 1998 23:58:11 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 380560 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Jul 1998 23:58:06 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id XAA11676 for
+          <latex-l@urz.uni-heidelberg.de>; Mon, 6 Jul 1998 23:57:59 +0200 (MET
+          DST)
+Received: from sun06.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 6 Jul 1998
+          21:57:57 UT
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0EVP00F0110KNB@sun06.ams.org> for latex-l@urz.uni-heidelberg.de;
+          Mon, 6 Jul 1998 17:57:56 -0400 (EDT)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 40
+Message-ID:  <199807062157.XAA11676@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+Date:         Mon, 6 Jul 1998 17:57:56 -0400
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Neglected "primitives"
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2653
+
+l3basics.dtx mentions \c_space_chartok, evidently the equivalent of
+\@sptoken, but it's not defined anywhere. In fact there is a group of
+similar "character-token primitives".  For experimentation purposes I
+would suggest giving them new LaTeX3 names in l3basics. Some, if not
+all of these, as I recall, are dealt with off somewhere in another
+package, but it did not get included in the expl3 release.
+
+(catcode 1) \bgroup -> \group_begin_lbrace:  (?)
+(catcode 2) \egroup -> \group_end_rbrace:  (?)
+(catcode 3) $       -> \math_start: (and also \math_end:)
+\gdef:Npn \math_start_display: {\math_start:\math_start:}
+\gdef:Npn \math_end_display: {\math_end:\math_end:}
+(catcode 4) &       -> \align_end_cell:
+(catcode 6) #       -> \param_marker:
+(catcode 7) ^       -> \math_superscript:w
+(catcode 8) _       -> \math_subscript:w
+(catcode 10) space  -> \c_space_chartok
+
+Some interesting tricks can be done when a control sequence
+\param_marker: instead of a character # is embedded in macro
+definitions. The behavior of the macro is affected at run-time by the
+current local definition of the control sequence. (LaTeX already uses
+this in constructing preambles for array and tabular, but I played
+around with the idea a little more, some time ago.)
+
+If you wanted to handle the above single-character functions in
+l3names.dtx in full generality, one could argue that you need 256
+names for each catcode. But I guess 1 or 2 will be enough :-)
+
+The following which are used by TeX when scanning numbers and dimens
+probably are also useful to have (must be assigned with def, not let).
+
+(catcode 12) '      -> \num_octal
+(catcode 12) "      -> \num_hex
+(catcode 12) -      -> \num_minus
+(catcode 12) .      -> \num_decimal
+(catcode 12) =      -> \num_equal
+(catcode 12) `      -> \num_alph "alphabetic constant"
+
+Michael Downes
+

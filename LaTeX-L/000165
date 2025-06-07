@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 6 Jul 90 08:42:32 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 165
+
+Don raised some important topics about makeindex and I like
+to add a few remarks:
+
+    (1) despite what Nelson says, makeindex should be
+    in WEB.  Somewhere, while I was at Texas A&M I read
+    a comment saying "makindex is a fine program, but
+    only runs on Unix since it was written in C." ....
+
+I agree with Don that we should try to provide all TeXware in Web
+format. Not because it is not possible to produce good coded
+programs but because I think it is very important to provide
+an environment which is likly to run on all target machines.
+Using Web2C translators it is fairly easy to use Webware
+in the Unix world and Web itself ensures that the program are
+likely to run on all other machines. Thinking of commercial
+(industrial) environments we often have to deal with IBM mainframes
+where you might find a Fortan, Cobol, PL1 and Pascal compiler
+but often no C compiler (expensive).
+
+    (2) Speaking of documentation, well, um. Makeindex, as Nelson
+    distributes it, has three documents:
+          ...
+       makeindex - a general purpose, formatter-independent index
+          processor (apparently by Pehong Chen). This is the only
+          documentation of the ist format. However, the options one
+          has for the documentation formatting are: GNU infor format,
+          Unix man page, nroff output, VMS help and PostScript output
+          from troff. *no* TeX formatting, nor is their a plain text
+          file version. No wonder I never figured this stuff out when
+          I was at UIC on a CMS machine without PostScript printers.
+
+I have an LaTeX version of this document which was provided by
+Reinhard Wonneberger. I suppose that some updates are necessary
+but I'm sure that this will be of some help.
+
+    (3) some design flaws: There should be a syntax for indicating
+    the ist file to be used in the idx file itself. I'm sure more
+    than one person has cursed the day Frank Mittelbach was born when
+    they tried typing something like
+       latex array
+       makeindex array
+       latex array
+    and that's too bad since it isn't really Frank's fault (well,
+    maybe a little ;-) I'm not sure if this can be handled in a
+    formatter-independent way, but hey, let's make this feature
+    TeX/LaTeX bound if we have to... it is important.
+
+First of all I suppose that there aren't many people arround knowing
+this day (at least not under the doc.sty users). But of course Don
+is right both makeindex and me could have done better.
+Within the last year I had to do a lot of work concerning
+automatical index generation and if found more than one important
+concept missing in makeindex.
+
+What makeindex calls a style file has nearly nothing to do with
+the term style file we know from LaTeX or BibTeX. 90 percent
+of an ist file concerns input character translation and not
+formating. But input character translation is a property of
+the document containing the data. So when the doc.sty uses \index
+it use the convention to have the = sign as the actual character
+instead of the @ sign because the @ sign is used all the time in the
+index data.
+So it is only reasonable to request a specific style by writing the
+information into the idx file. But I would like to go a step further:
+
+  1) leave the style file for user entries so that the user can
+     choose  his / her own special characters.
+
+  2) Allow to reset/change the special characters inside the
+     idx file by switching to a specific char map which was declared
+     somewhere before inside the idx file. This would allow to
+     set up macros for automatic indexing which use their own
+     convention for special characters. This is very important
+     if you like to combine indexentries from such sources (like the
+     doc style) and user entries.
+
+  3) I see no problems to include such a scheme efficent and
+     formatter independent into makeindex. The only thing you have
+     to do is to add a few more keywords. (The usual meta-meta stuff)
+
+There are many other questionable features in makeindex, for example
+sorting which is not properly handled. The same is true for BibTeX
+and some efforts should be spend on making the interfaces similar.
+
+Frank
+
+

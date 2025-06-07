@@ -1,0 +1,88 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 27 Aug 2007 11:31:45 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l7R9VeLk014493
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 27 Aug 2007 11:31:40 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l7R9JkPr011071
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 27 Aug 2007 11:19:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l7QM1nZp030926;
+	Mon, 27 Aug 2007 11:19:25 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 116855 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 27 Aug
+          2007 11:19:25 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l7R9JPBv016029 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 27 Aug 2007 11:19:25 +0200
+Received: from nf-out-0910.google.com (nf-out-0910.google.com [64.233.182.184])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          l7R9JLoK000769 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 27 Aug
+          2007 11:19:24 +0200
+Received: by nf-out-0910.google.com with SMTP id d3so1077118nfc for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 27 Aug 2007 02:19:21 -0700
+          (PDT)
+Received: by 10.78.168.1 with SMTP id q1mr3708853hue.1188206360352; Mon, 27 Aug
+          2007 02:19:20 -0700 (PDT)
+Received: from mortens-ibook.local ( [89.150.77.196]) by mx.google.com with
+          ESMTPS id q40sm4795783ugc.2007.08.27.02.19.14 (version=SSLv3
+          cipher=OTHER); Mon, 27 Aug 2007 02:19:17 -0700 (PDT)
+Content-Type: text/plain; format=flowed; delsp=yes; charset=iso-8859-1
+MIME-Version: 1.0
+References: <46C0AE5B.7010308@arcor.de>
+            <18112.53634.669944.358049@morse.mittelbach-online.de>
+            <op.tw1ik2bcss64je@mortens-ibook> <46C23C6A.3060701@arcor.de>
+Content-Transfer-Encoding: 7bit
+User-Agent: Opera Mail/9.23 (MacPPC)
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <op.txpn1gb3ss64je@mortens-ibook.local>
+Date:         Mon, 27 Aug 2007 11:18:59 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?iso-8859-1?Q?Morten_H=F8gholm?=
+              <morten.hoegholm@LATEX-PROJECT.ORG>
+Subject: Re: xinitials and graphicx, xcolor
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <46C23C6A.3060701@arcor.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.599 () BAYES_00,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 27 Aug 2007 09:31:45.0865 (UTC) FILETIME=[15E41390:01C7E88D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5029
+
+On Wed, 15 Aug 2007 01:36:10 +0200, Stephan Hennig wrote:
+
+Hi Stephan,
+
+> However, there is another issue.  In the attached example the
+> \raggedright command has no effect as soon as xinitials.sig is loaded
+> (from svn now).  Without xinitials it works (of course).
+
+Yes \raggedright doesn't work because the registers it sets are not the  
+ones actually used. Galley makes sure it is the only one actually touching  
+these register - if not we can't rely on it working properly. I have added
+   \def\raggedright{\UseInstance{justification}{raggedright}}
+   \def\raggedleft {\UseInstance{justification}{raggedleft}}
+to xhj, \fussy and \sloppy were already there. Note that template has to  
+be updated as well as there was a bug in there preventing it from working  
+correctly: a spurious brace group had crept in in the fake registers so  
+while \DelayEvalution correctly would wait until run to set its argument,  
+the settting would be done inside a group and restored to the default.  
+Both are now updated in the repository.
+
+Thanks,
+-- 
+Morten
+

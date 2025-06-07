@@ -1,0 +1,76 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 23 Feb 2006 20:26:15 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k1NJQ9oE017774
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 23 Feb 2006 20:26:10 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k1NJORvj014922;
+	Thu, 23 Feb 2006 20:24:27 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k1NA82fr004082;
+	Thu, 23 Feb 2006 20:22:17 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1348817 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 23 Feb
+          2006 20:22:17 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k1NJMHWa027551 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 23 Feb 2006 20:22:17 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.186]) by relay.uni-heidelberg.de (8.13.4/8.13.1) with
+          ESMTP id k1NJLr6i022684 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 23 Feb 2006 20:21:56 +0100
+Received: from [62.143.170.143] (helo=rigel.site) by mrelayeu.kundenserver.de
+          (node=mrelayeu8) with ESMTP (Nemesis),
+          id 0ML2ov-1FCM2U0Ri6-0007os; Thu, 23 Feb 2006 20:22:10 +0100
+Received: from localhost (localhost [127.0.0.1]) by rigel.site
+          (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id k1NJLjT5022791; Thu,
+          23 Feb 2006 20:21:45 +0100
+References: <200602231927.45843.lehman@gmx.net>
+X-Mailer: Mew version 4.2.54 on Emacs 22.0.50.1 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: kundenserver.de abuse@kundenserver.de
+              login:2dc398bc694a1e60948148ba0a42c0da
+Message-ID:  <20060223.202144.04749817.wl@gnu.org>
+Date:         Thu, 23 Feb 2006 20:21:44 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Werner LEMBERG <wl@GNU.ORG>
+Subject: Re: [latex/3844] uc/lccode controls in inputenc?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <200602231927.45843.lehman@gmx.net>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 23 Feb 2006 19:26:16.0511 (UTC) FILETIME=[040E34F0:01C638AF]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4918
+
+> My suggestion was: why not set the uppercase and lowercase codes of
+> all bytes used in UTF-8 to zero? The concept of uc/lccodes doesn't
+> apply to UTF-8 anyway (at least not with an 8-bit engine...), why
+> take the risk of having it backfire?
+
+This sounds reasonable to me.
+
+> There is one thing I didn't mention in the report. Since inputenc
+> may switch the input encoding mid-stream, the codes would also need
+> to be restored before a new encoding is initialized. So the issue at
+> stake is really: should there by a central uc/lccode management in
+> inputenc?
+
+Hmm.  Isn't there a rule that uc/lccode values are fixed?
+Additionally, they apply to the font encoding, IIRC, and not the input
+encoding...
+
+I vote for setting uc/lccode values to zero for UTF-8 but retain them
+as-is for all other 8bit input encodings.
+
+
+    Werner
+

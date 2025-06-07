@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2404" "Fri" "28" "January" "1994" "11:02:16" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199401281108.AA07225@mail.cs.tu-berlin.de>" "45" "form and content" "^Date:" nil nil "1" "1994012811:02:16" "form and content" (number " " mark "     Mike Piff         Jan 28   45/2404  " thread-indent "\"form and content\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA14233; Fri, 28 Jan 94 12:10:04 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA09638; Fri, 28 Jan 94 12:08:26 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA07225
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 28 Jan 1994 12:08:22 +0100
+Message-Id: <199401281108.AA07225@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1355; Fri, 28 Jan 94 12:08:21 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1354; Fri,
+ 28 Jan 1994 12:08:19 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3511; Fri,
+ 28 Jan 1994 12:07:52 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 28 Jan 1994 11:02:16 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      form and content
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1337
+
+Some thoughts on what should go between \begin{document} and \end{document}.
+
+This is a problem that has troubled me greatly over the years I have used
+LaTeX.  I am coming more and more to the conclusion that *only* commands that
+the user defines in the preamble should be used between \begin{document} and
+\end{document}. Thus even innocent commands like \em, \section, \rightarrow,
+etc, should not be used. The problem arises when the user wishes to re-format
+a document and change some of the \em's but not all to \bf's, or to change
+some \rightarrow's to =, or whatever. If the user has written \Emphasize{..}
+or \Define{...} then the change is trivial. Otherwise, the whole document has
+to be edited just to change its appearance slightly.
+
+I am thinking here of longish documents that undergo frequent modification,
+not 2 page letters.  But there are problematic areas, for instance, to ban
+the use of & and \\ in tabular environments is sometimes desirable, but
+incredibly tedious. (One might want to print a list two times, once with all
+columns visible and once with only some of them visible, eg, paper marks
+and final exam marks, or retail price and trade price.)
+
+What do others on the list see as good practice? Probably most of us run a
+happy medium between the above and the
+
+{\bf Section 2}\\
+\\
+A {\em matrix\/} is defined by
+\[ a_{i,j}=1,~~~{\rm for\ all}i,j\in\{1,\ldots,n\}.\]
+
+which our (WYSI(Almost)WYG trained) secretaries (and some staff) produce.  But
+take the above example. Clearly, we should use \Set{1,\ldots,n}, and \quad
+rather than ~~~. But what about \[ and \], _, and \mbox{....\Set{...}}?
+Should we ban these too?  I am sure that many of you have had to edit $xyz$.
+into \[xyz.\] plenty of times, just the sort of thing you need to do on
+changing \textwidth for instance.  It is difficult to conceive of how each
+formula that might need to be moved from in-line to display could be
+individually marked, although a tag such as \Math{} or \Math[D]{} might be
+used to make the editing easier. And I guess the period could be moved inside
+the maths. But what if it is a semicolon?
+
+
+Mike
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

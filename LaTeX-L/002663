@@ -1,0 +1,271 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["14381" "Wed" "8" "July" "1998" "13:05:18" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "231" "Second experience with l3" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id NAA21363;
+	Wed, 8 Jul 1998 13:08:49 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.01E6771F@listserv.gmd.de>; Wed, 8 Jul 1998 13:08:48 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 382498 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Jul 1998 13:08:42 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id NAA21231 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Wed, 8 Jul 1998 13:08:32 +0200
+          (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA182 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Wed, 8 Jul 1998
+          13:07:59 +0200
+Received: from [195.122.195.245] by fclients0.redestb.es (Post.Office MTA
+          v3.1.2 release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAC217 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Wed, 8 Jul 1998 13:11:28 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="Emailer_-1311496996"
+Message-ID:  <199807081108.NAA21231@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 8 Jul 1998 13:05:18 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Second experience with l3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2663
+
+--Emailer_-1311496996
+Content-Type: text/plain; charset="US-ASCII"
+
+Hello,
+
+After my first trials at a small level, I've decided to adapt a
+larger package.
+
+Attached to this message (Unix eol's) is an adaptation to l3 of my tensind
+package (for TENSorial INDexes). The original package and its manual are
+in ...supported/bezos. In this version \whenindex and related commads has
+been
+removed. It also has some bugs which are not present in the original, but
+it took me longer to write this version than the original--I am tired
+and I've decided to leave it in the current state.
+
+In fact that has been one of my most frustratring programming experiences.
+Debugging is quite difficult, code is full of obtrusive and meaningless
+stuff making it unreadable, typos are more frequent now (for example
+a typo in \ifx is very unlikely, but not in \if_meaning:NN)...
+Well, so frustrating it has been )-; I decided not to continue trying
+the experimental distribution for a while. IMO, all these great tools are
+ruined by their syntax and incoherences. I know that I will not
+make friends in the Latex Team with these comments, but I'm being very
+honest in my opinions. Sorry.
+
+\tensind_process:n reads the tokens one by one inside the tensor
+environment and acts accordingly:
+- if _, makes sb the current index "line"
+- if ^, makes sp the current index "line"
+- if \end or the shortcut char, ends the tensor and prints it
+- otherwise, adds the index to the current "line" and a gap to the
+  other "line"
+
+Example:
+
+\documentclass{book}
+\usepackage{l3tens}
+\tensordelimiter{?}
+\tensorformat{lrb}
+\begin{document}
+$?A_ij^kl?$
+\end{document}
+
+Notes:
+
+1. Some macros work as both functions and parameters; in those
+   cases a conventional parameter name has been used in some cases
+(because
+   \tlp_put_right is used with them) and a function name in the others.
+2. \@tfor requires an "other" colon and hence does not work in l3
+contexts.
+   A \newtfor command has been defined.
+3. Some primitives have not been renamed.
+4. If you want to understand more in depth how the package works, I
+strongly
+   recommend to make some tests with the *original* package (\tracing...
+is
+   far more readable.) and then study the l3 equivalent.
+
+Regards
+Javier
+
+"Hemos ido de Guatemala a Guatepeor"
+Spanish saying :-)
+
+
+
+
+--Emailer_-1311496996
+Content-Type: application/octet-stream; name="l3tens.sty";
+ x-mac-type="54455854";
+ x-mac-creator="414C4641"
+Content-transfer-encoding: base64
+
+XFByb3ZpZGVzUGFja2FnZXtsM3RlbnN9WzE5OTgvMDcvMDggdjEuMCBUZW5zb3JpYWwgSW5kZXhl
+c10KCiUgSG93IHRvIHdyaXRlIHRoaXMgaW5zaWRlIGwzICppbiBhIHNpbXBsZSB3YXkqPzoKXGV4
+cGFuZGFmdGVyXGRlZlxjc25hbWUgbF90ZW5zaW5kX3N1YnNjcmlwdF90bHBcZW5kY3NuYW1le199
+CgpcZGVmXG5ld3Rmb3IjMXtcY3NuYW1lIEB0Zm9yXGVuZGNzbmFtZSMxOj19CgpcUmVxdWlyZVBh
+Y2thZ2V7bDNiYXNpY3MsbDNuYW1lcyxsM3RscCxsM2ludCxsM2V4cGFufQoKXENvZGVTdGFydAoK
+XG5ld2RpbWVuXGxfdG1wYl9kaW0KClxpbnRfc2V0Ok5uIFxsX3RtcGJfaW50IHtcaW50X3VzZTpO
+IFx0ZXhfY2F0Y29kZTpEYF59JSBIZXJlIE4gaXMgKm5vdCogYSB0b2tlbgpcdGV4X2NhdGNvZGU6
+RGBcXj03CgpcbmV3ZGltZW5cbF90ZW5zaW5kX3RtcF9kaW0KClxuZXdpZlxpZnRlbnNpbmRfc3AK
+XG5ld2lmXGlmdGVuc2luZF9zYgoKXG5ld2lmXGlmdGVuc2luZF9lClxuZXdpZlxpZnRlbnNpbmRf
+YgpcbmV3aWZcaWZ0ZW5zaW5kX2wKXG5ld2lmXGlmdGVuc2luZF9yClxuZXdpZlxpZnRlbnNpbmRf
+bwpcbmV3aWZcaWZ0ZW5zaW5kX2MKXG5ld2lmXGlmdGVuc2luZF9zClxuZXdpZlxpZnRlbnNpbmRf
+bm9kb3QKClx0bHBfbmV3Ok5uIFxsX3RlbnNpbmRfdGhlZG90c190bHAge30KXHRscF9uZXc6Tm4g
+XGxfdGVuc2luZF90aGVwcmltZXNfdGxwIHt9Clx0bHBfbmV3Ok5uIFxsX3RlbnNpbmRfdGhlc2Jf
+dGxwIHt9Clx0bHBfbmV3Ok5uIFxsX3RlbnNpbmRfdGhlc3BfdGxwIHt9Clx0bHBfbmV3Ok5uIFxs
+X3RlbnNpbmRfbGFzdGxvY190bHAge3h9Clx0bHBfbmV3Ok5uIFxsX3RlbnNpbmRfbGFzdGluZGV4
+X3RscCB7fSUKClxkZWY6TnBuIFx0ZW5zaW5kX2FkZGluZGV4OiB7XHRlbnNpbmRfYWRkcHI6fQoK
+XGxldDpOTiBcdGVuc2luZF9ibDpuIFx0ZXhfcmVsYXg6RApcbGV0Ok5OIFx0ZW5zaW5kX2JyOm4g
+XHRleF9yZWxheDpEClxsZXQ6Tk4gXHRlbnNpbmRfYm06biBcdGV4X3JlbGF4OkQKXGxldDpOTiBc
+dGVuc2luZF90bDpuIFx0ZXhfcmVsYXg6RApcbGV0Ok5OIFx0ZW5zaW5kX3RyOm4gXHRleF9yZWxh
+eDpEClxsZXQ6Tk4gXHRlbnNpbmRfdG06biBcdGV4X3JlbGF4OkQKClxsZXQ6Tk4gXHRlbnNpbmRf
+Y2hvaWNlOm5ubm4gXHRleF9tYXRoY2hvaWNlOkQKClxuZXdpZlxpZnRlbnNpbmRfdG9wClxuZXdp
+ZlxpZnRlbnNpbmRfYm90CgpcbGV0Ok5OIFx0ZW5zaW5kX2dhcDpuIFx0ZXhfcmVsYXg6RAoKXG5l
+d2NvbW1hbmR7XHRlbnNvcmZvcm1hdH1bMV17CiAgXHRlbnNpbmRfbGZhbHNlCiAgXHRlbnNpbmRf
+cmZhbHNlCiAgXHRlbnNpbmRfZWZhbHNlCiAgXHRlbnNpbmRfYmZhbHNlCiAgXHRlbnNpbmRfb2Zh
+bHNlCiAgXHRlbnNpbmRfY2ZhbHNlCiAgXHRlbnNpbmRfc2ZhbHNlCiAgXG5ld3Rmb3JcbF90ZW5z
+aW5kX3RtcF90cGwgIzFcZG8KICAgIHsKICAgICAgXGNzOncgdGVuc2luZF9cbF90ZW5zaW5kX3Rt
+cF90cGwgdHJ1ZVxjc19lbmQ6CiAgICB9Cn0KClx0ZW5zb3Jmb3JtYXR7fQpcbmV3Y29tbWFuZHtc
+aW5kZXhkb3R9e1xjZG90fQoKXG5ld2NvbW1hbmR7XHRlbnNvcn17CiAgXGNhdGNvZGVgXz04XGNh
+dGNvZGVgXj03fgogIFxkZWY6TnBuIFx0ZW5zaW5kX2VuZDoge1xlbmR9CiBcQGlmbmV4dGNoYXJb
+e1x0ZW5zaW5kX290ZW5zb3I6d317XHRlbnNpbmRfeHRlbnNvcjpufQp9CgpcZ3JvdXBfYmVnaW46
+CgpcdGV4X2NhdGNvZGU6RGA/PTEzfgoKXGdkZWZfbmV3Ok5wbiBcdGVuc29yZGVsaW1pdGVyICMx
+IHsKICBcdGV4X21hdGhjb2RlOkRgIzE9IjgwMDAKICB7CiAgICBcdGV4X2NhdGNvZGU6RGA/PTEz
+flx0ZXhfbGNjb2RlOkRgPz1gIzF+CiAgICBcdGV4X2xvd2VyY2FzZTpECiAgICB7CiAgICAgXGdk
+ZWY6TnBuP3sKICAgICAgICBcZ3JvdXBfYmVnaW46CiAgICAgICAgICAgXGNhdGNvZGVgXz04flxj
+YXRjb2RlYF49N34KICAgICAgICAgICBcZGVmOk5wbiBcdGVuc2luZF9lbmQ6IHsjMX0KICAgICAg
+ICAgICBcZGVmOk5wbj97XGVuZHRlbnNvclxncm91cF9lbmQ6fQogICAgICAgICAgIFxAaWZuZXh0
+Y2hhclt7XHRlbnNpbmRfb3RlbnNvcjp3fXtcdGVuc2luZF94dGVuc29yOm59CiAgICAgICAgfQog
+ICAgIH0KICB9Cn0KICAgICAgICAKXGdyb3VwX2VuZDoKClxkZWY6TnBuIFx0ZW5zaW5kX290ZW5z
+b3I6dyBbIzFde1x0ZW5zb3Jmb3JtYXR7IzF9XHRlbnNpbmRfeHRlbnNvcjpufQoKXGRlZl9uZXc6
+TnBuXHRlbnNpbmRfeHRlbnNvcjpuICMxewogICBcdGxwX25ldzpObiBcbF90ZW5zaW5kX251Y2xf
+dGxwIHsjMX0KICAgXHRleF9mdXR1cmVsZXQ6RCBcdGVuc2luZF9uZXh0X2lpOiBcdGVuc2luZF9w
+cm9jZXNzOm59CgpcZGVmX25ldzpOcG4gXHRlbnNpbmRfcHJvY2VzczpuICMxewogIFxkZWY6TnBu
+IFx0ZW5zaW5kX25leHRfaToKICAgICB7XHRleF9mdXR1cmVsZXQ6RCBcdGVuc2luZF9uZXh0X2lp
+OiBcdGVuc2luZF9wcm9jZXNzOm59CiAgXHRscF9zZXQ6Tm4gXGxfdGVuc2luZF90aGVpbmRleF90
+bHAgeyMxfQogIFxpZl9tZWFuaW5nOk5OIFxsX3RlbnNpbmRfdGhlaW5kZXhfdGxwIFxsX3RlbnNp
+bmRfc3Vic2NyaXB0X3RscAogICAgIFxpZjp3IFxsX3RlbnNpbmRfbGFzdGxvY190bHAgeAogICAg
+ICAgIFx0bHBfc2V0Ok5uIFxsX3RlbnNpbmRfZmlyc3RfdGxwIFxjX2VtcHR5X3RscAogICAgIFxm
+aToKICAgICBcaWY6dyBcbF90ZW5zaW5kX2xhc3Rsb2NfdGxwIGJcZWxzZToKICAgICAgIFx0ZW5z
+aW5kX3N3aXRjaHNiOgogICAgIFxmaToKICBcZWxzZToKICAgIFxleHBfYXJnczpObm8gXHRsaXN0
+X2VxOm5uVEYge159IFxsX3RlbnNpbmRfdGhlaW5kZXhfdGxwIAogICAgICAge1xpZjp3IFxsX3Rl
+bnNpbmRfbGFzdGxvY190bHAgcFxlbHNlOgogICAgICAgICAgXHRlbnNpbmRfc3dpdGNoc3A6CiAg
+ICAgICBcZmk6fQogICAgICB7XGlmX21lYW5pbmc6Tk4gXGxfdGVuc2luZF90aGVpbmRleF90bHAg
+XHRlbnNpbmRfZW5kOgogICAgICAgICAgXGxldDpOTiBcdGVuc2luZF9uZXh0X2k6IFx0ZW5zaW5k
+X2VuZDoKICAgICAgIFxlbHNlOgogICAgICAgICBcdGVuc2luZF9ub2RvdGZhbHNlCiAgICAgICAg
+IFxpZl9tZWFuaW5nOk5OIFx0ZW5zaW5kX25leHRfaWk6IFx0ZXhfYmdyb3VwOkQKICAgICAgICAg
+ICBcdGxwX2NsZWFyOk4gXGxfdGVuc2luZF9sYXN0aW5kZXhfdGxwCiAgICAgICAgIFxlbHNlOgog
+ICAgICUgXGNzOncgdGVuc2luZF9jbWRcdGV4X3N0cmluZzpEICMxXGNzX2VuZDogJSBVc2VkIGJ5
+IFx3aGVuaW5kZXgKICAgICAgICAgICBcdGxwX3NldDpObiBcbF90ZW5zaW5kX2xhc3RpbmRleF90
+bHAgeyMxfQogICAgICAgICBcZmk6CiAgICAgICAgXHRlbnNpbmRfYWRkaW5kZXg6CiAgICAgIFxm
+aTp9CiAgXGZpOgogIFx0ZW5zaW5kX25leHRfaTp9CgpcZGVmX25ldzpOcG4gXHRlbnNpbmRfc3dp
+dGNoc3A6ewogIFxsZXQ6Tk4gXHRlbnNpbmRfYWRkaW5kZXg6IFx0ZW5zaW5kX2FkZHNwOgogIFxp
+ZnRlbnNpbmRfdG9wCiAgICBcZGVmOk5wbiBcdGVuc2luZF9nYXA6biB7XHRlbnNpbmRfdG06bn0K
+ICBcZWxzZToKICAgIFxkZWY6TnBuIFx0ZW5zaW5kX2dhcDpuIHtcdGVuc2luZF90bDpufQogIFxm
+aToKICBcdGxwX3B1dF9yaWdodDpOeCBcbF90ZW5zaW5kX3RoZXNwX3RscCBcbF90ZW5zaW5kX3Ro
+ZWRvdHNfdGxwCiAgXGxldDpOTiBcdGVuc2luZF9nYXA6biBcdGV4X3JlbGF4OkQKICBcdGxwX2Ns
+ZWFyOk4gXGxfdGVuc2luZF90aGVkb3RzX3RscAp9CiAgClxkZWZfbmV3Ok5wbiBcdGVuc2luZF9z
+d2l0Y2hzYjp7CiAgXGxldDpOTiBcdGVuc2luZF9hZGRpbmRleDogXHRlbnNpbmRfYWRkc2I6CiAg
+XGlmdGVuc2luZF9ib3QKICAgIFxkZWY6TnBuIFx0ZW5zaW5kX2dhcDpuIHtcdGVuc2luZF9ibTpu
+fQogIFxlbHNlOgogICAgXGRlZjpOcG4gXHRlbnNpbmRfZ2FwOm4ge1x0ZW5zaW5kX2JsOm59CiAg
+XGZpOgogIFx0bHBfcHV0X3JpZ2h0Ok54IFxsX3RlbnNpbmRfdGhlc2JfdGxwIFxsX3RlbnNpbmRf
+dGhlZG90c190bHAgCiAgXGxldDpOTiBcdGVuc2luZF9nYXA6biBcdGV4X3JlbGF4OkQKICBcdGxw
+X2NsZWFyOk4gXGxfdGVuc2luZF90aGVkb3RzCn0KClxkZWZfbmV3Ok5wbiBcdGVuc2luZF9hZGRw
+cjogewogIFx0bHBfcHV0X3JpZ2h0Ok5vIFxsX3RlbnNpbmRfdGhlcHJpbWVzX3RscCBcbF90ZW5z
+aW5kX3RoZWluZGV4X3RscAp9CgpcZGVmX25ldzpOcG5cdGVuc2luZF9hZGRzcDp7CiAgXHRlbnNp
+bmRfdG9wdHJ1ZQogIFx0bHBfcHV0X3JpZ2h0Ok5vIFxsX3RlbnNpbmRfdGhlc3BfdGxwIFxsX3Rl
+bnNpbmRfdGhlaW5kZXhfdGxwIAogIFxpZnRlbnNpbmRfbm9kb3QKICAgIFx0bHBfcHV0X3JpZ2h0
+Ok5uIFxsX3RlbnNpbmRfdGhlZG90c190bHAgXHRlbnNpbmRfcGhhbnRvbTpuCiAgICBcdGxwX3B1
+dF9yaWdodDpObyBcbF90ZW5zaW5kX3RoZWRvdHNfdGxwCgkgICAgIHtcZXhwX2FmdGVyOk5Oe1xs
+X3RlbnNpbmRfdGhlaW5kZXhfdGxwfX0KICBcZWxzZToKICAgIFx0bHBfcHV0X3JpZ2h0Ok54IFxs
+X3RlbnNpbmRfdGhlZG90c190bHAKCSAgICAge1x0ZW5zaW5kX2dhcDpuIHtcbF90ZW5zaW5kX3Ro
+ZWluZGV4X3RscH19CiAgXGZpOgogIFx0bHBfbmV3Ok5uIFxsX3RlbnNpbmRfbGFzdGxvY190bHAg
+e3B9Cn0KClxkZWZfbmV3Ok5wbiBcdGVuc2luZF9hZGRzYjp7CiAgXHRlbnNpbmRfYm90dHJ1ZQog
+IFx0bHBfcHV0X3JpZ2h0Ok5vIFxsX3RlbnNpbmRfdGhlc2JfdGxwIHtcbF90ZW5zaW5kX3RoZWlu
+ZGV4X3RscH0KICBcaWZ0ZW5zaW5kX25vZG90CiAgICBcdGxwX3B1dF9yaWdodDpObiBcbF90ZW5z
+aW5kX3RoZWRvdHNfdGxwIFx0ZW5zaW5kX3BoYW50b206bgogICAgXHRscF9wdXRfcmlnaHQ6Tm8g
+XGxfdGVuc2luZF90aGVkb3RzX3RscAogICAgICAgICB7XGV4cF9hZnRlcjpOTntcbF90ZW5zaW5k
+X3RoZWluZGV4X3RscH19CiAgXGVsc2U6CiAgICBcdGxwX3B1dF9yaWdodDpOeCBcbF90ZW5zaW5k
+X3RoZWRvdHNfdGxwCiAgICAgICAgICAgICAgICAgIHtcdGVuc2luZF9nYXA6bntcbF90ZW5zaW5k
+X3RoZWluZGV4X3RscH19CiAgXGZpOgogIFx0bHBfc2V0Ok5uIFxsX3RlbnNpbmRfbGFzdGxvY190
+bHAge2J9Cn0KClxkZWZfbmV3Ok5wbiBcdGVuc2luZF9kb3Q6biAjMSB7CiAgXHNldGJveFx6QCBc
+aGJveHskXGxfdGVuc2luZF9mYW1fdGxwXG1AdGhcbF90ZW5zaW5kX2luZGV4X3RscCMxJH0lCiAg
+XGhib3ggdG9cd2RcekAge1xoc3MkXGxfdGVuc2luZF9mYW1fdGxwXG1AdGhcbF90ZW5zaW5kX2lu
+ZGV4X3RscFxpbmRleGRvdCRcaHNzfQp9CgpcZGVmX25ldzpOcG4gXGVuZHRlbnNvciB7CiAgXGlm
+OncgXGxfdGVuc2luZF9sYXN0bG9jX3RscCBwCiAgICBcZGVmOk5wbiBcdGVuc2luZF9nYXA6biB7
+XHRlbnNpbmRfYnI6bn0KICAgIFx0bHBfcHV0X3JpZ2h0Ok5vIFxsX3RlbnNpbmRfdGhlc2JfdGxw
+IFxsX3RlbnNpbmRfdGhlZG90c190bHAKICBcZWxzZToKICAgIFxkZWY6TnBuIFx0ZW5zaW5kX2dh
+cDpuIHtcdGVuc2luZF90cjpufQogICAgXHRscF9wdXRfcmlnaHQ6Tm8gXGxfdGVuc2luZF90aGVz
+cF90bHAgXGxfdGVuc2luZF90aGVkb3RzX3RscAogIFxmaToKICBcbGV0Ok5OIFx0ZW5zaW5kX2Js
+Om4gXHRlbnNpbmRfcGhhbnRvbTpuCiAgXGxldDpOTiBcdGVuc2luZF9icjpuIFx0ZW5zaW5kX3Bo
+YW50b206bgogIFxsZXQ6Tk4gXHRlbnNpbmRfYm06biBcdGVuc2luZF9waGFudG9tOm4KICBcbGV0
+Ok5OIFx0ZW5zaW5kX3RtOm4gXHRlbnNpbmRfcGhhbnRvbTpuCiAgXGRlZjpOcG4gXHRlbnNpbmRf
+dGw6biAjIzEKICAgICAgICB7XHRlbnNpbmRfcGhhbnRvbTpueyMjMX1ccHJlZl9nbG9iYWw6RFx0
+ZXhfYWR2YW5jZTpEXGxfdGVuc2luZF90bXBfZGltXHdkXHpAfSUKICBcaWZ0ZW5zaW5kX3RvcAog
+ICAgXGxldDpOTiBcdGVuc2luZF90cjpuIFx0ZW5zaW5kX3BoYW50b206bgogIFxlbHNlOgogICAg
+XGxldDpOTiBcdGVuc2luZF90cjpuIFx0ZW5zaW5kX3RsOm4KICBcZmk6CiAgXGlmdGVuc2luZF9i
+b3QKICAgIFxpZnRlbnNpbmRfbAogICAgIFxsZXQ6Tk4gXHRlbnNpbmRfYmw6biBcdGVuc2luZF9k
+b3Q6bgogICAgIFxsZXQ6Tk4gXHRlbnNpbmRfYm06biBcdGVuc2luZF9kb3Q6bgogICAgXGZpOgog
+ICAgXGlmdGVuc2luZF9yCiAgICAgXGxldDpOTiBcdGVuc2luZF9icjpuIFx0ZW5zaW5kX2RvdDpu
+CiAgICAgXGxldDpOTiBcdGVuc2luZF9ibTpuIFx0ZW5zaW5kX2RvdDpuCiAgICBcZmk6CiAgXGVs
+c2U6CiAgICBcaWZ0ZW5zaW5kX2UKICAgICAgXGxldDpOTiBcdGVuc2luZF9icjpuIFx0ZW5zaW5k
+X2RvdDpuCiAgICAgIFx0ZW5zaW5kX2JvdHRydWUKICAgIFxmaToKICBcZmk6CiAgXGlmdGVuc2lu
+ZF9iXGVsc2U6CiAgICBcaWZ0ZW5zaW5kX3RvcAogICAgICBcaWZ0ZW5zaW5kX2wKICAgICAgICAg
+IFxsZXQ6Tk4gXHRlbnNpbmRfdGw6biBcdGVuc2luZF9kb3Q6bgogICAgICAgICAgXGxldDpOTiBc
+dGVuc2luZF90bTpuIFx0ZW5zaW5kX2RvdDpuCiAgICAgIFxmaToKICAgICAgXGlmdGVuc2luZF9y
+CiAgICAgICAgICBcbGV0Ok5OIFx0ZW5zaW5kX3RyOm4gXHRlbnNpbmRfZG90Om4KICAgICAgICAg
+IFxsZXQ6Tk4gXHRlbnNpbmRfdG06biBcdGVuc2luZF9kb3Q6bgogICAgIFxmaToKICAgIFxlbHNl
+OgogICAgICBcaWZ0ZW5zaW5kX2UKICAgICAgICAgIFxsZXQ6Tk4gXHRlbnNpbmRfdHI6biBcdGVu
+c2luZF9kb3Q6bgogICAgICAgICAgXHRlbnNpbmRfdG9wdHJ1ZQogICAgICAgXGZpOgogICAgXGZp
+OgogIFxmaToKICBcdGxwX2VtcHR5Ok5GIFxsX3RlbnNpbmRfdGhlcHJpbWVzX3RscCBcdGVuc2lu
+ZF90b3B0cnVlCiAgXGRlZjpOcHggXGxfdGVuc2luZF9mYW1fdGxwIHtcZmFtXHRoZVxmYW19CiAg
+XHRlbnNpbmRfY2hvaWNlOm5ubm4KICAgIHtcdGVuc2luZF9lbmR0ZW5zb3I6bm5cZGlzcGxheXN0
+eWxlXHNjcmlwdHN0eWxlfQogICAge1x0ZW5zaW5kX2VuZHRlbnNvcjpublx0ZXh0c3R5bGVcc2Ny
+aXB0c3R5bGV9CiAgICB7XHRlbnNpbmRfZW5kdGVuc29yOm5uXHNjcmlwdHN0eWxlXHNjcmlwdHNj
+cmlwdHN0eWxlfQogICAge1x0ZW5zaW5kX2VuZHRlbnNvcjpublxzY3JpcHRzY3JpcHRzdHlsZVxz
+Y3JpcHRzY3JpcHRzdHlsZX0KfQoKICAgIApcZGVmX25ldzpOcG4gXHRlbnNpbmRfZW5kdGVuc29y
+Om5uICMxIzIgeyUKICBcbGV0Ok5OIFxsX3RlbnNpbmRfdGV4dF90bHAgIzEKICBcbGV0Ok5OIFxs
+X3RlbnNpbmRfaW5kZXhfdGxwICMyCiAgXHNldGJveFx6QFxoYm94eyRcbF90ZW5zaW5kX2ZhbV90
+bHBcbUB0aCMxXGxfdGVuc2luZF9udWNsX3RscFxzYnt4fSR9CiAgXHNldGJveFxjX29uZVxoYm94
+eyRcbF90ZW5zaW5kX2ZhbV90bHBcbUB0aCMxXGxfdGVuc2luZF9udWNsX3RscHt9XHNie3h9JH0K
+ICBcbF90ZW5zaW5kX3RtcF9kaW1cd2RcekAgCiAgXHRleF9hZHZhbmNlOkQgXGxfdGVuc2luZF90
+bXBfZGltIC1cd2RcY19vbmUgIAogIFxsX3RtcGJfZGltIC1cbF90ZW5zaW5kX3RtcF9kaW0KICBc
+c2V0Ym94XHpAXGhib3h7JFxrZXJuXGxfdGVuc2luZF90bXBfZGltIFxsX3RlbnNpbmRfZmFtX3Rs
+cCBcbUB0aCMyXGxfdGVuc2luZF90aGVzcF90bHAkfQogIFxzZXRib3hcY19vbmUgXGhib3h7JFxs
+X3RlbnNpbmRfZmFtX3RscCBcbUB0aCMyXGxfdGVuc2luZF90aGVzYl90bHAkfQogIFxzZXRib3hc
+Y190d29caGJveHskXGxfdGVuc2luZF9mYW1fdGxwIFxtQHRoIzJ7XGxfdGVuc2luZF90aGVwcmlt
+ZXNfdGxwfSR9CiAgXGRwXHpAXHpACiAgXHRleF9pZmRpbTpEIFxsX3RlbnNpbmRfdG1wX2RpbSA+
+IFx3ZFxjX3R3bwogICAgXGxfdGVuc2luZF90bXBfZGltIFx6QCAKICBcZWxzZToKICAgIFx0ZXhf
+YWR2YW5jZTpEIFxsX3RlbnNpbmRfdG1wX2RpbSAtXHdkXGNfdHdvCiAgXGZpOgogIFx3ZFxjX3R3
+b1x6QCAKICBcaWZ0ZW5zaW5kX3MKICAgIFxpZl9tZWFuaW5nOk5OIFxsX3RlbnNpbmRfdGV4dF90
+bHAgXGRpc3BsYXlzdHlsZQogICAgICBcdGVuc2luZF9vdHJ1ZVx0ZW5zaW5kX2NmYWxzZQogICAg
+XGVsc2U6CiAgICAgIFx0ZW5zaW5kX29mYWxzZVx0ZW5zaW5kX2N0cnVlCiAgICBcZmk6CiAgXGZp
+OgogIFxsZXQ6Tk4gXGxfdGVuc2luZF90bXBfdGxwIFxjX2VtcHR5X3RscAogIFxsX3RlbnNpbmRf
+bnVjbF90bHAKICBcaWZ0ZW5zaW5kX2JvdFxzYntca2Vybi1cbF90ZW5zaW5kX3RtcF9kaW1cY29w
+eVxjX29uZSB9CiAgICBcaWZ0ZW5zaW5kX29cdGVuc2luZF90b3B0cnVlXGVsc2U6XGlmdGVuc2lu
+ZF9jXHRlbnNpbmRfdG9wdHJ1ZQogICAgICAgXGlmX21lYW5pbmc6Tk4gXGxfdGVuc2luZF90ZXh0
+X3RscCBcZGlzcGxheXN0eWxlIFxlbHNlOgogICAgICAgICBcdGxwX3NldDpObiBcbF90ZW5zaW5k
+X3RtcF90bHAge1x0ZXhfcmFpc2U6RC4xZXh9CiAgICAgICBcZmk6CiAgICAgICBca2Vybi1cd2Rc
+Y19vbmUgXGtlcm5cbF90ZW5zaW5kX3RtcF9kaW0KICAgICAgIFxrZXJuXGxfdG1wYl9kaW0gXGtl
+cm4tXHRleF9zY3JpcHRzcGFjZTpECiAgICBcZmk6XGZpOgogIFxmaToKICBcaWZ0ZW5zaW5kX3Rv
+cAogICAgXntcbF90ZW5zaW5kX3RtcF90bHAKICAgICAgXGJveFxjX3R3b1xrZXJuLVxsX3RlbnNp
+bmRfdG1wX2RpbVxsX3RlbnNpbmRfdG1wX3RscAogICAgICBcYm94XHpAIH0KICBcZmk6fQogIApc
+ZGVmOk5wbiBcdGVuc2luZF9waGFudG9tOm4gIzEgewogIFxzZXRib3hcY190d29cbnVsbAogIFxz
+ZXRib3hcekAgXGhib3h7JFxsX3RlbnNpbmRfZmFtX3RscFxtQHRoXGxfdGVuc2luZF9pbmRleF90
+bHAjMSR9JQogIFx3ZFxjX3R3b1x3ZFx6QCAKICBcYm94XGNfdHdvfSUKClx0ZXhfY2F0Y29kZTpE
+YFxePVxsX3RtcGJfaW50ClxDb2RlU3RvcAoK
+--Emailer_-1311496996--
+

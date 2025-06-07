@@ -1,0 +1,65 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1384" "Wed" "21" "October" "1998" "20:17:02" "PST" "Donald Arseneau" "asnd@TRIUMF.CA" nil "33" "Re: Users dropping into TeX" "^Date:" nil nil "10" nil "Users dropping into TeX" nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id FAA18129;
+	Thu, 22 Oct 1998 05:28:23 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.3F6D60FD@listserv.gmd.de>; Thu, 22 Oct 1998 5:28:22 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 402526 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 22 Oct 1998 05:28:15 +0200
+Received: from REG.TRIUMF.CA (reg.Triumf.CA [142.90.100.2]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id FAA14278 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 22 Oct 1998 05:28:12 +0200 (MET
+          DST)
+Received: by triumf.ca (MX V4.0-1 VAX) id 13; Wed, 21 Oct 1998 20:17:09 PST
+Message-ID:  <009CE0B8.3AA44DD4.13@triumf.ca>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 21 Oct 1998 20:17:02 PST
+From: Donald Arseneau <asnd@TRIUMF.CA>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Users dropping into TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2695
+
+At 21:09 +0200 98/10/21, Martin Schroeder wrote:
+>
+>\newenvironment{foo}{start}{end} defines \foo{start} and \endfoo{end}.
+>
+>But this is an undocumented feature -- which you can use at your own
+>risk.
+
+Hans Aberg <mailto:haberg@member.ams.org>
+>  So LaTeX defines \begin{list} and \end{list} as a part of the
+>list-environment interface, but \list and \endlist are part of the
+>implementation of the list environment. ...
+>  ... \list and \endlist do not belong to the interface,
+
+All untrue!  The command equivalent of an environment is "documented"
+on pages 25 and 34 of Lamport's Manual (1st ed; check the index for
+Environment > made from declaration).  It's not *well* documented,
+(omitting mention of the \end form) but it is clearly intended to
+be part of the user interface.
+
+For the package or class writer, it is *preferred* to use the commands
+rather than the environments for two reasons:
+
+ - less overhead and stack use (minor)
+ - better syntax checking (important!)
+
+Let's say you use \begin{list} when defining a new environment {citation},
+and a document has omitted \end{citation}.  The error message you get is
+! LaTeX Error: \begin{list} on input line xx ended by \end{document}.
+but if you use \list and \endlist you get the proper
+! LaTeX Error: \begin{citation} on input line xx ended by \end{document}.
+
+Donald Arseneau                         asnd@triumf.ca
+
+

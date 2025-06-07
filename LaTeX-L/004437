@@ -1,0 +1,221 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Sun, 19 Jan 2003 22:48:21 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0JLmI6C029880 for <rainer.schoepf@PROTEOSYS.COM>; Sun, 19 Jan 2003 22:48:19 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0JLX1AL029155; Sun, 19 Jan 2003 22:33:01 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C004.7BD8C080"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0J500qP028454; Sun, 19 Jan 2003 22:24:47 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6722 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 19 Jan 2003 22:24:46 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0JLOkkr031926 for          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 19 Jan 2003 22:24:46 +0100
+Received:  from mailgate.rz.uni-karlsruhe.de (exim@mailgate.rz.uni-karlsruhe.de          [129.13.64.97]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP          id h0JLVnZr024835 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 19          Jan 2003 22:31:49 +0100 (MET)
+Received:  from g113.hadiko.de (root@hadig113.hadiko.uni-karlsruhe.de          [172.20.43.13]) by mailgate.rz.uni-karlsruhe.de with esmtp (Exim 3.36          #1) id 18aN2i-0002KF-00; Sun, 19 Jan 2003 22:31:48 +0100
+Received:  (from nil@localhost) by g113.hadiko.de (8.11.1/8.11.1/Debian          8.11.0-6) id h0JLUXG04545 for LATEX-L@listserv.uni-heidelberg.de;          Sun, 19 Jan 2003 22:30:33 +0100
+In-Reply-To:  <15912.35366.899220.996696@istrati.mittelbach-online.de>
+References: <200212031601.gB3G11cQ009558@sun.dante.de>            <15899.14827.804209.458595@istrati.mittelbach-online.de>            <20030116114637.GA9844@g113.hadiko.de>            <15912.23044.419984.897093@istrati.mittelbach-online.de>            <20030117223345.GA14828@g113.hadiko.de>            <15912.35366.899220.996696@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 19 Jan 2003 21:48:21.0164 (UTC) FILETIME=[7BF1C6C0:01C2C004]
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -3 () IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_02_03,USER_AGENT,USER_AGENT_MUTT
+Content-class: urn:content-classes:message
+Subject:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Date: Sun, 19 Jan 2003 22:30:33 +0100
+Message-ID: A<20030119213033.GA2550@g113.hadiko.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Thread-Index: AcLABHwWUPUkfJ0nSjKmIRFzPHhLuA==
+From: "Dominique Unruh" <dominique@UNRUH.DE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4437
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C004.7BD8C080
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> sorry, misunderstanding, i meant quite literally the semantics of the
+> arguments for your \DeclareUnicodecharacter macro, ie what goes into
+> #1 ...
+
+Ah.
+
+\DeclareUnicodeCharacter{<num>}{<code>}
+
+where <num> is a TeX number (it is normalised by using \number#1), and
+<code> is some TeX code (like \texthallo).
+
+> question is how both could coexist and if they can whether they can =
+use the
+> same database of  \DeclareUnicodecharacter declarations rather than =
+doubling
+> the space
+
+My package uses features like combining characters and options, and
+therefore has to reflect these in the database (the database does not
+use \DeclareUnicodeCharacter, which is only an abbreviation).
+
+Further the files are ordered by code position uni-<num/256>.def, and
+not by fontencoding, since they are loaded on demand.
+
+But now that I think of it, it would make sense to allow third party
+packages to add mappings without having to detect, which package is
+loaded. This would be possible by adapting the syntax of your
+\DeclareUnicodeCharacter to mine (should'nt be too hard, exactly one
+byte has to be changed in \DeclareUnicodeCharacter), and then not
+simply \def'ing it, but using
+
+% pseudo-code
+\ifx\DeclareUnicodeCharacter\undefined\let\DeclareUnicodeCharacter\empty\=
+fi
+\g@addtomacro\DeclareUnicodeCharacter{the code}
+
+in both utf8.def's. This would make \DeclareUnicodeCharacter declare
+for both packages.
+
+
+>  > >  > \DeclareUnicodeCommand (analogous to \DeclareTextCommand)
+>  > \DeclareUnicodeMapping % the LaTeX may be guessed
+>  > \DeclareUnicodeInput % like in inputenc
+>  > \DeclareUnicodeInputText % like in inputenc
+
+If we take up the above proposal, then we don't have to worry about
+that any more.
+
+DniQ.
+
+------_=_NextPart_001_01C2C004.7BD8C080
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: latex/3480: Support for UTF-8 missing in =
+inputenc.sty</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; sorry, misunderstanding, i meant quite literally =
+the semantics of the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; arguments for your \DeclareUnicodecharacter =
+macro, ie what goes into</FONT>
+
+<BR><FONT SIZE=3D2>&gt; #1 ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ah.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\DeclareUnicodeCharacter{&lt;num&gt;}{&lt;code&gt;}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>where &lt;num&gt; is a TeX number (it is normalised by =
+using \number#1), and</FONT>
+
+<BR><FONT SIZE=3D2>&lt;code&gt; is some TeX code (like =
+\texthallo).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; question is how both could coexist and if they =
+can whether they can use the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; same database of&nbsp; \DeclareUnicodecharacter =
+declarations rather than doubling</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the space</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My package uses features like combining characters and =
+options, and</FONT>
+
+<BR><FONT SIZE=3D2>therefore has to reflect these in the database (the =
+database does not</FONT>
+
+<BR><FONT SIZE=3D2>use \DeclareUnicodeCharacter, which is only an =
+abbreviation).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Further the files are ordered by code position =
+uni-&lt;num/256&gt;.def, and</FONT>
+
+<BR><FONT SIZE=3D2>not by fontencoding, since they are loaded on =
+demand.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But now that I think of it, it would make sense to =
+allow third party</FONT>
+
+<BR><FONT SIZE=3D2>packages to add mappings without having to detect, =
+which package is</FONT>
+
+<BR><FONT SIZE=3D2>loaded. This would be possible by adapting the syntax =
+of your</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareUnicodeCharacter to mine (should'nt be too =
+hard, exactly one</FONT>
+
+<BR><FONT SIZE=3D2>byte has to be changed in \DeclareUnicodeCharacter), =
+and then not</FONT>
+
+<BR><FONT SIZE=3D2>simply \def'ing it, but using</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% pseudo-code</FONT>
+
+<BR><FONT =
+SIZE=3D2>\ifx\DeclareUnicodeCharacter\undefined\let\DeclareUnicodeCharact=
+er\empty\fi</FONT>
+
+<BR><FONT SIZE=3D2>\g@addtomacro\DeclareUnicodeCharacter{the =
+code}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in both utf8.def's. This would make =
+\DeclareUnicodeCharacter declare</FONT>
+
+<BR><FONT SIZE=3D2>for both packages.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;&nbsp; &gt; \DeclareUnicodeCommand =
+(analogous to \DeclareTextCommand)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \DeclareUnicodeMapping % the LaTeX =
+may be guessed</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \DeclareUnicodeInput % like in =
+inputenc</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \DeclareUnicodeInputText % like in =
+inputenc</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If we take up the above proposal, then we don't have =
+to worry about</FONT>
+
+<BR><FONT SIZE=3D2>that any more.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>DniQ.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C004.7BD8C080--
+

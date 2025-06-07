@@ -1,0 +1,103 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3117" "Sun" "5" "October" "1997" "15:57:44" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "65" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil "LaTeX journal and publisher macros" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id PAA31896;
+	Sun, 5 Oct 1997 15:59:10 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.11429AB0@listserv.gmd.de>; Sun, 5 Oct 1997 15:59:04 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 208285 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 5 Oct 1997 15:58:01 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id PAA08521 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 5 Oct 1997 15:57:59 +0200
+          (MET DST)
+Received: from [130.237.37.82] (sl118.modempool.kth.se [130.237.37.144]) by
+          mail.nada.kth.se (8.8.7/8.8.4) with ESMTP id PAA24857 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 5 Oct 1997 15:57:56 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v0311070fb05bf72af762@[130.237.37.66]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <97100115382274@multivac.jb.man.ac.uk>
+Date:         Sun, 5 Oct 1997 15:57:44 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2344
+
+  Here is a futuristic scenario: Think of a version HyTeX of TeX (as the
+name HyperTeX is already occupied) with the capacity of \input-ing URL's;
+then the ideal electronic journal only needs to contain information about
+journal style, and which articles to \input, the latter which of course
+already are posted in an official e-print archive. The distribution of each
+journal issue can thus become very compact. :-)
+
+  Now, this idea is somewhat extreme (to us, today), but it gives an idea
+of how information needs to be split up between the journal style and the
+article style: The author needs to be able to write the article as usual,
+being able to generate a printout with its style elements; the journal
+style needs to being able to intercept and alter the style elements of its
+choice from the article style.
+
+  If TeX was object oriented, then the various style elements would be
+elements of an abstract classes, first derived by the "article" class, and
+then derived by the "foo-journal" class (opposite of the typesetting order,
+with the journal class coming before the article class). The question is
+how to simulate this in TeX:
+
+  In the typesetting, the journal class will be read before the article
+class, so if the journal defines a style element which it does not allow
+the article class to change, it must somehow communicate that to the
+article class. Now, exactly which style elements this concerns will vary
+with the journal, so the suggested scheme must be fairly general.
+
+  So it appears that what is needed is a document hierarchy:
+  \documentclass{journal}       % Start of journal class
+  \begin{document}
+
+    \documentclass{article}     % Start of article 1 class
+    \begin{document}
+      %% Article 1 stuff
+    \end{document}              % End of article 1 class
+
+    \documentclass{article}     % Start of article 2 class
+    \begin{document}
+      %% Article 2 stuff
+    \end{document}              % End of article 2 class
+
+    %%...                       % More articles
+
+  \end{document}                % End of journal class
+
+LaTeX is somewhat misleading, because each document locality starts with
+the \documentclass statement (and not \begin{document}), and ends with
+\end{document} in the description I give here. Also, each locality should
+be viewed as a document-locality only, separated from the TeX \begingroup
+... \endgroup localities.
+
+  Then, what we are looking for, is a kind of \final attribute, to be
+attached to definitions like \def and \let. Defining
+    \final\let\foo=\bar
+would mean: Suppose \foo is defined in the document locality above the one
+where  the statement occurs, then the effect is that \foo is not redefined;
+otherwise, the \let takes place as usual. So attaching \final to a
+definition prevents it to be redefined in a document sublevel, but it
+allows it to be redefined on the same document level.
+
+  I do not see any immediate, good way of implementing this idea, so lets
+hear of some suggestions.
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+

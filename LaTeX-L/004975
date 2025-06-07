@@ -1,0 +1,169 @@
+Received: from webgate.proteosys ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 13 Jul 2006 00:48:35 +0200
+Received: by webgate.proteosys (8.13.6/8.13.4) with ESMTP id k6CMmXlX014405
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 13 Jul 2006 00:48:34 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k6CMicCB013904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 13 Jul 2006 00:44:38 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k6CM1IMi006378;
+	Thu, 13 Jul 2006 00:44:20 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1288397 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 13 Jul
+          2006 00:44:19 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k6CMiJ2o006949 for <latex-l@listserv.uni-heidelberg.de>;
+          Thu, 13 Jul 2006 00:44:19 +0200
+Received: from ix.urz.uni-heidelberg.de (cyrus1.urz.uni-heidelberg.de
+          [129.206.119.235]) by relay.uni-heidelberg.de (8.13.4/8.13.1) with
+          ESMTP id k6CMiIaf013843 for <latex-l@listserv.uni-heidelberg.de>;
+          Thu, 13 Jul 2006 00:44:18 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id AAA18448450 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 13 Jul
+          2006 00:44:19 +0200
+Received: from linux06.dns-servicios.com (linux06.dns-servicios.com
+          [82.194.66.60]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with
+          ESMTP id k6CMkVvj020292 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 13
+          Jul 2006 00:46:33 +0200 (MET DST)
+Received: from 42.red-81-41-164.staticip.rima-tde.net ([81.41.164.42]
+          helo=[127.0.0.1]) by linux06.dns-servicios.com with esmtpa (Exim
+          4.52) id 1G0nR7-0000NP-T4 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Thu, 13
+          Jul 2006 00:44:06 +0200
+User-Agent: Thunderbird 1.5.0.4 (Windows/20060516)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse,
+             please include it with any abuse report
+X-AntiAbuse: Primary Hostname - linux06.dns-servicios.com
+X-AntiAbuse: Original Domain - urz.uni-heidelberg.de
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [47 12]
+X-AntiAbuse: Sender Address Domain - digi21.net
+X-Spam-Flag: No
+X-Envelope-From: <javier@digi21.net>
+X-Spam-Status: No, hits=-5.60 required=5 tests=AWL,BAYES_00
+Message-ID:  <44B57B36.2030603@digi21.net>
+Date:         Thu, 13 Jul 2006 00:44:06 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Javier_M=FAgica_de_Rivera?= <javier@DIGI21.NET>
+Subject: Ifs
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang 2.56 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Jul 2006 22:48:35.0872 (UTC) FILETIME=[4F18F200:01C6A605]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4975
+
+There is a control secuence named \chk_if_exist_cs:N with the following 
+definition:
+
+\def:Npn \chk_if_exist_cs:N #1 {
+  \if:w \cs_if_exist_p:N #1
+  \else:
+    \err_latex_bug:x{Command~ `\token_to_string:N #1'~
+                     not~ yet~ defined!}
+  \fi:}
+
+i.e., if the control sequence already exists it does nothing, but \else 
+an error is issued. The opposite to \chk_if_exist_cs:N is, amazingly, 
+\chk_new_cs:N,
+
+\def:Npn \chk_new_cs:N #1{
+  \if_meaning:NN #1\c_undefined
+  \else:
+    \if_meaning:NN #1\scan_stop:
+    \else:
+      \err_latex_bug:x {Command~name~`\token_to_string:N #1'~
+                            already~defined!~
+                        Current~meaning:~\token_to_meaning:N #1
+                      }
+    \fi:
+  \fi:
+%<*trace>
+some code
+%</trace>
+}
+
+\chk_if_exist_cs:N does the check via \cs_if_exist_p:N, which reverts 
+\cs_if_free_p:N, which in turn checks that the cs is undefined and not 
+literally \c_undefined. But \chk_new_cs:N does not!, and it is the one 
+actually used to test for free commands when new-defining something, so 
+that something like \def_new:Npn\c_undefined{whatever} would work, and 
+it shouldn't. From my point of view the definition of \chk_new_cs:N 
+should obviously be
+
+\def:Npn \chk_new_cs:N #1{
+  \cs_if_free_p:N #1
+  \else:
+    \err_latex_bug:x {Command~name~`\token_to_string:N #1'~
+                          already~defined!~
+                      Current~meaning:~\token_to_meaning:N #1
+                    }
+  \fi:
+%<*trace>
+some code
+%</trace>
+}
+
+(It looks as if \chk_new_cs:N were created prior to \cs_if_free_p:N and 
+\cs_if_exist_p:N, and it were not changed in order to take advantage of 
+these new macros).
+I also think that its name should be \chk_if_free_cs:N.
+
+It also happens that all the tests purposed to see if a cs is free, they 
+test for equality with both \c_undefined and \scan_stop: (\relax). The 
+logical equivalence of a cs equal to \scan_stop: to a undefined cs is 
+due to the fact that \expandafter\ifx\csname foo\endcsname creates the 
+control sequence, and lets it equal to \relax, as we all know, and also 
+it was common to ``undefine'' a cs by \let\foo\relax. Now we can 
+undefine via \let\foo\c_undefined (the control sequence \c_undefined is 
+the most tricky trick I've ever seen. It would have been nice if we had 
+known it from the begining) and test for the inexistence of a cs with 
+etex \ifdefined and \ifcsname without creating it, so there is no reason 
+why to think about someting equal to \scan_stop: as a free cs.
+There exist \if_really_free... that do these tests. In my opinion these 
+should be the normal \cs_if_free..., and nothing with the extrange names 
+\if_really_free... should exist. So my point of view is:
+1. All tests that finally use tex \ifx for free-cs testing should be 
+replaced by \if_cs_exist:N and \if_cs_exist:w (\ifdefined and \ifcsname)
+2. A control sequence equal to \relax being equivalent to a free control 
+sequence is an accident of the past we should commpletely forget about.
+
+We can think about some examples where a cs equal to \relax is by no 
+means a free cs, but just something that can be customized, and by 
+default is equal to \relax, and redefining it could cause major damage. 
+(For example, the old \@typeset@protect).
+
+
+Another thing that has nothing to do with the previous one. There have 
+been in the past many discussions about how to create a realy 
+multilingual program. One of the points was to allow typeseting cs in 
+Russian (say), but we cannot simply make the \catcode equal to 11 
+because then the character would be transparently passed to the dvi 
+(ie., the font). Can we simply add in etex (or pdftex, or whatever) a 
+\cscode? Such a \cscode would be equal to 0 or 1, acordingly as to the 
+characert is allowed in the name of a cs or not (more precisely, a 
+character with \cscode 1 would make the previous one the last of the cs, 
+or if it is the first one it would be the only one in the name of the 
+cs). The setting of the cscodes would be done when selecting the input 
+encoding.
+I think cscodes would make catcodes 11 and 12 equal, or am I missing 
+something?
+
+p.s. I also thik that names for testing if a certain condition is true 
+or false should always contain ``if'' to avoid confusion.
+
+p.p.s I will herefrom sign all my e-mails with Javier A., in order to 
+avoid confusion with Javier Bezos, who entered this list long before me.
+
+Javier A.
+

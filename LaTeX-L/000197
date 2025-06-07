@@ -1,0 +1,38 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Jul 90 11:30:50 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: two-column output
+To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+In-Reply-To:  Message of Tue, 17 Jul 90 15:09:00 UT+2 from <POPPELIER@HUTRUU53>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 197
+
+If I understand Nico's problem correctly he wants either
+a) the length of the double-column figure to be a multiple of
+   \baselineskip, or
+b) some additional stretchable glue at the top of the right-hand column.
+
+Modifying LaTeX's output routine to do the first thing is certainly
+non-trivial; but he could try to increase the length of the figure
+by hand (suitable only if this happens rarely).  I looked into the code
+last evening and saw that there is some provision for the second case.
+[Frank: correct me if I'm wrong; I haven't attained your deep insights
+into LaTeX's output routine yet]
+
+LaTeX knows of two macros \@texttop and \@textbottom that are expanded
+just above resp. below the output box that contains the current column.
+\flushbottom, for example, is basically defined as
+ \def\@textbottom{\vskip 0pt plus 1fil}
+To get extra effects at the top you have to redefine \@texttop.  You
+may also use the @firstcolumn switch to determine whether you are
+dealing with the left or right column.
+
+Does this information help?
+
+Rainer
+
+

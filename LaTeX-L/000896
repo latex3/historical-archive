@@ -1,0 +1,90 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2272" "Fri" "4" "December" "92" "11:45:47" "+0100" "Bernd Raichle" "Raichle@INFORMATIK.UNI-STUTTGART.DE" nil "62" "Re: Who needs a \\charset primitive (was: structured comments)" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA14749; Fri, 4 Dec 92 11:47:58 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA00568; Fri, 4 Dec 92 11:47:33 +0100
+Message-Id: <9212041047.AA00568@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1490; Fri, 04 Dec 92 11:48:03 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6818;
+ Fri, 04 Dec 92 11:47:57 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6816;
+ Fri, 04 Dec 92 11:47:52 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Michael Downes's message of Thu, 3 Dec 92 19:28:52 CET
+Date:         Fri, 4 Dec 92 11:45:47 +0100
+From: Bernd Raichle <Raichle@INFORMATIK.UNI-STUTTGART.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Who needs a \charset primitive (was: structured comments)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 896
+
+
+Michael Downes wrote on Thu, 3 Dec 92 19:28:52 CET:
+
+MD> David Carlisle wrote:
+> It *may* be reasonable to switch character sets from within (a
+> successor to) TeX, rather than from the command line, or having
+> different sets built into different executables, but such extra
+> functionality should *not* be a comment, rather it should be a new
+> primitive
+> \characterset=
+
+MD> Agreed. I favor having every format define some standard basic
+MD> declarations that could be used before a documentstyle is loaded, for
+MD> example
+
+[..]
+MD>   \encoding{iso8859-1}
+[..]
+MD> The \encoding declaration would provide a
+MD> higher-level interface to the \characterset primitive, to translate
+MD> meaningful names into numbers (as with language declarations).
+
+
+Don't forget the characters
+
+	\ e n c o d i n g { i s o 8 8 5 9 - 1 }
+
+are itself encoded in a code.  One of the advantages of TeX is, that
+DEK has defined a standard encoding for a set of characters: use ASCII
+for the visible characters with their corresponding ASCII 32-127.
+
+If you see an `A' on your terminal, than TeX should see a character
+code value of "41.  This is true either if your host uses ASCII
+(A = "41), EBCDIC (A = "C1) or another code.
+
+The problems with these encodings are, that there are many standards
+and quasi-standards for all other characters (e.g., accented chars).
+
+
+Another problem is that there are often two necessary encoding steps:
+at first the step from the host charset to TeX's internal codes, than
+from these TeX character codes to the appropriate codes in the used
+font.
+
+
+Jonathan M. Gilligan wrote in another posting:
+
+JG> Perhaps it's because I missed the discussion on NTS-L, but I don't see
+JG> why \charset\ would have to be a primitive. Couldn't it be a macro
+JG> that resets \catcode, \uccode, and \lccode\ values and selects a set
+JG> of fonts for which a vf provides the appropriate remapping of the
+JG> glyph set?
+
+No, there are a lot of problems with this approach.  This discussion
+has happened on the GUT list beginning at the end of October.  The
+result was the remapping using active characters has to be done with
+great care... and it depends on the mapping (using xord/xchr) done
+when reading the input file.
+
+
+Bernd Raichle
+raichle@Informatik.Uni-Stuttgart.de
+

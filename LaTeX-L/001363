@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1895" "Mon" "31" "January" "1994" "16:04:30" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199401311621.AA15915@mail.cs.tu-berlin.de>" "58" "Re: form and content" "^Date:" nil nil "1" "1994013116:04:30" "form and content" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA21315; Mon, 31 Jan 94 17:22:10 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA03966; Mon, 31 Jan 94 17:21:08 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA15915
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 31 Jan 1994 17:21:06 +0100
+Message-Id: <199401311621.AA15915@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 8164; Mon, 31 Jan 94 17:20:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 8163; Mon,
+ 31 Jan 1994 17:20:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9468; Mon,
+ 31 Jan 1994 17:20:24 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Mon, 31 Jan 1994 16:04:30 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: form and content
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1363
+
+From:          Sebastian Rahtz <spqr@ftp.tex.ac.uk>
+%>as Michel Goossens pointed out to me today, the logical extension of
+%>`PiffMarkUp' is that tabular data should be supplied as just a data
+%>set, which the style might set as table, a graph, a 3d pie chart. how
+%>far do you go?
+%>
+
+Just a prototype, as it doesn't recognize \\[ ] or \\*, but it can be done. I
+haven't tried the graph and pie. But this is more useful than having to put
+in all those & and \\ by hand, if the data doesn't contain spaces.
+
+Mike Piff
+
+\documentstyle[12pt]{article}
+
+\makeatletter
+   \def\@array[#1]#2{\setbox\@arstrutbox\hbox{\vrule
+      \@height\arraystretch \ht\strutbox
+      \@depth\arraystretch \dp\strutbox
+      \@width\z@}\@mkpream{#2}\edef\@preamble{\halign \noexpand\@halignto
+   \bgroup \tabskip\z@ \@arstrut \@preamble \tabskip\z@ \cr}%
+   \let\@startpbox\@@startpbox \let\@endpbox\@@endpbox
+   \if #1t\vtop \else \if#1b\vbox \else \vcenter \fi\fi
+   \bgroup \let\par\relax
+   \let\@sharp##\let\protect\relax \lineskip\z@\baselineskip\z@\@preamble
+   \mjparray}%%make it use space and cr rather than & and \\
+\makeatother
+
+{\obeylines%
+\gdef\mjparray{\obeyspaces\obeylines\def
+{\\\mjparray}\spacesamp\igspaces}%
+}
+
+{\obeyspaces\gdef\spacesamp{\def {&\mjparray}}}
+
+{\obeyspaces\obeylines%
+\gdef\igspaces#1{\ifx#1 \let\temp\igspaces\else%
+\ifx#1
+\let\temp\igspaces\else\def\temp{\spacesamp#1}\fi\fi\temp}%
+}
+
+\begin{document}
+   \begin{tabular}{ccc}
+      aa bbb ccccc
+      d eeeee ff\end{tabular}
+   \[
+      \left[
+      \begin{array}{cc}
+         1 2
+         -1 3\end{array}
+      \right]
+   \]
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

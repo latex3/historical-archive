@@ -1,0 +1,103 @@
+X-VM-VHeader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+X-VM-Bookmark: 1
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+To: LaTeX discussion list <LATEX-L@DHDURZ1.uucp>
+Subject: What we want to change in the style file interface
+Date:  Mon, 05 Feb 90 11:49:47 CET
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6
+
+I'm forwarding this on behalf of Don Hosek.
+   Rainer
+----------------------------Original message----------------------------
+
+I think that the first thing that we need to do is determine
+exactly how we want to change the style interface. The primary
+pieces seem to be:
+
+(1) Interface to sectioning. \@startsection is not general enough
+for all applications (for example, it cannot produce section
+headers like:
+
+    1.
+    _Paradise Lost_ and pseudepigraphical sources
+
+    Section 2     The Origins of the English Sonnet
+
+etc.)
+
+(2) The list and trivlist environments. Are they adequate? This
+has not been mentioned on this list at all. However, Rainer
+Schoepf and Frank Mittelbach point out the following problems
+with these environments (quoted directly from their paper)
+
+    * An actual conceptual bug was the decision to add the value of
+    \parskip to all vertical spacing parameters, even when it is
+    used in places where no paragraph ends.
+
+    This means that changing this parameter influences the layout
+    in unexpected places, which in turn means that other
+    parameters must be adjusted unnecessarily to compensate for
+    this undesired side effect.
+
+    * There is also the problem that the \parskip parameter is
+    user-accessible while the affected parameters are only
+    changeable in a style file. The user can change the \topsep
+    parameter, for example, but its default value, defined in the
+    style file, will be restored later on.
+
+    * The resetting of parameters to their default values if
+    nothing else is specified is somewhat arbitrary. Some of the
+    important parameters (i.e., the penalty values for page
+    breaking before and after the list) get their values from the
+    surrounding list which is more than a nuisance for a style
+    designer. (As an unpleasant result the LaTeX fleqn style
+    option (which causes displayed equations to be typeset flush
+    left instead of the usual centering) favours pagebreaks just
+    before displayed equations. (This bug is corrected in the
+    LaTeX version of 24 May 89.))
+
+    * Another implementation decision makes it impossible to define
+    lists with page-wide labels, i.e., with labels placed on a
+    line by themselves.  Those lists cannot be nested properly
+    see, for example, comments in the article about the
+    implementation of the extended theorem environment (TUGboat
+    10#3).
+
+    ...
+
+    * There is no possibility of generating a run-in list i.e., a
+    list where the first item runs into the preceding text. This
+    feature is provided in AmS-TeX.
+
+    * More generally, since the layout of the standard list types
+    is fixed by the document style selected, there is no way for the
+    user to select different kinds of layouts for the same kinds
+    of lists (e.g., enumerated or itemized lists) without
+    defining his own environments. It would be better to provide
+    a way to specify attributes such as "compact", "stream" (see
+    for example "Stream lists and related list types for LaTeX"
+    by Reinhard Wonneberger, TUGboat 6#3), "run-in", etc.
+
+    * The vertical space before and after lists is controlled by
+    the same parameter
+
+    * The vertical space preceding the first item does not depend
+    on the length of the last line of the preceding paragraph (as
+    is the case for displayed equations.
+
+(3) Support for easier national language support. As has been
+suggested in numerous places at numerous times, all the English
+text "hard-wired" into LaTeX should be changed so that it can be
+easily changed into a more useful language (e.g., Latin).
+
+(4) I'm sure that there is more than this that we will want to
+change, but this makes a good start. I would like to hear from
+everybody out there to hear if they can think of anything
+missing; I will then post a revised version of this list.
+
+

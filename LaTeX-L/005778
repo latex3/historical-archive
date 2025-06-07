@@ -1,0 +1,208 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 13 May 2009 10:13:31 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n4D8D6sq021050
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 13 May 2009 10:13:07 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n4D89Ena027847
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 13 May 2009 10:09:15 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n4CM2aN9003823;
+	Wed, 13 May 2009 10:09:03 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 283695 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 13 May
+          2009 10:09:03 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n4D7x3mN014715 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 13 May 2009 09:59:03 +0200
+Received: from an-out-0708.google.com (an-out-0708.google.com [209.85.132.241])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          n4D7wx65019765 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 13 May
+          2009 09:59:03 +0200
+Received: by an-out-0708.google.com with SMTP id c38so142783ana.25 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 13 May 2009 00:58:58 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.100.248.4 with SMTP id v4mr507301anh.121.1242201538492; Wed, 13
+          May 2009 00:58:58 -0700 (PDT)
+Content-Type: multipart/alternative; boundary=00163698966f71062c0469c69580
+X-Spam-Whitelist: <vafak9@gmail.com>
+Message-ID:  <7ac5ed450905130058n6178e8beoc7daacc45996f6ce@mail.gmail.com>
+Date:         Wed, 13 May 2009 17:58:58 +1000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Vafa Khalighi <vafak9@GMAIL.COM>
+Subject: grouping in array.sty internal macros
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.598 () BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 May 2009 08:13:31.0875 (UTC) FILETIME=[B43BCB30:01C9D3A2]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5778
+
+--00163698966f71062c0469c69580
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hello Frank
+
+
+I did a hack to make tabular in array.sty RTL and this is what I have done
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{array}
+\makeatletter
+\TeXXeTstate=1
+\def\@tabular{%
+  \leavevmode
+  \hbox \bgroup \beginR $\col@sep\tabcolsep \let\d@llarbegin\begingroup
+                                    \let\d@llarend\endgroup
+  \@tabarray}
+
+\def\endarray{\crcr \egroup\egroup\endR\egroup \egroup \gdef\@preamble{}}
+\def\endtabular{\endarray $\endR \egroup}
+\expandafter\let\csname endtabular*\endcsname=\endtabular
+
+\def\@array[#1]#2{%
+  \@tempdima \ht \strutbox
+  \advance \@tempdima by\extrarowheight
+  \setbox \@arstrutbox \hbox{\vrule
+             \@height \arraystretch \@tempdima
+             \@depth \arraystretch \dp \strutbox
+             \@width \z@}%
+  \begingroup
+  \@mkpream{#2}%
+  \xdef\@preamble{\noexpand \ialign \@halignto
+                  \bgroup \@arstrut \@preamble
+                          \tabskip \z@ \cr}%
+  \endgroup
+  \@arrayleft
+  \if #1t\vtop \else \if#1b\vbox \else \vcenter \fi \fi
+  \bgroup
+  \let \@sharp ##\let \protect \relax
+  \lineskip \z@
+  \baselineskip \z@
+  \m@th
+  \let\\\@arraycr \let\tabularnewline\\\let\par\@empty
+\hbox\bgroup\beginR\vbox\bgroup
+\@preamble}
+\makeatother
+\begin{document}
+\begin{tabular}{|l|l|}\hline
+vafa khalighi&shahrzad khalighi\\ \hline
+\end{tabular}
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Now the macros that are shown in red are the ones that I have added. I have
+done all my grouping correctly but when I compile this document with
+pdflatex or xelatex, they complain about a missing or extra end group. I
+have done the same kind of trick with several other tabular packages
+including standard LaTeX tabular macros and they just work (if you like I
+can send other documents where tabular works RTL with no problem) fine but I
+have got no clue why when I have done my grouping correct, pdflatex or
+xelatex complains about it.
+
+can you please help me to get this fixed? I have been working on tabular
+packages for a month full time and array is the only one that is annoying
+too much.
+
+Please note that in RTL we both want the order of columns to be RTL and each
+entry in each cell to be RTL.
+
+Frank, Please if you can help me I am hopeless. I have asked this in several
+other places and still got no solution. It is driving me crazy that the
+grouping does not work.
+
+Thanks
+
+--00163698966f71062c0469c69580
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello Frank<br><br><br>I did a hack to make tabular in arr=
+ay.sty RTL and this is what I have done<br><br>%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+%%<div dir=3D"ltr">%%%%%%%%%%%%%%%%%<br>\documentclass{article}<br>\usepack=
+age{array}<br>
+\makeatletter<br>
+
+
+\TeXXeTstate=3D1<br>\def\@tabular{%<br>=C2=A0 \leavevmode<br>=C2=A0 \hbox \=
+bgroup<span style=3D"color: rgb(204, 0, 0);"> \beginR</span> $\col@sep\tabc=
+olsep \let\d@llarbegin\begingroup<br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0<div d=
+ir=3D"ltr">=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \let\d@llarend\endgroup<br>
+
+
+=C2=A0 \@tabarray}<br><br>\def\endarray{\crcr \egroup<span style=3D"color: =
+rgb(204, 0, 0);">\egroup\endR\egroup</span> \egroup \gdef\@preamble{}}<br>
+\def\endtabular{\endarray $<span style=3D"color: rgb(153, 0, 0);">\endR</sp=
+an> \egroup}<br>\expandafter\let\csname endtabular*\endcsname=3D\endtabular=
+<br><br>\def\@array[#1]#2{%<br>=C2=A0 \@tempdima \ht \strutbox<br>=C2=A0 \a=
+dvance \@tempdima by\extrarowheight<br>
+
+
+=C2=A0 \setbox \@arstrutbox \hbox{\vrule<br>
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \@=
+height \arraystretch \@tempdima<br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \@depth \arraystretch \dp \strutbox<br>=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \@=
+width \z@}%<br>=C2=A0 \begingroup<br>=C2=A0 \@mkpream{#2}%<br>=C2=A0 \xdef\=
+@preamble{\noexpand \ialign \@halignto<br>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \bgro=
+up \@arstrut \@preamble<br>
+
+
+
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ \tabskip \z@ \cr}%<br>=C2=A0 \endgroup<br>=C2=A0 \@arrayleft<br>=C2=A0 \if=
+ #1t\vtop \else \if#1b\vbox \else \vcenter \fi \fi<br>=C2=A0 \bgroup<br>=C2=
+=A0 \let \@sharp ##\let \protect \relax<br>=C2=A0 \lineskip \z@<br>=C2=A0 \=
+baselineskip \z@<br>
+
+
+
+=C2=A0 \m@th<br>=C2=A0 \let\\\@arraycr \let\tabularnewline\\\let\par\@empty=
+ <br><span style=3D"color: rgb(204, 0, 0);">\hbox\bgroup\beginR\vbox\</span=
+><span style=3D"color: rgb(204, 0, 0);">bgroup</span><br>\@preamble}<br>\ma=
+keatother<br>
+
+
+\begin{document}<br>\begin{tabular}{|l|l|}\hline<br>vafa khalighi&amp;shahr=
+zad khalighi\\ \hline<br>
+\end{tabular}<br>\end{document}<br>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+%%%%%%%<br><br>Now
+the macros that are shown in red are the ones that I have added. I have
+done all my grouping correctly but when I compile this document with
+pdflatex or xelatex, they complain about a missing or extra end group.
+I have done the same kind of trick with several other tabular packages
+including standard LaTeX tabular macros and they just work (if you like
+I can send other documents where tabular works RTL with no problem)
+fine but I have got no clue why when I have done my grouping correct,
+pdflatex or xelatex complains about it.<br>
+<br>can you please help me to get this fixed? I have been working on
+tabular packages for a month full time and array is the only one that
+is annoying too much.<br><br>Please note that in RTL we both want the order=
+ of columns to be RTL and each entry in each cell to be RTL.<br><br>Frank, =
+Please if you can help me I am hopeless. I have asked this in several other=
+ places and still got no solution. It is driving me crazy that the grouping=
+ does not work.<br>
+<br>Thanks<br></div></div></div>
+
+--00163698966f71062c0469c69580--
+

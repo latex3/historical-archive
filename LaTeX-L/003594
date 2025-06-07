@@ -1,0 +1,173 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Sun, 20 Aug 2000 21:43:19 +0200 (MEST)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA05001 for <schoepf@mail.uni-mainz.de>; Sun, 20 Aug 2000 21:43:18 +0200 (MEST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C00ADE.E3F6E580"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.10.1/8.10.1) with ESMTP id e7KJhIe23691 for <schoepf@UNI-MAINZ.DE>; Sun, 20 Aug 2000 21:43:18 +0200 (MET DST)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.1D834535@mail.listserv.gmd.de>; Sun, 20 Aug 2000 21:43:17 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 468378 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 20 Aug 2000 21:43:16 +0200
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id VAA16137 for <latex-l@relay.urz.uni-heidelberg.de>; Sun, 20          Aug 2000 21:43:14 +0200 (MET DST)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id VAA46082 for <LATEX-L@urz.uni-heidelberg.de>; Sun, 20 Aug          2000 21:43:14 +0200
+Received:  from wisbech.cl.cam.ac.uk (mta1.cl.cam.ac.uk [128.232.0.15]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with ESMTP id VAA03427 for          <LATEX-L@urz.uni-heidelberg.de>; Sun, 20 Aug 2000 21:43:13 +0200 (MET          DST)
+Received:  from pallas.cl.cam.ac.uk ([128.232.8.88] helo=cl.cam.ac.uk ident=rf)          by wisbech.cl.cam.ac.uk with esmtp (Exim 3.092 #1) id          13Qazx-0000jr-00 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Sun, 20 Aug 2000          20:43:13 +0100
+In-Reply-To:  Your message of "Sun, 20 Aug 2000 20:01:53 +0200."               <200008201801.UAA1470298@sg10.chem.tue.nl>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Content-class: urn:content-classes:message
+Subject:      Re: new command (for romanian letter)
+Date: Sun, 20 Aug 2000 20:43:13 +0100
+Message-ID:  <E13Qazx-0000jr-00@wisbech.cl.cam.ac.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Robin Fairbairns" <Robin.Fairbairns@CL.CAM.AC.UK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3594
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C00ADE.E3F6E580
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> See at http://charts.unicode.org/ select the `Latin Extended-B'
+> and look at page 7 of 8, second column down: `Additions for Romanian':
+>
+> 0218 LATIN CAPITAL LETTER S WITH COMMA BELOW =3D 0053 S 0326 ,
+> 0219 LATIN SMALL LETTER S WITH COMMA BELOW  =3D 0073 s 0326 ,
+> 021A LATIN CAPITAL LETTER T WITH COMMA BELOW  =3D 0054 T 0326 ,
+> 021B LATIN SMALL LETTER T WITH COMMA BELOW  =3D 0074 t 0326 ,
+
+i think these things _do_ appear in the free unicode fonts that come
+with omega.
+
+looks easy enough to do.  something along the lines of:
+
+\def\ucomma#1{\ooalign{#1\crcr\hidewidth\raise-.25ex\hbox{\tiny,}\hidewid=
+th}}
+
+usage: \ucomma{S}  (i don't think this is a terribly good name,
+but...)
+
+this kills hyphenation of any word it appears in.  whatever, it goes
+some way towards what's needed, but the computer modern comma looks
+most definitely wrong here: some differential scaling might improve it
+(using the graphics package, not difficult, but slightly tedious).
+
+a general-use command would use relative scaling of the comma
+(rather than the absolute-scaling \tiny), and possibly differential
+scaling of the glyph so as to get the squashed-up look we see in the
+unicode font tables.  and the name would be better.
+
+personally, i wouldn't want to see a kernel command offering such a
+cobbled-up thing (it could appear in a babel package for romanian
+support, though).  the proper solution would involve some real font
+design, i think.
+
+------_=_NextPart_001_01C00ADE.E3F6E580
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: new command (for romanian letter)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; See at <A =
+HREF=3D"http://charts.unicode.org/">http://charts.unicode.org/</A> =
+select the `Latin Extended-B'</FONT>
+
+<BR><FONT SIZE=3D2>&gt; and look at page 7 of 8, second column down: =
+`Additions for Romanian':</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 0218 LATIN CAPITAL LETTER S WITH COMMA BELOW =3D =
+0053 S 0326 ,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 0219 LATIN SMALL LETTER S WITH COMMA BELOW&nbsp; =
+=3D 0073 s 0326 ,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 021A LATIN CAPITAL LETTER T WITH COMMA =
+BELOW&nbsp; =3D 0054 T 0326 ,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 021B LATIN SMALL LETTER T WITH COMMA BELOW&nbsp; =
+=3D 0074 t 0326 ,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i think these things _do_ appear in the free unicode =
+fonts that come</FONT>
+
+<BR><FONT SIZE=3D2>with omega.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>looks easy enough to do.&nbsp; something along the =
+lines of:</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\def\ucomma#1{\ooalign{#1\crcr\hidewidth\raise-.25ex\hbox{\tiny,=
+}\hidewidth}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>usage: \ucomma{S}&nbsp; (i don't think this is a =
+terribly good name,</FONT>
+
+<BR><FONT SIZE=3D2>but...)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>this kills hyphenation of any word it appears =
+in.&nbsp; whatever, it goes</FONT>
+
+<BR><FONT SIZE=3D2>some way towards what's needed, but the computer =
+modern comma looks</FONT>
+
+<BR><FONT SIZE=3D2>most definitely wrong here: some differential scaling =
+might improve it</FONT>
+
+<BR><FONT SIZE=3D2>(using the graphics package, not difficult, but =
+slightly tedious).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>a general-use command would use relative scaling of =
+the comma</FONT>
+
+<BR><FONT SIZE=3D2>(rather than the absolute-scaling \tiny), and =
+possibly differential</FONT>
+
+<BR><FONT SIZE=3D2>scaling of the glyph so as to get the squashed-up =
+look we see in the</FONT>
+
+<BR><FONT SIZE=3D2>unicode font tables.&nbsp; and the name would be =
+better.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>personally, i wouldn't want to see a kernel command =
+offering such a</FONT>
+
+<BR><FONT SIZE=3D2>cobbled-up thing (it could appear in a babel package =
+for romanian</FONT>
+
+<BR><FONT SIZE=3D2>support, though).&nbsp; the proper solution would =
+involve some real font</FONT>
+
+<BR><FONT SIZE=3D2>design, i think.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C00ADE.E3F6E580--
+

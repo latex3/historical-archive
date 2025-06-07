@@ -1,0 +1,83 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2912" "Mon" "23" "November" "92" "21:36:02" "+0100" "Lutz Birkhahn" "lutz@BISUN.NBG.SUB.ORG" nil "53" "Re: Indexing" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA26504; Wed, 25 Nov 92 22:04:48 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA00732; Wed, 25 Nov 92 22:04:44 +0100
+Message-Id: <9211252104.AA00732@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3890; Wed, 25 Nov 92 22:04:12 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9977;
+ Wed, 25 Nov 92 22:04:09 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9975;
+ Wed, 25 Nov 92 22:04:05 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Your message of "Fri,
+              20 Nov 92 12:21:15 +0100."
+              <m0msXlq-0000MsC@arbi.informatik.uni-oldenburg.de>
+Date:         Mon, 23 Nov 92 21:36:02 +0100
+From: Lutz Birkhahn <lutz@BISUN.NBG.SUB.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Indexing
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 870
+
+
+Tarjei T. Jensen wrote:
+
+> How would a LaTeX3 user tell the indexing program how to sort? E.g. if I
+> were an English speaker I might want to sort \aa{} as a, but as a Norwegian I
+> would want it in its proper place after \ae{} and \o{}. Since these things
+> tend to depend on the document it would be nice if one could specify these
+> things in the document itself.
+
+Yes, I think an \indexstyle{norwegian} or something like \indexstyle{din} for
+german documents conforming to DIN standard would be fine. MakeIndex should
+then load the appropriate index style (see [International] MakeIndex 3.0.?
+for index styles).
+
+> BTW. How is the size of a page decided? Let's say that I have this CD-ROM with
+> 15000 LaTeX documents and want to print them. How do I set up things so that I
+> automagically get A4 pages when I need them?
+
+The only reasonable location for specifying the paper size is the document
+style (or perhaps the style option), like \documentstyle[a4]{article}. I admit
+it would be desirable to have the paper size be independent of the document,
+but in many cases you cannot completely separate form and content. Everyone
+who has ever added an A4 style option to a document will have noticed some
+over/underfull h/vboxes or similar things. Think of the words from Don Knuth
+who rewrites his paragraphs until they can be formatted well. I am sure it
+would need a substantial work to reformat the TeXbook to A4 paper size (not-
+withstanding the typographical objections against A4 paper size, e.g. by
+Jan Tschichold, "Willkuerfreie Massverhaeltnisse der Buchseite und des Satz-
+spiegels", engl.: "Non-arbitrary proportions of page and type area"; see also
+the a4-9 document style option by Joachim Schrod). In a well-designed layout
+paper size and page size are only two of many related parameters, ie. you have
+to change many many other values if you want to print on a different paper size.
+
+> I think an mechanism for selecting
+> these sort of defaults should be included into LaTeX3. How about a using a
+> scheme with multiple default.sty files? E.g. first do the one in TEX_INPUTS
+ and
+> lastly the one in the current directory. In other words; first the site
+ specific
+> version and then the personal (document) specific version. The default.sty
+ would
+> contain default documentstyle options and spacing, etc.
+
+Imagine the confusion: on every site you get another document! That would be a
+huge step backwards in document portability. Not to mention the disadvantages
+of an operating system dependent solution like yours. Some OSs do not even know
+the concept of a "current directory"!
+
+--
+Lutz Birkhahn (Germany)   email: lutz@bisun.nbg.sub.org (don't use another!)
+F"urther Str. 6          +--------------------------------------------------
+D-W-8501 Cadolzburg 2    | "It is an error to not have enough arguments"
+Voice: 09103 / 2886      |                         (Hype Programmer's Guide)
+

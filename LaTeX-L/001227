@@ -1,0 +1,88 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2083" "Wed" "22" "December" "93" "15:43:37" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" nil "56" "RE: LaTeX2e" "^Date:" nil nil "12" nil nil])
+Return-Path: <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20053; Thu, 23 Dec 93 13:00:29 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA13163; Thu, 23 Dec 93 13:00:19 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA22969
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 23 Dec 1993 13:00:18 +0100
+Message-Id: <199312231200.AA22969@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 0491; Thu, 23 Dec 93 13:00:45 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 0490; Thu,
+ 23 Dec 1993 13:00:45 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 7437; Wed,
+ 22 Dec 1993 16:47:03 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9312221524.AA18779@m1.cs.man.ac.uk> (P.Taylor@rhbnc.ac.uk)
+Date:         Wed, 22 Dec 93 15:43:37 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      RE: LaTeX2e
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1227
+
+
+
+>>> The new release of LaTeX is now available for testing.
+
+ > Many congratulations; I have successfully installed it under MS/DOS
+ > (emTeX) and VAX/VMS (TeX 3.141 and 3.1415).  But I suggest that the
+ > documentation should _not_ suggest copying the style files to the
+ > normal TeX-Inputs directory; if this is done, and a catastrophic
+ > bug later discovered, it will not be possible to revert to the
+ > original LaTeX 2.09 without major hassle.  Another suggestion would
+ > be to provide pro formas for all .Cfg files (some are provided, but
+ > others are not).  And I think that there is a mistake in the
+ > documentation on page~19, where \@filename@parse is subsequently
+ > referred to as \filename@parse.
+
+ > 					Philip Taylor, RHBNC.
+
+Thanks, we hope you find it useful.
+
+It is hard to word the documentation so that it makes sense on all
+machine types, but anyway we would agree with you that as this is a
+*test* release, it would be unwise to replace latex209 with LaTeX2e at
+your site.
+
+At Manchester (a UNIX site) I have installed it as the following shell
+script (latex2e)
+
+=======
+#!/bin/ksh
+
+export TEXINPUTS=/usr/common/lib/tex3/latex2e/inputs:$TEXINPUTS:
+
+/usr/common/bin/virtex \&latex2e $*
+=======
+
+which means essentially that I have put all the LaTeX2e files in a
+site readable directory that is not in the standard TeX search path.
+Then arranged TEXINPUTS so latex2e looks there first, and then in the
+`standard' places later. LaTeX209 (`latex') is just a link to virtex
+in the normal way for web2c TeX, and so does not `see' any of the
+LaTeX2e files.
+
+I am sure something similar can be done on DOS, Macs, VMS,.....
+
+pro formas for .cfg files would be a good idea (although for testing
+we would rather you didnt ConFiGure things too much:-)
+The exception is texsys.cgf which you may *have* to configure to get a
+running system on your machine. We would be *very* interested in
+getting texsys.cfg settings for other TeX implementations.
+
+> \@filename@parse
+
+Thanks, I expect that there will be some other things to fix when we
+get back next year:-)
+
+David
+

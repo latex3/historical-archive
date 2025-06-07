@@ -1,0 +1,151 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Mon, 31 Jan 2000 22:05:08 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA09736 for <schoepf@mail.uni-mainz.de>; Mon, 31 Jan 2000 22:05:08 +0100 (MET)
+MIME-Version: 1.0
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA01550 for <schoepf@UNI-MAINZ.DE>; Mon, 31 Jan 2000 22:05:07 +0100 (MET)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF6C2E.DA835A00"
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.A80C9698@mail.listserv.gmd.de>; Mon, 31 Jan 2000 22:04:49 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 450275 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 31 Jan 2000 22:03:00 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id WAA01952 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 31 Jan          2000 22:02:58 +0100 (MET)
+Received:  from sun06 (sun06.ams.org [130.44.1.6]) by relay.uni-heidelberg.de          (8.9.3+Sun/8.9.3) with ESMTP id WAA26054 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 31 Jan 2000 22:02:59 +0100 (MET)
+Received:  from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id          <0FP700602X72O3@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;          Mon, 31 Jan 2000 16:04:14 -0500 (EST)
+In-Reply-To:  Frank Mittelbach's message of Thu, 27 Jan 2000 23:21:08 +0100
+Lines: 27
+References: <200001272221.XAA00635@istrati.zdv.uni-mainz.de>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: Gnus v5.5/Emacs 20.2
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["1020" "Mon" "31" "January" "2000" "16:04:14" "-0500" "Michael J. Downes" "mjd@AMS.ORG" nil "27" "galleys, \\if@minipage test" "^Date:" nil nil "1" nil "galleys, \\if@minipage test" nil nil nil]nil)
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+Content-class: urn:content-classes:message
+Subject:      galleys, \if@minipage test
+Date: Mon, 31 Jan 2000 22:04:14 +0100
+Message-ID:  <200001312102.WAA26054@relay.uni-heidelberg.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3530
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF6C2E.DA835A00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+>% At the start of a new galley we do not want to have any vertical
+>% space being inserted not even a zero |\parskip| since that would
+>% mess up use of |\vtop| etc.  The below is a sort of crude fix for
+>% the problem ie this is the old minipage switch.
+
+Here is some stuff I found in my notes:
+
+% Usage: \if\AtBoxTop ...\else ...\fi
+% Assumption: called in inner vertical mode.
+\def\AtBoxTop{\ifdim\prevdepth=3D-\@m\p@ T\else F\fi T}
+
+% Usage: \if\AtPageTop ...\else ...\fi
+% Assumption: called in vertical mode
+\def\AtPageTop{\ifinner F\else\ifdim\pagetotal=3D\z@ T\else F\fi\fi T}
+
+Most of the time I think the parskip will not be added before the
+internal galley stuff has a chance to get control---for example, with
+just
+
+  \vbox{
+    text
+  }
+
+you don't get parskip at the top. But if there is any non-text object
+preceding the first text you will get the parskip (\mark, \special,
+\write, \hrule). So I guess when the AtBoxTop test is true it might be
+advisable to combine the prev-whatsits with the next-whatsits.
+
+------_=_NextPart_001_01BF6C2E.DA835A00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     galleys, \if@minipage test</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt;% At the start of a new galley we do not want to =
+have any vertical</FONT>
+
+<BR><FONT SIZE=3D2>&gt;% space being inserted not even a zero |\parskip| =
+since that would</FONT>
+
+<BR><FONT SIZE=3D2>&gt;% mess up use of |\vtop| etc.&nbsp; The below is =
+a sort of crude fix for</FONT>
+
+<BR><FONT SIZE=3D2>&gt;% the problem ie this is the old minipage =
+switch.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here is some stuff I found in my notes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% Usage: \if\AtBoxTop ...\else ...\fi</FONT>
+
+<BR><FONT SIZE=3D2>% Assumption: called in inner vertical mode.</FONT>
+
+<BR><FONT SIZE=3D2>\def\AtBoxTop{\ifdim\prevdepth=3D-\@m\p@ T\else F\fi =
+T}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% Usage: \if\AtPageTop ...\else ...\fi</FONT>
+
+<BR><FONT SIZE=3D2>% Assumption: called in vertical mode</FONT>
+
+<BR><FONT SIZE=3D2>\def\AtPageTop{\ifinner F\else\ifdim\pagetotal=3D\z@ =
+T\else F\fi\fi T}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Most of the time I think the parskip will not be added =
+before the</FONT>
+
+<BR><FONT SIZE=3D2>internal galley stuff has a chance to get =
+control---for example, with</FONT>
+
+<BR><FONT SIZE=3D2>just</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \vbox{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>you don't get parskip at the top. But if there is any =
+non-text object</FONT>
+
+<BR><FONT SIZE=3D2>preceding the first text you will get the parskip =
+(\mark, \special,</FONT>
+
+<BR><FONT SIZE=3D2>\write, \hrule). So I guess when the AtBoxTop test is =
+true it might be</FONT>
+
+<BR><FONT SIZE=3D2>advisable to combine the prev-whatsits with the =
+next-whatsits.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF6C2E.DA835A00--
+

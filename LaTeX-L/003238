@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2989" "Tue" "5" "January" "1999" "09:50:55" "-0500" "Michael J. Downes" "mjd@AMS.ORG" nil "71" "Re: Layout parameters in LaTeX" "^Date:" nil nil "1" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id PAA08996;
+	Tue, 5 Jan 1999 15:51:18 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.B26074FA@listserv.gmd.de>; Tue, 5 Jan 1999 15:51:18 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 414289 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 5 Jan 1999 15:51:13 +0100
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id PAA16364 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 5 Jan 1999 15:51:09 +0100 (MET)
+Received: from sun06.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 5 Jan 1999
+          14:50:56 UT
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0F5300C01D8V8U@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;
+          Tue, 5 Jan 1999 09:50:55 -0500 (EST)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 70
+References: <199812141041.LAA13591@mozart.ujf-grenoble.fr>
+Message-ID:  <199901051451.PAA16364@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  Thierry Bouche's message of Mon, 14 Dec 1998 11:41:00 +0100
+Date:         Tue, 5 Jan 1999 09:50:55 -0500
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Layout parameters in LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3238
+
+Thierry Bouche <Thierry.Bouche@UJF-GRENOBLE.FR> writes:
+
+>  Well, when i simply gently ask tex to do what seems the minimal
+> requirements of quality typography by setting the parameters to \pm
+> the values above, it appears that it can't do its job anymore, it
+> stretchs infinitely my tiny vertical glue to find a page break, it
+> removes up to 2 lines from a page because of widow/broken control,
+> etc.
+
+For homogeneous text like in a novel, snapping to a grid may be
+considered quality typography. For material with lots of odd-sized
+objects such as equations or smaller-typesize quotes or section heads,
+snapping to a grid can easily lead to vertical spacing that looks
+worse than the usual TeX approach. Let L = line spacing, e = smallest
+unit of space that forces use of an extra grid line, then what do you
+think this sequence looks like?
+
+  text
+
+  equation (height L+e)
+
+  text
+
+  equation (height L)
+
+  text
+
+  equation (height L+e)
+
+That's right, the visible whitespace around the equations fluctuates
+up and down by almost .5L in the same page. For a typical L of 12pt
+this is 6pt.
+
+So grid-snapping is not "quality typography" for such material. (Since
+the material that I usually work with has lots of displayed equations
+and other odd-sized elements, I have never had sufficient reason to
+work on a grid-based system of vertical spacing.)
+
+But if you assume that all lines are normal height and all vertical
+spaces are integral multiples of baselineskip, a grid-based system is
+easy. However ... if you also want automatic widow/orphan suppression
+*and* flush-bottom columns then you are talking about mutually
+conflicting constraints which are hard for any system, not just
+LaTeX. Most publishers just have human beings fixing the more
+difficult page breaks "by hand".
+
+Otherwise you need to plug in a different LaTeX output routine that
+holds more of the pages in memory while seeking page breaking
+solutions. The current one as you probably know ships out each page as
+soon as a locally optimum page break is found.
+
+Historically there has not been much leeway to work on such output
+routines because two or three complex pages (plus, perhaps, some
+pending figures) can use up 256K of main memory and there is no way to
+have the output routine check the current memory usage to decide if
+there is enough room to consider more material. Lacking such a check,
+an output routine that considers two pages or four pages at a time
+instead of one is much more likely to create problems by simply
+failing in the middle of a job with a fatal TeX out-of-memory error
+and leaving an incomplete .dvi file.
+
+If you want to handle floating objects like footnotes, figures,
+tables, the algorithm can easily become infinitely complicated.
+
+I think it would be interesting to try to handle four pages at a time
+(two two-page spreads; try to optimize the first one with the ability
+to borrow lines from the second one). But I don't think I would want
+to go beyond that.
+
+Michael Downes
+

@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1857" "Mon" "20" "October" "1997" "19:26:15" "GMT" "Phillip Helbig" "helbig@MULTIVAC.JB.MAN.AC.UK" nil "46" "\\@ifdefinable and journal macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id UAA11836;
+	Mon, 20 Oct 1997 20:36:02 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.3D9C8C95@listserv.gmd.de>; Mon, 20 Oct 1997 20:36:00 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 218821 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Oct 1997 20:35:53 +0200
+Received: from multivac (multivac.jb.man.ac.uk [130.88.24.128]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id UAA02986 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Mon, 20 Oct 1997 20:35:51
+          +0200 (MET DST)
+X-VMS-To: SMTP%"LATEX-L@relay.urz.uni-heidelberg.de"
+X-VMS-Cc: HELBIG
+Message-ID:  <97102019261585@multivac.jb.man.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 20 Oct 1997 19:26:15 GMT
+From: Phillip Helbig <helbig@MULTIVAC.JB.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      \@ifdefinable and journal macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2489
+
+>   I get the following variations; all should check \@ifdefinable without
+> \@ifundefined, but differ in the other respects:
+>     define
+>     new         If undefined, then define, else error.
+>     renew       If defined, then define, else error.
+>     provide     If undefined, then define, else do nothing.
+>     override    If define, then define, else do nothing.
+>
+> (I do not want to go much into the context, but the problem shows up when
+> trying to do new variations of \newcommand, \newenvironment, \newobject,
+> etc.)
+
+\providecommand was a big improvement in LaTeX2e when one is writing
+mutually compatible macro packages.  The stuff mentioned above is of
+course relevant to the idea of standard journal macros, redefinable by
+various .cls, able to harmonise with personal macros etc.
+
+There is another possibility:
+
+   cancel        If defined, then undefine, else do nothing
+
+Which might be useful to cancel (and provoke an error message) for
+certain commands.  To use a journal macros front matter example,
+something like
+
+   \cancelcommand{\thanks}
+
+might be useful :)
+
+Also, something like this could be useful
+
+   force         If undefined, then define, else override and provide warning
+
+Back to journal macros, they could ALL be of the form \forcecommand,
+assuming that they were processed after an author's personal commands.
+A warning would be nice.
+
+
+--
+Phillip Helbig                          Email ... helbig@multivac.jb.man.ac.uk
+Nuffield Radio Astronomy Laboratories   Tel. ..... +44 1477 571 321 (ext. 297)
+Jodrell Bank                            Fax ................. +44 1477 571 618
+Macclesfield                            Telex ................. 36149 JODREL G
+UK-Cheshire SK11 9DL                    Web .... http://www.jb.man.ac.uk/~pjh/
+
+My opinions are not necessarily those of NRAL or the University of Manchester.
+

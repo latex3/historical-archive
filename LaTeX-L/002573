@@ -1,0 +1,160 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4764" "Sat" "20" "June" "1998" "21:00:17" "+0200" "Volkan Yavuz" "yavuzv@RUMMS.UNI-MANNHEIM.DE" nil "124" "Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id VAA06907;
+	Sat, 20 Jun 1998 21:05:47 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.A7DDCE16@listserv.gmd.de>; Sat, 20 Jun 1998 21:05:45 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 365838 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 20 Jun 1998 21:05:38 +0200
+Received: from bilbo.yavuz.de (root@p3ppp209.rz.uni-mannheim.de
+          [134.155.17.209]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id VAA18614 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 20
+          Jun 1998 21:05:32 +0200 (MET DST)
+Received: by bilbo.yavuz.de id m0ynSs5-000DLbC (Debian Smail-3.2 1996-Jul-4
+          #2); Sat, 20 Jun 1998 21:00:17 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 6.35 under Emacs 20.2.1
+Message-ID:  <m0ynSs5-000DLbC@bilbo.yavuz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 20 Jun 1998 21:00:17 +0200
+From: Volkan Yavuz <yavuzv@RUMMS.UNI-MANNHEIM.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2573
+
+These are my thoughts regarding modules and a hierarchical
+namespace. They are similar to what Hans has written, but slightly
+different.
+
+
+* Specifying the Local Scope
+
+A package author identifies not just the package name but also gives
+it's location within a hierarchy (modules, submodule). This hierarchy
+may also correspond to some extent to the directory structure on
+CTAN.... :-) It may be feasible to use a deeper module hierarchy than
+the current directory structure on CTAN to be able to categorize
+packages more exactly.
+
+        \ProvidesPackage{latex3/contrib/math}
+
+after this declaration, all macros that are \newcommand'ed within this
+package are auto-magically[1] prefixed with something like
+"latex3/contrib/math".
+
+        [1] This would save package authors a lot of typing and
+        automatically ensures that all macros have the correct
+        prefix.
+
+
+* Accessing Macros
+
+When the author of that particular package wants to access macros
+defined in some other package, he says
+
+        \RequirePackage{latex3/base/toc}
+        \RequirePackage{latex3/base/ifthen}
+
+or for document authors respectively
+
+        \usepackage{latex3/base/toc}
+        \usepackage{latex3/base/ifthen}
+
+   This could lead to the following: whenever a macro is requested, it
+is searched along some kind of search path, i.e. it is first looked up
+in "latex3/contrib/math", "latex3/base/toc" and finally
+"latex3/base/ifthen".[2] It could well be looked up in some standard
+system namespaces, too, or maybe it is not searched anywhere else.
+
+        [2] This would save document authors a lot of typing since
+        they needn't specify the fully qualified macro name. Because
+        of \usepackage, LaTeX knows where to look for the macros.
+
+   This only works as long as there is no name clash among the macros
+in "latex3/contrib/math" and the public[3] macros in "latex3/base/toc"
+and "latex3/base/ifthen". When a name is ambiguous, the macro has to
+be fully qualified, e.g. something like "\latex3/base/ifthen/newif".
+
+        [3] How about declaring macros public or private to some
+        module. When declared private, they are not looked up
+        automatically when not in the local scope. The local scope is
+        determined by "\ProvidesPackage{the/local/scope}".
+
+
+* Local Namespaces
+
+It may be very useful to locally specify some valid namespaces which
+are to be prepended to all unqualified macros. This could also be used
+to rearrange the order in which the namespace is traversed in search
+for a macro.
+
+        \begin{namespace}{latex3/contrib/tabularx,%
+           latex3/contrib/graphics}
+                % use macros from tabularx and graphics
+                % no need to fully qualify their names
+                % first look in tabularx, then in graphics
+        \end{namespace}
+
+
+* Redefining Macro Names
+
+In case there are macros with identical names from different
+packages, it may be useful to allow redefinition of one of them to
+disambiguate their names, so there is no need to fully qualify their
+names. Say there is a macro "\phi" both in "latex3/contrib/math/phi"
+and in "latex3/contrib/phys/phi". Both \phis are somewhat different
+and needed throughout the document.
+
+        \rename{latex3/contrib/math/phi}{mphi}
+
+   After this, \phi from latex3/contrib/math is accessible "from
+outside" as \mphi. Of course, this could equally well be achieved by
+just writing a macro \mphi that expands to the fully qualified name of
+\phi. There was some other reason to providing this functionality
+which has just escaped my mind...
+
+
+*
+
+By specifying a local scope and using a search path, there should be
+no problem for both package and document authors dealing with the now
+somewhat long macro names as Richard has pointed out. I haven't
+considered the impact on TeX's memory and performance, though.
+
+
+The module name could also be used to distinguish officially released
+packages which are available from CTAN from locally written packages,
+which are either not meant to be published or are still in
+development. How about reserving the prefix "latex3" for packages
+which are released on CTAN and using something like
+"edu/st-anford/drofnats" for packages written by an individual at
+St-Anford? You see the obvious similarities to the way Java(tm)
+handles packages which belong to the standard distribution and which
+are developed elsewhere.
+
+
+Regarding the similarity of the module/submodule names and the
+directory structure on CTAN, how about making LaTeX Internet
+aware. Lets let it load packages on-demand from the nearest CTAN
+host... ;-)
+
+
+Kind regards, Volkan
+
+--
+__volkan yavuz___________________________
+mailto:yavuzv@rumms.uni-mannheim.de
+http://webrum.uni-mannheim.de/ba/yavuzv/
+__________"May the source be with you!"__
+

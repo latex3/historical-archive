@@ -1,0 +1,84 @@
+X-VM-v5-Data: ([nil nil nil nil t nil nil nil nil]
+	["1803" "Wed" "15" "September" "93" "14:14:38" "CET" "\"Erik-Jan Vens\"" "erikjan@OBELIX.ICCE.RUG.NL" "<9309151250.AA23123@sc.ZIB-Berlin.DE>" "57" "Re: when is a bug a bug? or is it? (fwd)" "^Date:" nil nil "9"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06515; Wed, 15 Sep 93 14:50:48 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA23123; Wed, 15 Sep 93 14:50:45 +0200
+Message-Id: <9309151250.AA23123@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 8464; Wed, 15 Sep 93 14:27:58 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9388;
+ Wed, 15 Sep 93 14:27:54 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9386;
+ Wed, 15 Sep 93 14:27:51 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 15 Sep 93 14:14:38 CET
+From: "Erik-Jan Vens" <erikjan@OBELIX.ICCE.RUG.NL>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: when is a bug a bug? or is it? (fwd)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1059
+
+
+Hi,
+
+  some time ago I provided Barbara Beeton with an example where LaTeX seemed
+to be getting in an infinite loop. I suspected it had to do with TeX the
+program, but yesterday I found the answer, and Barbara asked me to pass it on
+to you:
+
+dixit bbeeton:
+
+> well, that's a good one!
+> shows the dangers of redefining primitives.
+> this should definitely be passed on to the latex3 folks -- would
+> you do that, please?  (cc me, though -- i'd like to hear the
+> answer.)
+> i'm going to hand this over to my reliable bug-checker for his
+> opinion.  it may be desirable to report this to knuth even though
+> it's a bad thing in latex and a possible "misuse" of the facilities.
+
+This was what I did:
+
+\documentstyle{article}
+
+\begin{document}
+
+\begin{tabular}{rl}
+\ &$\vbox to 2\ht\strutbox{\ \vfill}$\\
+\end{tabular}
+
+\end{document}
+
+Don't ask me why I did just this, it was part of a much larger structure, but
+this was the minimal example I could make that seemed to hang TeX. Now,
+Barbara told me that DEK only accepts plain input, so I rewrote it in TeX:
+
+\vbox{\halign{\hfil#&#\hfil\cr
+\ &$\vbox to 2\ht\strutbox{\ \vfill}$\cr}}
+\bye
+
+But TeX happily created a DVI file. It was much later that I tried a
+\tracingall (yes, I always throw in the whole weight). This reveiled that
+LaTeX redefined \par. So I inserted this redefinition in the TeX example:
+
+\vbox{\halign{\hfil#&#\hfil\cr
+\ &\let\par\relax$\vbox to 2\ht\strutbox{\ \vfill}$\cr}}
+\bye
+
+And of course, TeX now also gets in an infinite loop: for the \vfill TeX has
+to be in vertical mode, so it inserts a \par. The \par is redefined to
+\relax, so it doesn't do anything. Now it is time to examine the \vfill again,
+which needs vertical mode, so TeX inserts a \par. This is an endless loop.
+
+EJee.
+
+--
+
+Erik-Jan Vens.  E.J.Vens@icce.rug.nl
+

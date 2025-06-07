@@ -1,0 +1,74 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p6AN7K4L008027
+	for <rainer@rainer-schoepf.de>; Mon, 11 Jul 2011 01:07:22 +0200
+Received: (qmail 12206 invoked by alias); 10 Jul 2011 23:07:15 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 10 Jul 2011 23:07:15 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx013) with SMTP; 11 Jul 2011 01:07:15 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p6AN4tcX027341
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 11 Jul 2011 01:04:55 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p6AM177P023297;
+	Mon, 11 Jul 2011 01:04:55 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1426659 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 11 Jul
+          2011 01:04:55 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p6AN4sOf028099 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 11 Jul 2011 01:04:54 +0200
+Received: from freefriends.org (b0.f7.net [66.148.120.132]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p6AN4XOn027199
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 11 Jul 2011 01:04:38
+          +0200
+X-Envelope-From: karl@freefriends.org
+X-Envelope-To: <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Received: from freefriends.org (sls-af11p1 [127.0.0.1]) by freefriends.org
+          (8.14.4/8.14.4) with ESMTP id p6AN4TsT019702 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 10 Jul 2011 19:04:32 -0400
+Received: (from nobody@localhost) by freefriends.org (8.14.4/8.14.4/submit) id
+          p6AN4TEt019701; Sun, 10 Jul 2011 23:04:29 GMT
+X-Authentication-Warning: localhost.localdomain: nobody set sender to
+                         karl@freefriends.org using -f
+Message-ID:  <201107102304.p6AN4TEt019701@freefriends.org>
+Date:         Sun, 10 Jul 2011 23:04:29 GMT
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Karl Berry <karl@FREEFRIENDS.ORG>
+Subject: Re: [lltx] issue with unicode-math, spanish and LuaLaTeX
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <7C97AC7C-2BF4-47C9-9170-F080CB34F72B@yahoo.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p67RO+WkUtkdimdahEJ3CDq2Qzwpsdkx3/hOIQJ4jAv0McNqITKUpvNR8nCl
+ 2J4SoKVCUc8XDB5WZR+5c5F9uLZfOIIGVKluPwfIsHp6ZYWNrhfp1aI4MzYoBfW5GOeLAP+AGgHO
+ vHglSxTrS+02aLJ3/qDFMZu4xhqMRDSbLTfYaRtfNGyJ3nXa941vFI8shlcaHoodBIEX3aNHsFur
+ JVGV1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6793
+
+    only a symptom of a deeper problem, namely that the \mathcode,
+    \mathchardef, \delcode, \radical etc. primitives are deprecated with
+    LuaTeX since they (unlike \char etc.) can't easily be extended to allow
+    Unicode code points. Therefore all packages that make use of any of
+    these primitives need to be fixed. 
+
+I can't imagine that rewriting the world is either feasible or desirable.
+Presumably "deprecated" means "if you want new functionality use new
+primitives, existing primitives will keep working as they always have".
+

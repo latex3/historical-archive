@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1637" "Fri" "13" "June" "1997" "03:10:25" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "41" "Multilingual TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from VZDMZY.ZDV.UNI-MAINZ.DE (vzdmzy.zdv.Uni-Mainz.DE [134.93.178.25])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA29343; Fri, 13 Jun 1997 14:59:11 +0200 (MET DST)
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V5.0-4 #10401)
+ id <01IK0T27BMN4GM2YE0@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri,
+ 13 Jun 1997 11:20:47 +0100
+Received: from listserv.gmd.de (listserv.gmd.de) by MZDMZA.ZDV.UNI-MAINZ.DE
+ (PMDF V5.0-4 #22141) id <01IK0T25W9BKH63P8N@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri,
+ 13 Jun 1997 11:20:44 +0100
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de
+ (LSMTP for OpenVMS v1.1a) with SMTP id <14.193D8766@listserv.gmd.de>; Fri,
+ 13 Jun 1997 11:19:18 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+ (LISTSERV-TCP/IP release 1.8b)
+ with spool id 152199 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri,
+ 13 Jun 1997 01:11:04 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+ (8.7.6/8.7.4) with ESMTP id BAA15430 for
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri,
+ 13 Jun 1997 01:10:52 +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5)
+ with UUCP id DAA01233 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri,
+ 13 Jun 1997 03:09:17 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5)
+ with SMTP id DAA00186 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>; Fri,
+ 13 Jun 1997 03:10:25 +0400
+Reply-to: Mailing list for the LaTeX3 project
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Message-id: <33A081E1.2201C3C8@vvv.vsu.ru>
+MIME-version: 1.0
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7bit
+Date: Fri, 13 Jun 1997 03:10:25 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+ <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject: Multilingual TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2026
+
+Hello,
+
+This is my first post to this mailing list, so I'm sorry.
+
+LaTeX has some `built in' definitions of \lccode, \uccode, \sfcode
+values for symbols with codes above 128 (which are used in Russian
+language). But these settings do not conform to the common Russian
+encodings (and it is evident that these `frozen' values can not
+be in agreement with all possible languages ;-) ).
+
+Next, it is written in cfgguide.tex, that the values of above mentioned
+registers should not be changed e.g. in a hyphenation files
+of a particular languages.
+
+So, I think, that the correct way to solve this problem is to
+set the values of \lccode, \uccode, \sfcode and \mathcode,
+in a macros which switches to a language (\selectlanguage
+in Babel).
+
+Are there some ready means to preserve the `language environment'
+before switching to another language and to restore it after
+changing back (or to some third language)?
+Is it a normal practice to `tune' \lccode, \uccode, \sfcode
+and \mathcode values in a language-switching mechanism?
+
+Here I see another problem. Consider some multilingual
+phrase and let's assume that we need to do
+\uppercase{} or \lowercase{} of this phrase. If the languages contained
+in this phrase have a conflicting \lccode and \uccode
+values, than the result of \uppercase{} will be incorrect.
+However, some time ago I solved this problem by redefining
+TeX's builtins \uppercase and \lowercase so that
+these new macros split the multilingual phrase into
+one-language pieces and do \uppercase of these pieces,
+and then merge them again.
+
+May be, all this was already solved?
+
+--
+With best regards,
+                   Vladimir.
+

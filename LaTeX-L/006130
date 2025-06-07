@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 7 Nov 2009 11:01:26 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nA7A1PDv000691
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 7 Nov 2009 11:01:26 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nA79wXsh025457
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 7 Nov 2009 10:58:33 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nA79mjXP002519;
+	Sat, 7 Nov 2009 10:58:25 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 352201 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 7 Nov
+          2009 10:58:25 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nA79wPWJ021008 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 7 Nov 2009 10:58:25 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id nA79wLUR014493 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 7 Nov 2009 10:58:24 +0100
+Received: from morse.mittelbach-online.de (p54A85B52.dip.t-dialin.net
+          [84.168.91.82]) by mrelayeu.kundenserver.de (node=mreu1) with ESMTP
+          (Nemesis) id 0LrGCe-1M8Jvt0ggO-013DBW; Sat, 07 Nov 2009 10:58:21 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 2D62A6EE48; Sat,  7 Nov 2009 10:58:18 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+hUTVM6uGaxGpVBmUUxcbGie1gRMYEa1joeWl
+              ddqfuTpNN9vIaOHa9aknhTCRsAV/BHuqZPSpAEa61mHV2bgZXg
+              gclIXtZ8BL1XNitOGUHXA==
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <19189.17593.814557.704925@morse.mittelbach-online.de>
+Date:         Sat, 7 Nov 2009 10:58:17 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: an object type for heading commands
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -106.599 () BAYES_00,RCVD_IN_DNSWL_MED,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Nov 2009 10:01:26.0488 (UTC) FILETIME=[44EED580:01CA5F91]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6130
+
+I do want to try my hand on setting up some templates for headings and for
+that the first step is to define a suitable 
+
+  \DeclareObjecttype{headings}{?}
+
+The initial question here is what are the arguments this object type should
+carry? for that I hope some of you can help with some thoughts.
+
+Note that each of the mandatory arguments could well be receiving \NoValue
+from the outside and or disregard the argument altogether in most document
+classes. So we do have somepossibilities and we need to weight them as whether
+something is too esoteric or okay to be made part of the standard even if,
+say, it will only get used in 10% of the cases.
+
+Here is my current list of candiates:
+
+  - title of the heading
+  - title version to go in the TOC
+  - title version to go in the running header
+  - subtitle of the heading (e.g., an author name, copyright notice ...)
+  - motto/quote text to display alongside the heading title
+  - flag to number heading
+
+do we need a way to specify that something is send to the TOC or to the
+running header and if so how do we do that?
+
+what else is missing or which of the above aren't sensible in the first place?
+
+Remember that the while the object type (and thus the templates implementing
+it) only expects mandatory arguments, this doesn't restrict us to have any
+kind of optional argument structure on document level, eg the current LaTeX
+\section*[...]{...} type command very well fits the above except that it
+doesn't implement some of the arguments (passing \NoValue) and putting the
+same document material in others. This not withstanding I think that the
+current LaTeX2e sectinion command is too restricted in its syntax as several
+things that should be manipulatable separately are bundled together there.
+
+thanks
+frank
+

@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1631" "Thu" "27" "February" "1997" "10:28:11" "+0100" "Gernot Salzer" "salzer@LOGIC.TUWIEN.AC.AT" nil "36" "Re: International documents" "^Date:" nil nil "2" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id KAA32696; Thu, 27 Feb 1997 10:32:57 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.0E5984BC@listserv.gmd.de>; Thu, 27 Feb 1997 10:32:55 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 106349 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 27 Feb 1997 10:32:51 +0100
+Received: from alpha.logic.tuwien.ac.at (alpha.logic.tuwien.ac.at
+          [128.130.175.20]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id KAA06341 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 27
+          Feb 1997 10:32:42 +0100 (MET)
+Received: from localhost (localhost [127.0.0.1]) by alpha.logic.tuwien.ac.at
+          (8.8.3/8.8.3) with SMTP id KAA27245 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 27 Feb 1997 10:28:11 +0100
+          (MET)
+X-Mts: smtp
+Message-ID:  <199702270928.KAA27245@alpha.logic.tuwien.ac.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  Your message of Wed, 26 Feb 1997 22:15:44 +0100
+Date:         Thu, 27 Feb 1997 10:28:11 +0100
+From: Gernot Salzer <salzer@LOGIC.TUWIEN.AC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: International documents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1842
+
+Frank.Mittelbach@UNI-MAINZ.DE wrote:
+> Now clearly this is another border case and i think nearly nobody
+> would bother to actually type \ordinal{7} in the middle of the text
+> normally. However one can see applications, eg referencing list items
+> using special forms of \ref, the items themselves, etc. I have seen
+> requests for such functionality
+
+This and several other issues can be summarized under
+"intelligent labelling and referencing". Another example is the varioref
+package for intelligent page references.
+
+I encountered another instance when referring to sections and theorems.
+Suppose I have something like
+   \begin{theorem}\label{x}
+   \end{theorem}
+   In Theorem~\ref{x} ...
+If at some point I decide to change the theorem to a corollary, lemma,
+proposition etc, the reference becomes inappropriate and has to be changed.
+Same (but less important) for sections becoming chapters and vice versa.
+
+Ideally, with each such label should be associated a type
+to determine the proper wording of the reference. The type cannot be part of the
+label itself, otherwise changing the type would require to change the references
+throughout the whole document. It could look like this:
+   \newtype{th}{Theorem}
+   \begin{theorem}\label[th]{x}
+   \end{theorem}
+   In \reftext{x}~\ref{x} ...
+\reftext would look at the type of label "x" and choose a proper word, "Theorem"
+in this case.
+
+Of course, the question is where to stop. \reftext might be different at the
+beginning of a sentence (concerning case), so one should maybe include markup
+for the beginning of a sentence, \uppercase'ing the first letter in general?
+
+Gernot
+

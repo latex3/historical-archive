@@ -1,0 +1,122 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 27 Nov 2006 15:11:54 +0100
+Received: by mail.proteosys.com (8.13.6/8.13.4) with ESMTP id kAREBo5l026938
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 27 Nov 2006 15:11:50 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id kARE62Dp017273
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 27 Nov 2006 15:06:02 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id kAQN20kt000448;
+	Mon, 27 Nov 2006 15:05:57 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1291088 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 27 Nov
+          2006 15:05:57 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id kARE5vVS016616 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 27 Nov 2006 15:05:57 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.177]) by relay.uni-heidelberg.de (8.13.4/8.13.1) with
+          ESMTP id kARE5e3N017149 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 27 Nov 2006 15:05:44 +0100
+Received: from [84.169.176.131] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu5) with ESMTP (Nemesis),
+          id 0ML25U-1Goh7425Xt-0003I5; Mon, 27 Nov 2006 15:05:40 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id E09B84DDB6; Mon, 27 Nov 2006 15:05:37 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <0A807AAD-06E1-47CA-BB88-619F7452D75B@frycomm.com>
+            <E081489C-5183-48A4-945B-C0B932E907CD@guerilla.net.au>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: kundenserver.de abuse@kundenserver.de
+              login:923c546e49b26a7485eda6910e23f403
+Message-ID:  <17770.61617.791402.285029@morse.mittelbach-online.de>
+Date:         Mon, 27 Nov 2006 15:05:37 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: The Next Font Selection Scheme
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <E081489C-5183-48A4-945B-C0B932E907CD@guerilla.net.au>
+Precedence: list
+X-ProteoSys-SPAM-Score: -102.461 () AWL,BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 27 Nov 2006 14:11:55.0291 (UTC) FILETIME=[FE512EB0:01C7122D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4995
+
+Hi Will,
+
+ > > Here's a quick recap as a starting point for discussion:
+ > > I think that covers most options / possibilities. Most of the weird
+ > > variations get folded into family (so one could have
+ > > Thames-Calligraphic Engraved).
+ > 
+ > This is a good taxonomy, but I'm not convinced (any more) that a  
+ > fixed scheme is necessary these days. Take fontspec, for example --  
+ > it's certainly not perfect, but what features does it lack by not  
+ > having a rigid structure for font definitions?
+
+I must confess ignorance on the latest stage of fontspec, but anyway, here are
+a few thoughts on the subject
+
+ - to communicate with a font resource (from within a source document) there
+   has to be an understanding on the side of the user what the result of
+   specifying X means for a certain font resource.
+
+ - now there are several ways and levels on which this understanding can be
+   achieved:
+
+    1) on the level of the user: he just knows that normal width font
+    resources for family X are called "book" while they are call "regular" for
+    font family Y. Dito for all font attributes etc etc.
+
+    2) on an intermediate level, eg as currently provided by NFSS in
+    LaTeX. NFSS hides the font resource differences by providing a uniform
+    interface 
+
+    3) on the level of the font resources: the font resource implement a
+    uniform model so that this uniform model can be propaged 1-to-1 to the
+    user.
+
+ - now 3) is clearly wishful thinking which leaves 1) or 2)
+
+why do you want to have an intermediate layer? basically to allow for easy
+configuration changes and flexibility. it is the old story: unless you build a
+common exchange layer modification is more than painful.
+
+If you go for option 1) then
+
+ - the user has potentially more flexibility in specification
+
+ - he/she has to know what individual font resources provide and how they call
+   what they provide
+
+ - update/changes, eg replacing one font family with another is a major effort
+   within a document, same for material reuse.
+
+
+So in short, in my opinion an intermediate layer that unifies the interface
+from the user perspecitive is more than beneficial. It is true that the axis
+concept of NFSS (which was born out of the evailable font resources and the
+possibility given in TeX installations back then) is no longer fully adequate
+but in my opinion theway forward would be an extended/variant model on the
+same level, rather than one on the user level.
+
+by the way an intermediate interface model wouldn't need to have a fixed axis
+set, it could very well work with an open-ended attributes --- the important
+point would be that it would provide a uniform set of attributes with a single
+set of conventions regards of how font resources implement those attributes
+eventually (that level of translation would happen behind the scenes in the
+interface)
+
+regards
+frank
+

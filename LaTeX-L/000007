@@ -1,0 +1,59 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 12 Feb 90 09:15:20 MET
+Reply-To: Victor Eijkhout <U641000@HNYKUN11.uucp>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: Victor Eijkhout <U641000@HNYKUN11.bitnet>
+Subject:      LaTeX and catcodes (sections and footnotes)
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7
+
+
+Hello,
+
+LaTeX is somewhat careless about catcodes treatment. My favourite
+way of phrasing this is
+    ``You can't write a book about LaTeX in LaTeX''
+Explanation: the section command takes its argument as macro
+parameter, whence it is not possible to have verbatim text
+in a section heading. So you can't say
+    \section{And what \verb=\else= had you to learn?} %Ni\copyright o
+
+Of course only a minority of people writes _about_ TeX, but
+here at the university the Greek style of mr. Levi (mod sp) is used,
+and the other day the TeX person from the computing centre asked my why
+it wasn't possible to have greek text in footnotes. That turned out
+to be the same problem. Note that the Plain \footnote _can_ handle
+catcode changes.
+
+And after 15 minutes of `ijsbeering' through the house, I knew that
+I could do verbatim in section headings too: suppose
+    \def\section#1\par{... \SectionStyle #1 ...}
+is given, then
+   \newbox\@verbox
+   \def\@verbatize#1#2{\setbox\@verbox=\hbox\bgroup
+       \def\par{\egroup#1\unhbox\@verbox\par}#2\ignorespaces}
+   \let\ssection=\section
+   \def\section{\@verbatize\ssection\SectionStyle}
+does the job.
+Extension to LaTeX syntax is trivial (use \aftergroup).
+It's just that I prefer the \par-delimiting.
+
+So. Can anyone think of a reason why LaTeX shouldn't be a bit
+more permissive of catcode stunts?
+
+
+Victor Eijkhout                     Department of Mathematics
+                                    University of Nijmegen
+                                    Toernooiveld 5
+  "Far out in the uncharted         6525 ED Nijmegen, the Netherlands
+   backwaters of the unfash-
+   ionable end of the               +31 80  61 3169
+   western spiral arm               (switchboard: 61 1111)
+   of the galaxy"
+                                    u641000@HNYKUN11.BITNET
+
+

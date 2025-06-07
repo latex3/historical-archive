@@ -1,0 +1,70 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1591" "Sun" "13" "April" "1997" "12:16:20" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "33" "Re: Letterspacing, Shortref mechanism" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id MAA21321; Sun, 13 Apr 1997 12:16:21 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.F5A8F5DB@listserv.gmd.de>; Sun, 13 Apr 1997 12:16:20 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 124267 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 13 Apr 1997 12:16:17 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id MAA16780 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 13 Apr 1997 12:16:15
+          +0200 (MET DST)
+Received: from [130.237.37.53] (sl31.modempool.kth.se [130.237.37.51]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id MAA18900 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 13 Apr 1997 12:16:08
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130501af765f2665d0@[130.237.37.53]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 13 Apr 1997 12:16:20 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Letterspacing, Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1924
+
+>> ... it seems
+>> that there should be an algorithmic solution which
+>> extrapolates the available kerning information which
+>> comes very (and for some fonts maybe even indistiguishably)
+>> close to the optimum?  Something like a poor man's
+>> letterspace that's not so poor after all?
+>
+>The crucial limiting factor is this: in TeX it is very difficult to
+>write *fully general* macros that pick up tokens one at a time and test
+>them before execution. Your intuition has some merit, if you are willing
+>that the letterspaced text should be subject to some strong
+>restrictions: no { } characters, no accent commands, no conditional
+>commands (\if... \else \fi), no macros that take arguments (such as
+>\ref, \index, \cite, or further font changes ...).
+
+  I think this is the same problem that Frank Mittelbach encountered in the
+"shortref" discussion.
+
+  Actually, the restrictions are not so severe: It is possible to parse
+special token like "{", "}", space, etc.
+
+  In fact, I used this to remove that restriction of the definition macro I
+made that produces conditional macros, namely, the restriction that it
+cannot be enclosed in { }. I wrote a macro that picks down the argument to
+the next "}" or \par, whatever comes first, making sure that what is picked
+down is being unaltered (thus putting back "{}" or spaces that may have
+been stripped out). This argument can subsequently be repeatedly examined
+in non-deterministic parsing.
+
+  Nevertheless, you do not get truly general macros by doing such parsing.
+One problem is lack of proper macro expansion control.
+
+  Hans Aberg
+

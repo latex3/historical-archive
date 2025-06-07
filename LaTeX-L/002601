@@ -1,0 +1,202 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7083" "Sat" "27" "June" "1998" "14:36:57" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "162" "Re: l3 function names" "^Date:" nil nil "6" nil "l3 function names" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA28847;
+	Sat, 27 Jun 1998 14:39:31 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.DB115B04@listserv.gmd.de>; Sat, 27 Jun 1998 14:39:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372401 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Jun 1998 14:39:23 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA09658 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 27 Jun 1998 14:39:21
+          +0200 (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA162 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 27 Jun 1998
+          14:39:26 +0200
+Received: from [195.122.197.214] by fclients0.redestb.es (Post.Office MTA
+          v3.1.2 release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAA218 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 27 Jun 1998 14:42:26 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199806271239.OAA09658@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 27 Jun 1998 14:36:57 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: l3 function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2601
+
+Hello
+
+The Frank's letter clarifies me many things.
+
+>and typing with a
+>small child on my lap is ...)
+
+I presume a lot harder than with a cat :-)
+
+>first of all the basic commands are unchanged availabale all starting
+>\tex_... (with the idea that perhaps \etex_... or \pdftex_... thingies
+>exist one day.
+
+In this case using \tex_ makes sense, but I presume that tex, etex,
+pdftex... names will not overlap. For this reason I think removing
+the "tex" is not a serious problem and this way we avoid the
+cluttering with "tex"s.
+
+There is also the :D convention which suggest that many TeX parameters
+are functions; eg \uchyph or \parindent. If this notation is to be used
+in all or none of primitives, I think is preferable in none, because
+they will not follow neither the function nor the parameter syntax,
+ie they stand apart.
+
+>if the bootstrap of something like L3PL is short and painless you
+>could start from learning the language itself and nothing else.  it
+>does clearly keep the primitives that should be enough. in other words
+>i think this is more something for old programmers like you and me
+>being a *short-term* problem but that should'nt guide us.
+
+I'm not convinced. I think that that will make LaTeX a closed world
+without
+exchanging ideas and macros with other TeX formats. I'm thinking of EDMAC,
+ArabTeX or MusicTeX for instance.
+
+> > \let:NN{\arg1}{\arg2} is particularly amusing because the first N is
+> > \arg1 and the second one is { with an unmatched brace.
+>
+>indeed. but then you could argue, garbage in garbage out, ie as this
+>isn't correct input output might be anything. but i know if i argue
+>this way then you give me
+>
+>\let:NN{\arg2
+>
+>which should then work but doesn't either. so????
+
+Of course it does not work because { is not active. The point here is that
+the opening brace sometimes is ignored, sometimes is not; the closing
+brace sometimes will be read, sometimes will give an error.
+
+> > If specifiers rules are not very, very, very clear it could be interpreted
+> > in a wide variety of ways by developpers, making the code even more
+> > unintelligible. I've devised some other specifier schemes but
+> > inconsistencies
+> > seems reluctant to disappear (except if a score of specifiers are used).
+>
+>not sure i understand that sentence. did you mean you found it hard to
+>find something that works better without running into different
+>problems?  (that's what we found)
+
+Yes, you are right. (English is not my strong point and
+perhaps I didn't explain myself correctly.) I also mean that if someone
+interprets the specifiers in a wrong way he could give a misleading name.
+For example, n instead of N (in fact I've made this mistake when writing
+some macros. I realized my error when trying to devise other specifier
+schemes) or argumentless function instead of parameter.
+
+>we would certainly welcome suggestions---this is a working draft and
+>as we say by no means anything that is present as the best and final
+>thoughts on the subject, though it is true that we have put a lot of
+>thoughts into it and thrown away many (worse) attempts.
+
+Obviously, I cannot try for a complete spec scheme in just
+a few days, but for example this is the best idea I had
+(so far and by far)
+spec  arg forms              meaning
+~~~~  ~~~~~~~~~              ~~~~~~~~
+u     \cmd                   unexpanded/unbraced token
+n     \cmd  {\cmd}           token name
+c     \cmd  {\cmd1\cmd2...}  container; the contents will be passed as
+argument
+  [\expandafter{\cmd}]
+l     \cmd  {\cmd1\cmd2...}  token list
+x     \cmd  {\cmd1\cmd2...}  expanded token list
+
+n and c have the "string" variants N [\expandafter{\csname str\endcsname}]
+and C [\expandafter\expandafter\expandafter{\csname str\endcsname}].
+Perhaps also:
+S     string containter in string form
+  [\expandafter\expandafter\expandafter
+          {\expandafter\csname\csname str\endcsname\endcsname}]
+An hypothetical no string form (s) is equivalent to N; there is
+also p, t, f, w. I was looking for some symmetry in the meaning
+of uppercase letters; here uppercase means "string form".
+
+So we have for instance \let:uwu \let:nu \let:Nu \let:nN \let:NN
+\exp_after:uu \def:upl \def:upx \def:Npl \def:Npx.
+As you can see nothing new, except the letters used and the u spec.
+
+A further spec is to be used with \exp_args:
+d   \cmd  {\cmd}     dormant; usually n but it will not be expanded
+                     in protected expansions.
+Its definition could be something like:
+  \def\:::#1{\exp_not:N#1}
+  \def\::d#1\:::#2#3{#1\:::{#2\exp_not:N#3}}
+with the corresponding tests to see if the protection is enabled.
+The string variant (D) can lead to confusion. For example
+   \exp_args:nd\def:npl\cmd{...}
+is right, but
+   \exp_args:nD\def:Npl{str}{...}
+expands to \def:Npl\str, which is wrong. If the modifiers + basics
+scheme is used this problem does not exist: \exp_args_d\def\cmd and
+\exp_args_D\def{str}. These ideas should be thought out if they seem
+interesting.
+
+Actually, the problem is always present if diferent variants of
+\exp_args and command specs are mixed: \exp_args:Noox\cmd:nNxn...
+What? :-) )
+
+The answer of exercise 9.8 from the TeXbook is to the point. Why \'#1
+and not simply \'? "An argument makes the use of \' more consistent with
+the use of other accents like \d." This idea may be applied to the
+\def: functions. So \def:Npn #1{\tex_def:D #1} instead
+of \let:NN\def:Npn\tex_def:D. In the notation above that gives
+\def:npl \def:npx \def:Npl \def:Npx.
+
+>well, my experience is that having the number of arguments clearly
+>attached to a command makes things much more readable than not having
+>it (ie \seq_test_in:nn compared to \seq_test_in) --- after getting
+>used to it this was a very helpful feature in reading code by others.
+
+If you want to understand a function you must read its definition,
+and then you see its arguments, making the specs a bit redundant.
+And when I see things like \titlesec_sect:nnnnnnnn I am horrified.
+Up to now I have not get used to it. Perhaps in a few years... ;-)
+
+>as for the _ not being available as an explicit subscript:
+>
+>we don't consider this significant as we think that this should be
+>done this way anyway. the few places where you really need a subscript
+>in a macro you can as well use some slightly more complicated way (in
+>plain TeX this would be \sb)
+
+\sb is not an explicit subscript char. I cannot say, for instance
+\def:Npn \get_token:n #1{
+ \if:w \str_eq_p:nn {#1} {\sb} etc
+to test if the token is _.
+I presume that the \lccode / \lowercase trick will be necessary.
+(Or thinking in terms of the new syntax (expandable version):
+  \if:w \exp_args:No \str_eq_p:nn {\sb_char} {#1}... where \sb_char
+contains an actual subscript char. But I find clearer
+  \if \exp_args_o \str_eq_p {\sb_char} {#1}...)
+
+(Actually, \str_eq_p is great. I've had using for years the
+\if\test device in my own TeX macros. I think it's one of the most
+interesting aditions, besides the l3expand module and the fint type.)
+
+>thanks for all the comments        (hope to get more)
+You are welcome... and l3 as well   (no doubt)
+
+Ragards
+Javier
+

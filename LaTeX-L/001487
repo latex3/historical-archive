@@ -1,0 +1,119 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3808" "Wed" " 9" "February" "1994" "16:29:43" "+0100" "Johannes L. Braams" "J.L.Braams@research.ptt.nl" "<199402091531.AA22087@mail.cs.tu-berlin.de>" "86" "Re: Continuation lines" "^Date:" nil nil "2" "1994020915:29:43" "Continuation lines" nil "<01H8OS14GVHU9PMPY3@research.ptt.nl>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA10654; Wed, 9 Feb 94 16:32:21 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA24926; Wed, 9 Feb 94 16:31:41 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA22087
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 9 Feb 1994 16:31:36 +0100
+Message-Id: <199402091531.AA22087@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6233; Wed, 09 Feb 94 16:31:23 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6231; Wed,
+ 9 Feb 1994 16:31:18 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 6919; Wed,
+ 9 Feb 1994 16:30:43 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  Your message of "Wed,
+              09 Feb 94 14:43:38 -1100." <01H8OS14GVHU9PMPY3@research.ptt.nl>
+Date:         Wed, 9 Feb 1994 16:29:43 +0100
+From: "Johannes L. Braams" <J.L.Braams@research.ptt.nl>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Continuation lines
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1487
+
+On Wednesday, February 9 M.Piff@sheffield.ac.uk wrote:
+
+> From:          Anselm Lingnau <lingnau@MATH.UNI-FRANKFURT.DE>
+>
+> %>                                                             As far as the
+> %>`question ... continued' bit is concerned, from looking at the Companion I
+> %>believe that there are now `Boolean variables', so it seems that we can do
+> %>what we used to need \newif for, in a way that's blessed by LaTeX.
+>
+> With the usual complications involved in expanding \marks.
+>
+>
+> Two very short pages:
+>
+> ------------------------------------------------------------------
+> |    hhh                        hhh                          hhh |
+> |                                                                |
+> |   ----------------------------------------------------------   |
+> |   | Q1  qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  |   |
+> |   |   qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  |   |
+> |   |   qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  |   |
+> |   |                            Q1 continued on next page   |   |
+> |   ----------------------------------------------------------   |
+> |                                                                |
+> |     fff                       fff                          fff |
+> ------------------------------------------------------------------
+>
+>
+> ------------------------------------------------------------------
+> |    hhh                        hhh                          hhh |
+> |                                                                |
+> |   ----------------------------------------------------------   |
+> |   | Q1  (continued) qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq |   |
+> |   |   qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq |   |
+> |   |   qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq |   |
+> |   |   qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq |   |
+> |   ----------------------------------------------------------   |
+> |                                                                |
+> |     fff                       fff                          fff |
+> ------------------------------------------------------------------
+>
+
+  If I may refer to a talk I gave in Portland at TUG92, this sort of
+  thing can be acheived *without* fiddling with output routines.
+
+  Algorithm (just cut from an existing style file, so it needs
+  modification):
+
+\newbox\question@box
+\newbox\rest@box
+\newlength\question@ht
+\question@ht=<room left on the page, to be determined by \question>
+
+\def\question#1{\def\q@num{#1}\question@ht=...\pickup@text}
+\def\endquestion{%
+    \endpickup@text{question}%
+               {Question \q@num\space(continued)}
+               {Question \q@num\space continued on next page}}
+
+\def\pickup@text{\setbox\pickup@box=\vbox%
+    \bgroup\hsize=\pickup@wd\@parboxrestore}
+\def\endpickup@text#1#2#3{\egroup\vbadness=10000
+    \edef\box@todo{\expandafter\csname#1@box\endcsname}
+    \edef\box@height{\expandafter\csname#1@ht\endcsname}
+    \global\setbox\box@todo = \vsplit\pickup@box to \box@height
+    \wd\box@todo=\textwidth
+    \ifdim\ht\pickup@box>0pt
+      \global\setbox\box@todo = \vbox{\unvbox\box@todo
+            \hbox to \pickup@wd{\null\hfill\strut #3}}
+      \global\setbox\rest@box =\vbox{\hsize=\pickup@wd
+        \unvbox\rest@box\strut
+        \hbox{\hskip-\shiftleft\strut #2}
+        \unvbox\pickup@box}
+    \fi
+}
+
+        All you have to do now is set \rest@box at the top of the next
+        page.
+
+        Johannes Braams
+
+PTT Research,                           P.O. box 421,
+2260 AK Leidschendam,                   The Netherlands.
+Phone    : +31 70 3325051               E-mail : J.L.Braams@research.ptt.nl
+Fax      : +31 70 3326477
+-------------------------------------------------------------------------------
+

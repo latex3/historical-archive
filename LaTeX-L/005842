@@ -1,0 +1,125 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 9 Aug 2009 09:36:01 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n797a2CI010614
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 9 Aug 2009 09:36:03 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n797Ub0x015338
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 9 Aug 2009 09:30:37 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n78M1BSl017973;
+	Sun, 9 Aug 2009 09:30:27 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285822 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 9 Aug
+          2009 09:30:27 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n797URiM010752 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 9 Aug 2009 09:30:27 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n797UDJf015169 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 9 Aug 2009 09:30:16 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id 1Ma2r4-00056K-c6
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 09 Aug 2009 07:30:10
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>                              
+            <4A7A1505.4040604@residenset.net>                      
+            <DB76B425-0A88-43B4-9CF0-B92FAF159E37@gmail.com>           
+            <4A7A726F.3080006@morningstar2.co.uk>
+            <4A7A857F.4010400@morningstar2.co.uk>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A7E7B08.5090908@morningstar2.co.uk>
+Date:         Sun, 9 Aug 2009 08:30:16 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A7A857F.4010400@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 09 Aug 2009 07:36:01.0848 (UTC) FILETIME=[0B76EB80:01CA18C4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5842
+
+Joseph Wright wrote:
+> Joseph Wright wrote:
+>> Will is on the nail here. The advantage of two different letters for
+>> optional argument and optional argument + default is that it avoids this
+>> question. Perhaps that scheme is better over all, even though we then
+>> need an extra letter.  How about:
+>>
+>> - n = optional argument with no default
+>> - o = optional argument with default (which must therefore be specified)
+>> - b = optional braced argument (as Will wanted "n" for this)
+> 
+> Suggestion (2):
+> 
+> - o = standard optional LaTeX argument with no default value.
+> - d = delimited optional argument where both the delimiters and default
+>       must be given.
+> - b or n = optional braced argument (now have a choice!).
+
+I've been thinking about this some more.  I can see that Lars has a good
+point that it would be better to have only mandatory arguments for
+xparse specifiers, and also Will is right that asking people to put the
+default in each time is not great.  That takes me back to the original
+idea in xparse of using o and O to differentiate these cases. Of course,
+there is then an issue with \long arguments.
+
+Suggestion (3):
+
+- Stick with xparse idea of using a "modifier" to make arguments \long
+  (possible choices: !, +, *, >, of which I think I like "+" best)
+
+- Letters as follows:
+  * m = mandatory
+  * l = read up to left brace
+  * o = optional with \NoValue default
+  * O = optional with default to be given
+  * d = delimited with \NoValue default
+  * D = delimited with default to be given
+  * b = optional braced argument with \NoValue default
+  * B = optional braced argument with default to be given
+  * s = star (short-cut for "t*")
+  * t = arbitrary single token test
+  * u = "up to" argument as Will suggests
+
+- b/B is included here as the more I think about it the more I don't
+  like the idea of "overloading" d/D to do this. This is a special case,
+  and I think should be handled as such.
+
+- Could consider retaining c/C for co-ordinate pairs. If so, I'd go with
+  Will's suggestion that it is always optional as far as xparse is
+  concerned, and trap a missing value using \NoValue.
+
+That leads to calls which look like:
+
+\DeclareDocumentCommand \foo { o m }
+\DeclareDocumentCommand \foo { o +m }
+\DeclareDocumentCommand \foo { O{default} m }
+\DeclareDocumentCommand \foo { d() l m }
+\DeclareDocumentCommand \foo { u{\bar} t+ +m }
+\DeclareDocumentCommand \foo { s D<>{default} b o +m }
+
+This does not seem too bad to me: what do other people think?
+-- 
+Joseph Wright
+

@@ -1,0 +1,365 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["15344" "Fri" "17" "October" "1997" "22:27:35" "-0600" "Nelson H. F. Beebe" "beebe@MATH.UTAH.EDU" nil "323" "[Oren Patashnik <opbibtex@labrea.Stanford.EDU>: Re: [MERTENS               Jean-Francois <jfm@CORE.UCL.AC.BE>: Re: LaTeX journal and               publisher macros]]" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id GAA15129;
+	Sat, 18 Oct 1997 06:27:50 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.6ADFAE3B@listserv.gmd.de>; Sat, 18 Oct 1997 6:27:48 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 217486 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 18 Oct 1997 06:27:41 +0200
+Received: from csc-sun.math.utah.edu (root@csc-sun.math.utah.edu
+          [128.110.198.2]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id GAA14100 for <latex-l@relay.urz.uni-heidelberg.de>; Sat, 18
+          Oct 1997 06:27:39 +0200 (MET DST)
+Received: from plot79.math.utah.edu (beebe@plot79.math.utah.edu
+          [128.110.198.3]) by csc-sun.math.utah.edu (8.8.5/8.8.5) with ESMTP id
+          WAA06713; Fri, 17 Oct 1997 22:27:36 -0600 (MDT)
+Received: (from beebe@localhost) by plot79.math.utah.edu (8.8.5/8.8.5) id
+          WAA20087; Fri, 17 Oct 1997 22:27:35 -0600 (MDT)
+X-US-Mail: "Center for Scientific Computing, University of Utah,
+           155 S 1400 E RM 233, Salt Lake City, UT 84112-0090, USA"
+X-Telephone: +1 801 581 5254
+X-FAX: +1 801 581 4148
+X-URL: http://www.math.utah.edu/~beebe
+Message-ID:  <CMM.0.91.0.877148855.beebe@plot79.math.utah.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 17 Oct 1997 22:27:35 -0600
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      [Oren Patashnik <opbibtex@labrea.Stanford.EDU>: Re: [MERTENS
+              Jean-Francois <jfm@CORE.UCL.AC.BE>: Re: LaTeX journal and
+              publisher macros]]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2477
+
+Folks, here is some extensive commentary from Oren Patashnik on the
+BibTeX personal name handling topic.  As he requests, please
+communicate further with him OFF the latex-l list if you wish to
+pursue the discussion:
+
+                ---------------
+
+Date: Fri, 17 Oct 97 00:38:50 PDT
+From: Oren Patashnik <opbibtex@labrea.Stanford.EDU>
+----------------------------------------------------------------------
+I have been forwarded from the LaTeX-L list some comments regarding
+name structure and BibTeX.  Here are my comments.  (I don't read
+LaTeX-L, so if you want to send me comments, please email me directly.
+Thanks.)  Also, I apologize in advance for any faulty assumptions I've
+made due to my jumping into the middle of the discussion.
+
+JFM = Jean-Frangois Mertens
+SR = Sebastian Rahtz
+BV = Boris Veytsman
+RF = Robin Fairbairns
+
+JFM>    4) Concerning names: it are clearly not only Chinese names (or
+JFM> south-indian, or from other far-away places) that have a completely
+JFM> different STRUCTURE than the US one.
+JFM>    Just as to surnames already, I get that in Spain typically an
+JFM> individual's surname has his wife's maiden-name after his own _ so is
+JFM> no longer a "family-name" (in the sense of being the same as for his
+JFM> brothers). But the "given" (or: "preferred") name would typically be
+JFM> just the first part. In Portugal on the contrary, (part of) the
+JFM> mother's name would be pre-pended to () the father's name in naming
+JFM> the children _ and the "given" (or: "preferred") name would be some
+JFM> final part. Even here, a colleague of mine has "d'Aspremont-Lynden" as
+JFM> surname (so Bibtex misses the "von" part, because of the absence of a
+JFM> space), but the "given" name would be just "d'Aspremont" (so even a
+JFM> hyphen doesn't mean the 2 parts have to be treated equally _ the name
+JFM> could equally plausibly have been "Lynden-d'Aspremont", with "Lynden"
+JFM> as "given" name.).
+
+With the current BibTeX (0.99), there are four "parts" to a name
+(first, von, last, jr); each part consists of zero or more tokens, and
+tokens are separated by either whitespace *or* hyphens.  (For this
+discussion, I'll use the terms `surname' and `family name'
+synonymously; the purpose of having `von' and `last' parts is to break
+the surname into a primary and a secondary part, for the styles that
+want to treat the primary and secondary tokens differently.)
+
+For the current BibTeX, I had considered making the apostrophe, too, a
+token separator, but I decided not to do that, because I saw too many
+published examples that seemed to not treat, for example, "d'" as a
+`von' token in the same way that they treated "de" as a `von' token.
+
+But I now think that that decision was a mistake, and my current
+plans are to make the apostrophe a token separator in BibTeX 1.0.
+Thus, if you have
+
+     author = "Jean le Rond d'Alembert",
+
+styles that use the ordering `last, first von' will render this name as
+
+     Alembert, Jean le Rond d'
+
+for BibTeX 1.0.
+
+By the way, with "d'Aspremont-Lynden" the current BibTeX treats
+d'Asperemont as a `von' token and Lynden as a `last' token.  (This is
+different from what JFM claims above---perhaps he was thinking of a
+different way in which the current BibTeX mishandles this name.)
+Anyway, anyone who wants to know exactly how BibTeX parses a name can
+read the bibtex.web source code, or (easier) can ask me for a simple
+name-parts.bst I wrote, which tells you precisely the four parts of a
+specified name.  (This will all be documented explicitly for 1.0.)
+
+JFM>     And for complete names, something like "Maria de Dolores de Garcia
+JFM> de la Vega" would be a quite plausible Spanish name (with similar
+JFM> examples in several other languages), but with 3 "von" parts, of which
+JFM> it is the SECOND that separates first and last name... And the
+JFM> textbook example of "de La Vallee Poussin" signs some of his books
+JFM> with "Charles-J." as first name (so nothing like Charles Louis ...),
+JFM> while his "given" first name was just "Charles": so this is a case
+JFM> where a hyphen between the 2 first names does NOT mean they are a
+JFM> single "given" name and should be treated equally.
+
+With
+
+     author = "Maria de Dolores de Garcia de la Vega",
+
+the current BibTeX uses, and BibTeX 1.0 will use, these parts:
+
+     first: Maria
+     von:   de Dolores de Garcia de la
+     last:  Vega
+
+If there's a bibliography style that will produce incorrect formatting
+(incorrect with respect to that style) with this division of tokens,
+then this name must be entered with the one-comma syntax to get BibTeX
+to parse it differently.  More on this shortly.
+
+As for de la Vall/'ee Poussin, the person (Charles Louis ...) that
+appears in the "BibTeXing" document, DEK tells me, is the father of
+the more famous de la Vall\'ee Poussin---the one who was a co-prover
+in 1896 of the Prime Number Theorem---
+
+      Charles-Jean-Gustave-Nicolas de la Vall\'ee Poussin
+
+(father and son were at the same university, which is apparently why
+DEK got them confused in the index of volume 2, second edition).  So
+Charles Louis and and Charles-J. are two different people.  In any
+case, as I mentioned earlier, BibTeX treats a hyphen as a token
+separator, hence a BibTeX style may, if it wants, treat the two tokens
+differently.
+
+JFM>     In summary, I think there is no hope to parse complete names
+JFM> correctly, and one has to ask for the individual name-components.
+
+If I understand this correctly, I think I disagree.  It seems to me
+that the problem is not in parsing the names into parts (for example,
+BibTeX's comma syntax can, unambiguously, parse a name into different
+parts), but rather the problem is in assigning meaning to those parts.
+Different languages and different cultures have different name
+structures.  I think it's probably a mistake to assign a *fixed*
+meaning to name components, because for some cultures those components
+won't adequately handle its name structure.  (It's true that, in some
+sense, BibTeX's first-von-last-jr structure is fixed, but that's only
+because of how the current standard styles interpret the four parts;
+it's certainly possible to have other styles interpret those parts
+differently.  More on this in a bit.)
+
+JFM>     Further, it seems to me that for each of those components one has
+JFM> to ask the full form (if only just for database use: it seems
+JFM> ridiculous to refer in databases with different names to the same
+JFM> individual, so this probably means in practice one has to use there
+JFM> the full form, as in the Library of Congress cards), and the "given"-
+JFM> or "preferred" form (if only for uses like headers) (reduction to
+JFM> initials can well be handled automatically _ cf. e.g. BibTeX _, so no
+JFM> need to bother authors with that).
+
+I'm not sure what's the intended use of the database mentioned here,
+but in general it seems to me that you really have to think hard about
+the intended uses.  For example, a Library-of-Congress-type database
+may want to use the name, say, for two purposes, which may require
+both an author's full name as well as an author's name the way it
+appears in the work itself.  For these two purposes, using BibTeX at
+least, it probably suffices to enter the name just once, in a form
+like
+
+    name = "Donald E[rvin] Knuth",
+
+indicating that "Donald Ervin Knuth" is the full name but "Donald E.
+Knuth" is the way it appeared in the work itself.  But you need some
+abbreviation markup mechanism (here, the square brackets), because for
+the two purposes above it's insufficient to do the abbreviation
+automatically---for example you can't tell from just the full name
+
+    name = "Donald Ervin Knuth",
+
+(without the square brackets) how it appeared in the work itself.
+
+On the other hand, I can think of databases for which you want to make
+three uses of a name---for example, an author's full name for an
+index; the name of the author as he prefers it; and the name of the
+author as it appeared in some work, say because some overbearing
+journal editor butchered it by automatically abbreviating "Donald".
+For this situation, using BibTeX, I would probably have two fields:
+
+     author = "D[onald] E. Knuth",
+     full-author = "Donald Ervin Knuth",
+
+(It's possible to serve all three purposes with just a single field,
+but the markup would probably be too cumbersome in this case---I
+realize that some people think that even using the bracket markup I've
+suggested above is too cumbersome.)
+
+JFM>     As to those components, we need concepts that are as widely
+JFM> meaningful as possible _ to avoid "visual markup" _, and I have no
+JFM> precise idea what those might be... I heard that Patashnik is working
+JFM> hard on BibTeX 1.00; and he must have given serious thought to this
+JFM> question. Since in addition there may be obvious advantages in
+JFM> coordinating this question with BibTeX, one should probably ask his
+JFM> opinion.
+
+I go through stages where I work hard on 1.0, punctuated by periods
+where I'm forced to turn my attention elsewhere (:-(
+
+BV> Maybe BibTeX-like syntax will work, i.e. something like \author{Albert
+BV> Einstein} and \author{Einstein, Albert} would produce same output
+BV> determined *only* by house class?  Then house classes could process
+BV> \author declarations and extract, if required, both Albert Einstein in
+BV> title page and A.~Einstein in the running head?
+BV>
+BV> Actually BibTeX has a very subtle algorithm of dealing with author names;
+BV> I think it is possible to reimplement it in TeX for journal styles.
+
+I'm not sure how hard it would be to do BibTeX's name-handling in TeX,
+but it seems to me that, if it's done, it should be done exactly (or
+almost exactly) the same---I think it might cause too much confusion
+if it were a half-way job, because then people would start confusing
+the two syntaxes.
+
+SR> While I (sort of) admire BibTeX's system for second-guessing surnames,
+SR> I have always found it confusing as an author, and as a processor of
+SR> other peoples .bib files. I think a clean separation into surname and
+SR> other bits is better.
+
+I guess the question I have is, is it confusing because BibTeX's
+parsing scheme is inherently confusing, or because it's insufficiently
+documented?  I'm guessing it's more of the latter, although I suppose
+I'm not the one to ask (it's not confusing to me at all :-).
+
+SR> That does not mean you cannot give a simple case like
+SR>
+SR>  \author{name=Sebastian Rahtz}
+SR>
+SR> and have it parsed easily by TeX as if you had typed
+SR>
+SR>  \author{surname=Rahtz, forenames=Sebastian Patrick Quintus} [1]
+SR>
+SR> but it goes further than that, doesn't it. some styles will need to
+SR> suppress that to S.P.Q., others want the full name. you cannot always
+SR> work out that initial compression easily, by the way - people called
+SR> Christian sometimes like to be be abbreviated Chr.
+
+Two comments here.  First, you might want the initials as S.P.Q., or
+maybe as S.~P.~Q., or maybe as S.\,P.\,Q., so you need some
+flexibility here.  Also, BibTeX's special-character mechanism lets you,
+if you want, abbreviate Christian as Chr. or Charles as Ch. or whatever.
+
+BV> Actually BibTeX has a very subtle algorithm of dealing with author names;
+BV> I think it is possible to reimplement it in TeX for journal styles.
+
+SR> While I (sort of) admire BibTeX's system for second-guessing surnames,
+SR> I have always found it confusing as an author, and as a processor of
+SR> other peoples .bib files. [...]
+
+RF> I wholeheartedly agree with Sebastian.  In addition, I feel that the
+RF> BibTeX algorithm is seriously slanted towards European languages (more
+RF> precisely, languages whose impact was felt in the USA prints at the
+RF> time BibTeX was being designed).
+
+Yes, BibTeX's name handling is definitely biased toward the names
+encountered in U.S. academia, 1983.  But the goals were to have a
+system that was both flexible and, for the "common" names, easy to
+use.  Thus you could type
+
+     author = "Sebastian Patrick Quintus Rahtz",
+
+and BibTeX would figure out what you meant.  And in the somewhat rarer
+case where you wanted Quintus to be part of the surname, you could
+type
+
+     author = "Quintus Rahtz, Sebastian Patrick",
+
+which is only a little more difficult, and BibTeX would again know
+what you meant.  And while it's true that, for Asian names, for example,
+typing
+
+     author = "Mao, Tse-tung",
+
+(which is what the current BibTeX requires) is a little less natural
+than typing
+
+     author = "Mao Tse-tung",
+
+(without the comma), still, it's not very hard.  So although there is
+indeed a bias, it's not much of a hardship---it's certainly easier
+than having to use, for example,
+
+     author-surname = "Mao",
+     author-firstnames = "Tse-tung",
+
+RF> I suspect it's inadequate to `world-wide publishing' -- is Oren
+RF> listening to this list? -- or can someone else comment on whether the
+RF> eagerly-awaited BibTeX v1.0 is going to extend the algorithm anywhere?
+
+I assuming you mean that BibTeX's name-handling is inadequate for
+`world-wide publishing'.  Perhaps you could give examples; but it
+seems to me that even the current scheme is adequate.  (I make a
+distinction between the adequacy of the scheme itself and the adequacy
+of available styles, which is a separate issue.)
+
+In the current scheme, there are four name parts, with three allowed
+input syntaxes:
+
+     first von last
+     von last, first
+     von last, jr, first
+
+The two main name-handling changes on the slate for BibTeX 1.0 are:
+
+     (1) The addition of another syntax, probably
+            last, von, jr, first,
+     so that users may unambiguously mark the von/last boundary, in
+     difficult cases, without too many contortions.
+
+     (2) The use of another field, call it `attributes' for now, that lets
+     a user specify certain attributes of a name.  For example if a name
+     has an `Asian' attribute, then a style might use Asian ordering for
+     that name, for example with
+          author = "Donald E. Knuth and Mao, Tse-tung",
+     the style could produce
+          Donald E. Knuth and Mao Tse-tung
+     instead of
+          Donald E. Knuth and Tse-tung Mao
+     which is what, e.g., plain.bst would produce.  (Of course currently a
+     style may use Asian ordering; what the `attribute' field buys in this
+     case is the ability to produce Asian-style ordering in the middle of an
+     otherwise Western-ordering style.)
+
+In any case, I'm open to other enhancements for which there is a
+demonstrated need.  In particular, if any language/country has names
+that must be broken into five or more parts to be handled correctly
+(that is, if BibTeX's four name-parts are insufficient), I'd love to
+hear about them.
+
+        --Oren Patashnik (opbibtex@cs.stanford.edu)
+
+----------------------------------------------------------------------------
+- Nelson H. F. Beebe                  Tel: +1 801 581 5254                 -
+- Center for Scientific Computing     FAX: +1 801 581 4148                 -
+- University of Utah                  Internet e-mail: beebe@math.utah.edu -
+- Department of Mathematics, 105 JWB                   beebe@acm.org       -
+- 155 S 1400 E RM 233                                  beebe@ieee.org      -
+- Salt Lake City, UT 84112-0090, USA  URL: http://www.math.utah.edu/~beebe -
+----------------------------------------------------------------------------
+

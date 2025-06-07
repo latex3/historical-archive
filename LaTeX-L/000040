@@ -1,0 +1,179 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 28 Feb 90 16:26:32 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Subject: Utrecht (IV) and startsection
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 40
+
+Even more comments:
+
+First on chris mail:
+
+  The question this raises is whether, with AMSTEX.STY
+  "coming real soon", need/ought we to do anything about
+  this situation?
+
+amstex.sty is coming real soon. Today I got the user description from
+Michael, so we needn't do anything about it. Anyway in my opinion
+math is important but periphical. That is, special features for math
+should be placed into style options like amstex amstext amssymb amsbsy
+etc. I asure you that we did a good job in this respect.
+
+Anyway amstex.sty or let's say special math in general would be part
+of LaTeX 3.0 not 2.10 which should not add new features or only a few
+necessary for the new style interface.
+So please let's concentrate on the style interface first.
+
+
+Therefore I'm back at startsection: I think that the discussion
+might be easier if I show you the implementation I wrote, but
+this stuff is at home.
+Here are some comments on Nicos comments:
+
+> > Otherwise the designer has to use such monsters like \ifnum level >
+> > \c@secnumdepth ...\else in the definition of the unstared heading
+> > layout, brrrr.
+>
+> See: \@part and \ps@headings in book.sty, and \@chapter in bk1*.sty.
+> It's not an unusual construction for a document style designer
+> to use, apparently.
+
+A bad situation is not a reason to do it forever again. May I ask why
+so many people (designer and others) have problems to create a
+different design? Of course definitions of pagestyles have to
+be reviewed as well.
+
+
+> > I strongly disagree with the the use of beforeskip, afterskip and
+> > its special - syntax to denote things like run-in heading
+> > and afterindent.
+>
+> You're right. But replacing this convention with a set of flags
+> doesn't add functionality, which is what this discussion is about.
+
+This list is not to discuss new features but also to find a better
+interface. Replacing such conventions with human readable and
+memorable switches and registernames will make it possible to
+understand the layout behind the definitions in a certain file
+much easier and will make it therefore much easier to change.
+This is similar to LaTeX/DCF: using \begin{itemize} instead of
+two letter abbrivations is human understandable even without
+knowledge of LaTeX it is possible to read the source.
+
+
+> [ A suggestion: if you change the syntax to
+>
+>   \@startsection{XXX}{1}{\afterindentfalse \runinfalse}
+>                         {10pt plus 5 pt}{5pt plus 3 pt}{....}...
+>
+>   you could assign #4 to \beforeXXXskip and #5 to \afterXXXskip, and
+>   change these glue parameters any time you wish without calling
+>   \@startsection again.]
+
+I don't understand this suggestion. If \section is defined via
+\@startsection \beforesectionskip will always get its default value
+back so I see no use in providing new registers names.
+
+
+> > Granted that even this would be manageble it is a questionable syntax
+> > in general. My question here is: do we really need to destinguish
+> > normally between present/not present of numbers etc.
+>
+> Yes, we do need to distinguish.
+>
+> > I would assume (please comments!) that one definition would be enough
+> > if objects given back by the kernel (like \headingnumber) would
+> > produce different things (i.e. empty for example).
+>
+> I believe the following theorem holds
+>
+> Theorem: for every generic syntax there is at least one style of
+> -------  sectional unit headings that can not be fitted into this
+>          generic syntax.
+> It's a bit like G\"odel's theorem (just kidding).
+
+I know about G"odel myself and mentioning it seems to be just right.
+Well, even after G"odel mathematicians are working and I think
+we have to face the same problem. Your right that it isn't possible
+to define a rigit generic command without finding examples which could
+be specified using this command. That's the reason why the current
+\@startsection isn't working. So we need to balance between
+special cases and usual applications.
+Even seeing your example below I think that the usual applications
+don't need to destinuish between stared and unstared headers
+(assuming of course that \headernumber used by the designer will
+expand into nothing in the stared version.)
+
+> I will give an example from my own work:
+>
+> - section  := \Large ragged-right `hangfrom', for level < secnumdepth
+> - section  := \large centered heading, for level >= secnumdepth
+> - section* := \large centered heading
+>
+
+Your example above of course then has to be specified by the designer
+using \ifpresent\headernumber ...
+
+
+>
+> > For the real special applications one could provide a test, say
+> > \ifpresent, which could be used by the style designer to take certain
+> > actions depending on \ifpresent\headingnumber ...\else ... \fi.
+>
+> There's no difference between this and \ifnum level > \c@secnumdepth.
+
+That's not true! There is a big difference:
+
+\ifpresent<something>{yes case}{no case} %might be better than \else\fi
+
+is a concept which could be applied in various situation throughout
+a document style file whereas \ifnum level is one of the real lowlevel
+interfaces (if it could be called interface) of the section mechanism
+of LaTeX.
+
+
+> > In the special case of heading/contents however I think the write read
+> > mechanism of the current version is okay.
+>
+> \numberline needs to be re-defined if section numbers have to be
+> typeset in a font that differs from that of the section title. I
+> thought this a bit awkward.
+
+I apologize. I wanted to say that the mechanism in general, i.e.
+writing to the aux and then at the end to toc or whatever is more
+or less okay. Not okay is of course what is written to these files.
+And I think somewhere in my message I stated that the table of contents
+macros should receive three object namely Title Number and Pagenum
+some of them probably empty.
+
+
+> > What Nico is discussing here seems in my opinion partly a question of
+> > ``which commands to provide in which meta style''.
+>
+> Yes, but only partly: there are no tools for this in LaTeX 2.09. If I
+> want to produce Bryan's book in LaTeX I have to create new tools.
+
+So far so good, I only wanted to point out that we should think about
+what kind of tools (concepts) should be provided in what
+`document-types'. I would like to clear this first, then discuss
+whether it is implementable or should be implemented.
+
+
+Summerizing I think that we have to give the designer all freedom by
+having an argument to the generic command where the layout is specified
+but I don't like to force him to supply many different layouts if
+not necessary. Maybe my intention will be clearer when I show you
+the syntax I'm using in my test installation.
+Chris also wrote a long comment but I got it to late today.
+I already raised the question of specifying how many lines have to
+follow a header. I think this might be important.
+
+Greetings Frank
+
+

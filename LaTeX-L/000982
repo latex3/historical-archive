@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2750" "Wed" "24" "February" "93" "09:33:07" "MST" "\"Nelson H. F. Beebe\"" "beebe@MATH.UTAH.EDU" nil "61" "Re: subdocuments" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA23540; Wed, 24 Feb 93 17:35:30 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA09989; Wed, 24 Feb 93 17:35:24 +0100
+Message-Id: <9302241635.AA09989@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0110; Wed, 24 Feb 93 17:35:54 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1759;
+ Wed, 24 Feb 93 17:35:49 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1757;
+ Wed, 24 Feb 93 17:35:46 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Your message of Wed, 24 Feb 93 15:22:49 CET
+Date:         Wed, 24 Feb 93 09:33:07 MST
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: subdocuments
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 982
+
+
+Michael Downes has identified some major issues in putting together
+compound documents from independent subdocuments.
+
+The issue I raised at the Portland TUG meeting in July 1992 was the
+observation that current LaTeX styles require the author to make a
+decision about sectioning levels that is hard-coded into the document
+with \chapter, \section, ...  I believe this is highly undesirable;
+what we should be using is relative section naming; with suitably
+clevel macros and document styles, this need not imply that names
+other than \chapter et be used by authors.
+
+A colleague of mine is editing a NATO conference proceedings where we
+have had to deal with this problem.  The solution was to instruct
+authors to use \documentstyle{article}, so they use \section at the
+highest level, and their contributions look something like
+
+\documentstyle[natoproc]{article}
+\title{...}
+\author{...}
+\maketitle
+\begin{document}
+\input{my-contrib.tex}
+\end{document}
+
+The editor and his secretary then extract the \input{} commands into
+the book master, and manually copy the \title and \author information
+into new macros named something like \chaptertitle and \chapterauthor.
+Because of requirements on getting author names and (sometimes
+shortened) chapter titles into opposing page headers, this was
+somewhat more complex than I've indicated.
+
+We've had to cobble together modifications of David Rhead's authordate
+bibliography styles to suit publisher citation requirements, and add
+support for chapter-specific bibliographies, and an end-of-book master
+bibliography.  I believe that only a single index, at end-of-book, is
+planned.
+
+All of this involves a lot of hand work, and sometimes difficult (or
+at least, very time consuming) macro writing and debugging.
+
+For LaTeX 3, I believe we need greater generality in sectioning naming
+so that documents and subdocuments could be printed WITHOUT having to
+modify macros in the text files.
+
+Consider, for example, a large encyclopaedia stored on CD ROM in TeX
+SOURCE form, with portions TeXable on personal computers and
+workstations without having to copy any of the document text itself to
+local storage.  I envision such portions as having a possibly quite
+different appearance when treated as a subdocument, with possibly
+separate title page, tables of contents, abstract, ..., endnotes,
+bibliography, and index.
+
+
+========================================================================
+Nelson H. F. Beebe                      Tel: +1 801 581 5254
+Center for Scientific Computing         FAX: +1 801 581 4148
+Department of Mathematics, 105 JWB      Internet: beebe@math.utah.edu
+University of Utah
+Salt Lake City, UT 84112, USA
+========================================================================
+

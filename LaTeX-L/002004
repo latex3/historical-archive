@@ -1,0 +1,95 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2957" "Mon" "5" "May" "1997" "11:29:32" "+0200" "Ulrik Vieth" "vieth@THPHY.UNI-DUESSELDORF.DE" nil "55" "\\mathxx (was: Capital greek letters)" "^Date:" nil nil "5" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id LAA16326; Mon, 5 May 1997 11:35:54 +0200 (MET DST)
+Received: from yoda.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.F4413236@listserv.gmd.de>; Mon, 5 May 1997 11:35:53 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 134430 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 5 May 1997 11:35:48 +0200
+Received: from thphy.uni-duesseldorf.de (www.thphy.uni-duesseldorf.de
+          [134.99.64.123]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          SMTP id LAA24170 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 5
+          May 1997 11:29:06 +0200 (MET DST)
+Received: from macbeth.uni-duesseldorf.de (macbeth.thphy.uni-duesseldorf.de) by
+          thphy.uni-duesseldorf.de (4.1/SMI-4.1) id AA02247; Mon, 5 May 97
+          11:29:35 +0200
+Received: by macbeth.uni-duesseldorf.de (SMI-8.6/SMI-SVR4) id LAA10579; Mon, 5
+          May 1997 11:29:32 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199705050929.LAA10579@macbeth.uni-duesseldorf.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <01IHRVYNYRJ6FTF8OM@MZDMZA.ZDV.UNI-MAINZ.DE>
+              (KNAPPEN@MZDMZA.ZDV.UNI-MAINZ.DE)
+Date:         Mon, 5 May 1997 11:29:32 +0200
+From: Ulrik Vieth <vieth@THPHY.UNI-DUESSELDORF.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      \mathxx (was: Capital greek letters)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2004
+
+Joerg Knappen:
+
+> Unfortunately, I think there is a point, where the math font encoding (here:
+> MC) needs to be changed for the sake of compatibility.
+
+> Currently it is possible and often applied practice, to use
+>
+> \( \mathit{\Gamma} \mathrm{\Gamma} \mathsf{\Gamma} \)
+>
+> to get the different shapes of the capital greek Gamma. The MC encoding as
+> outlined by Justin Ziegler makes the capital Greek letter mathematical
+> symbols (instead of mathematical letters) and treats them in a way entirely
+> different from Latin letters. I cannot imagine any sensible implementation
+> of \mathit and friends with the current MC encoding.
+
+If I recall correctly, it was suggested very early in the discussions
+in 1993 that additional math alphabets accessed with \mathxx{} that
+require greek letters in addition to the roman letters would have to
+be implemented as extra MC-encoded fonts (or a subset thereof), not
+just extra T1 fonts.  The T1-encoded operator font (in \fam0) is just
+for operator names (and possibly also for physical units), while it
+is insufficient for \mathrm{} with arbitrary greek or roman letters.
+
+Whether an MC- or T1-encoded font is needed to implement a specific
+math alphabet might also depend on the context.  In a computer science
+context, where you might just want to typeset keywords, variables or
+strings in \mathbf{}, \mathit{} or \mathtt{}, it might be sufficent
+to have T1-fonts.  In a physics context, however, where you might need
+a full set of greek in upright, bold italics and bold sans oblique,
+you'll obviously can't do without MC-encoded fonts.
+
+In the case of \mathrm{} vs \mathnormal{} assuming that both are
+implemented as MC-encoded fonts, this might imply some waste of
+resources as the two sets of greek alphabets (upright and italics)
+would appear in both fonts (possibly with the two sets exchanged).
+However, this is probably not so much of a concern, as disk space
+and memory is becoming cheaper every day.
+
+If you really want to implement \mathrm{} with T1 + MC, you might get
+along with a more involved macro definition as suggested by David.
+I suppose, it shouldn't be too difficult to check for ASCII letters
+in the macro argument with \ifcat and use the \fam mechanism for these,
+whereas  the control glyph ligaturing mechanism might be employed for
+anything else. (For bold/bold italics or sans bold/sans bold oblique,
+several  extra T1 + MC combos could be used with the same mechanism.)
+
+OTOH, it would be far more difficult to write a macro that just takes
+care of handling lowercase greek specially, as would be needed with the
+old math encodings.  While you can do an \ifnum comparison if you know
+that the argument is a \mathchardef token, applying the comparison
+to other tokens may cause syntax errors.  When I asked for suggestions
+at one of Phil's macro writing tutorials, he suggested using \meaning
+and handling all the possible cases, which seems like a lot of overhead.
+
+Cheers, Ulrik.
+

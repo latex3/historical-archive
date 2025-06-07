@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1900" "Tue" "7" "October" "1997" "22:44:57" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "43" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id BAA03543;
+	Wed, 8 Oct 1997 01:24:14 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.56221DCB@listserv.gmd.de>; Wed, 8 Oct 1997 1:24:07 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 210149 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Oct 1997 01:23:45 +0200
+Received: from punt-1.mail.demon.net (punt-1b.mail.demon.net [194.217.242.135])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id BAA27044
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Wed, 8 Oct 1997 01:23:38
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-1.mail.demon.net  id aa1001531; 7 Oct 97 23:22 BST
+Received: by dcarlisle.demon.co.uk id m0xIhR3-000OWIC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 7 Oct 1997 22:44:57 +0100 (BST)
+Message-ID:  <m0xIhR3-000OWIC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199710071818.OAA17732@aleph.swift.xxx> (message from Matthew
+              Swift on Tue, 7 Oct 1997 14:18:49 -0400)
+Date:         Tue, 7 Oct 1997 22:44:57 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2386
+
+> Hunh?  Like what kind of class is that?
+
+The kind we were discussing before we wandered off topic and Frank
+changed the Subject to ``Extended include'' at which point it caught
+your eye:-)
+
+> You can't just go latex section1.tex if it doesn't have a
+> \documentclass in it.  If it does, either you weren't using \input or
+> \include to include it in the first place,
+
+A proposed `journal' or `proceedings' class which redefines
+\documentclass and other preamble commands such that `self standing'
+articles *can* be input.
+
+> A typical 300+-page document (source2e for example) doesn't tax TeX at
+> all, and we are about to enter the era of web2c-7 with dynamic memory
+> allocation.
+
+Number of pages is more or less irrelevant to memory use. Source2e has
+almost no cross references (sadly:-) so is quite light on memory
+consumption. It is *slow* because all the verbatim bits are parsed `by
+hand' to index command usage, and large parts of the old ASCII
+latex209 comments are similarly parsed by hand so that commands
+automatically print themselves verbatim even though they are not
+marked up as LaTeX.
+
+
+> add reason 2A) for using \include: To produce a partial document
+> that is identical to part of the whole document.
+
+Yes that as well, but to be reliable for that use the pages generated
+have to be *exactly* correct and it is always difficult to be sure of
+that with an include system. So you \includeonly{chapter3} but the
+first page of chapter3 `should' start with a float from chapter2,
+(which is now allowed because we assume an improved system with no
+\clearpage) so at best the system leaves the correct amount of white
+space. That might be acceptable depending on what you were planning to
+do with these pages. If you *really* want `final form' not just a
+draft perhaps you really need that float to be in place in which case
+you need \includeonly{chapter2,chapter3}  etc etc.
+
+
+David
+

@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 25 Feb 2009 21:32:07 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1PKYMeP026541
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 25 Feb 2009 21:34:22 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n1PKQp3K002444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 25 Feb 2009 21:26:52 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1PI8OHN015915;
+	Wed, 25 Feb 2009 21:26:51 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 200628 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 21:26:51 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1PKQpQ6021079 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:26:51 +0100
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n1PKQc56010440 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:26:41 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1LcQL0-00028p-h5 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 20:26:38 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <49A453A1.9040000@morningstar2.co.uk>           
+            <FB18C832-EA5E-42F0-9BF7-6853DB79B805@gmail.com>           
+            <49A4F031.50405@morningstar2.co.uk>           
+            <49A4FE4F.6040304@morningstar2.co.uk>           
+            <27990a880902250600v21963220v319195a504107625@mail.gmail.com>
+            <18853.41758.364009.703166@morse.mittelbach-online.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49A5A982.9050508@morningstar2.co.uk>
+Date:         Wed, 25 Feb 2009 20:26:42 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Missing expl3 primitives
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18853.41758.364009.703166@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Feb 2009 20:32:07.0170 (UTC) FILETIME=[20666E20:01C99788]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5686
+
+Frank Mittelbach wrote:
+> I really expect all (or nearly all) of them to used in higher-level
+> interfaces, each in one specific module and that the low-level functionality
+> outside these interfaces should not be accessed at all.
+> This is precisely the issue that exists in LaTeX2e right now which has a very
+> specific use for \everypar (but only a poorly developed inferface to access it
+> by others. As a result packages mistakenly use \everpar directly only to find
+> out that they die in certain situation or produce unexpected results.
+> 
+> So yes, we do want a functionality like \everypar available, but if LaTeX3
+> implements a galley module (whether it be variant of galley2 or something
+> leaner like xfmgalley or ...) then this functionality will not be provided
+> through the primitive \everpar but through something else that fits that
+> model.
+> 
+> Same essentially for every other \every... command: "every end of file" might
+> be useful and should be provided, but probably not through the primitive as
+> the l3file might as well have something to do at the end of every file first
+> (hijacking that lowlevel and instead providing something else for other
+> packages).
+> 
+> as i expect kernel (or near kernel) modules for all areas that offer
+> \every... I would leave this alone as \tex_every_...:D for now
+> 
+> if it turns out that one or the other is not going to be hijacked by the
+> kernel we can in the end still offer it as programmer available, but not
+> before
+
+One "philosophical" question: are the xpackages allowed to use :D
+functions?  My (possibly faulty) understanding was that expl3 is the
+language definition, and only the functions defined there are allowed
+anywhere else in LaTeX3.  This implies to me that the xpackages can't
+use :D functions, but that something in expl3 has to make the
+functionality available.
+--
+Joseph Wright
+

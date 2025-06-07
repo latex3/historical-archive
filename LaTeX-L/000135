@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 22 Jun 90 21:27:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      Re: Front matter
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 135
+
+>Don Hosek suggested a new way of specifying front matter
+>elements.
+>In my opinion, this is NOT the direction things should go: the
+>old
+>way of specifying front matter elements is still the best way, I
+>think,
+>but more elements need to be added. Before this discussion list
+>started
+>I sent Frank a list of the commands that are implemented by the
+>styles
+>for Elsevier's scientific journals. For that application I added
+>\address, \received and \keyword commands to the existing
+>\title, \author
+>and \date.
+
+The reason I proposed the format I did was it seemed to me the
+easiest way for a document style to handle any front matter
+specifications it did not recognize. The possible specifications
+is really rather limitless. I think that the Platonic ideal of
+LaTeX is that any document prepared under the, say, "article"
+idiom for markup should be capable of being formatted with any
+article variant without any modifications beyond \documentstyle.
+In certain cases additional changes may need to be made in the
+preamble, but this should be fairly rare (the case of causing all
+tabulars to be printed flush left rather than centered, for
+example).
+
+My scheme has the advantage that it is fairly simple to
+implement:
+
+\def\topm#1{\ifnextchar[{\@otopm#1}{\@topm#1}}
+\def\@topm#1#2{\@namedef{@#1}{#2}}
+\def\@otopm#1[#2]#3{\@namedef{@short#1}{#2}
+  \@namedef{@#1}{#3}}
+
+and is backwards compatible (I haven't seen a style which has,
+e.g., \address define anything other than \@address for example.
+
+Actually the scheme above is lacking one feature that I think it
+should have which is repeatability of topmatter (I really like
+Barbara's name for it) specifications. E.g.,
+
+\topm{author}{Fred Schwartz}
+\topm{author}{Joe Fish}
+\topm{revised}{12-Jan-1968}
+\topm{revised}{12-Feb-1968}
+\topm{revised}{23-Jun-1977}
+
+should define
+
+\@author == Fred Schwartz
+\@author1 == Joe Fish
+\@revised == 12-Jan-1968
+\@revised1 == 12-Feb-1968
+\@revised2 == 23-Jun-1977
+
+This would not be too much more difficult to implement but since
+I'm dealing with a 100+ message backlog right now, I'll leave the
+implementation of the code to the reader (also left as an
+exercise is the explanation of why numbering of additional
+authors and other duplicated topmatter is only applied beginning
+with the second occurrences and starts with one (this should be
+easy).
+
+-dh
+
+

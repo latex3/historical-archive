@@ -1,0 +1,1339 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D47DB7C4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:49 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D47DB7C4"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      \parskip
+Date: Mon, 8 Oct 1990 16:20:32 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1FB@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <eijkhout@CSRD.UIUC.EDU>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer Schoepf" <JL2@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 236
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D47DB7C4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Here is the \parskip article. This has a bit more
+substance than the indentation bit.
+
+I can think of more uses for \everypar, by the way, but
+that's for a future article, not written yet.
+
+---------------------------------------
+\documentstyle[ltugboat]{article}
+
+\chardef\busje=3D`\\
+\newcommand{\cs}[1]{{\tt\busje#1}}
+\newcommand{\whiteline}{\medskip\noindent}
+\frenchspacing
+%\hyphenchar\tentt=3D`\-
+
+\begin{document}
+
+\title{A parskip scheme}
+\author{Victor Eijkhout}
+\address{Department of Mathematics\\
+        University of Nijmegen\\
+        Toernooiveld 1\\
+        6525 ED Nijmegen, The Netherlands}
+\netaddress[\network{Bitnet}]{u641001@HNYKUN11}
+\maketitle
+
+\noindent
+While I~was working on the \LaTeX\ styles described in~\cite{BEP},
+it became apparent to me that lots of people are rather fond of
+the sort of layout
+that can be described as
+\begin{verbatim}
+\parindent=3D0cm
+\parskip=3D6pt % or other positive size
+\end{verbatim}
+Unfortunately, most of them realize this layout by no more sophisticated
+means than simply inserting these two lines at the beginning
+of the input. The drawback of such a simple action is
+that all sorts of vertical spaces are augmented by the
+\cs{parskip} when there is absolutely no need to,
+or where it is positively unwanted. Examples of this
+are the white space below section headings,
+and the white space above and
+below list environments in \LaTeX.
+
+In this article I~will present an approach that unifies the
+paragraph skip and the
+white spaces surrounding various environments.
+Since the macros given below make use of the \cs{everypar}
+token list, this article may be seen as a sequel to
+an earlier paper on an indentation scheme~\cite{E},
+which is based on a similar principle.
+The \cs{everypar} parameter was explained there.
+
+\section{\cs{parskip}}
+
+\TeX\ starts a paragraph when it switches from
+vertical to horizontal mode. The vertical mode
+may have been initiated by a \cs{par} (for instance
+because of an empty line after a preceding paragraph)
+or by a vertical skip command; the switch to horizontal
+mode can be effected by, for example, a character
+or a horizontal skip command (see the list in~\cite[p.~283]{DeK}).
+Immediately above the first line of the paragraph
+\TeX\ will then add glue
+of size \cs{parskip}
+to the vertical list\footnote{Unless this paragraph is
+at the start of a vertical list, for instance at the
+start of a vertical box or insertion item.}.
+
+Apparently, then, the \cs{parskip} parameter is very
+simple to use. That this is only an apparent
+simplicity becomes  clear in a number of instances.
+
+For instance, unless precautions are taken, the white
+space below headings is augmented by the paragraph skip.
+Precautions against this are not particularly elegant:
+the easiest solution is to include a
+\begin{verbatim}\vskip-\parskip\end{verbatim}
+statement, to backspace the paragraph skip in advance.
+Such an approach, however, is somewhat error-prone.
+Vertical spacing  will be messed up if what follows is not
+a paragraph, but a display formula or a box.
+
+Similar considerations apply to the amounts of white space
+that surround, for example, list environments, as in \LaTeX.
+
+\section{Paragraph skip: to be or not to be}
+
+(This section is something of a footnote to the rest
+of the article. Readers who are not interested in layout consideration
+may skip the rest of it.)
+
+Ordinarily in plain \TeX\ and in \LaTeX\ the paragraph
+skip is set to {\tt 0pt plus 1pt}, which gives pages some
+`last resort' stretchability. However, even an amount of vertical
+space as small as one point may become very
+visible, and often without need (see for instance
+the first page of the preface of~\cite{DeK}).
+
+Furthermore, Stanley Morison states that not indenting
+paragraphs is `decidedly an abject method'~\cite{M}.
+However, reading his intention instead of his words,
+he is only concerned with the recognizability of the individual
+paragraphs. The positive value of the paragraph skip is sufficient
+to ensure this. If a layout is based on zero values for
+both \cs{parindent} and \cs{parskip}, one may for instance
+give the \cs{parfillskip} a positive natural width
+to prevent last lines of a paragraph from almost, or completely,
+lining up with the right margin.
+
+Neither Donald Knuth nor Leslie Lamport
+seem to have given much thought to
+the case where the paragraph skip has a positive natural width.
+Leslie Lamport dismisses all potential difficulties with the remark
+that `it is customary not to leave any extra space
+between paragraphs'~\cite[p.~94]{LL}.
+
+\section{Environments and white lines}
+
+Given that the paragraph skip appears to interact with
+explicit vertical spacing in user macros, it may seem
+like a good idea to find a unified approach to both.
+In the rest of this article I~will describe the implementation
+of the following basic idea: {\em give the paragraph skip
+the value zero whenever you do an explicit vertical skip}.
+
+For the presentation  I~assume a context with  some form of
+environments. These are the assumptions that I~make
+about such environments:
+\begin{itemize}
+\item An environment is a portion of material that is vertically
+separated from whatever is before and after it. Thus, according to
+this definition, a portion of a paragraph cannot be an environment,
+nor can an environment start or end in the middle of a paragraph.
+\item An environment has associated with it three glue parameters:
+to an environment {\tt foo} correspond \cs{fooStartskip} (glue
+above the environment), \cs{fooParskip} (the paragraph skip
+inside the environment), and the \cs{fooEndskip} (glue below
+the environment). \item At the outset of the environment
+a \begin{verbatim}\StartEnvironment{foo}\end{verbatim} statement
+is executed; at the end of the environment a macro
+\begin{verbatim}\EndEnvironment{foo}\end{verbatim} is executed.
+These statements are assumed to
+contain a \cs{begingroup} and \cs{endgroup}
+respectively.\end{itemize}
+Such assumptions are sufficiently general for the macros
+below to be adaptable to existing macro packages.
+At first sight it would appear as if section headings
+are not covered by the above points. However, there
+is no argument against the start and end of an environment
+occurring in the same macro.
+
+\section{Tools}
+
+First I will present two auxiliary macros: \cs{csarg}
+and \cs{vspace}.
+
+The command \cs{csarg}
+is only needed inside other macros; it is meant to
+enable constructs such as
+\begin{verbatim}\csarg\vskip{#1Parskip}\end{verbatim}
+Its definition is
+\begin{verbatim}
+\def\csarg#1#2{\expandafter
+    #1\csname#2\endcsname}
+\end{verbatim}
+By way of explanation of this macro, consider a simple example.
+Let us assume that there exists a macro
+\begin{verbatim}
+\def\startlist#1{ ...
+    \csarg\vskip{#1Startskip}
+    ...}
+\end{verbatim}
+The call \begin{verbatim}\startlist{enumerate}\end{verbatim}
+will then lead to the following call to \cs{csarg}:
+\begin{verbatim}\csarg\vskip{enumerateStartskip}\end{verbatim}
+This expands to
+\begin{verbatim}
+\expandafter\vskip
+ \csname enumerateStartskip\endcsname\end{verbatim}
+Now the \cs{expandafter} forces \cs{csname} to be executed
+before the \cs{vskip}, so the next step of the expansion
+looks like
+\begin{verbatim}\vskip\enumerateStartskip\end{verbatim}
+and this statement can simply be executed.
+
+Next I~need a generalization of \cs{vskip}, which I~will call =
+\cs{vspace}:
+a number of calls to \cs{vspace} should have the effect
+that only the maximum argument is placed.
+\begin{verbatim}
+\newskip\tempskipa
+\def\vspace
+ #1{\tempskipa=3D#1\relax
+    \ifvmode \ifdim\tempskipa<\lastskip
+        \else \vskip-\lastskip \vskip\tempskipa
+        \fi
+    \else \vskip\tempskipa \fi}
+\end{verbatim}
+This may need some explanation too. First, by the assignment
+\begin{verbatim}\tempskipa=3D#1
+\end{verbatim} I~allow the argument of \cs{vspace} to be
+both a control sequence, for instance \cs{parskip},
+and a denotation, for instance {\tt 5pt plus 3pt}.
+If one omits the assignment, the latter option would cause trouble
+in the \cs{ifdim} test.
+
+The decision to keep the maximum value of the skip, instead of
+always replacing the last skip, was motivated by phenomena
+such as a display formula at the end of a list. If the
+skip below the display is larger than the vertical glue
+below the list (which may for instance be zero),
+the former should be retained entirely.
+
+Note that this macro can insert vertical space of size
+zero. This will for instance happen if it follows
+a \cs{par} command at the end of a paragraph.
+It is then called in vertical mode,
+but the last item on the vertical list is a box
+(the last line of the paragraph) instead of a
+glue item. The parameter \cs{lastskip} will then be zero.
+
+\section{The environment macros}
+
+In this section, I~will give the implementation of the
+macros \cs{StartEnvironment} and \cs{EndEnvironment}.
+
+There is a remarkable similarity between these two macros.
+As I explained above, the basic idea is to have only explicit
+spacing above and below the environment; thus, the value of \cs{parskip}
+should then be zero both for the first paragraph in the
+environment, and for the first paragraph that follows it.
+Both macros should then
+\begin{itemize}
+   \item save the current value of the paragraph skip;
+   \item set the paragraph skip to zero;
+   \item give \TeX\ a signal that, somewhere in the near
+   future, the old value of \cs{parskip} is to be restored.
+\end{itemize}
+For this I~allocate a skip register and a conditional:
+\begin{verbatim}
+\newskip\TempParskip
+\newif\ifParskipNeedsRestoring
+\end{verbatim}
+The basic sequence for both macros is then
+\begin{verbatim}
+\TempParskip=3D\parskip
+\parskip=3D0cm\relax
+\ParskipNeedsRestoringtrue
+\end{verbatim}
+
+For both macros, however, this sequence needs to be
+refined slightly.
+
+The paragraph skip to be `restored' at the start of the
+environment is the specific value associated with that
+environment. This gives us:
+\begin{verbatim}
+\def\StartEnvironment
+ #1{\csarg\vspace{#1Startskip}
+    \begingroup %% make changes local
+    \csarg\TempParskip{#1Parskip}
+    \parskip=3D0cm\relax
+    \ParskipNeedsRestoringtrue}
+\end{verbatim}
+Note that the statement
+\begin{verbatim}
+\csarg\TempParskip{#1parskip}
+\end{verbatim}
+denotes an assignment (without an optional equals sign) here.
+
+At the end of the environment we have to be more careful.
+It may be the case that
+the environment being ended was inside another
+environment, and occurred
+before the first paragraph inside
+that environment. In that case the value of \cs{parskip} is zero,
+and the proper value must still be restored.
+Therefore, no further actions are required.
+We arrive at the following implementation:
+\begin{verbatim}
+\def\EndEnvironment
+ #1{\csarg\vspace{#1Endskip}
+    \endgroup %% restore global values
+    \ifParskipNeedsRestoring
+    \else \TempParskip=3D\parskip
+          \parskip=3D0cm\relax
+          \ParskipNeedsRestoringtrue
+    \fi}
+\end{verbatim}
+Note that both macros start with a vertical skip. This prevents
+the \cs{begingroup} and \cs{endgroup} statements from
+occurring in a paragraph. On a side note: since these macros
+are executed in vertical mode, I~have not bothered to terminate
+any lines with comment signs. Any spaces generated by
+these macros are ignored in vertical mode.
+
+\section{Paragraph skip restoring}
+
+So far, I~have ignored one important question:
+how exactly is restoring the paragraph skip implemented.
+For this I~use the \cs{everypar} token list.
+Basically then, the idea is the same as in~\cite{E}:
+the occurrence of a paragraph will  automatically
+have \TeX\ perform, through the insertion of the
+\cs{everypar} tokens, the actions necessary for subsequent
+paragraphs.
+\begin{verbatim}
+\everypar=3D
+   {\ControlledIndentation
+      %see Tugboat 11, #3
+    \ControlledParskip}
+\def\ControlledParskip
+   {\ifParskipNeedsRestoring
+       \parskip=3D\TempParskip
+       \ParskipNeedsRestoringfalse
+    \fi}
+\end{verbatim}
+The cost of a controlled paragraph skip is then one conditional
+per paragraph. Conceivably, this cost could even be reduced further
+(to almost zero) by defining
+\begin{verbatim}
+\def\CPS % Controlled Parskip
+   {\ifParskipNeedsRestoring
+       \parskip=3D\TempParskip
+       \ParskipNeedsRestoringfalse
+       \let\ControlledParskip=3D\relax
+    \fi}
+\end{verbatim}
+and including a statement
+\begin{verbatim}\let\ControlledParskip=3D\CPS\end{verbatim}
+in both the \cs{StartEnvironment} and \cs{EndEnvironment}
+macros, and at the start of the job (for instance
+by including it in the macro package).
+This approach, however, does not particularly
+appeal to me. Too much `pushing the bit around'.
+
+\section{Conclusion}
+
+The \cs{parskip} parameter is arguably the most tricky parameter of
+\TeX. Its workings are very easy to describe, but in actual
+practice difficulties arise. In this article I~have
+described how treatment of the paragraph skip can be integrated
+with the glue above and below environments.
+As in an earlier article on indentation, I~use for this
+the \cs{everypar} parameter as an essential tool.
+
+\begingroup
+%\parskip=3D6pt plus 3pt \parindent=3D0pt
+\begin{thebibliography}9
+
+\bibitem{BEP}J. Braams, V.~Eijkhout, N.A.F.M.~Poppelier,
+The development of national \LaTeX\ styles,
+TUGboat vol.~10 (1989) \#3, pp.~401--406.
+
+\bibitem{E}Victor Eijkhout,
+An indentation scheme, TUGboat vol.~11 (1990) \#4.
+
+\bibitem{DeK}Donald Knuth, The \TeX\ book,
+Addison-Wesley Publishing Company, 1984.
+%Donald Knuth, \TB, 1984.
+
+\bibitem{M} Stanley Morison, First principles of typography,
+Cambridge University Press, 1936.
+
+\bibitem{LL} Leslie Lamport, \LaTeX, a document preparation
+system, Addison-Wesley Publishing Company, 1986.
+
+\end{thebibliography}\endgroup
+
+
+
+\makesignature
+
+\end{document}
+
+
+------------------------------------------------
+Victor Eijkhout                     phone: +1 217 244-0047
+ Center for Supercomputing Research and Development
+ University of Illinois at Urbana-Champaign
+ 305 Talbot laboratory
+ 104 South Wright street
+ Urbana, Illinois 61801-2932, USA
+
+home: 2503 W. Springfield Av, Apt. K-4, Champaign 61821, USA
+
+
+------_=_NextPart_001_01C19442.D47DB7C4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     \parskip</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Here is the \parskip article. This has a bit =
+more</FONT>
+
+<BR><FONT SIZE=3D2>substance than the indentation bit.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I can think of more uses for \everypar, by the way, =
+but</FONT>
+
+<BR><FONT SIZE=3D2>that's for a future article, not written yet.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---------------------------------------</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[ltugboat]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\chardef\busje=3D`\\</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\cs}[1]{{\tt\busje#1}}</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\whiteline}{\medskip\noindent}</FONT>
+
+<BR><FONT SIZE=3D2>\frenchspacing</FONT>
+
+<BR><FONT SIZE=3D2>%\hyphenchar\tentt=3D`\-</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{A parskip scheme}</FONT>
+
+<BR><FONT SIZE=3D2>\author{Victor Eijkhout}</FONT>
+
+<BR><FONT SIZE=3D2>\address{Department of Mathematics\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; University =
+of Nijmegen\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Toernooiveld 1\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6525 ED =
+Nijmegen, The Netherlands}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\netaddress[\network{Bitnet}]{u641001@HNYKUN11}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>While I~was working on the \LaTeX\ styles described =
+in~\cite{BEP},</FONT>
+
+<BR><FONT SIZE=3D2>it became apparent to me that lots of people are =
+rather fond of</FONT>
+
+<BR><FONT SIZE=3D2>the sort of layout</FONT>
+
+<BR><FONT SIZE=3D2>that can be described as</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\parindent=3D0cm</FONT>
+
+<BR><FONT SIZE=3D2>\parskip=3D6pt % or other positive size</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Unfortunately, most of them realize this layout by no =
+more sophisticated</FONT>
+
+<BR><FONT SIZE=3D2>means than simply inserting these two lines at the =
+beginning</FONT>
+
+<BR><FONT SIZE=3D2>of the input. The drawback of such a simple action =
+is</FONT>
+
+<BR><FONT SIZE=3D2>that all sorts of vertical spaces are augmented by =
+the</FONT>
+
+<BR><FONT SIZE=3D2>\cs{parskip} when there is absolutely no need =
+to,</FONT>
+
+<BR><FONT SIZE=3D2>or where it is positively unwanted. Examples of =
+this</FONT>
+
+<BR><FONT SIZE=3D2>are the white space below section headings,</FONT>
+
+<BR><FONT SIZE=3D2>and the white space above and</FONT>
+
+<BR><FONT SIZE=3D2>below list environments in \LaTeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In this article I~will present an approach that =
+unifies the</FONT>
+
+<BR><FONT SIZE=3D2>paragraph skip and the</FONT>
+
+<BR><FONT SIZE=3D2>white spaces surrounding various environments.</FONT>
+
+<BR><FONT SIZE=3D2>Since the macros given below make use of the =
+\cs{everypar}</FONT>
+
+<BR><FONT SIZE=3D2>token list, this article may be seen as a sequel =
+to</FONT>
+
+<BR><FONT SIZE=3D2>an earlier paper on an indentation =
+scheme~\cite{E},</FONT>
+
+<BR><FONT SIZE=3D2>which is based on a similar principle.</FONT>
+
+<BR><FONT SIZE=3D2>The \cs{everypar} parameter was explained =
+there.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{\cs{parskip}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\TeX\ starts a paragraph when it switches from</FONT>
+
+<BR><FONT SIZE=3D2>vertical to horizontal mode. The vertical mode</FONT>
+
+<BR><FONT SIZE=3D2>may have been initiated by a \cs{par} (for =
+instance</FONT>
+
+<BR><FONT SIZE=3D2>because of an empty line after a preceding =
+paragraph)</FONT>
+
+<BR><FONT SIZE=3D2>or by a vertical skip command; the switch to =
+horizontal</FONT>
+
+<BR><FONT SIZE=3D2>mode can be effected by, for example, a =
+character</FONT>
+
+<BR><FONT SIZE=3D2>or a horizontal skip command (see the list =
+in~\cite[p.~283]{DeK}).</FONT>
+
+<BR><FONT SIZE=3D2>Immediately above the first line of the =
+paragraph</FONT>
+
+<BR><FONT SIZE=3D2>\TeX\ will then add glue</FONT>
+
+<BR><FONT SIZE=3D2>of size \cs{parskip}</FONT>
+
+<BR><FONT SIZE=3D2>to the vertical list\footnote{Unless this paragraph =
+is</FONT>
+
+<BR><FONT SIZE=3D2>at the start of a vertical list, for instance at =
+the</FONT>
+
+<BR><FONT SIZE=3D2>start of a vertical box or insertion item.}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Apparently, then, the \cs{parskip} parameter is =
+very</FONT>
+
+<BR><FONT SIZE=3D2>simple to use. That this is only an apparent</FONT>
+
+<BR><FONT SIZE=3D2>simplicity becomes&nbsp; clear in a number of =
+instances.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For instance, unless precautions are taken, the =
+white</FONT>
+
+<BR><FONT SIZE=3D2>space below headings is augmented by the paragraph =
+skip.</FONT>
+
+<BR><FONT SIZE=3D2>Precautions against this are not particularly =
+elegant:</FONT>
+
+<BR><FONT SIZE=3D2>the easiest solution is to include a</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}\vskip-\parskip\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>statement, to backspace the paragraph skip in =
+advance.</FONT>
+
+<BR><FONT SIZE=3D2>Such an approach, however, is somewhat =
+error-prone.</FONT>
+
+<BR><FONT SIZE=3D2>Vertical spacing&nbsp; will be messed up if what =
+follows is not</FONT>
+
+<BR><FONT SIZE=3D2>a paragraph, but a display formula or a box.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Similar considerations apply to the amounts of white =
+space</FONT>
+
+<BR><FONT SIZE=3D2>that surround, for example, list environments, as in =
+\LaTeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Paragraph skip: to be or not to be}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>(This section is something of a footnote to the =
+rest</FONT>
+
+<BR><FONT SIZE=3D2>of the article. Readers who are not interested in =
+layout consideration</FONT>
+
+<BR><FONT SIZE=3D2>may skip the rest of it.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ordinarily in plain \TeX\ and in \LaTeX\ the =
+paragraph</FONT>
+
+<BR><FONT SIZE=3D2>skip is set to {\tt 0pt plus 1pt}, which gives pages =
+some</FONT>
+
+<BR><FONT SIZE=3D2>`last resort' stretchability. However, even an amount =
+of vertical</FONT>
+
+<BR><FONT SIZE=3D2>space as small as one point may become very</FONT>
+
+<BR><FONT SIZE=3D2>visible, and often without need (see for =
+instance</FONT>
+
+<BR><FONT SIZE=3D2>the first page of the preface of~\cite{DeK}).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Furthermore, Stanley Morison states that not =
+indenting</FONT>
+
+<BR><FONT SIZE=3D2>paragraphs is `decidedly an abject =
+method'~\cite{M}.</FONT>
+
+<BR><FONT SIZE=3D2>However, reading his intention instead of his =
+words,</FONT>
+
+<BR><FONT SIZE=3D2>he is only concerned with the recognizability of the =
+individual</FONT>
+
+<BR><FONT SIZE=3D2>paragraphs. The positive value of the paragraph skip =
+is sufficient</FONT>
+
+<BR><FONT SIZE=3D2>to ensure this. If a layout is based on zero values =
+for</FONT>
+
+<BR><FONT SIZE=3D2>both \cs{parindent} and \cs{parskip}, one may for =
+instance</FONT>
+
+<BR><FONT SIZE=3D2>give the \cs{parfillskip} a positive natural =
+width</FONT>
+
+<BR><FONT SIZE=3D2>to prevent last lines of a paragraph from almost, or =
+completely,</FONT>
+
+<BR><FONT SIZE=3D2>lining up with the right margin.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Neither Donald Knuth nor Leslie Lamport</FONT>
+
+<BR><FONT SIZE=3D2>seem to have given much thought to</FONT>
+
+<BR><FONT SIZE=3D2>the case where the paragraph skip has a positive =
+natural width.</FONT>
+
+<BR><FONT SIZE=3D2>Leslie Lamport dismisses all potential difficulties =
+with the remark</FONT>
+
+<BR><FONT SIZE=3D2>that `it is customary not to leave any extra =
+space</FONT>
+
+<BR><FONT SIZE=3D2>between paragraphs'~\cite[p.~94]{LL}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Environments and white lines}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Given that the paragraph skip appears to interact =
+with</FONT>
+
+<BR><FONT SIZE=3D2>explicit vertical spacing in user macros, it may =
+seem</FONT>
+
+<BR><FONT SIZE=3D2>like a good idea to find a unified approach to =
+both.</FONT>
+
+<BR><FONT SIZE=3D2>In the rest of this article I~will describe the =
+implementation</FONT>
+
+<BR><FONT SIZE=3D2>of the following basic idea: {\em give the paragraph =
+skip</FONT>
+
+<BR><FONT SIZE=3D2>the value zero whenever you do an explicit vertical =
+skip}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For the presentation&nbsp; I~assume a context =
+with&nbsp; some form of</FONT>
+
+<BR><FONT SIZE=3D2>environments. These are the assumptions that =
+I~make</FONT>
+
+<BR><FONT SIZE=3D2>about such environments:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item An environment is a portion of material that is =
+vertically</FONT>
+
+<BR><FONT SIZE=3D2>separated from whatever is before and after it. Thus, =
+according to</FONT>
+
+<BR><FONT SIZE=3D2>this definition, a portion of a paragraph cannot be =
+an environment,</FONT>
+
+<BR><FONT SIZE=3D2>nor can an environment start or end in the middle of =
+a paragraph.</FONT>
+
+<BR><FONT SIZE=3D2>\item An environment has associated with it three =
+glue parameters:</FONT>
+
+<BR><FONT SIZE=3D2>to an environment {\tt foo} correspond =
+\cs{fooStartskip} (glue</FONT>
+
+<BR><FONT SIZE=3D2>above the environment), \cs{fooParskip} (the =
+paragraph skip</FONT>
+
+<BR><FONT SIZE=3D2>inside the environment), and the \cs{fooEndskip} =
+(glue below</FONT>
+
+<BR><FONT SIZE=3D2>the environment). \item At the outset of the =
+environment</FONT>
+
+<BR><FONT SIZE=3D2>a =
+\begin{verbatim}\StartEnvironment{foo}\end{verbatim} statement</FONT>
+
+<BR><FONT SIZE=3D2>is executed; at the end of the environment a =
+macro</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}\EndEnvironment{foo}\end{verbatim} is =
+executed.</FONT>
+
+<BR><FONT SIZE=3D2>These statements are assumed to</FONT>
+
+<BR><FONT SIZE=3D2>contain a \cs{begingroup} and \cs{endgroup}</FONT>
+
+<BR><FONT SIZE=3D2>respectively.\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>Such assumptions are sufficiently general for the =
+macros</FONT>
+
+<BR><FONT SIZE=3D2>below to be adaptable to existing macro =
+packages.</FONT>
+
+<BR><FONT SIZE=3D2>At first sight it would appear as if section =
+headings</FONT>
+
+<BR><FONT SIZE=3D2>are not covered by the above points. However, =
+there</FONT>
+
+<BR><FONT SIZE=3D2>is no argument against the start and end of an =
+environment</FONT>
+
+<BR><FONT SIZE=3D2>occurring in the same macro.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Tools}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>First I will present two auxiliary macros: =
+\cs{csarg}</FONT>
+
+<BR><FONT SIZE=3D2>and \cs{vspace}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The command \cs{csarg}</FONT>
+
+<BR><FONT SIZE=3D2>is only needed inside other macros; it is meant =
+to</FONT>
+
+<BR><FONT SIZE=3D2>enable constructs such as</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{verbatim}\csarg\vskip{#1Parskip}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Its definition is</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\csarg#1#2{\expandafter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; #1\csname#2\endcsname}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>By way of explanation of this macro, consider a =
+simple example.</FONT>
+
+<BR><FONT SIZE=3D2>Let us assume that there exists a macro</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\startlist#1{ ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \csarg\vskip{#1Startskip}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The call =
+\begin{verbatim}\startlist{enumerate}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>will then lead to the following call to =
+\cs{csarg}:</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{verbatim}\csarg\vskip{enumerateStartskip}\end{verbatim}</=
+FONT>
+
+<BR><FONT SIZE=3D2>This expands to</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\expandafter\vskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\csname =
+enumerateStartskip\endcsname\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Now the \cs{expandafter} forces \cs{csname} to be =
+executed</FONT>
+
+<BR><FONT SIZE=3D2>before the \cs{vskip}, so the next step of the =
+expansion</FONT>
+
+<BR><FONT SIZE=3D2>looks like</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{verbatim}\vskip\enumerateStartskip\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>and this statement can simply be executed.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Next I~need a generalization of \cs{vskip}, which =
+I~will call \cs{vspace}:</FONT>
+
+<BR><FONT SIZE=3D2>a number of calls to \cs{vspace} should have the =
+effect</FONT>
+
+<BR><FONT SIZE=3D2>that only the maximum argument is placed.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\newskip\tempskipa</FONT>
+
+<BR><FONT SIZE=3D2>\def\vspace</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;#1{\tempskipa=3D#1\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifvmode =
+\ifdim\tempskipa&lt;\lastskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\vskip-\lastskip \vskip\tempskipa</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \vskip\tempskipa \fi}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>This may need some explanation too. First, by the =
+assignment</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}\tempskipa=3D#1</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim} I~allow the argument of \cs{vspace} to =
+be</FONT>
+
+<BR><FONT SIZE=3D2>both a control sequence, for instance =
+\cs{parskip},</FONT>
+
+<BR><FONT SIZE=3D2>and a denotation, for instance {\tt 5pt plus =
+3pt}.</FONT>
+
+<BR><FONT SIZE=3D2>If one omits the assignment, the latter option would =
+cause trouble</FONT>
+
+<BR><FONT SIZE=3D2>in the \cs{ifdim} test.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The decision to keep the maximum value of the skip, =
+instead of</FONT>
+
+<BR><FONT SIZE=3D2>always replacing the last skip, was motivated by =
+phenomena</FONT>
+
+<BR><FONT SIZE=3D2>such as a display formula at the end of a list. If =
+the</FONT>
+
+<BR><FONT SIZE=3D2>skip below the display is larger than the vertical =
+glue</FONT>
+
+<BR><FONT SIZE=3D2>below the list (which may for instance be =
+zero),</FONT>
+
+<BR><FONT SIZE=3D2>the former should be retained entirely.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Note that this macro can insert vertical space of =
+size</FONT>
+
+<BR><FONT SIZE=3D2>zero. This will for instance happen if it =
+follows</FONT>
+
+<BR><FONT SIZE=3D2>a \cs{par} command at the end of a paragraph.</FONT>
+
+<BR><FONT SIZE=3D2>It is then called in vertical mode,</FONT>
+
+<BR><FONT SIZE=3D2>but the last item on the vertical list is a =
+box</FONT>
+
+<BR><FONT SIZE=3D2>(the last line of the paragraph) instead of a</FONT>
+
+<BR><FONT SIZE=3D2>glue item. The parameter \cs{lastskip} will then be =
+zero.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{The environment macros}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In this section, I~will give the implementation of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>macros \cs{StartEnvironment} and =
+\cs{EndEnvironment}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There is a remarkable similarity between these two =
+macros.</FONT>
+
+<BR><FONT SIZE=3D2>As I explained above, the basic idea is to have only =
+explicit</FONT>
+
+<BR><FONT SIZE=3D2>spacing above and below the environment; thus, the =
+value of \cs{parskip}</FONT>
+
+<BR><FONT SIZE=3D2>should then be zero both for the first paragraph in =
+the</FONT>
+
+<BR><FONT SIZE=3D2>environment, and for the first paragraph that follows =
+it.</FONT>
+
+<BR><FONT SIZE=3D2>Both macros should then</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item save the current value of the =
+paragraph skip;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item set the paragraph skip to =
+zero;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item give \TeX\ a signal that, =
+somewhere in the near</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; future, the old value of \cs{parskip} is =
+to be restored.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>For this I~allocate a skip register and a =
+conditional:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\newskip\TempParskip</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifParskipNeedsRestoring</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The basic sequence for both macros is then</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\TempParskip=3D\parskip</FONT>
+
+<BR><FONT SIZE=3D2>\parskip=3D0cm\relax</FONT>
+
+<BR><FONT SIZE=3D2>\ParskipNeedsRestoringtrue</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For both macros, however, this sequence needs to =
+be</FONT>
+
+<BR><FONT SIZE=3D2>refined slightly.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The paragraph skip to be `restored' at the start of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>environment is the specific value associated with =
+that</FONT>
+
+<BR><FONT SIZE=3D2>environment. This gives us:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\StartEnvironment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;#1{\csarg\vspace{#1Startskip}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \begingroup %% make changes =
+local</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\csarg\TempParskip{#1Parskip}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \parskip=3D0cm\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ParskipNeedsRestoringtrue}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Note that the statement</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\csarg\TempParskip{#1parskip}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>denotes an assignment (without an optional equals =
+sign) here.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At the end of the environment we have to be more =
+careful.</FONT>
+
+<BR><FONT SIZE=3D2>It may be the case that</FONT>
+
+<BR><FONT SIZE=3D2>the environment being ended was inside another</FONT>
+
+<BR><FONT SIZE=3D2>environment, and occurred</FONT>
+
+<BR><FONT SIZE=3D2>before the first paragraph inside</FONT>
+
+<BR><FONT SIZE=3D2>that environment. In that case the value of =
+\cs{parskip} is zero,</FONT>
+
+<BR><FONT SIZE=3D2>and the proper value must still be restored.</FONT>
+
+<BR><FONT SIZE=3D2>Therefore, no further actions are required.</FONT>
+
+<BR><FONT SIZE=3D2>We arrive at the following implementation:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\EndEnvironment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;#1{\csarg\vspace{#1Endskip}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \endgroup %% restore global =
+values</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifParskipNeedsRestoring</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else =
+\TempParskip=3D\parskip</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\parskip=3D0cm\relax</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ParskipNeedsRestoringtrue</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Note that both macros start with a vertical skip. =
+This prevents</FONT>
+
+<BR><FONT SIZE=3D2>the \cs{begingroup} and \cs{endgroup} statements =
+from</FONT>
+
+<BR><FONT SIZE=3D2>occurring in a paragraph. On a side note: since these =
+macros</FONT>
+
+<BR><FONT SIZE=3D2>are executed in vertical mode, I~have not bothered to =
+terminate</FONT>
+
+<BR><FONT SIZE=3D2>any lines with comment signs. Any spaces generated =
+by</FONT>
+
+<BR><FONT SIZE=3D2>these macros are ignored in vertical mode.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Paragraph skip restoring}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>So far, I~have ignored one important question:</FONT>
+
+<BR><FONT SIZE=3D2>how exactly is restoring the paragraph skip =
+implemented.</FONT>
+
+<BR><FONT SIZE=3D2>For this I~use the \cs{everypar} token list.</FONT>
+
+<BR><FONT SIZE=3D2>Basically then, the idea is the same as =
+in~\cite{E}:</FONT>
+
+<BR><FONT SIZE=3D2>the occurrence of a paragraph will&nbsp; =
+automatically</FONT>
+
+<BR><FONT SIZE=3D2>have \TeX\ perform, through the insertion of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>\cs{everypar} tokens, the actions necessary for =
+subsequent</FONT>
+
+<BR><FONT SIZE=3D2>paragraphs.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\everypar=3D</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\ControlledIndentation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %see Tugboat 11, =
+#3</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ControlledParskip}</FONT>
+
+<BR><FONT SIZE=3D2>\def\ControlledParskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\ifParskipNeedsRestoring</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\parskip=3D\TempParskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ParskipNeedsRestoringfalse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The cost of a controlled paragraph skip is then one =
+conditional</FONT>
+
+<BR><FONT SIZE=3D2>per paragraph. Conceivably, this cost could even be =
+reduced further</FONT>
+
+<BR><FONT SIZE=3D2>(to almost zero) by defining</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\CPS % Controlled Parskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\ifParskipNeedsRestoring</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\parskip=3D\TempParskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ParskipNeedsRestoringfalse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\let\ControlledParskip=3D\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>and including a statement</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{verbatim}\let\ControlledParskip=3D\CPS\end{verbatim}</FON=
+T>
+
+<BR><FONT SIZE=3D2>in both the \cs{StartEnvironment} and =
+\cs{EndEnvironment}</FONT>
+
+<BR><FONT SIZE=3D2>macros, and at the start of the job (for =
+instance</FONT>
+
+<BR><FONT SIZE=3D2>by including it in the macro package).</FONT>
+
+<BR><FONT SIZE=3D2>This approach, however, does not particularly</FONT>
+
+<BR><FONT SIZE=3D2>appeal to me. Too much `pushing the bit =
+around'.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Conclusion}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \cs{parskip} parameter is arguably the most tricky =
+parameter of</FONT>
+
+<BR><FONT SIZE=3D2>\TeX. Its workings are very easy to describe, but in =
+actual</FONT>
+
+<BR><FONT SIZE=3D2>practice difficulties arise. In this article =
+I~have</FONT>
+
+<BR><FONT SIZE=3D2>described how treatment of the paragraph skip can be =
+integrated</FONT>
+
+<BR><FONT SIZE=3D2>with the glue above and below environments.</FONT>
+
+<BR><FONT SIZE=3D2>As in an earlier article on indentation, I~use for =
+this</FONT>
+
+<BR><FONT SIZE=3D2>the \cs{everypar} parameter as an essential =
+tool.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>%\parskip=3D6pt plus 3pt \parindent=3D0pt</FONT>
+
+<BR><FONT SIZE=3D2>\begin{thebibliography}9</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{BEP}J. Braams, V.~Eijkhout, =
+N.A.F.M.~Poppelier,</FONT>
+
+<BR><FONT SIZE=3D2>The development of national \LaTeX\ styles,</FONT>
+
+<BR><FONT SIZE=3D2>TUGboat vol.~10 (1989) \#3, pp.~401--406.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{E}Victor Eijkhout,</FONT>
+
+<BR><FONT SIZE=3D2>An indentation scheme, TUGboat vol.~11 (1990) =
+\#4.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{DeK}Donald Knuth, The \TeX\ book,</FONT>
+
+<BR><FONT SIZE=3D2>Addison-Wesley Publishing Company, 1984.</FONT>
+
+<BR><FONT SIZE=3D2>%Donald Knuth, \TB, 1984.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{M} Stanley Morison, First principles of =
+typography,</FONT>
+
+<BR><FONT SIZE=3D2>Cambridge University Press, 1936.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{LL} Leslie Lamport, \LaTeX, a document =
+preparation</FONT>
+
+<BR><FONT SIZE=3D2>system, Addison-Wesley Publishing Company, =
+1986.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{thebibliography}\endgroup</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\makesignature</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+<BR>
+
+<P><FONT =
+SIZE=3D2>------------------------------------------------</FONT>
+
+<BR><FONT SIZE=3D2>Victor =
+Eijkhout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phone: +1 217 =
+244-0047</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Center for Supercomputing Research and =
+Development</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;University of Illinois at =
+Urbana-Champaign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;305 Talbot laboratory</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;104 South Wright street</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Urbana, Illinois 61801-2932, USA</FONT>
+</P>
+
+<P><FONT SIZE=3D2>home: 2503 W. Springfield Av, Apt. K-4, Champaign =
+61821, USA</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D47DB7C4--
+

@@ -1,0 +1,373 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.9AB71194@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:22 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.9AB71194"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      {1} Re uppercase problems (was urgent)
+Date: Fri, 21 Feb 1992 16:59:20 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE92E@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Frank Mittelbach" <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 578
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.9AB71194
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Yannis said:
+
+> I have the following (serious) problem:
+> If I use
+> \section{Fran^^8dais et \CyrMacCharacters =
+^^f0^^f3^^f1^^f1^^ea^^e8^^e9}
+> I'll get a tremendously long line in the AUX file, and furthermore the
+> whole thing won't work because \uppercase first converts everything =
+and
+> then expands.
+
+The problems he has are actually two separate ones.
+
+The first is that the \uppercase primitive is a TeX tool that is not
+suitable for multi-lingual text. In other words, styles that use
+uppercase as a tool to convert whole tokenstrings can only be used by
+automatic means with fonts that have one well-defined codepage. Any
+codepage switching that also involves uccode table changes will
+produce chaos because uppercasing will come too early. This is also
+true if math find its way into such a token list because variable will
+get uppercased changing the meaning of formulas (something I ran into
+long time ago when I did my master thesis).
+Primitive solutions to this problem are:
+
+ - avoid using \uppercase, i.e. use a style that doesn't uppercase
+running headings
+
+ - explicitly use \lowercase around portions that have to stay
+lowercase. This solution is working when the uccode and lccode tables
+match which is usually the case.
+
+I think that is about the only thing one can do in the current LaTeX.
+
+The second problem is that the current aux file concept is using
+expanded writes so that all commands in a section etc. will be
+expanded on its way to the ouput file. This will usually result in
+some errors which means that you have to use \protect in the current
+implementation or define the commands to expand to \protect
+<something> to prevent this. This kind of problem will certainly
+vanish in ltx3 because we will use unexpanded writes for the whole
+auxilary file handling.
+
+
+
+So let's try to rephrase the problem for ltx3:
+
+ 0) Is automatical uppercasing of given text a design tool that should
+be provided in a general context?
+
+ 1) If so then: given a <token string> how can we upper (or lower)
+case it while allowing to change uccode table entries in the middle,
+or as a weaker constraint, can we leave out uppercasing for parts od
+<token string>? Michael Downes has done some work in this direction in
+the AMS styles, perhaps he can comment here.
+
+ 2) Can we achieve a partial solution by using suitable code pages in
+fonts?
+
+
+Some side remarks:
+
+> I'm using the Macintosh set of 8-bit characters for the input of =
+accented
+> letters as well for the input of Greek and Russian (with the =
+corresponding
+> Apple systems). This works in the following way:
+>   ^^88 for example is an a with grave accent.
+>   I define: \catcode"88=3D\active
+>             \def\`#1{...\ifx#1a\char"E0{}\else... etc }
+>             \def ^^88{\`a}
+>   where \char"E0 is the a with grave of the DC font.
+
+I'm not at all keen on the idea of making all kind of characters
+active to achieve some results and I suppose that we will try a
+different approach. But much more important is that we will not follow
+the ``Apple system'' or the ``PC code page such-and-such'' and
+defining a lot of internal character mappings for various conventions.
+Such mapping should be done outside the TeX system in my opinion to
+keep sources portable between different platforms.  I don't want to
+start a holy war on this, especially not now because this is a type of
+problem which can be address at a much later stage in the project.
+Nevertheless feel free to comment now (agree or disagree), only that I
+probably will not answer to this type of discussion right away.
+
+
+> Subj:	{1} URGENT
+
+Finally some comments on subject lines :-) Naturally on such a list
+many questions will get discussed and often someone (including me) is
+starting a new topic which may or may not be picked up directly by
+others. So please try to make the the subject lines a bit more
+informative this will help everybody. In fact, I don't think that this
+problem is more urgent then the other thousand problems that we have
+to deal with and certainly we need time and a bit dicipline to solve
+them.
+
+cheers Frank
+
+
+------_=_NextPart_001_01C19443.9AB71194
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     {1} Re uppercase problems (was urgent)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Yannis said:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I have the following (serious) problem:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; If I use</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \section{Fran^^8dais et \CyrMacCharacters =
+^^f0^^f3^^f1^^f1^^ea^^e8^^e9}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I'll get a tremendously long line in the AUX =
+file, and furthermore the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; whole thing won't work because \uppercase first =
+converts everything and</FONT>
+
+<BR><FONT SIZE=3D2>&gt; then expands.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The problems he has are actually two separate =
+ones.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The first is that the \uppercase primitive is a TeX =
+tool that is not</FONT>
+
+<BR><FONT SIZE=3D2>suitable for multi-lingual text. In other words, =
+styles that use</FONT>
+
+<BR><FONT SIZE=3D2>uppercase as a tool to convert whole tokenstrings can =
+only be used by</FONT>
+
+<BR><FONT SIZE=3D2>automatic means with fonts that have one well-defined =
+codepage. Any</FONT>
+
+<BR><FONT SIZE=3D2>codepage switching that also involves uccode table =
+changes will</FONT>
+
+<BR><FONT SIZE=3D2>produce chaos because uppercasing will come too =
+early. This is also</FONT>
+
+<BR><FONT SIZE=3D2>true if math find its way into such a token list =
+because variable will</FONT>
+
+<BR><FONT SIZE=3D2>get uppercased changing the meaning of formulas =
+(something I ran into</FONT>
+
+<BR><FONT SIZE=3D2>long time ago when I did my master thesis).</FONT>
+
+<BR><FONT SIZE=3D2>Primitive solutions to this problem are:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- avoid using \uppercase, i.e. use a style that =
+doesn't uppercase</FONT>
+
+<BR><FONT SIZE=3D2>running headings</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- explicitly use \lowercase around portions that =
+have to stay</FONT>
+
+<BR><FONT SIZE=3D2>lowercase. This solution is working when the uccode =
+and lccode tables</FONT>
+
+<BR><FONT SIZE=3D2>match which is usually the case.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that is about the only thing one can do in the =
+current LaTeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The second problem is that the current aux file =
+concept is using</FONT>
+
+<BR><FONT SIZE=3D2>expanded writes so that all commands in a section =
+etc. will be</FONT>
+
+<BR><FONT SIZE=3D2>expanded on its way to the ouput file. This will =
+usually result in</FONT>
+
+<BR><FONT SIZE=3D2>some errors which means that you have to use \protect =
+in the current</FONT>
+
+<BR><FONT SIZE=3D2>implementation or define the commands to expand to =
+\protect</FONT>
+
+<BR><FONT SIZE=3D2>&lt;something&gt; to prevent this. This kind of =
+problem will certainly</FONT>
+
+<BR><FONT SIZE=3D2>vanish in ltx3 because we will use unexpanded writes =
+for the whole</FONT>
+
+<BR><FONT SIZE=3D2>auxilary file handling.</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>So let's try to rephrase the problem for ltx3:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;0) Is automatical uppercasing of given text a =
+design tool that should</FONT>
+
+<BR><FONT SIZE=3D2>be provided in a general context?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;1) If so then: given a &lt;token string&gt; how =
+can we upper (or lower)</FONT>
+
+<BR><FONT SIZE=3D2>case it while allowing to change uccode table entries =
+in the middle,</FONT>
+
+<BR><FONT SIZE=3D2>or as a weaker constraint, can we leave out =
+uppercasing for parts od</FONT>
+
+<BR><FONT SIZE=3D2>&lt;token string&gt;? Michael Downes has done some =
+work in this direction in</FONT>
+
+<BR><FONT SIZE=3D2>the AMS styles, perhaps he can comment here.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;2) Can we achieve a partial solution by using =
+suitable code pages in</FONT>
+
+<BR><FONT SIZE=3D2>fonts?</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Some side remarks:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I'm using the Macintosh set of 8-bit characters =
+for the input of accented</FONT>
+
+<BR><FONT SIZE=3D2>&gt; letters as well for the input of Greek and =
+Russian (with the corresponding</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Apple systems). This works in the following =
+way:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; ^^88 for example is an a with grave =
+accent.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; I define: =
+\catcode&quot;88=3D\active</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; \def\`#1{...\ifx#1a\char&quot;E0{}\else... etc }</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; \def ^^88{\`a}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; where \char&quot;E0 is the a with =
+grave of the DC font.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'm not at all keen on the idea of making all kind of =
+characters</FONT>
+
+<BR><FONT SIZE=3D2>active to achieve some results and I suppose that we =
+will try a</FONT>
+
+<BR><FONT SIZE=3D2>different approach. But much more important is that =
+we will not follow</FONT>
+
+<BR><FONT SIZE=3D2>the ``Apple system'' or the ``PC code page =
+such-and-such'' and</FONT>
+
+<BR><FONT SIZE=3D2>defining a lot of internal character mappings for =
+various conventions.</FONT>
+
+<BR><FONT SIZE=3D2>Such mapping should be done outside the TeX system in =
+my opinion to</FONT>
+
+<BR><FONT SIZE=3D2>keep sources portable between different =
+platforms.&nbsp; I don't want to</FONT>
+
+<BR><FONT SIZE=3D2>start a holy war on this, especially not now because =
+this is a type of</FONT>
+
+<BR><FONT SIZE=3D2>problem which can be address at a much later stage in =
+the project.</FONT>
+
+<BR><FONT SIZE=3D2>Nevertheless feel free to comment now (agree or =
+disagree), only that I</FONT>
+
+<BR><FONT SIZE=3D2>probably will not answer to this type of discussion =
+right away.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt; Subj: {1} URGENT</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Finally some comments on subject lines :-) Naturally =
+on such a list</FONT>
+
+<BR><FONT SIZE=3D2>many questions will get discussed and often someone =
+(including me) is</FONT>
+
+<BR><FONT SIZE=3D2>starting a new topic which may or may not be picked =
+up directly by</FONT>
+
+<BR><FONT SIZE=3D2>others. So please try to make the the subject lines a =
+bit more</FONT>
+
+<BR><FONT SIZE=3D2>informative this will help everybody. In fact, I =
+don't think that this</FONT>
+
+<BR><FONT SIZE=3D2>problem is more urgent then the other thousand =
+problems that we have</FONT>
+
+<BR><FONT SIZE=3D2>to deal with and certainly we need time and a bit =
+dicipline to solve</FONT>
+
+<BR><FONT SIZE=3D2>them.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>cheers Frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.9AB71194--
+

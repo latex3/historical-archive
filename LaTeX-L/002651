@@ -1,0 +1,148 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4051" "Mon" "6" "July" "1998" "22:20:58" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "107" "Re: First experience with xr under L3PL" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA19962;
+	Mon, 6 Jul 1998 23:11:22 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.F3AFA3E2@listserv.gmd.de>; Mon, 6 Jul 1998 23:04:54 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 380526 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Jul 1998 23:04:02 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA10064
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Jul 1998 23:04:01
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA12520 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Jul 1998
+          23:04:00 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA19898; Mon, 6 Jul 1998 22:20:58 +0200
+References: <199807020724.RAA19706@ricetub.anu.edu.au>
+            <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+            <199807060810.SAA24960@ricetub.anu.edu.au>
+Message-ID:  <199807062020.WAA19898@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199807060810.SAA24960@ricetub.anu.edu.au>
+Date:         Mon, 6 Jul 1998 22:20:58 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: First experience with xr under L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2651
+
+Richard Walker writes:
+ > Frank Mittelbach writes:
+ >  > fine, however you could take the exercise further and actually apply
+ >  > some of the functionality of L3PL. i've appended my version below
+ >
+ > Yes, I could have done that if I knew what I was doing!
+
+no critique intended. i know that this is not easy if you haven't felt
+yourself around in those set of functions.
+
+ >  >  > %<notpackage>\RequirePackage{l3io}
+ >  > actually it works if there is a blank line after the \RequirePackage
+ >
+ > Indeed (I checked) - very interesting!
+
+not really, just a bloody pain in the neck which should get fixed at
+some point even though the current mix of 2e + L3PL is only for
+experiments anyway
+
+
+ >  > ----------------- test
+ >  >
+ >  > \begin{filecontents}{l3xr}
+ >
+ > l3xr.sty, natch . . .
+
+guilty. comes from doing manual changes in the code without rechecking
+it. should know not to do this.
+
+ > No, if you want to do it `properly' you must say:
+ >
+ > \newcommand\externaldocument[2][]
+ > {
+ >  {
+ >   \makeatletter
+ >   \tlp_set:Nn \l_xr_prefix_tlp {#1}
+ >   \seq_push:Nn \l_xr_subfiles_seq {#2.aux}
+ >   \xr_loop:
+ >  }
+ > }
+
+again caught :-( in fact i saw that one the moment the mail went out i
+can't claim any cold though the whether is good for getting one. my
+only excuse is that mainly i was doing what you (probably) did, namely
+search and replace first with some cosmetic fixes.
+
+ > \seq_pop:NN is not listed in the first part of the l3seq
+ > documentation.  It was not obvious that one is allowed/supposed to use
+ > it.
+
+is it not? oversight, then probably the whole set of stack type of
+commands is missing. it is indeed. sorry for that. will see that this
+gets updated soon. but essentially all the stuff in the implementation
+section about stacks is intended for general use.
+
+ > The rest seems OK . . . .
+
+what a relieve :-)
+
+ > Tim's questions are really quite important for the `average' package
+ > writer, because they will be programing `in-the-small', and the xr
+ > example is quite a good one for that.  Even such a small package has
+ > needed a total re-think and re-writing.
+
+true but is it so much different from having to hunt through the LaTeX
+source to find you way in providing packages?
+
+After all a lot of the documentation therein was provided by us during
+the last years before that its internal documentation was very much
+out of date (still is in some parts).
+
+what i mean is, you need to have got a feeling for it but that it true
+right now as well except that right now because of nearly no
+conventions people are forced to reinvent the wheel over and over just
+because they don't know that some command or datatype or whatever
+already exist somewhere.
+
+so yes you need a re-think, you probably don't need much of a
+rewriting for an existing package if you just mainly do a manual
+translation but you can gain a lot once you start replacing all you
+low-level private code by already provided solutions for many of the
+basic functionality which right now is often repeated over and over
+again in packages.
+
+ > Clearly I haven't yet got my brain around what one is supposed to do
+ > with all of the new data types (prop, seq, tlp) - and I doubt anyone
+ > else listening has.  Because there are no examples I have to do a lot
+ > of mind-reading.  So I am going to study your l3xr more carefully and
+ > have a go at a larger package.  (I've been in Melbourne since February
+ > and I'm moving back to Canberra this week, so don't hold your breath -
+ > but I'll do my best!)
+
+i hope that we can provide more examples and others do so as well.
+
+ > > so \foo_bar:nn would be module foo function bar
+ > > and \foo/baz_bar:nn would be module foo submodule baz function bar
+ > >
+ > > so what? (and it doesn't look so bad actually)
+ >
+ > I am going to think about that one for a while.
+
+it is not perfect. all i was trying to say is that even within the
+current spec you could implement a module/submodule and thus
+experiment with it. my whole point is that for this the current spec
+doesn't need changing right now!
+
+frank
+

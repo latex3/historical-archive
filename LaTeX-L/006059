@@ -1,0 +1,120 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 1 Sep 2009 23:50:47 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n81Lokpc001936
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 1 Sep 2009 23:50:47 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n81Leglp006703
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 1 Sep 2009 23:40:42 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n81Bbg9B010493;
+	Tue, 1 Sep 2009 23:40:42 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 292769 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 1 Sep
+          2009 23:40:41 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n81LefOJ030259 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 1 Sep 2009 23:40:41 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n81LecZB024009 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 1 Sep 2009 23:40:41 +0200
+Received: from morse.mittelbach-online.de (p54A84898.dip.t-dialin.net
+          [84.168.72.152]) by mrelayeu.kundenserver.de (node=mreu0) with ESMTP
+          (Nemesis) id 0MKuxg-1Mib5h3QUy-000ROp; Tue, 01 Sep 2009 23:40:38 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id F33AB6F541; Tue,  1 Sep 2009 23:40:34 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <122D1D66-1300-424C-9FBC-11C0B0CCB6C9@gmail.com>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18raY+sh8/QPQjjXhz/dlESSl+vhvrkF0/XTwo
+              /RQT9YQErpEn7HawHT0UNX5+FPl0lhlPtgAM4H+uPhAOaDzqN8
+              4xg6i4Ij8HgGE4Fb46iwA==
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <19101.38098.951382.933456@morse.mittelbach-online.de>
+Date:         Tue, 1 Sep 2009 23:40:34 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: template key default values
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <122D1D66-1300-424C-9FBC-11C0B0CCB6C9@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -106.599 () BAYES_00,RCVD_IN_DNSWL_MED,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 Sep 2009 21:50:47.0372 (UTC) FILETIME=[438518C0:01CA2B4E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6059
+
+by the way, the idea brought forward by Will of taking the defaults out could
+also be provided in any of the proposed implementation: a template could
+define defaults but one could envision to additionally at a later stage
+overwrite and replace those defaults. This is fairly independed concept to the
+rest of the syntax discussion so should probably also discussed
+separately. 
+
+The problem with default settings at different stages is to come
+up with a model that describes how they should apply.
+
+Currently key defaults get used and thus become "real" values the moment a
+template is instantiated, i.e., if we have
+
+        above-skip         =L           [0pt] \caption_above_skip ,
+
+then doing
+
+   \DeclareInstance{caption}{figure-caption}{lesssimple}{}
+
+is equivalent to  
+
+  \DeclareInstance{caption}{figure-caption-ii}{lesssimple}{ above-skip=0pt }
+
+and there would be no way to distinguish them later on other than by the fact
+that I gave them two different names above). I'm not saying that this has to
+be the case, only that this what current template and i guess template-alt
+does.
+
+consequentially, if we have a way to alter the default of a template, eg
+
+      \ChangeTemplateDefaults{caption}{lesssimple}
+                       {        above-skip         = 4pt }
+
+that would have no effect on the "figure-caption" if it comes after that
+instance got declared. thus changing such defaults say in a document preamble
+would be a fairly useless exercise.
+
+of course things could be done differently: a instance could somehow record
+that  a default is to be used and then finalize it only at begin document or
+always instantiate it when the instance is used or ... but any of these
+schemes seem to me would only lead to chaos. After all  then it is absolutly
+not clare when something would be affected and when not (eg figure-caption-ii
+shouldthen not be affected as in that instance the default has been explicitly
+overwritten by a value evne though it was the same as the default).
+
+for that reason I think the current scheme for defaults is about right. if so,
+then being able to alter the default of a template would still have its place
+and I think it would be a valid addition to a future implementation, but it
+would only be used on layer 1 when setting up document classes, ie prior to
+definining instances and there it would help to better structure the
+design. For example, by setting the defaults for fonts just once all near to
+each other, rather than repeating them over and over again when specifying the
+instances.
+
+But it would not be usable or intended to make changes to a design in a
+document preamble.
+
+frank
+

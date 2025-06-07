@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1611" "Sun" "19" "December" "93" "02:33:24" "PST" "Donald Arseneau" "asnd@ERICH.TRIUMF.CA" nil "44" "RE: LaTeX Figure placement" "^Date:" nil nil "12" nil nil])
+Return-Path: <LATEX-L@vm.hd-net.uni-heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA15407; Mon, 20 Dec 93 19:17:06 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00147; Mon, 20 Dec 93 19:16:34 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA16611
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 20 Dec 1993 19:16:32 +0100
+Message-Id: <199312201816.AA16611@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 2552; Mon, 20 Dec 93 19:05:24 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 2551; Mon,
+ 20 Dec 1993 19:05:25 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 1702; Sun,
+ 19 Dec 1993 11:34:13 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Sun, 19 Dec 93 02:33:24 PST
+From: Donald Arseneau <asnd@ERICH.TRIUMF.CA>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      RE: LaTeX Figure placement
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1221
+
+
+viro@MATUPS.MATUPS.FR     (Laurent S) wrote:
+
+The test file works just as it is supposed to, given the errors
+made...If you mix TeX primitive commands with LaTeX, you had better
+know what yoiu are doing, and if you complain about LaTeX's figure
+placement, you should have read the explanation of the figure
+placement parameters in the manual!
+
+
+> Lots of room left!
+
+This is a lie.  After typesetting that line there is not enough
+room on the page for a 300+300 = 600 pt figure.  That figure will
+be dumped on the last page because \end{document} forces figures
+out, even if they don't fit.  Moreover, even if the figure could
+have fit below the text, it would still have been put on a float
+page because it is bigger than \floatpagefraction.
+
+>  \vbox to 300pt{\relax
+>   \copy0
+>   \relax
+>   }
+
+This does not produce what you think it does.  It makes a box with
+height and depth of 300 pt (600 total), but the contents of box0 are
+in the *TOP* half.  That is because the box was made with no glue
+to fill the demanded 300 pt height.  TeX emits an error message for
+the underfull box.  TeX does build the box with height and depth of
+300 pt, but the contents begin at the upper left corner, *NOT* at
+the baseline.  I recommend Victor Eijkhout's book "TeX by Topic" for
+a better explanation of this than can be found in The TeXbook.
+
+When you put some stretch in the box:
+
+>  \vbox to 300pt{\vfil
+>   \copy0
+>   \relax
+>   }
+
+the error message goes away, and the placement of the black block
+does indeed show that the figure does not fit on a page.
+
+Donald Arseneau                         asnd@reg.triumf.ca
+

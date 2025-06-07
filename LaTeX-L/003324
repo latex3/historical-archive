@@ -1,0 +1,151 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5104" "Sun" "12" "September" "1999" "11:54:27" "+0200" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "111" "Re: xparse" "^Date:" "LATEX-L@URZ.UNI-HEIDELBERG.DE" "Multiple recipients of list LATEX-L" "9" nil "xparse" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id NAA01317
+	for <schoepf@UNI-MAINZ.DE>; Sun, 12 Sep 1999 13:18:31 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.C5DCCF20@mail.listserv.gmd.de>; Sun, 12 Sep 1999 13:18:31 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 443762 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 12 Sep 1999 13:18:25 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id NAA03627
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 12 Sep 1999 13:18:20 +0200
+          (MET DST)
+Received: from istrati.zdv.uni-mainz.de (root@dialin02.zdv.Uni-Mainz.DE
+          [134.93.174.2]) by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id
+          NAA27666 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 12 Sep 1999
+          13:18:14 +0200 (MET DST)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          LAA00439; Sun, 12 Sep 1999 11:54:27 +0200
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199909071904.VAA00530@istrati.zdv.uni-mainz.de>
+            <199909101541.QAA22188@mimosa.csv.warwick.ac.uk>
+Message-ID:  <199909120954.LAA00439@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199909101541.QAA22188@mimosa.csv.warwick.ac.uk>
+Date:         Sun, 12 Sep 1999 11:54:27 +0200
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xparse
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3324
+
+James Kilfiger writes:
+
+ > One feature which I think would be nice is a \newargumenttype macro,
+ > analogous to \newcolumntype of the array package.
+
+i doubt that a generic extension like that would be useful on this level as a)
+you can't really extend parsing rules like you can extend processing rules in
+array, instead you always need to write additional low-level code for parsing
+and b) i think them main purpose of that package is not to provide an extended
+parser but rather clearly separate top-level parsing from formatting with the
+result that you can replace the parsing bit completely without having to
+rewrite the whole formatting part as well (see talk)
+
+don't misunderstand me here: the current interface most likely need changes
+and additions and disucssing the merits of individual suggested extensions is
+worth while, i'm only saying that right now i think the final package should
+provide a fixed set of parsing rules.
+
+perhaps it might be sensible to provide a mechanism for packages to allow
+extending the parser, ie a \DeclareParsingRule thing so that a special purpose
+package could extend this interface. however the disadvantage of something
+like this is that packages might define conflicting rules and of course the
+general danger of the document-level syntax getting more and more complex
+without a real benefit for the user --- needs further thought i guess.
+
+
+regarding the individual suggestions:
+
+ > Well three thoughts I had:
+ >   Using characters other than * to indicate variant forms. I can imagine
+ >   a command with two independent variants, accesed by \foo, \foo*, \foo+,
+ >   and \foo*+
+
+this could be provided easily enough, eg, S{<symbol-to-scan} and might indeed
+be generally useful, any comments?
+
+ >   If one wanted to make a `3d' picture mode, a triplet (x,y,z) argument
+ >   might be useful.
+
+that would seem to me very special ie should probably not be part of the
+standard interface.
+
+ >   It is proposed that the float placement argument be in the form
+ >   [hb|tp]; this might be a convienent form for other commands.
+
+that's an interesting one. perhaps you are right that supporting stuff like
+this would be useful. on the other hand [..|..] might be a stupid idea in the
+first place. the main reason for suggesting this extension in the talk is that
+it is upward compatible not necessarily because we think it is the best syntax
+for that case. so there might be some need to rethink that float part anyway
+in which case the example may vanish :-)
+
+irregardless of that (just looking at it from the xparse point of view) what
+would a parser parsing for [..|..] return?
+
+for those who haven't looked at our talk yet: the proposed syntax for the
+float is to structure the float specifier using | (zero or more time). That is
+the argument could be [htb], or [hb|tbp], or even [hb|tb|tbp] etc.
+
+now the main point of the xparse interface is that after parsing we end up
+always with the same number of mandatory arguments. So what should be
+returned?
+
+ > Other thing, making the default value of an optional command the same as
+ > that of another command, as is done with \@dblarg, I can imagine
+ > \DeclareDocumentCommand{\foo}{m O{#1}}{...} being useful.
+
+i thought about that too --- and decided against it.
+
+two reasons:
+
+ a) awark to implement as a general solution without slowing down the parsing
+ process substancially (but perhaps i simply hadn't had the right idea?)
+
+ b) more importantly i'm more or less convinced that providing such defaults
+ at the xparse level is wrong in the first place as it confuses formatting and
+ parsing again.
+
+to explain b): if we have { o m } then we get returned \NoValue{foo} if the
+optional argument is missing. Now on the formatting level the invoked template
+can easily decide that if there is \NoValue then reuse the second argument
+here again. On the other hand the design might decide to do something
+different, eg to not use anything in such a case. If however the parser
+already returns {foo}{foo} there is no way for the template to distinguish the
+case that the document contained [foo]{foo} from the case that the document
+just contained {foo} (ie no optional argument). In other words you lose
+potentially interesting information and you put design information back into
+the parsing interface.
+
+So why did i implement O{default} at all then? well, mainly for processing
+speed issues in certain cases (see the section discussing this in xparse.dtx)
+but i'm not really convinced it should be there at all. it is after all
+against the main idea of separating document-level syntax from formatting
+especially if misused.
+
+comments?
+
+ > Here my inventivness begins to run-out.  Perhaps these are bad ideas;
+ > too many argument types will only cause confusion for the user. But I
+
+that is the main reason why i believe that a suitable but mainly fixed
+interface here is probably better
+
+ > can imagine a \newargtype scheme being useful.
+
+should be thought about, i guess. if it can be implemented in a sensible way
+and made available with caution to the package designer it might be useful
+but...
+
+frank
+

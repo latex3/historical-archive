@@ -1,0 +1,471 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["13459" "Tue" "14" "December" "93" "10:09:55" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" nil "440" "Re: someone who **never** typesets mathematics..." "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.hd-net.uni-heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA00198; Tue, 14 Dec 93 11:27:01 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00614; Tue, 14 Dec 93 11:26:50 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA16118
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 14 Dec 1993 11:26:47 +0100
+Message-Id: <199312141026.AA16118@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 5008; Tue, 14 Dec 93 11:26:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 4999; Tue,
+ 14 Dec 1993 11:26:51 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3533; Tue,
+ 14 Dec 1993 11:22:08 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 14 Dec 93 10:09:55 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: someone who **never** typesets mathematics...
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1205
+
+
+Grant Gustafson writes:
+%>>%>Figure environment and floats in particular currently behave in a way
+%>>%>that makes page design inconvenient. Programs like PageMaker look
+%>>%>attractive compared with LaTeX. Even stupid programs like MS-Word and
+%>>%>WordPerfect look attractive compared with LaTeX.
+%>>
+%>>Clearly someone who **never** typesets mathematics...
+%>
+%>Dear Mike,
+%>
+%>I will respond to the above statement by the following:
+%>
+%>Example: Margo Mankus, degree from UIUC Illinois, applied math
+%>
+%>         Writes her papers and thesis in LaTeX
+%>
+%>         Two years later, chooses MS-word to write her book!
+%>         Why? Because LaTeX made the page design too clumsy to get
+%>              anything done in a reasonable length of time! She had
+%>              2 or 3 figures per page and a limited amount of time
+%>              available to write the book (187 pages, calculus).
+%>
+%>        Her husband, Frank Wattenberg, is writing his book using LaTeX,
+%>        and likely will admit that Margo got done quickly (he's not done
+%>        yet - calculus reform text).
+%>
+
+When you say *write* do you mean that this was camera-ready copy, or that a
+MS-Word document was used for typesetting; or do you mean that the thing was
+typed and then typeset as a separate operation?
+
+I devised a simple document here that was used to help the Maths School
+decide which system to use. (The decision to use TeX was forced upon many of
+us by its support by the various mathematical associations anyway, but this
+was a sort of feasibility study.) One of our programmers had first chosen a
+page from a calculus book, in which the most sophisticated use of maths was
+the use of a partial derivative \partial and an integration \int. I decided
+this was not subtle enough, and chose the following. Someone *did* type it in
+in WordPerfect, but it looked a complete and utter mess. He also complained
+that many of the blackboard bold symbols seemed to be missing. The Word
+protagonists didn't even produce anything.
+
+Some of our mathematicians use chiwriter too, and swear by it, but none of
+the pure mathematicians use anything other than TeX.
+
+Mike
+
+The following needs NFSS but has not been modified for NFSS2. It also needs
+ams.sty which is appended to it. This breaks out of amsfonts.sty when the
+latter starts to get really silly and starts to set its strut with a bracket.
+This messes up some other macros I have which treat ( as \left( and ) as
+\right).
+
+\documentstyle[newlfont,12pt,a4,ams]{article}
+\nofiles
+\let\Int=\cap
+\let\Union=\cup
+\let\UNION=\bigcup
+\let\INT=\bigcap
+\let\Limp\Longrightarrow
+\def\Reals{{\Bbb R}}
+\def\Vect#1{{\bf #1}}
+
+\newif\ifsqbraces \sqbracestrue
+\def\lmatbrace{\left\ifsqbraces[\else(\fi}
+\def\rmatbrace{\right\ifsqbraces]\else)\fi}
+\newenvironment{Mat}[1]{\lmatbrace\array{*{#1}{c}}}{\endarray\rmatbrace}
+
+
+\input amssym
+\pagestyle{empty}
+\newsymbol\subsetne 2326
+%%Copy following from AMSTEX.TEX and AMSLATEX.TEX
+\def\AmSTeX{{$\cal A$}\kern-.1667em\lower.5ex\hbox
+ {$\cal M$}\kern-.125em{$\cal S$}-\TeX}
+\def\AmSLaTeX{{$\cal A$}\kern-.1667em\lower.5ex\hbox
+ {$\cal M$}\kern-.125em{$\cal S$}-\LaTeX}
+
+\emergencystretch1in
+
+\begin{document}\Large
+\begin{itemize}
+   \item It shouldn't be difficult to produce ``dif\mbox{f}icult'', \TeX,
+\LaTeX, \AmSTeX\ and \AmSLaTeX.
+   \item {\huge $a^2+b^2$
+      and $\displaystyle\frac{a^2+b^2}{a^2+b^2}$.}
+   \item $\frak g$, $\frak h$, $\frak i$, $\frak j$, $\frak k$, $\frak R$,
+$\widehat{\frak{ghijk}}$, $\imath_{\frak A^*}$.
+
+   \item $\underbrace{2^{2^{\cdot^{\cdot^{\cdot^{2}}}}}}_k$
+and $2^{2^{2^{\aleph_0}}}$ are huge, but $2^{\mbox{$2^{\mbox{2}}$}}$
+is just ugly!
+
+   \item $A_1,A_2,\ldots,A_n\subseteq\Reals^n$,
+   $A_1\subsetne A_2\subsetne\cdots\subsetne A_n$.
+$$\INT_{k=1}^n A_k=A_1,\qquad\UNION_{k=1}^n A_k=A_n\neq\emptyset.$$
+
+   \item If $(A\setminus B)\Union(B\setminus A)=A\Int B$ then $x\in A\Limp
+x\in B$.
+
+   \item $a\pm b\mp c\times d\preceq e \gg f \succeq g\dashv h\sim i\simeq j
+\asymp k\approx l\cong m\bowtie n\propto o\models p\doteq q\perp r$
+
+   \item $a\leftarrow b\Leftarrow c\leftrightarrow d\Leftrightarrow e \mapsto
+f
+\hookleftarrow g\leftharpoonup h\rightleftharpoons i\longleftarrow j
+\uparrow k \Uparrow l \nearrow m \searrow n\nwarrow o$
+
+   \item $\epsilon=\varepsilon\neq\in$ and $\phi=\varphi\neq\emptyset=\o$,
+but does
+$\mbox{\sf i}=\mbox{\sf\sl i}=\mbox{\rm i}=i={\frak i}=\iota=\imath$?
+
+   \item $\hat p=\check q=\tilde r=\acute s=\grave t=\dot u=\ddot v=\breve w
+=\bar x=\vec y=\hat\imath$.
+
+   \item Let
+$A=
+\begin{Mat}4
+   a_{11}&a_{12}&\cdots&a_{1n}\\
+   a_{21}&a_{22}&\cdots&a_{2n}\\
+   \vdots&\vdots&\ddots&\vdots\\
+   a_{m1}&a_{m2}&\cdots&a_{mn}
+\end{Mat}
+$
+be an $m\times n$ matrix with entries in $\C$.
+
+   \item $\Vect T=T_{j_1j_2\ldots j_s}^{i_1i_2\ldots i_r}\Vect
+e^{j_1j_2\ldots j_s}_{i_1i_2\ldots i_r}$
+
+   \item
+$
+\begin{array}{*{15}c}
+   G&\cong&\Z_1&\oplus&\cdots&\oplus&\Z_t&\oplus&\Z/\Z
+p_1^{u_{11}}&\oplus&\cdots&\oplus&\Z/\Z p_1^{u_{1w(1)}}\\
+    &     &    &      &      &      &    &\oplus&\Z/\Z
+p_1^{u_{21}}&\oplus&\cdots&\oplus&\Z/\Z p_2^{u_{2w(2)}}&\oplus&\cdots\\
+    &     &    &      &      &      &    &      &\vdots\\
+    &     &    &      &      &      &\cdots&\oplus&\Z/\Z
+p_n^{u_{n1}}&\oplus&\cdots&\oplus&\Z/\Z p_n^{u_{nw(n)}}&,\\
+\end{array}
+$
+\gdef\newsymbol#1#2#3#4#5{x #1 }
+\item $
+\newsymbol\boxdot 1200
+\newsymbol\boxplus 1201
+\newsymbol\boxtimes 1202
+\newsymbol\square 1003
+\newsymbol\blacksquare 1004
+\newsymbol\centerdot 1205
+\newsymbol\lozenge 1006
+\newsymbol\blacklozenge 1007
+\newsymbol\circlearrowright 1308
+\newsymbol\circlearrowleft 1309
+\newsymbol\rightleftharpoons 130A
+\newsymbol\leftrightharpoons 130B
+\newsymbol\boxminus 120C
+\newsymbol\Vdash 130D
+\newsymbol\Vvdash 130E
+\newsymbol\vDash 130F
+\newsymbol\twoheadrightarrow 1310
+\newsymbol\twoheadleftarrow 1311
+\newsymbol\leftleftarrows 1312
+\newsymbol\rightrightarrows 1313
+\newsymbol\upuparrows 1314
+\newsymbol\downdownarrows 1315
+\newsymbol\upharpoonright 1316
+\newsymbol\downharpoonright 1317
+\newsymbol\upharpoonleft 1318
+\newsymbol\downharpoonleft 1319
+\newsymbol\rightarrowtail 131A
+\newsymbol\leftarrowtail 131B
+\newsymbol\leftrightarrows 131C
+\newsymbol\rightleftarrows 131D
+\newsymbol\Lsh 131E
+\newsymbol\Rsh 131F
+\newsymbol\rightsquigarrow 1320
+\newsymbol\leftrightsquigarrow 1321
+\newsymbol\looparrowleft 1322
+\newsymbol\looparrowright 1323
+\newsymbol\circeq 1324
+\newsymbol\succsim 1325
+\newsymbol\gtrsim 1326
+\newsymbol\gtrapprox 1327
+\newsymbol\multimap 1328
+\newsymbol\therefore 1329
+\newsymbol\because 132A
+\newsymbol\doteqdot 132B
+\newsymbol\triangleq 132C
+\newsymbol\precsim 132D
+\newsymbol\lesssim 132E
+\newsymbol\lessapprox 132F
+\newsymbol\eqslantless 1330
+\newsymbol\eqslantgtr 1331
+\newsymbol\curlyeqprec 1332
+\newsymbol\curlyeqsucc 1333
+\newsymbol\preccurlyeq 1334
+\newsymbol\leqq 1335
+\newsymbol\leqslant 1336
+\newsymbol\lessgtr 1337
+\newsymbol\backprime 1038
+\newsymbol\risingdotseq 133A
+\newsymbol\fallingdotseq 133B
+\newsymbol\succcurlyeq 133C
+\newsymbol\geqq 133D
+\newsymbol\geqslant 133E
+\newsymbol\gtrless 133F
+\newsymbol\sqsubset 1340
+\newsymbol\sqsupset 1341
+\newsymbol\vartriangleright 1342
+\newsymbol\vartriangleleft 1343
+\newsymbol\trianglerighteq 1344
+\newsymbol\trianglelefteq 1345
+\newsymbol\bigstar 1046
+\newsymbol\between 1347
+\newsymbol\blacktriangledown 1048
+\newsymbol\blacktriangleright 1349
+\newsymbol\blacktriangleleft 134A
+\newsymbol\vartriangle 134D
+\newsymbol\blacktriangle 104E
+\newsymbol\triangledown 104F
+\newsymbol\eqcirc 1350
+\newsymbol\lesseqgtr 1351
+\newsymbol\gtreqless 1352
+\newsymbol\lesseqqgtr 1353
+\newsymbol\gtreqqless 1354
+\newsymbol\Rrightarrow 1356
+\newsymbol\Lleftarrow 1357
+\newsymbol\veebar 1259
+\newsymbol\barwedge 125A
+\newsymbol\doublebarwedge 125B
+\newsymbol\angle 105C
+\newsymbol\measuredangle 105D
+\newsymbol\sphericalangle 105E
+\newsymbol\varpropto 135F
+\newsymbol\smallsmile 1360
+\newsymbol\smallfrown 1361
+\newsymbol\Subset 1362
+\newsymbol\Supset 1363
+\newsymbol\Cup 1264
+\newsymbol\Cap 1265
+\newsymbol\curlywedge 1266
+\newsymbol\curlyvee 1267
+\newsymbol\leftthreetimes 1268
+\newsymbol\rightthreetimes 1269
+\newsymbol\subseteqq 136A
+\newsymbol\supseteqq 136B
+\newsymbol\bumpeq 136C
+\newsymbol\Bumpeq 136D
+\newsymbol\lll 136E
+\newsymbol\ggg 136F
+\newsymbol\circledS 1073
+\newsymbol\pitchfork 1374
+\newsymbol\dotplus 1275
+\newsymbol\backsim 1376
+\newsymbol\backsimeq 1377
+\newsymbol\complement 107B
+\newsymbol\intercal 127C
+\newsymbol\circledcirc 127D
+\newsymbol\circledast 127E
+\newsymbol\circleddash 127F
+\newsymbol\lvertneqq 2300
+\newsymbol\gvertneqq 2301
+\newsymbol\nleq 2302
+\newsymbol\ngeq 2303
+\newsymbol\nless 2304
+\newsymbol\ngtr 2305
+\newsymbol\nprec 2306
+\newsymbol\nsucc 2307
+\newsymbol\lneqq 2308
+\newsymbol\gneqq 2309
+\newsymbol\nleqslant 230A
+\newsymbol\ngeqslant 230B
+\newsymbol\lneq 230C
+\newsymbol\gneq 230D
+\newsymbol\npreceq 230E
+\newsymbol\nsucceq 230F
+\newsymbol\precnsim 2310
+\newsymbol\succnsim 2311
+\newsymbol\lnsim 2312
+\newsymbol\gnsim 2313
+\newsymbol\nleqq 2314
+\newsymbol\ngeqq 2315
+\newsymbol\precneqq 2316
+\newsymbol\succneqq 2317
+\newsymbol\precnapprox 2318
+\newsymbol\succnapprox 2319
+\newsymbol\lnapprox 231A
+\newsymbol\gnapprox 231B
+\newsymbol\nsim 231C
+\newsymbol\ncong 231D
+\newsymbol\diagup 231E
+\newsymbol\diagdown 231F
+\newsymbol\varsubsetneq 2320
+\newsymbol\varsupsetneq 2321
+\newsymbol\nsubseteqq 2322
+\newsymbol\nsupseteqq 2323
+\newsymbol\subsetneqq 2324
+\newsymbol\supsetneqq 2325
+\newsymbol\varsubsetneqq 2326
+\newsymbol\varsupsetneqq 2327
+\newsymbol\subsetneq 2328
+\newsymbol\supsetneq 2329
+\newsymbol\nsubseteq 232A
+\newsymbol\nsupseteq 232B
+\newsymbol\nparallel 232C
+\newsymbol\nmid 232D
+\newsymbol\nshortmid 232E
+\newsymbol\nshortparallel 232F
+\newsymbol\nvdash 2330
+\newsymbol\nVdash 2331
+\newsymbol\nvDash 2332
+\newsymbol\nVDash 2333
+\newsymbol\ntrianglerighteq 2334
+\newsymbol\ntrianglelefteq 2335
+\newsymbol\ntriangleleft 2336
+\newsymbol\ntriangleright 2337
+\newsymbol\nleftarrow 2338
+\newsymbol\nrightarrow 2339
+\newsymbol\nLeftarrow 233A
+\newsymbol\nRightarrow 233B
+\newsymbol\nLeftrightarrow 233C
+\newsymbol\nleftrightarrow 233D
+\newsymbol\divideontimes 223E
+\newsymbol\varnothing 203F
+\newsymbol\nexists 2040
+\newsymbol\Finv 2060
+\newsymbol\Game 2061
+\newsymbol\mho 2066
+\newsymbol\eth 2067
+\newsymbol\eqsim 2368
+\newsymbol\beth 2069
+\newsymbol\gimel 206A
+\newsymbol\daleth 206B
+\newsymbol\lessdot 236C
+\newsymbol\gtrdot 236D
+\newsymbol\ltimes 226E
+\newsymbol\rtimes 226F
+\newsymbol\shortmid 2370
+\newsymbol\shortparallel 2371
+\newsymbol\smallsetminus 2272
+\newsymbol\thicksim 2373
+\newsymbol\thickapprox 2374
+\newsymbol\approxeq 2375
+\newsymbol\succapprox 2376
+\newsymbol\precapprox 2377
+\newsymbol\curvearrowleft 2378
+\newsymbol\curvearrowright 2379
+\newsymbol\digamma 207A
+\newsymbol\varkappa 207B
+\newsymbol\Bbbk 207C
+\newsymbol\hslash 207D
+\newsymbol\hbar 207E
+\newsymbol\backepsilon 237F
+x
+$
+\item $\Bbb{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
+\item $\frak{ABCDEFGHIJKLMNOPQRSTUVWXYZ}$
+\item $\frak{abcdefghijklmnopqrstuvwxyz}$
+\item {\tiny\tt And} {\scriptsize\it all} {\small\it\bf in\/}
+   {\large\sf at} {\Large\sf\bf least} {\huge\sl\bf 12} {\Huge\bf\sl SIZES}.
+\end{itemize}
+
+
+\end{document}
+
+%%%%%ams.sty
+\def\filename{ams.sty}
+\def\fileversion{3.04}
+\def\filedate{15 Sep 1993 12:21:46 BST}
+%% Usage:
+%% \documentstyle[ams]{article} %% in LaTeX
+%%
+\typeout{\filename\space v\fileversion, (C) Copyright Mike Piff, \filedate}
+\typeout{\string\input\string{amssym\string} if you want the full AMS symbol
+set}
+
+\let\@@@newbox\newbox
+\def\newbox#1{\endinput}
+\input amsfonts.sty  %%but skip latter part of it
+\let\newbox\@@@newbox
+
+\ifx\cy\undefined
+   \newmathalphabet*{\cy}{UWCyr}{m}{n}
+   \addtoversion{bold}{\cy}{UWCyr}{b}{n}
+\fi
+
+\def\gothic{\fontfamily{euf}\selectfont}
+\let\endgothic\relax
+\let\fraktur\gothic \let\endfraktur\endgothic
+\def\cyrillic{\fontfamily{UWCyr}\selectfont}
+\let\endcyrillic\relax
+
+\def\undefine#1{\let#1\undefined}
+\def\newsymbol#1#2#3#4#5{% Simplified
+   \mathchardef#1="#3%
+   \ifcase#2 \or \hexnumber@\msa@group \or \hexnumber@\msb@group \fi%
+   #4#5 %
+}
+
+\def\Bbb#1{\relax\protect\ifmmode{\protect\pBbb{#1}}\else$\protect\pBbb{#1}$\f
+\def\frak#1{\relax\protect\ifmmode{\goth{#1}}\else$\goth{#1}$\fi}
+
+%% Commonest ones...
+\def\C{\Bbb C}
+\def\F{\Bbb F}
+\def\N{\Bbb N}
+\def\Q{\Bbb Q}
+\def\R{\Bbb R}
+\def\T{\Bbb T}
+\def\Z{\Bbb Z}
+
+%%Substitute better-formed symbols for existing ones
+\undefine\le           \newsymbol\le 1336
+\undefine\leq          \newsymbol\leq 1336
+\undefine\ge           \newsymbol\ge 133E
+\undefine\geq          \newsymbol\geq 133E
+
+\undefine\tick         \newsymbol\tick 1058
+\undefine\Box          \newsymbol\Box1003
+\undefine\square       \let\square\Box
+\undefine\lhd          \newsymbol\lhd1343
+\undefine\rhd          \newsymbol\rhd1342
+\undefine\unlhd        \newsymbol\unlhd1345
+\undefine\unrhd        \newsymbol\unrhd1344
+\undefine\leadsto      \newsymbol\leadsto1320
+\undefine\Diamond      \newsymbol\Diamond1006
+\let\Join=\bowtie
+
+\endinput
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff                            %%  e-mail:
+%% School of Mathematics and Statistics   %%
+%% University of Sheffield                %%  M.Piff@sheffield.ac.uk
+%% Hicks Building                         %%
+%% SHEFFIELD S3 7RH                       %%  Telephone: (0742) 824431
+%% England                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

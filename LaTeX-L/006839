@@ -1,0 +1,98 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p7TEDlgm007369
+	for <rainer@rainer-schoepf.de>; Mon, 29 Aug 2011 16:13:48 +0200
+Received: (qmail 24780 invoked by alias); 29 Aug 2011 14:13:42 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 29 Aug 2011 14:13:41 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx079) with SMTP; 29 Aug 2011 16:13:41 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p7TEAiiN017361
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 29 Aug 2011 16:10:44 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p7TDppL2006217;
+	Mon, 29 Aug 2011 16:10:43 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1606267 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 29 Aug
+          2011 16:10:43 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p7TEAhP4007883 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 29 Aug 2011 16:10:43 +0200
+Received: from mail-fx0-f49.google.com (mail-fx0-f49.google.com
+          [209.85.161.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p7TEAd7g017332 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 29 Aug
+          2011 16:10:43 +0200
+Received: by fxd20 with SMTP id 20so6758664fxd.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 29 Aug 2011 07:10:39 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.223.58.73 with SMTP id f9mr2196998fah.149.1314627039133; Mon,
+          29 Aug 2011 07:10:39 -0700 (PDT)
+Received: by 10.152.14.8 with HTTP; Mon, 29 Aug 2011 07:10:39 -0700 (PDT)
+References: <bs7n95ikt65p$.dlg@nililand.de> <4E5B6BF7.80208@morningstar2.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <CANQYN6w2ZrLzPY4UqJSwFU_A+Vfw=ApeYgPWjg1UVYTv-k-rew@mail.gmail.com>
+Date:         Mon, 29 Aug 2011 10:10:39 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Re: Removing braces in a token list
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4E5B6BF7.80208@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6839
+
+> The is no pre-build 'strip_braces' function at present. You don't say if
+> we are talking one set of braces or multiple sets. For the former case,
+> a simple 'do nothing' loops would be easiest:
+>
+>   \tl_set:Nx \l_temp_tl
+>     { \tl_map_function:NN \l_temp_tl \exp_not:n }
+
+Agreed with Joseph. If you need to recursively remove braces, and
+don't care about speed, the following should work (unless I screwed
+up), and it doesn't remove spaces, although it easily could.
+
+\cs_new:Npn \tl_ungroup_all:n
+  {
+    \tex_romannumeral:D
+    \tl_act_aux:NNNnn
+      \tl_act_ungroup_normal:nN
+      \tl_act_ungroup_group:nn
+      \tl_act_ungroup_space:n
+      { }
+  }
+\cs_new:Npn \tl_act_ungroup_space:n #1
+  { \tl_act_output:n {~} }
+\cs_new:Npn \tl_act_ungroup_normal:nN #1 #2
+  { \tl_act_output:n {#2} }
+\cs_new:Npn \tl_act_ungroup_group:nn #1
+  {
+    \tl_act_group_recurse:Nnn
+      \tl_act_output:n
+      { \tl_ungroup_all:n }
+  }
+
+Cheers,
+Bruno
+

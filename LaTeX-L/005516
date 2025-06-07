@@ -1,0 +1,147 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 6 Dec 2008 04:53:45 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mB63rgKK007603
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 6 Dec 2008 04:53:43 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mB63oQ84018854
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 6 Dec 2008 04:50:26 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mB5N1AYv021973;
+	Sat, 6 Dec 2008 04:50:20 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 167855 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 6 Dec
+          2008 04:50:19 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mB63oJ1S014121 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 6 Dec 2008 04:50:19 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.243])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mB63oEBq018707 for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 6 Dec
+          2008 04:50:18 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so294892rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 05 Dec 2008 19:50:14 -0800
+          (PST)
+Received: by 10.140.226.14 with SMTP id y14mr343078rvg.237.1228535413999; Fri,
+          05 Dec 2008 19:50:13 -0800 (PST)
+Received: from ?10.0.1.102? (219-90-176-178.ip.adam.com.au [219.90.176.178]) by
+          mx.google.com with ESMTPS id g31sm19964116rvb.7.2008.12.05.19.50.12
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Fri, 05 Dec 2008 19:50:13 -0800
+          (PST)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v929.2)
+References: <LISTSERV%200811270913326844.0163@LISTSERV.UNI-HEIDELBERG.DE>
+            <18745.42929.572931.522217@morse.mittelbach-online.de>
+            <4939B59D.2070301@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.929.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <E45AA543-005D-4BF1-B083-C9F8539EF189@gmail.com>
+Date:         Sat, 6 Dec 2008 14:20:09 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: New functions for l3expan; was: Recent talk on LaTeX3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4939B59D.2070301@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Dec 2008 03:53:45.0416 (UTC) FILETIME=[3CB66480:01C95756]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5516
+
+On 06/12/2008, at 9:43 AM, Joseph Wright wrote:
+
+> BTW, I'd missed
+> the point that "\exp_args: ...  not to be used within the code": I'll
+> have to revisit some of my ideas.
+
+Maybe we need some more programming tools that do similar things,  
+then. (I've been tempted to use things like \exp_args:NNO instead of  
+chains of \exp_after:NN.)
+
+I guess we could do something like this...?
+
+   \let_new:NN \exp_after:NNN  \exp_args:NNO
+   \let_new:NN \exp_after:NNNN \exp_args:NNNO
+
+Where:
+   \def_long_new:Npn \exp_args:NNO #1#2#3 {
+     \exp_after:NN #1 \exp_after:NN #2 #3
+   }
+
+Both have the naming problems of \exp_after:NN itself, where they can  
+be used to expand past a brace in a situation like
+
+    \exp_after:NNNN \foo \bar { \baz }
+-> \exp_after:NN \foo \exp_after:NN \bar \exp_after:NN { \baz }
+
+So they should probably be
+
+   \exp_after:wN
+   \exp_after:NwN
+   \exp_after:NNwN
+
+* * *
+
+I know the idea of expl3 is to move away from these sorts of things,  
+but I think that the \expandafter functionality is pretty unavoidable  
+in some circumstances; consider:
+
+\def_new:Npn \toks_use_clear:N #1 {
+   \exp_after:NN
+     \toks_clear:N
+   \exp_after:NN
+     #1
+     \toks_use:N#1
+}
+
+which could be written simply as
+
+\def_new:Npn \toks_use_clear:N #1 {
+   \exp_after:NwN \toks_clear:N #1 \toks_use:N #1
+}
+
+* * *
+
+Open questions:
+
+  - is "exp_after" the best name, still?
+    "exp_last" ?
+    \exp_ii:wN / \exp_iii:NwN / \exp_iv:NNwN ? (I like this; see below)
+
+  - can these be nested/threaded/whatever-the-word for simplifying  
+situations like
+      \@xa\@xa\@xa\foo\@xa\bar\baz ?
+
+       \exp_after:NNwN \exp_after:wN \foo \bar \baz
+    or \exp_iv:NNwN \exp_ii:wN \foo \bar \baz
+
+    Seems okay.
+    Could then write
+
+      \def:Npn \exp_iii_ii:NNN { \exp_after:NNwN \exp_after:wN }
+      \exp_iii_ii:NNN \foo \bar \baz
+
+    Seems nice, and fits in with the nomenclature of \use_ to an extent.
+
+* * *
+
+Thoughts? There is definite overlap between these functions and what  
+the \exp_args functions do, but I think there's enough justification  
+to include functions like this, carefully, into l3expan.
+
+Will
+

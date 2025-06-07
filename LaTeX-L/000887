@@ -1,0 +1,118 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["3960" "Thu" "3" "December" "92" "15:36:14" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "89" "structured comments (was: accents)" nil nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA11944; Thu, 3 Dec 92 16:44:08 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA27588; Thu, 3 Dec 92 16:44:04 +0100
+Message-Id: <9212031544.AA27588@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0549; Thu, 03 Dec 92 16:44:41 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2436;
+ Thu, 03 Dec 92 16:44:37 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2434;
+ Thu, 03 Dec 92 16:44:34 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  "J%org Knappen"'s message of Thu,
+              3 Dec 92 16:09:10 CET <25294.9212031510@m1.cs.man.ac.uk>
+Date:         Thu, 3 Dec 92 15:36:14 GMT
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      structured comments (was: accents)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 887
+
+
+>>>>> On Thu, 3 Dec 92 16:09:10 CET, "J%org Knappen"
+ <KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE> said:
+....
+J%org> However, here is another idea which might be interesting, allthough I'm not
+J%org> sure if it may violate the principles of TeX:
+J%org>
+J%org> Use some kind of ``structured comment'' at the beginning of a .tex file. I
+J%org> have seen a thing like this on the Atari, where a line like
+J%org> %macropackage=lplain
+J%org> causes the implementation to choose the right format automatically.
+J%org>
+J%org> Here I'm thinking of of structured comment like
+J%org> %characterset=latin1
+J%org> to cause the implementation automatically to choose the right character
+J%org> conversion table.
+J%org>
+J%org> Think this proposal needs some discussion, since the structured comments
+J%org> need standardisation to be really usefull.
+
+All my documents have (emacs generated) comments like your first
+example, which determine which format, and which previewer to use etc.
+so that I can use xdvi on simple documents and ghostview on ones with
+PS inserts.
+
+% Master File: xxx.tex
+% Document Previewer: xdvi
+% Document Type: laTeX
+
+This is fine, and it means that I never need to type anything to the
+unix command line.
+
+I think that it would be a very bad idea for the TeX implementation
+itself to read these comments. Apart from the fact that such a thing
+may not be allowed to be called TeX, I think that comments should
+*not* be read by the application (that's why they are called comments).
+
+Even the idea of embedding commands for a pre-processor within the
+comments of the main language has a lot of problems. Witness how many
+applications fail to correctly produce and/or parse the structured
+comments in PostScript files.
+
+A standard file header (like but not necessarily equal to) the one
+suggested by Nelson Beebe can contain information about formats and
+character sets in human readable form so that any necessary convertion
+utilities can be applied by hand. Smart editors like emacs may of
+course parse these headers and do it automatically, but I would not
+like to see this functionality added to TeX (or its successor).
+
+An example of a Beebe style header is:
+
+%%% ======================================================================
+%%%  @LaTeX-file{
+%%%     filename        = "vol-task.tex",
+%%%     version         = "5.1",
+%%%     date            = "15 October 1992",
+%%%     time            = "07:58:32.41 CDT",
+%%%     list-manager    = "George D. Greenwade",
+%%%     address         = "Department of Economics and Business Analysis
+%%%                        College of Business Administration
+%%%                        P. O. Box 2118
+%%%                        Sam Houston State University
+%%%                        Huntsville, Texas, USA 77341-2118",
+%%%     email           = "bed_gdg@SHSU.edu (Internet)
+%%%                        BED_GDG@SHSU     (BITNET)
+%%%                        SHSU::BED_GDG    (THENET)",
+%%%     telephone       = "(409) 294-1266",
+%%%     FAX             = "(409) 294-3712",
+%%%     supported       = "yes",
+%%%     archived        = "*Niord.SHSU.edu:[FILESERV.VOL-TASK],
+%%%                        pip.SHSU.edu:/vol-task.tex",
+%%%     keywords        = "LaTeX3, LaTeX, volunteer task list",
+%%%     codetable       = "ISO/ASCII",
+%%%     checksum        = "55231 955 4432 36808",
+%%%     docstring       = "This is general volunteer task list in the
+%%%                        development of LaTeX3.  There are many tasks
+%%%                        needing to be done in support of the LaTeX3
+           [...... lots more documentation .....]
+%%% }
+%%% ======================================================================
+
+It *may* be reasonable to switch character sets from within (a
+successor to) TeX, rather than from the command line, or having
+different sets built into different executables, but such extra
+functionality should *not* be a comment, rather it should be a new
+primitive
+\characterset=
+
+David
+

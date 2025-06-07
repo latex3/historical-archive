@@ -1,0 +1,137 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 20 Nov 2008 14:12:21 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mAKDCI6K019804
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 20 Nov 2008 14:12:19 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mAKD95TM003647
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 20 Nov 2008 14:09:06 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mAJN2xEG023750;
+	Thu, 20 Nov 2008 14:08:47 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 159966 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 20 Nov
+          2008 14:08:47 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mAKD8ke5000400 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 20 Nov 2008 14:08:46 +0100
+Received: from ey-out-1920.google.com (ey-out-1920.google.com [74.125.78.144])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mAKD8buU020500 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 20 Nov
+          2008 14:08:42 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so165031eyk.58 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 20 Nov 2008 05:08:37 -0800
+          (PST)
+Received: by 10.210.80.2 with SMTP id d2mr1916204ebb.67.1227186517099; Thu, 20
+          Nov 2008 05:08:37 -0800 (PST)
+Received: by 10.210.123.11 with HTTP; Thu, 20 Nov 2008 05:08:36 -0800 (PST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <LISTSERV%200811192230181624.04A3@LISTSERV.UNI-HEIDELBERG.DE>
+            <27990a880811191758x2a29ecb4m33d2dcead1f32093@mail.gmail.com>
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <859ec5630811200508x17ef357dvc7cf352f5bc1031f@mail.gmail.com>
+Date:         Thu, 20 Nov 2008 14:08:36 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: \exp_after:NN
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <27990a880811191758x2a29ecb4m33d2dcead1f32093@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 20 Nov 2008 13:12:21.0363 (UTC) FILETIME=[9F2A0C30:01C94B11]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5448
+
+On Thu, Nov 20, 2008 at 2:58 AM, Will Robertson <wspr81@gmail.com> wrote:
+> On Thu, Nov 20, 2008 at 8:00 AM, Joseph Wright
+> <joseph.wright@morningstar2.co.uk> wrote:
+>> Hello all,
+>>
+>> I've been writing a talk about LaTeX3, and something struck me.  Why is it
+>> \exp_after:NN and no \exp_after:NO?
+
+Because the O type specification is "read a single token, expand it
+once, return it in braces"
+
+I tried to address the situation with the E specifier, which is the
+same as O except the braces are removed.
+
+I outlined a different, more generic approach in August:
+
+---------------------------------------------------------------
+"Returning expanded tokens without braces"
+Arguments are almost always returned with braces and while this is a
+good thing overall, it is sometimes not desired. However, there is no
+good way to specify that you do not want it returned in braces. You
+can resort to adding extra arguments in front using
+\use_arg_ii_iii:nnn or similar to remove the braces which is just
+obfuscating the code and completely against the idea of the expansion
+module.
+
+The point, I think, is that we are mixing up two things here: One is
+how arguments are read and the other is how they are handed back to
+us. Right now, N is supposed to be read as single token and returned a
+single token. o, d, x, f are brace group both when read and when
+returned. O, X are single token when read and brace group when
+returned.
+
+Here's a crazy idea. What if in the argument specifiers, we use a
+special symbol for denoting that the next argument is to be returned
+without braces? Such as for example \exp_args:N!o or so which would
+pass N unchanged and then ``unbrace'' the result of the o expansion.
+Can't use +, -, / or * unfortunately as TeX relies on them having
+catcode 12 for calculations. Then this would mean that the o argument
+is returned without braces. The way it could be implemented is simple:
+  \def_long_new:Npn\::o!#1\:::#2#3{% omit braces around #3
+    \exp_after:NN\exp_arg_next:nnn\exp_after:NN{#3}{#1}{#2}
+  }
+  \def:Npn \exp_args:N!o { \::o! \::: }
+Perhaps better would be if it would work like this:
+  \def:Npn \exp_args:N!o { \::! \::o \::: }
+I.e., this ``unbracer'' modifier is an argument type of its own. If we define
+  \def:Npn\::! #1{ \cs_use:c{\cs_to_str:N #1 !} }
+  \def:Npn \exp_args:N!o { \::! \::o \::: }
+and \::o! as above we get this behavior which feels more natural and
+would work with the general mechanism of defining these things.
+---------------------------------------------------------------
+
+If the above is implemented, \expandafter would be \exp_args:N!O.
+
+However, it is my feeling that for most practical purposes you only
+wish to remove braces from the very last item in the expansion chain.
+Therefore, a simpler naming scheme such as
+  \exp_args_u:NO
+  \exp_args_u:NNo
+  etc.
+could be employed.
+
+> I guess \exp_after:NN is an edge-case of the naming scheme. In fact,
+> it should probably be called \exp_after:ww because in a case like
+> this:
+>  \foo\expandafter{\bar}
+> the opening brace doesn't really qualify as a "N" type argument.
+
+True, \expandafter is really a ww type. I think it would be better to
+sort out the unbracing of an argument after it has been through its
+expansion steps. It is a typical thing to do for which we currently
+use \exp_after:NN in its raw form - I'd like to get away from that.
+
+-- 
+Morten
+

@@ -1,0 +1,89 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id r6HCn9wk026354
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Wed, 17 Jul 2013 14:49:10 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.4) with ESMTP id r6HCmm7F027872;
+	Wed, 17 Jul 2013 14:48:49 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+	[212.227.126.171])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.4) with ESMTP id
+	r6HCmiST027864
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <latex-team@latex-project.org>; Wed, 17 Jul 2013 14:48:45 +0200
+Received: from [10.111.50.184] ([46.115.107.50])
+	by mrelayeu.kundenserver.de (node=mreu4) with ESMTP (Nemesis)
+	id 0M4gBt-1UELJz1aQ9-00yz1I; Wed, 17 Jul 2013 14:48:39 +0200
+References: <51E5AE74.7080503@morningstar2.co.uk>
+	<3FBE1311-1DC2-4869-840B-D4A14F9F1E52@mittelbach-online.de>
+	<51E68CB1.50005@morningstar2.co.uk>
+In-Reply-To: <51E68CB1.50005@morningstar2.co.uk>
+Mime-Version: 1.0 (1.0)
+Message-Id: <DEF238FB-1A9D-40E4-B85A-25B4FDD3CB6D@mittelbach-online.de>
+X-Mailer: iPad Mail (9B206)
+From: iPad Mittelbach <ipad@mittelbach-online.de>
+Subject: Re: Michiel Helvensteijn's ideas
+Date: Wed, 17 Jul 2013 14:48:43 +0200
+To: LaTeX Team <latex-team@latex-project.org>
+X-Provags-ID: V02:K0:TtOTObyWk/jAmdX3TYZInwo2bglk3RGQ6epGoyIgCos
+	GgOwTY0SSH3aWYEixyHZwmQqyoFeljGjQbS5rMlFXg+HsuuRy9
+	gCPWSLAXgsXsN/WCGiDTLnOqs2Ruf2XSC7QCV1LPm3XY59aDnl
+	em724CvVuueL8BCQUIS21CMlh0rVKOBDlVm5psB0gTmhAh7cCE
+	RWrlk1Uh6tHI1kMaY90cbTcK152a1vzg3fbmPyOlnSSWk3mOz3
+	0Pvfptcum815cXEFux0wqRHwc38gl78jLiWTEZNtrCvJ71d2cW
+	1rZaNAM1RE/i/ZYpB9ZBdd2v/LN6CVBj7/VgQQX+2iifO/6aFc
+	nL3g3ue7Zc+K5+KiM0yt+qaqjTTXyc+fv1NJpVa+5fcijr8rJM
+	pCFeQrp7xozte5JohxLxUiU3adUG1YbPiw=
+X-DANTE-Spam-Score: -1.9 () BAYES_00,MIME_QP_LONG_LINE,SPF_HELO_PASS
+X-Scanned-By: MIMEDefang 2.69 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.69 on 176.28.54.184
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.13
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: latex-team-bounces@latex-project.org
+Errors-To: latex-team-bounces@latex-project.org
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7257
+
+
+> 
+>> I do see a need for unique pointers but I don't think that a representation via the arg spec is the right approach
+> 
+> I'm not even sure about this: the standard approach of use a space
+> 'within' your module name space for storage has worked fine to date.
+
+What I mean is the use of data structures that implement some sort of graph realized by linked lists
+
+E.g. The LDB data structure as I implemented it is a set of records that are linked to each other. Each such link is provided by referencing a successor record and the natural way to do this is by having unique cs names "pointing" to a record. For this you need some machinery that generates (and/or) manages a pool of unique names from where you can request a new name (or an existing one that got freed up).
+
+But my approach for this would be to have this name returned in a result variable so that you can reuse it as necessary, which is what you need if you build out such data structures
+
+A module that would implement such a scheme could also maintain returned pointers that got freed up so that they could be reused.
+
+In the LDB implementation i also implemented a way to implement external storage so that such dynamic data structures could be written out
+
+Frank
+
+> 
+>> Ps if somebody could tell me if my note to latexl arrived that would be helpful
+> 
+> Yes, I've seen it :-)
+
+Good, wonder why it got rejected initially, I thought I was subscribed from this iPad account before
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

@@ -1,0 +1,317 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D4F9807C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:50 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D4F9807C"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: RE: RE: VERB IN HEADINGS FULL
+Date: Tue, 23 Oct 1990 09:50:47 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE201@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Sender: "MITTELBACH FRANK" <PZF5HZ@DRUEDS2.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 244
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D4F9807C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Victor pointed out a problem with using meaning but
+I still think this can be handled:
+>
+> The idea of using \meaning was too good to be true.
+>
+> In the next TUGboat there will be an article by Ron Whitney
+> that uses this trick. When I read a draft of that article
+> I thought 'Cute. Let's try using it'. Here's what's wrong with
+> using it for verbatim text:
+>
+> \def\verb#1{\def\text{#1}\meaning\text}
+> \verb{1&2}
+> \verb{1#3}
+>
+> which gives
+>
+> \verb #1->\def \text {#1}\meaning \text
+> #1<-1##3
+> ! Illegal parameter number in definition of \text.
+> <to be read again>
+>                    3
+> \verb #1->\def \text {#1
+>                         }\meaning \text
+
+If I don't miss anything the only critical character is the hash mark.
+But I don't think we need to make the hash mark a special character in
+the new LaTeX. It can be a simple character of catode 12. Only during
+the definition time, i.e. \newcommand, etc. we need it as a macro
+parameter character. The only restriction of the use of \verb would
+then be that \verb inside \newcommand can only contain a # mark if it
+is doubled. Explaining #1 etc for \newcommand could make it clear to
+the user that it is sensible to prevent LaTeX from interpreting
+# in a \newcommand by doubling it. This would also allow to define
+things like
+
+\newcommand{\abc}[1 ]{<somecode> \verb+#1+ <some more code>}
+
+which would then put the argument into the \verb command.
+
+Of course, there is one problem: \def etc outside of style files
+would not be possible any longer. But that's something some people
+would like anyway. At least everybody who ever had to track done
+errors coming from user definitions like
+
+\def\or{\lor}
+
+or something similar nasty.
+
+An interesting side effect is that if somebody uses \verb=3D#=3D inside
+\newcommand this would be interpreted after the error message
+correctly as \verb=3D##=3D so the output would be okay!
+
+>
+> Ron also suggested scooping up the text as a token list, writing
+> that out and reading it in (his context was a bit different,
+> but that's irrelevant for now). Here's what's wrong with that:
+>
+> \def\verb#1{\toks0=3D{#1}\showthe\toks0 }
+> \verb{1#3}
+>
+> gives
+>
+> \verb #1->\toks 0=3D{#1}\showthe \toks 0
+> #1<-1##3
+>
+> That is, the parameter character gets duplicated.
+> It seems like implementing verbatim will have to be done
+> the hard way. Or at least *some* hard way.
+
+Writing out and reading in is not possible because of brace problems
+and because it is much too slow. In principle all this problems
+including double # marks could be solved by assigning suitable catcodes
+to all critical characters (# could be active removing the second
+# since this is always present). But as I said this would be much  too
+complicated.
+
+Frank Mittelbach
+
+
+
+------_=_NextPart_001_01C19442.D4F9807C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>RE: RE: VERB IN HEADINGS FULL</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Victor pointed out a problem with using meaning =
+but</FONT>
+
+<BR><FONT SIZE=3D2>I still think this can be handled:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; The idea of using \meaning was too good to be =
+true.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; In the next TUGboat there will be an article by =
+Ron Whitney</FONT>
+
+<BR><FONT SIZE=3D2>&gt; that uses this trick. When I read a draft of =
+that article</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I thought 'Cute. Let's try using it'. Here's =
+what's wrong with</FONT>
+
+<BR><FONT SIZE=3D2>&gt; using it for verbatim text:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \def\verb#1{\def\text{#1}\meaning\text}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb{1&amp;2}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb{1#3}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; which gives</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb #1-&gt;\def \text {#1}\meaning =
+\text</FONT>
+
+<BR><FONT SIZE=3D2>&gt; #1&lt;-1##3</FONT>
+
+<BR><FONT SIZE=3D2>&gt; ! Illegal parameter number in definition of =
+\text.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &lt;to be read again&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb #1-&gt;\def \text {#1</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; }\meaning \text</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If I don't miss anything the only critical character =
+is the hash mark.</FONT>
+
+<BR><FONT SIZE=3D2>But I don't think we need to make the hash mark a =
+special character in</FONT>
+
+<BR><FONT SIZE=3D2>the new LaTeX. It can be a simple character of catode =
+12. Only during</FONT>
+
+<BR><FONT SIZE=3D2>the definition time, i.e. \newcommand, etc. we need =
+it as a macro</FONT>
+
+<BR><FONT SIZE=3D2>parameter character. The only restriction of the use =
+of \verb would</FONT>
+
+<BR><FONT SIZE=3D2>then be that \verb inside \newcommand can only =
+contain a # mark if it</FONT>
+
+<BR><FONT SIZE=3D2>is doubled. Explaining #1 etc for \newcommand could =
+make it clear to</FONT>
+
+<BR><FONT SIZE=3D2>the user that it is sensible to prevent LaTeX from =
+interpreting</FONT>
+
+<BR><FONT SIZE=3D2># in a \newcommand by doubling it. This would also =
+allow to define</FONT>
+
+<BR><FONT SIZE=3D2>things like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\abc}[1 ]{&lt;somecode&gt; \verb+#1+ =
+&lt;some more code&gt;}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>which would then put the argument into the \verb =
+command.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Of course, there is one problem: \def etc outside of =
+style files</FONT>
+
+<BR><FONT SIZE=3D2>would not be possible any longer. But that's =
+something some people</FONT>
+
+<BR><FONT SIZE=3D2>would like anyway. At least everybody who ever had to =
+track done</FONT>
+
+<BR><FONT SIZE=3D2>errors coming from user definitions like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\or{\lor}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>or something similar nasty.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>An interesting side effect is that if somebody uses =
+\verb=3D#=3D inside</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand this would be interpreted after the error =
+message</FONT>
+
+<BR><FONT SIZE=3D2>correctly as \verb=3D##=3D so the output would be =
+okay!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Ron also suggested scooping up the text as a =
+token list, writing</FONT>
+
+<BR><FONT SIZE=3D2>&gt; that out and reading it in (his context was a =
+bit different,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; but that's irrelevant for now). Here's what's =
+wrong with that:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \def\verb#1{\toks0=3D{#1}\showthe\toks0 }</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb{1#3}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; gives</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb #1-&gt;\toks 0=3D{#1}\showthe \toks =
+0</FONT>
+
+<BR><FONT SIZE=3D2>&gt; #1&lt;-1##3</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; That is, the parameter character gets =
+duplicated.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; It seems like implementing verbatim will have to =
+be done</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the hard way. Or at least *some* hard =
+way.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Writing out and reading in is not possible because of =
+brace problems</FONT>
+
+<BR><FONT SIZE=3D2>and because it is much too slow. In principle all =
+this problems</FONT>
+
+<BR><FONT SIZE=3D2>including double # marks could be solved by assigning =
+suitable catcodes</FONT>
+
+<BR><FONT SIZE=3D2>to all critical characters (# could be active =
+removing the second</FONT>
+
+<BR><FONT SIZE=3D2># since this is always present). But as I said this =
+would be much&nbsp; too</FONT>
+
+<BR><FONT SIZE=3D2>complicated.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank Mittelbach</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D4F9807C--
+

@@ -1,0 +1,84 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2647" "Mon" "14" "February" "1994" "11:41:16" "-0500" "bbeeton" "BNB@MATH.AMS.ORG" "<199402141837.AA00960@mail.cs.tu-berlin.de>" "52" "Re: collective documents [was exam papers]" "^Date:" nil nil "2" "1994021416:41:16" "collective documents [was exam papers]" nil "<01H8VG57GH6A9OEC0Y@MATH.AMS.ORG>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA02354; Mon, 14 Feb 94 19:37:54 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA04268; Mon, 14 Feb 94 19:37:53 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA00960
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 14 Feb 1994 19:37:50 +0100
+Message-Id: <199402141837.AA00960@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6761; Mon, 14 Feb 94 19:37:35 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6760; Mon,
+ 14 Feb 1994 19:37:35 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 0562; Mon,
+ 14 Feb 1994 18:51:31 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <01H8VG57GH6A9OEC0Y@MATH.AMS.ORG>
+Date:         Mon, 14 Feb 1994 11:41:16 -0500
+From: bbeeton <BNB@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: collective documents [was exam papers]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1556
+
+sebastian asks some questions about whether a "collective document"
+would really need new faciliities, as opposed to simply a new
+document class.
+
+regarding whether our hacked-together tugboat "collection" option
+will or won't work with latex2e remains to be seen; it might work
+with compatibility mode, but i don't really want that -- when the
+switch is made to latex2e, i want it to be a complete switch so as
+not to be using any more versions of the styles than absolutely
+necessary; gets too confusing otherwise.
+
+the kinds of things that are implemented are (as in sebastian's
+style/class) per-paper bibliographies, contents, lists of tables and
+figures -- i.e., separate .aux and .lo* files (and i would love to
+have the ability to use \nofiles for a particular article if it's
+appropriate, but right now the reconstruction of these auxiliary
+files is so delicate -- sometimes they simply don't get rewritten
+when i'm in "collective" operation -- that i don't dare chance it).
+
+for proofing individual items, they are most easily processed one at
+a time, so the \documentstyle line (or its new equivalent) will be
+present in every article file.  when in "collection" mode, this must
+be read in and checked to see if any new options must be input; if
+any options have already been input, don't repeat them (double input
+is sometimes pretty lethal, or at least "the results are undefined").
+
+at \begin{document} various things need to get reset -- section
+numbers, for example, and the elements that make up the front matter
+(don't want to use the net address of the previous paper's author
+if the author of the current paper has none).
+
+it's necessary to *not* stop processing at \end{document} but to check
+whether there's anything more; so there needs to be a "final" \end .
+\however, any paper-specific definitions and parameter settings should
+be killed to keep them from affecting later papers.
+
+compiling a "publication" table of contents would require an .aux
+file at the collective level -- so two .aux files could be open at
+once.
+
+posit a two-column publication in which articles have one-column
+top matter, but start on a page that has already begun if there's
+enough room.  then \end{document} must balance the columns, and
+\begin{document} must reset to one-column a suitable distance down
+the page.
+
+probably some more bits that i've forgotten at the moment.
+i guess that none of this is really "new", but especially the
+encapsulation and reinitialization, and the extra file handling
+are sufficiently nasty that it would be helpful to have a
+standard way of handling them.
+                                                -- bb
+

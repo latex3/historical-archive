@@ -1,0 +1,153 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 10 Feb 2008 16:41:26 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m1AFfOFp025847
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 10 Feb 2008 16:41:24 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m1AFbrXv019745
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 10 Feb 2008 16:37:54 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m19N1AcW013795;
+	Sun, 10 Feb 2008 16:37:52 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 209437 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 10 Feb
+          2008 16:37:52 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m1AFbqiQ003319 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 10 Feb 2008 16:37:52 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.174]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m1AFXrTA017396 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 10 Feb 2008 16:33:58 +0100
+Received: from morse.mittelbach-online.de (p4FD47FCA.dip.t-dialin.net
+          [79.212.127.202]) by mrelayeu.kundenserver.de (node=mrelayeu7) with
+          ESMTP (Nemesis) id 0ML2xA-1JOEFW3Ddq-0002LK; Sun, 10 Feb 2008
+          16:37:47 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 2852D2535D; Sun, 10 Feb 2008 16:37:44 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <554562.68625.qm@web82005.mail.mud.yahoo.com>
+            <18348.49762.276704.111827@morse.mittelbach-online.de>
+            <20ce17a8a5ca4b38f7c78f7c195108ad@residenset.net>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18eEyek01wmJSSjwkFCW32UFDm2EuD8sW+MMc5
+              pD+yS76uCaCnkDigFxqVazyx3Qe9ye0E34RQ0hazPV5ZWI79+x
+              RbEm63Wku8mGD4rJFfVg9n+r/vIGeMC
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18351.6728.118301.982422@morse.mittelbach-online.de>
+Date:         Sun, 10 Feb 2008 16:37:44 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Internal and external page setup control
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20ce17a8a5ca4b38f7c78f7c195108ad@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Feb 2008 15:41:26.0395 (UTC) FILETIME=[65809CB0:01C86BFB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5163
+
+Lars,
+
+ > Which brings me back to the question about using \marks. If a mark 
+ > changing the \pagestyle (assuming here metrics stay the same) is given 
+ > in material ending up on page 5, there is no way that it can affect 
+ > what happens on page 4, even if it was put on the main vertical list 
+ > before page 4 was shipped out. So far so good, eh?
+
+well not quite I think (though that has nothing to do with your suggestion to
+use marks). The problem is the way the new output routine does its float
+placement: it works basically by collecting enough material for a page with no
+floats (plus some safety extra) and then starts adding floats one at a
+time. That means that one the first trial cut (no floats) it will pick up some
+pagestyle that on a later trial may no longer be present.
+
+So if the "pagestyle" can control the float placement then there is a
+conflict. The problem would only go away if the material from the mark is
+supposed to define the layout/pagestyle of the "next page, because then we can
+simply wait until we have determined the final galley cut and then evaluate
+the marks from that cut to be used on the next page.
+ > 
+ > The other problem is nonmonotonic dependence on page breaks chosen, as 
+ > illustrated by the roman numeral problem. One way to break an infinite 
+ > loop of rebreaks would be to impose a monotonicity rule on the 
+ > settings. Basically there is the main body of text and floating 
+ > material competeing for area on the page being built, right? An 
+ > increasing text rule could then mean that settings are not taken into 
+ > account if they decrease the amount of body text being included, i.e., 
+ > if we have the following sequence of events:
+ >    1. A page break is chosen with default settings.
+ >    2. Within this page material is then a change of settings which would
+ >       increase the part of the page occupied by body text, so the page
+ >       break is recalculated with the new settings.
+ >    3. Within the additional material put on the page, there is another
+ >       change of settings which would reduce the body text amount on
+ >       the page. This is however not taken into account, as it would
+ >       violate monotonicity; the page break is not recalculated.
+ > It's possible that decreasing text is more often useful than increasing 
+ > text. Maybe it should even be decided on a case-by-case basis: if for 
+ > breaking page N there is an adjustment which increases (decreases) the 
+ > text part of the page, then further setting changes may not decrease 
+ > (increase) the text part of the page.
+
+well perhaps I misread the algorithm, but I guess it can't be used if the
+basical float placement happens the way it is described above. And I think it
+has to happen in this way to be able to do better than a simple linear
+algorithm as LaTeX currently uses (that one works well enough for single
+column pages but already with two columns it doesn't really do).
+
+but if you do that you can't impose a monotonicity rule in this way (i think)
+as that would still produce backward effects, i.e., assume you have 
+
+page 3 with 4 floats
+page 4 with 2 floats
+
+you add a directive on page four that says no floats on this page (i.e., the
+intention to push the 2 floats to page 5.
+
+now when the doc is compiled the directive will be seen first time on page 3
+(when it is cut without floats), so ...
+
+
+ > What is best to do probably depends on *why* output routine setting 
+ > changes are made. Does anyone have a list of scenarios that might be 
+ > discussed? Some I can think of are:
+ > 
+ >   * We're entering a new section of the document, so it would be good if 
+ > float
+ >     placement could be a bit more liberal so that we got them out of the 
+ > way.
+ > 
+ >   * We're making a special kind of page (e.g. chapter opening) and don't
+ >     want any floats to go here.
+ > 
+ >   * We're entering a section of the document where the basic page layout
+ >     is different (e.g. includes page headers because we're in the index).
+
+I think I can perhaps come up with a few more but that may need a little time
+actually I'm down with some flu and shouldn't sit in front of the computer
+anyway
+
+ > PS: I wouldn't mind getting a response to the xparse/xdoc stuff too.
+
+well let's see, how many more days do I have before I'm slower than you
+replying to my post?  :-)
+
+cheers
+frank
+

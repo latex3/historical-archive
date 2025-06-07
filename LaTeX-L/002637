@@ -1,0 +1,324 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["9241" "Thu" "2" "July" "1998" "17:24:24" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "288" "First experience with xr under L3PL" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id JAA13817;
+	Thu, 2 Jul 1998 09:25:26 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.CE78B973@listserv.gmd.de>; Thu, 2 Jul 1998 9:25:24 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 375884 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 2 Jul 1998 09:25:20 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id JAA22457
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 2 Jul 1998 09:25:14
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.8) id
+          RAA19706; Thu, 2 Jul 1998 17:24:24 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Message-ID:  <199807020724.RAA19706@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 2 Jul 1998 17:24:24 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      First experience with xr under L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2637
+
+Well . . . some people got out of the wrong side of bed yesterday.
+(Stress from watching the World Cup? :-)
+
+While you Europeans were sleeping, I have been doing an experiment
+with my `minimalist proposal'.
+
+I picked a `random' package from tools to see what it looks like under
+L3PL.  I happened to pick xr.
+
+I attach the files in full at the end of the message.
+
+Here are some notes on xr2.dtx gained from the experience:
+
+%<notpackage>\RequirePackage{l3io}
+
+This line is effectively `commented out'.
+I tried \usepackage{xr2} (with the \RequirePackage) first.  As a
+result I had to put \CodeStart...\CodeStop around the `body' of the
+package.  (The altered version of \RequirePackage doesn't take effect
+quickly enough.) So I changed my test document to say
+\usepackage{l3io,xr2} instead and commented out the \RequirePackage.
+
+Oh, and don't do this (as I did):
+\usepackage{l3io,graphicx,url,xr2}
+
+`Funny things' happen to graphicx and url (i.e. spaces get gobbled up)
+if you do that . . . you must put l3io and xr2 last.
+
+% ^^ACodeStart
+
+This is now commented out.
+
+\tex_catcode:D `\/=11\tex_relax:D
+
+I'm testing out the `/ _ : proposal' . . . internal macros will be
+prefixed by \tools/xr/.  I haven't renamed the Team's L3PL names
+(e.g. \ior_eof:NTF to \ior/eof:NTF) - that will take a little more
+time!
+
+\let:NwN\ior_close:N\tex_closein:D
+\let:NwN\if_eof:w\tex_ifeof:D
+
+See my previous two messages . . . .
+
+\def_new:Npn\externaldocument{\@ifnextchar[\tools/xr/xr_main:w%
+{\tools/xr/xr_main:w[]}}
+
+I haven't tried to implement an import/export mechanism at this
+stage, so I just use \def_new:Npn here.
+
+\def_new:Npn\tools/xr/xr_main:w[#1]#2{{%
+
+This was \XR@; for want of a better name I chose xr_main.
+
+\def_new:Npn\tools/xr/loop:n#1{\ior_open:Nn\@inputcheck{#1}\scan_stop:
+
+A gotcha:  you now need the braces around #1.
+
+  \ior_eof:NTF\@inputcheck{
+    \PackageWarning{xr2}{^^JNo~file~#1^^JLABELS~NOT~IMPORTED.^^J}%
+    \tools/xr/aux:
+  }{
+    \PackageInfo{xr2}{IMPORTING~LABELS~FROM~#1}%
+    \tools/xr/read:}}
+
+The use of \ior_eof:NTF avoids the need for a couple of \expandafters.
+
+  \exp_after:NN\tools/xr/test:nnnn\tools/xr/line...\\}
+
+\def_long_new:Npn\tools/xr/test:nnnn#1#2#3#4\\{%
+
+The \\ in both these lines was \XR@.  I wanted to change that to
+\tools/xr/dummy or something like that, but this doesn't work because
+\tools/xr/test:nnnn gets invoked when reading the .aux file, and at
+that stage / has catcode 12 again.  (Using a _ wouldn't work either,
+of course.)
+
+  \ior_eof:NTF\@inputcheck{\tools/xr/aux:}{\tools/xr/read:}}
+
+This is much easier to read!
+
+\tex_catcode:D `\/=12\tex_relax:D
+
+Undo my testing . . .
+
+%^^ACodeStop
+
+Also commented out.
+
+So . . . what are my impressions?
+
+First, highlighting in Emacs/AUC TeX/font-lock looks a bit funny; the
+highlighting of macros stops at the first /, _, or :.
+Easily fixed.
+
+Second, I think you will get used to / in the macro names.
+I can `parse' names such as \tools/xr/exp_list: without much
+trouble.  If I have any parsing problems at all it is with lines such
+as:
+  \if_meaning:NN\tools/xr/list\@empty\else:
+Somehow the NN stands out too much.
+
+Third, this example isn't as interesting as it might be; I have only
+used `function names' (no `parameter names').  And it's too small: the
+(only) apparent payoff of L3PL in xr was the two uses of \ior_eof:NTF.
+
+Clearly I have to try converting some of tools's larger packages.
+
+OK, it's 17.20 AEST which means the Germans, Swedes, and Spaniards are
+just sitting down at their computers and it's time for me to go home
+. . . enjoy!
+
+Richard.
+
+
+Here's tools2.ins:
+#### snip ########################################################
+\input docstrip
+\def\SimplePackage#1{%
+  \generate{\file{#1.sty}{\from{#1.dtx}{package}}}}
+\keepsilent
+\SimplePackage{xr2}
+\endbatchfile
+#### snip ########################################################
+
+And xr2.dtx:
+#### snip ########################################################
+% \iffalse
+%% File: xr.dtx Copyright (C) 1993-1994 David Carlisle
+%
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{xr2}
+%<package>         [1998/07/02 v15.02 eXternal References (DPC,RJW)]
+%<notpackage>\RequirePackage{l3io}
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{xr2}
+\GetFileInfo{xr2.sty}
+\begin{document}
+\title{The \textsf{xr2} package\thanks{This file
+        has version number \fileversion, last
+        revised \filedate.}}
+\author{David Carlisle \\ L3PL experiments by Richard Walker\thanks{%
+  The Author of Versions 1--4 was Jean-Pierre Drucbert}\\
+  carlisle@cs.man.ac.uk}
+\date{\filedate}
+\maketitle
+\DocInput{xr2.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \CheckSum{87}
+%
+% \changes{v5.00}{1993/07/07}
+%         {First DPC version (by agreement with J-PD).  New mechanism
+%         (\cmd{\read} instead of \cmd\input).}
+%
+% \changes{v5.01}{1993/07/20}{Fix bug added by DPC, v5.00 did not import
+%           aux files of \cmd\include'ed files. (Reported by J-PD)}
+%
+% \changes{v5.02}{1994/05/28}{Update for LaTeX2e}
+% \changes{v15.02}{1998/07/02}{L3PL experiments}
+%
+%
+% This package implements a system for eXternal References.
+%
+% If one document needs to refer to sections of another, say |aaa.tex|,
+% then this package may be loaded in the main file, and the command\\
+% |\externaldocument{aaa}|\\
+%  given in the preamble.
+%
+% Then you may use |\ref| and |\pageref| to refer to anything which has
+% been given a |\label| in either |aaa.tex| or the main document.
+% You may declare any number of such external documents.
+%
+% If any of the external documents, or the main document, use the same
+% |\label| then an error will occur as the label will be multiply
+% defined. To overcome this problem |\externaldocument| has an optional
+% argument. If you declare |\externaldocument[A-]{aaa}| Then all
+% references from |aaa| are prefixed by |A-|. So for instance, if a
+% section of |aaa| had |\label{intro}|, then this could be referenced
+% with |\ref{A-intro}|. The prefix need not be |A-|, it can be any
+% string chosen to ensure that all the labels imported from external
+% files are unique. Note however that if your style declares certain
+% active characters (|:| in French, |"| in German) then these
+% characters can not usually be used in |\label|, and similarly may not
+% be used in the optional argument to |\externaldocument|.
+%
+% \StopEventually{}
+%
+% \section{The macros}
+%
+%    \begin{macrocode}
+%<*package>
+% ^^ACodeStart
+\tex_catcode:D `\/=11\tex_relax:D
+\let:NwN\ior_close:N\tex_closein:D
+\let:NwN\if_eof:w\tex_ifeof:D
+%    \end{macrocode}
+%
+% Check for the optional argument.
+%    \begin{macrocode}
+\def_new:Npn\externaldocument{\@ifnextchar[\tools/xr/xr_main:w%
+{\tools/xr/xr_main:w[]}}
+%    \end{macrocode}
+%
+% Save the optional prefix. Start processing the first |aux| file.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/xr_main:w[#1]#2{{%
+  \makeatletter
+  \def:Npn\tools/xr/prefix:{#1}%
+  \tools/xr/next:w#2.aux\scan_stop:\\}}
+%    \end{macrocode}
+%
+% Process the next |aux| file in the list and remove it from the head of
+% the list of files to process.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/next:w#1\scan_stop:#2\\{%
+  \def:Npx\tools/xr/list{#2}%
+  \tools/xr/loop:n{#1}}
+%    \end{macrocode}
+%
+% Check whether the list of |aux| files is empty.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/aux:{%
+  \if_meaning:NN\tools/xr/list\@empty\else:
+  \exp_after:NN\tools/xr/exp_list:\fi:}
+%    \end{macrocode}
+%
+
+% Expand the list of aux files, and call |\tools/xr/next| to process the first
+% one.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/exp_list:{\exp_after:NN\tools/xr/next:w\tools/xr/list\\}
+%    \end{macrocode}
+%
+% If the |aux| file exists, loop through line by line, looking for
+% |\newlabel| and |\@input|. Otherwise process the next file in the
+% list.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/loop:n#1{\ior_open:Nn\@inputcheck{#1}\scan_stop:
+  \ior_eof:NTF\@inputcheck{
+    \PackageWarning{xr2}{^^JNo~file~#1^^JLABELS~NOT~IMPORTED.^^J}%
+    \tools/xr/aux:
+  }{
+    \PackageInfo{xr2}{IMPORTING~LABELS~FROM~#1}%
+    \tools/xr/read:}}
+%    \end{macrocode}
+%
+% Read the next line of the aux file.
+%    \begin{macrocode}
+\def_new:Npn\tools/xr/read:{%
+  \ior_to:NN\@inputcheck\tools/xr/line
+%    \end{macrocode}
+% The |...| make sure that |\tools/xr/test:nnnn| always has sufficient
+% arguments.
+%    \begin{macrocode}
+  \exp_after:NN\tools/xr/test:nnnn\tools/xr/line...\\}
+%    \end{macrocode}
+%
+% Look at the first token of the line.
+% If it is |\newlabel|, do the |\newlabel|. If it is |\@input|, add the
+% filename to the list of files to process. Otherwise ignore.
+% Go around the loop if not at end of file. Finally process the next
+% file in the list.
+%    \begin{macrocode}
+\def_long_new:Npn\tools/xr/test:nnnn#1#2#3#4\\{%
+  \if_meaning:NN#1\newlabel
+    \newlabel{\tools/xr/prefix:#2}{#3}%
+  \else:\if_meaning:NN#1\@input
+     \def:Npx\tools/xr/list{\tools/xr/list#2\scan_stop:}%
+  \fi:\fi:
+  \ior_eof:NTF\@inputcheck{\tools/xr/aux:}{\tools/xr/read:}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\tex_catcode:D `\/=12\tex_relax:D
+%^^ACodeStop
+%</package>
+%    \end{macrocode}
+%
+% \Finale
+%
+#### snip ########################################################
+

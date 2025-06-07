@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1895" "Thu" "11" "November" "93" "11:37:31" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "50" "Re: new extension for files" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA12379; Thu, 11 Nov 93 11:52:19 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA18022; Thu, 11 Nov 93 11:52:15 +0100
+Message-Id: <9311111052.AA18022@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7809; Thu, 11 Nov 93 11:50:50 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3680;
+ Thu, 11 Nov 93 11:50:42 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3678;
+ Thu, 11 Nov 93 11:50:39 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 11 Nov 93 11:37:31 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: new extension for files
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1144
+
+
+ Emilio C. Lopes said:
+
+> What do you think about "nf" or "s2e" or etc. *IN THE EXTENSION* ?:
+>
+>      times.sty ---> times.s2e
+>
+> Doesnot seem a good idea? Any problems with it?
+
+we did thought of that and in fact had many discussions about it. We
+finally decided afainst it except that we will distinugish class files
+(formerly major document styles) by the extension .cls from packages
+(with the extension .sty).
+
+*The reason lies in  the question of compatibility*
+
+As I said before style files for LaTeX209 will work under 2e. However,
+when we change their extension a lot of them won't. Here is why:
+
+- There is no problem to define a command \usepackage{foo} that looks for
+foo.pkg and if it can't find it tries foo.sty as a compatibility solution.
+
+- There is also no problem to handle \documentstyle[...]{...} and pick
+up the right files whatever extension they have.
+
+However, many style file do have direct input statements in them
+loading other styles to extend or slightly modify them. Now all such
+styles would break if we switch to new extensions in LaTeX2e.
+
+The consequence of this is:
+
+a) either you end up a system which is not compatible (ie where the
+   site maintainer needs to change a lot of files to make them work with
+   latex2e)
+
+b) or you come along with an enormous amount of .sty files that
+   contain only \input .pkg. For example, something like the array
+   package would need to provide array.pkg (containing the code) but
+   also array.sty to avoid breaking all those styles that load it directly.
+
+c) This would be a situation that we would then have forever.
+
+
+The same is true for essentially for class files, but here the number
+is much smaller and so we came to the conclusion that the advantages
+of distinguishing something essentially different from packages by
+its extension, outweights the need to provide an additional
+compatibility level.
+
+Frank
+

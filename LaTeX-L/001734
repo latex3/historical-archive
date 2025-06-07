@@ -1,0 +1,100 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2885" "Wed" "3" "April" "1996" "11:50:12" "BST" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "68" "Re: Changing \\hyphenchar" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.6.12) with ESMTP id MAA19741; Wed, 3 Apr 1996 12:53:56 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.136735C4@listserv.gmd.de>; Wed, 3 Apr 1996 12:53:53 +0200
+Received: from URZINFO.URZ.UNI-HEIDELBERG.DE by URZINFO.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 66201 for
+          LATEX-L@URZINFO.URZ.UNI-HEIDELBERG.DE; Wed, 3 Apr 1996 11:51:45 +0100
+Received: from m1.cs.man.ac.uk (m1.cs.man.ac.uk [130.88.13.4]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id MAA20060 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Wed, 3 Apr 1996 12:51:38 +0200
+          (MET DST)
+Received: from r8h.cs.man.ac.uk by m1.cs.man.ac.uk (4.1/SMI-4.1:AL6) id
+          AA17003; Wed, 3 Apr 96 11:50:16 BST
+Message-ID:  <9604031050.AA26966@r8h.cs.man.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+In-Reply-To:  <199604030745.JAA04157@murnau.idris.fr> (message from Bernard
+              GAULLE on Wed, 3 Apr 1996 09:45:16 +0200)
+Date:         Wed, 3 Apr 1996 11:50:12 BST
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Subject:      Re: Changing \hyphenchar
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1734
+
+DC> (The fd files distributed with the dc fonts do set it, but that is
+DC> another issue)
+
+BG> hum... this is the root of our discussion.
+
+Sorry I should have made myself more clear.
+
+Currently there are three sets of fd files distributed for dc fonts.
+
+* The set that LaTeX uses by default if `unpacked' in the standard way
+  use the new release 1.2 names but do *not* set \hyphenchar to 127
+
+* The alternative set in olddc.ins use the old release 1.1 names, and
+  do *not* set \hyphenchar.
+
+* The set distributed by with the dc fonts use the new release names
+  and *do* set hyphenchar to 127.
+
+By `not the issue' I just meant that in that particular message I was
+only discussing the versions in the LaTeX distribution, ie the first
+two sets above.
+
+Clearly it is not ideal that there should be two `competing' sets of
+fd files for the new fonts, but this is, I think, a reasonable
+compromise position at present for the following reason. As I
+mentioned last time, LaTeX currently does not have any real interface
+for users to make a choice about this hyphenation behaviour, Hopefully
+this round of discussion may lead to such an interface....
+So in the present circumstances having the two sets of fd files is
+quite useful as it makes a choice reasonably easy to document as
+follows:
+
+If you have the new dc fonts you can
+
+*either* use the traditional TeX - hypenchar, and traditional
+         hyphenation patterns, in which case use the Standard LaTeX fd
+         files,
+*or*     alternatively use the hanging punctuation character from
+         position 127 and extended hyphenation patterns describing
+         hyphenation near -, in which case you should use the fd files
+         coming with the dc fonts.
+
+I am not saying this is an `ideal' interface, but is more or less the
+work-around solution that is in place until an interface can be
+developed.
+
+> again, as long as fd files distributed with the DC force
+> \hyphenchar to `177
+> there is no issue to \defaulthyphenchar.
+True, but I was only describing how to use the 127 slot with the fd
+files in the LaTeX distribution. Your example comes from the `third
+set' of fd files in the dc font distribution.
+
+> obviously ^^7f needs to have catcode of 11, otherwise it will not do
+> its job. Why not? but we can't imagine the user typing ^^7f each time
+> it needs a compound word mark.
+
+Well I agree that anyway typing ^^7f is not a possibility, but unless
+I misunderstand what you mean, even catcode 11 would not help. The
+^^7f glyph in the new dc fonts is not suitable as a compound word
+mark, with any catcode. It has to come at the end of a line it may not
+be used mid-line as it sticks out on the right.
+
+However all this discussion is clarifying what the *current* position
+is. Probably a more useful discusion is to discuss what functionality
+people need for various languages, and how that might be declared...
+
+David
+

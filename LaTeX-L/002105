@@ -1,0 +1,92 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2609" "Wed" "18" "June" "1997" "17:30:58" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "55" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id RAA20415; Wed, 18 Jun 1997 17:27:00 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.4A7B71DE@listserv.gmd.de>; Wed, 18 Jun 1997 17:26:59 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 155405 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 18 Jun 1997 17:26:52 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id RAA28794 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 18
+          Jun 1997 17:26:48 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Wed, 18 Jun 1997 17:26:32 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          RAA14290; Wed, 18 Jun 1997 17:30:59 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970618172316.14277A-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A7C026.7D4DBCCA@vvv.vsu.ru>
+Date:         Wed, 18 Jun 1997 17:30:58 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2105
+
+On Wed, 18 Jun 1997, Vladimir Volovich wrote:
+
+> Thank you, I now think that my first approach with changing uccode and lccode
+> values foe russian letters in LCY encoding is not as good as I thought of it
+> some time ago... I changed Babel LCY support to the `canonical' LaTeX solutions,
+> and it works well (although slower than the simple approach; but this approach
+> is more general and more stable in a multilingual environment).
+> But what about sfcodes (and mathcodes) for russian letters?
+> May one safely change 'em (and restore) when doing language switching?
+
+I think so. The only reason to be careful with lccodes is hyphenation.
+AFAIK the effects of sfcodes will be applied immediately. Please correct
+me if I'm wrong.
+
+> Then in the body of \MakeUppercase we should simply do \let\macros\uc@macros
+> (in a local group) for all \macroses which have corresponding \uc@macroses or \ls@macroses?
+> (we may provide a command, say, \DeclareUCLC{\macros}{\uc@macros}{\lc@macros},
+> which will add `\let\macros\uc@macros' to the body of some control sequence,
+> say, \do@uccase, and add `\let\macros\lc@macros' to the body of \do@lccase;
+> then it would be sufficient to execute \do@uccase in the body of \MakeUppercase.
+> This will do all necessary substitutions effectively).
+
+Well, we shouldn't think about the internals of \@uclclist. A longer time
+ago I proposed an interface like \AddLowerUpper to add something to this
+list, but frankly, I can't remember what the LaTeX has answered, and until
+today there is no such interface :-)
+
+> >     \begingroup
+> >       \expandafter\toks@\expandafter{\@uclclist}%
+> >       \toks@\expandafter{\the\toks@
+> >         \rusa\RUSA\rusb\RUSB...}%
+> >       \expandafter\gdef\expandafter\@uclclist\expandafter{\the\toks@}
+> >     \endgroup
+>
+> This could be simplified as follows:
+> \expandafter\def\expandafter\@uclclist\expandafter{\@uclclist
+> \CYRa\CYRA\CYRb\CYRB...}
+
+Oh. But why should I use the simple solution if the complicated works
+too? :-)
+
+> > But the need for T2 is definitely here since 0x80-0xFF is not sufficient
+> > for all Cyrillic characters, and the characters in the range 0x00-0x7F
+> > *must* follow the default \lccode and \uccode values.
+>
+> Why must they? :-) The above mentioned solutions should work here, too.
+> [although, it would be *very* inefficient and slow].
+
+Hyphenation will fail if you mix, say, English and Russian in one
+paragraph. After all expansion has been done some `\char xxx' will be in
+the stream, and TeX will check its \lccode value to find hyphenation
+points. There is no possibility to escape.
+
+
+    Werner
+

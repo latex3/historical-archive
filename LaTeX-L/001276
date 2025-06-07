@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2559" "Fri" "14" "January" "1994" "20:13:17" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" "<199401151348.AA09005@mail.cs.tu-berlin.de>" "76" "Bugs in latex2e" "^Date:" nil nil "1" "1994011420:13:17" "Bugs in latex2e" (number " " mark "     David Carlisle    Jan 14   76/2559  " thread-indent "\"Bugs in latex2e\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20509; Sat, 15 Jan 94 14:49:36 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00299; Sat, 15 Jan 94 14:48:54 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA09005
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Sat, 15 Jan 1994 14:48:47 +0100
+Message-Id: <199401151348.AA09005@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 8458; Fri, 14 Jan 94 21:15:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 8457; Fri,
+ 14 Jan 1994 21:15:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 6463; Fri,
+ 14 Jan 1994 21:15:28 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 14 Jan 1994 20:13:17 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Bugs in latex2e
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1276
+
+This list (and the latex-bugs mailbox) are getting several reports of
+the same bugs in the current release of LaTeX2e.
+
+While this is not such a bad thing (it is better a bug be reported
+lots of times rather than not at all) we are currently trying to put
+together a second  release that fixes many of these bugs. This release
+will be available real soon (I would say next week, but I would not be
+so bold as to make predictions on release dates:-)
+
+The following is a list of some of the things fixed. It is not a full
+list, and doesnt include various optimisations and improvements we
+have made internally. However if one of these bugs bites you, you dont
+need to let us know. Some of the items I have included a fix, This is
+for your information, I am not suggesting that you should `patch' the
+current release.
+
+
+Thanks for your help in testing this (and sorry about the bugs:-)
+
+David
+
+
+Bugs that will be fixed `in the next release'
+=============================================
+
+1)
+The installation guide install.l2e file has been rewritten. Amongst
+other things we have indicated how to run both LaTeX209 and LaTeX2e on
+the same machine. And documented that the .def files should be moved,
+as well as the .sty and .cls files to a directory on the input path,
+
+2)
+In fontdef.dtx the old files nft1.def and nfot1.def are input instead
+of t1.def and ot1.def.
+
+3)
+In docclass.dtx a typo will mean that the new command \@ifpackageloaded
+will not work. Undefined command \@pkgetension should be \@pkgextension
+
+4)
+In Compatibility mode (ie documents starting with \documentstyle)
+The option list is not correctly handled by certain non-standard
+options. (it does work OK with article report etc)
+\@obsoletefile in latex209.cmp should look like
+\def\@obsoletefile#1#2{%
+   \expandafter\let\csname opt@#1\expandafter\endcsname
+      \csname opt@\@currname.\@currext\endcsname
+   \wlog{Compatibility mode: inputting `#1'
+      instead of obsolete `#2'.}%
+}
+
+
+5)
+pandora.sty doesnt work as \NeedsTeXFormat has been mis-spelt as
+\NeedsFormat
+
+6)
+some missing font definition (fd) files will be added.
+
+7)
+\label now works in \eqnarray
+
+8)
+\pounds is fixed
+
+9)
+float-in-list fixed
+Brief description of bug:
+LaTeX2e will not split a list environment around a figure which appears
+before the list even though there is some room to do so (see demo file).
+The old version of LaTeX splits the list.
+
+10)
+The new command \enlargethispage works. The bug is that the commands
+\@gbsphack and \@gesphack (which are not defined) should be replaced by
+\@bsphack and \@esphack
+

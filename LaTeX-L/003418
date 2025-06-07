@@ -1,0 +1,122 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3121" "Tue" "16" "November" "1999" "21:42:37" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "79" "Re: xcontents" "^Date:" nil nil "11" nil "xcontents" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA27034
+	for <schoepf@UNI-MAINZ.DE>; Tue, 16 Nov 1999 22:59:27 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.AFD96057@mail.listserv.gmd.de>; Tue, 16 Nov 1999 22:59:23 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446422 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 16 Nov 1999 22:59:06 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id WAA29702 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov
+          1999 22:58:43 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id WAA28098 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov 1999 22:59:02 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin385.zdv.Uni-Mainz.DE
+          [134.93.175.85]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA28160 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov 1999
+          22:58:59 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          VAA00504; Tue, 16 Nov 1999 21:42:37 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <4e530740@corona.oche.de>
+Message-ID:  <199911162042.VAA00504@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <4e530740@corona.oche.de>
+Date:         Tue, 16 Nov 1999 21:42:37 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3418
+
+Achim wrote:
+
+> >  - share your thoughts and sample trials with us
+>
+> Below is my attempt to define the TOC of the ``Handbook of Mathematical
+> Logic'' which is a collection of articles from different authors where
+> each chapter has its own TOC. There were three (minor) problems:
+
+great; it is really gratifying to see that the concepts are actually
+being used by somebody other than me and i think looks promising
+
+as for the minor problems:
+
+>  o In the main TOC the extra field is used for the name of the author,
+>    so I had to change the template to pass this field as second
+>    argument to `title-format'.
+
+you are right in assuming that the unused field in the toc data
+structure should be used for passing on something like an authors
+name. i find it acceptable to assume that for special applications
+(and i would consider a multi-authored book a somewhat special
+application) one would need specialized templates. however, it should
+be evaluated it it isn't possible to provide for this case in the
+standard templates already (at least better) and you show one way to
+do this.
+
+you have solved that problem in your example code by making
+title-format an f2 but defaulting it to just a single argument, ie
+
+>   title-format     =f2 [#1]       \COtitle@format,
+
+and then have a spec like that:
+
+>   title-format     = #1\IfNoValueF{#2}{\comma\space\textit{#2}},
+
+to append the second argument if available.
+
+another possible approach would be to consider title-format,
+number-format as something only responsible for typesetting the
+immediate text (eg setting it in a certain font etc) and have a) and
+additional key that is responsible to format the extra text if
+available and b) another key that is resonsible to put all those
+together somehow.
+
+don't know. at some point in the code smebody has to check for NoValue
+in `number' and `extra' and has to make some decision about it. i just
+wonder whether it should be done in the key values or hidden in the
+templates?
+
+>  o The separation betwenn number and title is annoying for the `part'
+>    entries where I had to choose (by trial and error) a fixed width of
+>    the number field to get the spacing right.
+
+this is definitely a restriction in the template definition which
+should be lifted. there are enough designs which define that the
+number should be a fixed value away from following text, or in that
+case that the number and the text should simply form a single
+sequence. (Heading specs would have comparable requirements) so there
+need to be a better spec replacing or adding to:
+
+   \TemplateKey{number-width}{l}
+      {Width of the space reserved for the document object
+      number. Space is reserved regardless of whether or not the
+      number is present.}
+      {}
+
+any suggestions to offer anybody?
+
+
+>  o There seems to be no way to add spacing under an entry
+>    (`post-v-action') to enlarge the space between a part and the first
+>    chapter.
+
+quite right. call it forgotten. it would not hurt and sometimes help
+and the default could be to do nothing
+
+thanks for enlarging the test samples this is really helping a lot
+
+frank
+

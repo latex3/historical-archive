@@ -1,0 +1,88 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q0TDPC0L028169
+	for <rainer@rainer-schoepf.de>; Sun, 29 Jan 2012 14:25:13 +0100
+Received: (qmail 31239 invoked by alias); 29 Jan 2012 13:25:06 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 29 Jan 2012 13:25:06 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx089) with SMTP; 29 Jan 2012 14:25:06 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id q0TDNC8E011476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 29 Jan 2012 14:23:12 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id q0T876Q5002175;
+	Sun, 29 Jan 2012 14:23:11 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1935978 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 29 Jan
+          2012 14:23:11 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id q0TDNBcA017339 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 29 Jan 2012 14:23:11 +0100
+Received: from lon1-msapost-1.mail.demon.net (lon1-msapost-1.mail.demon.net
+          [195.173.77.180]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id q0TDMx8V009656 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 29 Jan 2012 14:23:03 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by lon1-post-1.mail.demon.net with esmtpsa (AUTH morningstar2)
+          (TLSv1:AES256-SHA:256) (Exim 4.69) id 1RrUih-00059Z-WZ for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 29 Jan 2012 13:22:59 +0000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:9.0) Gecko/20111222
+            Thunderbird/9.0.1
+MIME-Version: 1.0
+References: <D6C19E2C-AAB5-4237-8102-0FCE69E1F442@gmail.com>
+X-Enigmail-Version: 1.3.4
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4F254832.8040906@morningstar2.co.uk>
+Date:         Sun, 29 Jan 2012 13:22:58 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Unexpandability inside \csname
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <D6C19E2C-AAB5-4237-8102-0FCE69E1F442@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Sender is in whitelist: joseph.wright@MORNINGSTAR2.CO.UK);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnBi0P5cROEGjO+pG7NAH/K+tf9SrVFtpLrKONl
+ 2T9EL4W4U4jgzLbnCcGpk1z/zwmKT/K1fv3lD0=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6996
+
+Hello Will,
+
+On 29/01/2012 12:56, Will Robertson wrote:
+> Consider:
+> 
+>   \csname\ifnum 3 > 2 foo\fi\endcsname
+> 
+> This (probably obviously to all of you) complains with the standard "Missing \endcsname inserted." presumably because there's an unexpandable implicit \relax inserted somewhere in there.
+
+No, it works fine :-) I assume you were thinking of something else.
+
+> In expl3 we've discussed the concept of "restricted expandability", which refers to an expandable function that doesn't fully expand inside an "f" function (which is expandable \romannumeral-style expansion).
+> 
+> Does it make sense to also indicate how/where expandable functions won't behave correctly inside "c" arguments? I must admit I haven't considered the ramifications of what these mean entirely. It does seem there's not necessarily much overlap between the f-unexpandable functions and the c-unexpandable ones.
+
+Expansion in an "f"-type argument is more 'restricted' than in a
+"x"-type one as "f" expansion stops when the first non-expandable token
+is left in the input stream. In that sense, "c"-type expansion should be
+compared to "x"-type expansion, since TeX will keep going until it finds
+an \endcsname. Now, of course there is a difference as for example a
+protected macro is fine in an "x"-type expansion but no in a "c"-type.
+-- 
+Joseph Wright
+

@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1682" "Thu" "10" "February" "1994" "10:43:59" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" "<199402101206.AA18282@mail.cs.tu-berlin.de>" "48" "Re: A philosophical question about packages and options" "^Date:" nil nil "2" "1994021010:43:59" "A philosophical question about packages and options" nil "<MAILQUEUE-101.940210092502.352@derwent.shef.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA13961; Thu, 10 Feb 94 13:07:07 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00909; Thu, 10 Feb 94 13:06:06 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18282
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 10 Feb 1994 13:06:03 +0100
+Message-Id: <199402101206.AA18282@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3298; Thu, 10 Feb 94 13:05:46 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3297; Thu,
+ 10 Feb 1994 13:05:46 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9445; Thu,
+ 10 Feb 1994 11:45:43 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <MAILQUEUE-101.940210092502.352@derwent.shef.ac.uk> (message from
+              Mike Piff on 10 Feb 94 09:25:02)
+Date:         Thu, 10 Feb 1994 10:43:59 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: A philosophical question about packages and options
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1509
+
+> ... Indeed, article is far too big a portmanteau to survive
+> undivided,...
+
+Mike, perhaps you should look at David Rhead's postings.
+Much of the confusion you are having over options/packages is due,
+exactly as you say, to the fact that article.{cls|sty} defines
+
+* the `tags' an article may have,
+* The default layout of those tags
+* A mixed bag of tags which may optionally be defined
+* A mixed bag of optional layout choices.
+
+But it is not just article.cls. All 2.09 `main document styles' do
+this.
+
+> 2e is designed as a `consolidation' of existing 2.09 flavours. Most   <
+> existing styles are supposed to work with it, with only minor changes.<
+> So the 2e interface is not as `pure' `orthogonal'  (insert whatever   <
+> words you want in this list) as it would otherwise be.                <
+
+However an `option' in 2e is something *declared by the class/package*
+
+So article.cls has an option 12pt to change the default font size and
+spacing. It is declared in the file. so you can go
+\documentclass[12pt]{article}
+
+article.cls does  not declare any options to change the font families
+used, so you can not go
+\documentclass[times]{article}
+
+however there are extension packages to add this functionality
+
+\documentclass{article}
+\usepackage{times}.
+
+To find out what options a package supports, you just need to look at
+the list of \DeclareOption commands in the file.
+
+This distinction may be weak, but it is better than 2.09 where
+
+\documentstyle[array,twocolumn,11pt]{article}
+
+mixes up internal options defined by the class, options adding extra
+functionality defined in external files...
+
+And we were working under the constraint marked with > ... < above.
+
+David
+

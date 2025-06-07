@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3181" "Tue" "7" "October" "1997" "00:49:25" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "61" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id JAA31993;
+	Tue, 7 Oct 1997 09:46:20 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.530382F1@listserv.gmd.de>; Tue, 7 Oct 1997 9:46:18 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209476 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997 09:46:13 +0200
+Received: from punt-2.mail.demon.net (punt-2b.mail.demon.net [194.217.242.6])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id JAA09552
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 7 Oct 1997 09:44:42
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id aa1507814; 7 Oct 97 8:36 BST
+Received: by dcarlisle.demon.co.uk id m0xIMtx-000OWGC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 7 Oct 1997 00:49:25 +0100 (BST)
+Message-ID:  <m0xIMtx-000OWGC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v0311071ab05f11411694@[130.237.37.113]> (message from Hans Aberg
+              on Tue, 7 Oct 1997 00:11:58 +0200)
+Date:         Tue, 7 Oct 1997 00:49:25 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2366
+
+>   Could you give some hints of why this stuff is needed? It can't be in
+> order to merely keep the references right, because that could be solved by
+> avoiding having multiple aux files.
+
+To get references right means that the page breaks need to be the
+same even if some sections are not included. That means keeping track
+of where the floats would have floated to had they been included.
+Even if there are no floats, you need to know how far down the page
+each section should start so the page breaks work out the same again.
+\pageref is a harder beast to deal with than \ref, but \include
+doesn't just aim to keep references correct, but to keep all the
+typesetting of the included sections correct. So there is work to do
+even if there are no floats and no cross references. You need to know
+where on the page each section starts if you give up forcing that
+it starts at the top of the page.
+
+>  I have not followed that gory float stuff, but this is what I am saying:
+> Are there any reasons for LaTeX having multiple AUX files?
+
+Yes there are several good reasons. It is (perhaps) not impossible to
+avoid the use of multiple aux files but it is not entirely trivial.
+In particular if a section is not included then currently its .aux
+file hangs around for use in later runs.
+If the information for the section is written to the main aux file
+then it will need to be copied if that section is omitted, but how to
+copy from the old aux file to the new one? either you store the full
+list in memory or you have to have two aux files and keep switching
+from one to the other, or...
+Similarly the separate aux files store the counter resetting
+information to use when a section is skipped. Being in separate files
+means the .aux file can be input at the appropriate time (in place of
+the skipped file). If all the information is in one file either that
+file has to be read multiple times, or all the information needs to be
+held in memory so the counters can be reset when needed.
+
+However Why do people use \include? Some possible answers
+
+1) By mistake, when they meant to use \input.
+2) To speed up processing of drafts as only the `current chapter' need
+   be processed.
+3) To cope with big jobs where running the whole document in one go
+   runs out of memory.
+
+I think (1) is probably the most common reason.
+
+(2) is not relevant if you are using a class where the individual
+sections are self contained documents. To just work on section1 you
+don't need to go \includeonly{section1} you can just go latex section1.tex
+
+So that leaves (3). But (3) is usually a forlorn hope. Often the
+reason for running out of memory on big jobs are too many \labels.
+As \include always reads all the \label info from the aux files,
+it does not help here at all. The only time it can help if the
+separate chapters use different large packages, eg if section1 uses
+pictex and section2 uses xypic, you may gain a bit by using
+\includeonly to process the sections in separate jobs. But here again
+probably you usually run out of register allocations before you run
+out of csnames, and that can be fixed by a better allocation scheme (or
+fixing pictex not to waste so many registers).
+
+David
+

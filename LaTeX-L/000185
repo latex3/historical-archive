@@ -1,0 +1,60 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 16 Jul 90 15:08:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      Re: Another way to do bibliographic entries
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 185
+
+>However, there is the larger problem of the
+>formatting of the bibliography entry, currently done by
+>BibTeX into a separate .bbl file intended for inclusion en
+>masse into the end of the document, and this problem remains
+>if the alternate method of putting references in footnotes
+>is done.
+
+I've thought about it... Keeping the basic input format, 3 or 4
+passes would be necessary, but C'est le LaTeX. The basic approach
+would be:
+
+\cite would do an unskip to take care of any space preceding it
+(typing ~\cite{foo} is an ingrained habit in any BibTeXnical
+typist worth their salt), write the \citation command to the aux
+file, we would also check to see if the .bbl file has been read in
+yet, and if not, we would read it in. Finally, we attempt to
+execute the command \cite@foo (or some such).
+
+The bbl file would define \cite@foo such that the first time it is
+called, it would create a full reference in a footnote, then
+afterwards, depending on whether the last reference was to the
+same work or not, it would either do an ibid-type reference or an
+op.cit.-type reference. Finally, the \bibliography command would
+read in the .bbl file at the end and print the full bibliography
+(if such a thing were desired).
+
+Now, a few qualms about the way citations and bibliographies are
+handled in LaTeX:
+
+(1) \bibliographystyle belongs in the preamble. We can modify
+\bibliography so that it writes the appropriate information to
+aux file to get around the timing problem.
+
+(2) There should be a default bibliography style. Especially
+important for, say, an APA style which implies
+\bibliographystyle{apalike}.
+
+(3) We need to officially define \shortcite (or some such). Some
+bibliography styles beg for this sort of thing (e.g., "It has been
+shown (Knuth 1492)..." and "Knuth (1492) has shown..."). For many
+bibliography styles, \shortcite and \cite are equivalent.
+
+(4) There should be a way for a citation along the lines of
+[Hosek, pp. 12-13, Schwartz, p. 14]
+
+-dh
+
+

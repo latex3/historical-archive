@@ -1,0 +1,97 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 31 Dec 2007 16:53:16 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id lBVFr9TB012282
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 31 Dec 2007 16:53:10 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lBVFix6O024384
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 31 Dec 2007 16:44:59 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lBUN1AhI003731;
+	Mon, 31 Dec 2007 16:44:48 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 239190 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Dec
+          2007 16:44:47 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lBVFilwF019119 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 31 Dec 2007 16:44:47 +0100
+Received: from mx03.kabsi.at (mx03.kabsi.at [195.202.128.130]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lBVFiZQN023493
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 31 Dec 2007 16:44:40
+          +0100
+Received: from buckbeak.hogwarts (h081217001071.dyn.cm.kabsi.at [81.217.1.71])
+          by mx03.kabsi.at (8.13.8/8.13.8) with SMTP id lBVFiZ1c014640 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 31 Dec 2007 16:44:35 +0100
+Received: by buckbeak.hogwarts (Postfix, from userid 1000) id 0F8CF33003B; Mon,
+          31 Dec 2007 16:44:35 +0100 (CET)
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <874pdy7tss.fsf@buckbeak.hogwarts>
+Date:         Mon, 31 Dec 2007 16:44:35 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Andreas Matthias <amat@KABSI.AT>
+Subject: Usage of \prg_whiledo:nT
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 31 Dec 2007 15:53:17.0040 (UTC) FILETIME=[4224AF00:01C84BC5]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5141
+
+I struggled a while to understand how to use \prg_whiledo:nT.
+I think I figured it out, but it seems to be rather clumsy:
+
+
+\RequirePackage{l3prg}
+\ExplSyntaxOn
+
+\tlp_new:N \a_tlp
+\int_new:N \a_int
+\int_zero:N \a_int
+
+\prg_whiledo:nT {
+  \tlp_set:Nx \a_tlp {
+    \predicate_p:n {
+      \int_compare_p:nNn \a_int < 4 &&
+      \c_true % some complex tests here
+    }
+  }
+  \exp_after:NN \tlp_if_eq:NNT \a_tlp
+}{
+  \io_put_term:x{Loop~ \int_use:N \a_int}
+  \int_incr:N \a_int
+}
+
+\stop
+
+
+Is this the way how to use it? Or did I miss something?
+
+In xtheorem.sty it is used as:
+
+    \prg_whiledo:nT{
+      \int_compare:nNnT \etex_lastnodetype:D = \c_eleven
+    }{\tex_unskip:D}
+
+And actually, this was the way it expected it to work? But
+it doesn't work, does it? I didn't run xtheorem.sty, though.
+
+
+Ciao
+Andreas
+

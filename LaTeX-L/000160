@@ -1,0 +1,62 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 5 Jul 90 12:23:42 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: N.POPPELIER@ELSEVIER.NL
+Subject:      hierarchy in toc files (a different idea)
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 160
+
+While I was working on the proto version of split .toc files, I also
+thought of another solution. At first I thought it unfeasible, but
+now I wonder. Well anyway: I will put the idea on this list and see
+if anyone 'takes the bait'.
+
+What you want is the possibility to have a full table of contents, let's
+say in the prelim pages of a book, plus chapter table of contents. In
+our (ESP's) books this is quite normal, but also in other books. For
+example: Martin Bryan's "SGML, an author's guide to the ...".
+This can be implemented by using partial .toc files, similar to
+the partial .aux files of LaTeX 2.09.
+
+I have on my desk a book, "Handbook of mathematical logic", edited
+by Jon Barwise and published by ESP (North-Holland actually, but
+that's the historical name for one of our publishing sections).
+This book contains a global table of contents and the rest of the book
+is divided into parts A-D. Every part has a 'Guide to part ..', which
+is in fact a small table of contents. Now here comes the fun: every
+part consists of chapters, and chapters have their own table of contents.
+
+Now unless someone comes up with n-level (n>2) file hierarchy -- the
+aux files have n=2 in LaTeX 2.09 -- you can't implement the above
+in LaTeX 2.09 (if I make a mistake somewhere, please respond!)
+
+So here comes another idea: what if you still write ALL .toc entries
+to 1 .toc file, but add a label to each and every line to indicate
+the point in the hierarchy of the document. Something like
+
+\contentsline{ ... }{ ... }{1}
+\contentsline{ ... }{ ... }{1.1}
+\contentsline{ ... }{ ... }{1.2}
+\contentsline{ ... }{ ... }{1.2.1}
+\contentsline{ ... }{ ... }{1.2.2}
+\contentsline{ ... }{ ... }{2}
+
+etcetera. The first digit, for the example of "Handbook of mathematical
+logic", would correspond to PART, the second one to CHAPTER, and so forth.
+If you then read back the information from the .toc file, you can use
+the numbers to decide whether you need that particular line to be
+formatted or not. If this works, you can have tables of contents
+on every level of the document's hierarchy (I think).
+
+It's just a wild idea. Comments please!
+
+Nico Poppelier
+Elsevier Science Publishers
+PSED, R&D Department
+email: n.poppelier@elsevier.nl
+
+

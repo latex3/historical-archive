@@ -1,0 +1,287 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.45EE11AC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:00 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.45EE11AC"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: list indent et cetera
+Date: Mon, 2 Sep 1991 01:00:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE593@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <eijkhout@CSRD.UIUC.edu>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 375
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.45EE11AC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Yo!
+
+In a list environment the following three items are
+level dependent:
+- indentation distance
+- representation of item sign
+- representation of item number.
+
+In Lollipop there are now defaults for all of these,
+but during processing of a piece of the list macros test
+if control sequences \indentleveli/ii/iii/...
+\itemsigni/ii/... \itemcounterrepresentationi/ii/iii...
+are defined, and if so, those values are taken
+instead of the default.
+
+All of this is a tribute to the power of the
+TeX expansion mechanism.
+
+% allocate a counter that is increased for every \itemize list
+\new@@counter{itemlevel}
+
+% initially the itemize level is zero
+\add@style@stop@command{\set@counter{itemlevel}\z@}
+
+% a glimpse in the inards of Lollipop: a list is an
+% itemize list if it uses the 'itemsign'.
+% thus a list can be an 'itemize', 'enumerate' and 'description'
+% list at the same time. The appearance of keywords 'itemsign'
+% 'itemcounter', 'description' simply triggers the inclusions of
+% the relevant pieces of code.
+\newif\ifitem@list
+\add@List@default{\item@listno}
+\@ListOption{itemsign}{
+    \global\item@listyes
+    \edef\cs@e{\nxp\@aan{\nxp\item@sign\counter@@name{itemlevel}}}
+    \cs@e}
+
+% here we go: this is just for abbreviation
+\def\@item@sign#1{itemsign\romannumeral#1}
+% this macro test if for this particular level an itemsign
+% has been defined, if not it takes the deafult
+\def\item@sign#1{\ifnotdefined{\@item@sign{#1}}\@@item@sign{#1}%
+    \else \csname \@item@sign{#1}\endcsname \fi}
+% and here are the defaults.
+\def\@@item@sign#1{\ifcase#1\relax\or
+    $\bullet$\or $\circ$ \or --\else $\cdot$\fi}
+% this is the cute macro:
+% you call \SetItemSign:5=3Db
+% to get a bullet at level 5.
+\def\SetItemSign:#1=3D#2{\csarg\edef{\@item@sign{#1}}%
+   {\cswitch \ifx#2 in:
+    b $\bullet$;
+    c $\circ$;
+    d $\diamond$;
+    m ---;
+    n --;
+    . $\cdot$;
+    default $\cdot$;
+    \endswitch}}
+
+Macros for counter representation and indentation are
+pretty analogous.
+
+Victor Eijkhout
+ Center for Supercomputing Research and Development
+ University of Illinois at Urbana-Champaign
+ 305 Talbot Laboratory                 phone: +1 217 244-0047 (office)
+ 104 South Wright Street                      +1 217 356-0876 (home)
+ Urbana, Illinois 61801-2932, USA        fax: +1 217 244-1351
+
+home: 2503 W. Springfield Av, Apt. K-4, Champaign 61821, USA
+
+
+
+------_=_NextPart_001_01C19443.45EE11AC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>list indent et cetera</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Yo!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In a list environment the following three items =
+are</FONT>
+
+<BR><FONT SIZE=3D2>level dependent:</FONT>
+
+<BR><FONT SIZE=3D2>- indentation distance</FONT>
+
+<BR><FONT SIZE=3D2>- representation of item sign</FONT>
+
+<BR><FONT SIZE=3D2>- representation of item number.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In Lollipop there are now defaults for all of =
+these,</FONT>
+
+<BR><FONT SIZE=3D2>but during processing of a piece of the list macros =
+test</FONT>
+
+<BR><FONT SIZE=3D2>if control sequences \indentleveli/ii/iii/...</FONT>
+
+<BR><FONT SIZE=3D2>\itemsigni/ii/... =
+\itemcounterrepresentationi/ii/iii...</FONT>
+
+<BR><FONT SIZE=3D2>are defined, and if so, those values are taken</FONT>
+
+<BR><FONT SIZE=3D2>instead of the default.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>All of this is a tribute to the power of the</FONT>
+
+<BR><FONT SIZE=3D2>TeX expansion mechanism.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% allocate a counter that is increased for every =
+\itemize list</FONT>
+
+<BR><FONT SIZE=3D2>\new@@counter{itemlevel}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% initially the itemize level is zero</FONT>
+
+<BR><FONT =
+SIZE=3D2>\add@style@stop@command{\set@counter{itemlevel}\z@}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% a glimpse in the inards of Lollipop: a list is =
+an</FONT>
+
+<BR><FONT SIZE=3D2>% itemize list if it uses the 'itemsign'.</FONT>
+
+<BR><FONT SIZE=3D2>% thus a list can be an 'itemize', 'enumerate' and =
+'description'</FONT>
+
+<BR><FONT SIZE=3D2>% list at the same time. The appearance of keywords =
+'itemsign'</FONT>
+
+<BR><FONT SIZE=3D2>% 'itemcounter', 'description' simply triggers the =
+inclusions of</FONT>
+
+<BR><FONT SIZE=3D2>% the relevant pieces of code.</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifitem@list</FONT>
+
+<BR><FONT SIZE=3D2>\add@List@default{\item@listno}</FONT>
+
+<BR><FONT SIZE=3D2>\@ListOption{itemsign}{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \global\item@listyes</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\edef\cs@e{\nxp\@aan{\nxp\item@sign\counter@@name{itemlevel}}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \cs@e}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% here we go: this is just for abbreviation</FONT>
+
+<BR><FONT SIZE=3D2>\def\@item@sign#1{itemsign\romannumeral#1}</FONT>
+
+<BR><FONT SIZE=3D2>% this macro test if for this particular level an =
+itemsign</FONT>
+
+<BR><FONT SIZE=3D2>% has been defined, if not it takes the =
+deafult</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\item@sign#1{\ifnotdefined{\@item@sign{#1}}\@@item@sign{#1}%=
+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \csname =
+\@item@sign{#1}\endcsname \fi}</FONT>
+
+<BR><FONT SIZE=3D2>% and here are the defaults.</FONT>
+
+<BR><FONT SIZE=3D2>\def\@@item@sign#1{\ifcase#1\relax\or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; $\bullet$\or $\circ$ \or --\else =
+$\cdot$\fi}</FONT>
+
+<BR><FONT SIZE=3D2>% this is the cute macro:</FONT>
+
+<BR><FONT SIZE=3D2>% you call \SetItemSign:5=3Db</FONT>
+
+<BR><FONT SIZE=3D2>% to get a bullet at level 5.</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\SetItemSign:#1=3D#2{\csarg\edef{\@item@sign{#1}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\cswitch \ifx#2 in:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; b $\bullet$;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; c $\circ$;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; d $\diamond$;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; m ---;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; n --;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; . $\cdot$;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; default $\cdot$;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \endswitch}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Macros for counter representation and indentation =
+are</FONT>
+
+<BR><FONT SIZE=3D2>pretty analogous.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Victor Eijkhout</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Center for Supercomputing Research and =
+Development</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;University of Illinois at =
+Urbana-Champaign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;305 Talbot =
+Laboratory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phone: +1 217 244-0047 (office)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;104 South Wright =
+Street&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +1 217 =
+356-0876 (home)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Urbana, Illinois 61801-2932, =
+USA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fax: +1 217 =
+244-1351</FONT>
+</P>
+
+<P><FONT SIZE=3D2>home: 2503 W. Springfield Av, Apt. K-4, Champaign =
+61821, USA</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.45EE11AC--
+

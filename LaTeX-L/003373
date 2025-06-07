@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2846" "Sun" "31" "October" "1999" "09:09:30" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "71" "Re: section heading templates" "^Date:" nil nil "10" nil "section heading templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id PAA31137
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 15:09:13 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.679802B2@mail.listserv.gmd.de>; Sun, 31 Oct 1999 15:09:34 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444967 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 16:09:32 +0200
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id PAA26231 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 15:09:29 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.9.3/8.9.3) with ESMTP id
+          JAA21364 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999
+          09:09:31 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.9.3/8.9.3) id
+          JAA02892 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 09:09:30
+          -0500 (EST)
+Message-ID:  <199910311409.JAA02892@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 31 Oct 1999 09:09:30 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3373
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> Marcel Oliver writes:
+>
+>  > What I would really like to see at the user level is the possibility
+>  > of relative sectioning commands.
+>
+> having read this far i thought that you meant something like this:
+>
+>    \begin{head}{Main heading}
+>
+>       text text text
+>
+>       \begin{head}{Sub heading}
+>         text text
+>       \end{head}
+[snip]
+
+So nesting would determine the level?
+
+Or perhaps one could simply descend a level with
+
+             \downsection{heading}
+
+(no explicit container for section contents as with LaTeX \section)
+and go up a level with \upsection.  Then if the value of
+\documentclass were, for example, "article", a "\downsection" at the
+top of the body would be the same as "\section".  And at some point
+when deeply nested it would be possible to get out simply with an
+absolute command such as old-fashioned \subsection without risking an
+incorrect number of \end's.
+
+If section-like units are going to have explicit containment boundaries,
+then I see a sense only in absolute names and I would suggest upper
+casing the traditional names for this.  That is,
+
+\begin{Subsection}{heading} ... \end{Subsection},
+
+but I think there are relatively few cases where explicit containment
+is actually helpful.  (Still I have it modeled for optional use in
+gellmu.dtd; I seldom use it since I'm lazy.  The language definition
+in the dtd causes sgml endtags to be placed correctly in almost every
+case (perhaps every case).  An OMITTAG feature available in SGML, not
+in XML; once it's there, one can down-translate to XML if desired.)
+
+>  > One requirement should be that one
+>  > can mix absolute and relative sectioning in a natural way.  To explain
+>
+> but to be honnest i don't think that a concept of mixing absolute names with
+> relative names via a label/ref mechanism is really helpful.
+
+The labels could only be auxiliary as now.  One keeps track of the
+level.  Absolute names have absolute level values depending on the
+value of \documentclass, while \downsection increments the level by
+one and \upsection does the reverse.
+
+> I agree that it is a bit of a pain to change a heading tree in a LaTeX
+> document at the moment but something like the above seems to mak a document
+> completely uncomprehensible (if used on a larger scale). So in my opinion it
+> is better to either accept that changing  the names is necessary if one
+> changes the structure or to use a real relative naming scheme (as outlined
+> above) in the first place. --- or perhaps i'm just getting too old for
+> revolutionary changes?
+
+(No!  You certainly must be younger than I am.   :-) )
+
+What about a user-level way to tweek the section level counter?
+(Perhaps a new section level counter, not stepping on anything already
+there.)
+
+                                   -- Bill
+

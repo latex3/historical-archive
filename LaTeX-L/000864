@@ -1,0 +1,62 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["963" "Mon" "9" "November" "92" "19:02:59" "BST" "CHAA006@VAX.RHBNC.AC.UK" "CHAA006@VAX.RHBNC.AC.UK" nil "35" "Frayed bottom (was: \\raggedbottom and footnote placement)" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA03466; Tue, 10 Nov 92 11:30:22 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA08143; Tue, 10 Nov 92 11:26:15 +0100
+Message-Id: <9211101026.AA08143@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1155; Tue, 10 Nov 92 11:24:32 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4815;
+ Tue, 10 Nov 92 11:24:27 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4813;
+ Tue, 10 Nov 92 11:24:25 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 9 Nov 92 19:02:59 BST
+From: CHAA006@VAX.RHBNC.AC.UK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Frayed bottom (was: \raggedbottom and footnote placement)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 864
+
+
+[Nelson discusses certain deficiencies in LaTeX's treatment of footnotes
+ in \raggedbottom mode]
+
+Just by way of illustration of an alternative approach to \raggedbottom,
+I append a copy of \frayedbottom (plain only, I'm afraid), which is to
+\raggedbottom as [sober] is to LaTeX's normal rather alcoholic excesses...
+
+					Philip Taylor, RHBNC
+--------
+\newskip \topskipneg
+
+\widowpenalty = 9999
+\clubpenalty = 9999
+\vbadness = 9999
+
+\topskip = 1\baselineskip plus 1.0 \baselineskip minus 1.0 \baselineskip
+\topskipneg = -\topskip
+\advance \topskipneg by 1\topskip
+
+\vfuzz = \baselineskip
+
+\catcode `\@ = 11
+\def \pagecontents
+    {\ifvoid\topins\else\unvbox\topins\fi
+     \dimen@=\dp\@cclv \vskip \topskipneg \unvbox\@cclv % open up \box255
+     \ifvoid \footins
+     \else % footnote info is present
+          \vskip\skip\footins
+          \footnoterule
+          \unvbox \footins
+     \fi
+     \ifr@ggedbottom \kern-\dimen@ \vfil \fi
+    }
+\catcode `\@ = 11
+

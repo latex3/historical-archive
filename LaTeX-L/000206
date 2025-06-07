@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 19 Jul 90 17:33:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      FWD: RE: Multiple refs in a \cite{} with page refs
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 206
+
+From Oren Patashnik:
+
+Date: Wed, 18 Jul 1990 13:06:06 PDT
+From: Oren Patashnik <opbibtex@Neon.Stanford.EDU>
+Subject: RE: Multiple refs in a \cite{} with page refs
+In-reply-to: Your message of Tue 17 Jul 90 13:24:42-MDT
+To: "Nelson H. F. Beebe" <Beebe@science.utah.edu>, dhosek@HMCVAX.CLAREMONT.EDU
+Message-id: <CMM.0.88.648331566.opbibtex@Neon.Stanford.EDU>
+X-Envelope-to: dhosek
+
+nb> On the LATEX-L discussion list, a question has arisen about
+nb> the handling of a citation that would appear as:
+nb>   Input:  From \cite{..}, we can see
+nb>   Output: From [19, p. 23, 89, Ch. 2], we can see
+
+In my opinion, it's better to write input so that your output
+looks like
+    From Knuth [19, page 23] and Ullman [89, Chapter 2] we can see . . .
+Perhaps that's why Leslie didn't include the feature you're suggesting
+in the original LaTeX.  (In fact, I believe even more---that the page
+and chapter numbers almost always belong in the reference list, not
+here in the text---but I guess I've been dealing with bibliographic
+issues too much of my life not to have strong opinions about them.)
+Nevertheless I agree that, given that there are people who will want
+to use the feature, it should probably be doable.
+
+nb> The \cite[]{} variant permits getting a page or chapter
+nb> reference into a single citation, but doesn't support
+nb> multiple refs of the type illustrated.  Have you any
+nb> thoughts on how BibTeX might be extended to deal with this?
+
+As Don Hosek suggests in his reply, this is more properly thought of
+as a LaTeX issue, not a BibTeX issue.  However, if Leslie/Frank/Rainer
+don't want to include this in the new LaTeX, I'd give it further
+thought.
+
+nb> It was also observed that the [] part illogically appears
+nb> before the {} part, when in the output, the order is reversed.
+
+I agree that "locally" it's illogical.  But in the context of LaTeX as
+a whole, where in general the [] part of the command precedes the
+{} part, it makes more sense the way it appears now.  I think that,
+in this case, the global consistency of LaTeX is more important than
+the local logic.  (Sorry if I've misinterpretted anything.)
+
+nb> This suggests that perhaps an alterate format might be supported;
+nb> examples could be
+nb>   \cite{Jones1989:protozoa[p. 23],Lamport:latex[ch. 2],Knuth:texbook}
+nb>   \cite{Jones1989:protozoa{p. 23},Lamport:latex{ch. 2},Knuth:texbook}
+nb> However, any such extension could require revision of .bib
+nb> bibliography file tags to remove the possibility of
+nb> syntactic confusion.  Given the special nature of braces in
+nb> TeX and BibTeX already, it seems to me that the second form
+nb> might be introduced into BibTeX 1.0 rather innocuously,
+nb> since .bib tags are highly unlikely to already contain braces.
+
+The first form isn't possible, since [] are legal characters in the
+citation key (and I wouldn't want to introduce an incompatibility
+between version 0.99 and 1.00).  The second form would be a
+possibility, though, as long as LaTeX could be convinced to parse it
+correctly.
+
+dh> Actually, no. The parsing can (and should) be handled exclusively by
+dh> LaTeX. The only thing that I think that BibTeX should be modified to
+dh> handle is (1) individual chapter reference lists and (2) separate
+dh> references and bibliographies in a document.
+
+Albeit somewhat clumsily, BibTeX/LaTeX can handle both situations now
+(assuming that by (2) you mean roughly that some document (say a book)
+has several reference lists, as well as one long bibliography at the
+end).  The idea is that you run BibTeX once for each reference list/
+bibliography you have (each one should be in a different \include'd
+file in the LaTeX (.tex) file; you wind up running BibTeX on the .aux
+files of the \include'd files).  It's a bit of a pain, but Leslie and
+I discussed this at some length during the design stage, and we
+decided that the extra work involved for the author, under this
+scheme, is usually in the noise of the work in dealing with the
+(presumably) large document anyway.  My gut feeling now is that unless
+people are encountering problems I haven't heard of with that scheme,
+the difficulty in implementing multiple bibliographies outweighs the
+marginal gain in ease of use; but I'm open to evidence to the
+contrary.
+
+dh> Incidentally, Oren, are you interested in being added to the LaTeX-L
+dh> list? Since we keep wondering into the bibliography zone, it might be
+dh> useful for you to hear what we have to say (if this is the case, send a
+dh> note to Rainer Schoepf, RZ92@DHDURZ1.BITNET).
+
+Thanks, but I think I prefer to not be on the list.  (I'm trying to
+move to a situation where, once I'm finished with BibTeX 1.00, the
+frozen version, I will be in a DEK-like mode, available for bug fixes
+but not much else; not being on mailing lists (aside from TeXhax,
+which I had previously promised people I would read until 1.00 is
+finished) is a step in that direction, I hope.)  Feel free, on the
+other hand, to send me any BibTeX-related questions that come up, even
+if you're not sure if they're BibTeX related.  And feel free to
+forward my responses to whomever.
+
+        --Oren
+
+

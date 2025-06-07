@@ -1,0 +1,100 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 20 Feb 90 13:13:42 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: Startsection proposal
+To: LATEX-L@unido.informatik.uni-dortmund.de
+In-Reply-To:  Victor Eijkhout's message of Mon, 19 Feb 90 09:21:01 MET
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 10
+
+
+I read with interest Victors \@startsection proposal.
+While I think that he's right that no or only a few things
+should be hardwired into such an generic command I believe
+we have to take much more things into acount.
+
+Some thoughts:
+
+1) First of all we have to make \@startsection work with
+   the standard LaTeX syntax, i.e. it has to work for
+   \section{..} \section:..|{..} and for \section*{..}.
+   This means that we can not propose a commmand where the
+   designer has to specify things like \thesection somewhere.
+   This would not work for \section* or for some settings
+   of secnumdepth.
+
+2) I can think at the moment of three possible approaches:
+   a) Give \@startsection some more arguments to cover the
+      possibilities. I don't mean that it is necessary to
+      leave the internal syntax the same, especially the way to
+      code runin and afterindent is somewhat funny but the
+      funtionality should be the same.
+   b) Make some sort of optional argument like the one in the
+      list environment where the designer is able to overwrite
+      default values by saying something like \afterindenttrue
+      or <parm>=<value> or whatever.
+      I think we could do this even with plain TeX sort of syntax
+      which is much more compact because this is not an ordinary
+      user interface.
+   c) A more different point of view is to think of a heading
+      as a graphical object composed of some units where the designer
+      is free to combine them to form the actual heading. To
+      explain this (which I like best althrough I haven't found
+      the time yet to think it out properly) let's discuss
+      first what sort of object might be necessary (there might be
+      more):
+      i) there is the heading text information probably simply
+         a parameter like #5
+      ii) There is the `number box'. There could be an argument
+          to \@startsection where the outcome of the number
+          (if any) is specified: {\thesection\quad} for example.
+          To access the  number in the heading (i.e. to place it)
+          there could be some macros and dimension like \placenumber
+          \numberwidth (a dimen) \numberheight etc.
+          Depending on whether or not a number is to produce these
+          commands are set by \@startsection.
+       iii) maybe one could provide additional helping macros,
+            for example to determine if something will fit one a single
+            line or not.
+       Finally \@startsection would have a third argument where
+       the designer would put in TeX code to describe the layout.
+
+3) As I said, I like c) best but one has to think a lot about
+   advantages and disadvantages before making a choice.
+
+4) The same is true for the table of contents: we have an
+   generic command \@dottedcontentsline but things like
+   \l@chapter have to be defined totally by hand. In my
+   opinion a smiliar approach could be used.
+   I case of tableofcontents additional objects for the pagenumber
+   are necessary.
+
+5) Your turn!
+
+
+I think I have to spend a few more words on sending stuff to this
+list since the discussion in the begining (about reply) has had a
+lot of unwanted effects.  Most mail of general interest was sent to us
+instead of to the list.  This list is not a forum for me telling you
+my thoughts about the subject so please feel free to send your thoughts
+directly to the list.
+
+Another point: In one of my mails I asked for your opinion about
+classes of documents, what sort of commands to provide, and so on.
+'Till now there was no reply whatsoever.  So, I like to repeat this
+question.
+Is there anybody out there who would undergo the trouble to make
+a list of all (user) commands currently defined by the different
+document styles?  Maybe it is easier to go on from some definite list.
+(I will do it myself if nobody can spare the time, but I'm somewhat
+out of breath at the moment, still working on the printer change
+XEROX to IBM at the EDS so it will take some time)
+Any takers?
+
+Greetings Frank
+
+

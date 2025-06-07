@@ -1,0 +1,171 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5889" "Mon" "16" "June" "1997" "00:10:42" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "130" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA13367; Sun, 15 Jun 1997 22:11:56 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.9932D0E7@listserv.gmd.de>; Sun, 15 Jun 1997 22:11:55 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153541 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 22:11:48 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id WAA12772 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15 Jun 1997 22:11:20
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id AAA13403 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 16 Jun 1997
+          00:09:51 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id AAA00476 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Mon, 16 Jun 1997 00:10:42 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <Pine.GSO.3.96.970615140407.26200B-100000@uxp1.hrz.uni-dortmund.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A44C42.4A2F4772@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 16 Jun 1997 00:10:42 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2047
+
+Hello,
+
+Werner Lemberg wrote:
+
+> Have a look into my CJK package. Besides support for Chinese etc. you will
+> find an interface for Mule which allows the use of various latin encodings
+> (and Vietnamese) at the same time.
+
+Oh, you are doing a great work! So many languages are being developed!
+
+> My goal is to extend this---there are
+> so many language specific solutions which can't be made more general (e.g.
+> Japanese TeX). I don't like this, and I will always try to find a
+> multilingual solution. For example, you can embed Babel seamlessly into
+> the CJK package (provided you have only 7bit input encoding for non-CJK
+> languages: this will be done by the Mule-CJK interface).
+
+I did not see MULE yet (I have only xemacs-19.14).
+
+> > Moreover, do the _one_ default lccode+uccode settings conform to _all_
+> > languages (which are already TeXized)?
+>
+> Of course not. But it is better to try to follow this standard if
+> possible. And it *is* possible for Russian to use these settings.
+
+Well, I agree. But
+ * the (widely used) LCY encoding does not correspond to
+   the default settings of lccode.
+ * Until new T2-based LH fonts will not be widely available,
+   LCY will be the main encoding.
+ * Again, when we will use T2-based fonts, we'll have to have
+   russian letters to be active chars (to translate from input encoding
+   into TeX's internal encoding---T2), and this has some disadvantages.
+ * Because of `strange' (non-monomorphic ;-)) settings of lccode and uccode values for
+   characters "19, "1a, "9d and "9e in T1 encoding (this fact is mentioned in
+   T2 home page), these positions will not probably used in T2 encoding :-(
+   May be, it would possible to change the lccode and uccode values for these
+   characters in T1?
+
+> > > > Next, when somebody uses Russian language in his TeX document,
+> > > > very offten the other language(s) used in the same document
+> > > > will have the codes of it's letters below 128. So,
+> > > > why not to allow Babel to change lccodes for Russian
+> > > > in this case?
+>
+> Well, think of multilingualism. The next one will mix Russian with old
+> Greek (where the same problems are) in one paragraph. What then?
+
+First, this case of mixing Russian with old Greek is not what I meant above.
+Second, there is also a solution---to set hyphenation places explicitly.
+Probably, in such situation (of multilingualism) there will be one
+`predominant' language, and the amount of words of the second languane
+will be small enough to allow to use explict hyphenation
+(at least, before the day, when we'll have Omega+E-TeX+LaTeX3 available ;-) ).
+
+Of course, I'm speaking about the situation when one of used lagnuages
+will be too hard (or impossible) to conform to T1's lccode&uccode settings.
+I hope, that Russian(T2) + old Greek is not the case.
+
+> > 2) use TeX Code Pages (TCP). This has advantage because it is universal,
+> >    and lets us preserve catcodes of translated characters.
+> >    But TCP are not supported by all TeX implementations.
+>
+> only emTeX, AFAIK. Non-portable.
+
+And is e-TeX or Omega having in plans to implement this?
+Why other TeX implementation did not implemented this? It seems to
+be not too hard. :-(
+
+> > 3) declare all _letters_ of this language to be non-letters (!)
+> >    from the TeX's point of view -- i.e. declare them active characters.
+> >    But this approach has some disadvattages:
+>
+> only for the input encoding!
+>
+> >    * letters are now `not letters' -- so it becomes impossible
+> >      to define and use macroses with names consisting of letters of this language.
+>
+> this is bad anyway, since TeX does not have a mechanism for separating
+> control characters from normal TeX (Omega can do this...)
+
+Could you explain what you mean?
+I mean that when russian letters have the same input encoding and internal TeX incoding
+(the case of LCY), then these characters will have catcodes equal to 11 (letter).
+So it will be possible to use macroses with russian names.
+It is impossible if russian characters are active.
+
+[ However, this possibility (to have macroses with russian names) is not *vitally* important. ]
+
+> >    * TeX log files become unreadable (because our fonts have encoding different
+> >      from TeX's internal encoding). So it becobes very tricky to work with TeX.
+> >      This, again, can be avoided by translating TeX log files `manually',
+> >      but this approach is not applicable to all users...
+>
+> Have you ever seen a log file of my CJK package for Chinese? :-)
+
+No. The only thing from CJK package I tried to play with, was a ttf2pk package,
+which faied to work on my computer. ;-(
+
+I can explain, why log files become unreadable.
+To be readable, the encoding of russian characters in log files
+must be the same as the input encoding (8 bit!).
+But when TeX reads russian character (with code >= 0x80) in some
+external encoding (say, koi-8) and translates this character to
+the corresponding place in T2 table (therefore the character should be active),
+then all russian letters which will go to log files (and to the screen)
+in case of TeX errors, will have TeX internal encoding (T2), but *not*
+the external encoding (koi-8). Am I right?
+So, the log (and the screen) will be unreadable.
+
+> > BTW, how one can make virtex (I use NTeX under Linux) or teTeX to
+> > show characters with codes above 0x80 as normal characters?
+> > In the case of emtex, it is possible to use options like `-o' and `-8'.
+> > But I didn't find the way to do this with virtex.
+>
+> send a change file to Karl Berry, the author of web2c. It's not
+> implemented.
+
+> > > I want to change my own code to T2.
+> >
+> > BTW, do you have the new alpha version of LH fonts (with T2 encoding)?
+>
+> Oh! This is good news! Where can I get them?
+
+They are not yet widely available. I hope that I'll get them soon,
+and I'll inform you about this.
+
+--
+With best regards,
+                   Vladimir.
+

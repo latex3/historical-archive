@@ -1,0 +1,82 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Sat, 26 Mar 2005 12:34:33 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j2QBYVNi010499
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 26 Mar 2005 12:34:32 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j2QBVdfK026021;
+	Sat, 26 Mar 2005 12:31:39 +0100 (MET)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j2PN0sh3017400;
+	Sat, 26 Mar 2005 12:29:28 +0100
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 184119 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 26 Mar 2005 12:29:27 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j2QBTRYd001330 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 26 Mar 2005 12:29:27 +0100
+Received: from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j2QBV6fK025937 for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 26 Mar
+          2005 12:31:07 +0100 (MET)
+Received: from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org
+          with esmtp (Exim 4.34) id 1DF9Ua-00037R-G5 for
+          LATEX-L@listserv.uni-heidelberg.de; Sat, 26 Mar 2005 06:30:12 -0500
+References: <5.1.0.14.0.20050325194659.02471690@pop3.web.de>
+            <yfivf7fqyhl.fsf@triumf.ca> <x5sm2jwfnc.fsf@lola.goethe.zz>
+            <yfimzsrqaiu.fsf@triumf.ca>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <x5u0myfxvg.fsf@lola.goethe.zz>
+Date:         Sat, 26 Mar 2005 12:30:11 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Re: \@reinserts
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <yfimzsrqaiu.fsf@triumf.ca> (Donald Arseneau's message of "Fri,
+              25 Mar 2005 20:46:49 -0800")
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 26 Mar 2005 11:34:33.0703 (UTC) FILETIME=[C84BEF70:01C531F7]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4840
+
+Donald Arseneau <asnd@TRIUMF.CA> writes:
+
+> David Kastrup <dak@GNU.ORG> writes:
+>
+>> >
+>> > This probably doesn't belong on this list, so email me.
+>>
+>> Guffaw.  Output routine design details in connection with LaTeX don't
+>> belong on the LaTeX-L list?
+>
+> I was rushed to finish off.  What I meant to say is that I could
+> look at some specific failed attempt to use \holdinginserts,
+> and would take that by direct mail.
+>
+> The problem with \penalty\outputpenalty is that \outputpenalty=10000
+> and prevents the same page break instead of forcing the same break.
+
+Well, when rebreaking, I find that using \pagediscards seems like the
+best thing to do.  Then you get the same vertical list again, unless
+\outputpenalty is less than 10000, in which case you need to reinsert
+it in front of the discards (it will be replaced with \nobreak in the
+\pagediscards in this case).
+
+> I would use a unique force-break penalty.
+
+Always a good idea.  You just have to place it in a manner that makes
+sure it does not get discarded.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

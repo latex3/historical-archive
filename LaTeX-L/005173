@@ -1,0 +1,124 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 7 Mar 2008 20:59:10 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m27Jx96i031554
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 7 Mar 2008 20:59:09 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m27JhTho004648
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 7 Mar 2008 20:43:30 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m27G09DY016170;
+	Fri, 7 Mar 2008 20:47:55 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 220761 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 7 Mar
+          2008 20:47:55 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m27JltPu026532 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 7 Mar 2008 20:47:55 +0100
+Received: from mail-in-13.arcor-online.net (mail-in-13.arcor-online.net
+          [151.189.21.53]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m27Jgp31004089 (version=TLSv1/SSLv3
+          cipher=DHE-RSA-AES256-SHA bits=256 verify=OK) for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 7 Mar 2008 20:42:56 +0100
+Received: from mail-in-19-z2.arcor-online.net (mail-in-19-z2.arcor-online.net
+          [151.189.8.36]) by mail-in-13.arcor-online.net (Postfix) with ESMTP
+          id 5DB991E50FD for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri,  7 Mar
+          2008 20:47:34 +0100 (CET)
+Received: from mail-in-04.arcor-online.net (mail-in-04.arcor-online.net
+          [151.189.21.44]) by mail-in-19-z2.arcor-online.net (Postfix) with
+          ESMTP id 4C2276BD3B for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri,  7
+          Mar 2008 20:47:34 +0100 (CET)
+Received: from lola.goethe.zz (dslb-084-061-103-190.pools.arcor-ip.net
+          [84.61.103.190]) by mail-in-04.arcor-online.net (Postfix) with ESMTP
+          id 2F3001BF3DB for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri,  7 Mar
+          2008 20:47:34 +0100 (CET)
+Received: by lola.goethe.zz (Postfix, from userid 1002) id 66E701C40B72; Fri, 
+          7 Mar 2008 18:57:27 +0100 (CET)
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.0.60 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: ClamAV 0.92.1/6166/Fri Mar  7 17:36:07 2008 on
+                 mail-in-04.arcor-online.net
+X-Virus-Status: Clean
+Message-ID:  <85wsoeto1k.fsf@lola.goethe.zz>
+Date:         Fri, 7 Mar 2008 18:57:27 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: David Kastrup <dak@GNU.ORG>
+Subject: A really, really bad bug.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.307 () BAYES_00,FORGED_RCVD_HELO,HOT_NASTY
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Mar 2008 19:59:10.0941 (UTC) FILETIME=[B5D490D0:01C8808D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5173
+
+Ok, I get bombed out with save stack size exceeded in a large document.
+
+At the end of the document.  Here is an example (bombs out with a save
+stack size of 5000, adjust the number for other binaries):
+
+\documentclass{minimal}
+\begin{document}
+\leavevmode
+\newcount\xxx
+\loop
+\label{xxx\number\xxx}
+\advance\xxx1
+\ifnum\xxx<10000
+\repeat
+\end{document}
+
+Bombs out only when run with an empty .aux file.  What is the problem?
+At the end of the document,
+\@ifdefined{something}
+is run within a local group for all labels.  This replaced the undefined
+label _locally_ with \relax and pushes the outer "undefined" value onto
+the save stack.
+
+This is idiotic.  Of course, by far the easiest solution is
+\ifx\ifcsname\@undefined
+  make a definition that first checks with \ifcsname, and only if that
+  does not yield undefined, checks against \relax
+\else
+  the old definition
+\fi
+
+This is incompatible in that it does not have the sideeffect of turning
+an undefined macro locally into \relax.
+
+This is the solution I prefer.  It will avoid save stack buildup (and
+sideeffects I don't consider useful) elsewhere, too.
+
+Another possibilities are to remove the grouping from the end of
+document action testing the labels.  Yet another is to perform the
+\@ifdefined test within a group of its own, namely as
+
+\begingroup \@ifdefined{xxx}{\endgroup...}{\endgroup...}
+
+This will also not have the side effect of changing the label internal
+to \relax and will avoid save stack buildup.  So it keeps the changed
+side effect to a very small area and does not depend on eTeX.  One could
+also implement both (which would help with non-eTeX as well), but I
+don't think that supporting large documents on non-eTeX that previously
+did not work is much of a priority.
+
+What is your take?  I find it clearly unsatisfactory to have LaTeX eat
+up save stack for newly defined labels like that at the end of the
+document.
+
+-- 
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

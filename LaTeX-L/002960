@@ -1,0 +1,146 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4811" "Fri" "27" "November" "1998" "10:14:22" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "110" "Re: portable LaTeX" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id QAA14141;
+	Fri, 27 Nov 1998 16:15:09 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.8FC1D60C@listserv.gmd.de>; Fri, 27 Nov 1998 16:15:07 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 411706 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 27 Nov 1998 16:14:59 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id QAA29188 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 27 Nov 1998 16:14:38 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          KAA21577 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 27 Nov 1998
+          10:14:22 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          KAA22026 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Fri, 27 Nov 1998 10:14:22
+          -0500 (EST)
+Message-ID:  <199811271514.KAA22026@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 27 Nov 1998 10:14:22 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: portable LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2960
+
+Sebastian Rahtz <s.rahtz@elsevier.co.uk> writes:
+
+: William F. Hammond writes:
+:  > This could as well be:
+:  >
+:  > \documenttype{article}
+: which is not valid XML, so whats the point?
+
+But haven't I been saying here for several weeks that I think it more
+sensible to use the additional strength of sgml relative to xml while
+working on an authoring platform?  It is, upon transliteration -- but
+certainly not char-by-char transliteration -- valid sgml under the
+didactic gellmu dtd, which is subordinate to a non-reference sgml
+declaration.
+
+(Because I've been using different declarations I can become confused
+about what is legal when, which is why I made the slip about case
+sensitivity that Sebastian kindly pointed out several days ago.)
+
+And didn't I say that it could trivially be processed to xml?
+
+And we understand, don't we, when xml made from my sgml dialect is
+*parsed*, the parse stream looks just like the parse stream from the
+sgml.  (Well, one needs to do something about "eqnarray*" if that name
+is used.)
+
+:  > If I run this markup through my elisp, I get the following sgml:
+: but i want the *source* be to useable, not a result munged by  some
+: script!!!
+
+We do understand, don't we, that elisp under GNU Emacs is not just
+a scripting language but rather a full lisp that can be run either
+interactively in Emacs or else in batch mode.  We're NOT talking about
+clever merging of "sh", "sed" and "gawk".  And we have, moreover, the
+possibility of layered error diagnosis with the elisp finding low
+level syntax mistakes and the parser finding structural mistakes.
+Then, if, for example, validation fails for an output sgml or xml,
+it's most likely a problem with the sgml processor for that output.
+Or if LaTeX yells, it's most likely a problem with the sgml processor
+for that target.  (I do, however, as I write new things, still find a
+few authoring mistakes at that stage.)
+
+Wasn't it previously agreed that good LaTeX is just inches away from
+something usable?  If so, then I expect that something usable when
+coded for *personal* convenience to look like LaTeX is also usable.
+
+Of course, if one is happy writing verbose xml, then one does that.
+It's just that since I have this persistent LaTeX habit and find this
+a convenient way to write sgml that can be robustly translated to xml,
+I thought that others might also find this to be a personal
+convenience.
+
+(Of course, if I were designing a wysiwyg interface, then I expect that
+I would go for the xml.)
+
+Finally, there are four things for authors:
+ (1)  editing format.
+ (2)  exchange format.
+ (3)  private archiving format.
+ (4)  public archiving format.
+
+There is also the issue for any format that is a printable plain text
+format whether it is sane for *backup to paper* with recovery by
+optical scanning.
+
+These formats do not all have the same purpose.  What is optimal
+for one purpose may not be optimal for another.
+
+The question then always is: starting at X can I safely get to Y?
+
+: but it goes through you (inevitably flaky) elisp. thats the flaw.
+:
+: if you *started* with valid *ML markup, wouldnt it be even easier?
+
+But I *am* starting with valid sgml markup.  That's why it is called
+gellmu and not called LaTeX.  It only looks like LaTeX.  I must have
+my DTD in mind while writing.
+
+My elisp may be flaky if applied to arbitary LaTeX documents.  I did
+not design it primarily for legacy documents but rather for being able
+to use LaTeX-like markup to create sgml documents.
+
+For example, inasmuch as "frac12" is a legal name in sgml, my elisp
+regards it as a legal name.  If I want to use something obfuscated
+like "\frac12" as a synonym for "\frac{1}{2}", then I must have that
+name in my DTD and my processors must know about it.  (I choose not to
+go there, but one could.)
+
+I did say that my choice to use LaTeX-like markup to create sgml
+is a personal matter.   On the other hand, it staves off my symptoms
+of "withdrawal" from editing real LaTeX (which I still very much
+shall continue to use to get to paper).
+
+And when I come across a good legacy document such as the LaTeX3
+prospectus (part of the LaTeX2E distribution) by Mittelbach and
+Rowley, it is not that much work to make it legal sgml via the
+transliterator.  From that sgml an equivalent latex document may
+be re-constructed.  Or a good html version may be made.
+
+If I am editing for the transliterator, I do need to be minimally
+aware that I am writing sgml.
+
+:  > Note that this approach is different from that of James Clark's "jade"
+:  > which "centralizes" style for all "backends" using a DSSSL stylesheet
+: please don't blame James Clark in person for the fundamental concepts
+: of DSSSL, an ISO standard developed after a decade of work...
+
+Blame?  There was no blame from me.  I am a fan.
+
+                                   -- Bill
+

@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3165" "Wed" "24" "November" "1999" "17:05:01" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "73" "Declare vs define, objects" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA04950
+	for <schoepf@UNI-MAINZ.DE>; Wed, 24 Nov 1999 17:06:10 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.A779A7A7@mail.listserv.gmd.de>; Wed, 24 Nov 1999 17:06:04 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445831 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 24 Nov 1999 17:05:40 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id RAA25644 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 24 Nov
+          1999 17:05:38 +0100 (MET)
+Received: from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id RAA08871 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 24 Nov 1999 17:05:59 +0100 (MET)
+Received: (qmail 13787 invoked from network); 24 Nov 1999 17:05:56 +0100
+Received: from du137-226.ppp.su-anst.tninet.se (HELO ?195.100.226.137?)
+          (195.100.226.137) by knatte.tninet.se with SMTP; 24 Nov 1999 17:05:56
+          +0100
+X-Sender: haberg@pop.matematik.su.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b461b41ee074@[195.100.226.129]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 24 Nov 1999 17:05:01 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Declare vs define, objects
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3438
+
+On the http://www.latex-project.org/talks/tug99.pdf document:
+
+LaTeX2e* uses commands such as \DeclareDocumentEnvironment, with the word
+``declare''.
+
+In C/C++ and other computer languages one distinguishes between a
+declaration and a definition. Say if I write a declaration
+    int x;
+then it means that the variable x is of type ``int''. A definition looks like
+    int x = 5;
+which means that the variable x will be assigned the value 5.
+
+Thus, declarations do not have any physical impact on the binary code
+created, (and can occur several times) whereas definition do have a
+physical impact on the binary code created (and can only occur once).
+
+So LaTeX* departs from this common computer language lingo. Declarations
+may not have an exact TeX/LaTeX interpreation, but the could be wise
+reserving the word for some later use.
+
+So I think that word ``define'' or ''new'' should be used in these cases.
+
+It is also possible to apply object thinking on this: There is an object
+called ``document'' with subobjects ``command'' and ``environment'', both
+with subobjects ``new''. Then names of the two ``new'' commands thus becomes
+    document/command/new
+    document/environment/new
+
+The way I thought on it when I worked on these ideas is that these are the
+names  that are executed, but normally hidden away by some syntax from the
+user. The use of the slashes ``/'' in these names are thus just some
+internal mechanism brought into use in order to avoid name classes while on
+the same time sorting out different object structures.
+
+The point is also that one can use different local syntaxes in order to
+call these object commands. So for example, in one locality, one may use
+the old environment commands
+     \begin{_x_} ... \end{_x_}
+where _x_ is a variable, but in another, newer locality one might use say
+     <_x_| ... |_x_>
+In both cases the commands
+     document/environment/_x_/begin
+     ...
+     document/environment/_x_/end
+would be executed. (And my work on environments with hooks showed that the
+\begingroup \endgroup commands should be put into the begin and end
+statements of the environment, and not into the environment definition
+itself, as is the case now in LaTeX.)
+
+Such uses could be guided say by that the input code has some kind of
+special syntax.
+
+In the case of the new's above, the user commands could be
+    \new{document}{command}
+    \new{document}{environment}
+
+One way to execute this would be that first the command \new picks up an
+argument {document} and makes sure
+    \document/new
+is executed. Then the definition of the command named ``document/new''
+takes an argument {command} or {environment} and then executes respectively
+    \document/command/new
+    \document/environment/new
+which each has its own localized definitions.
+
+Above, I do not take into account issues such as compilation time and long
+names and so on, but I merely describe the logical structure of objects
+that I arrived at.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

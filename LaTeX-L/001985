@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2059" "Thu" "17" "April" "1997" "16:48:56" "+0100" "J%org Knappen, Mainz" "KNAPPEN@MZDMZA.ZDV.UNI-MAINZ.DE" nil "44" "Re: Capital greek letters and the math font encoding" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id QAA28222; Thu, 17 Apr 1997 16:49:45 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.D0CFA816@listserv.gmd.de>; Thu, 17 Apr 1997 16:49:44 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 126752 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 17 Apr 1997 16:49:41 +0200
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (dzdmza.zdv.Uni-Mainz.DE
+          [134.93.178.30]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id QAA13656 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 17
+          Apr 1997 16:49:40 +0200 (MET DST)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V5.0-4
+          #10401) id <01IHTGAH8C7GFTFBOT@MZDMZA.ZDV.UNI-MAINZ.DE> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 17 Apr 1997 16:48:56 +0100
+X-VMS-To: IN%"LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE"
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Message-ID:  <01IHTGAH8D5AFTFBOT@MZDMZA.ZDV.UNI-MAINZ.DE>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 17 Apr 1997 16:48:56 +0100
+From: "J%org Knappen, Mainz" <KNAPPEN@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Capital greek letters and the math font encoding
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1985
+
+David,
+
+if you really want to emulate the behaviour of \mathrm{\gamma} with the MC
+font encoding, this is a solution to the problem.
+
+It is not the only one, as I want to line out in some more detail:
+
+Currently the is a _subencoding_ OMA (Old Math Alphabetic), which is a
+subset of both OML (cmmi's encoding) and OT1 (cmr's encoding). It contains
+the latin A-Z, a-z, the digits 0-9, and the greek special capitals \Gamma-
+\Omega (including \Upsilon). This subencoding currently has something to do
+with the text encoding, since cmr is both cm text roman and cm math roman
+at the same time. However, the connection is not necessary.
+
+I am thinking of a new subencoding MA (Math Alphabetic) which is in fact
+OMA plus lowercase greek letters plus completed uppercase greek letters
+plus some letterlike symbols (\dbar coming to my mind as an obvious
+candidate for this, \partial and \Nabla, too. This list not complete.).
+Then we could have a differently organised group of fonts:
+
+     Current situation        Justin's Proposal     alternative proposal
+     OT1 (cmr)                T1 (?)                MC1            *
+     OML (cmmi)               MC                    MC2
+     OMS (cmsy)               MSP                   MSP
+     OMX (cmex)               MX                    MX             **
+     U (all other)            MS1                   MS1
+                              MS2                   MS2
+
+MA is subset of both MC1 and MC2, where MC1 contains math roman and MC2
+math italic. Further fonts (without symbols, but purely MA encoded) can
+provide math text italic, math sans serif and math typewriter on demand.
+
+Since It is possible to make OML (or almost all of it) a subset of MC2 and
+(almost all of) OT1 a subset of MC1, compatibility to the old version can be
+kept.
+
+* T1 for math roman is not explicitly stated in Justin's proposal, as far
+as I can see.
+
+** MX may need splitting in tow parts. In this case, separating the
+vertically extensible things from the horizontally extensibles ones looks
+preferable to me.
+
+--J"org Knappen
+

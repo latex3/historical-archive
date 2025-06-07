@@ -1,0 +1,71 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1439" "Tue" "21" "October" "1997" "16:43:45" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "35" "Re: \\@ifdefinable" "^Date:" nil nil "10" nil "\\@ifdefinable" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id TAA19505;
+	Tue, 21 Oct 1997 19:55:01 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.8E620A50@listserv.gmd.de>; Tue, 21 Oct 1997 19:54:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 219896 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 21 Oct 1997 19:53:59 +0200
+Received: from post.mail.demon.net (post-10.mail.demon.net [194.217.242.154])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id TAA13183
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 21 Oct 1997 19:53:55
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by post.mail.demon.net
+          id aa1013515; 21 Oct 97 18:44 BST
+Received: by dcarlisle.demon.co.uk id m0xNgTB-000OXrC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 21 Oct 1997 16:43:45 +0100 (BST)
+Message-ID:  <m0xNgTB-000OXrC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110707b07144139223@[130.237.37.82]> (message from Hans Aberg
+              on Mon, 20 Oct 1997 19:30:59 +0200)
+Date:         Tue, 21 Oct 1997 16:43:45 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: \@ifdefinable
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2497
+
+Hans writes.
+  I think the LaTeX parameter style \newcommand[6]... is pointless. Should
+  it not be scrapped in LaTeX3, only be allowed in compatibility mode?
+
+You need to differentiate between commands aimed at document use, and
+general latex programmers interface.
+
+In documents, not allowing arbitrary argument syntax is one of the
+great strengths of LaTeX. It is one of the things that allows latex
+documents to be parsed by non-tex engines such as latex2html,
+techexplorer, Scientific Word etc. Figuring out the argument to
+\vspace is a whole lot easier than figuring out the argument to
+\vskip.
+
+Of course at a programming level one needs to use arbitrary TeX
+delimited arguments, eg for parsing comma separated lists, or key
+value pairs or whatever. However one could imagine a sufficiently rich
+`programmers interface' which gave access to such constructs without
+needing to do the most basic TeX macro expansion tricks that you
+unfortunately need to do to code things for the present system.
+
+
+To answer the original question
+
+>   Should not \@ifdefinable be changed so that it does not check
+>   \@ifundefined?
+
+No. Changing the semantics of a command used in a large proportion
+of latex packages is not a very safe thing to do.
+
+Your analysis of the possibilities for defining/testing commands
+sounds reasonable, but any implementation of such a thing should
+use new names and keep clear of the old (existing) interface.
+
+David
+

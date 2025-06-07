@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2260" "Fri" "26" "February" "93" "14:56:11" "NFT" "Gaulle Bernard" "UCIR001%FRORS12.bitnet@vm.urz.Uni-Heidelberg.de" nil "48" "Multi \\documentstyle" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA26438; Fri, 26 Feb 93 15:00:59 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA13969; Fri, 26 Feb 93 15:00:40 +0100
+Message-Id: <9302261400.AA13969@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2882; Fri, 26 Feb 93 15:00:51 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3463;
+ Fri, 26 Feb 93 15:00:48 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3461;
+ Fri, 26 Feb 93 15:00:46 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Comments:     Resent-From: Gaulle Bernard <UCIR001@FRORS12.BITNET>
+Comments:     Originally-From: gaulle@circe.fr (Bernard GAULLE)
+Date:         Fri, 26 Feb 93 14:56:11 NFT
+From: Gaulle Bernard <UCIR001%FRORS12.bitnet@vm.urz.Uni-Heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Multi \documentstyle
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 986
+
+
+My point here is not to answer any previous message about sub-documents
+(id didn't read all the discussion...)
+but the discussion pointed to me the usual problem of editors to be able
+to typeset correctly authors documents as they arrive ie without any
+change, including \documentstyle, \begin{document} and so on. So i tried
+a piece of code that can solve probably simpliest cases. May be, that point
+is of no interest for the whole list... But i'd be glad that people
+wanting to criticize it do it directly to me.
+Any way i'm sure that such feature would be greatly appreciated in ltx3.
+
+Have a good WE,
+  --bg
+
+%%%%%%%%%%%
+% This code is to allow multi-documents to be processed by LaTeX in a batch.
+% Insert it before your first \documentstyle
+% It's a try. Don't know if all features are well processed.
+% Now use \ENDDOCUMENT as the LaTeX byebye.
+%                                                          --bg  02/26/92
+\let\ENDDOCUMENT\enddocument
+\makeatletter
+\def\enddocument{\clearpage\begingroup%
+        \gdef\documentstyle{\@ifnextchar[{\@documentstyle}{\@documentstyle[]}}
+        \gdef\@documentstyle[##1]##2{\makeatletter
+             \def\@optionlist{##1}\gdef\@optionfiles{}%\input ##2.sty\relax
+             \let\@elt\input \@optionfiles \let\@elt\relax \makeatother}
+        \gdef\document{\endgroup
+             \@colht\textheight  \@colroom\textheight \vsize\textheight
+             \columnwidth\textwidth \@clubpenalty\clubpenalty
+             \if@twocolumn \advance\columnwidth -\columnsep
+                \divide\columnwidth\tw@ \hsize\columnwidth \@firstcolumntrue
+             \fi
+             \hsize\columnwidth \linewidth\hsize
+          %  \begingroup\@floatplacement\@dblfloatplacement
+          %   \makeatletter\let\@writefile\@gobbletwo
+          %   \@input{\jobname.aux}\endgroup
+          %  \if@filesw \immediate\openout\@mainaux=\jobname.aux
+          %    \immediate\write\@mainaux{\relax}\fi
+          %  \csname process@table\endcsname
+             \let\glb@currsize\@empty  %% Force \baselineskip initialisation.
+          %  \def\do##1{\let ##1\@notprerr}%
+          %  \@preamblecmds
+          %  \let\do\noexpand
+             \@normalsize\everypar{}\@noskipsecfalse}
+                }
+\makeatother
+%%%%%%%%%%%%
+

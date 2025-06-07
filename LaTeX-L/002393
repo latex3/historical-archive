@@ -1,0 +1,121 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3699" "Wed" "8" "October" "1997" "14:02:08" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "78" "Re: MathML" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id QAA24151;
+	Wed, 8 Oct 1997 16:45:42 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.12C3BE56@listserv.gmd.de>; Wed, 8 Oct 1997 16:45:39 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 210610 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Oct 1997 16:45:30 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id QAA23693 for
+          <LaTeX-l@relay.urz.uni-heidelberg.de>; Wed, 8 Oct 1997 16:45:28 +0200
+          (MET DST)
+Received: from [130.237.37.74] (sl54.modempool.kth.se [130.237.37.74]) by
+          mail.nada.kth.se (8.8.7/8.8.4) with ESMTP id QAA03596; Wed, 8 Oct
+          1997 16:45:23 +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <199710071451.QAA04848@macbeth.uni-duesseldorf.de>
+            <199710071320.PAA16991@mozart.ujf-grenoble.fr>
+            <199710071451.QAA04848@macbeth.uni-duesseldorf.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id QAA23694
+Message-ID:  <v03110700b0611d321e83@[130.237.37.126]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199710080947.LAA00612@mozart.ujf-grenoble.fr>
+Date:         Wed, 8 Oct 1997 14:02:08 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: MathML
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2393
+
+At 11:47 +0200 97/10/08, Thierry Bouche wrote:
+>Concernant « Re: MathML », Ulrik Vieth schreibt :
+>> Careless coding tends to be mostly
+>> visual, but there's at least a potential to make it more semantic
+>> by using high-level macros to encode symbols by their function
+>> and having them translated to low-level macros in the background.
+..
+>yes yes yes !
+
+  This the other aspect, making LaTeX prepare input that is more semantic,
+and which I think may have a relation to MathML, such efforts: Eventually,
+in the future, one should be able to have all mathematic semantic
+information in the input formulas, but I do not think TeX or LaTeX suitable
+for a preparation for this task. -- Computer technology has not developed
+sufficiently yet to support it.
+
+...>tex (as a program) is not always coherent with tex (as a
+>coding scheme) though... {,} making the comma mathord (there should be
+>at least 2 commas in maths, one mathpunct, one mathord); in
+>\Sum_{i=1}^n, {i=1} is _not_ an index nor n an exponant,
+>mathematically speaking. My feeling is that the Knuthian macros play
+>like a virtuose with tex's font oddities and abilities, at the expense
+>of the genericity of the markup (too much clerveness, too many special
+>cases are not good for genericity...).
+
+  I would define a formula as "semantics expressed in symbols": So it is
+possible to extract the semantics information from a formula, as opposed to
+an illustration. In the attempts achieving the goal of having formulas as
+input, the exact syntax makes little difference, because one can later
+develop automated tools translating to another syntax.
+
+  So, in the example, $\Sum_{i=1}^n$, one should be able to somehow extract
+that $i$ an index ranging from $1$ to $n$; additional rendering information
+should be added independently of this semantic information. There are two
+ways we could do this:
+
+  First, we could ignore the TeX syntax, saying that we have an automated
+tool that knows how to extract the semantic information from expressions of
+the type $\Sum_{i=a}^b$. The problem with this approach is that authors
+would find ways to write formulas that break this scheme, for example
+$\Sum^b_{i=a}$. We could try to cover up that possibility, but then the
+authors will invent something else, and so on.
+
+  The second approach is to make use of the TeX syntax, forcing the authors
+entering the semantic information. For example, we could define
+$\def\Sum#1#2#3#4{...}$, with the usage #1 = i, #2 = a, #3 = b, #4 =
+summand. The problem with this approach is that TeX's syntax is too
+limited, so authors would probably feel to be in straight-jacket: We do not
+have name overloading, and cannot parse (easily) even simple types of
+grammars.
+
+  But one could play with ideas of how to implement with ideas of improved
+formula input: In the example above, suppose we decide that an author
+always should input sums as $\def\Sum#1#2#3#4{...}$ (ignoring for a moment
+the fact that this is mathematically too restrictive). Then the typesetter
+would end up with a formula
+    \begin{equation}
+      % gory stuff
+      \Sum{gory i}{gory a}{gory b}{gory summand}
+      % more gory stuff
+    \end{equation}
+The typesetter needs to somehow add rendering information that does not
+disturb the semantic information.
+
+  Then, the syntax should perhaps be
+    \begin{equation}
+      \rendering{...}
+      % gory stuff
+      \Sum{gory i}{gory a}{gory b}{gory summand}
+      % more gory stuff
+    \end{equation}
+putting in the rendering info separately.
+
+  Well, I did not say it is going to be easy. :-)
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+

@@ -1,0 +1,37 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 09 Jul 90 13:51:09 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: Permanence of .aux files
+To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 172
+
+As Barbara points out, file systems with version numbers are helpful,
+but not a full solution. Murphy always wins...yes, but I prefer to call
+it the law of conservation of trouble.
+
+I can see three reasons for .aux files beingincompletely written:
+- bad information passed from within LaTeX, such as the long caption
+  problem: here we can avoid this by tricky TeX programming (should
+  we really do this?)
+- interruption of writing, e.g., by an overflow of TeX's memory or
+  by typing `x' while in a break loop: this can be avoided by the
+  two step approach proposed by Nelson (unless the interruption occurs
+  while the second file is written which is highly unlikely).
+  Actually, this is the reason why .toc are nearly never damaged.
+  (They may be empty, but this can be avoided.)
+  One could do better if TeX had a system interface.
+- external causes, such as running out of disk space: no chance.
+
+The two step (auy-->aux) approach has another advantage: it is possible
+to write information (namely to .auy) while LaTeX is still reading
+(from .aux).  This can be used to read only the information into memory
+that is really needed.
+
+-Rainer
+
+

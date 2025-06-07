@@ -1,0 +1,422 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.402E6A04@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:50 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.402E6A04"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      \chapter complications
+Date: Mon, 8 Apr 1991 19:46:30 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE558@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Michael Downes" <MJD@MATH.AMS.COM>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 314
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.402E6A04
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+I am currently working on a documentstyle with a slightly weird design.
+It's for a book consisting of chapters by various authors; the chapters
+are collected from various sources, and may be previously published, or
+given as a talk at some conference but not previously published, or
+written specifically for the current book. I am wondering about
+questions such as the following.
+
+---Structure of a chapter: Make it exactly like a journal article?
+
+  \title{Chapter title}
+  \author{Chapter author}
+  \affiliation{Author's university or institution}
+  \maketitle
+
+Or use \chapter instead of \title?  Each chapter is numbered with a big
+chapter number, which wouldn't normally be the case in, say, a
+conference proceedings volume.
+
+Maybe it's only a question of semantics; but if the publisher wants to
+call them chapters, my first choice is to use the \chapter command, to
+avoid confusing end users and the publisher's staff.
+
+However, this immediately raises another difficulty: \chapter
+does not normally have an associated \maketitle command, but the format
+of the author names and affiliations is such that typesetting
+each one as it comes along, and getting it in the right place,
+would be technically difficult. So I am leaning to the format
+
+  \chapter{Chapter title}
+  \author{Chapter author}
+  \affiliation{Author's university or institution}
+  \makechaptertitle
+
+But this is a little out of synch with the LaTeX manual.
+
+---Processing each article separately or processing them together using
+\include. The main benefits of processing them together seem to be (a)
+less chance of error in the page numbering and (b) cross-references
+between chapters---but this is unlikely to be applicable for
+independent articles.  The main drawback of processing articles by
+different authors together is the possibility of a global change in one
+article affecting subsequent articles in undesirable ways. Local
+changes can of course be limited to the original article by enclosing
+it in a group. In AMS journals we have experimented with processing
+all the articles of an issue together, and encountered undesirable
+global changes, as well as save stack overflow from the extra
+level of grouping, often enough that eventually we went to separate
+processing, with the sequence of articles controlled in a VAX/VMS DCL
+command procedure, and with the page number being passed from one
+article to the next using \write and \read.
+
+---There is also a possibility in any given volume that certain commands
+might be required both within a chapter and at the outer level:
+\tableofcontents, \bibliography, \appendix. Something of course
+can be managed, but does anyone have previous experience and/or
+suggestions on how the user interface ought to look? Should I
+provide \tableofcontents and \chaptertableofcontents,
+\bibliography and \chapterbibliography, etc.? Or how about
+putting commands such as \frontmatter, \middlematter, \backmatter
+in the driver file that would change the effect of \tableofcontents,
+\bibliography, and \appendix commands? I.e.,
+
+       \documentstyle{X}
+
+       \begin{document}
+       % front matter beginning here
+       \tableofcontents
+       \include{preface} % containing \chapter{Preface}
+       \include{notation} % containing \chapter{List of Notation}
+
+       \middlematter
+       \include{chapter1} % normal chapters, maybe containing
+       \include{chapter2} % their own \tableofcontents, \appendix,
+       \include{chapter3} % or \bibliography commands.
+       ...
+
+       \backmatter
+       \appendix % switch to appendix format
+       \include{app1} % \chapter{Appendix title}
+       \include{app2}
+
+       \include{biblio} % \bibliography
+       \include{index} % \begin{theindex}...\end{theindex}
+
+       \end{document}
+
+
+---On another tangent, the way the \appendix command works has always
+seemed slightly odd to me. It would seem more natural to make \appendix
+a direct substitute for \section (in an article documentstyle) or
+\chapter (in a book documentstyle). Maybe in LaTeX 3.0, with its
+attribute handling, we'll be able to say something like
+
+  \section[variant=3Dappendix]{...}
+
+?
+
+The chief difficulty seems to be resetting the counter to 1, for the
+first such command, and incrementing it naturally thereafter. Other
+changes would be straightforward.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+Michael Downes
+mjd@math.ams.com (Internet)
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+-------
+
+
+------_=_NextPart_001_01C19443.402E6A04
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     \chapter complications</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>I am currently working on a documentstyle with a =
+slightly weird design.</FONT>
+
+<BR><FONT SIZE=3D2>It's for a book consisting of chapters by various =
+authors; the chapters</FONT>
+
+<BR><FONT SIZE=3D2>are collected from various sources, and may be =
+previously published, or</FONT>
+
+<BR><FONT SIZE=3D2>given as a talk at some conference but not previously =
+published, or</FONT>
+
+<BR><FONT SIZE=3D2>written specifically for the current book. I am =
+wondering about</FONT>
+
+<BR><FONT SIZE=3D2>questions such as the following.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---Structure of a chapter: Make it exactly like a =
+journal article?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \title{Chapter title}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \author{Chapter author}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \affiliation{Author's university or =
+institution}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Or use \chapter instead of \title?&nbsp; Each chapter =
+is numbered with a big</FONT>
+
+<BR><FONT SIZE=3D2>chapter number, which wouldn't normally be the case =
+in, say, a</FONT>
+
+<BR><FONT SIZE=3D2>conference proceedings volume.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe it's only a question of semantics; but if the =
+publisher wants to</FONT>
+
+<BR><FONT SIZE=3D2>call them chapters, my first choice is to use the =
+\chapter command, to</FONT>
+
+<BR><FONT SIZE=3D2>avoid confusing end users and the publisher's =
+staff.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, this immediately raises another difficulty: =
+\chapter</FONT>
+
+<BR><FONT SIZE=3D2>does not normally have an associated \maketitle =
+command, but the format</FONT>
+
+<BR><FONT SIZE=3D2>of the author names and affiliations is such that =
+typesetting</FONT>
+
+<BR><FONT SIZE=3D2>each one as it comes along, and getting it in the =
+right place,</FONT>
+
+<BR><FONT SIZE=3D2>would be technically difficult. So I am leaning to =
+the format</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \chapter{Chapter title}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \author{Chapter author}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \affiliation{Author's university or =
+institution}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \makechaptertitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But this is a little out of synch with the LaTeX =
+manual.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---Processing each article separately or processing =
+them together using</FONT>
+
+<BR><FONT SIZE=3D2>\include. The main benefits of processing them =
+together seem to be (a)</FONT>
+
+<BR><FONT SIZE=3D2>less chance of error in the page numbering and (b) =
+cross-references</FONT>
+
+<BR><FONT SIZE=3D2>between chapters---but this is unlikely to be =
+applicable for</FONT>
+
+<BR><FONT SIZE=3D2>independent articles.&nbsp; The main drawback of =
+processing articles by</FONT>
+
+<BR><FONT SIZE=3D2>different authors together is the possibility of a =
+global change in one</FONT>
+
+<BR><FONT SIZE=3D2>article affecting subsequent articles in undesirable =
+ways. Local</FONT>
+
+<BR><FONT SIZE=3D2>changes can of course be limited to the original =
+article by enclosing</FONT>
+
+<BR><FONT SIZE=3D2>it in a group. In AMS journals we have experimented =
+with processing</FONT>
+
+<BR><FONT SIZE=3D2>all the articles of an issue together, and =
+encountered undesirable</FONT>
+
+<BR><FONT SIZE=3D2>global changes, as well as save stack overflow from =
+the extra</FONT>
+
+<BR><FONT SIZE=3D2>level of grouping, often enough that eventually we =
+went to separate</FONT>
+
+<BR><FONT SIZE=3D2>processing, with the sequence of articles controlled =
+in a VAX/VMS DCL</FONT>
+
+<BR><FONT SIZE=3D2>command procedure, and with the page number being =
+passed from one</FONT>
+
+<BR><FONT SIZE=3D2>article to the next using \write and \read.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---There is also a possibility in any given volume =
+that certain commands</FONT>
+
+<BR><FONT SIZE=3D2>might be required both within a chapter and at the =
+outer level:</FONT>
+
+<BR><FONT SIZE=3D2>\tableofcontents, \bibliography, \appendix. Something =
+of course</FONT>
+
+<BR><FONT SIZE=3D2>can be managed, but does anyone have previous =
+experience and/or</FONT>
+
+<BR><FONT SIZE=3D2>suggestions on how the user interface ought to look? =
+Should I</FONT>
+
+<BR><FONT SIZE=3D2>provide \tableofcontents and =
+\chaptertableofcontents,</FONT>
+
+<BR><FONT SIZE=3D2>\bibliography and \chapterbibliography, etc.? Or how =
+about</FONT>
+
+<BR><FONT SIZE=3D2>putting commands such as \frontmatter, \middlematter, =
+\backmatter</FONT>
+
+<BR><FONT SIZE=3D2>in the driver file that would change the effect of =
+\tableofcontents,</FONT>
+
+<BR><FONT SIZE=3D2>\bibliography, and \appendix commands? I.e.,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\documentstyle{X}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % front matter =
+beginning here</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\tableofcontents</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{preface} % containing \chapter{Preface}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{notation} % containing \chapter{List of Notation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\middlematter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{chapter1} % normal chapters, maybe containing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{chapter2} % their own \tableofcontents, \appendix,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{chapter3} % or \bibliography commands.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\backmatter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \appendix % =
+switch to appendix format</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \include{app1} % =
+\chapter{Appendix title}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\include{app2}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \include{biblio} =
+% \bibliography</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \include{index} =
+% \begin{theindex}...\end{theindex}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\end{document}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>---On another tangent, the way the \appendix command =
+works has always</FONT>
+
+<BR><FONT SIZE=3D2>seemed slightly odd to me. It would seem more natural =
+to make \appendix</FONT>
+
+<BR><FONT SIZE=3D2>a direct substitute for \section (in an article =
+documentstyle) or</FONT>
+
+<BR><FONT SIZE=3D2>\chapter (in a book documentstyle). Maybe in LaTeX =
+3.0, with its</FONT>
+
+<BR><FONT SIZE=3D2>attribute handling, we'll be able to say something =
+like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \section[variant=3Dappendix]{...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The chief difficulty seems to be resetting the counter =
+to 1, for the</FONT>
+
+<BR><FONT SIZE=3D2>first such command, and incrementing it naturally =
+thereafter. Other</FONT>
+
+<BR><FONT SIZE=3D2>changes would be straightforward.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D</FONT>
+
+<BR><FONT SIZE=3D2>Michael Downes</FONT>
+
+<BR><FONT SIZE=3D2>mjd@math.ams.com (Internet)</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D</FONT>
+
+<BR><FONT SIZE=3D2>-------</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.402E6A04--
+

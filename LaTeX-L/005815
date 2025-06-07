@@ -1,0 +1,118 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 5 Aug 2009 07:17:40 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n755HdUN022338
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 5 Aug 2009 07:17:39 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n755DF4o004611
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 5 Aug 2009 07:13:16 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n74M1QgP007784;
+	Wed, 5 Aug 2009 07:12:59 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285012 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 5 Aug
+          2009 07:12:58 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n755Cwxf008407 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Aug 2009 07:12:58 +0200
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+          [195.173.77.148]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n755ChOb004401 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Aug 2009 07:12:47 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          lon1-post-1.mail.demon.net with esmtp (Exim 4.69) id 1MYYnr-0004M4-Yi
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 05 Aug 2009 05:12:43
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A781594.8060202@elzevir.fr> <4A78A9FE.5020309@morningstar2.co.uk>
+            <C50A26BB-4922-4A3B-ABA0-3EFF2CD45BAC@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A7914CB.2050003@morningstar2.co.uk>
+Date:         Wed, 5 Aug 2009 06:12:43 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: using expl3 for latex2e packages
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <C50A26BB-4922-4A3B-ABA0-3EFF2CD45BAC@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Aug 2009 05:17:40.0436 (UTC) FILETIME=[0DC8F940:01CA158C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5815
+
+Will Robertson wrote:
+> As far as I'm concerned, it's now or never for the expl3 code (some
+> might even say it's too late). I think we're at a stage where we can
+> state: we've iterated some ideas and this seems the best we can achieve;
+> if you use it now we will support backwards compatibility to the best of
+> our ability.
+
+Agree entirely.  I'd imagine we may find that one or two functions have
+to be re-worked at some point, but as a percentage of the whole this
+should be very small.  I'm not sure stability in the LaTeX2e sense
+(nothing changes) is desirable in any case: sometimes you need to "bite
+the bullet".
+
+> P.S.  Joseph, I can't help noticing your use of \cs_new_nopar:Nn. I know
+> that without an argument this usage is (in TeX terms) more "correct".
+> But, unless I was drastically mistaken, the assumption we made when
+> naming these functions was that it didn't really matter to have some
+> spurious \long's and we really wanted people to use \cs_new:Nn in all
+> cases except when they *specifically* wanted to restrict \par. (Since
+> the \long case is more general and more frequent. Restricting \par in
+> the input is better achieved when defining the user commands than the
+> underlying commands beneath them.) Unfortunately, there are lots of
+> cases in source3 where this convention is not followed, but only because
+> the translation was performed mechanically. What do you think about the
+> whole thing?
+
+My take (in what I've done in siunitx) is as follows. Where there is any
+chance that \par might pop up (most functions), I've used \cs_new:Nn.
+I've only used \cs_new_nopar:Nn in two types of case:
+
+- Functions with no arguments.  As there are no arguments, the question
+of \par tokens never arises. So it makes no difference whether I use
+\cs_new:Nn or \cs_new_nopar:Nn. As I've said before, I feel it is better
+to use more restricted functions if possible.
+
+- Cases where I'm coding an aux function with known input. In the
+example I gave:
+
+\cs_new_nopar:Nn \siunitx_load_check: {
+  \clist_map_function:nN { SIunits, sistyle, siunits, SIstyle }
+    \siunitx_load_check_aux:n
+}
+
+\cs_new_nopar:Nn \siunitx_load_check_aux:n {
+  \group_begin:
+    \@ifpackageloaded {#1} {
+      \msg_error:nnx { siunitx } { incompatible-package } {#1}
+    } {}
+  \group_end:
+}
+
+\siunitx_load_check_aux:n is only ever used to process an item from the
+in-line clist in \siunitx_load_check:. They can never contain \par, so
+again I can use the "most restricted" function. So there should be no
+cases where user input is restricted by my choices: I'm using xparse to
+do that. (Having said that, I should probably check through the code
+I've to make sure I've stuck to that scheme carefully.)
+-- 
+Joseph Wright
+

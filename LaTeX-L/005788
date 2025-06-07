@@ -1,0 +1,126 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Jun 2009 09:29:04 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n5A7T3kS030033
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Jun 2009 09:29:03 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n5A7PW0W012378
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Jun 2009 09:25:33 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n5A7MEmh006334;
+	Wed, 10 Jun 2009 09:25:32 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 312626 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Jun
+          2009 09:25:31 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n5A7PVD8019267 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 10 Jun 2009 09:25:31 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n5A7PJev012244
+          for <latex-l@listserv.uni-heidelberg.de>; Wed, 10 Jun 2009 09:25:22
+          +0200
+Received: from [139.222.131.131] (helo=ueams02.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1MEIBS-0005dj-VF for
+          latex-l@listserv.uni-heidelberg.de; Wed, 10 Jun 2009 08:25:18 +0100
+Received: from [139.222.201.201] by ueams02.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1MEIBS-0006m5-KZ for latex-l@listserv.uni-heidelberg.de; Wed, 10 Jun
+          2009 08:25:18 +0100
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A2F5FE3.3030205@morningstar2.co.uk>
+Date:         Wed, 10 Jun 2009 08:25:23 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Key-value input
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Jun 2009 07:29:04.0500 (UTC) FILETIME=[21EBAB40:01C9E99D]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5788
+
+Hello all,
+
+A while ago, I wrote the "keys3" package as an experiment in how
+key-value methods might be implemented in LaTeX3. I've done various
+refinements on the code to try to make it clear, but I'm not sure I've
+succeeded.  So I'm thinking about the problem again.
+
+For LaTeX2e, key-value input can be created in two broad ways:
+
+- Using a key-by-key approach with dedicated macros. This is the method
+used in keyval itself, xkeyval and kvoptions.
+- Using a keyval list to create keys. This is what pgfkeys does, and
+what I followed when creating keys3.
+
+I note that the current template code also uses the second approach. The
+complexity of xkeyval, in particular, really makes me think that some
+kind of keyval method for generating keys is the best plan. So it is
+then a question of the best way to do that.
+
+I wonder if the pgfkeys idea of using one macro to create and set keys
+is confusing. Currently, it is what I've done in keys3:
+
+  \keys_manage:n{
+    % Some keys are created
+  }
+  \keys_manage:n{
+    % Some keys are set
+  }
+
+but do other people think that strict separation:
+
+  \keys_generate:n {
+    % Some keys are created
+  }
+  \keys_set:n {
+    % Some keys are set
+  }
+
+is clearer?
+
+The other question is how to make keys in this way. keys3 uses the idea
+of properties:
+
+  key name/.property = value
+
+for example
+
+  \module\my~key/.tl_set:N  = \l_module_my_tl,
+  \module\my~key/.default:n = {default}
+
+to create a key which will store its input in a tl. On the other hand,
+template uses and "extended key-value" approach:
+
+key name =<type> [default] <function>
+
+for example:
+
+  my key =n [default] \l_module_my_tl
+
+Both ideas have some good points. template keeps everything in one line,
+which probably makes it easier to see what goes with what. On the other
+hand, the pgfkeys approach does not need any special layout of the input
+to work.
+
+I wonder how other people see the two schemes, and if there are other
+ways that similar effects can be achieved.
+-- 
+Joseph Wright
+

@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2268" "Tue" "30" "June" "1998" "10:18:00" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "54" "Re: l3 function names" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id LAA05377;
+	Tue, 30 Jun 1998 11:12:08 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.61055701@listserv.gmd.de>; Tue, 30 Jun 1998 11:12:05 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 374862 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 30 Jun 1998 11:12:00 +0200
+Received: from nag.co.uk (andover.nag.co.uk [192.156.217.113]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id LAA15132 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 30 Jun 1998 11:11:41
+          +0200 (MET DST)
+Received: (from davidc@localhost) by nag.co.uk (8.8.7/8.8.7) id KAA02863; Tue,
+          30 Jun 1998 10:18:00 +0100
+References:  <199806271239.OAA09658@relay.urz.uni-heidelberg.de>
+Message-ID:  <199806300918.KAA02863@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806271239.OAA09658@relay.urz.uni-heidelberg.de> (message from
+              Javier Bezos on Sat, 27 Jun 1998 14:36:57 +0100)
+Date:         Tue, 30 Jun 1998 10:18:00 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: l3 function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2613
+
+spec  arg forms              meaning
+~~~~  ~~~~~~~~~              ~~~~~~~~
+u     \cmd                   unexpanded/unbraced token
+n     \cmd  {\cmd}           token name
+c     \cmd  {\cmd1\cmd2...}  container; the contents will be passed as
+                                argument [\expandafter{\cmd}]
+l     \cmd  {\cmd1\cmd2...}  token list
+x     \cmd  {\cmd1\cmd2...}  expanded token list
+
+
+
+A further spec is to be used with \exp_args:
+d   \cmd  {\cmd}     dormant; usually n but it will not be expanded
+                     in protected expansions.
+
+....... and uppercase variants of  these.
+
+Interesting.
+
+I Would need to experiment a bit more with it before really
+commenting, but in anycase having some control over arguments in
+protected contexts must be useful (even in etex which has some
+primitive protection mechanism)
+
+> Actually, the problem is always present if diferent variants of
+> \exp_args and command specs are mixed: \exp_args:Noox\cmd:nNxn...
+> What? :-) )
+
+Yes the current exp_arg schemes really assume that the underlying
+command is of type nnnn (or possibly some N's). If you apply it to
+something that already has a `different' argument type you get a mess.
+
+> So \def:Npn #1{\tex_def:D #1} instead
+> of \let:NN\def:Npn\tex_def:D. In the notation above that gives
+> \def:npl \def:npx \def:Npl \def:Npx.
+
+The whole question of what to do with the primitives is not clear.
+Initially the names like \def:Npn were defined in the initial pass
+through the TeX primitives. That is, each primitive was given a new name
+(and then the old name undefined).  While descripibing the system for
+the paper at TUG98 this summer we decided to switch to a regular
+naming scheme for the primitives of \tex_(old name):D and then \let
+them to useable name(s) in the appropriate module (or modules).
+
+This does `waste' some csnames (as the :D forms are not supposed to be
+used) and it does let evil people like Phil reconstruct plain TeX by
+relocating all the primitive commands in a consistent way, but it seemed
+better than trying to decide the `right' new name for the primitives.
+
+The hope was that apart from these low level modules most code would be
+using (slightly) higher level functions in which the argument
+conventions were more rationalized.
+
+David
+

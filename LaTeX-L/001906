@@ -1,0 +1,171 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6152" "Thu" "10" "April" "1997" "14:05:44" "+0200" "Johannes Kuester" "kuester@MATHEMATIK.TU-MUENCHEN.DE" nil "127" "Re: math fonts" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA20011; Thu, 10 Apr 1997 14:22:41 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.1B9A7722@listserv.gmd.de>; Thu, 10 Apr 1997 14:22:39 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123061 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 14:22:26 +0200
+Received: from tuminfo2.informatik.tu-muenchen.de
+          (root@tuminfo2.informatik.tu-muenchen.de [131.159.0.81]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id OAA16287 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10 Apr 1997 14:22:05
+          +0200 (MET DST)
+Received: from sunbulirsch4.mathematik.tu-muenchen.de ([131.159.68.4]) by
+          tuminfo2.informatik.tu-muenchen.de with SMTP id <109539-234>; Thu, 10
+          Apr 1997 14:16:27 +0200
+Received: from sgibulirsch6.mathematik.tu-muenchen.de ([131.159.68.57]) by
+          sunbulirsch4.mathematik.tu-muenchen.de with SMTP id <20789>; Thu, 10
+          Apr 1997 14:05:50 +0200
+Received: by sgibulirsch6.mathematik.tu-muenchen.de (931110.SGI/930416.SGI) for
+          @sunbulirsch4.mathematik.tu-muenchen.de:LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE id AA08054; Thu, 10 Apr 97
+          14:05:44 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-ID:  <9704101205.AA08054@sgibulirsch6.mathematik.tu-muenchen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <Pine.SOL.3.93.970410115619.27446C-100000@sun2> from "Matthias
+              Clasen" at Apr 10, 97 12:07:02 pm
+Date:         Thu, 10 Apr 1997 14:05:44 +0200
+From: Johannes Kuester <kuester@MATHEMATIK.TU-MUENCHEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: math fonts
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1906
+
+Matthias Clasen wrote:
+
+>                             Splitting MX ?
+
+Yes, definitely. This always seemed to me to be the major weak point of
+Justin's proposal, as this is too rigid, too restrictive. I think
+there are enough glyphs to make up a second extension font, at least.
+
+Of course, the first one should contain the usual TeX glyphs, as proposed,
+and the second (and may be third,..) one then should contain the others.
+
+> If the new big delimiters are no longer in the first 6 families, there is
+> not much point in keeping their basic size counterparts in MC. These
+> should also go to MX2, freeing some valuable slots in that encoding.
+
+Some comments on MC: the ordering of the Greek glyphs seems to be somewhat
+arbitrary, they should either be ordered in the order of the Greek
+alphabet or according to the input conventions of e.g. Haralambous's
+Greek fonts (I think the first is preferable, but the current alpha,beta,
+delta,... gives a new ordering never to be seen so far). I also think that
+upright and slanted/italic glyphs should reside at a multiple-of-8 distance
+in the font; e.g. upright Alpha at "81, slanted Alpha at "B9, to make
+then more easily findable and comparable. There are some glyphs for
+which I don't see any reason for being in the core, namely "5F, "61,
+"F8 and "F9 (barred V, upright and slanted, thorn (variant) and Thorn),
+as they are very rarely used in mathematics (if at all?). Justin didn't
+give any example of their usage. Also, to include the upright "d" seems
+arbitrary, as other upright glyphs aren't taken into account.
+  Freeing some slots could be advantageous, but for some delimiters the
+reason to reside here is kerning, so this should be considered before
+taking them elsewhere.
+
+  Oh, and the digits should be upright, I think, as slanted/italic digits
+should not appear in mathematics.
+
+>  - moving *all* charlist-accessed glyphs (even the wide accents) out of
+>    MC, MSP, MS1 and MS2 .
+
+Consider kerning, taken them out of the fonts could well be quite
+disadvantageous.
+  I didn't like Justin's proposal at first, because doesn't seem to me
+that it cleanses up the current mess of math fonts, but puts together
+some new fonts which show the same mess only on a larger scale, but
+I didn't think of kerning then: this is still the major restriction
+here to make deliberate decision and putting different groups in different
+fonts (this restriction won't be overcome in TeX, though). So here
+Justin made some very valuable points: to get proper kerning at least
+with the most important symbols, one has to keep things in the same font
+here. And the basic sizes of the delimiters occur more often than their
+extended counterparts, so I think they should kern properly e.g. with
+italic letters.
+
+>  - there is now enough room in MX2 to add some more wide accents, like
+>    wide triangles or parens (found in yhmath).
+
+And there should be upright versions of all the integral sings (as the
+integral falls under the "upright type rule" discussed here before; to
+be consistent in using this rule, these glyphs are needed.
+
+I have metafonted a few glyphs which I could contribute
+(in rather poor METAFONT, as these were among my first glyphs,
+but I think they look the right way, even when their programs need
+to be polished). Namely:
+
+interval delimiters (with extensibles)
+   (to be found in Duden, used e.g. in "dtv-Atlas zur Mathematik";
+    quite useful to denote intervals unambiguous, as the usual "(a,b)"
+    is one of the most overloaded notation in mathematics)
+
+"medium" and "sharp" angle brackets (with extensibles)
+   (useful to make at least a slight distinction for the reader,
+    when notating different concepts with angle brackets)
+
+the Vinogradoff symbols for the order of a function
+   (looking like < and > with another angle inside, I think these
+    should have their own glyphs, as their meaning is quite different
+    from "much less than" and "much greater than")
+
+arrows for surjection (double arrowhead), injection (arrowhead and -tail)
+    and bijection (arrowtail and double arrowhead)
+    (found in Duden, could be covered by the arrowkit package, I suppose
+     (how about the double arrowhead?), quite useful sometimes)
+
+a special symbol for the Laplace operator and a matching Nabla
+    (looking like a \bigtriangle, a bit larger and bolder though;
+     may be useful as I think \Delta (the upright one for Laplace) is
+     overused and ambiguous)
+
+a "does not divide" symbol
+    (TeX's slash for negation doesn't work here properly, and the AMS
+     symbol for this seems to have a negation slash which is too short)
+
+upright lowercase Greek glyphs
+    (these are merely a matter of taste, I made them by "unslanting"
+     the usual ones and changing the code when it seemed appropriate
+     to get a goodlooking glyph. May be Greek has to be redesigned
+     completely anyway, as I don't see a reason for having uppercase
+     Greek letters which are undistinguishable for their Latin counterparts)
+
+    Here again, Justin's proposal seems to be too restricted: There
+    are at least two variant glyhs for each of Qoppa, qoppa, Sanpi and sanpi,
+    and there is "stigma" (merely a sigma-tau ligature, to be found in
+    Unicode), which hasn't been considered yet.
+
+a big times-like symbol
+a big bottom symbol
+a big top symbol
+(all of them in the two sizes of the extension font)
+
+
+I agree that the "group" delimiters of TeX should be made available at
+all sizes (they could be useful to distinguish different kinds of arguments,
+e.g. in the theory of representations, or to give the Legendre symbol
+a more distinct appearance from a fraction in parentheses etc.)
+
+And as for font naming conventions: please do use preliminary names
+for the fonts (how about "d" instead of "e" as a starting letter?).
+I don't see a good reason for the naming "emsp", I think this should
+just be the first math symbol font, named "emsa" ("dmsa" for now?),
+the other names shifted accordingly, thus it will be privileged enough.
+
+Johannes Kuester
+
+--
+Johannes Kuester                    kuester@mathematik.tu-muenchen.de
+Mathematisches Institut der
+Technischen Universitaet Muenchen
+

@@ -1,0 +1,92 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2302" "Fri" "7" "August" "1998" "22:11:45" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "53" "Re: expl3: parameter access letters" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA03211;
+	Fri, 7 Aug 1998 23:33:05 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.2FF9187B@listserv.gmd.de>; Fri, 7 Aug 1998 23:33:04 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 394286 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 7 Aug 1998 23:32:59 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (Ufrank@kralle.zdv.Uni-Mainz.DE
+          [134.93.8.158]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id XAA20519 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 7 Aug
+          1998 23:32:57 +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA15724 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Fri, 7 Aug 1998 23:32:54
+          +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA13710; Fri, 7 Aug 1998 22:11:45 +0200
+References: <199808071741.TAA14358@relay.urz.uni-heidelberg.de>
+Message-ID:  <199808072011.WAA13710@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199808071741.TAA14358@relay.urz.uni-heidelberg.de>
+Date:         Fri, 7 Aug 1998 22:11:45 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: expl3: parameter access letters
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2670
+
+Javier
+
+ > In fact, both g and l specifiers are wrong, because TeX lacks
+ > the concept of variable scope. Only *assignments* are local
+ > or global and a certain macro is assigned globally or locally
+ > depending on the context. (That makes \global different to \outer
+ > and \long, as you can see in the p 210 of the TeXbook.)
+
+i think wrong here is the wrong word. The fact that the underlying
+language does in principle allow you to mix local and global
+assignments does not mean that on a higher level of abstraction you
+want to distinguish variables for global or local use (and discurrage
+or even prevent mixing those assignments).
+
+ > The best approach is not to believe that TeX is ModulaX or Java -- just
+
+nobody believes that TeX is that or at least I don't but that doesn't
+mean that i want to structure my variables. the fact that, for
+example, half of the \newif commands in current latex are meant to be
+used always globally but have no indication of needing this access
+method has resulted in quite a number of bugs over the years.
+
+or to give a different example, this is like claiming that LaTeX or
+plain TeX has no concept of internal commands (ie those with @ in them
+since it is not part of the language and everybody can make @ a letter
+at any time. or course everybody can but then he/she is conceptually
+starting to work with internal commands.
+
+ > >  \g_master_parindent
+ > >  \g_cur_parindent
+ > >
+ > >or something along those lines.
+ >
+ > And don't forget the intermediate levels when you write a footnote in
+ > a minipage in a float in an appendix in a document! ;-)
+ >
+ > >So I think the "C" should be discarded, leaving c l g R L G.
+ >
+ > I think all of them should be discarded.
+
+
+i disagree with both of you: discard RLG but keep the (in my opinion)
+helpful distinction between constants and variable intended for local
+or for global use. this covers 99.9% of any code you need to write and
+helps structuring it a lot for easier understanding and less errors.
+
+if you look at the article produced for TUB you will notice that there
+only c l g are described (plus a vague sentence that "these codes
+include the following" which indicates that there might be more). this
+was because working with this i found that more would not be helpful
+but rather over the top.
+
+frank
+

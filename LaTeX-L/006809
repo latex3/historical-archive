@@ -1,0 +1,177 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p7KHwxvn016185
+	for <rainer@rainer-schoepf.de>; Sat, 20 Aug 2011 19:59:00 +0200
+Received: (qmail 27667 invoked by alias); 20 Aug 2011 17:58:54 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 20 Aug 2011 17:58:53 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx073) with SMTP; 20 Aug 2011 19:58:53 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p7KHugh1013193
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 20 Aug 2011 19:56:42 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p7JM15TC027152;
+	Sat, 20 Aug 2011 19:56:41 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1543530 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 20 Aug
+          2011 19:56:41 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p7KHuffK002770 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 20 Aug 2011 19:56:41 +0200
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p7KHuAmB013126 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 20 Aug 2011 19:56:13 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1QupmD-0004PE-hy for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 20 Aug
+          2011 17:56:10 +0000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:6.0) Gecko/20110812
+            Thunderbird/6.0
+MIME-Version: 1.0
+References: <C58398B6-8915-458C-AF38-F3C82F9342B2@gmail.com>
+X-Enigmail-Version: 1.3
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4E4FF538.7070601@morningstar2.co.uk>
+Date:         Sat, 20 Aug 2011 18:56:08 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: couple of l3keys notes
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <C58398B6-8915-458C-AF38-F3C82F9342B2@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p6owQmP6PwN9F2fCHGg1o5hsMeZqRcl8ttfb4BdRizna6PdfgD7KKHmClsom
+ zy5dqcZeknr6jFPOe3mCTB7cwm68Mzs2VQ1NIebmDGo2NuYjaYscsgMmxmbaIgUvDI2hFREUF5ik
+ 1w4yKrc4yTQ4Fa5JhXd4ERkRXJYq2eqWgPsidNFR6etdrUJx6Yiyq2QZes=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6809
+
+Hello Will,
+
+Yuo may remember that l3keys started life as a more-or-less direct
+conversion of pgfkeys to expl3 syntax. Over time, it's evolved somewhat,
+but I think we can still look to pgfkeys for inspiration. This will show
+up in my comments. I'm also imagining that as I'm 'responsible' for
+l3keys in many ways, I'll be writing any new functionality (which I'm
+perfectly happy with).
+
+> 1.
+> 
+> It seems a bit strange that "generate-choices" requires two calls:
+> 
+> \keys_define:nn {fontspec-preparse} {
+>   Renderer .choice-code:n = { ... } ,
+>   Renderer .generate-choices:n = {AAT,ICU,Graphite,Full,Basic}
+> }
+> 
+> (Especially when the code is quite long, the final line can get a bit lost.)
+> What do you think of an additional keys function on the lines of:
+> 
+> \keys_define:nn {fontspec-preparse} {
+>   Renderer .choices:nn = {AAT,ICU,Graphite,Full,Basic}{ ... }
+> }
+> 
+> (Actually now I ponder this a little more I seem to remember it was a design goal for l3keys not to have key functions that take multiple arguments...am I recalling correctly? If that is the case, do we want to reconsider this?)
+
+Originally, l3keys followed pgfkeys in having multi-argument keys: we
+originally had '.choices:nn'! However, it seemed to me at the time that
+the concept with a key sis that you set some key to some value, and that
+this worked best in a one-to-one fashion. Thus l3keys has nothing
+directly equivalent to pgfkeys' ".code 2 args", ".code args" or similar.
+
+I'd agree that this may not be ideal in this particular case, as choices
+are somewhat different from other ideas. I'm happy to make this switch
+if it feels overall more 'natural' to do ".choices:nn". After all, the
+entire idea of l3keys is to make defining key-value input as easy as
+possible.
+
+> 2.
+> 
+> There is currently a conditional "\keys_if_exist:nnTF" (and friends). What do you think of, additionally, "\keys_if_choice_exist:nnnTF" for which, say,
+> 
+>    \keys_if_choice_exist_p:nnn {fontspec-preparse} {Renderer} {AAT}
+> 
+> returns true?
+
+Easy to implement, as if is simply an alternative take on
+\keys_if_exist:nnTF. One obvious question is whether you check that
+<key> is a choice in the first place, and if not what the 'correct'
+answer is
+
+  \keys_if_choice_exist_p:nnn { <fam> }{ <some-non-choice-key> }
+    { <whatever> }
+
+> 3.
+> 
+> I think it's generally useful to be able to filter lists of keys into their various modules. (Well, I do it in fontspec and it's the kind of thing that makes inheritance of values easy.)
+> 
+> For example, given a keyval list #1 it's often nice to be able to say
+> 
+> \keys_set:nn {foo} {#1}
+> ...
+> \keys_set:nn {bar} { <remainder of keys not set by "foo"> }
+> 
+> In xkeyval this is done in a simple manner by assigning all unset keys to a macro that can be accessed later; e.g., if it were like this in l3keys:
+> 
+> \keys_set:nn {foo} {#1}
+> ...
+> \keys_set:nV {bar} \l_keys_previous_unset_clist
+> 
+> You could also imagine doing it more explicitly with a "filtering" function:
+> 
+> \keys_filter:nnNN {foo} {#1} \l_keys_included_clist \l_keys_leftover_clist
+> \keys_set:nV {foo} \l_keys_included_clist
+> ...
+> \keys_set:nV {bar} \l_keys_leftover_clist
+> 
+> 
+> I'll provide my own local definition of the xkeyval approach in fontspec; do you think one of these should be added to l3keys proper? If the former, I imagine it would have to act in concert with the current "unknown" key setting. But I'm more in favour of the latter choice because it would then not conflict with current error handling.
+
+When I was writing l3keys, this idea was not really available in
+pgfkeys. However, there is now a  filter add-on to pgfkeys which does
+exactly what you describe. (See the Tikz manual, section 'Key
+Filtering'.) I find some of the current pgfkeys approach a bit hard to
+follow, so if we do want to go this way will probably come up with a
+proposal of my own. I'll come back on this once I've given it some more
+thought, and hopefully will have an interface idea.
+
+> 4.
+> 
+> Implicit mapping for multiple key choices; what do you think the expected behaviour is here?
+> 
+> \keys_define:nn {foo}
+>   {
+>     key .choice: ,
+>     key / aaa .code:n = \typeout{aaa} ,
+>     key / bbb .code:n = \typeout{bbb} ,
+>   }
+> \keys_set:nn {foo} {key={aaa,bbb}}
+> 
+> I would be inclined to disallow "," inside a choice name (if that's not already the case) and automatically map over this list. Is this a bad idea? (Of course, happy to do this manually in my own code.)
+
+Here I'm a bit confused. The idea of a multiple-choice key is that they
+are mutually-exclusive. I guess that you have a particular use case in
+mind here, but I wonder if that means you have some badly-defined keys.
+ Could you give more detail on this? (In general, if a key sets several
+things then it is probably best defined as a meta-key which sets several
+other keys. See for example the "mode" or "detect-all" keys in siunitx.)
+--
+Joseph Wright
+

@@ -1,0 +1,87 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1896" "Mon" "22" "November" "93" "16:40:37" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "60" "Re: NFSS2: how do I change math letters in the middle ?" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA03823; Mon, 22 Nov 93 16:41:59 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA19060; Mon, 22 Nov 93 16:41:55 +0100
+Message-Id: <9311221541.AA19060@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7483; Mon, 22 Nov 93 16:40:13 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0453;
+ Mon, 22 Nov 93 16:39:57 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0451;
+ Mon, 22 Nov 93 16:39:54 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 22 Nov 93 16:40:37 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: NFSS2: how do I change math letters in the middle ?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1174
+
+
+Subj:	NFSS2: how do I change math letters in the middle ?
+
+> when i asked Frank something like this last March or so, his reply was
+> along the lines of `i didnt write NFSS so that you could write manuals
+> about it'...
+
+this sounds strange if pulled out of the context. It was said by me to
+Sebastian when he asked for it to pull some tricks in a manual (about
+graphics not nfss, i think)
+
+There is a good reason for not allowing local changes to symbol fonts
+but i don't want to go into that now.
+
+> my pragmatic solution would be to typeset the examples in a separate
+> file and input them as EPS files.
+
+sebastians solution is a possibility if you have ps facilitities.
+
+If you don't, you can do the following:
+
+\DeclareMathVersion{showoff}  % this is automatically like normal
+                              % if you don't change anything
+
+\SetSymbolFont{letters}{showoff}{OML}{cmtt}{m}{it}
+
+                              % this modifies letters in version showoff
+
+then you can use this with
+
+{\mathversion{showoff}
+ $ ... $
+}
+
+in the middle of my document.
+
+However, I have no idea what kind of MF trickery you did to produce a
+math italic tt font. Maybe you are missing something at this point?
+
+To explain what i mean:
+
+letters should be an OML encoded font like cmmi10. it must contain
+enough fontdimen etc to be usable in math. the only font beside the
+cmmi set of fonts that is normally available is ccmi (concrete roman
+math italic).  You can of course produce an OML cmtt font but this
+means some Metafont runs.
+
+It also means that you need an additional fontshape declaration, eg
+
+\DeclareFontShape{OML}{cmtt}{m}{it}{
+  <10> cmttm10    % <- whatever you call that font
+  ...}{}
+
+without this, the above declaration will be unable to carry out your
+request and thus the substitution will start and that will bring you
+back to  OML/cmm/m/it in the end.
+
+hope that helps a bit
+
+frank
+

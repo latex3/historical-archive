@@ -1,0 +1,143 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3791" "Wed" "17" "June" "1998" "19:20:22" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "106" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA03647;
+	Wed, 17 Jun 1998 19:20:41 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.7A207E93@listserv.gmd.de>; Wed, 17 Jun 1998 19:20:39 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 364401 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 17 Jun 1998 19:20:33 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA22305 for
+          <LaTeX-l@relay.urz.uni-heidelberg.de>; Wed, 17 Jun 1998 19:20:30
+          +0200 (MET DST)
+Received: from [130.237.37.46] (sl26.modempool.kth.se [130.237.37.46]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id TAA29175 for
+          <LaTeX-l@relay.urz.uni-heidelberg.de>; Wed, 17 Jun 1998 19:20:28
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b1ada22893b8@[130.237.37.25]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 17 Jun 1998 19:20:22 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2565
+
+  I will give a simple example on how the idea of modules and submodules
+might be developed, which illustrates the principle I saw of a sequence of
+logical substructures with its own local rules for executing the code. I
+have attached LaTeX2e code, which is "quick-and-dirty" in order to keep it
+small.
+
+  So, I define a module "math" with a submodule "symbol". The module math
+has commands phi and varphi which are named math/phi and math/varphi, and
+the submodule symbol has the command phi which is named math/symbol/phi. I
+then define an user command <...> for invoking those module and submodule
+commands, that is, <math/phi>, <math/varphi>, and <math/symbol/phi>.
+
+  The command <...> does not merely execute what it encloses, but parses it
+and passes it to the correct module, which then determines how to react to
+it. So the module math has a command named \math/ which takes one argument
+which determines how to react to the argument. So <math/phi>,
+<math/varphi>, and <math/symbol/phi> will be parsed to \math/ taking the
+argument {phi}, {varphi}, and {symbol/phi} respectively. (If what <...>
+encloses does not contain a slash /, then in the version I wrote here, it
+is merely executed as a command. So <phi> executes \phi.)
+
+  Then the command \math/ as it is defined here parses its argument too see
+if it is a command or a submodule: If it is a command (no slash in it),
+then it merely executes it. So \math/{phi} executes \math/phi, etc. But in
+the submodule case (a slash in the name), \math/{symbol/phi} translates
+into \math/symbol/{phi}; it is then up to the submodule command
+\math/symbol/ to decide how to react.
+
+  I have then given two versions of \math/symbol/, one in which
+\math/symbol/{#1} expands to \math/symbol/#1 and another where this expands
+to \math/var#1. So in the first case, \math/symbol/{phi} becomes
+\math/symbol/phi, and in the other case it becomes \math/varphi.
+
+  This then illustrates the principle that even though there is a generic
+rule for what a module or submodule should execute, this can easily be
+overridden by a local definition.
+
+
+---- Module Example -----------------------------------------------
+
+\documentclass{minimal}
+
+\catcode`\/=11
+
+\def\newmodule#1{%
+  \expandafter\def\csname#1/\endcsname##1{\parseB{#1}##1>}}
+
+
+% Define an example module "math" with submodule "symbol"
+
+\newmodule{math} % Same as \def\math/#1{\parseB{math}#1>}
+
+% Command #1 of submodule math/symbol executes \math/symbol/#1
+\def\math/symbol/#1{\csname math/symbol/#1\endcsname}
+
+% Command #1 of submodule math/symbol executes \math/var#1
+%\def\math/symbol/#1{\csname math/var#1\endcsname}
+
+\let\math/phi\phi          % Command phi of module math
+\let\math/varphi\varphi    % Command varphi of module math
+\let\math/symbol/phi\phi   % Command phi of submodule math/symbol
+
+\catcode`\/=12
+
+\catcode`\<=\active
+
+% User command for invoking module commands.
+\def<#1>{\parseA#1>}
+
+% Parse for slash in argument.
+\def\parseA#1#2#3>{
+  \ifx#3\relax\relax%
+    \def\tempA{\csname#1#2\endcsname}% No /; command #1#2.
+  \else\ifx#2/%
+    \def\tempA{\csname#1/\endcsname{#3}}% /, command #3 in module #1/.
+  \else
+    \def\tempA{\parseA{#1#2}#3>}%
+  \fi\fi%
+  \tempA%
+}
+
+% Same as parseA, but within a module #1.
+\def\parseB#1#2#3#4>{
+  \ifx#4\relax\relax%
+    \def\tempA{\csname#1/#2#3\endcsname}% No /; command #2#3 in module #1/.
+  \else\ifx#3/%
+    \def\tempA{\csname#1/#2/\endcsname{#4}}% A /, so submodule #1/#2 checks #4
+  \else
+    \def\tempA{\parseB{#1}{#2#3}#4>}%
+  \fi\fi%
+  \tempA%
+}
+
+
+\begin{document}
+
+Command ``phi'': $<phi>$.
+
+Command ``phi'' of module ``math'': $<math/phi>$.
+
+Command ``phi'' of submodule ``symbol'' of module ``math'':
+$<math/symbol/phi>$.
+
+\end{document}
+
+---- End of Module Example -----------------------------------------------
+

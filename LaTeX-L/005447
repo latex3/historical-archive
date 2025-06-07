@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 20 Nov 2008 09:10:50 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mAK8AmeU016427
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 20 Nov 2008 09:10:49 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mAK86VGV025784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 20 Nov 2008 09:06:31 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mAJN2xWc023750;
+	Thu, 20 Nov 2008 09:06:25 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 157078 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 20 Nov
+          2008 09:06:25 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mAK86ODM028548 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 20 Nov 2008 09:06:24 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mAK86BDn005954
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 20 Nov 2008 09:06:16
+          +0100
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1L34YC-0004Dp-5e for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 20 Nov 2008 08:06:08 +0000
+Received: from [139.222.202.18] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1L34YC-0007ta-4u for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 20 Nov
+          2008 08:06:08 +0000
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+References: <LISTSERV%200811192230181624.04A3@LISTSERV.UNI-HEIDELBERG.DE>
+            <27990a880811191758x2a29ecb4m33d2dcead1f32093@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49251A70.1020308@morningstar2.co.uk>
+Date:         Thu, 20 Nov 2008 08:06:08 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \exp_after:NN
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <27990a880811191758x2a29ecb4m33d2dcead1f32093@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 20 Nov 2008 08:10:51.0108 (UTC) FILETIME=[80883240:01C94AE7]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5447
+
+Will Robertson wrote:
+> On Thu, Nov 20, 2008 at 8:00 AM, Joseph Wright
+> <joseph.wright@morningstar2.co.uk> wrote:
+>> Hello all,
+>>
+>> I've been writing a talk about LaTeX3, and something struck me.  Why is it
+>> \exp_after:NN and no \exp_after:NO?
+> 
+> Or even \exp_args:NO, which saves us a char. (In fact, we could drop
+> the "s" in all of the \exp_args functions and save us another...)
+
+True, \exp_args:NO makes sense.  I think that the "s" is handy in some
+of the cases where more than one argument is altered, so for the sake of
+one character I'd leave it alone.
+
+> I guess \exp_after:NN is an edge-case of the naming scheme. In fact,
+> it should probably be called \exp_after:ww because in a case like
+> this:
+>   \foo\expandafter{\bar}
+> the opening brace doesn't really qualify as a "N" type argument.
+
+In the main, with all of the \exp_args functions the average programmer
+should only need \exp_after:NN for the simple case of getting past a
+macro, not another token.  In general, it seems that the :w functions
+tend to be ones where there is a better alternative for most scenarios.
+So I'd be wary of using :ww here.
+
+Joseph
+-- 
+Joseph Wright          Tel.   01604 810094
+Morning Star           Mobile 07974 148180
+2 Dowthorpe End
+Earls Barton
+Northants NN6 0NH
+

@@ -1,0 +1,189 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6944" "Fri" "13" "June" "1997" "23:20:43" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "149" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA18513 for <schoepf@UNI-MAINZ.DE>; Fri, 13 Jun 1997 23:49:26 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.CC72786A@listserv.gmd.de>; Fri, 13 Jun 1997 23:48:47 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 152831 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 13 Jun 1997 23:48:27 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id XAA18546
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 13 Jun 1997 23:48:26
+          +0200 (MET DST)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id XAA23149 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 13 Jun 1997 23:34:52 +0200
+          (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          XAA00649; Fri, 13 Jun 1997 23:20:43 +0200
+References: <33A081E1.2201C3C8@vvv.vsu.ru>
+Message-ID:  <199706132120.XAA00649@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A081E1.2201C3C8@vvv.vsu.ru>
+Date:         Fri, 13 Jun 1997 23:20:43 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2033
+
+Vladimir,
+
+ > This is my first post to this mailing list, so I'm sorry.
+
+why being sorry for that? you pick up on a disscusion that happened
+not too long ago on this list and with a new topic
+
+ > LaTeX has some `built in' definitions of \lccode, \uccode, \sfcode
+ > values for symbols with codes above 128 (which are used in Russian
+ > language). But these settings do not conform to the common Russian
+ > encodings (and it is evident that these `frozen' values can not
+ > be in agreement with all possible languages ;-) ).
+ >
+ > Next, it is written in cfgguide.tex, that the values of above mentioned
+ > registers should not be changed e.g. in a hyphenation files
+ > of a particular languages.
+ >
+ > So, I think, that the correct way to solve this problem is to
+ > set the values of \lccode, \uccode, \sfcode and \mathcode,
+ > in a macros which switches to a language (\selectlanguage
+ > in Babel).
+
+well, not really. what we mean here is that they should not be changed
+at all. the reason is that otherwise due to a deficiency of TeX you
+can't do multi-lingual typesetting at all properly.
+
+the reason is that TeX does support several hyphenation patterns but
+unfortunately it uses the lccode table during hyphenation and it
+doesn't support several lccode tables. even worse: it looks at this
+table only at the end of a paragraph. as a result, if you have a
+paragraph that mixes several languages then all languages might be
+hyphenated according their correct hyphenation patterns, BUT before
+this happens all words are translated to lowercase using the lccode
+table for the LAST language in the paragraph. That makes the result
+quite arbitrary.
+
+therefore, to support fonts with different encodings within the same
+paragraph (you don't even need different languages since in tex
+hyphenation is tied to the font encoding so you need different
+patterns for different fonts even for the same language) we have to
+enforce a single lccode table.
+
+that's an unfortunate fact of life.
+
+now that doesn't help very much, i agree. so the questions we have to
+ask is what can be done about it
+
+ a) just support a single lccode table
+
+ b) don't care about rubbish hyphenation when languages are mixed
+    and allow for several hyphenation tables
+
+ c) allow to change lccode tables only between paragraphs and disable
+    hyphenation within language fragments in a paragraph that do not have
+    the have the right (meaning: current) lccode table
+
+ d) hope for a successor to TeX to fix it
+
+right now we basically have situation a) which means LaTeX does not
+support changing the lccode table. this does not mean that packages
+can't do it but any such code is likely to break at some time in the
+future and we, from the LaTeX3 project don't feel able to support
+problems with a LaTeX system that does use a modified table. in
+addition documents written for such a system will produce strange
+results on others, ie we can't have portability there and definitely
+not real multi-lingual.
+
+b) means putting lccode changes into the framework of Babel as it is
+now. that is sometimes done right now and Babel supports setting any
+resetting things when entering or leaving a language environment so if
+you are happy with those poor results when mixing language that sort
+of works
+
+c) is the situation where i think we can get to as long as we use TeX
+as a basis and it is the scheme i intend to adopt for the new language
+interface for LaTeX for which the conceptual work is mostly done and
+trial implementation is done in parts.  this would give a clean
+interface and only minor inconvenience, ie, if languages are mixed
+within a paragraph then LaTeX will not not hyphenate part of it
+(warning you about it) and you have to put in explicit hyphens there.
+but it would not produce rubbish in this case, eg something you do
+only notice after publication.
+
+d) would be my wish and indeed there is a successor that does fix it
+namely Omega. but unfortunately we currently have two competing
+successors and neither is fit to be used as a basis for development
+because both solve important issues but both solve different ones and
+neither is widespread (and part of the reason why is that neither
+solves enough to make it worth switching for the majority of users).
+Sorry Phil, but as good and nice e-TeX is in parts, the big problems that
+Omega solves aren't touched by it and as long as this is not happening
+it isn't a serious candidate. --- what i would hope (but i fear in
+vain) is that we take Omega and extend it with the e-tex features as
+they are now and freeze that (FREEZE!) or vice versa and then we have
+something that we could promote and more importantly could use to
+develop serious code for, eg the LaTeX kernel.
+
+ > Are there some ready means to preserve the `language environment'
+ > before switching to another language and to restore it after
+ > changing back (or to some third language)?
+ > Is it a normal practice to `tune' \lccode, \uccode, \sfcode
+ > and \mathcode values in a language-switching mechanism?
+
+it is not a "normal" practice for the reasons outlined before.  as for
+\mathcode this is something for which LaTeX has a high-level interface
+but it is also something that is considered static and in that case i
+don't really see that it could reasonably be maintained or even
+should.
+
+ > Here I see another problem. Consider some multilingual
+ > phrase and let's assume that we need to do
+ > \uppercase{} or \lowercase{} of this phrase. If the languages contained
+ > in this phrase have a conflicting \lccode and \uccode
+ > values, than the result of \uppercase{} will be incorrect.
+ > However, some time ago I solved this problem by redefining
+ > TeX's builtins \uppercase and \lowercase so that
+ > these new macros split the multilingual phrase into
+ > one-language pieces and do \uppercase of these pieces,
+ > and then merge them again.
+
+again a deficiency of TeX that really isn't solvable generally, yes
+you can do some hacks by trying to write your own interpreter within
+TeX but it is so easy to make it fall over, just think about the user
+putting something in a macro to save typing, so how do you find those
+hidden language changes? by parsing macro code? (well we all have fun
+working on exotic code but it isn't worth it for serious use.
+
+reliably this can right now only be solved by using uppercase fonts in
+such places. Or, using Omega ...
+
+ > May be, all this was already solved?
+
+well yesno :-(
+
+Phil replied to Vladimir:
+
+ > One idea under consideration for e-TeX V2 is the option to save and
+ > restore an entire set of register values (e.g. the current set of
+ > lccodes, etc); this may prove useful in solutions to this question.
+
+a nice feature and probably useful for a number of things BUT the
+problem is a different one here and as i said above a real solution
+for me would be a merger of e-TeX and Omega (and pdftex to help
+promoting a switch)
+
+
+good night
+frank
+technical director LaTeX3 project (only ;-)
+

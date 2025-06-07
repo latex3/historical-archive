@@ -1,0 +1,96 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2440" "Tue" "23" "November" "93" "19:27:56" "CET" "\"Denis B. Roegel\"" "Denis.Roegel@LORIA.FR" nil "67" "Re: NFSS2: how do I change symbol position in the middle" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08389; Tue, 23 Nov 93 19:30:08 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA23470; Tue, 23 Nov 93 19:30:06 +0100
+Message-Id: <9311231830.AA23470@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0163; Tue, 23 Nov 93 19:28:22 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8434;
+ Tue, 23 Nov 93 19:28:14 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8432;
+ Tue, 23 Nov 93 19:28:11 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <199311221703.SAA13468@lorraine.loria.fr> from "Frank Mittelbach"
+              at Nov 22, 93 04:40:37 pm
+Date:         Tue, 23 Nov 93 19:27:56 CET
+From: "Denis B. Roegel" <Denis.Roegel@LORIA.FR>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: NFSS2: how do I change symbol position in the middle
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1176
+
+
+
+Hello,
+
+A few days ago, I posted a query in order to change locally
+the font used for math letters. Frank Mittelbach suggested to use a
+different \mathversion. I used it and it worked fine.
+
+But, now, I would like to do the following:
+I want to switch between two math versions which do not have
+all symbols at the same location, that is, with different encodings.
+(maybe I should not do something like that, but it's not really
+the point here).
+
+Here is an example: I want to put most of the letters and
+operators characters in cmtt font. (the reason is that
+I need to mix mathematics and a programming language;
+by the way, a good answer is maybe to create
+a virtual font mainly based on cmtt but with
+`.' or `,' like in cmmi ?)
+
+Ok, so in the following example, I had the idea to create
+two symbol fonts `oldoperator' and `oldletters'
+in order to access them later, namely
+when \mymathtt is activated in constructions like:
+
+{\mymathtt $   formulas... $}
+I switch to the tt version of the `operators' and `letters'
+and I *try* to redefine the character location
+of a few symbols. And now I'm stuck because I cannot execute
+\DeclareMathSymbol out of the preamble.
+
+
+\DeclareSymbolFont{oldoperators}{OT1}{cmr}{m}{n}
+\DeclareSymbolFont{oldletters}{OML}{cmm}{m}{it}
+
+\DeclareMathVersion{tt}
+\SetSymbolFont{operators}{tt}{OT1}{cmtt}{m}{n} % family 0
+\SetSymbolFont{letters}{tt}{OT1}{cmtt}{m}{n} % family 1
+
+\def\mymathtt{\mathversion{tt}%
+               \DeclareMathSymbol{.}{0}{letters}{"2E}%
+               \DeclareMathSymbol{,}{6}{letters}{"2C}%
+               \DeclareMathSymbol{=}{3}{oldoperators}{"3D}%
+               \DeclareMathSymbol\Delta{7}{oldoperators}{"01}%
+               \DeclareMathSymbol{/}{0}{oldletters}{"3D}%
+               \DeclareMathSymbol{<}{3}{oldletters}{"3C}%
+               \DeclareMathSymbol{>}{3}{oldletters}{"3E}%
+}
+
+In OFSS, I did all this with a few \mathcode s, and it worked,
+though my \mymathtt declaration was not sizeable
+(I did it only for one size as a matter of fact).
+
+So ?
+
+Thanks for your ideas,
+
+Denis.
+
+ -----------------------------------------------------
+| Denis Roegel                                        |
+| CRIN (Centre de Recherche en Informatique de Nancy) |
+| F-54506 VANDOEUVRE-LES-NANCY                        |
+| FRANCE                                              |
+| e-mail: roegel@loria.fr                             |
+ -----------------------------------------------------
+

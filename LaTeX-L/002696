@@ -1,0 +1,110 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2823" "Thu" "22" "October" "1998" "12:41:01" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "71" "Re: Users dropping into TeX" "^Date:" nil nil "10" nil "Users dropping into TeX" nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id NAA17326;
+	Thu, 22 Oct 1998 13:56:58 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.4BF71DB0@listserv.gmd.de>; Thu, 22 Oct 1998 13:56:57 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 403562 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 22 Oct 1998 13:56:50 +0200
+Received: from mail0.nada.kth.se (mail0.nada.kth.se [130.237.222.70]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id NAA14789 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 22 Oct 1998 13:55:12 +0200 (MET
+          DST)
+Received: from [130.237.37.28] (sl08.modempool.kth.se [130.237.37.28]) by
+          mail0.nada.kth.se (8.8.7/8.8.7) with ESMTP id NAA10692 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 22 Oct 1998 13:13:14 +0200 (MET
+          DST)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b2549d1fbafb@[130.237.37.63]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <009CE0B8.3AA44DD4.13@triumf.ca>
+Date:         Thu, 22 Oct 1998 12:41:01 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Users dropping into TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2696
+
+At 20:17 -0800 98/10/21, Donald Arseneau wrote:
+...
+>Hans Aberg <mailto:haberg@member.ams.org>
+>>  So LaTeX defines \begin{list} and \end{list} as a part of the
+>>list-environment interface, but \list and \endlist are part of the
+>>implementation of the list environment. ...
+>>  ... \list and \endlist do not belong to the interface,
+>
+>All untrue!  The command equivalent of an environment is "documented"
+>on pages 25 and 34 of Lamport's Manual (1st ed; check the index for
+>Environment > made from declaration).  It's not *well* documented,
+>(omitting mention of the \end form) but it is clearly intended to
+>be part of the user interface.
+
+  I think the story is that LaTeX does not make that distinction clear,
+which it ought to do.
+
+>For the package or class writer, it is *preferred* to use the commands
+>rather than the environments for two reasons:
+>
+> - less overhead and stack use (minor)
+
+  When building a high level user interface, overhead is not an important
+factor. One should stick to the interface in order to avoid hard-to-catch
+errors (like in your example; see below).
+
+> - better syntax checking (important!)
+>
+>Let's say you use \begin{list} when defining a new environment {citation},
+>and a document has omitted \end{citation}.  The error message you get is
+>! LaTeX Error: \begin{list} on input line xx ended by \end{document}.
+>but if you use \list and \endlist you get the proper
+>! LaTeX Error: \begin{citation} on input line xx ended by \end{document}.
+
+  The apparent reason this gives "improved syntax checking" is due to a bug
+in LaTeX!:
+
+  When nesting environments, there are more than environment to keep track
+of for the error checking, which LaTeX does not do. So when you write
+  \newenvironment{citations}{%
+    \list{}{%
+      \renewcommand{\makelabel}[1]{\normalfont\itshape ##1}%
+      }%
+    }{%
+    \endlist
+  }
+you avoid the \begingroup ... \endgroup clause for the inner environment
+that any environment. Therefore the variable is set correctly for the error
+checking you mentioned, but it may be set incorrectly for other tasks.
+
+  Therefore, it is safer to rely that the general programming tasks work
+correctly, use
+  \newenvironment{citations}{%
+    \begin{list}{}{%
+      \renewcommand{\makelabel}[1]{\normalfont\itshape ##1}%
+      }%
+    }{%
+    \end{list}%
+  }
+and not worry about that the error message comes out wrong.
+
+  I made some code "environments with hooks" which keeps track of both
+these environments in the case these area nested, so it should be possible
+to make both the error messages and other environment tasks compute
+correctly.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+
+

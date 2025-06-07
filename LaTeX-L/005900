@@ -1,0 +1,111 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 12 Aug 2009 07:21:27 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7C5LNrj030045
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 12 Aug 2009 07:21:24 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7C5Gso2031916
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 12 Aug 2009 07:16:54 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7C4wq1r017198;
+	Wed, 12 Aug 2009 07:16:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 287013 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 12 Aug
+          2009 07:16:46 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7C5GkAg022790 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 12 Aug 2009 07:16:46 +0200
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n7C5GW1G031626 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 12 Aug 2009 07:16:36 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1Mb6CO-000754-nn for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 12 Aug
+          2009 05:16:32 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>                              
+            <4A7A1505.4040604@residenset.net>                                  
+            <DB76B425-0A88-43B4-9CF0-B92FAF159E37@gmail.com>                   
+            <4A7AD930.2090106@residenset.net>                                 
+            <8516B615-51AA-4D90-BB7D-A9E122AA0335@gmail.com>                   
+            <4A816C31.9080401@residenset.net>           
+            <4A817463.8000805@morningstar2.co.uk>           
+            <4A81E3CA.6050608@residenset.net>
+            <AF0E0200-8A77-491D-93E5-E08198E50B64@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A825031.6000007@morningstar2.co.uk>
+Date:         Wed, 12 Aug 2009 06:16:33 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: v expansion, was xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <AF0E0200-8A77-491D-93E5-E08198E50B64@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Aug 2009 05:21:28.0053 (UTC) FILETIME=[BE58D250:01CA1B0C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5900
+
+Will Robertson wrote:
+>> Does it inspect the argument at runtime to figure out which of the two
+>> cases is at hand? Looks rather fragile & syntactic sugar to me.
+> 
+> The heuristic is fairly safe, I believe. It uses \ifx\noexpand#1#1 to
+> detect whether the argument is a macro, and if it is not inserts \the to
+> extract the value of the toks/dim/whatever. The whole thing takes place
+> inside a \romannumeral expansion so the number of expansion steps is
+> constant.
+
+Thus far, all seems to work okay. Whether that means it never goes wrong
+ ...
+
+> (There is no error checking at present, but may be added conditionally
+> in the future.)
+
+Will, don't forget that it does catch things like:
+
+\csname l_does_not_exist_tl\endcsname
+
+which using :o will not. (Variables are not meant to equal \relax under
+any circumstances, according to the LaTeX3 specs.)
+
+>>> So V is preferred for accessing variables (as the internal structure is
+>>> not important),
+>>
+>> Wouldn't you still need to know the variable's "internal structure"
+>> when setting it?
+> 
+> But setting does not need to be done in a known number of expansion
+> steps, so the setting functions \toks_set:Nn, \tl_set:Nn, etc., all
+> behave analogously.
+
+As Will says, we have set functions for everything, and also use
+functions, the idea begin that you can always know that
+
+\<var>_use:N \l_my_var
+
+and
+
+\<var>_set:Nn \l_my_var {<content>}
+
+will be correct (of coure <content> must be correct here!).
+-- 
+Joseph Wright
+

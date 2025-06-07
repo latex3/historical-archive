@@ -1,0 +1,186 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7521" "Tue" "26" "May" "1998" "11:03:43" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "151" "Re: L3PL" "^Date:" nil nil "5" nil "L3PL" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id MAA27671;
+	Tue, 26 May 1998 12:06:54 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.3B92BD6E@listserv.gmd.de>; Tue, 26 May 1998 12:06:52 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 344515 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 26 May 1998 12:06:47 +0200
+Received: from nag.co.uk (andover.nag.co.uk [192.156.217.113]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA06408 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 26 May 1998 12:06:43
+          +0200 (MET DST)
+Received: (from davidc@localhost) by nag.co.uk (8.8.7/8.8.7) id LAA22233; Tue,
+          26 May 1998 11:03:43 +0100
+References:  <199805251137.VAA09913@ricetub.anu.edu.au>
+Message-ID:  <199805261003.LAA22233@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199805251137.VAA09913@ricetub.anu.edu.au> (message from Richard
+              Walker on Mon, 25 May 1998 21:37:46 +1000)
+Date:         Tue, 26 May 1998 11:03:43 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2552
+
+> I feel only luke-warm.
+Well, that's good! It could have been that you felt positively
+hostile...
+
+> Some features are long overdue:  the naming system (if only it were
+> more consistently applied) and the different types of arguments (n, o,
+> x, etc.).
+
+If you spot any particular inconsitencies we'd be interested. The
+details of the naming scheme change from time to time so inconsistencies
+may relate to older conventions that we ought to update, or it may be
+that you are viewing some concept in a different way.
+
+> But `fake' integers?  I like hacking TeX too, but I realize
+> its limitations.  There seems to have been a considerable amount of
+> effort put into overcoming limitations of TeX which are better
+> overcome by changing TeX - as has already been done.  If I need more
+> counters I will use Omega.
+
+The fake integer implementations predate etex and omega. Probably it is
+correct to say that a real L3 implementation would use an extended tex's
+features for that, but perhaps this implementation may still be useful to
+provide support for a standard tex. Also (and more to the point here) it
+gives an example of a relatively simple datatype implemented within L3
+as opposed to being a primitive tex register. As you will have noticed
+the distribution is mainly intended as a set of `small examples'. The
+examples provided are mainly chosen to be small enough to run just with
+the provided code, rather than being chosen as being particularly the
+most important or useful topics.
+
+
+> I'm not normally the paranoid type (although I like watching The X
+> Files as much as the next person . . .) but features such as
+> removeoldnames are positively subversive!
+
+Well.. Having that feature on a latex2e package (which then disables
+almost all of the underlying system) is clearly rather strange, and only
+there as a topic of conversation, not really to be used.
+However if one considers making a format from scratch using these kinds
+of conventions, then it does make sense to at least consider freeing up
+the tex primitive names. It is not clear whether it is a good idea or
+not, but it does have several advantages. The main point of the
+[removeoldnames] option is to provoke discussion of that.
+
+> The packages give tantalizing hints about the future and raise more
+> questions than they answer.
+
+Ah. They are working just as intended!
+
+>  Surely `fake' integers can not be here to stay?
+
+See comments above.
+
+> On the one hand it looks like the Team want to drop TeX, but at the
+> same time it looks as though they are trying to hold on tightly.  I
+> would appreciate a little more clarity on this issue.  Clearly at this
+> stage we are not all going to agree on whether we go with Omega or
+> e-TeX, or a merger of the two projects (ideal), but what about
+> dropping TeX per se?
+
+This is of course a big issue. One that wasn't really so pressing when
+the l3 project started. omega/etex/pdftex/... and how they relate to the
+standard tex distributions is something that will clearly have an effect
+on how latex develops, but I don't think it is clear at this stage
+how things will turn out.
+
+Generalising slightly, it is etex rather than omega or pdftex that has
+the most bearing on the kind of low level programming issues addressed
+by this distribution, as omega's otp and language support is really
+acting at a different level, as is the variant pdf backend in pdftex.
+However etex is also concerned with improving the basic programming
+aspects and so does (or rather should) affect the design at various
+points (eg fake counters, although in that case omega also provides
+the functionality). However if you start to consider a full L3
+environment not just this low level programming language, then
+all the tex extensions will have an influence.
+
+> and (a) adopt a new base platform (Omega, e-TeX, whatever)
+> and (b) change the name to something other than LaTeX.
+
+Both are topics that are worth discussing.....
+
+> In TeX, all macros must be unique across all input files for a job, to
+> avoid unintended conflicts.> To be true to L3PL, this means using the
+> <module> component on practically everything.  While I do not object
+> to this in principle, it is yet another burden for package writers.
+
+Some package writers (me, for instance) already use some kind of module
+system to try to ensure uniqueness of internal names. eg all longtable
+internal command names begin \LT@... all tabularx ones begin \TX@...
+So I don't really see this as an extra burden, more of an aid in having
+a documented mechanism for this. Having the naming scheme being based on
+some kind of abstract `module' rather than package based, should help
+different packages share code.
+
+> Third, it isn't possible to abstract away from TeX completely.  The
+> fact that there are so many `TeXhackers notes' hints at this, as well
+> as `w' in arg-specs.  I suspect that using many of the new macros
+> properly requires an understanding of what's happening at the TeX
+> level.
+
+Hopefully it will be possible to build up the core l3 functionality to
+the point that it is possible to program using `l3 primitives'
+without having to look up the definition of each of those in terms of
+tex primitives. That probably is not the case with the current suite of
+functions and the current level of documentation.
+
+> (And what are error messages going to look like?)
+
+A good question. One possibilty is to have long helpful error messages
+loaded `on demand' from external files.
+
+> Fifth, an even more basic objection is `so what?'.  It isn't clear
+> that using L3PL will yield a significant payoff.  Is it really worth
+> the enormous effort of rewriting LaTeX in L3PL when (a) it already
+> works, and (b) the underlying system is still TeX?  The maxim `if it
+> ain't broke, don't fix it' surely applies here.
+
+Another good question. If the outcome is to produce a rewrite of 2e but
+using a new internal syntax then I agree it isn't much of a payoff.
+However one may want to extend the functionality of latex in places
+where it does not ``already work'' not least you may want to take
+advantage of extra functionality coming from omega or etex, and also one
+of the original motivations, producing a system that makes it easier to
+implement design specifications. Although it is not _really_ hard to
+write a latex class file, there are still relatively few good ones
+around, that implement layouts drastically different to the standard
+classes. Part of the problem is that it is too much like programming,
+rather than being a more declarative interface closer to a design spec.
+While latex2 does `work' it is a rather monolithic beast that is rather
+hard to change fundamentally without breaking a lot of existing code.
+If you are going to break stuff in order to add functionality, you may
+as well take a step back and try to `do it right' (or at least
+better). Which is really the point of these packages.
+
+> I need more convincing.  Let the Team show us why the L3PL is so
+> great, by releasing some of their prototype re-implementations of some
+> of the functionality of LaTeX.
+
+It may be that discussions show changes need to be made to all parts of
+this proposed interface. Therefore we don't really want to code up
+a really functioning `latex-lookalike' at this stage, while we are still
+in a stage where we are prepared to go right back to the drawing board
+and redo everything. Probably some larger programming examples will get
+released  reasonably soon though, depending on time available.
+
+> Let the debate begin!
+
+Hope so.
+
+David
+

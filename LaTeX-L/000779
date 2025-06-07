@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1364" "Mon" "21" "September" "92" "23:54:55" "CET" "Don Hosek" "DHOSEK@HMCVAX.CLAREMONT.EDU" nil "62" "Re: Cross-references" "^Date:" nil nil "9"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA18215; Tue, 22 Sep 92 09:22:48 +0200
+Received: from dagobert by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AB21117; Tue, 22 Sep 92 09:22:20 +0200
+Message-Id: <9209220722.AB21117@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4416; Mon, 21 Sep 92 23:55:23 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4399;
+ Mon, 21 Sep 92 23:55:19 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4395;
+ Mon, 21 Sep 92 23:55:15 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 21 Sep 92 23:54:55 CET
+From: Don Hosek <DHOSEK@HMCVAX.CLAREMONT.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Cross-references
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 779
+
+
+-> Two desiderata:
+
+-> 1. Cross-referencing between footnotes.
+
+-OK.
+
+Actually, everything that is automatically numbered in LaTeX can
+be referenced now. Unfortunately, the documentation of this is
+poor in all currently published works.
+
+-> 2. Cross-references and index-entries of the form e.g.
+-> p.~25 n.~34
+->
+-More info please, or references!:
+
+-eg  what is  n.~24 a reference to?  (I assume that p.~25 is page 25).
+
+-I assume that you want index entries to be able to refer to elements
+-other than pages.  If there is more to it, please explain.
+
+I imagine that the dediratum is the ability to specially mark
+index entries to text in footnotes. The standard notation would
+be to indicate the page in the index as 25n rather than simply
+25. This can be accomplished using the following code:
+
+.
+\newcommand{\n}[1]{#1n}
+.
+
+\begin{document}
+.
+.\index{foo|n}
+.
+
+
+which will add an n to the page number in the index.
+
+Adding the ability to print the note number takes a little more
+work:
+
+\newcommand{\N}[2]{#2n#1}
+\let\ex\expandafter
+\newcommand{\nindex}[1]{\ex\def\ex\foo\ex{\ex#\ex1\ex|\exN\ex{\thefootnote}}%
+  \ex\index\ex{\foo}}
+.
+
+.\nindex{foo}
+
+[This latter I'm just assuming will work as given. I make no
+guarantees.]
+
+A better facility for this could be incorporated.
+
+-dh
+
+Don Hosek
+dhosek@ymir.claremont.edu
+Quixote Digital Typography
+714-621-1291
+
+
+

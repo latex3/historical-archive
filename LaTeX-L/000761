@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["960" "Fri" "11" "September" "92" "15:21:32" "+0200" "rolf.lindgren@USIT.UIO.NO" "rolf.lindgren@USIT.UIO.NO" nil "49" "Re: sectioning units lower than \\subparagraph" "^Date:" nil nil "9"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA01956; Fri, 11 Sep 92 15:37:13 +0200
+Received: from vm.urz.Uni-Heidelberg.de by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA17978; Fri, 11 Sep 92 15:37:02 +0200
+Message-Id: <9209111337.AA17978@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4744; Fri, 11 Sep 92 15:32:39 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4732;
+ Fri, 11 Sep 92 15:31:55 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4730;
+ Fri, 11 Sep 92 15:31:52 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 11 Sep 92 15:21:32 +0200
+From: rolf.lindgren@USIT.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: sectioning units lower than \subparagraph
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 761
+
+
+"Juergen Egeling (FFT)" writes:
+ > Juergen
+ > p.s.: I vote for begin{something} end{something} and let LaTeX
+ >       do the job, like in begin{itemize} begin{itemize} ....
+
+
+I vote for something along the lines of
+
+\newsection{paragraph}{
+
+
+ <insert font, margin, line spacing, etc. commands here, such as : >
+
+\family{Adobe Garamond} 	% Adobe Garamond defined elsewhere
+\size{3.1mm}{3.7mm}		% I don't think in points, i think in
+				% milimeters
+\leftmargin0pt\rightmargin0pt   %
+\firstparindent0pt\parindent1em % differentiate between initial and
+				% ordinary paragraphs
+\keepwithnextparagraphs1
+\tocentry0			% Don't show heding in toc
+ .
+ .
+ .
+
+}
+
+
+
+
+
+Which could give
+
+	\paragraph{Discussion} (command paragraph defined above)
+
+	bla bla bla
+
+or
+
+	\begin{paragraph}{Discussion}
+
+	bla bla bla
+
+The \newsection might also, if appropriate, define an environment or
+command tocparagraph in which the appearance of the heading in the toc
+could be defined.
+
+
+

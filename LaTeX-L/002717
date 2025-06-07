@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2219" "Tue" "3" "November" "1998" "12:11:48" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "61" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id MAA09509;
+	Tue, 3 Nov 1998 12:12:26 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.AE399C11@listserv.gmd.de>; Tue, 3 Nov 1998 12:12:25 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407236 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 3 Nov 1998 12:12:20 +0100
+Received: from mail0.nada.kth.se (mail0.nada.kth.se [130.237.222.70]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA22145 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 3 Nov 1998 12:12:03 +0100 (MET)
+Received: from [130.237.37.128] (sl104.modempool.kth.se [130.237.37.130]) by
+          mail0.nada.kth.se (8.8.7/8.8.7) with ESMTP id MAA05006 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 3 Nov 1998 12:11:54 +0100 (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <v03110700b2647e640c40@[130.237.37.81]> (message from Hans Aberg   
+            on Tue, 3 Nov 1998 10:36:19 +0100) <98102213123551@man.ac.uk> 
+            <98102213123551@man.ac.uk> <v03110700b2647e640c40@[130.237.37.81]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110701b26491718673@[130.237.37.128]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199811030953.JAA04308@nag.co.uk>
+Date:         Tue, 3 Nov 1998 12:11:48 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2717
+
+At 09:53 +0000 1998/11/03, David Carlisle wrote:
+>This works for a few more cases, but only a few. What if the quote is
+>inside a font change, or a section head, or any other command, you still
+>have the potential problem of the lookahead coping with {}.
+
+  I was able to make a \leturelet to detect {}:
+
+% Make a definition that uses \futurelet to check the next token,
+% and then pick up all arguments until the next token is a } or a \par.
+
+\newtoks\@tget
+
+\def\get{\@tget={}\@get}
+
+\def\@get{\futurelet\@next\@getA}
+
+\def\@getA{%
+  \ifx\@next\@sptoken%
+    \let\@@next\@getspace%
+  \else\ifcat\noexpand\@next{%
+    \let\@@next\@getarg%
+  \else\ifcat\noexpand\@next}%
+    \let\@@next\@getend%
+    \@tget=\expandafter{\the\@tget\@get@end}%
+  \else%
+    \let\@@next\@gettoken%
+  \fi\fi\fi%
+  \@@next%
+}
+
+It is the funny section
+  \else\ifcat\noexpand\@next{%
+    \let\@@next\@getarg%
+  \else\ifcat\noexpand\@next}%
+that makes it possible. I have no idea why it works; TeX seemed to accept it.
+
+>Of course you can follow the above to its logical conclusion of
+>implementing _everything_ via active characters and implementing your
+>own parsing routines _in_ TeX rather than using the parser built into
+>tex-the-program. This is certainly possible (some people have done
+>exactly that) but TeX isn't really the best language for implementing a
+>parser, and certainly isn't the fastest.
+
+  It is extremely difficult to implement any general type of parser; TeX is
+not suitable for that.
+
+>If more involved contextual
+>analysis is required in the input stream then it probably makes more
+>sense to look to an extended system that can provide such extended
+>functionality. (Something like omega's OTP processes.) They may not be
+>quite what you want here, but the principle is the same, to make a
+>controlled extension of the underlying system rather than try to build a
+>tower of macros on the rather fragile sand that is tex-the-program.
+
+  One needs a successor to TeX, or perhaps a TeX preprocessor.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+
+

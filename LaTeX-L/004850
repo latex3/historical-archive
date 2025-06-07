@@ -1,0 +1,266 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Wed, 30 Mar 2005 10:52:26 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j2U8qONi015082 for <rainer.schoepf@PROTEOSYS.COM>; Wed, 30 Mar 2005 10:52:25 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j2U8mifK004034; Wed, 30 Mar 2005 10:48:45 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C53505.CBC94100"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j2TM0KlJ025093; Wed, 30 Mar 2005 10:46:16 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 187091 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 30 Mar 2005 10:46:15 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id j2U8kEYd009838 for          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 30 Mar 2005 10:46:14 +0200
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          j2U8lxtL002952 for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 30 Mar          2005 10:47:59 +0200 (MET DST)
+Received:  from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org          with esmtp (Exim 4.34) id 1DGYqj-0007Hl-8Z for          LATEX-L@listserv.uni-heidelberg.de; Wed, 30 Mar 2005 03:46:53 -0500
+In-Reply-To:  <yfi7jjqui9e.fsf@triumf.ca> (Donald Arseneau's message of "Tue,              29 Mar 2005 15:47:25 -0800")
+References: <5.1.0.14.0.20050329212401.02478aa0@pop3.web.de>            <yfi7jjqui9e.fsf@triumf.ca>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 30 Mar 2005 08:52:26.0945 (UTC) FILETIME=[CC597310:01C53505]
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id j2U8kEYd009839
+X-Scanned-By: MIMEDefang at proteosys.com
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: \@reinserts
+Date: Wed, 30 Mar 2005 09:46:55 +0100
+Message-ID: A<x5u0mtv7uo.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: \@reinserts
+Thread-Index: AcU1BcyBJ3RysLw6SRGGVhWYsjUOpQ==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4850
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C53505.CBC94100
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Donald Arseneau <asnd@TRIUMF.CA> writes:
+
+> Uwe L=FCck <uwe.lueck@WEB.DE> writes:
+>
+>> At 13:30 26.03.05, you [David Kastrup] wrote:
+>> >Donald Arseneau <asnd@TRIUMF.CA> writes:
+>> >
+>> > > The problem with \penalty\outputpenalty is that =
+\outputpenalty=3D10000
+>> > > and prevents the same page break instead of forcing the same =
+break.
+>> >
+>> >Well, when rebreaking, I find that using \pagediscards seems like =
+the
+>> >best thing to do.  Then you get the same vertical list again, unless
+>> >\outputpenalty is less than 10000, in which case you need to =
+reinsert
+>> >it in front of the discards (it will be replaced with \nobreak in =
+the
+>> >\pagediscards in this case).
+>>
+>> And where is \pagediscards available? (Not by a Google search on =
+CTAN.)
+>
+> \pagediscards is an etex primitive (built-in) command.  David is
+> probably right (since he has been looking at that stuff) but I
+> don't see the benefit, since we want to get the same page break
+> again.
+
+If we are aiming for the same break, indeed the pagediscards are not
+interesting.  Indeed, as opposed to splitdiscards, the page discards
+are what has been removed at the _start_ of the current output page,
+not after it.  So the pagediscards are only interesting if the
+_previous_ break might need reversal.
+
+Which is what I have to do in my sort of setup, so I probably confused
+the requirements there with those of the simpler case presented here.
+
+> I see no reason to reproduce the exact output penalty, since you are
+> looking to get the same page break, so I would probably put a
+> negative penalty there.
+
+As the sort of a note aside: a forced penalty will lead to different
+values of \pagetotal, \pageshrink and so on (more useful values,
+actually), so if you have some subordinate output routine looking at
+those values, it might make different decisions.
+
+> There are references to \footins in \@specialoutput that have to be
+> rewritten for the case when \holdinginserts is holding the
+> inserts. (The whole point of holding them is that they do *not* come
+> out when cycling through \@specialoutput.)
+>
+> I'm not sure that it is even possible to maintain the \@pageht
+> methods when using \holdinginserts.
+
+The page break decisions including splits of insertions and limiting
+of insertion material to the respective dimen remain the same.  It is
+just that the material does not make it into the boxes, but stays in
+insertion items in box255.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C53505.CBC94100
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: \@reinserts</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Donald Arseneau &lt;asnd@TRIUMF.CA&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Uwe L=FCck &lt;uwe.lueck@WEB.DE&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; At 13:30 26.03.05, you [David Kastrup] =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;Donald Arseneau &lt;asnd@TRIUMF.CA&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt; &gt; The problem with =
+\penalty\outputpenalty is that \outputpenalty=3D10000</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt; &gt; and prevents the same page break =
+instead of forcing the same break.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;Well, when rebreaking, I find that using =
+\pagediscards seems like the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;best thing to do.&nbsp; Then you get the =
+same vertical list again, unless</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;\outputpenalty is less than 10000, in =
+which case you need to reinsert</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;it in front of the discards (it will be =
+replaced with \nobreak in the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; &gt;\pagediscards in this case).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; And where is \pagediscards available? (Not =
+by a Google search on CTAN.)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \pagediscards is an etex primitive (built-in) =
+command.&nbsp; David is</FONT>
+
+<BR><FONT SIZE=3D2>&gt; probably right (since he has been looking at =
+that stuff) but I</FONT>
+
+<BR><FONT SIZE=3D2>&gt; don't see the benefit, since we want to get the =
+same page break</FONT>
+
+<BR><FONT SIZE=3D2>&gt; again.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If we are aiming for the same break, indeed the =
+pagediscards are not</FONT>
+
+<BR><FONT SIZE=3D2>interesting.&nbsp; Indeed, as opposed to =
+splitdiscards, the page discards</FONT>
+
+<BR><FONT SIZE=3D2>are what has been removed at the _start_ of the =
+current output page,</FONT>
+
+<BR><FONT SIZE=3D2>not after it.&nbsp; So the pagediscards are only =
+interesting if the</FONT>
+
+<BR><FONT SIZE=3D2>_previous_ break might need reversal.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Which is what I have to do in my sort of setup, so I =
+probably confused</FONT>
+
+<BR><FONT SIZE=3D2>the requirements there with those of the simpler case =
+presented here.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I see no reason to reproduce the exact output =
+penalty, since you are</FONT>
+
+<BR><FONT SIZE=3D2>&gt; looking to get the same page break, so I would =
+probably put a</FONT>
+
+<BR><FONT SIZE=3D2>&gt; negative penalty there.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As the sort of a note aside: a forced penalty will =
+lead to different</FONT>
+
+<BR><FONT SIZE=3D2>values of \pagetotal, \pageshrink and so on (more =
+useful values,</FONT>
+
+<BR><FONT SIZE=3D2>actually), so if you have some subordinate output =
+routine looking at</FONT>
+
+<BR><FONT SIZE=3D2>those values, it might make different =
+decisions.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; There are references to \footins in =
+\@specialoutput that have to be</FONT>
+
+<BR><FONT SIZE=3D2>&gt; rewritten for the case when \holdinginserts is =
+holding the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; inserts. (The whole point of holding them is =
+that they do *not* come</FONT>
+
+<BR><FONT SIZE=3D2>&gt; out when cycling through =
+\@specialoutput.)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I'm not sure that it is even possible to =
+maintain the \@pageht</FONT>
+
+<BR><FONT SIZE=3D2>&gt; methods when using \holdinginserts.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The page break decisions including splits of =
+insertions and limiting</FONT>
+
+<BR><FONT SIZE=3D2>of insertion material to the respective dimen remain =
+the same.&nbsp; It is</FONT>
+
+<BR><FONT SIZE=3D2>just that the material does not make it into the =
+boxes, but stays in</FONT>
+
+<BR><FONT SIZE=3D2>insertion items in box255.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C53505.CBC94100--
+

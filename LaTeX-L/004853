@@ -1,0 +1,76 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Fri, 1 Apr 2005 22:07:12 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j31K7Aqc030052
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 1 Apr 2005 22:07:11 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j31K2htL003525;
+	Fri, 1 Apr 2005 22:02:44 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j31Cdrld008231;
+	Fri, 1 Apr 2005 22:00:40 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 190697 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 1 Apr 2005 22:00:40 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j31K0eYd028669 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr 2005 22:00:40 +0200
+Received: from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j31K2ZfK013259 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr
+          2005 22:02:36 +0200 (MET DST)
+Received: from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org
+          with esmtp (Exim 4.34) id 1DHSKG-0003gS-6M for
+          LATEX-L@listserv.uni-heidelberg.de; Fri, 01 Apr 2005 15:01:06 -0500
+References: <5.1.0.14.0.20050401192426.024909a0@pop3.web.de>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j31K0eYd028670
+Message-ID:  <x5r7huclm3.fsf@lola.goethe.zz>
+Date:         Fri, 1 Apr 2005 22:01:24 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Re: \@reinserts / \holdinginserts
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <5.1.0.14.0.20050401192426.024909a0@pop3.web.de> (Uwe
+              =?iso-8859-1?Q?L=FCck's?= message of "Fri, 1 Apr 2005 19:32:58
+              +0200")
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 01 Apr 2005 20:07:12.0908 (UTC) FILETIME=[64B0A4C0:01C536F6]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4853
+
+Uwe Lück <uwe.lueck@WEB.DE> writes:
+
+> A package file with a proposal for dealing with the \@reinserts
+> problem that has occupied the LaTeX-L list this week is attached.
+
+Standard mistake.  When redefining hook token registers, you need
+_two_ extra control sequences, not one.  Something like
+
+\let\my@@output\output
+\newtoks\output
+\let\my@output\output
+\output\expandafter{\the\my@@output}
+
+\my@@output{whatever stuff I want and need
+  \the\my@output for recursing to the original}
+
+If you use \the\output for recursing instead of \the\my@output, then
+multiple packages doing the same trick will conflict, and not properly
+daisy-chain.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

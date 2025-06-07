@@ -1,0 +1,136 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o8JLFnau018291
+	for <rainer@rainer-schoepf.de>; Sun, 19 Sep 2010 23:15:51 +0200
+Received: (qmail 16356 invoked by alias); 19 Sep 2010 21:15:44 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 19 Sep 2010 21:15:44 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx064) with SMTP; 19 Sep 2010 23:15:44 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id o8JLBlCM022717
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 19 Sep 2010 23:11:47 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o8IM1431031686;
+	Sun, 19 Sep 2010 23:12:10 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 439087 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 19 Sep
+          2010 23:12:10 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o8JLCACM008660 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 19 Sep 2010 23:12:10 +0200
+Received: from mail.gmx.net (mailout-de.gmx.net [213.165.64.23]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with SMTP id o8JLChu1030688
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 19 Sep 2010 23:12:46
+          +0200
+Received: (qmail invoked by alias); 19 Sep 2010 21:12:00 -0000
+Received: from HSI-KBW-109-192-176-120.hsi6.kabel-badenwuerttemberg.de (EHLO
+          [192.168.0.197]) [109.192.176.120] by mail.gmx.net (mp061) with SMTP;
+          19 Sep 2010 23:12:00 +0200
+X-Provags-ID: V01U2FsdGVkX18PN8cc/8QPKzdYq8XzDqht43KqwBwLCcvZsh1Sq1
+              DwlISwksKaoXOe
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.9)
+            Gecko/20100907 Lanikai/3.1.3
+MIME-Version: 1.0
+X-Enigmail-Version: 1.1.2
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="------------enig740B70EF00B4971D26C99678"
+Message-ID:  <4C967C9B.5010706@gmx.de>
+Date:         Sun, 19 Sep 2010 23:11:55 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Arno Trautmann <Arno.Trautmann@GMX.DE>
+Subject: boolean expressions in ExplSyntaxNames
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4WX0t+AtsdW/aoqQDaDNIQmQ42YRl1sCMKAaj1x11eY3UOezDsDXYNS66rN
+ u8rTyvHv5XL0bJ52jvUl1dRN738ezJhno1IOlGQnfXGBxmzBp+cBX3yWoRbg1HC0+bptHPMryLmv
+ M3uulOGGAligEi3V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6413
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig740B70EF00B4971D26C99678
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi all,
+
+I want to ask whether the following behaviour is intended where
+ExplSyntax and ExplSyntaxNames differ:
+
+\documentclass{minimal}
+\usepackage{expl3}
+
+\begin{document}
+\ExplSyntaxOn
+\bool_if_p:n{
+\intexpr_compare_p:n {2=3D3} ||
+\intexpr_compare_p:n {4=3D4}
+}
+\ExplSyntaxOff
+
+%% works fine up to here
+
+\ExplSyntaxNamesOn
+\bool_if_p:n{
+\intexpr_compare_p:n {2=3D3} ||
+\intexpr_compare_p:n {4=3D4}
+}
+\ExplSyntaxNamesOff
+
+\end{document}
+
+In SyntaxNames, I get the error
+
+! Use of \bool_|_0:w doesn't match its definition.
+<argument>  \intexpr_compare_p:n {2=3D3} ||
+                                          \intexpr_compare_p:n {4=3D4}
+l.16 }
+
+The use of && is successfull in both cases, though. I guess this is
+because the line in ExplSyntax:
+
+\tex_catcode:D 124=3D11 \tex_relax:D % vertical bar, other
+
+is missing in SyntaxNames.
+So is it intended that boolean expressions cannot be fully evaluated in
+SyntaxNames? Or didn=E2=80=99t anybody have requested this yet?
+I need it because of some TikZ code I=E2=80=99m using at that place. I co=
+uld
+make the boolean test at another place and then use a boolean variable
+at the TikZ code, but that wouldn=E2=80=99t be very nice =E2=80=A6
+
+Cheers
+Arno
+
+
+--------------enig740B70EF00B4971D26C99678
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAkyWfJ4ACgkQcYXUw/rerZ5rNwCZAUiflLUHUJNSKZpBdGjkqNs/
+4JwAn0jIFdllJEKJ/L0ypLrVof+zhaI3
+=a/1C
+-----END PGP SIGNATURE-----
+
+--------------enig740B70EF00B4971D26C99678--
+

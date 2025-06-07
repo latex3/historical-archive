@@ -1,0 +1,163 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5738" "Tue" "9" "November" "93" "23:29:45" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "136" "Re: Administrator's nightmare" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09914; Tue, 9 Nov 93 23:53:10 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA12114; Tue, 9 Nov 93 23:53:07 +0100
+Message-Id: <9311092253.AA12114@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4295; Tue, 09 Nov 93 23:51:46 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3837;
+ Tue, 09 Nov 93 23:51:33 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3834;
+ Tue, 09 Nov 93 23:51:30 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 9 Nov 93 23:29:45 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Administrator's nightmare
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1140
+
+
+Subj:	Administrator's nightmare
+
+Richard said:
+
+> But the issue for me is:  how can I provide the functionality
+> of 2.09 for those who don't want to move, and 2e for those
+> that are willing?  (And then there's the problem that if I
+> provide both, no one will move to 2e.)
+
+the first question to ask here is:
+
+ What did you tell your user when you updated from LaTeX 209 <date x>
+ to LaTeX 209 <date y>?
+
+I know that one can't just change releases even minor ones and keep a
+fallback but if you are upgrating your OS on a larger machine you
+normally can't run both versions in parallel (unless its MVS :-).
+With something like LaTeX you can over a period of time but i doubt
+that you have several "pure" LaTeX209 running for a longer period,
+have you?
+
+One information that doesn't seem to have got proper attention, I
+think, is that LaTeX2e
+
+ IS NOT ANOTHER FLAVOR OF THE MANY FLAVORS OF LaTeX
+
+it is the release update issued by Leslie Lamport and The LaTeX3
+Project team, to put an end to various formats a site maintainer has
+to provide to be able to process ``so called LaTeX document''.  In
+that and in others it is something like a <z-date> 209 release. But in
+addition to this it comes with a number of *additional* (notice the
+word it is not different) features, like defining commands with
+optional arguments and a number of other often asked extensions.
+
+One consequence of this is:
+
+There will be no maintenance for a LaTeX209 system when the first
+official release of LaTeX2e is out (not the beta test this year).
+LaTeX209 will be removed from. Thus if somebody sending me mail about
+a problem in a 209 version I'm likely to say please upgrade and check
+if it happens still.
+
+Another consequence is:
+
+All of our style files will make use of the new features and thus
+updates will not any longer run with obsolete LaTeX versions. As i
+said in a previous mail styles for 209 will (with a very few
+exceptions) run without modifications with 2e. however, since the
+extended option concept in 2e will certainly attract the attension of
+style writers, for example you can have options on packages like
+
+   \usepackage[verbose]{multicol}
+
+it is quite likely that many styles will soon use these things too.
+
+So compatibility is a one-way street (but i said this before)
+
+
+This does not affect the user interface (except \documentstyle
+\documentclass/usepackage).  The functionality of latex209 will be
+there in 2e (yes, you will have ${\it abc}$ in 2e, something you do
+not have in the NFSS2 beta test out at the moment) and if you have a
+document starting with \documentstyle it will probably even remove
+some of the functionality to provide as much compatibility as you can
+hope for. For example in 2e \sloppy will use \emergencystretch but
+with \documentstyle it will revert to the old bad line breaking to
+make you happy.
+
+I'm sure there will be some bugs in the new system where we overlooked
+something or implemented something not quite right :-). However, i also
+hope that we get such starting problems solved fast.
+
+So yes, for the beta test time you will need both formats but spring
+next year you should only need one.
+
+
+> There are files e.g. amsart.sty that are different for
+> 2.09 and 2.09+NFSS2 (and 2e).
+
+they will be removed as well. the ams has already updated the files
+for nfss2 (or is nearly finished with it).
+
+this is another reason why, something like an nf prefix is probably no
+longer a good idea. when latex2e is out there should be only one
+times.sty (except the one for plain, but this is like changing cars,
+as explained in the LaTeX book)
+
+> As an aside, in the light of the completely different
+> structure of NFSS2, I am extremely relieved that I did
+> not force NFSS1 on my users.  I made it available (for
+> AmS-LaTeX) but I kept it basically a secret.
+
+it is not completely different. NFSS2 runs on NFSS1 documents (not
+styles) without problems (it only warns about obsolete math alphabet
+definitions), but as i said in a previous mail the encoding attribute
+was badly necessary and that would have changed the syntax already.
+thus the step to provide something much better (and I'm quite pleased
+with the interface by now, if i may say so, even the one for math is
+useable :-) by learning from the nfss1 lessons
+
+
+> PS When will we see `The LaTeX companion'?
+
+everything is through the second step of professional proof-reading,
+except one chapter and one appendix (copy-editing only there), and of
+course, changing nf... into ... means that i have to redo two chapters
+(if unlucky redoing the page breaking, you don't think this is
+something you can leave to TeX, do you?) you can guess for yourself.
+AW will need 4-5 weeks for printing and distribution so if we are fast
+and this list doesn't come with too many new ideas we make it for
+christmas. The cover is already printed.
+
+So i better return to ch11 now
+
+good night
+frank
+
+ps: to answer Paul's remark about the difference between options and
+packages: 2e supports this concept: options are in the optional
+argument and packages are in \usepackage. More, when it is ready, or
+it will never be ready
+
+
+pps: i got about 100 votes back (still hoping for another 100) so i
+will not say now what the current result is. But: one result was
+interesting. i had about 10% mistakes, ie people sending the vote in
+the mail body and not the subject (thus i couldn't move votes by
+subject search into folders) or not sending the requested words.
+And most of them quite famous people that didn't read the mail carefully :-)
+
+So please if you haven't send your vote. do it now but send it in the
+subject line containing the words "poll" followed by a colon and a
+^^^^^^^^^^^^
+space ": " followed by either "keep", "scratch", or "do not care".
+thanks
+

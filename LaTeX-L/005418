@@ -1,0 +1,89 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 7 Nov 2008 02:02:06 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mA711sOm004701
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 7 Nov 2008 02:01:55 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mA70wjjJ002049
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 7 Nov 2008 01:58:45 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mA6N1KQv010773;
+	Fri, 7 Nov 2008 01:58:44 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 104191 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 7 Nov
+          2008 01:58:44 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mA70wi8G019199 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 7 Nov 2008 01:58:44 +0100
+Received: from av11-2-sn2.hy.skanova.net (av11-2-sn2.hy.skanova.net
+          [81.228.8.184]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id mA70wUjH005623 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 7 Nov 2008 01:58:33 +0100
+Received: by av11-2-sn2.hy.skanova.net (Postfix,
+          from userid 502) id C36E137F14; Thu,  6 Nov 2008 11:48:33 +0100 (CET)
+Received: from smtp4-2-sn2.hy.skanova.net (smtp4-2-sn2.hy.skanova.net
+          [81.228.8.93]) by av11-2-sn2.hy.skanova.net (Postfix) with ESMTP id
+          8BC7B37EB8 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu,  6 Nov 2008
+          11:48:33 +0100 (CET)
+Received: from [192.168.1.3] (h243n5c1o260.bredband.skanova.com
+          [81.231.36.243]) by smtp4-2-sn2.hy.skanova.net (Postfix) with ESMTP
+          id 71CAB37E4C for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu,  6 Nov
+          2008 11:48:33 +0100 (CET)
+User-Agent: Thunderbird 1.5.0.14 (Macintosh/20071210)
+MIME-Version: 1.0
+References: <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4912CB82.2050200@residenset.net>
+Date:         Thu, 6 Nov 2008 11:48:34 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: Some implementation details of \let:XX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Nov 2008 01:02:06.0294 (UTC) FILETIME=[73FA5760:01C94074]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5418
+
+Will Robertson skrev:
+> Hello,
+> 
+> Taking a look at how \let:NN and friends are implemented strongly 
+> tempted my "clean up" urge. Rather than delay it for the "big future 
+> refactor" that's going to happen at some stage, I thought it small 
+> enough to address immediately.
+> 
+> (Also, I'm using this public list since I'm not entirely sure that 
+> conducting the expl3 business "in the dark" isn't one of the reasons 
+> that the project has attracted less interest than we possibly would have 
+> liked.)
+> 
+> Here's the offending code:
+> 
+> \def_protected_long_new:Npn \let:NN #1{\let:NwN #1=~}
+> \def_new:Npn\let:cN #1 {\exp_after:NN\let:NN\cs:w#1\cs_end:}
+> \def_new:Npn\let:Nc{\exp_args:NNc\let:NN}
+> \def_new:Npn\let:cc{\exp_args:Ncc\let:NN}
+> 
+> Yielding concerns:
+>  - Why is \let:NN long?
+
+So that it can be used on \par.
+
+Lars Hellström
+

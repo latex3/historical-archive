@@ -1,0 +1,114 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3299" "Wed" "8" "October" "1997" "10:30:58" "-0400" "Michael John Downes" "mjd@MATH.AMS.ORG" nil "72" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id QAA22087;
+	Wed, 8 Oct 1997 16:40:29 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.4AB835AE@listserv.gmd.de>; Wed, 8 Oct 1997 16:32:54 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 210600 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Oct 1997 16:32:01 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id QAA22451 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 8 Oct 1997 16:31:50 +0200
+          (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 8 Oct 1997
+          14:31:01 UT
+Received: from epsilon.ams.org by AXP14.AMS.ORG (PMDF V5.1-8 #1) with SMTP id
+          <01IOK7EWHT1C001U2G@AXP14.AMS.ORG> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Oct 1997 10:30:59 EST
+Received: by epsilon.ams.org; (5.65v3.2/1.1.8.2/12Oct95-1155AM) id AA27796;
+          Wed, 08 Oct 1997 10:30:59 -0400
+X-Mailer: Gnus v5.3/Emacs 19.34
+Lines: 72
+References: <m0xIrvr-000OWIC@dcarlisle.demon.co.uk>
+Message-ID:  <pcd8lgz5r1.fsf@epsilon.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  David Carlisle's message of Wed, 08 Oct 1997 09:57:27 +0100
+Date:         Wed, 8 Oct 1997 10:30:58 -0400
+From: Michael John Downes <mjd@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2401
+
+> > Many journals these days work from author-created tex files, and a
+> > substantial portion of the authoring community uses amstex.
+>
+> I don't know of any converter myself, but do you have any idea why
+> they still use amstex.
+
+In the community of mathematician/authors? Inertia. AMS-TeX was heavily
+promoted by the AMS in the mid-80s to facilitate electronic submission
+of math-intensive documents to the AMS publishing program. Once an
+author gets a working TeX system going it's easier for them to stick
+with it than to go through the upheaval of switching to a different
+system. Thus I'd guess the people who started using AMS-TeX have
+typically stayed with it for five years or more. And many of those in
+the author population don't pay as much attention to recent developments
+in the TeX world as we do. I dare say there are even a few authors out
+there who discovered AMS-TeX only two or three years ago and are right
+now converting their acquaintances to the use of AMS-TeX from the yet
+more primitive typesetting systems (troff? T3? Word Perfect?) they were
+using before.
+
+Circa 1990 with the release of AMS-LaTeX 1.0, LaTeX got enough
+mathematical functionality to rival AMS-TeX and mathematicians
+(physicists, statisticians, ...) began to be lured from AMS-TeX by the
+other features LaTeX provides---automatic numbering, for example.
+But I would estimate that the penetration of LaTeX among the people who
+submit articles and books to the AMS has grown something like this:
+
+1991  1992  1993  1994  1995  1996  1997
+ 5%    10%   15%   20%   30%   40%   55%? 60%?
+
+which leaves still quite a few AMS-TeX users out there.
+
+> In particular if you (or someone else) put the
+> work in to make a converter and then openly advertised submission
+> requirements as
+>
+> `Submit articles in latex or amstex, in the latter case we will convert
+> your document to latex in house before processing it.'
+>
+> Then at least some of those authors may think it worth the trouble to
+> code it up in latex to start with.
+
+The AMS has begun promoting LaTeX more strongly than AMS-TeX in the last
+year or so because the five primary AMS journals are published on the
+WWW in HTML form now and LaTeX documents convert more easily than AMS-TeX.
+
+> `LaTeX-like' engines such as latex2html or ScientificWord, or do you
+> `just' want something that will allow documents (or sections of
+> documents) marked up in amstex to be processed directly by LaTeX.
+
+We've already done this to a certain extent in order to process the
+table of contents for journals that contain a mixture of LaTeX and
+AMS-TeX documents. (The titles often contain math ...)
+
+The amstex-to-latex converter used by the AMS inhouse is written in
+Omnimark and doesn't attempt to work miracles. Author-defined macros
+that take delimited arguments typically have to be cleaned up by hand.
+And the issues of automatic numbering and cross-referencing are rather
+intractable. The converter does what it can with the relatively easy
+parts and leaves the rest. For example, if a document has 10 theorems
+the converter does
+
+  \newtheorem*{theorem1}{Theorem 1}
+  \newtheorem*{theorem2}{Theorem 2}
+  \newtheorem*{theorem3}{Theorem 3}
+  ...
+
+rather than try to deal with all the potential pitfalls of unusual
+numbering schemes.
+
+Michael Downes
+mjd@ams.org
+

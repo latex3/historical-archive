@@ -1,0 +1,149 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 9 Sep 2008 16:21:35 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m89ELT5V030581
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 9 Sep 2008 16:21:30 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m89EE4F9004005
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 9 Sep 2008 16:14:04 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m88M19cC015958;
+	Tue, 9 Sep 2008 16:13:50 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 27499 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 9 Sep
+          2008 16:13:49 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m89EDnbF026557 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 9 Sep 2008 16:13:49 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.242])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m89EDiWR003256 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 9 Sep
+          2008 16:13:48 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so1740991rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 09 Sep 2008 07:13:44 -0700
+          (PDT)
+Received: by 10.140.201.15 with SMTP id y15mr9778803rvf.33.1220969623928; Tue,
+          09 Sep 2008 07:13:43 -0700 (PDT)
+Received: from ?10.0.1.102? ( [219.90.231.17]) by mx.google.com with ESMTPS id
+          c20sm9858531rvf.3.2008.09.09.07.13.42 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Tue, 09 Sep 2008 07:13:43 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v928.1)
+References: <48C3DAD1.6030004@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.928.1)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <4B6A6CEE-A06F-4EAC-B618-3B637A5902E4@gmail.com>
+Date:         Tue, 9 Sep 2008 23:43:38 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: \clist_gput_right:Nx?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48C3DAD1.6030004@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 09 Sep 2008 14:21:35.0297 (UTC) FILETIME=[5D5C1310:01C91287]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5250
+
+Hi,
+
+Everyone on the LaTeX team is also on this list, right?
+
+On 07/09/2008, at 11:14 PM, Joseph Wright wrote:
+
+> Is there a reason expl3 has
+>
+> \clist_put_right:Nx
+> \clist_put_left:Nx
+>
+> but no
+>
+> \clist_gput_right:Nx
+> \clist_gput_left:Nx
+>
+> when the other (non-expanded) variants are all available as gpu and  
+> put
+> variations?  As it stands, I have to use \clist_put_right:Nx for a
+> global list: not good.
+
+I've been looking into the seq, clist, toks, and tlp modules and  
+trying to normalise the commands that are provided for the put_left  
+and put_right cases in each. Seems to me like the sensible thing to do  
+is provide the same set in each for consistency's sake. Here's the  
+list I've ended up with:
+
+%  \seq_put_right:Nn |
+%  \seq_put_right:No |
+%  \seq_put_right:Nx |
+%  \seq_put_right:Nc |
+%  \seq_put_right:NC |
+%  \seq_put_right:cn |
+%  \seq_put_right:co |
+%  \seq_put_right:cc |
+
+The idea is to support the whole lot for all of
+   put_right
+   put_left
+   gput_right
+   gput_left
+in the four modules mentioned above.
+
+BUT.
+This seems like too many to me.
+
+***
+
+\clist_put_right:NC is only used in  xo-or.dtx , and the corresponding  
+global and/or left variants aren't used at all. I'm going to recommend  
+that the definition for this be moved into the xor package, then, and  
+we can omit defining it in expl3 whatsoever.
+
+Similarly,
+
+\seq_gput_right:Nc is only used in  xo-alloc.dtx , so I'd suggest to  
+remove that variant from the expl3 bundle as well.
+
+***
+
+The :cc variant seems to be NEVER used, so lets drop that one too.  
+Otherwise,
+   :Nn
+   :No
+   :Nx
+   :cn
+   :co
+all come in with some level of frequency, so I'll recommend them as  
+the "base five" function variants to implement for the four modules.
+
+***
+
+Comments?
+
+***
+
+Oh.
+I just noticed \toks_put_right:Nd and \toks_put_right:Nf .
+The former is not used at all, the latter only in  template.dtx.
+Again, I'd recommend moving that to where it's used.
+
+The alternative to moving these "one-shot" variants from expl3 is to  
+keep them in there but document them separately. I'm perfectly happy  
+with this solution, too.
+
+Good night,
+Will
+

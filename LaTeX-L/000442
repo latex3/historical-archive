@@ -1,0 +1,288 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4CD7B8FC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:11 +0100
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4CD7B8FC"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-to:         LATEX-L%DHDURZ1.BITNET@uga.cc.uga.edu
+Content-class: urn:content-classes:message
+Subject:      Should chars over 128 be active?
+Date: Fri, 1 Nov 1991 10:17:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5D8@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Don Hosek" <DHOSEK%HMCVAX.CLAREMONT.EDU@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 442
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4CD7B8FC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+(because, after all, I don't know when to keep my mouth shut...)
+
+-   Sorry, I'm not a mathematician so I misuse terms all the time. I
+-   didn't mean that the mapping was mathematically 1-to-1, but that
+-   a single byte must map to a single byte. Check it out.
+-
+-Now, there I agree. So, if one wants to have \^^80 to mean a c with
+-cedilla, he must define a macro. This is only possible (in general if
+-the category code of ^^80 is letter. (see below.)
+
+Bzzt. Guess again. Single character control sequences can have
+any category code one likes. Named commands (to use Norbert
+Schwarz' terminology) must (in general) be composed of letters
+although as long as the sequence of letters up to the first
+non-letter is unique, this is not a hard-and-fast rule.
+
+-No, I didn't say that. I can see several possibilities for this, like
+-having the same code page on both systems, having the TeX job on the
+-VAX go through a preprocessing step, or even making some characters
+-active that are in different positions in both code pages. Making all
+-characters active is, in my opinion, a bad solution -- for a default.
+
+Same code page on both systems is assuming a lot. Code pages are
+rather variable (and can, in fact vary within documents). Having
+a settable code page, while possibly a good idea, is also not
+standard issue in TeX implementations. Filters are messy garbage
+and best avoided whenever possible; should you have any doubts,
+take a look at the documentation for Jacques Goldberg's original
+SemiTeX package. All characters active is the only solution that
+works with all existing TeX 3 implementations (except those which
+are seriously broken--I won't name names despite my high P.O.
+factor on this issue) and handles all cases.
+
+-The real problem is this: you *need* to tag the files with the
+-character set used, and the program to work on them must use this
+-information. Unless this problem is addressed and solved, we cannot
+-get any further.
+
+I wouldn't say that it's _necessary_ to be able to have a named
+cs with accented characters. Desirable, yes (I find
+undiacriticalized Spanish rather unpleasant to read, not to
+mention certain amusing puns that can occur through the loss of a
+tilde), but necessary? I think that the problem is that we're
+expecting too big of an advance out of what TeX 3 provides for
+us. With TeX 2.x, we got by with csnames that weren't quite
+right. Unfortunately, with TeX 3.x, DEK did not address the issue
+properly so we must ocntinue to get by with csnames that aren't
+quite right (fortunately, the bulk of my coding is in English or
+Latin (depending on my mood) so accents aren't generally a
+concern for me... this does not mean that I'm ignorant of the
+problem).
+
+-   By the way, you qdidn't address the issue of why making chars
+-   128-255 active is so horrible.
+
+-Because characters of catcode 11 are rather special: only they can be
+-used in control sequences. And besides, it's a hell of an overhead.
+
+See above regarding cses. As regards the overhead, it's not too
+bad. I haven't run into files where LaTeX+my activation of high
+chars to be used with the PC850 code page didn't fit on a
+standard TeX (except files that didn't fit for other, more
+interesting, reasons).
+
+-dh
+
+
+------_=_NextPart_001_01C19443.4CD7B8FC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Should chars over 128 be active?</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>(because, after all, I don't know when to keep my =
+mouth shut...)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; Sorry, I'm not a mathematician so I =
+misuse terms all the time. I</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; didn't mean that the mapping was =
+mathematically 1-to-1, but that</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; a single byte must map to a single =
+byte. Check it out.</FONT>
+
+<BR><FONT SIZE=3D2>-</FONT>
+
+<BR><FONT SIZE=3D2>-Now, there I agree. So, if one wants to have \^^80 =
+to mean a c with</FONT>
+
+<BR><FONT SIZE=3D2>-cedilla, he must define a macro. This is only =
+possible (in general if</FONT>
+
+<BR><FONT SIZE=3D2>-the category code of ^^80 is letter. (see =
+below.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Bzzt. Guess again. Single character control sequences =
+can have</FONT>
+
+<BR><FONT SIZE=3D2>any category code one likes. Named commands (to use =
+Norbert</FONT>
+
+<BR><FONT SIZE=3D2>Schwarz' terminology) must (in general) be composed =
+of letters</FONT>
+
+<BR><FONT SIZE=3D2>although as long as the sequence of letters up to the =
+first</FONT>
+
+<BR><FONT SIZE=3D2>non-letter is unique, this is not a hard-and-fast =
+rule.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-No, I didn't say that. I can see several =
+possibilities for this, like</FONT>
+
+<BR><FONT SIZE=3D2>-having the same code page on both systems, having =
+the TeX job on the</FONT>
+
+<BR><FONT SIZE=3D2>-VAX go through a preprocessing step, or even making =
+some characters</FONT>
+
+<BR><FONT SIZE=3D2>-active that are in different positions in both code =
+pages. Making all</FONT>
+
+<BR><FONT SIZE=3D2>-characters active is, in my opinion, a bad solution =
+-- for a default.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Same code page on both systems is assuming a lot. Code =
+pages are</FONT>
+
+<BR><FONT SIZE=3D2>rather variable (and can, in fact vary within =
+documents). Having</FONT>
+
+<BR><FONT SIZE=3D2>a settable code page, while possibly a good idea, is =
+also not</FONT>
+
+<BR><FONT SIZE=3D2>standard issue in TeX implementations. Filters are =
+messy garbage</FONT>
+
+<BR><FONT SIZE=3D2>and best avoided whenever possible; should you have =
+any doubts,</FONT>
+
+<BR><FONT SIZE=3D2>take a look at the documentation for Jacques =
+Goldberg's original</FONT>
+
+<BR><FONT SIZE=3D2>SemiTeX package. All characters active is the only =
+solution that</FONT>
+
+<BR><FONT SIZE=3D2>works with all existing TeX 3 implementations (except =
+those which</FONT>
+
+<BR><FONT SIZE=3D2>are seriously broken--I won't name names despite my =
+high P.O.</FONT>
+
+<BR><FONT SIZE=3D2>factor on this issue) and handles all cases.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-The real problem is this: you *need* to tag the files =
+with the</FONT>
+
+<BR><FONT SIZE=3D2>-character set used, and the program to work on them =
+must use this</FONT>
+
+<BR><FONT SIZE=3D2>-information. Unless this problem is addressed and =
+solved, we cannot</FONT>
+
+<BR><FONT SIZE=3D2>-get any further.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I wouldn't say that it's _necessary_ to be able to =
+have a named</FONT>
+
+<BR><FONT SIZE=3D2>cs with accented characters. Desirable, yes (I =
+find</FONT>
+
+<BR><FONT SIZE=3D2>undiacriticalized Spanish rather unpleasant to read, =
+not to</FONT>
+
+<BR><FONT SIZE=3D2>mention certain amusing puns that can occur through =
+the loss of a</FONT>
+
+<BR><FONT SIZE=3D2>tilde), but necessary? I think that the problem is =
+that we're</FONT>
+
+<BR><FONT SIZE=3D2>expecting too big of an advance out of what TeX 3 =
+provides for</FONT>
+
+<BR><FONT SIZE=3D2>us. With TeX 2.x, we got by with csnames that weren't =
+quite</FONT>
+
+<BR><FONT SIZE=3D2>right. Unfortunately, with TeX 3.x, DEK did not =
+address the issue</FONT>
+
+<BR><FONT SIZE=3D2>properly so we must ocntinue to get by with csnames =
+that aren't</FONT>
+
+<BR><FONT SIZE=3D2>quite right (fortunately, the bulk of my coding is in =
+English or</FONT>
+
+<BR><FONT SIZE=3D2>Latin (depending on my mood) so accents aren't =
+generally a</FONT>
+
+<BR><FONT SIZE=3D2>concern for me... this does not mean that I'm =
+ignorant of the</FONT>
+
+<BR><FONT SIZE=3D2>problem).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; By the way, you qdidn't address the =
+issue of why making chars</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; 128-255 active is so horrible.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Because characters of catcode 11 are rather special: =
+only they can be</FONT>
+
+<BR><FONT SIZE=3D2>-used in control sequences. And besides, it's a hell =
+of an overhead.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>See above regarding cses. As regards the overhead, =
+it's not too</FONT>
+
+<BR><FONT SIZE=3D2>bad. I haven't run into files where LaTeX+my =
+activation of high</FONT>
+
+<BR><FONT SIZE=3D2>chars to be used with the PC850 code page didn't fit =
+on a</FONT>
+
+<BR><FONT SIZE=3D2>standard TeX (except files that didn't fit for other, =
+more</FONT>
+
+<BR><FONT SIZE=3D2>interesting, reasons).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-dh</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4CD7B8FC--
+

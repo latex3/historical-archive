@@ -1,0 +1,75 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 5 May 2007 22:56:48 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l45KulWf017175
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 5 May 2007 22:56:47 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id l45KoTK9012050;
+	Sat, 5 May 2007 22:50:29 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 75061 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 5 May
+          2007 22:50:28 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l45KoSHs017555 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 5 May 2007 22:50:28 +0200
+Received: from mx02.kabsi.at (mx02.kabsi.at [62.40.128.130]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id l45KoGEX012012
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 5 May 2007 22:50:21
+          +0200
+Received: from buckbeak.hogwarts (h081217001071.dyn.cm.kabsi.at [81.217.1.71])
+          by mx02.kabsi.at (8.13.6/8.13.6) with SMTP id l45KoFxn011416 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 5 May 2007 22:50:15 +0200
+Received: by buckbeak.hogwarts (Postfix, from userid 1000) id 5939A330032; Sat,
+          5 May 2007 22:50:15 +0200 (CEST)
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <877irnt2pk.fsf@buckbeak.hogwarts>
+Date:         Sat, 5 May 2007 22:50:15 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Andreas Matthias <amat@KABSI.AT>
+Subject: l3prop
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 May 2007 20:56:48.0620 (UTC) FILETIME=[E5F342C0:01C78F57]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5011
+
+1) I suppose there's a bug in \prop_map_function_aux:NNn.
+   Here is the diff:
+
+--- l3prop.dtx.orig     2006-12-12 13:28:27.000000000 +0100
++++ l3prop.dtx  2007-05-05 22:04:43.000000000 +0200
+@@ -665,7 +665,7 @@
+     \exp_after:NN #2 \prop_use:N #1 \q_nil \q_no_value \q_stop
+ }
+ \def_new:Npn \prop_map_function_aux:NNn #1#2#3{
+-  \if_meaning:NN \q_nil #1
++  \if_meaning:NN \q_nil #2
+     \exp_after:NN \prop_map_break:w
+   \fi:
+   #1#2{#3}
+
+
+
+2) I have no idea how to use \prop_map_inline:NN. Can someone
+   show me? There seems to be a missing \prop_map_function:N.
+
+
+Ciao
+Andreas
+

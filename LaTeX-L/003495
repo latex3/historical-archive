@@ -1,0 +1,263 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Sat, 8 Jan 2000 04:56:27 +0100 (MET)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id EAA08409 for <schoepf@mail.uni-mainz.de>; Sat, 8 Jan 2000 04:56:26 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF598C.566DE780"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id EAA03725 for <schoepf@UNI-MAINZ.DE>; Sat, 8 Jan 2000 04:56:26 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.26FEF1E6@mail.listserv.gmd.de>; Sat, 8 Jan 2000 4:56:13 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 446525 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 8 Jan 2000 04:55:10 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id EAA20280 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 8 Jan          2000 04:55:09 +0100 (MET)
+Received:  from downtown.oche.de (downtown.oche.de [194.94.253.3]) by          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id EAA03437 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 8 Jan 2000 04:56:06 +0100 (MET)
+Received:  from corona.oche.de (uucp@localhost) by downtown.oche.de          (8.9.3/8.9.3/Debian/GNU) with UUCP id EAA25468 for          URZ.UNI-HEIDELBERG.DE!LATEX-L; Sat, 8 Jan 2000 04:50:00 +0100
+Received:  by corona.oche.de (wUUCP 1.10) id <1k9y@corona.oche.de>; Fri, 7 Jan          00 21:31:45 CET
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: AmiGate 1.6 (13.11.95)
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["2014" "Fri" "7" "January" "2000" "21:25:39" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "54" "Re: environment templates" "^Date:" nil nil "1" nil "environment templates" nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Re: environment templates
+Date: Fri, 7 Jan 2000 22:25:39 +0100
+Message-ID:  <c057579a@corona.oche.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Achim Blumensath" <blume@CORONA.OCHE.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3495
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF598C.566DE780
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach wrote:
+> Achim Blumensath writes:
+>  > > for the theoremstyle template type a good name could then be
+>  > > something like \EndThisTheorem.
+>  >
+>  > I think it would be a good idea to uniformly call those commands
+>  > \EndThisEnvironment.
+>
+> the problem with this and perhaps the problem with the whole mechanism
+> is that a lot of people have learned to write environments like this:
+>
+> \newenvironment{foo}{...\quote ...}{ ... \endquote ...}
+>
+> ie without using \begin/\end internally.
+>
+> if all such things like \quote internally use \EndThisEnviornment then
+> guess what happens. so this needs some thoughts.
+>
+>  a) do not allow above usage
+
+IMHO such hacks as above shouldn't be allowed anyway. If someone =
+directly
+accesses internals of some package instead of using the defined
+interface he deserves his code breaking when the implementation is
+changed. Besides, what happenes if someone uses two nested lists in the
+above way? So you have the problem regardless of whether all templates
+share a common name or each uses its own one.
+
+One way to allow hacks like this could be to define \newenvironment as
+
+  \newenvironment <name> <begin-code> <end-code> :=3D
+    \def\<name>{
+      \begingroup
+      <begin-code>
+    }
+    \def\end<name>{
+      <end-code>
+      \endgroup
+    }
+
+that is, to move the \begingroup, \endgroup from \begin and \end
+into the \foo, \endfoo commands.
+
+>  b) do implement your independent stack handling for these things
+>  c) do provide your own groups already at the environment-template =
+level
+>  d) ...?
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ =
+|
+    //  Achim Blumensath       | \  _                        \O/ \___/\ =
+|
+   //   blume@corona.oche.de   |-< /_\                       =3Do=3D  \ =
+/\ \|
+ \X/    (p^2 - m^2)\psi =3D 0    |_/ \_                        /"\   =
+o----|
+____________________________________________________________________\___|=
+
+
+------_=_NextPart_001_01BF598C.566DE780
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: environment templates</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Achim Blumensath writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; for the theoremstyle template =
+type a good name could then be</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; something like =
+\EndThisTheorem.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; I think it would be a good idea to =
+uniformly call those commands</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \EndThisEnvironment.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the problem with this and perhaps the problem =
+with the whole mechanism</FONT>
+
+<BR><FONT SIZE=3D2>&gt; is that a lot of people have learned to write =
+environments like this:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \newenvironment{foo}{...\quote ...}{ ... =
+\endquote ...}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; ie without using \begin/\end internally.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; if all such things like \quote internally use =
+\EndThisEnviornment then</FONT>
+
+<BR><FONT SIZE=3D2>&gt; guess what happens. so this needs some =
+thoughts.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; a) do not allow above usage</FONT>
+</P>
+
+<P><FONT SIZE=3D2>IMHO such hacks as above shouldn't be allowed anyway. =
+If someone directly</FONT>
+
+<BR><FONT SIZE=3D2>accesses internals of some package instead of using =
+the defined</FONT>
+
+<BR><FONT SIZE=3D2>interface he deserves his code breaking when the =
+implementation is</FONT>
+
+<BR><FONT SIZE=3D2>changed. Besides, what happenes if someone uses two =
+nested lists in the</FONT>
+
+<BR><FONT SIZE=3D2>above way? So you have the problem regardless of =
+whether all templates</FONT>
+
+<BR><FONT SIZE=3D2>share a common name or each uses its own one.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One way to allow hacks like this could be to define =
+\newenvironment as</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \newenvironment &lt;name&gt; &lt;begin-code&gt; =
+&lt;end-code&gt; :=3D</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \def\&lt;name&gt;{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;begin-code&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \def\end&lt;name&gt;{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;end-code&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \endgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>that is, to move the \begingroup, \endgroup from =
+\begin and \end</FONT>
+
+<BR><FONT SIZE=3D2>into the \foo, \endfoo commands.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; b) do implement your independent stack =
+handling for these things</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; c) do provide your own groups already at =
+the environment-template level</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; d) ...?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Achim</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; | \_____/ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; //&nbsp; Achim =
+Blumensath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | \&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \O/ =
+\___/\ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; //&nbsp;&nbsp; =
+blume@corona.oche.de&nbsp;&nbsp; |-&lt; =
+/_\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3Do=3D&nbsp; \ /\ \|</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\X/&nbsp;&nbsp;&nbsp; (p^2 - m^2)\psi =3D =
+0&nbsp;&nbsp;&nbsp; |_/ =
+\_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+/&quot;\&nbsp;&nbsp; o----|</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+____\___|</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF598C.566DE780--
+

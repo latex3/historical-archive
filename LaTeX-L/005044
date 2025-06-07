@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 5 Sep 2007 08:42:53 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l856glDo000600
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 5 Sep 2007 08:42:47 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l856bvk9015656
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 5 Sep 2007 08:37:57 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l84M1Ab8029482;
+	Wed, 5 Sep 2007 08:37:47 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 114707 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 5 Sep
+          2007 08:37:45 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l856bjEv001949 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Sep 2007 08:37:45 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id l856baxb015152 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Sep 2007 08:37:44 +0200
+Received: from p54A98018.dip0.t-ipconnect.de [84.169.128.24]
+          (helo=morse.mittelbach-online.de) by mrelayeu.kundenserver.de
+          (node=mrelayeu6) with ESMTP (Nemesis),
+          id 0ML29c-1ISoW72naE-0004Ib; Wed, 05 Sep 2007 08:37:36 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 06A9D135FC; Wed,  5 Sep 2007 08:37:34 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <87wsv6odr8.fsf@buckbeak.hogwarts>
+            <18141.38684.704361.46277@morse.mittelbach-online.de>
+            <op.tx4553qyjli536@newhost71-038.imm.dtu.dk>
+            <87sl5uno7u.fsf@buckbeak.hogwarts>
+            <18141.51596.255158.574401@morse.mittelbach-online.de>
+            <87ir6qng8e.fsf@buckbeak.hogwarts>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18r/ONNsfQ2zPDmXMsgCeOiDbgwES02Kpr+4Sh
+              kFu0mAPcD+sZ9/0nbbalpJlv3wxWIgjrrMVoQxwSZnfIQo+Ksn
+              Kg9zL+X4xAXTC7yZrvWYqTk3q1qIhSB
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18142.20142.549886.908550@morse.mittelbach-online.de>
+Date:         Wed, 5 Sep 2007 08:37:34 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: l3prop: documentation
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <87ir6qng8e.fsf@buckbeak.hogwarts>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Sep 2007 06:42:53.0335 (UTC) FILETIME=[FC267270:01C7EF87]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5044
+
+Andreas,
+
+ > But \prop_get_gdel:NNN doesn't work, yet. The value of the deleted
+ > key is not assigned to the tlp.
+
+hmm, something got messed up when the prop implementation got changed from
+using sequences (with tlps) to toks registers. try this one
+
+\RequirePackage{l3prop}
+
+\ExplSyntaxOn
+
+\def_long:NNn \prop_get_del_aux:w 6
+{
+  \tlp_set:Nn #1{#5}
+  \quark_if_no_value:NF #1
+    {
+     \def:Npn \tmp:w ##1#3\q_no_value {#2{#4##1}}
+     \tmp:w #6
+    }
+}
+
+i haven't updated it yet as I wonder why that change was done. using
+\quark_if_no_value:NF is much much faster than \quark_if_no_value:nF as the
+later literately scans for \q_no_value which the former just uses the quark
+feature that
+
+\tlp_set:Nn \FOO{\BAR}
+\if_meaning:NN \FOO \BAR  ->  true if and only if \BAR was a quark
+
+frank
+

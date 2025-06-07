@@ -1,0 +1,97 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 1 Jun 2006 17:58:17 +0200
+Received: by mail.proteosys.com (8.12.11.20060308/8.12.2) with ESMTP id k51FwCxO025828
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 1 Jun 2006 17:58:13 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k51FvGvj024986;
+	Thu, 1 Jun 2006 17:57:17 +0200 (MET DST)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k51F09X1014566;
+	Thu, 1 Jun 2006 17:53:02 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1293570 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 1 Jun
+          2006 17:53:02 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k51Fr2MJ010989 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 1 Jun 2006 17:53:02 +0200
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          k51Fulvj024856 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 1 Jun
+          2006 17:56:48 +0200 (MET DST)
+Received: from remote218-12.home.uni-freiburg.de ([132.230.218.12]
+          helo=m0A023293.vpn.uni-freiburg.de) by
+          atlas.informatik.uni-freiburg.de with esmtpsa (TLSv1:AES256-SHA:256)
+          (Exim 4.60) (envelope-from <oberdiek@uni-freiburg.de>) id
+          1FlpTd-0003Wa-Qv for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 01 Jun
+          2006 17:52:49 +0200
+Received: by m0A023293.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 7096536B0B; Thu,  1 Jun 2006 17:52:42 +0200 (CEST)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <20060531192925.GA7290@m0A023293.vpn.uni-freiburg.de>
+            <DDC53624-F13D-11DA-8C1B-0003930D5AB6@residenset.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Message-ID:  <20060601155242.GA4393@m0A023293.vpn.uni-freiburg.de>
+Date:         Thu, 1 Jun 2006 17:52:42 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LaTeX Release 2005/12/01
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <DDC53624-F13D-11DA-8C1B-0003930D5AB6@residenset.net>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0.001 () HTML_MESSAGE
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 Jun 2006 15:58:17.0475 (UTC) FILETIME=[3273ED30:01C68594]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4957
+
+On Thu, Jun 01, 2006 at 09:11:37AM +0200, Lars Hellström wrote:
+
+> Onsdagen den 31 maj 2006 kl 21.29 skrev Heiko Oberdiek:
+> >
+> >>* To get smaller pdf file sizes I have experimented with
+> >>  destinations:
+> >>  * Unused destinatins are removed.
+> >>  * The destination names are renamed to shorter names.
+> [snip]
+> >Thus I made the assumption the spelling of the destinations are not
+> >intended for external referencing. This allows two optimizations:
+> >* Unused destinations are removed.
+> >* The destination names must still unique, but I can choose shorter
+> >  names, e.g. instead of
+> >      section.1, section.23, codline.127   (30 bytes)
+> >  the shortest possible, but unique names are used:
+> >      A, B, C                                (3 bytes)
+> >  The HTML example from above would be transformed to:
+> >      <a name="A">...</a> or <a ref="#C">...</a>
+> >
+> >Example: file size decrease of source2e.pdf: around 4.5 %.
+> 
+> Have you tried using numbered destinations? 
+
+Thanks for the idea.
+
+> Apart from being simpler, 
+> this should shave off another byte or two (for the parentheses 
+> delimiting the string).
+
+The comparison is a little more complicate:
+* "(<name>)" is replaced by an object reference " <obj_id> 0 R"
+* The object specification for the destination is shorter:
+  "<</D[...]>>" --> "[...]"
+* The name tree is shorter, because the names aren't used.
+
+Thus I give it a try.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

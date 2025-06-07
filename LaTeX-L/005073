@@ -1,0 +1,177 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 8 Nov 2007 21:07:19 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id lA8K74C9005440
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 8 Nov 2007 21:07:04 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lA8K33Bx013437
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 8 Nov 2007 21:03:03 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lA89VTqf004836;
+	Thu, 8 Nov 2007 21:02:45 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 194255 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 8 Nov
+          2007 21:02:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lA8K2jWC016384 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 8 Nov 2007 21:02:45 +0100
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lA8K2fob012967
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 8 Nov 2007 21:02:44
+          +0100
+Received: from remote239-22.home.uni-freiburg.de ([132.230.239.22]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.68) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1IqDaI-0003Ly-35 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 08 Nov 2007 21:02:40 +0100
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id D03E048ED; Thu,  8 Nov 2007 21:01:00 +0100 (CET)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <9343542E664B894484613D106D7D3F5F84AAE9@s-yellow.net.silverstroke.de>
+            <9343542E664B894484613D106D7D3F5F84AAEC@s-yellow.net.silverstroke.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Auto-Whitelist: <oberdiek@uni-freiburg.de>
+Message-ID:  <20071108200100.GA5344@irwin.vpn.uni-freiburg.de>
+Date:         Thu, 8 Nov 2007 21:01:00 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: Bug in \int_div_truncate_raw:nn
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <9343542E664B894484613D106D7D3F5F84AAEC@s-yellow.net.silverstroke.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Nov 2007 20:07:19.0494 (UTC) FILETIME=[F775D660:01C82242]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5073
+
+On Thu, Nov 08, 2007 at 11:18:55AM +0100, Jonathan Sauer wrote:
+
+> > Also both solutions have the disadvantage, that intermediate 
+> > results may cause an arithmetic overflow. As result the 
+> > accepted number range is limited unnecessarily.
+> >   Therefore I have choosen a more complicate route in package 
+> > `intcalc' by a case switch for zero, positive and negative numbers.
+> 
+> It looks like that is the only way to be safe.
+
+\def\divtrunc#1#2{%
+  \numexpr
+    \ifnum\numexpr#1=0 %
+      0%
+    \else
+      (#1%
+      \ifnum\numexpr#1<0 %
+        \ifnum\numexpr#2<0 %
+          -(#2+%
+        \else   
+          +(#2-%
+        \fi
+      \else
+        \ifnum\numexpr#2<0 %
+          +(#2+%
+        \else   
+          -(#2-%
+        \fi
+      \fi  
+      1)/2)%
+    \fi
+    /(#2)%
+  \relax  
+}
+ 
+\def\test#1#2#3{%
+  \immediate\write16{%
+    (#1) / (#2) = \number\divtrunc{#1}{#2} %
+    \ifnum\divtrunc{#1}{#2}=#3 [ok]\else <> #3 [error]\fi
+  }%
+}   
+\test{-3}{1}{-3}
+\test{-2}{1}{-2}
+\test{-1}{1}{-1}
+\test{0}{1}{0}  
+\test{1}{1}{1}  
+\test{2}{1}{2}  
+\test{3}{1}{3}  
+\test{-3}{-1}{3}
+\test{-2}{-1}{2}
+\test{-1}{-1}{1}
+\test{0}{-1}{0} 
+\test{1}{-1}{-1}
+\test{2}{-1}{-2}
+\test{3}{-1}{-3}
+\test{-4}{2}{-2}
+\test{-3}{2}{-1}
+\test{-2}{2}{-1}
+\test{-1}{2}{0} 
+\test{0}{2}{0}  
+\test{1}{2}{0}  
+\test{2}{2}{1}  
+\test{3}{2}{1}  
+\test{4}{2}{2}  
+\test{-4}{-2}{2}
+\test{-3}{-2}{1}
+\test{-2}{-2}{1}
+\test{-1}{-2}{0}
+\test{0}{-2}{0} 
+\test{1}{-2}{0} 
+\test{2}{-2}{-1}
+\test{3}{-2}{-1}
+\test{4}{-2}{-2}
+\test{-6}{3}{-2}
+\test{-5}{3}{-1}
+\test{-4}{3}{-1}
+\test{-3}{3}{-1}
+\test{-2}{3}{0} 
+\test{-1}{3}{0} 
+\test{0}{3}{0}  
+\test{1}{3}{0}  
+\test{2}{3}{0}  
+\test{3}{3}{1}  
+\test{4}{3}{1}  
+\test{5}{3}{1}  
+\test{6}{3}{2}  
+\test{-6}{-3}{2}
+\test{-5}{-3}{1}
+\test{-4}{-3}{1}
+\test{-3}{-3}{1}
+\test{-2}{-3}{0}
+\test{-1}{-3}{0}
+\test{0}{-3}{0} 
+\test{1}{-3}{0} 
+\test{2}{-3}{0} 
+\test{3}{-3}{-1}
+\test{4}{-3}{-1}
+\test{5}{-3}{-1}
+\test{6}{-3}{-2}
+\test{2147483647}{2}{1073741823}
+\test{-2147483647}{2}{-1073741823}
+\test{2147483647}{-2}{-1073741823}
+\test{-2147483647}{-2}{1073741823}
+\test{2147483647}{2147483647}{1}
+\test{-2147483647}{2147483647}{-1}
+\test{2147483647}{-2147483647}{-1}
+\test{-2147483647}{-2147483647}{1}
+% tests for expressions ...
+\csname @@end\endcsname
+\end
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

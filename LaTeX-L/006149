@@ -1,0 +1,148 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 8 Nov 2009 18:11:14 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nA8HBDBr017442
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 8 Nov 2009 18:11:14 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nA8H7hjK007808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 8 Nov 2009 18:07:43 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nA8DNhlT013298;
+	Sun, 8 Nov 2009 18:07:36 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 353153 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 8 Nov
+          2009 18:07:36 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nA8H7aQu009884 for <latex-l@listserv.uni-heidelberg.de>;
+          Sun, 8 Nov 2009 18:07:36 +0100
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id nA8H7PgO017528 for <latex-l@listserv.uni-heidelberg.de>;
+          Sun, 8 Nov 2009 18:07:28 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1N7BEb-0004pC-dE for latex-l@listserv.uni-heidelberg.de; Sun, 08 Nov
+          2009 17:07:25 +0000
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4AF6FACC.3030204@morningstar2.co.uk>
+Date:         Sun, 8 Nov 2009 17:07:24 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: xtemplate
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Nov 2009 17:11:14.0487 (UTC) FILETIME=[7A30F470:01CA6096]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6149
+
+Hello everyone,
+
+There has been some work going on within the team to get ideas (and 
+code) into better shape with template. The result of the work is the 
+xtemplate package. There are still open questions that we are working 
+on, and also some where more input would be very helpful. I'll try to 
+outline what we have done and what remains to be decided.
+
+========================================================================
+
+The ideas are laid out in the dtx: Will has done a good job of setting 
+them out there, and I'm not going to repeat it! For people familiar with 
+template, you'll see that we've renamed \DeclareTemplateType to 
+\DeclareObjectType, as the old name was downright misleading.
+
+The keyval system has been completely revised in xtemplate. This is 
+because it became clear we wanted some "self-documentation" in the keys. 
+The idea now is to divide things into two:
+
+  - \DeclareTemplateInterface. This sets up the names of keys in a 
+template and the type of argument they expect (skips, functions, etc.). 
+It also includes default values.
+  - \DeclareTemplateCode. Sets up the implementation of the keys.
+
+The reason for this is that the interface should be understandable 
+without needing to know about the code. So the aim is that you can look 
+at the arguments to \DeclareTemplateInterface and know what you might 
+want to change, without looking at \DeclareTemplateCode at all.
+
+Most of the ideas for instances and collections have not changed (at the 
+moment).
+
+========================================================================
+
+There are a number of things that still need sorting out. In no 
+particular order, I'll list the ones I remember.
+
+The key types are in the main pretty easy to follow. One that I'm not 
+sure about is "tokenlist". In the context of designing templates, "text" 
+would seem to make sense here, as this is really what is intended. If 
+the interface is supposed to help designers, the TeX token concept is 
+not necessarily helping much.
+
+\MultiSelection has not been moved to xtemplate from template. That is 
+because it'd not clear quite what to do yet. The general question is how 
+to make one key depend in some way on another. Frank suggested some 
+"stories":
+
+  - set the vertical space between items of a list depending on the list
+    context (i.e., the list depth) -> that is an index like spec
+
+  - set the vertical space before a heading to X except when the heading
+    is immediately preceded by another heading (in which case use Y) but
+    use Z if the heading falls on the top of a new page -> that is not an
+    index like spec
+
+  - set some length to the max of X and the current value of variable V
+    taken from the context of the instance
+
+So something that uses an index is one possibility, but only covers some 
+scenarios. The question is therefore what situations need support at the 
+level of xtemplate (as opposed to being handled in the code part of a 
+template).
+
+The collections idea is currently probably not quite right. A while ago, 
+Frank said:
+
+'What exactly should collection instances be used for? I'm starting to 
+question how much use they actually provide as they offer exactly one 
+level of variance and often you would have several layers, e.g., would 
+"frontmatter", "mainmatter", "backmatter" be good candidates for 
+collections? So that, for example, pagestyles behave differently in 
+those places? But then this should also influence the way headings are 
+set (would be possible) and in the way page numbers are displayed (more 
+difficult perhaps). And what happens if somebody else come up with a 
+different type of collection, e.g., making "minipage" a collection to 
+change behaviour or stuff inside. Then who wins? And why?'
+
+and that still applies. As collections are about design, I can't myself 
+see how more than one can be in force at any time, but can see the 
+problem of keeping things in sync. The code currently sticks close to 
+the original template concept, but this probably needs to change.
+
+The argument order of some of the functions probably needs rethinking. 
+This will probably have to be decided after other stuff is sorted out!
+
+========================================================================
+
+Thoughts on any part of (x)template very welcome. It's clear that some 
+problems will have to be revisited as more use is made of templates: we 
+can't hope to know everything now!
+--
+Joseph Wright
+

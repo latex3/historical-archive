@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3083" "Wed" " 9" "February" "1994" "13:41:38" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402091351.AA18862@mail.cs.tu-berlin.de>" "58" "Re: Continuation lines" "^Date:" nil nil "2" "1994020913:41:38" "Continuation lines" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA10360; Wed, 9 Feb 94 14:52:58 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA24219; Wed, 9 Feb 94 14:51:56 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18862
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 9 Feb 1994 14:51:51 +0100
+Message-Id: <199402091351.AA18862@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 5469; Wed, 09 Feb 94 14:51:39 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 5467; Wed,
+ 9 Feb 1994 14:51:39 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 6437; Wed,
+ 9 Feb 1994 14:50:57 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 9 Feb 1994 13:41:38 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Continuation lines
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1481
+
+From:          Anselm Lingnau <lingnau@MATH.UNI-FRANKFURT.DE>
+%>
+%>Joachim Schrod <schrod@ITI.INFORMATIK.TH-DARMSTADT.DE> writes:
+%>
+%>> It means use \@footline (or however it
+%>> is called in LaTeX) to put your ////// sentence there.
+                               (expletive deleted)
+
+%>I believe that Mike wanted to know about the possibility of implementing
+%>something without having to change LaTeX internals (the \output routine, as it
+%>were). It turns out that it *is* possible, if nonobvious.
+
+Well, I would regard the solution as changing the output routine, just as
+much as changing \@outputpage is changing the output routine. One is changing
+the way the output routine works whether one changes the internal \@outputpage
+or the internal \@oddpagefooter or whatever.
+
+Thus Joachim's solution---I have not tried it, so I cannot say whether
+it works---is as bad as mine, in that it
+(a) changes internal commands
+(b) changes the behaviour of \output.
+Hence all chances of achieving an essential function without hackery are
+presumably lost. LaTeX, in pure and simple form, is incapable of handling
+this simple task.
+
+Moreover, there are presumably problems. In this instance, it is necessary
+for the continuation lines to lie in the same text area as that occupied on
+any other page, not in a region between the header/footer and the text area,
+which is small anyway, as the text area is A4 minus a 2.54cm border. I easily
+achieved this on the second page, because the \vsplit of the output routine
+allows you to insert material in the main vertical list. This technique I
+copied from The TeXbook, Ch23, p263.
+
+I must admit that I fudged the first page of the split question for a while,
+by allowing an extra line to be added to what were its former contents, and
+assuming there was enough glue on the page to compensate. However,
+occasionally it goes wrong this way, and the continuation line bumps right
+down on top of the footer. (By the way, it is not enough just to remove the
+last box from the first page and substitute the continuation line, as the
+places where questions can be broken are *generally* pretty much constrained
+by automatic insertion of penalties, and the carefully chosen breakpoint
+would then be messed up by a displayed equation, say, being moved to the
+following page.)  Last year I changed the format so that the continuation
+line on the first page did, in fact, replace the Turn Over of the footer.
+
+Fortunately, the default is to use a \filbreak between questions and a
+\samepage within questions, so that questions are not split. Unfortunately,
+this has the weird effect of moving a 1.5 page question that could have
+started on page 5, say, onto page 6, then splitting it onto page 7, which is
+wholly illogical from the end-user's point of view!
+
+Mike Piff
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,160 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4373" "Sun" "14" "November" "1999" "10:24:36" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "117" "Re: xcontents" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id KAA22089
+	for <schoepf@UNI-MAINZ.DE>; Sun, 14 Nov 1999 10:48:49 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.497AE94F@mail.listserv.gmd.de>; Sun, 14 Nov 1999 10:48:45 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445148 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 14 Nov 1999 10:48:28 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id KAA12738 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov
+          1999 10:48:26 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id KAA05061 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999 10:48:42 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin407.zdv.Uni-Mainz.DE
+          [134.93.175.107]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          KAA26306 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999
+          10:48:40 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          KAA00478; Sun, 14 Nov 1999 10:24:36 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199911112052.VAA00641@istrati.zdv.uni-mainz.de>
+            <199911122226.WAA21138@mimosa.csv.warwick.ac.uk>
+Message-ID:  <199911140924.KAA00478@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199911122226.WAA21138@mimosa.csv.warwick.ac.uk>
+Date:         Sun, 14 Nov 1999 10:24:36 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3402
+
+James wrote:
+
+> > my questions to this list would be now:
+> >
+> >  c) can you define the layout you are looking for?
+> >     if not:
+> >     - are there keys missing for the current templates?
+> >     - are there other templates missing that do radically different things?
+> >     - are the keys perhaps the wrong ones?
+>
+> One more key : number-indent =l [0pt] \parindent
+> Perhaps it should be `first-line-indent'.  Used below.
+
+yes, probably. and probably all keys should be a little bit more
+uniform in names and bahviour, eg if we have right-margin-sep why
+don't we have left-margin-sep?
+
+> For the contents I am trying to simulate I seem to need both
+> chapter and un-numbered-chapter instances. That would have implications
+> for the templates which write the table of contents file. (I also need
+> a demi-bold font, but thats by-the-by)
+
+i strongly believe that we do something seriously wrong if something
+like the design of the TOC has implications for the templates that
+generate the toc entries. if we have such a dependency then i think we
+need to consider modifying the contentsobject templates instead. after
+all, i as a designer, want to change the layout of the TOC by changing
+the instances for contentsobject but i don't want to be forced to
+change the instances of `headings' at the same time. the main reason
+for having a proper interface that passes along enough data was to
+avoid such dependencies.
+
+so the conclusion for me is that James' simulation of the Ktheory TOC
+suggests that we do need a different type of contentsobject template.
+
+since my feeling is that the current templates do nicely for a large
+number of toc layouts i would not try to extend them directly to cater
+for the case that the unnumbered object requires a very different
+layout in comparison to the numbered object. Instead my proposal is to
+add a `combination' template which allows that specification;
+something like this:
+
+
+ \DeclareTemplate{contentsobject}{combined}{6}{
+   numbered-setup   =i {contentsobject} \contents@numbered,
+   unnumbered-setup =i {contentsobject} \contents@unnumbered,
+ }
+ {
+     \DoParameterAssignments
+     \IfNoValueTF{#3}
+        { \contents@unnumbered }
+        { \contents@numbered }
+     {#1}{#2}{#3}{#4}{#5}{#6}
+ }
+
+
+This template does nothing but decides (depending on whether or not a
+number is present) which real template (or rather which instance) to
+use. --- the name `combined' is very much rubbish: anybody having a
+good idea how to call such types of templates; i'm sure that one will
+see them more often in the future.
+
+having this template the instances for James' simulation would then
+look like this:
+
+\DeclareCollectionInstance{Ktheory}{contentsobject}{chapter}{combined}
+ {
+   numbered-setup   = \UseTemplate{contentsobject}{JK}
+        {pre-v-action  = \DelayEvaluation{
+                          \addpenalty{10000}\addvspace{0.5ex plus 1pt}},
+         number-format = \textbf{\hfil Chapter~#1.\nobreakspace},
+         title-format  = \textbf{#1},
+         pnum-format   = \textbf{\hfil#1},
+         leaders-sep   = 100cm,
+         object-indent = 2cm,
+         number-indent = -2cm,
+         number-width  = 2cm},
+   unnumbered-setup = \UseTemplate{contentsobject}{JK}
+         {pre-v-action = \DelayEvaluation{
+                          \addpenalty{10000}\addvspace{1ex plus 1pt}},
+          title-format = \textbf{#1},
+          pnum-format  = \textbf{\hfil#1},
+          leaders-sep  = 100cm},
+ }
+
+or assuming that the indivdual instances have been named:
+
+\DeclareCollectionInstance{Ktheory}{contentsobject}{chapter}{combined}
+ {
+   numbered-setup   = numberedchapter,
+   unnumbered-setup = unnumberedchapter,
+ }
+
+
+> >  e) how difficult is it to implement a given design?
+>
+> It's straightforward but fiddley,
+
+is it? if so why? because things could be improved or because the
+situation is complex and nothing could be done about it?
+
+i would like to repeat my questions from the previous post (with one
+additional question at the end):
+
+ - can you define the layout you are looking for?
+    if not:
+    - are there keys missing for the current templates?
+    - are there other templates missing that do radically different things?
+    - are the keys perhaps the wrong ones?
+
+ - share your thoughts and sample trials with us
+
+ - do you have a good suggestion for the name of the above template
+   `combined'?
+
+frank
+

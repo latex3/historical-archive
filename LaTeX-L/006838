@@ -1,0 +1,92 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p7TAeqx5015735
+	for <rainer@rainer-schoepf.de>; Mon, 29 Aug 2011 12:40:53 +0200
+Received: (qmail 7937 invoked by alias); 29 Aug 2011 10:40:47 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 29 Aug 2011 10:40:46 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx117) with SMTP; 29 Aug 2011 12:40:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p7TAbsYg020959
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 29 Aug 2011 12:37:54 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p7T9iKnf006654;
+	Mon, 29 Aug 2011 12:37:53 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1600527 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 29 Aug
+          2011 12:37:53 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p7TAbrV0012736 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 29 Aug 2011 12:37:53 +0200
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p7TAbhvJ020619 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 29 Aug 2011 12:37:47 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1QxzDr-0003om-l6 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 29 Aug
+          2011 10:37:43 +0000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:6.0) Gecko/20110812
+            Thunderbird/6.0
+MIME-Version: 1.0
+References: <bs7n95ikt65p$.dlg@nililand.de>
+X-Enigmail-Version: 1.3.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4E5B6BF7.80208@morningstar2.co.uk>
+Date:         Mon, 29 Aug 2011 11:37:43 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Removing braces in a token list
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <bs7n95ikt65p$.dlg@nililand.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Sender is in whitelist: joseph.wright@MORNINGSTAR2.CO.UK);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnBi0P5cROEGjO+pG7NAH/K+tf9SrVFtpLrKONl
+ 2T9EL4W4U4jgzLbnCcGpk1z/zwmKT/K1fv3lD0=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6838
+
+On 29/08/2011 09:43, Ulrike Fischer wrote:
+> Assuming that I have a token list variable like this:
+> 
+> \tl_set:Nn \l_temp_tl { a b c {e f} g {h} i }.
+> 
+> What is the right way to remove the inner braces and convert it to 
+> 
+> { a b c e f g h i } 
+> 
+> ? (spaces don't matter)
+> 
+> (I want to loop through the list, but I need simply chars as
+> arguments)
+
+The is no pre-build 'strip_braces' function at present. You don't say if
+we are talking one set of braces or multiple sets. For the former case,
+a simple 'do nothing' loops would be easiest:
+
+  \RequirePackage{expl3}
+  \ExplSyntaxOn
+  \tl_new:N \l_temp_tl
+  \tl_set:Nn \l_temp_tl { a b c {e f} g {h} i }
+  \tl_set:Nx \l_temp_tl
+    { \tl_map_function:NN \l_temp_tl \exp_not:n }
+  \tl_show:N \l_temp_tl
+--
+Joseph Wright
+

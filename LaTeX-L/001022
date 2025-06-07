@@ -1,0 +1,60 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1274" "Thu" "29" "April" "93" "19:56:48" "+0200" "Kresten Krab Thorup" "krab@IESD.AUC.DK" nil "32" "documentstyle option versions" "^Date:" nil nil "4"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA16648; Thu, 29 Apr 93 19:59:25 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA03688; Thu, 29 Apr 93 19:59:22 +0200
+Message-Id: <9304291759.AA03688@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 8836; Thu, 29 Apr 93 19:59:01 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3366;
+ Thu, 29 Apr 93 19:58:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3364;
+ Thu, 29 Apr 93 19:58:54 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <199304291747.AA03873@iesd.auc.dk> "carlisle@CS.MAN.AC.UK"
+Date:         Thu, 29 Apr 93 19:56:48 +0200
+From: Kresten Krab Thorup <krab@IESD.AUC.DK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      documentstyle option versions
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1022
+
+
+>>>>> On Thu, 29 Apr 93 18:29:56 BST, David Carlisle <carlisle@CS.MAN.AC.UK>
+ said:
+
+
+Michael> how do you guard against the possibility that s/he may get subtly
+Michael> wrong results---no error messages---because of having version 1.2
+Michael> instead of version 2.1 of foobar.sty?
+
+David> Well if foobar.sty defines a macro \foobarversion to be 1.2 (or 2.1)
+David> you can test that. If not I suppose that if you know of a macro that
+David> has changed in version 2.1, you can copy the definition of that to a
+David> temp \cs, and test with \ifx against the macro defined by the style.
+
+Why not design some kind of standard interface to style option
+version "control", and then encurage people to use that.  Here's what
+I've been thinking about:
+
+Allow optional syntax in the documentsyle command for specifying the
+version number:
+
+ \documentstyle[foobar:2.1,english]{article}
+
+Which would cause the macro \foobar@major to be defined as 2, and
+\foobar@minor to be defined as 1.
+
+This should be accompanied by some kind of standard for how to use
+such version numbers. Like: "same major number implies same interface"
+or "incompatible" whereas if minor number present (in the style file)
+is smaller than the minor number requested a warning message is emitted.
+
+/Kresten
+

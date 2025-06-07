@@ -1,0 +1,221 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Aug 2009 04:07:53 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7P27rNY009165
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 25 Aug 2009 04:07:53 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7P23fk8025628
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 25 Aug 2009 04:03:41 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7OM2RaU018349;
+	Tue, 25 Aug 2009 04:03:29 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 284262 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 25 Aug
+          2009 04:03:28 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7P23S84002030 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 25 Aug 2009 04:03:28 +0200
+Received: from mail-pz0-f186.google.com (mail-pz0-f186.google.com
+          [209.85.222.186]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n7P23KZQ005827 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 25 Aug 2009 04:03:26 +0200
+Received: by pzk16 with SMTP id 16so473896pzk.18 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 24 Aug 2009 19:03:20 -0700
+          (PDT)
+Received: by 10.141.45.1 with SMTP id x1mr2557717rvj.141.1251165800123; Mon, 24
+          Aug 2009 19:03:20 -0700 (PDT)
+Received: from ?129.127.15.244? ([129.127.15.244]) by mx.google.com with ESMTPS
+          id f42sm1674270rvb.11.2009.08.24.19.03.16 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Mon, 24 Aug 2009 19:03:19 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v935.3)
+X-Mailer: Apple Mail (2.935.3)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <122D1D66-1300-424C-9FBC-11C0B0CCB6C9@gmail.com>
+Date:         Tue, 25 Aug 2009 11:33:13 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: template vs template-alt
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Aug 2009 02:07:54.0739 (UTC) FILETIME=[DBA47C30:01CA2528]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6002
+
+Hello,
+
+Before I start I'd like to thank Joseph for his fantastic effort  
+putting template-alt together. It really is a "re-imagining" of  
+template itself and raises many questions. It is much more useful to  
+be able to compare two working implementations than to discuss  
+template on its own in abstract terms.
+
+* * *
+
+I've been comparing in more detail template to Joseph's template-alt.  
+The only differences I'm interested in are the different ways to  
+define keys. I'm assuming that the collection/type/template/instance  
+groundwork in template is pretty much the approach that we're happy  
+with.
+
+Here's a modified example from the template documentation:
+
+     \DeclareTemplate{caption}{lesssimple}{4}
+       {
+        above-skip         =L           [0pt] \caption_above_skip ,
+        below-skip         =L           [0pt] \caption_below_skip ,
+        number-format      =f2      [#1~#2:~]  
+\caption_number_format:nn     ,
+        nonumber-format    =f1         [#1:~]  
+\caption_nonumber_format:n    ,
+        single-line-format =f1 [\hfil#1\hfil]  
+\caption_single_line_format:n ,
+        caption-font       =f0  [\normalfont] \caption_set_font:   ,
+        caption-hj-setup   =i {hj}  [default] \caption_hj_instance ,
+       }
+
+And here's how something equivalent might look in template-alt:
+
+     \DeclareTemplate{caption}{lesssimple}{4}
+       {
+        above-skip         .set:N       = \l_caption_above_skip     ,
+        below-skip         .set:N       = \l_caption_below_skip     ,
+        number-format      .function:N  = \caption_number_format:nn ,
+        nonumber-format    .function:N  =  
+\caption_nonumber_format:nn   ,
+        single-line-format .function:N  =  
+\caption_single_line_format:n ,
+        caption-font       .function:N  = \caption_set_font:        ,
+        caption-hj-setup   .instance:nN = {hj} \caption_hj_instance ,
+        above-skip         .initial:n   = 0pt                       ,
+        below-skip         .initial:n   = 0pt                       ,
+        number-format      .initial:n   = {#1~#2:~}                 ,
+        nonumber-format    .initial:n   = {#1:~}                    ,
+        single-line-format .initial:n   = {\hfil #1\hfil}           ,
+        caption-font       .initial:N   = \normalfont               ,
+        caption-hj-setup   .initial:n   = default                   ,
+       }
+
+Discussion:
+
+1.  Despite the large increase in verbosity (doubling the line count),  
+I think I like splitting the defaults into separate keyvals. In fact,  
+after splitting defaults from the definition of the keys, it's no  
+longer clear to me whether defaults should be included within the  
+template definition at all. For example, perhaps it would be more  
+readable to write something like this:
+
+     \DeclareTemplate{caption}{lesssimple}{4}
+       {
+        above-skip         .set:N       = \l_caption_above_skip     ,
+        below-skip         .set:N       = \l_caption_below_skip     ,
+        number-format      .function:N  = \caption_number_format:nn ,
+        nonumber-format    .function:N  =  
+\caption_nonumber_format:nn   ,
+        single-line-format .function:N  =  
+\caption_single_line_format:n ,
+        caption-font       .function:N  = \caption_set_font:        ,
+        caption-hj-setup   .instance:nN = {hj} \caption_hj_instance ,
+       }
+     \DeclareTemplateDefaults{caption}{lesssimple}
+       {
+        above-skip         = 0pt              ,
+        below-skip         = 0pt              ,
+        number-format      = {#1~#2:~}        ,
+        nonumber-format    = {#1:~}           ,
+        single-line-format = {\hfil #1\hfil}  ,
+        caption-font       = \normalfont      ,
+        caption-hj-setup   = default          ,
+       }
+
+This transfers much more cleanly when people are generating instances  
+(e.g., they can just copy/paste some of the default list).  
+\DelayEvaluation of template could still be used instead of .initial:V  
+of template-alt.
+
+But considering templates are designed to be instantiated, what's the  
+point of default values? Well, it's nice to be able to generate  
+instances without setting every key; furthermore, the instance  
+parameters will cascade from these default values. If the template  
+defaults can be altered, classes of instances can be generated much  
+more easier, I think.
+
+For example, if we create instances 'chapter', 'section',  
+'subsection', and so on, it's much easier to change the "section font"  
+by calling
+     \DeclareTemplateDefaults{divisions}{plain}{font=italic}
+than editing each instance or the definition of each instance.  
+(Assuming that there's a processing stage where we can edit template  
+defaults and instances *before* the document elements become  
+instantiated and frozen.)
+
+
+2.  If template-alt is going to auto-detect variables and set them  
+appropriately, perhaps it could do the same for functions.
+
+        number-format      .set:N  = \caption_number_format:nn
+
+could look at the signature of \caption_number_format:nn and use  
+\cs_set:Nn automagically, I think.
+
+
+3.  The big difference between template and template-alt is the number  
+of keyval types and how they're referred to.
+
+template provides 11 different key types with nine different letters  
+(two are uppercase variants).
+
+template-alt provides seven key types (assuming we can  
+drop .function), of which four are equivalent to template, one relates  
+to initial/default values (which may be able to be dropped as well as  
+discussed above), and two more deal with choices selection. Actually,  
+I'm lying here, as there are actually 15 key types in template-alt  
+with many variations such as
+     .code:n
+     .code:x
+     .code:Nn
+     .code:Nx
+But where template has six letters for setting different variables,  
+template-alt uses the catch-all ".set:N" with an _x variant.  
+Furthermore, template-alt also deals with global variables properly.  
+(As a possible downside, to do all of this it ties the package writer  
+down to use the expl3 syntax, which template.sty is more lenient about.)
+
+I believe that template-alt, as it currently stands, provides more  
+useful tools for the template designer. Many 2e packages use keyval  
+forms like
+     size=a4paper
+     style=SI
+     font=bf   (not that I like this one!)
+and template should cater for these uses. \MultiSelection doesn't  
+really go far enough, I think.
+
+This isn't to say that template-alt necessarily does things 100%  
+correctly; I am saying that, in my opinion, template needs further  
+improvement before it's ready, and it's not clear to me that we'll be  
+able to add more functionality without overly complicating its current  
+naming system.
+
+* * *
+
+I hope this comparison helps the discussion here, rather than bogging  
+it down with too many details. From the sounds of things, we're much  
+closer to finalising something with xparse than with template.
+
+Will
+

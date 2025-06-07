@@ -1,0 +1,352 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.4905); Wed, 7 Aug 2002 15:54:41 +0200
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id g77DrgVP028300 for <rainer.schoepf@PROTEOSYS.COM>; Wed, 7 Aug 2002 15:53:43 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id g77Db42T013402; Wed, 7 Aug 2002 15:37:04 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C23E19.FA0C2680"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id g7737prc013321; Wed, 7 Aug 2002 15:36:08 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 5949 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 7 Aug 2002 15:36:08 +0200
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id g77Da8gS017373 for          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 7 Aug 2002 15:36:08 +0200
+Received:  from ams.org (sun06.ams.org [130.44.1.6]) by relay2.uni-heidelberg.de          (8.12.4/8.12.4) with ESMTP id g77DZw2T013224 for          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 7 Aug 2002 15:35:59 +0200          (MET DST)
+Received:  (from mjd@localhost) by ams.org (8.12.2/8.12.2) id g77DZoN0015645;          Wed, 7 Aug 2002 09:35:50 -0400 (EDT)
+In-Reply-To:  Julius Smith's message of "Mon, 5 Aug 2002 23:21:16 -0700"
+Lines: 91
+References: <200207221857.g6MIv9iZ010706@bilbo.localnet>            <v03110705b961fef4cd8e@[195.100.226.133]>            <v03110700b9617ea3a699@[195.100.226.132]>            <878z46p1yi.fsf@becket.becket.net>            <200207162352.g6GNq9Ow031038@bilbo.localnet>            <878z46p1yi.fsf@becket.becket.net>            <v03110700b9617ea3a699@[195.100.226.132]>            <v03110705b961fef4cd8e@[195.100.226.133]>            <5.1.0.14.0.20020805230706.0352eec0@w3k.org>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: Gnus v5.7/Emacs 20.7
+X-OriginalArrivalTime: 07 Aug 2002 13:54:42.0250 (UTC) FILETIME=[FACAE2A0:01C23E19]
+X-Scanned-By: MIMEDefang 2.6 (www dot roaringpenguin dot com slash mimedefang)
+Content-class: urn:content-classes:message
+Subject:      Re: LaTeX Error: which file?
+Date: Wed, 7 Aug 2002 14:35:50 +0100
+Message-ID: A<r0bs8edc5l.fsf@sun06.ams.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: LaTeX Error: which file?
+Thread-Index: AcI+Gfrs3xIvb17/TUq/UE8fIxwiXA==
+From: "Michael John Downes" <mjd@AMS.ORG>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4353
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C23E19.FA0C2680
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Julius Smith <jos@W3K.ORG> writes:
+
+> When LaTeX encounters an error, we see something like the following:
+>
+>      ! LaTeX Error: \begin{itemize} on input line 21 ended by =
+\end{document}.
+>
+> However, I typically have many "\input" statements, so it is often =
+annoying
+> to figure out which file contains the offending line.  (In an emacs =
+shell,
+> I routinely type "\C-u\C-r([a-z]" to get back to the last opened file, =
+but
+> this is only right some of the time.)  It seems it should not be hard =
+to
+> improve the error message to say instead
+>
+>    ! LaTeX Error: \begin{itemize} on input line 21 in foo.tex ended by
+> \end{document}.
+
+You are right of course that it is a good idea. I think it was already
+implemented in one of the early LaTeX 3 prototypes.
+
+But you don't have to wait until LaTeX 3 to get that functionality.
+There is a package "fink" on CTAN that tracks input file names (provided
+that you use \include{filename} or \InputIfFileExists{filename}{}). And
+with that, you "merely" need to redefine \begin and \@badend as shown
+below. You might want to suggest to the author of the fink package that
+he add this feature as an option. Failing that, write your own package
+that loads the fink package and adds the rest.
+
+------------------------------------------------------------------------
+%&elatex
+
+\begin{filecontents}{finktest1.tex}
+What if we have a missing end-itemize?
+\begin{itemize}
+\item First item
+\item Second item
+% end-itemize should have been here
+
+Some more text after.
+\end{filecontents}
+
+\begin{filecontents}{finktest2.tex}
+Just another file.
+\end{filecontents}
+
+\documentclass{article}
+\usepackage{fink}
+
+\makeatletter
+\newcommand{\iife}[1]{%
+  \InputIfFileExists{#1}{%
+    \typeout{>> Entering "#1"}%
+  }%
+}
+
+\def\begin#1{%
+  \@ifundefined{#1}{%
+    \def\reserved@a{%
+      \@latex@error{Environment #1 undefined}\@eha}%
+  }{%
+    \def\reserved@a{%
+      \def\@currenvir{#1}\edef\@currenvline{\on@line}%
+      \edef\@beginfile{\finkfile}%
+      \csname#1\endcsname
+    }%
+  }%
+  \@ignorefalse \begingroup \@endpefalse
+  \reserved@a
+}
+
+\def\@badend#1{%
+  \@latex@error{%
+    \protect\begin{\@currenvir}\@currenvline\MessageBreak
+    in file "\@beginfile"\MessageBreak
+    ended by \protect\end{#1}%
+  }%
+  \@eha
+}
+
+\@ifundefined{everyeof}{}{% e-TeX only
+  \everyeof{\typeout{>> Exiting "\finkfile"}}%
+}
+\makeatother
+
+\begin{document}
+
+La de dah.
+\iife{finktest1.tex}
+\iife{finktest2.tex}
+
+More text after.
+
+\end{document}
+
+------_=_NextPart_001_01C23E19.FA0C2680
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: LaTeX Error: which file?</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Julius Smith &lt;jos@W3K.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; When LaTeX encounters an error, we see something =
+like the following:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ! LaTeX Error: =
+\begin{itemize} on input line 21 ended by \end{document}.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; However, I typically have many =
+&quot;\input&quot; statements, so it is often annoying</FONT>
+
+<BR><FONT SIZE=3D2>&gt; to figure out which file contains the offending =
+line.&nbsp; (In an emacs shell,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I routinely type &quot;\C-u\C-r([a-z]&quot; to =
+get back to the last opened file, but</FONT>
+
+<BR><FONT SIZE=3D2>&gt; this is only right some of the time.)&nbsp; It =
+seems it should not be hard to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; improve the error message to say instead</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; ! LaTeX Error: \begin{itemize} =
+on input line 21 in foo.tex ended by</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \end{document}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>You are right of course that it is a good idea. I =
+think it was already</FONT>
+
+<BR><FONT SIZE=3D2>implemented in one of the early LaTeX 3 =
+prototypes.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But you don't have to wait until LaTeX 3 to get that =
+functionality.</FONT>
+
+<BR><FONT SIZE=3D2>There is a package &quot;fink&quot; on CTAN that =
+tracks input file names (provided</FONT>
+
+<BR><FONT SIZE=3D2>that you use \include{filename} or =
+\InputIfFileExists{filename}{}). And</FONT>
+
+<BR><FONT SIZE=3D2>with that, you &quot;merely&quot; need to redefine =
+\begin and \@badend as shown</FONT>
+
+<BR><FONT SIZE=3D2>below. You might want to suggest to the author of the =
+fink package that</FONT>
+
+<BR><FONT SIZE=3D2>he add this feature as an option. Failing that, write =
+your own package</FONT>
+
+<BR><FONT SIZE=3D2>that loads the fink package and adds the rest.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>----------------------------------------------------------------=
+--------</FONT>
+
+<BR><FONT SIZE=3D2>%&amp;elatex</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{filecontents}{finktest1.tex}</FONT>
+
+<BR><FONT SIZE=3D2>What if we have a missing end-itemize?</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item First item</FONT>
+
+<BR><FONT SIZE=3D2>\item Second item</FONT>
+
+<BR><FONT SIZE=3D2>% end-itemize should have been here</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Some more text after.</FONT>
+
+<BR><FONT SIZE=3D2>\end{filecontents}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{filecontents}{finktest2.tex}</FONT>
+
+<BR><FONT SIZE=3D2>Just another file.</FONT>
+
+<BR><FONT SIZE=3D2>\end{filecontents}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentclass{article}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{fink}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\iife}[1]{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \InputIfFileExists{#1}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \typeout{&gt;&gt; Entering =
+&quot;#1&quot;}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }%</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\begin#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@ifundefined{#1}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \def\reserved@a{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@latex@error{Environment #1 undefined}\@eha}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \def\reserved@a{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\def\@currenvir{#1}\edef\@currenvline{\on@line}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\edef\@beginfile{\finkfile}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\csname#1\endcsname</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@ignorefalse \begingroup \@endpefalse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \reserved@a</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@badend#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@latex@error{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\protect\begin{\@currenvir}\@currenvline\MessageBreak</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; in file =
+&quot;\@beginfile&quot;\MessageBreak</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ended by \protect\end{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@eha</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\@ifundefined{everyeof}{}{% e-TeX only</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \everyeof{\typeout{&gt;&gt; Exiting =
+&quot;\finkfile&quot;}}%</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>\makeatother</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>La de dah.</FONT>
+
+<BR><FONT SIZE=3D2>\iife{finktest1.tex}</FONT>
+
+<BR><FONT SIZE=3D2>\iife{finktest2.tex}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>More text after.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C23E19.FA0C2680--
+

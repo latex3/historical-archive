@@ -1,0 +1,97 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p4UKKd98021761
+	for <rainer@rainer-schoepf.de>; Mon, 30 May 2011 22:20:40 +0200
+Received: (qmail 21079 invoked by alias); 30 May 2011 20:20:34 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 30 May 2011 20:20:32 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx077) with SMTP; 30 May 2011 22:20:32 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p4UKIHSw029842
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 30 May 2011 22:18:17 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p4UFtGGJ016830;
+	Mon, 30 May 2011 22:18:16 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1243131 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 30 May
+          2011 22:18:16 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p4UKIGXQ030394 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 30 May 2011 22:18:16 +0200
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p4UKI3dY006972 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 30 May 2011 22:18:07 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1QR8uV-00079T-el for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 30 May
+          2011 20:18:02 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.17)
+            Gecko/20110414 Thunderbird/3.1.10
+MIME-Version: 1.0
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4DE3FB77.6020707@morningstar2.co.uk>
+Date:         Mon, 30 May 2011 21:17:59 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \GetInfoId, \filename, etc.
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p4yCuwxJv6KY0FCZRnwZ+13/97VikQI3huTQ0vHMIXxJZNVuUn7lZEmqA7SX
+ WcNGP7EMkKQfB1wkaog747jPeXUhAZWkt7/+/GanbJQiIHpoOm6SDuAiJfeQMhQhFICooU4QQYsO
+ bDF9sLJmd+WzuaSmppKZ9DVrL1w3S2Q5YHMKmz7Y6oLDBfma/wRA3dBMSg8MWufEKc8gnAzVoBHg
+ uB+V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6774
+
+Hello all,
+
+As detailed in the bug database
+(https://github.com/latex3/svn-mirror/issues/15) there are currently
+some issues with how \GetInfoId assigns the data it collects to storage
+macros. The current storage names, \filename, \filedate, etc., can clash
+with those from other sources.
+
+Some time ago, there was a suggestion that \GetInfoId should be removed
+entirely from expl3 as it is tied to CVS/SVN meta-data. At present, that
+is not possible as version information for the core LaTeX3 modules is
+extracted directly from the $Id string. At the same time, there is good
+reason to believe that over time this method may be replaced by
+alternatives.
+
+At this stage, the key is to avoid clashing with any other packages
+while still retaining the version data for existing modules. One
+approach to this is to use storage macro names less likely to clash with
+other packages. An obvious approach is \ExplFileDate, \ExplFileVersion,
+etc. Before making such a change, I'd like to check:
+
+ - Are any packages other than those maintained by the team using
+   \GetInfoId?
+ - If so, which pieces of meta-data are needed? (The team only use
+   \filedate and \fileversion)
+ - Is \GetInfoId being used only with SVN meta-data, or is anyone
+   using it with CVS?
+
+Once I know what is in use I will modify \GetInfoId to provide 'safe'
+meta-data macros for those items which are needed.
+--
+Joseph Wright
+

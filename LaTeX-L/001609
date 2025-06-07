@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2992" "Wed" "23" "March" "1994" "15:28:00" "GMT" "Alan Jeffrey" "alanje@cogs.sussex.ac.uk" nil "73" "Re: LaTeX2e and PostScript" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA12294; Wed, 23 Mar 94 16:38:29 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA13569; Wed, 23 Mar 94 16:36:28 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA21778
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 23 Mar 1994 16:36:26 +0100
+Message-Id: <199403231536.AA21778@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 0441; Wed, 23 Mar 94 16:35:42 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 0440; Wed,
+ 23 Mar 1994 16:35:42 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2898; Wed,
+ 23 Mar 1994 16:34:29 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <m0pjTx5-0006ReC@rsuna.crn.cogs.susx.ac.uk> (message from Frank
+              Poppe on Wed, 23 Mar 1994 15:29:00 +0100)
+Date:         Wed, 23 Mar 1994 15:28:00 GMT
+From: Alan Jeffrey <alanje@cogs.sussex.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: LaTeX2e and PostScript
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1609
+
+Not very much to do with LaTeX3 ;-) but...
+
+>It seems to me that the italic variant should be mapped to the italic
+>shape in the NFSS scheme, while the oblique variants should be mapped to
+>the slanted shape.
+
+Yes, `slanted' and `oblique' are synonyms.
+
+>In the PSNFSS package this is the case now, except
+>for Courier-Oblique and  -BoldOblique, which are mapped to pcr/m/it and
+>pcr/b/it (this should be pcr/m/sl and pcr/b/sl in my opinion).
+
+Yes... the fd files in psnfss have some odd `features' which should be
+fixed for the full distribution :-)
+
+The main problem with oblique fonts is that some drivers don't support
+faked oblique fonts.  So if we distribute oblique fonts as standard,
+then some people won't be able to print the documents, or will get
+strange font substitutions with no warning.  The final decision on
+support for obliqued fonts is still `under construction'.
+
+>times-roman e.g., my distribution (I suppose it came with DVIPS but I'm
+>not sure) contains a ptmro.tfm and ptmro.vf, while the rptmro entry in
+>PSFONTS.MAP refers to: Times-Roman ".167 SlantFont"
+
+The fonts which come with dvips are *not* the fonts supported by
+psnfss!  If you're using psnfss, you should make sure you're using the
+fonts that come with it...  In particular, the dvips fonts refer to
+`rptmro' as the raw Adobe Times-Oblique, rather than `ptmr0' which is
+the `approved' font name.
+
+>I wonder if these tfm- and vf-files have been made for other PS fonts?
+
+There are plans to convert the entire Monotype CD-rom into TFM and VF
+format.  This may take some time...
+
+>Finally I wondered about the Helvetiva-Narrow fonts. The PSNFSS package
+>does not use them. I have added entries in the FD file for phv/c/n,
+>etc., and this works well.
+
+The standard Helvetica PSNFSS fd file doesn't support
+Helvetica-Narrow, since many drivers don't have it, and the `Laser
+Writer 35' package is meant to work with (almost) any PostScript
+printer.
+
+If you do have extra fonts you'd like to add to your local FD file,
+feel free!  But please either:
+
+ a) change the name of the family, or
+ b) don't distribute the resulting fd file.
+
+In either case, you should change any identification information
+(comments, \typeout's, \wlog's, \ProvidesFile, etc. etc.) to make it
+clear that you've changed the .fd file.
+
+Sorry to sound draconian, but document portability is one of the major
+selling points of LaTeX, and if different sites have different fd
+files with the same name, this doesn't help much!
+
+>Did anybody make TFM and VF files for the
+>"real" Helvetica-Narrow fonts?
+
+The tool for doing this is `fontinst' (OK, so I wrote it :-) and is on
+CTAN.  If anyone's used fontinst to install any fonts, and they'd like
+to share them with the rest of the TeX community, please mail me and
+I'll include them in the fontinst contrib directory.
+
+Yours,
+
+Alan.
+
+Alan Jeffrey         Tel: +44 273 606755 x 3238         alanje@cogs.susx.ac.uk
+School of Cognitive and Computing Sciences, Sussex Univ., Brighton BN1 9QH, UK
+

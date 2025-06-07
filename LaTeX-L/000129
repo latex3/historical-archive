@@ -1,0 +1,254 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 11 Jun 90 12:41:35 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Attributes and Parameters
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 129
+
+1.  First some comments on the "...matter" discussion:
+
+Barbara's comment needs serious consideration:
+
+>  providing a good framework and tools for implementing
+> a publisher's required/desired styles is what latex should do, not lock
+> all documents into just a few predetermined ones.
+>                                       -- bb
+
+
+I agree that this must be our primary aim: but it certainly does not
+make the problem go away since we still need a good user-syntax for
+providing the information.
+
+What is also needed is a designer-interface
+where the following can easily be specified:
+
+1.  What information is required or optional (possibly using defaults
+>from the required part, or elsewhere)
+
+2.  How that information should be manipulated (eg Capitalising
+certain parts) and used (eg typeset in various parts of the document
+or, if possible, "passed out of Latex" for use by other programs).
+
+3.  How the information provided by the publisher (eg copyright
+notices) is incorporated into the typesetting.
+
+
+It also does not address the problem of whether each document type
+will specify where in the input document the user must put each bit of
+"matter" (I believe that, in SGML for entities that appear in the
+"main text" of a document, this would normally, but
+not necessarily, be at the point where the text appears).
+
+The alternative is that all such information is specified in the
+preamble of the document: possibly enclosed by suitable "matter"
+delimiters; or possibly "free form" apart from the syntax to be used
+for each piece of information.  The syntax for providing the
+information could be either be much as at present, eg:
+
+\title ...
+
+and/or
+
+\begin ...
+
+content
+
+\end ...
+
+or like attributes:
+
+title=
+
+
+Note that both of these suggestions treat the preamble as the place
+where "attributes of the document" are specified.  I have always
+thought of the preamble (including the \documentstyle declaration)
+as being exactly this and see no reason why it should not continue to
+be, thus preventing the need for attributes to the document
+environment (which is not really an environment, it just looks like
+one!) or in the \documentstyle command.
+
+It would even be possible to remove the optional substyles and
+specify them after the \documentstyle.  Indeed, if this is not done,
+it will be difficult for users to know which attributes should be
+specified as an optional style, which can be specified as attributes
+in the preamble, and which need to be specified by setting parameter
+values in the preamble.
+
+Of course, the whole preamble will need to be parsed before "reading
+in the main style file" or whatever action the main documentstyle
+causes in the new system.
+
+
+2.  Now some comments on other aspects of "attributes":
+
+Recent discussions with Frank and Rainer have
+convinced me that, as far as implementation is concerned,
+the following method (which I shall denote here FMi)
+has many advantages. By FMi I mean the following idea, which was
+expounded in more detail by Frank in 1)--4) of his 25 May message
+
+for each attribute,  checking whether a particular control sequence
+(whose name depends on both environment and attribute) is defined and
+taking the appropriate action.
+
+Actually, I did not take much persuading as I have been an "attribute
+advocate" for some time and had discovered the need for something like
+this as part of the implementation.  Its major advantage is that it
+gives a smooth and consistent method of allowing an attribute to have
+different effects determined by the environment in which it is used.
+This will, I am sure, make the designer-interface easier to use,
+describe and implement.
+
+
+FMi also makes it straightforward to control what attributes
+are allowed for each environment.  He has also described [in 3)] a
+mechanism for passing attributes on from a high level environment to a
+lower level one such as "list".
+
+But use of FMi, as I have described it, to implement attributes does not
+imply that any particular user-syntax need be used to specify them.
+
+I think that Frank's suggested syntax is easy to explain and
+use and I think that having a new syntax for a new idea is sensible.
+However, I have no strong views on the syntax since FMi can be used for
+any syntax, provided that syntax distinguishes "attributes" from
+"parameter value assignments" (by which I mean anything put in by the
+user which should be interpreted directly as assignment statements
+such as \setlength or \renewcommand).  Frank's suggestion of a "decls="
+attribute is one of many methods of achieving this distinction, and it is
+method which fits in well with the rest of his syntax.
+
+One thing I should like to point out here is that Frank is wrong in
+asserting the following in answer to one of Leslie's claims:
+
+>       * It is trivial to implement.  (Hence, less
+>       likely to have bugs.)
+>
+> This is simply incorrect as Leslie already found out, because using
+> actual macro names like \compact will make it necessary to reset
+> everything in every circumstance.
+
+In fact, provided it is clear from the context syntax that an attribute
+is to be parsed, then it is just as easy to pick-up an attribute specified as
+"\compact" as one specified as "compact", and then treat it as in FMi;
+indeed it is not much more difficult to allow the user to specify an
+attribute in either form!
+
+I shall therefore not spend any more time on the syntax.
+
+
+As I have said before, it is much more important to specify clearly
+what kinds of modifications to an environment are to be made by these
+attributes.  I had not understood until I discussed this with Frank
+that his intention was that only modifications which could be described
+as "logical" should be made in this way, whereas formatting
+specifications, such as the frequently discussed changes to topsep and
+arraystretch, should be done by making "parameter value assignments"
+in the "decls=" attribute.  This was partially explained in Example 3)
+of his 25 May message, but Example 1) seems to contradict this!
+
+Thus everything which Leslie, on 26 May, referred to as "parameters"
+would constitute only the assignments in Frank's "decls=' attribute.
+Therefore they are in complete agreement that any parameter can be
+easily reset there.  I am not at all happy with allowing such freedom
+but agree that it is necessary to allow the user to reset parameters in some
+such controlled way (to override defaults, for instance); I also think
+it is important, if this is allowed, that the exact point at which
+these assignments are done can be easily controlled by implementors of
+new environments and that they are done in a way that is safe, in the
+sense that spaces and blank lines put in by the user within the
+"parameter setting" do not have any effect on the typesetting of the
+document.
+
+I am still not sure exactly how decisions will be made as to what
+attributes are allowed: Frank states that it will be "only a small
+number", and with his restriction I can see that this could be the
+case (especially if he decides what is allowed!).
+
+I also suspect that I disagree with Frank on the following points:
+
+ 1.  What should be an attribute?--- I would want a lot more
+possibilities than him: so that everything that is likely to change is
+changed using attributes, leaving the all-purpose decls= for "emergencies
+only".  I think that he would reserve attributes for certain important
+variants of the environment, ie make it an extension of the * forms.
+
+ 2.  What is a "logical" attribute of an environment and what is
+a "formatting" attribute?--- some of the things which he has suggested
+as attributes are to him "logical" but to me "formatting".  Since I
+think that both should be allowable as attributes, this distinction
+does not matter to me, but it does for his more restricted class of
+variants which should accessed by attributes.
+
+Thus I wish to ask Frank the following questions:
+
+  1.  How shall we decide what should be the attributes for each environment?
+
+  2.  Will tools to ease the addition of attributes to those
+allowed for a particular environment be available in the designer interface?
+If these are available, how would he prevent a designer from
+adding what he(=Frank) considers to be formatting attributes to those
+allowed for an environment?
+
+  3.  PLease can he give some examples with the following structure?
+
+environment-name;
+
+suggested list of allowed attributes;
+
+why these are "logical"; and why there should not be any more;
+
+what would be the sensible parameters to be reset in the decls=
+attribute for this environment;
+
+why resetting each of these parameters should not be done by an
+attribute.
+
+
+3.  Some further, not totally unrelated, questions and requests:
+
+ 1.  Can I once again make my plea for eliminating "trailing optional
+arguments using []": any "punctuation symbol" except [] and ()
+would be very much less likely to produce "weird error messages" such
+as "Missing number, treated as zero." But my preference would be to avoid
+them altogether. This may not be easy for those command forms which
+do not have any required arguments but, in fact, in these cases the
+optional argument could be in good old braces: this would be totally
+harmless but, I agree, may not be the best user-interface---but then
+the present []s are certainly far from an optimal user-interface.
+
+ 2.  I have noticed that \addto@hook is becoming ubiquitous in
+Frank and Rainer's code, and I understand that it is a very useful
+idea which can, for example, make \everypar far more flexible than
+present uses would suggest it to be.  I should like to know how it is
+implemented (I can think of several ways). In particular:
+
+will it always add tokens to token registers?
+
+will it always add them to the beginning, or always to the end?
+
+or, will this vary from hook to hook?
+
+will there be a \new@hook tool to set up hooks and decide how adding to
+them will be done?
+
+Finally, and most importantly:
+
+will there be a \subtractfrom@hook?  This would give "total
+flexibility" but, unlike \addto@hook, I cannot see how to implement
+it, at least not without making a new data structure for hooks (hence
+the above questions).
+
+
+Time for bed, Zebedee said.
+
+
+chris
+
+

@@ -1,0 +1,142 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4595" "Thu" "10" "December" "92" "16:58:52" "GMT" "Mike Piff" "M.Piff@SHEFFIELD.AC.UK" nil "115" "Re: BNF.DOC -- how about this??" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA09448; Fri, 11 Dec 92 11:06:40 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA19806; Fri, 11 Dec 92 11:03:48 +0100
+Message-Id: <9212111003.AA19806@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1758; Thu, 10 Dec 92 18:08:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7910;
+ Thu, 10 Dec 92 18:08:53 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7908;
+ Thu, 10 Dec 92 18:08:49 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 10 Dec 92 16:58:52 GMT
+From: Mike Piff <M.Piff@SHEFFIELD.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: BNF.DOC -- how about this??
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 905
+
+
+> Date: Wed, 09 Dec 1992 13:32:14 CST
+> From: "George D. Greenwade" <bed_gdg@SHSU.edu>
+> To: M.Piff@sheffield.ac.uk
+> Subject: BNF.DOC -- how about this??
+> Sender: bed_gdg@shsu.edu
+>
+> Mike:
+>
+> I have made a few adjustments to your last submission of BNF.DOC (which I
+> am playing with since we are both in something of a learning mode here).
+> Clearly, you can do anything you want with this, but I think it provides a
+> nice extension.  I have modified the paper sizing routine from vol-task.tex
+> and included it in the %<+driver> section.  This allows for something very
+> akin to FULLPAGE.STY for those of us on this side of the pond and provides
+> something close to A4WIDE.STY for the rest of the world.  Everything works
+> fine at this end with docstrip.tex.
+>
+
+Looks fine to me.
+
+> Also, I modified your header, reversing the author and filename fields
+> (which should be a standard in a close-to-be release in Nelson's new
+> filehdr package as I understand it).  This makes filename identification
+> much quicker.  Additionally, I added a checksum to the header.
+>
+> As a good Texan would way, "waddaya think?"
+>
+> --George
+>
+
+I am mystified by this. As far as I can see, none of M&S' stuff contains
+such a file header---indeed, it seems to be incompatible with the .DOC
+style. I should have thought that the header has to be
+the FIRST thing in the file, yet it has to be surrounded by \iffalse...\fi
+doesn't it?
+
+The other difficulty appears to be that the usefulness of
+"\filedate" evaporates
+if one then has to explicitly insert the date in the header.
+
+Perhaps I am missing something, but it seems to need some thought.
+
+Mike
+
+
+> \def\filedate{12/09/92 12:56pm}
+> %\iffalse
+> %%% ====================================================================
+> %%%  @LaTeX-file{
+> %%%     filename        = "bnf.sty",
+> %%%     date            = "9 Dec 1992",
+> %%%     time            = "12:56 BST",
+> %%%     author          = "Mike Piff",
+> %%%     address         = "Dr M. J. Piff
+> %%%                        University of Sheffield
+> %%%                        Department of Pure Mathematics
+> %%%                        Hicks Building
+> %%%                        Hounsfield Road
+> %%%                        SHEFFIELD S3 7RH
+> %%%                        England",
+> %%%     telephone       = "0742-305468",
+> %%%     email           = "M.Piff@shef.ac.uk (Janet)",
+> %%%     keywords        = "Backus,Naur,syntax,grammar",
+> %%%     supported       = "yes",
+> %%%     checksum        = "10141 528 2414 20734",
+> %%%     docstring       = "A style option to LaTeX for producing
+> %%%                        Backus-Naur Form syntax notation.",
+> %%%  }
+> %%% ====================================================================
+> %% This is BNF.STY
+> %% Copyright (C) 1992 by Mike Piff.
+> %% All rights reserved.
+> %% Copying of this file is authorized only if
+> %% you make absolutely no changes to your copy.
+> %%
+> %% Usage:
+> %% \documentstyle[bnf]{article} %% in LaTeX
+> %<+driver>\documentstyle[12pt,doc,bnf]{article}
+> %<+driver>%    Select paper size.
+> %<+driver>\def\firstletter#1#2\end{#1}
+> %<+driver>\typein[\papersize]{Intended paper size?J%
+> %<+driver>Choices: US letter size or A4; enter u or a, please:}%
+> %<+driver>\edef\setpapersize{\lowercase{\edef\noexpand\papersize{%
+> %<+driver>  \noexpand\firstletter\papersize u\noexpand\end}}}
+> %<+driver>\setpapersize
+> %<+driver>\if a\papersize\relax
+> %<+driver>  \typeout{%
+> %<+driver>OK, adjusting textwidth and textheight for A4 paper size}
+> %<+driver>%    A4 paper size, 21cm x 30cm
+> %<+driver>  \textwidth 6.375 true in \textheight 42\baselineskip
+> %<+driver>\else
+> %<+driver>  \typeout{%
+> %<+driver>Adjusting textwidth and textheight for US letter paper size}
+> %<+driver>%    US letter-size paper, 8.5 x 11 in:
+> %<+driver>  \textwidth 6.5in \textheight 8.9in
+> %<+driver>\fi
+> %<+driver>\begin{document}
+> %<+driver>   \DocInput{bnf.doc}
+> %<+driver>\end{document}
+> %<*style>
+> %\fi
+> %
+> %\CheckSum{334}
+
+etc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff                      %%  e-mail:
+%% Department of Pure Mathematics   %%
+%% University of Sheffield          %%  M.Piff@sheffield.ac.uk
+%% Hicks Building                   %%  M.Piff@pa.shef.ac.uk
+%% Hounsfield Road                  %%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SHEFFIELD S3 7RH                 %%  Telephone: SHEFFIELD (0742) 768555
+%% England                          %%             Ext. 4431
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Jul 90 13:38:19 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Proposal for a section heading concept
+To: LaTeX discussion list <LATEX-L@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 199
+
+I have an idea how a section heading should be handled.  At the moment
+I'm not so much concerned about implementation or actual syntax, only
+about the principal way of doing it.
+
+When the user writes a section-type command (s)he specifies the
+following information:
+- the text of the heading
+- automatic numbering or no numbering
+- writing to toc or not, possibly with a special text for the toc.
+
+This is then passed to the kernel, in the form, say,
+  \here-starts-a-section{text}{t/f}{t/f}[extra text]
+where the two t/f means either true or false (Probably one would
+set switches, but I don't care about the method at the moment).
+
+Now the kernel generates the structual (not textual) representation
+of the section number (if needed) and writes the necessary information
+to the toc file.  With `structual representation' I mean the sequence
+of counter values `2 2 1' instead of the textual form `Section 2.2.1'.
+
+Now the style comes into the play: its the style's task to determine
+how the section heading is typeset.  It will therefore convert the
+structual representation of the number into textual form.  [So far
+nothing new, only mentioned to set the scene.]
+
+Now, many headers in books are of what I call the conventional form:
+some space going before the text, then the text, possibly typeset
+in a slightly special way (such as the last line centered instead
+of flushleft), followed again by space, and then the body of the
+section, with some additional requirement such as special indentation
+for the first paragraph or that there must be at least n lines on
+the same page.  For this format Frank's proposal is well-suited, and
+I think we can adopt his solution.
+
+There remain `the rest of the cases', e.g., the format I mentioned
+in an earlier message: the text of the heading typeset in the margin
+next to the first lines of the section's body.  I think that layouts
+like this can be handled in one of the following ways:
+- The heading is typeset in a box of standard dimensions (0x0 or
+  \textwidth x0), and it is the style's responsibility to put the
+  right things into it.
+- The style returns a box containing the heading, and it specifies
+  where to put it (say, relative to the bottom of the last paragraph
+  of the preceding section, to the top of the first following paragraph)
+
+Finally, there are certain layouts that cannot be implemented in this
+way.  I strongly vote for leaving a `hook' in the following sense:
+the style may set a switch that tells the kernel that it has nothing
+to do, that instead everything is handled by the style.
+
+In short, I am proposing a two-level scheme: the toplevel for the
+`usual' cases, a second level (where much must be done by hand) for
+more complicated layouts, and finally an escape to do all and
+everything by hand (within the limits of TeX, of course).
+
+I did not say much about implementation, as my ideas have not reached
+that state yet.  Maybe they will never, when you decide that this is
+not the way to do it.
+
+Eagerly awaiting your comments and flames...
+
+Rainer
+
+

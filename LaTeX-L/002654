@@ -1,0 +1,143 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4905" "Tue" "7" "July" "1998" "17:55:46" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "102" "Re: First experience with xr under L3PL" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id JAA21781;
+	Tue, 7 Jul 1998 09:56:12 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.EF2B1EA8@listserv.gmd.de>; Tue, 7 Jul 1998 9:56:11 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 380974 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Jul 1998 09:56:06 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id JAA28484
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Jul 1998 09:56:01
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.8) id
+          RAA26108; Tue, 7 Jul 1998 17:55:46 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199807020724.RAA19706@ricetub.anu.edu.au>
+            <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+            <199807060810.SAA24960@ricetub.anu.edu.au>
+            <199807062020.WAA19898@frank.zdv.uni-mainz.de>
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Message-ID:  <199807070755.RAA26108@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199807062020.WAA19898@frank.zdv.uni-mainz.de>
+Date:         Tue, 7 Jul 1998 17:55:46 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: First experience with xr under L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2654
+
+Frank Mittelbach writes:
+ >  > The rest seems OK . . . .
+ >
+ > what a relieve :-)
+
+On closer inpsection you also need this somewhere:
+\tlp_new:Nn \l_xr_line_tlp {}
+
+So as we have seen there is a Fortran-style implicit declaration of
+tlp's in certain circumstances, e.g. when used as the second argument
+of \ior_to:NN.  I'd like to suggest that the `check' option used in
+the dtx files be changed into a package option, say `checkdef' (you
+can think of a better name).  At the moment the decision of whether or
+not to check arguments is made once for all time when docstrip is
+invoked.
+
+Clearly we are still used to using \def in the same way as Lisp's
+setq, i.e. as a general definition mechanism that doesn't care about
+what you are defining (i.e. whether it has a previous definition).
+The new version of xr now has three `declarations' that are evaluated
+when the package is loaded.  I can live with that; I (we) just need to
+remember that a new discipline is required.  I expect that a syntax
+checker for L3PL will find uses of seq's, tlp's, etc. without
+corresponding declarations.
+
+Your algorithm is also subtly different.  The original version is
+careful to process \@input's in the order in which they are
+encountered, but your version uses a stack.  If there are no label
+conflicts, the net effect is the same.  But if there are multiple
+conflicts, the original version stops at the first conflict, whereas
+yours might even stop at the last first and the first last!
+
+In your favour:  since you use push and pop operations it's obvious
+that your version handles \@input's back-to-front, whereas it wasn't
+obvious in the original that \@input's are handled front-to-back (both
+versions using a breadth-first traversal).
+
+ >  > Tim's questions are really quite important for the `average' package
+ >  > writer, because they will be programing `in-the-small', and the xr
+ >  > example is quite a good one for that.  Even such a small package has
+ >  > needed a total re-think and re-writing.
+ >
+ > true but is it so much different from having to hunt through the LaTeX
+ > source to find you way in providing packages?
+
+Well . . . it's yet another layer of knowledge that has to be mastered
+before you can start doing non-trivial things.  Those of us who have
+been using TeX for ten years or more will shrug our shoulders and
+learn it anyway, but it might well serve as a deterrent to those who
+come to LaTeX3 as beginners.
+
+ > After all a lot of the documentation therein was provided by us during
+ > the last years before that its internal documentation was very much
+ > out of date (still is in some parts).
+
+If you are happy to release out-of-date and inconsistent documentation
+for incomplete packages then in fairness to us - your guinea pigs -
+_everything_ must be up for grabs.
+
+Frank wrote elsewhere:
+ > just to change all the files to some new convention takes some effort
+ > which can be better spend. at the moment at least!
+
+Perhaps (the fewer inconsistencies in the original, the easier it will
+be), and I am not suggesting doing it on a whim; but if you try to
+close doors at this stage I - and I suspect others - will stubbornly
+stick in our arms and legs.  Even if you have already written five
+chapters of your next book :-)
+
+ > what i mean is, you need to have got a feeling for it but that it true
+ > right now as well except that right now because of nearly no
+ > conventions people are forced to reinvent the wheel over and over just
+ > because they don't know that some command or datatype or whatever
+ > already exist somewhere.
+
+Agreed.  A good example from the internals of LaTeX is the \@for and
+\@tfor constructs.  Unless you read the old lplain.tex or the new
+ltcntrl.dtx you would probably have no idea that these constructs
+existed.  The problem here is not one of consistency, but rather (a)
+these constructs have never really been `official' and advertised, and
+(b) there is still no proper documentation.  \@for, \@tfor, and many
+other internal macros of LaTeX deserve `promotion' to L3PL.  Much
+of this reinvention will then be avoided.
+
+ > so yes you need a re-think, you probably don't need much of a
+ > rewriting for an existing package if you just mainly do a manual
+ > translation but you can gain a lot once you start replacing all you
+ > low-level private code by already provided solutions for many of the
+ > basic functionality which right now is often repeated over and over
+ > again in packages.
+
+It sounds as though it must be true, but let's see.  As I said
+earlier, we will go anywhere you take us, but let's enjoy the journey
+and learn from it.
+
+Frank also writes:
+ > . . . the
+ > solution is that you provide a replacement book for the TeX book.
+
+So this is your next book . . . my hand is creeping up . . . pick me!
+:-) I would be happy to contribute a chapter or two or proof-read or
+. . . Eine deutsche Uebersetzung waere auch moeglich . . . :-)
+

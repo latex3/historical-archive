@@ -1,0 +1,91 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2306" "Tue" "9" "November" "93" "09:30:47" "CST" "Alex Stark" "jas1@ENGINEERING.CAMBRIDGE.AC.UK" nil "64" "RE: styles and locations" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08332; Tue, 9 Nov 93 10:37:44 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA09686; Tue, 9 Nov 93 10:37:38 +0100
+Message-Id: <9311090937.AA09686@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2498; Tue, 09 Nov 93 10:36:19 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8589;
+ Tue, 09 Nov 93 10:36:13 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8585;
+ Tue, 09 Nov 93 10:36:11 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 9 Nov 93 09:30:47 CST
+From: Alex Stark <jas1@ENGINEERING.CAMBRIDGE.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      RE: styles and locations
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1125
+
+
+First off, can we forget the idea of using suffixes to identify file types.
+There are three important reasons for this.
+
+1) Directories listed alphabetically will have all the files with the same
+prefix together which is very useful;
+
+2) Wildcard operations are, in general, handled better for prefixes;
+
+3) If filenames are too long (and a number of style writers etc do not keep
+to the 8+3 limitations) suffixes get lost first, so `somethingnf' and
+`somethinglf' become the same.
+
+
+I do not know whether or not it is because I have set up our (em)TeX
+installation badly, but our TEXINPUTS directory has 270 files in it. I would
+really like to be able to divide these into subdirectories. The problem with
+that is that users' files wouldn't process properly. Therefore I tentatively
+suggest the following.
+
+All LaTeX2e inputs should be placed in subdirectories of TEXINPUTS.
+Initially the LaTeX3 team would decide the arrangement, later the CTAN
+maintainers could organise them. Thus everyone should have the same
+hierarchy.
+
+For example:
+
+TEXINPUTS\classes \      for main style classes such as ARTICLE
+
+         \fontsel \      for font selections such as
+         \fontsel \times
+         \fontsel \amssymb
+
+         \journals\      for journal-specific styles such as
+         \journals\ieee\   trans
+         \journals\agu \   jgr
+         \journals\siam\
+         \journals\ams \
+
+         \pscript \epsf  and so on.
+
+A document might then start:
+
+\documentclass[   %
+                  %
+fontsel/times,
+journals/iop/jop,
+pscript/epsf      %
+                  %
+]{classes/report}
+
+It seems to me that the few extra characters here are worth it.
+
+This is just an idea, but something must be done about those 270 files!
+
+/Alex Stark
+----------------------------------------------------------------------
+J. Alex Stark          Signal Processing and Communications Laboratory
+Christ's College                             Department of Engineering
+Cambridge                                      University of Cambridge
+CB2 3BU                                             Trumpington Street
+                                                Cambridge, CB2 1PZ, UK
+email:jas1@uk.ac.cam.eng   Tel:[+44]223 3 32767   Fax:[+44]223 3 32662
+----------------------------------------------------------------------
+

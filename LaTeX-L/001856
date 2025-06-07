@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1330" "Mon" "3" "March" "1997" "20:04:41" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "35" "Re: Shortref mechanism" "^Date:" nil nil "3" nil "Shortref mechanism" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id UAA13236; Mon, 3 Mar 1997 20:03:15 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.63D77EE2@listserv.gmd.de>; Mon, 3 Mar 1997 20:03:13 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108115 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 20:03:08 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id UAA19440 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 20:03:02 +0100
+          (MET)
+Received: from [130.237.37.145] (sl121.modempool.kth.se [130.237.37.147]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id UAA29514 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 20:02:54 +0100
+          (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130504af40cbfa7fba@[130.237.37.145]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 3 Mar 1997 20:04:41 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1856
+
+>> I just made a definition command that can produce commands
+>> having optional arguments
+>
+>You can not do this for commands that are to appear `mid word' without
+>breaking TeX's ligatures. You can not have *any* non expandable
+>command there. Even \relax which does `nothing' is too much. Compare
+>
+>ff with f\relax f
+>
+>So as Frank mentioned, `shortref' definitions are very constrained in
+>what they can have in their definition. They can not use \def or \let
+>or \futurelet or pretty much anything else that you normally would use
+>for parsing. they are more or less restricted to using
+>\if\noexpand#1?
+>...
+>
+>or
+>\expandafter\ifx\csname #1-xxx\endcsname\?
+>...
+>
+>
+>Well you can have optional arguments, perhaps by looking for [ with
+>these methods, but you could not use the normal \@ifnextchar mechanisms.
+
+  But, continuing this theme of non-deterministic parsing, have you tried
+picking up say a whole word in advance, then doing some parsing of it
+(expanding all macros in it, and replacing it with a word where TeX might
+regonize it.
+  More explicitly, one would type say
+    <foo\a bar>
+Then the "<" would pick up the whole "foo\a bar>", expanding the \a,
+finally returning "foobar". Would it be possible to recognize a ligature
+"ob" by this method? (The example is otherwise entirely hypothetical.)
+
+  Hans Aberg
+

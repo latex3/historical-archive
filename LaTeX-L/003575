@@ -1,0 +1,168 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 25 Apr 2000 15:01:34 +0200 (MET DST)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id PAA12083 for <schoepf@mail.uni-mainz.de>; Tue, 25 Apr 2000 15:01:33 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BFAEB6.61EF0B00"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id PAA03188 for <schoepf@UNI-MAINZ.DE>; Tue, 25 Apr 2000 15:01:33 +0200 (MET DST)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.6D5332EE@mail.listserv.gmd.de>; Tue, 25 Apr 2000 15:00:15 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 456695 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 25 Apr 2000 15:01:30 +0200
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id PAA24760 for <latex-l@relay.urz.uni-heidelberg.de>; Tue, 25          Apr 2000 15:01:28 +0200 (MET DST)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id PAA19124 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 25 Apr          2000 15:01:29 +0200
+Received:  from abel.math.umu.se (abel.math.umu.se [130.239.20.139]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with ESMTP id PAA16189 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 25 Apr 2000 15:01:29 +0200 (MET          DST)
+Received:  from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by          abel.math.umu.se (8.9.2/8.9.2) with ESMTP id PAA30455 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 24 Apr 2000 15:56:52 +0200          (CEST)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["1401" "Tue" "25" "April" "2000" "15:01:27" "+0200" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "29" "A fancier \\@for" "^Date:" nil nil "4" nil nil nil nil nil]nil)
+X-Sender: lars@abel.math.umu.se
+x-mime-autoconverted: from quoted-printable to 8bit by                      relay.urz.uni-heidelberg.de id PAA24761
+Content-class: urn:content-classes:message
+Subject:      A fancier \@for
+Date: Tue, 25 Apr 2000 14:01:27 +0100
+Message-ID:  <l03130301b52b3c776717@[130.239.20.144]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: =?iso-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3575
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BFAEB6.61EF0B00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+It recently occured to me that when you use a \@for (or one of its
+relatives) loop to generate something that gets typeset, you often want =
+to
+do things slightly different at the first or last iteration. Therefore, =
+how
+about including in LaTeX2e* a command
+  \@fancyfor <command> :=3D <list> \do{<first>}{<middle>}{<last>}
+say, which is like \@for except for the fact that it does <first> on the
+first iteration, <last> on the last (unless that's the first), and =
+<middle>
+on the others? With that, you could write
+  \@fancyfor\@tempa:=3D<list>\do{\@tempa}{, \@tempa}{ and \@tempa}
+and for <list> equal to A; A,B; A,B,C; A,B,C,D respectively get the =
+results
+  A
+  A and B
+  A, B and C
+  A, B, C and D
+
+This will of course need some thinking about; perhaps these are not the
+best rules for which body gets executed when; perhaps the command should
+not be constructed as a variant of \@for, but rather as some map over a
+LaTeX3 sequence. But regardless of this, I think that some command in =
+the
+future standard language (be that LaTeX 2e+required, 2e*, or 3) should
+offer this kind of feature, since doing special things at the end is so
+useful to have, but so laborious to code.
+
+Lars Hellstr=F6m
+
+PS: What happened to the promised (FMi 2000/03/07) trace package? I =
+didn't
+see anything like it on www.latex-project.org when I looked for it a =
+couple
+of weeks ago, nor is there anything with that name on CTAN.
+
+------_=_NextPart_001_01BFAEB6.61EF0B00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     A fancier \@for</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>It recently occured to me that when you use a \@for =
+(or one of its</FONT>
+
+<BR><FONT SIZE=3D2>relatives) loop to generate something that gets =
+typeset, you often want to</FONT>
+
+<BR><FONT SIZE=3D2>do things slightly different at the first or last =
+iteration. Therefore, how</FONT>
+
+<BR><FONT SIZE=3D2>about including in LaTeX2e* a command</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@fancyfor &lt;command&gt; :=3D &lt;list&gt; =
+\do{&lt;first&gt;}{&lt;middle&gt;}{&lt;last&gt;}</FONT>
+
+<BR><FONT SIZE=3D2>say, which is like \@for except for the fact that it =
+does &lt;first&gt; on the</FONT>
+
+<BR><FONT SIZE=3D2>first iteration, &lt;last&gt; on the last (unless =
+that's the first), and &lt;middle&gt;</FONT>
+
+<BR><FONT SIZE=3D2>on the others? With that, you could write</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\@fancyfor\@tempa:=3D&lt;list&gt;\do{\@tempa}{, \@tempa}{ and =
+\@tempa}</FONT>
+
+<BR><FONT SIZE=3D2>and for &lt;list&gt; equal to A; A,B; A,B,C; A,B,C,D =
+respectively get the results</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; A</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; A and B</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; A, B and C</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; A, B, C and D</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This will of course need some thinking about; perhaps =
+these are not the</FONT>
+
+<BR><FONT SIZE=3D2>best rules for which body gets executed when; perhaps =
+the command should</FONT>
+
+<BR><FONT SIZE=3D2>not be constructed as a variant of \@for, but rather =
+as some map over a</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX3 sequence. But regardless of this, I think that =
+some command in the</FONT>
+
+<BR><FONT SIZE=3D2>future standard language (be that LaTeX 2e+required, =
+2e*, or 3) should</FONT>
+
+<BR><FONT SIZE=3D2>offer this kind of feature, since doing special =
+things at the end is so</FONT>
+
+<BR><FONT SIZE=3D2>useful to have, but so laborious to code.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Lars Hellstr=F6m</FONT>
+</P>
+
+<P><FONT SIZE=3D2>PS: What happened to the promised (FMi 2000/03/07) =
+trace package? I didn't</FONT>
+
+<BR><FONT SIZE=3D2>see anything like it on www.latex-project.org when I =
+looked for it a couple</FONT>
+
+<BR><FONT SIZE=3D2>of weeks ago, nor is there anything with that name on =
+CTAN.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BFAEB6.61EF0B00--
+

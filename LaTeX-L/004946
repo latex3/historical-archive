@@ -1,0 +1,116 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 7 May 2006 01:55:15 +0200
+Received: by mail.proteosys.com (8.12.11.20060308/8.12.2) with ESMTP id k46Nt5dr009485
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 7 May 2006 01:55:08 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k46NpfaM019004
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 7 May 2006 01:51:41 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k46M13Cg015234;
+	Sun, 7 May 2006 01:51:48 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1293929 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 7 May
+          2006 01:51:48 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k46NpWh2017112 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 May 2006 01:51:32 +0200
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          k46Nslvj018794 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 7 May
+          2006 01:54:48 +0200 (MET DST)
+Received: from remote218-02.home.uni-freiburg.de ([132.230.218.2]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.60) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1FcWYK-0002CN-Tx for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 07 May 2006 01:51:18 +0200
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 71EBF365AA; Sun,  7 May 2006 01:26:42 +0200 (CEST)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <20060427182251.GA23586@m0A023293.vpn.uni-freiburg.de>
+            <200605042048.k44KmDO23074@f7.net>
+            <20060505043642.GB3369@irwin.vpn.uni-freiburg.de>
+            <17499.5320.136951.598853@morse.mittelbach-online.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <20060506232642.GA3790@irwin.vpn.uni-freiburg.de>
+Date:         Sun, 7 May 2006 01:26:42 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LaTeX Release 2005/12/01
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17499.5320.136951.598853@morse.mittelbach-online.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 May 2006 23:55:15.0753 (UTC) FILETIME=[85891990:01C67168]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4946
+
+On Fri, May 05, 2006 at 11:03:04AM +0200, Frank Mittelbach wrote:
+
+> Getting the  distribution in a better shape should always be a goal. How much
+> of what you have done is or can be automated?
+
+The main job is done by a quite simple perl script that
+runs the manually determined program calls.
+To generate all, I only call
+  ./build.sh
+
+But the interesting part is how to get the TDS archive
+from a "wild" collection of files of a directory.
+
+* If the .ins file supports the TDS feature, then
+  the installation of the generated files is easy,
+  just running docstrip. The missing directories can be
+  created by the shell-escape feature:
+  For this purpose I am using the following docstrip.cfg:
+
+%%% docstrip.cfg
+\BaseDirectory{texmf}
+\UseTDS
+
+\def\shell#{\immediate\write18 }
+\def\mkdir#1{\shell{mkdir -p #1}}
+
+\let\saved@usedir\usedir
+\def\usedir#1{%
+  \mkdir{\basedir#1}%
+  \saved@usedir{#1}%
+}
+%%% docstrip.cfg %%%
+
+* Manual part of .ins file based installatoin:
+  * Which .ins files must be used (there can be a master .ins file).
+  * \usedir isn't always correct, e.g. babel puts driver.drv and user.drv
+    in the TDS:tex tree.
+
+* Even if there are .ins files, then there can be files, that
+  must copied directly into the TDS:tree, because they are not
+  covered by a dtx file (latex/base: testpage.tex, idx.tex, ...)
+
+* Deciding, which files goes into the TDS:source tree.
+
+* Generating the documention is the most difficult part:
+  * Installation of additional packages. (E.g., I had to install
+    some font packages (armenian, tipa, wsuipa, fc).
+  * Number and order of latex, makeindex, ... runs.
+  * Sometimes hyperref support is tricky (e.g. for adding
+    bookmarks that are not set by default).
+  * The example a.ps in grfguide is quite unhappy. The example
+    and the explanation in the text is not too good:
+    By specifying a wrong BoundingBox the viewport feature
+    is emulated. This works for dvips, but not for pdfTeX.
+  * ...
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

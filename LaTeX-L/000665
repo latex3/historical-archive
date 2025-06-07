@@ -1,0 +1,1724 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.A6088854@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:41 +0100
+Return-Path: <LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.A6088854"
+x-vm-v5-data: ([nil nil nil nil nil nil t nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Structures to be supported
+Date: Sat, 4 Apr 1992 17:44:24 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE986@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@tub.uucp>
+Sender: "LaTeX-L Mailing list" <LATEX-L@tub.uucp>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@tub.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 665
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.A6088854
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+%  These notes are along the same lines as Wessel Kraaij's comments, as
+%  copied from comp.text.tex by Rainer.
+
+%  Please feel free to replace ...
+   \documentstyle[11pt]{article}
+   \sloppy
+%  ... by a command to map a "2.09 article structure" into whatever
+%  design you like which is compatible with that structure.
+
+\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+      T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Structures to be supported}
+\author{David Rhead}
+\date{April 1992}
+\maketitle
+
+\tableofcontents
+
+\section{Motivation}
+
+\subsection{Dual role of 2.09 style files}
+
+In \LaTeX\ 2.09, ``style files'' confuse 2 roles:
+\begin{itemize}
+\item definition of a structure.
+      (I think I've heard this given as a justification for the designs:
+      ``the designs don't matter, because the style-files are just there
+      to define what structures are supported''.)
+\item mapping the structure into a design.
+\end{itemize}
+For example:
+\begin{itemize}
+\item {\tt article.sty} and {\tt xarticle.sty} seem to map the same
+      structure (the ``\LaTeX\ 2.09 analysis of the structure of an {\tt
+      article}'') into different designs
+\item the command \verb+\documentstyle{siam}+ seems to map ``{\sc =
+siam}'s
+      analysis of the structure of an article'' into ``{\sc siam}'s =
+design for
+      an article''.  (If so, then the roles of =
+\verb+\documentstyle[11pt]{siam}+
+      and \verb+\documentstyle[12pt]{siam}+ are unclear.  Are they =
+intended
+      as ``preprint styles'', for an author to use while a paper is
+      being drafted?)
+\item the commands \verb+\documentstyle[onecolumn,10pt]{iso}+ and
+      \verb+\documentstyle[twocolumn,9pt]{iso}+ seem to map ``the =
+structure
+      of an ISO standard'' into ``two designs for ISO standards''.
+\end{itemize}
+Changing from \verb+\documentstyle{article}+ to
+\verb+\documentstyle{xarticle}+ will work (i.e., give a document with =
+the
+same structure but a different design), but changing from
+\verb+\documentstyle{article}+ to \verb+\documentstyle{siam}+ or to
+\verb+\documentstyle{iso}+ won't work.
+
+The analysis that was done for version 2.09 is mostly implicit in {\tt =
+sty}
+files, rather than being available explicitly.  Subsequent providers of
+{\tt sty} files have generally followed the same practice (although some
+provide supplementary documentation).  Thus, a user who just wants =
+his/her
+current structure laid out in a different design may end up reading lots =
+of
+archived {\tt sty} file code to see whether an alternative {\tt sty} =
+file
+supports the structure they are currently using.
+
+\subsection{Practical difficulties at 2.09}
+
+Someone attempting to produce a book/thesis with \LaTeX\ 2.09
+has to change various defaults:
+\begin{itemize}
+\item they will want their preliminary pages numbered in roman, but will
+      want to switch back to arabic at the start of their main text.
+      They may need a \verb+\setcounter+ to start the roman sequence at =
+the
+      right place.
+\item they will probably want units such as ``acknowledgements'' and
+      ``references'' to appear in their ``table of contents''. They will
+      be using \verb+\chapter*+ for such units (to get headings that
+      look appropriate), so will have to use \verb+\addcontentsline+
+      to get the units mentioned in the ``table of contents''.
+\item page-selection can be a problem, since \verb+\count0+
+      doesn't distinguish between roman and arabic.
+\end{itemize}
+
+People producing ``an issue of a journal'', or a conference-proceedings,
+may have additional problems:
+\begin{itemize}
+\item if they treat the work as {\tt book} \cite[p.\ 23]{lamport}, they
+      will be faced with trying to get authors' names, affiliations, =
+etc.,
+      typeset consistently at the start of each chapter.
+\item if they leave the work as a series of {\tt article}s, they will be =
+faced
+      with ensuring that numbering (of pages, etc.) follows on.
+\end{itemize}
+
+I think that these problems arise because the analysis of ``document
+structure'' for the \LaTeX\ 2.09 ``standard styles'' is inappropriate:
+\begin{itemize}
+\item the concepts of ``front matter'' and ``back matter'' are well
+      known in publications about book design, etc., but aren't =
+supported
+      by the 2.09 ``standard styles''
+\item an ``issue of a journal'', and a conference-proceedings, have =
+structures
+      of their own (which are different from the structure of an =
+ordinary book).
+\end{itemize}
+
+\subsection{Suggestion for 3.0}
+
+I think that there would be advantages in:
+\begin{enumerate}
+\item
+     keeping a clear distinction between ``the structure supported'' and
+     ``the design into which the structure is mapped'', so that the
+     end-user will known when they can/cannot change design by changing
+     just one line of their {\tt tex} file.
+\item
+     associated with (1), thinking in terms of ``software that maps a
+     structure into a design'', rather than ``style file'' which =
+confuses
+     ``structure supported'' with ``design into which the structure is
+     mapped''
+\item
+     analyzing in more depth the structure of the types of documents to =
+be
+     supported.  Then, for example, the end-user will be able to just =
+say
+     ``this is front matter'', and so have details such as roman/arabic
+     numbering, heading style, and ``table of contents'' entries taken =
+care
+     of automatically in accordance with the relevant design (or
+     house-style).
+\end{enumerate}
+
+\section{Structures to be supported}
+
+Various gurus \cite{chicago,aap,majour,white,bs-thesis,bs-report,tei} =
+give
+analyses of the structures of the document-classes for which people use
+\LaTeX\ 2.09.  Although, there may be differences between the analyses
+offered by different gurus, I think that it would be better for the =
+project
+to consult the gurus, rather than to ignore them (since otherwise the
+project will waste time re-doing the work already done by the gurus).
+
+\subsection{First proposition}
+
+It is easier to select the ``good bits'' from off-the-shelf analyses =
+than
+to start from nothing.
+
+\subsection{Second proposition}
+
+For overall structure, particularly ``good bits'' are to be found in the
+{\it Chicago Manual of Style} \cite[pages 4,5]{chicago} and in the SGML =
+DTDs
+published by the Association of American Publishers \cite[appendix =
+B]{aap}.
+
+\subsection{Notes about AAP analysis}
+
+\subsubsection{Three basic structures}
+
+Broadly, the AAP analysis defines three basic structures:
+\begin{description}
+\item[BK-1] book/monograph/textbook, conference proceedings, technical =
+report,
+      thesis/dissertation
+\item[ART-1] article, feature
+\item[SER-1] serial,\footnote{%
+      I think they mean ``an issue of a serial''.  See section
+      \ref{not-a-serial}.}
+      conference-proceedings.  (Articles are embedded within
+      a serial without any modifications.)
+\end{description}
+
+Thus, although the \LaTeX\ 2.09 and AAP analyses both define 3 main =
+structures,
+the boundaries are drawn differently:
+\begin{itemize}
+\item
+     the AAP regards reports and books as having the same basic BK-1
+     structure (unlike \LaTeX\ 2.09, which has two distinct ``standard
+     styles'', {\tt report} and {\tt book}, the main difference being =
+that
+     {\tt book} isn't allowed to have an abstract)
+\item
+     whereas the \LaTeX\ 2.09 manual suggests \cite[p.\ 23]{lamport} =
+that
+     ``it is easy to include an article as a chapter in a report or =
+book'',
+     the AAP defines a special structure, SER-1, for multi-author works
+     made up of separate articles.
+\end{itemize}
+
+\subsubsection{Borderline cases}
+
+Some types of document may lie on the borderline between two AAP
+categories.  For example, a long report might be divided into units =
+called
+chapters and be appropriately classified as BK-1, while a short report
+might be divided into units called sections and be more akin to ART-1.
+(Compare \cite{aap}, which envisages that technical reports will have =
+BK-1
+structure, with \cite{bs-report} which envisages that technical reports
+will be divided into sections.)
+
+At worst, cases that cross borderlines might need two mappings.  In the
+report example, they might be (1) a mapping of BK-1 structure to a =
+report
+design, and (2) a mapping of ART-1 structure to a report design.  (This =
+is no
+worse than the situation with the \LaTeX\ 2.09 ``standard styles'', =
+which
+also envisage that {\tt report} is made up of chapters.) Thus, adoption =
+of
+AAP classification would not cause insuperable difficulties.
+
+\subsubsection{Advantages of AAP analysis}
+
+Paying serious attention to the AAP analysis would have various =
+advantages:
+\begin{itemize}
+\item the analysis is well-known
+\item it covers the types of documents that current \LaTeX-users =
+generally
+      want to produce
+\item it generally (but not always) gives analysis to the depth that
+      \LaTeX\ 3.0 might need
+\item other gurus cite it (if only to disagree with it)
+\item it embodies knowledge about publishing practice that the
+      average \LaTeX-er doesn't have
+\item it is finite.  The project would not be attempting to analyse
+      all possible documents, but would be concentrating on the =
+structures
+      that are most commonly required.
+\item support for AAP-like structures might attract ``real publishers''
+      to \LaTeX
+\item {\it it exists now} (unlike, for example, the European
+      journal-publishers' work \cite{majour}, which is still in =
+progress).
+\end{itemize}
+
+\subsubsection{Disadvantages of AAP analysis}
+\label{not-a-serial}
+
+The AAP analysis is not suitable in all respects as a model of what
+\LaTeX\ 3.0 (and associated software) should do:
+\begin{itemize}
+\item The analysis may go deeper in some areas than is required for =
+\LaTeX\ 3.0.
+      (If something with the ``look and feel'' of SGML is required, one =
+might
+      as well use SGML.)
+\item On the other hand, the analysis doesn't go deep enough in other =
+areas.
+      For example, the AAP analysis is no better than the \LaTeX\ 2.09 =
+analysis
+      for:
+      \begin{itemize}
+      \item citations and reference-lists \cite{iso-690};
+      \item captions, legends and credit-lines \cite[ch.\ 11]{chicago};
+      \item notes to tables \cite[ch.\ 12]{chicago}.
+      \end{itemize}
+      Other gurus' analyses would have to be used in such areas.
+\item At a recent SGML meeting \cite{exeter8}, the AAP standard was
+      described as too Anglo-centric.  Hence the European =
+journal-publishers'
+      work \cite{majour} was criticised as too AAP-influenced.
+\item ``Serial'' is usually used (e.g., by librarians) to describe a
+      publication that could potentially continue indefinitely (e.g., =
+all
+      the issues of a journal, including those not yet published).
+      Therefore SER-1 may be a poor choice of name for a structure that
+      would represent ``a single issue of a series'' or a ``one-off
+      conference proceeedings''.  MULTI-1 might have been a better name
+      for such multi-author (or multi-article) works.
+\end{itemize}
+
+\subsubsection{Attitude to AAP analysis}
+
+An analysis based on that given by the AAP (minus a few details, plus a =
+few
+other details which could be taken from \cite{chicago} and other places)
+might give a reasonable compromise between:
+\begin{itemize}
+\item ``re-inventing the wheel''
+\item blindly obeying something (AAP structure) that hasn't been thought =
+through
+ in all
+      respects.
+\end{itemize}
+
+\subsection{Example}
+
+For example, if some compromise was made between the Chicago analysis =
+and
+the AAP analysis, one might envisage a user preparing a file of the =
+form:
+\begin{verbatim}
+..
+\begin{frontmatter}
+   \frontelement{Foreword}
+   ...
+   \frontelement{Preface}
+   ...
+   \frontelement{Acknowledgements}
+   ...
+   \frontelement{Dedication}
+   ...
+   \frontelement{Abstract}
+   ...
+\end{frontmatter}
+\begin{bodymatter}
+   \chapter{...}
+   ...
+\end{bodymatter}
+\begin{appendices}
+   \appendix{...}
+   ...
+\end{appendices}
+\begin{backmatter}  %  short for "other back matter"
+   \backelement{Glossary}
+   ...
+   \backelement{Notes}
+   ...
+\end{backmatter}
+\end{verbatim}
+%  Perhaps \oneappendix{...} could be substituted for
+%     \begin{appendices}
+%     \appendix{...}
+%     ...
+%     \end{appendices}
+%  if there is only one appendix.
+
+\subsubsection*{Note}
+
+The above example assumes that, for \LaTeX\ purposes:
+\begin{itemize}
+\item it will generally be sufficient to think in terms of ``front =
+matter
+      elements'' and ``back matter elements''
+\item it will not be appropriate to go for complete analogy with the =
+AAP's
+      SGML DTD.  Thus, one would not expect typical \LaTeX\ 3.0 software =
+to
+      define environments like \verb+\acknowledgements+: if \LaTeX\ 3,0 =
+gets
+      used as a back-end for an SGML system, the AAP's \verb+<ack>+ =
+would
+      get converted to \verb+\frontelement{Acknowledgements}+.  =
+(However, if
+      any elements required special treatment, particular environments =
+could
+      be defined for them, as is done in \LaTeX\ 2.09 with {\tt =
+abstract}.)
+\end{itemize}
+
+\subsection{Bonuses from using structures influenced by Chicago/AAP}
+
+\subsubsection{Conference proceedings}
+
+A document with structure based on SER-1 will naturally support ``a
+reference-list at the end of each chapter'' plus the option of a =
+composite
+bibliography at the end of the document (for which one sometimes sees
+in requests in electronic digests from editors of conference =
+proceedings).
+
+Because the structure is appropriate, there should be less conflict than =
+if
+one is (for example) mis-using the 2.09 {\tt book} structure.  One
+shouldn't end up trying to have {\tt thebibliography} at both 2.09
+``section'' level and at ``chapter'' level, because the ``references at =
+end
+of article'' and ``bibliography at end of complete work'' units would =
+have
+different definitions.  For \BibTeX, one could envisage a scheme =
+involving
+perhaps {\tt article1.bbl}, \dots\ , {\tt article}$N${\tt .bbl}, {\tt
+backmatter.bbl}.
+
+\subsubsection{Page selection}
+
+Such an analysis would lead naturally to schemes for using the =
+\verb+\count+s
+sensibly, so as to support:
+\begin{itemize}
+\item distinction between roman and arabic numbered pages (i.e., front
+      matter and main text)
+\item selection of ``all the front matter'', a whole chapter, a whole =
+appendix,
+      or ``all the (non-appendix) back matter''.
+\end{itemize}
+For example, one might have:
+\begin{center}
+\begin{footnotesize}
+\begin{tabular}{lllll}
+\hline\hline
+Major division & Minor =
+divisions&\verb+\count0+&\verb+\count1+&\verb+\count2+\\
+\hline\hline
+Front matter   &                & page-number  & {\tt -1}    &  {\tt 0}  =
+\\
+\hline
+Main text      &   chapters     & page-number  & chapter-number  & {\tt =
+0} \\
+               &                &              & {\tt 1, 2, ... }&       =
+  \\
+\hline
+Back matter:            & appendices    &page-number&appendix number& =
+{\tt 1}\\
+appendices              &               &           & {\tt 1, 2, ... }& =
+\\
+\hline
+Back matter:   & glossary          & page-number&{\tt -2}   &  {\tt 0}  =
+\\
+other units    & bibliography      &            &            \\
+               & index, etc.       &            &            \\
+\hline\hline
+\end{tabular}\end{footnotesize}\end{center}
+
+\subsubsection{Generally}
+
+Generally, if a correct analysis of structure is made, practical details
+will tend to fall into place nicely, rather than needing messy {\it ad =
+hoc}
+circumventions.
+
+\section{Modularity}
+
+\subsection{Analysis in general}
+
+Although I've suggested that a Chicago/AAP analysis might provide a =
+suitable
+basis for ``structures to be supported by \LaTeX\ 3.0'':
+\begin{itemize}
+\item any ``\LaTeX\ 3.0 project'' selection of ``the good bits''
+      is unlikely to be perfect
+\item some better analysis may come along, and some successor to the
+      ``\LaTeX\ 3.0 project'' may want to support that analysis rather =
+than
+      one derived from the suggestions given here
+\item people may have to produce ``structure to design'' mappings for
+      structures other than the 3 ``modified AAP'' ones (e.g., legal
+      articles, ISO standards, SGML DTDs other than the 3 AAP ones)
+\item people may produce ``structure to design'' mappings for
+      enhancements of the 3 ``modified AAP'' ones (e.g., a book
+      that contains plates  and maps, if they are to be numbered
+      separately from other illustrations).
+\end{itemize}
+It seems desirable that such possibilities should be borne in mind when =
+any
+software is being written.
+
+\subsection{Structure supported by mapping software}
+
+I think that mapping software (i.e., whatever we call the successors to
+2.09 ``style files'') should make clear the structure that is supported,
+for example:
+\begin{itemize}
+\item by software checks
+\item because the mapping software starts with a comment that defines =
+the
+      structure it supports.
+\end{itemize}
+Then end-users will know (or find out in a friendly way) whether or not
+they can simply ``change design by changing one line of the {\tt tex} =
+file''.
+
+For example:
+\begin{itemize}
+\item a thesis and a Wiley book might have the same structure, so
+      a one-line change to the {\tt tex} file should lead to a change =
+from one
+      design to another (with no change to the structure)
+\item papers in different physics journals will probably have the same
+ structure, so
+      a one-line change to the {\tt tex} file should lead to a change =
+from one
+      journal's design to another's
+\item ISO standards have their own structure.  Someone who tries to =
+apply
+      typesetting software that is intended for a different structure =
+(e.g., an
+      AAP-based structure) should get a sensible error message.
+\end{itemize}
+
+
+
+\begin{thebibliography}{00}
+\addcontentsline{toc}{section}{References}
+\bibitem{lamport}
+     {\sc Leslie Lamport.} {\it LaTeX:  a document preparation system.}
+     Addison-Wesley, 1986.
+\bibitem{chicago}
+     {\it Chicago manual of style.}
+     13th edition.
+     Chicago: University of Chicago Press, 1982.
+\bibitem{aap}
+     {\it Electronic manuscript preparation and markup: ANSI/NISO =
+Z39.59-1988.}
+     New Brunswick: Transaction publishers, 1991.
+     ISBN 0-88738-945-7.
+\bibitem{majour}
+     {\it DTD for article headers.}
+     Amsterdam: European workgroup on SGML, 1991.
+\bibitem{white}
+     {\sc Jan V. White.}
+     {\it Graphic design for the electronic age.}
+     Watson-Guptill, 1988.
+\bibitem{bs-thesis}
+     {\it Presentation of theses and dissertations.}
+     BS 4821. British Standards Institution, 1990.
+\bibitem{bs-report}
+     {\it Presentation of research and development reports.}
+     BS 4811.  British Standards Institution, 1972.
+\bibitem{tei}
+     {\sc C. M. Sperberg-McQueen and Lou Burnard.}
+     {\it Guidelines for the encoding and interchange of =
+machine-readable
+     texts.}
+     Draft version 1.1.
+     Oxford, Chicago: Text Encoding Initiative, 1990.
+\bibitem{exeter8}
+     {\sc Michael Popham.} {\it Report on inaugural meeting of
+     UK chapter of SGML Users' Group.} Report number 8, SGML project, =
+Exeter
+     University, 1992.
+\bibitem{iso-690}
+     {\it Documentation --- bibliographic references --- content, form =
+and
+     structure.}
+     ISO 690.  International Organization for Standardization, 1987.
+\end{thebibliography}
+
+\end{document}
+
+
+------_=_NextPart_001_01C19443.A6088854
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Structures to be supported</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>%&nbsp; These notes are along the same lines as Wessel =
+Kraaij's comments, as</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; copied from comp.text.tex by Rainer.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%&nbsp; Please feel free to replace ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \documentstyle[11pt]{article}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \sloppy</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; ... by a command to map a &quot;2.09 article =
+structure&quot; into whatever</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; design you like which is compatible with that =
+structure.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc =
+i\kern-.025em b}\kern-.08em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{Structures to be supported}</FONT>
+
+<BR><FONT SIZE=3D2>\author{David Rhead}</FONT>
+
+<BR><FONT SIZE=3D2>\date{April 1992}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\tableofcontents</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Motivation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Dual role of 2.09 style files}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In \LaTeX\ 2.09, ``style files'' confuse 2 =
+roles:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item definition of a structure.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (I think I've heard =
+this given as a justification for the designs:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``the designs don't =
+matter, because the style-files are just there</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to define what =
+structures are supported''.)</FONT>
+
+<BR><FONT SIZE=3D2>\item mapping the structure into a design.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>For example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item {\tt article.sty} and {\tt xarticle.sty} seem =
+to map the same</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; structure (the =
+``\LaTeX\ 2.09 analysis of the structure of an {\tt</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; article}'') into =
+different designs</FONT>
+
+<BR><FONT SIZE=3D2>\item the command \verb+\documentstyle{siam}+ seems =
+to map ``{\sc siam}'s</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analysis of the =
+structure of an article'' into ``{\sc siam}'s design for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; an article''.&nbsp; =
+(If so, then the roles of \verb+\documentstyle[11pt]{siam}+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and =
+\verb+\documentstyle[12pt]{siam}+ are unclear.&nbsp; Are they =
+intended</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as ``preprint =
+styles'', for an author to use while a paper is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; being drafted?)</FONT>
+
+<BR><FONT SIZE=3D2>\item the commands =
+\verb+\documentstyle[onecolumn,10pt]{iso}+ and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+\documentstyle[twocolumn,9pt]{iso}+ seem to map ``the =
+structure</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of an ISO standard'' =
+into ``two designs for ISO standards''.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>Changing from \verb+\documentstyle{article}+ =
+to</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\documentstyle{xarticle}+ will work (i.e., give =
+a document with the</FONT>
+
+<BR><FONT SIZE=3D2>same structure but a different design), but changing =
+from</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\documentstyle{article}+ to =
+\verb+\documentstyle{siam}+ or to</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\documentstyle{iso}+ won't work.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The analysis that was done for version 2.09 is mostly =
+implicit in {\tt sty}</FONT>
+
+<BR><FONT SIZE=3D2>files, rather than being available explicitly.&nbsp; =
+Subsequent providers of</FONT>
+
+<BR><FONT SIZE=3D2>{\tt sty} files have generally followed the same =
+practice (although some</FONT>
+
+<BR><FONT SIZE=3D2>provide supplementary documentation).&nbsp; Thus, a =
+user who just wants his/her</FONT>
+
+<BR><FONT SIZE=3D2>current structure laid out in a different design may =
+end up reading lots of</FONT>
+
+<BR><FONT SIZE=3D2>archived {\tt sty} file code to see whether an =
+alternative {\tt sty} file</FONT>
+
+<BR><FONT SIZE=3D2>supports the structure they are currently =
+using.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Practical difficulties at 2.09}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Someone attempting to produce a book/thesis with =
+\LaTeX\ 2.09</FONT>
+
+<BR><FONT SIZE=3D2>has to change various defaults:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item they will want their preliminary pages numbered =
+in roman, but will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; want to switch back to =
+arabic at the start of their main text.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They may need a =
+\verb+\setcounter+ to start the roman sequence at the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; right place.</FONT>
+
+<BR><FONT SIZE=3D2>\item they will probably want units such as =
+``acknowledgements'' and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``references'' to =
+appear in their ``table of contents''. They will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be using =
+\verb+\chapter*+ for such units (to get headings that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; look appropriate), so =
+will have to use \verb+\addcontentsline+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to get the units =
+mentioned in the ``table of contents''.</FONT>
+
+<BR><FONT SIZE=3D2>\item page-selection can be a problem, since =
+\verb+\count0+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; doesn't distinguish =
+between roman and arabic.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>People producing ``an issue of a journal'', or a =
+conference-proceedings,</FONT>
+
+<BR><FONT SIZE=3D2>may have additional problems:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item if they treat the work as {\tt book} \cite[p.\ =
+23]{lamport}, they</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will be faced with =
+trying to get authors' names, affiliations, etc.,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typeset consistently =
+at the start of each chapter.</FONT>
+
+<BR><FONT SIZE=3D2>\item if they leave the work as a series of {\tt =
+article}s, they will be faced</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; with ensuring that =
+numbering (of pages, etc.) follows on.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that these problems arise because the analysis =
+of ``document</FONT>
+
+<BR><FONT SIZE=3D2>structure'' for the \LaTeX\ 2.09 ``standard styles'' =
+is inappropriate:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item the concepts of ``front matter'' and ``back =
+matter'' are well</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; known in publications =
+about book design, etc., but aren't supported</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; by the 2.09 ``standard =
+styles''</FONT>
+
+<BR><FONT SIZE=3D2>\item an ``issue of a journal'', and a =
+conference-proceedings, have structures</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of their own (which =
+are different from the structure of an ordinary book).</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Suggestion for 3.0}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that there would be advantages in:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; keeping a clear distinction =
+between ``the structure supported'' and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ``the design into which the =
+structure is mapped'', so that the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; end-user will known when =
+they can/cannot change design by changing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; just one line of their {\tt =
+tex} file.</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; associated with (1), =
+thinking in terms of ``software that maps a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; structure into a design'', =
+rather than ``style file'' which confuses</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ``structure supported'' with =
+``design into which the structure is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; mapped''</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; analyzing in more depth the =
+structure of the types of documents to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; supported.&nbsp; Then, for =
+example, the end-user will be able to just say</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ``this is front matter'', =
+and so have details such as roman/arabic</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; numbering, heading style, =
+and ``table of contents'' entries taken care</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of automatically in =
+accordance with the relevant design (or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; house-style).</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Structures to be supported}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Various gurus =
+\cite{chicago,aap,majour,white,bs-thesis,bs-report,tei} give</FONT>
+
+<BR><FONT SIZE=3D2>analyses of the structures of the document-classes =
+for which people use</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 2.09.&nbsp; Although, there may be =
+differences between the analyses</FONT>
+
+<BR><FONT SIZE=3D2>offered by different gurus, I think that it would be =
+better for the project</FONT>
+
+<BR><FONT SIZE=3D2>to consult the gurus, rather than to ignore them =
+(since otherwise the</FONT>
+
+<BR><FONT SIZE=3D2>project will waste time re-doing the work already =
+done by the gurus).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{First proposition}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It is easier to select the ``good bits'' from =
+off-the-shelf analyses than</FONT>
+
+<BR><FONT SIZE=3D2>to start from nothing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Second proposition}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For overall structure, particularly ``good bits'' are =
+to be found in the</FONT>
+
+<BR><FONT SIZE=3D2>{\it Chicago Manual of Style} \cite[pages =
+4,5]{chicago} and in the SGML DTDs</FONT>
+
+<BR><FONT SIZE=3D2>published by the Association of American Publishers =
+\cite[appendix B]{aap}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Notes about AAP analysis}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Three basic structures}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Broadly, the AAP analysis defines three basic =
+structures:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[BK-1] book/monograph/textbook, conference =
+proceedings, technical report,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+thesis/dissertation</FONT>
+
+<BR><FONT SIZE=3D2>\item[ART-1] article, feature</FONT>
+
+<BR><FONT SIZE=3D2>\item[SER-1] serial,\footnote{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I think they mean ``an =
+issue of a serial''.&nbsp; See section</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ref{not-a-serial}.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+conference-proceedings.&nbsp; (Articles are embedded within</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a serial without any =
+modifications.)</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus, although the \LaTeX\ 2.09 and AAP analyses both =
+define 3 main structures,</FONT>
+
+<BR><FONT SIZE=3D2>the boundaries are drawn differently:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the AAP regards reports and =
+books as having the same basic BK-1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; structure (unlike \LaTeX\ =
+2.09, which has two distinct ``standard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; styles'', {\tt report} and =
+{\tt book}, the main difference being that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\tt book} isn't allowed to =
+have an abstract)</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; whereas the \LaTeX\ 2.09 =
+manual suggests \cite[p.\ 23]{lamport} that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ``it is easy to include an =
+article as a chapter in a report or book'',</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the AAP defines a special =
+structure, SER-1, for multi-author works</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; made up of separate =
+articles.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Borderline cases}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Some types of document may lie on the borderline =
+between two AAP</FONT>
+
+<BR><FONT SIZE=3D2>categories.&nbsp; For example, a long report might be =
+divided into units called</FONT>
+
+<BR><FONT SIZE=3D2>chapters and be appropriately classified as BK-1, =
+while a short report</FONT>
+
+<BR><FONT SIZE=3D2>might be divided into units called sections and be =
+more akin to ART-1.</FONT>
+
+<BR><FONT SIZE=3D2>(Compare \cite{aap}, which envisages that technical =
+reports will have BK-1</FONT>
+
+<BR><FONT SIZE=3D2>structure, with \cite{bs-report} which envisages that =
+technical reports</FONT>
+
+<BR><FONT SIZE=3D2>will be divided into sections.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At worst, cases that cross borderlines might need two =
+mappings.&nbsp; In the</FONT>
+
+<BR><FONT SIZE=3D2>report example, they might be (1) a mapping of BK-1 =
+structure to a report</FONT>
+
+<BR><FONT SIZE=3D2>design, and (2) a mapping of ART-1 structure to a =
+report design.&nbsp; (This is no</FONT>
+
+<BR><FONT SIZE=3D2>worse than the situation with the \LaTeX\ 2.09 =
+``standard styles'', which</FONT>
+
+<BR><FONT SIZE=3D2>also envisage that {\tt report} is made up of =
+chapters.) Thus, adoption of</FONT>
+
+<BR><FONT SIZE=3D2>AAP classification would not cause insuperable =
+difficulties.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Advantages of AAP analysis}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Paying serious attention to the AAP analysis would =
+have various advantages:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item the analysis is well-known</FONT>
+
+<BR><FONT SIZE=3D2>\item it covers the types of documents that current =
+\LaTeX-users generally</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; want to produce</FONT>
+
+<BR><FONT SIZE=3D2>\item it generally (but not always) gives analysis to =
+the depth that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \LaTeX\ 3.0 might =
+need</FONT>
+
+<BR><FONT SIZE=3D2>\item other gurus cite it (if only to disagree with =
+it)</FONT>
+
+<BR><FONT SIZE=3D2>\item it embodies knowledge about publishing practice =
+that the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; average \LaTeX-er =
+doesn't have</FONT>
+
+<BR><FONT SIZE=3D2>\item it is finite.&nbsp; The project would not be =
+attempting to analyse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; all possible =
+documents, but would be concentrating on the structures</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that are most commonly =
+required.</FONT>
+
+<BR><FONT SIZE=3D2>\item support for AAP-like structures might attract =
+``real publishers''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to \LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>\item {\it it exists now} (unlike, for example, the =
+European</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; journal-publishers' =
+work \cite{majour}, which is still in progress).</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Disadvantages of AAP analysis}</FONT>
+
+<BR><FONT SIZE=3D2>\label{not-a-serial}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The AAP analysis is not suitable in all respects as a =
+model of what</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 3.0 (and associated software) should =
+do:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item The analysis may go deeper in some areas than =
+is required for \LaTeX\ 3.0.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (If something with the =
+``look and feel'' of SGML is required, one might</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as well use =
+SGML.)</FONT>
+
+<BR><FONT SIZE=3D2>\item On the other hand, the analysis doesn't go deep =
+enough in other areas.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For example, the AAP =
+analysis is no better than the \LaTeX\ 2.09 analysis</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item citations and =
+reference-lists \cite{iso-690};</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item captions, =
+legends and credit-lines \cite[ch.\ 11]{chicago};</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item notes to tables =
+\cite[ch.\ 12]{chicago}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Other gurus' analyses =
+would have to be used in such areas.</FONT>
+
+<BR><FONT SIZE=3D2>\item At a recent SGML meeting \cite{exeter8}, the =
+AAP standard was</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; described as too =
+Anglo-centric.&nbsp; Hence the European journal-publishers'</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; work \cite{majour} was =
+criticised as too AAP-influenced.</FONT>
+
+<BR><FONT SIZE=3D2>\item ``Serial'' is usually used (e.g., by =
+librarians) to describe a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; publication that could =
+potentially continue indefinitely (e.g., all</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the issues of a =
+journal, including those not yet published).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Therefore SER-1 may be =
+a poor choice of name for a structure that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; would represent ``a =
+single issue of a series'' or a ``one-off</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; conference =
+proceeedings''.&nbsp; MULTI-1 might have been a better name</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for such multi-author =
+(or multi-article) works.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Attitude to AAP analysis}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>An analysis based on that given by the AAP (minus a =
+few details, plus a few</FONT>
+
+<BR><FONT SIZE=3D2>other details which could be taken from =
+\cite{chicago} and other places)</FONT>
+
+<BR><FONT SIZE=3D2>might give a reasonable compromise between:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item ``re-inventing the wheel''</FONT>
+
+<BR><FONT SIZE=3D2>\item blindly obeying something (AAP structure) that =
+hasn't been thought through</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;in all</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; respects.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Example}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For example, if some compromise was made between the =
+Chicago analysis and</FONT>
+
+<BR><FONT SIZE=3D2>the AAP analysis, one might envisage a user preparing =
+a file of the form:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>..</FONT>
+
+<BR><FONT SIZE=3D2>\begin{frontmatter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \frontelement{Foreword}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \frontelement{Preface}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \frontelement{Acknowledgements}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \frontelement{Dedication}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \frontelement{Abstract}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{frontmatter}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{bodymatter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \chapter{...}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{bodymatter}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{appendices}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \appendix{...}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{appendices}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{backmatter}&nbsp; %&nbsp; short for =
+&quot;other back matter&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \backelement{Glossary}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \backelement{Notes}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{backmatter}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Perhaps \oneappendix{...} could be =
+substituted for</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; \begin{appendices}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; \appendix{...}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; \end{appendices}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; if there is only one appendix.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection*{Note}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The above example assumes that, for \LaTeX\ =
+purposes:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item it will generally be sufficient to think in =
+terms of ``front matter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; elements'' and ``back =
+matter elements''</FONT>
+
+<BR><FONT SIZE=3D2>\item it will not be appropriate to go for complete =
+analogy with the AAP's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SGML DTD.&nbsp; Thus, =
+one would not expect typical \LaTeX\ 3.0 software to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; define environments =
+like \verb+\acknowledgements+: if \LaTeX\ 3,0 gets</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used as a back-end for =
+an SGML system, the AAP's \verb+&lt;ack&gt;+ would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get converted to =
+\verb+\frontelement{Acknowledgements}+.&nbsp; (However, if</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; any elements required =
+special treatment, particular environments could</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be defined for them, =
+as is done in \LaTeX\ 2.09 with {\tt abstract}.)</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Bonuses from using structures influenced =
+by Chicago/AAP}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Conference proceedings}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A document with structure based on SER-1 will =
+naturally support ``a</FONT>
+
+<BR><FONT SIZE=3D2>reference-list at the end of each chapter'' plus the =
+option of a composite</FONT>
+
+<BR><FONT SIZE=3D2>bibliography at the end of the document (for which =
+one sometimes sees</FONT>
+
+<BR><FONT SIZE=3D2>in requests in electronic digests from editors of =
+conference proceedings).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Because the structure is appropriate, there should be =
+less conflict than if</FONT>
+
+<BR><FONT SIZE=3D2>one is (for example) mis-using the 2.09 {\tt book} =
+structure.&nbsp; One</FONT>
+
+<BR><FONT SIZE=3D2>shouldn't end up trying to have {\tt thebibliography} =
+at both 2.09</FONT>
+
+<BR><FONT SIZE=3D2>``section'' level and at ``chapter'' level, because =
+the ``references at end</FONT>
+
+<BR><FONT SIZE=3D2>of article'' and ``bibliography at end of complete =
+work'' units would have</FONT>
+
+<BR><FONT SIZE=3D2>different definitions.&nbsp; For \BibTeX, one could =
+envisage a scheme involving</FONT>
+
+<BR><FONT SIZE=3D2>perhaps {\tt article1.bbl}, \dots\ , {\tt =
+article}$N${\tt .bbl}, {\tt</FONT>
+
+<BR><FONT SIZE=3D2>backmatter.bbl}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Page selection}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Such an analysis would lead naturally to schemes for =
+using the \verb+\count+s</FONT>
+
+<BR><FONT SIZE=3D2>sensibly, so as to support:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item distinction between roman and arabic numbered =
+pages (i.e., front</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; matter and main =
+text)</FONT>
+
+<BR><FONT SIZE=3D2>\item selection of ``all the front matter'', a whole =
+chapter, a whole appendix,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or ``all the =
+(non-appendix) back matter''.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>For example, one might have:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tabular}{lllll}</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Major division &amp; Minor =
+divisions&amp;\verb+\count0+&amp;\verb+\count1+&amp;\verb+\count2+\\</FON=
+T>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Front matter&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; &amp; page-number&nbsp; &amp; {\tt =
+-1}&nbsp;&nbsp;&nbsp; &amp;&nbsp; {\tt 0}&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Main text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp; chapters&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+page-number&nbsp; &amp; chapter-number&nbsp; &amp; {\tt 0} \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; &amp; {\tt 1, 2, ... =
+}&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Back =
+matter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ &amp; appendices&nbsp;&nbsp;&nbsp; &amp;page-number&amp;appendix =
+number&amp; {\tt 1}\\</FONT>
+
+<BR><FONT =
+SIZE=3D2>appendices&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+{\tt 1, 2, ... }&amp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Back matter:&nbsp;&nbsp; &amp; =
+glossary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+page-number&amp;{\tt -2}&nbsp;&nbsp; &amp;&nbsp; {\tt 0}&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>other units&nbsp;&nbsp;&nbsp; &amp; =
+bibliography&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; &amp; index, =
+etc.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\\</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}\end{footnotesize}\end{center}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Generally}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Generally, if a correct analysis of structure is made, =
+practical details</FONT>
+
+<BR><FONT SIZE=3D2>will tend to fall into place nicely, rather than =
+needing messy {\it ad hoc}</FONT>
+
+<BR><FONT SIZE=3D2>circumventions.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Modularity}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Analysis in general}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although I've suggested that a Chicago/AAP analysis =
+might provide a suitable</FONT>
+
+<BR><FONT SIZE=3D2>basis for ``structures to be supported by \LaTeX\ =
+3.0'':</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item any ``\LaTeX\ 3.0 project'' selection of ``the =
+good bits''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is unlikely to be =
+perfect</FONT>
+
+<BR><FONT SIZE=3D2>\item some better analysis may come along, and some =
+successor to the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``\LaTeX\ 3.0 =
+project'' may want to support that analysis rather than</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one derived from the =
+suggestions given here</FONT>
+
+<BR><FONT SIZE=3D2>\item people may have to produce ``structure to =
+design'' mappings for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; structures other than =
+the 3 ``modified AAP'' ones (e.g., legal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; articles, ISO =
+standards, SGML DTDs other than the 3 AAP ones)</FONT>
+
+<BR><FONT SIZE=3D2>\item people may produce ``structure to design'' =
+mappings for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enhancements of the 3 =
+``modified AAP'' ones (e.g., a book</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that contains =
+plates&nbsp; and maps, if they are to be numbered</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; separately from other =
+illustrations).</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>It seems desirable that such possibilities should be =
+borne in mind when any</FONT>
+
+<BR><FONT SIZE=3D2>software is being written.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Structure supported by mapping =
+software}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that mapping software (i.e., whatever we call =
+the successors to</FONT>
+
+<BR><FONT SIZE=3D2>2.09 ``style files'') should make clear the structure =
+that is supported,</FONT>
+
+<BR><FONT SIZE=3D2>for example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item by software checks</FONT>
+
+<BR><FONT SIZE=3D2>\item because the mapping software starts with a =
+comment that defines the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; structure it =
+supports.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>Then end-users will know (or find out in a friendly =
+way) whether or not</FONT>
+
+<BR><FONT SIZE=3D2>they can simply ``change design by changing one line =
+of the {\tt tex} file''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item a thesis and a Wiley book might have the same =
+structure, so</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a one-line change to =
+the {\tt tex} file should lead to a change from one</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; design to another =
+(with no change to the structure)</FONT>
+
+<BR><FONT SIZE=3D2>\item papers in different physics journals will =
+probably have the same</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;structure, so</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a one-line change to =
+the {\tt tex} file should lead to a change from one</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; journal's design to =
+another's</FONT>
+
+<BR><FONT SIZE=3D2>\item ISO standards have their own structure.&nbsp; =
+Someone who tries to apply</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typesetting software =
+that is intended for a different structure (e.g., an</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AAP-based structure) =
+should get a sensible error message.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{thebibliography}{00}</FONT>
+
+<BR><FONT SIZE=3D2>\addcontentsline{toc}{section}{References}</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{lamport}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\sc Leslie Lamport.} {\it =
+LaTeX:&nbsp; a document preparation system.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Addison-Wesley, 1986.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Chicago manual of =
+style.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; 13th edition.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Chicago: University of =
+Chicago Press, 1982.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{aap}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Electronic manuscript =
+preparation and markup: ANSI/NISO Z39.59-1988.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; New Brunswick: Transaction =
+publishers, 1991.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ISBN 0-88738-945-7.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{majour}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it DTD for article =
+headers.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Amsterdam: European =
+workgroup on SGML, 1991.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{white}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\sc Jan V. White.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Graphic design for the =
+electronic age.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Watson-Guptill, 1988.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-thesis}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Presentation of theses =
+and dissertations.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; BS 4821. British Standards =
+Institution, 1990.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-report}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Presentation of =
+research and development reports.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; BS 4811.&nbsp; British =
+Standards Institution, 1972.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{tei}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\sc C. M. Sperberg-McQueen =
+and Lou Burnard.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Guidelines for the =
+encoding and interchange of machine-readable</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; texts.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Draft version 1.1.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Oxford, Chicago: Text =
+Encoding Initiative, 1990.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{exeter8}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\sc Michael Popham.} {\it =
+Report on inaugural meeting of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; UK chapter of SGML Users' =
+Group.} Report number 8, SGML project, Exeter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; University, 1992.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{iso-690}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\it Documentation --- =
+bibliographic references --- content, form and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; structure.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; ISO 690.&nbsp; International =
+Organization for Standardization, 1987.</FONT>
+
+<BR><FONT SIZE=3D2>\end{thebibliography}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.A6088854--
+

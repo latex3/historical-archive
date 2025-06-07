@@ -1,0 +1,112 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3018" "Mon" "10" "February" "1997" "20:13:47" "+0100" "Hans Aberg" "haberg@matematik.su.se" nil "76" "Re: International documents" "^Date:" nil nil "2" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA05517; Mon, 10 Feb 1997 22:31:03 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.4E9554EB@listserv.gmd.de>; Mon, 10 Feb 1997 20:13:13 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 97974 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 10 Feb 1997 20:12:36 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id UAA29208 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 10 Feb 1997 20:12:30
+          +0100 (MET)
+Received: from [130.237.37.154] (sl128.modempool.kth.se [130.237.37.154]) by
+          mail.nada.kth.se (8.6.10/8.6.10) with SMTP id UAA05097 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 10 Feb 1997 20:12:21 +0100
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130500af2516f23d9c@[130.237.37.124]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 10 Feb 1997 20:13:47 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: International documents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1799
+
+Richard Walker <Richard.Walker@CS.ANU.EDU.AU> wrote:
+
+>Part of the problem is that there isn't agreement on many aspects of
+>formatting.
+>
+>A classic example is that of date formats.  Everybody thinks that they
+>know best.  In Australia, you will see
+>10th February, 1997
+>February 10th, 1997
+>February 10, 1997
+>etc. etc.
+...
+
+  I think this touches on a a very important issue, which I think ought to
+be a major concern for the LaTeX3 project, namely, how to make LaTeX easily
+customizable for the user.
+  Treating the date formats are interesting, because it might be possible
+to get ideas of how it should work.
+  One idea might be implementing some kind of object orientation into LaTeX.
+  (My intention is just to present some ideas one might play around with.)
+
+* In order to do this, we would need to have a class object \Date, handling
+the aspects of dates which are common to all dates. (I use an uppercase
+\Date for the class, and lowercase \date for instatiated elements.)
+
+* We could agree that all dates are represented internally by three
+numbers, year, month, day (but this would not work when treating different
+calenders, in which case using Julian day numbers would be better).
+
+* In order to create a \Date object, we would need a constructor
+    \new{Date}{x}{\year1997\month2\day10}
+which might define
+    \def\x/date/year{1997}
+    \def\x/date/month{2}
+    \def\x/date/day{10}
+(the character code of "/" temporarily set so this works).
+
+* We need a print object, telling which formats to print on; the default
+print object belongs to the class object \Date.
+    \Date/print[\format]{x}
+
+* The environment can then set a variable
+    \Date/format
+defining a local date format to print on.
+
+* Then
+    \date{x}
+would print the date in the \format that the latest environment defined, and
+    \date[\format]{x}
+will print on the \format that you choose, which could be defined by another
+environment, say
+    \date[\US/format]{x}
+for getting the US date format.
+  (Alternatively, one could also define a macro \x printing the date, with
+takes an optional argument \x[\format], which would be better, if one does
+not have a problem with a lot of macro names that might collide.)
+
+* The class object \date could have two variables
+    \Date/months/full
+    \Date/months/short
+for defining full length month names ("January", etc), and short length month
+names ("Jan", etc). (And similar for other attributes, like "10th", "1st".)
+Different date printing formats can then call the these variables, which
+then come out right when localized to other languages.
+
+* Defining a date formate might then look something like
+    \set{Date}{format}{\dayorder\ \monthfull, \yearfull}
+to get the format "10th February, 1997", if "\dayorder", "\monthfull",
+"\yearfull" are selectors for the order number "10th", full month name, and
+full year number.
+
+  Or something.
+  This would be complicated, but not so difficult, to use, and all the
+formats mentioned by Richard Walker could then be produced.
+
+  Hans Aberg
+

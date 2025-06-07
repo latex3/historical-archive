@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1303" "Wed" "17" "November" "1999" "19:28:13" "+0000" "James Kilfiger" "mapdn@CSV.WARWICK.AC.UK" nil "34" "Re: xcontents" "^Date:" nil nil "11" nil "xcontents" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA17397
+	for <schoepf@UNI-MAINZ.DE>; Wed, 17 Nov 1999 20:28:21 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.BE7EB67F@mail.listserv.gmd.de>; Wed, 17 Nov 1999 20:28:17 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446109 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 17 Nov 1999 20:27:59 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id UAA08838 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 17 Nov
+          1999 20:27:58 +0100 (MET)
+Received: from snowdrop.csv.warwick.ac.uk (snowdrop.csv.warwick.ac.uk
+          [137.205.192.31]) by relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with
+          ESMTP id UAA06825 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 17 Nov
+          1999 20:28:18 +0100 (MET)
+Received: from ux-gh-05.csv.warwick.ac.uk (ux-gh-05 [137.205.236.20]) by
+          snowdrop.csv.warwick.ac.uk (8.9.3/8.9.3) with ESMTP id TAA29120 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 17 Nov 1999 19:28:16 GMT
+Received: (from mapdn@localhost) by ux-gh-05.csv.warwick.ac.uk (8.9.3/8.9.3) id
+          TAA01552 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Wed, 17 Nov 1999 19:28:14
+          GMT
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <199911171928.TAA01552@ux-gh-05.csv.warwick.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199911162049.VAA00527@istrati.zdv.uni-mainz.de> from Frank
+              Mittelbach at "Nov 16, 99 09:49:00 pm"
+Date:         Wed, 17 Nov 1999 19:28:13 +0000
+From: James Kilfiger <mapdn@CSV.WARWICK.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3429
+
+> Javier wrote:
+>
+>>>    - are there other templates missing that do radically different things?
+> > Yes. Entries grouped in a single paragraph. For instance:
+> > 1) First section, 3. 2) Second section, 5. 3) Third section, 7. 4)...
+> quite right, i have a couple of layouts for tocs that do use those and have
+> halfway tried my hands on that already (but not finished)
+
+<aol> me too </aol> But I took my code from Javier's titletoc package.
+
+Anyway here are the intances for `Homology Theory', James Vick, GTM #145,
+Springer.   The leaders could be
+  \leaders\hbox{\kern\@tempdimc\hbox{leader@action}} or xleaders...?
+as this would make the effect of leaders-sep easier to guess.
+
+\DeclareCollectionInstance{homology}{contentsobject}{chapter}{JK}
+        {number-format=\textsc{Chapter~ #1}\\,
+        boxed-number=false,
+        pre-v-action= \addvspace{10pt},
+        leaders-sep= 1.5pt}
+
+\DeclareCollectionInstance{homology}{contentsobject}{section}{JK}
+{       object-indent=12pt,
+        number-format=\relax,
+        leaders-sep = 1.5pt}
+
+And contentsobject template contains
+   \if@boxed@number
+     \IfNoValueT{#3}{\def\COnumber@format##1{\hfil}}
+     \hbox to \@tempdima {\COnumber@format{#3}}
+   \else
+     \IfNoValueT{#3}{\def\COnumber@format##1{\relax}}
+     {\COnumber@format{#3}}
+   \fi
+

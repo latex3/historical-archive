@@ -1,0 +1,121 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 24 Jan 2009 17:09:56 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0OG9r6B008113
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 24 Jan 2009 17:09:54 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0OG6QqA007808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 24 Jan 2009 17:06:26 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0NN1EvW024137;
+	Sat, 24 Jan 2009 17:06:13 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 172468 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 24 Jan
+          2009 17:06:11 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0OG6BXb009010 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 24 Jan 2009 17:06:11 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.248])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          n0OG681S007679 for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 24 Jan
+          2009 17:06:12 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so5514944rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 24 Jan 2009 08:06:06 -0800
+          (PST)
+Received: by 10.141.42.10 with SMTP id u10mr1414734rvj.241.1232813166440; Sat,
+          24 Jan 2009 08:06:06 -0800 (PST)
+Received: from ?10.0.1.100? (219-90-231-152.ip.adam.com.au [219.90.231.152]) by
+          mx.google.com with ESMTPS id g31sm25290035rvb.4.2009.01.24.08.06.04
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Sat, 24 Jan 2009 08:06:05 -0800
+          (PST)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v930.3)
+X-Mailer: Apple Mail (2.930.3)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <B378B7C1-3267-46DE-B864-40EDC369602D@gmail.com>
+Date:         Sun, 25 Jan 2009 02:36:00 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: comma lists, semicolon lists, vbar lists
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Jan 2009 16:09:56.0094 (UTC) FILETIME=[32BAB9E0:01C97E3E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5634
+
+Hello,
+
+There is currently a module in the expl3 bundle for dealing with lists  
+of tokens separated by commas. While there is a small application of  
+these things in areas such as XeTeX's font feature selection, this is  
+generally designed to offer convenient ways for users to input lists  
+of things.
+
+My question for LaTeX3 is, "are commas enough?".
+
+The current l3doc macros define the {function} environment that uses  
+vertical bar separated lists of function names:
+   \begin{function}{ \seq_push:Nn | \seq_push:NC }
+
+I've written a LaTeX2e package called mlist that deals with "math  
+lists" that I define as two-d lists of items that eventually turn out  
+to be functions or matrices or vectors or whatever:
+   \matr{ a , b ;
+          c , d }
+
+Whether we're dealing with commas, semicolons, or vertical bars, the  
+basic functions for manipulating the data would be largely identical.
+
+There are two points of view here. One is that we should avoid making  
+things more complex than they already are and highly suggest that if  
+lists like this are going to be defined, then it's comma-lists or it's  
+nothing.
+
+The other point of view is that we should allow some flexibility in  
+how users may end up needing to input list-like data, and providing a  
+range of delimited list types will be more convenient for (a) multi- 
+dimensional lists such as used by mlist, and (b) not having to escape  
+the delimiting characters as much; say if the list is likely to  
+contain commas then you can delimit it with vertical bars instead.
+
+I lean towards the second philosophy. My tentative proposal is to  
+rename the clist module to, er, something else, and for it to  
+generalise the functions in clist such that functions for new  
+"delimiter"-lists can be instantiated with a single command.
+
+I.e., the hypothetical command
+   \def_delimiter_list:nn {clist} {,}
+would generate the suite of functions that are currently defined in  
+l3clist;
+   \def_delimiter_list:nn {slist} {;}
+might then define equivalent commands for dealing with semi-colon  
+delimited lists.
+
+* * *
+
+Alternatively, maybe I'm taking this way too far and all we need is a  
+generalised mapping function that can loop through a token list using  
+an arbitrary substring as a delimiter. That would probably cover the  
+majority of the cases that \def_delimiter_list would be useful for.
+
+* * *
+
+Any comments or further thoughts?
+
+Will
+

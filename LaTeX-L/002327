@@ -1,0 +1,116 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4493" "Thu" "2" "October" "1997" "09:20:25" "+0200" "LINPWD::DALY" "daly@LINPWD.DNET.GWDG.DE" nil "84" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id JAA14071;
+	Thu, 2 Oct 1997 09:32:10 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.52202DF1@listserv.gmd.de>; Thu, 2 Oct 1997 9:23:34 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 207131 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 2 Oct 1997 09:20:23 +0200
+Received: from fw.gwdg.de (fw-nf0.gwdg.de [134.76.98.6]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id JAA06717 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 2 Oct 1997 09:20:13 +0200
+          (MET DST)
+Received: from dnet.gwdg.de (actually gwdgi.gwdg.de) by fw.gwdg.de with SMTP
+          (PP); Thu, 2 Oct 1997 09:19:30 +0200
+Message-ID:  <199710020720.JAA06717@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 2 Oct 1997 09:20:25 +0200
+From: "LINPWD::DALY" <daly@LINPWD.DNET.GWDG.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2327
+
+I am very much in favour of standardizing the LaTeX support for journals,
+having supplied two such macro packages, one as an add-on to improve an
+existing (2.09) mess that calls itself the official macro package for the major
+journal in my field, and the other for which I was commissioned to produce the
+official package. Of course the latter was much more enjoyable because I had a
+free hand.
+
+The problem of non-standardization is enormous, but more the fault of the
+article.sty/cls that did not provide enough models for the necessary input
+commands. Perhaps one should take AMS-LaTeX as a model since the AMS has always
+been a keen supporter TeX/LaTeX and can be considered to have sufficient
+practical experience with author-supplied copy in LaTeX(2e).
+
+>  > Fortunately, this problem can ALREADY be solved by the use of Patrick
+>  > Daly's natbib.sty and custom-bib package.  Since this is IDEALLY suited
+>  > to the problem of variation in citations and references, it should
+>  > actually be REQUIRED by all journals and publishers who use LaTeX at
+>  > all.
+> hear, hear. natbib/custom-bib are awesome contributions to the LaTeX
+> world
+
+These are beautiful words to hear! They make the whole gigantic effort,
+especially for custom-bib, well worthwhile. (I am a native English speaker, so
+I have no problems with "awesome"; it is not the same as "awful" at all!)
+
+The journal packages that I supply contain natbib coding (rather a subset of
+it)  included in the .cls files themselves. This may sound perverse, but as the
+author of natbib, I can take this liberty. It meant that I did not have to
+distribute natbib explicitly with the journal packages, and it also meant that
+much of the extra, unneeded features (the dancing girls) could be left out. I
+originally wrote natbib to be used as a module that could be included (via
+docstrip) in other packages; the module later evolved into an independent
+package. To generalize this so that other programmers can do the same would
+likely require some minor reworking of the code.
+
+One point of non-standard interfacing that all journal packages must solve
+somehow is the entry of the authors' names and affiliation. The standard LaTeX
+syntax
+             \author{First Author\\Affiliation One
+                      \and
+                 Second Author and Third Author\\Affiliation Two}
+is inadequate for long author lists where the authors are not ordered by
+affiliation. In this case, footnotes are usually used to associate author and
+affiliation, with repeating footnote markers. There is no way to provide this
+in standard LaTeX, so most journals must reinvent some syntax independently.
+I myself have a package (not make public) that also can be used as a module,
+that allows both the above syntax as well as
+        \author{First Author}
+        \affil{Affiliation One}
+        \author{Second Author}
+        \author{Third Author}
+        \affil{Affiliation Two}
+Depending on the number of affiliations, you either get the standard block-type
+author-affil listing, or the footnote style. By adding optional markers, you
+force the footnote method, as
+        \author[1]{First Author}
+        \author[2]{Second Author}
+        \author[1,*]{Third Author}
+        \affil[1]{Affiliation One}
+        \affil[2]{Affiliation Two}
+        \affil[*]{On leave from Affiliation Two}
+
+I think this is a flexible input syntax. What is really printed depends on the
+programmer, of course.
+
+I agree with Sebastian that PostScript is an interim solution. I have not yet
+worked with PDF but from what I hear of it, it is the better way of the
+future. I am currently working as production editor on an 18 chapter book, of
+500 pages, with dozens of PostScript figures. I assure you, the printing of
+these figures, sent to me by various contributers from multitudes of software,
+are often a real headache. As PostScript figures are used more and more, it is
+becoming clear how much trouble they can cause. Usually because the generating
+application abuses PostScript terribly.
+
+Summing up, I am willing to participate in this standardization project.
+
+Patrick
+-----------------------------------------------------------------------------
+   Dr. Patrick W. Daly                    Tel. [+49] 5556-979-279
+   Max-Planck-Institut fuer Aeronomie     Fax. [+49] 5556-979-240
+   Max-Planck-Str. 2
+   D-37191 Katlenburg-Lindau              Internet: daly@linmpi.mpg.de
+   Germany
+-----------------------------------------------------------------------------
+

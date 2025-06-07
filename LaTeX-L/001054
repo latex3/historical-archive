@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2218" "Sun" "20" "June" "93" "20:33:55" "+0200" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "47" "adding fake registers to ltx3" "^Date:" nil nil "6"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA19134; Sun, 20 Jun 93 20:39:30 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA10545; Sun, 20 Jun 93 20:39:28 +0200
+Message-Id: <9306201839.AA10545@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4380; Sun, 20 Jun 93 20:37:51 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5632;
+ Sun, 20 Jun 93 20:37:43 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5630;
+ Sun, 20 Jun 93 20:37:40 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 20 Jun 93 20:33:55 +0200
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      adding fake registers to ltx3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1054
+
+
+
+Phil remarked about my comments on the limitations of internal TeX
+registers and my proposal to extend them a bit:
+
+> I am sure --- certain, even --- that you have a very good reason for
+> providing a fixed number of fake counters, but may I urge you to
+> re-consider this decision?  one of the fundamental problems of TeX,
+> as you well know, is the small, fixed, number of certain entities
+> which it provides: in the light of this experience, would it not make
+> sense to allow an a TeX-extension module such as LaTeX-3 an infinite
+> number of all entities, limited only by the available storage space,
+> and interchangeable in that if, overall, an implementation allowed
+> $n$ words of space, this $n$ could be partitioned among the fake counters,
+> fake dimens, fake families, etc, in a totally flexible way?
+
+In principle I'm in favor of this idea but we are not talking NTS here
+but real life TeX programming. For example, there is *no* way to
+extend the 16 families in the current TeX except by reimplementing
+TeXs internal math handlings by hand within TeX.
+
+Instead of keeping the values for fake registers in main memory which
+would be slow and also needing a lot of it, I'm thinking of providing
+global dimens, counters and skips (?) by using one or more dummy fonts
+with no chars but a huge number of font dimens. This is very efficient
+in space and fast. In principle you could even extend it to a general
+allocation routine which loads the same font over and over again at
+slightly different sizes, thus providing as many new "registers" as
+necessary.
+
+It is not clear to me whether or not a fixed upper boundary is enough
+(this would be compile time constant of the format since you can say
+something like \fontdimen10000\nullfont=0pt if you do it early
+enough).
+
+Of course, these registers are all global, and therefore
+not usable in all situations. Another way of getting at local fake
+registers at a reasonable speed, is to use a medium number of mu-skip
+registers. This would be definitly limited to approx 200 but at least
+they would be local.
+
+I see no way to extend box registers or insertions and I do see no
+need to have so many mu-skip registers.
+
+Does this my remarks a bit better?
+
+Frank
+

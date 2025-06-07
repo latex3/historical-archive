@@ -1,0 +1,898 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.AA4EB8F4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:48 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.AA4EB8F4"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Short form stuff: illustrative documentation, part 2
+Date: Wed, 6 May 1992 16:03:39 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE9AF@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@vme.nott.ac.uk>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 706
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.AA4EB8F4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+\subsection{Example}
+\label{sf-example}
+
+If your input file contains \dots
+%  assuming that, in LaTeX 3, \footnote ignores preceding spaces
+\begin{verbatim}
+\section{First citation}
+
+Text text text text
+\footnote{\firstcite{simple}.}
+text text text text.
+
+\section{Next citation}
+
+Text text text text
+\footnote{\latercite{simple}, p.\ 1.}
+text text text text.
+
+\section{References}
+
+\begin{reflist}
+
+\sfentry{simple}{Form for first text reference}{Form for
+subsequent text references}{Form for entry in reference-list.}
+
+\end{reflist}
+\end{verbatim}
+%  and assuming that LaTeX 3 will ignore blanks before \footnote
+a particular \dots\
+%  structure-to-design mapping
+might give \dots
+
+\clearpage
+{\bf \dots\ First citation}
+\vspace{\baselineskip}
+
+Text text text text%
+\footnote{\firstcite{simple}.}
+text text text text.
+
+\vspace{\baselineskip}
+{\bf \dots\ Next citation}
+\vspace{\baselineskip}
+
+Text text text text%
+\footnote{\latercite{simple}, p.\ 1.}
+text text text text.
+
+\clearpage
+{\bf \dots\ References}
+\vspace{\baselineskip}
+
+\begin{reflist}
+
+\sfentry{simple}{Form for first text reference}{Form for
+subsequent text references}{Form for entry in reference-list.}
+
+\end{reflist}
+
+\clearpage
+
+You will find some more realistic examples in the file {\tt =
+shortform.tex}
+in your local examples directory.
+
+\subsection{Punctuation}
+\label{sf-punct}
+
+A text reference may cite the whole of a source, or a specific unit =
+(e.g.,
+a particular page) within the source.  The two situations may require
+different punctuation.  You will probably find it convenient to avoid
+having a punctuation character at the end of the {\it first-text-ref\/} =
+and
+{\it later-text-ref\/} given in \verb+\sfentry+, and to add punctuation =
+as
+necessary after your \verb+\firstcite+ or \verb+latercite+ (as shown in
+\ref{sf-example}'s example).
+
+\subsection{Other facilities}
+
+The standard \dots\
+%  structure-to-design mappings
+provide the following auxiliary commands:
+\begin{itemize}
+\item \verb+\sfdata+, which is identical to \verb+\sfentry+
+   except that it has no {\it ref-list-entry} argument and produces no =
+text
+   locally.  This command is provided to cater for situations such as =
+the
+   following:
+   \begin{itemize}
+   \item you wish to lay a group of reference-list entries out ``by =
+hand''
+     instead of relying on {\tt reflist}, but nevertheless wish to =
+supply
+     data for use by \verb+\firstcite+ and \verb+\latercite+.  For
+     example, you may wish to group related manuscript references =
+together
+     concisely under a suitable subheading, rather than letting {\tt
+     reflist} format a lot of repetitive {\it ref-list-entry\/}s.
+   \item you intend to let your readers rely on the bibliographic =
+information
+     given by your first text reference.  You will not be providing a
+     reference-list.
+   \end{itemize}
+   Since the function of \verb+\sfdata+ is to declare text for use in =
+text
+   references, rather than to produce text locally, such commands can, =
+in
+   theory, be put anywhere in your input file(s).  In practice, it is a =
+good
+   idea to put them where they can be checked easily, e.g.,
+   \begin{itemize}
+   \item adjacent to any corresponding reference-list entries that you =
+are
+         laying out by hand, or
+   \item together in a file that contains only \verb+\sfdata+ commands.  =
+You
+         can \verb+\input+ this file from your root file.
+   \end{itemize}
+\item \verb+\footfirst+ and \verb+\footlater+, such that
+   \verb+\footfirst{+{\it key\/}\verb+}+ and \verb+\footlater{+{\it
+   key\/}\verb+}+ are equivalent to \verb+\footnote{\firstcite{+{\it
+   key\/}\verb+}}+ and \verb+\footnote{\latercite{+{\it key\/}\verb+}}+
+   respectively.  These commands reduce the keystrokes needed in the
+   common situation when a footnote just contains one citation.
+
+   Both commands have an optional argument that allows punctuation to be
+   inserted between the end of the {\it \dots-text-ref\/} and the end
+   of the footnote (as envisaged in section \ref{sf-punct}).  For =
+example,
+   \verb+\footfirst[.]{simple}+ is equivalent to
+   \verb+\footnote{\firstcite{simple}.}+.
+
+\item \verb+\endfirst+ and \verb+\endlater+, which bear the
+   same relationship to \verb+\endnote+ that \verb+\footfirst+ and
+   \verb+\footlater+ bear to \verb+\footnote+.
+
+\end{itemize}
+
+
+\subsection{Miscellaneous}
+
+\noindent
+\begin{enumerate}
+\item
+     Unlike the analogous commands for reference by number and =
+author-date,
+     \verb+\firstcite+ and \verb+\latercite+ have a {\it key\/} argument
+     rather than a {\it key-list\/} argument.  Short form citations are
+     generally worked into sentences, so it is assumed that you will =
+deal with
+     a sequence of citations by working a sequence of
+     \verb+\firstcite+ and \verb+\latercite+ commands into a sentence.
+
+     Similarly, there is no optional \dots\
+%    argument-argument ?
+     for the {\it key\/} in \verb+\firstcite+ and \verb+\latercite+.  =
+You can
+     specify particular pages, etc., as shown in section =
+\ref{sf-example}'s
+     example.
+
+\item If you wish to use terms such as ``ibid.''\ and ``loc.\ cit.'', =
+you can
+     of course do so.  If you wish to refer back from a footnote in =
+which a
+     \verb+\latercite+ gives a {\it later-text-ref\/} to the footnote in
+     which a \verb+\firstcite+ gives the {\it first-text-ref\/}, you can
+     use \verb+\label+ and \verb+\ref+ to ensure that the number of the
+     \verb+\firstcite+ footnote appears correctly in the =
+\verb+\latercite+
+     footnote.
+
+     But such conventions date from when an author submitted a typed =
+manuscript
+     for a typesetter to re-key.  Your readers may have difficulty
+     following citations that refer back to footnotes that are no longer
+     visible (as when an ``ibid.'' occurs in the first footnote on a =
+page).
+     Perhaps, with \LaTeX, you would prefer to use \verb+\latercite+ =
+rather
+     than ``ibid.''\ or ``loc.\ cit.''?  Perhaps it would be better to =
+put more
+     detail into your {\it later-text-ref} instead of making =
+cross-references
+     to earlier footnotes?
+\end{enumerate}
+
+\appendix
+
+\setcounter{chapter}{4}
+\chapter{Further details}
+
+\dots
+
+\section{Bibliographic references}
+\label{multiple-systems}
+
+The circumstances (mentioned in chapter \ref{bib-refs}) in which two or
+three different citation systems may be used in parallel include:
+\begin{itemize}
+\item conference proceedings, if an editor is prepared to allow
+      contributors to choose their own citation system
+\item series of manuals.  A short form system is sometimes used
+      for references between one manual and another, with some other
+      system used for references to other literature.
+\item documents that may be re-published in different house-styles.
+      If two house-styles specify two different citation systems, the
+      input files may need to contain ``mark up'' for both schemes,
+      although only one scheme would be used at a time.  For example:\\
+      {\tt ... Marshall and Lewitt's \verb+\dcite{marshall-lewitt}+
+      approach \verb+\numcite{marshall-lewitt}+ ... }\\
+%  where the author-date citation is positioned according to ISO 690
+%  recommendations, while the reference-by-number citation is positioned
+%  according to American Chemical Society recommendations
+      contains ``mark up'' for both the reference-by-number system
+      and the author-date system, on the assumption that the \dots\
+%  mapping files?
+      will just make one system visible at a time.
+\end{itemize}
+
+\chapter{Specialized facilities for particular disciplines}
+
+\dots
+
+\setcounter{section}{2}
+\section{Law}
+
+If you have to prepare documents about law, you may find that the =
+standard
+\LaTeX\ facilities are inappropriate:
+\begin{itemize}
+\item although the citation system that is normally used in legal
+     publications has a certain amount in common with the ``short form =
+in
+     footnotes'' system mentioned in chapter \ref{bib-refs}, some of the
+     details are different
+\item legal publications often need tables of cases, statutes, etc.  The
+     structure of such tables is similar to that of an index, but they
+     generally appear in the front matter and may require a visual =
+design
+     which is similar to that of the table of contents.
+\end{itemize}
+
+Special facilities for authors of documents about law are provided
+\dots\ .
+%  whatever we call a "definition of law structure" and "mapping of a =
+law
+%  structure to a design"
+Further details are available in {\tt law-doc.tex} and {\tt law-ex.tex},
+which you will find in your local ``supplementary documentation'' and
+``examples'' directories respectively.
+
+\chapter{Help for old friends}
+\label{old-friends}
+
+
+\dots\ to avoid confusing structure with design \dots\ ``mapping files''
+rather than ``style files'' \dots
+
+\setcounter{section}{6}
+\section{Bibliographic references}
+
+\dots\ \LaTeX\ 2.09's \verb+\cite+ command has been superseded by =
+commands
+tailored to the three supported citation systems.  (If you want to =
+emulate
+version 2.09 for citations that do not require optional arguments, you =
+can
+define \verb+\newcommand{\cite}{\numcite}+.)
+
+\dots\ \LaTeX\ 2.09's {\tt thebibliography} environment has been =
+superseded
+by {\tt reflist}, with \verb+\bibitem+s superseded by the various
+\verb+\...entry+ commands.  Whereas {\tt thebibliography} produced a
+heading and formated a list, {\tt reflist} just formats the list: you =
+must
+arrange a suitable heading yourself with a command such as
+\verb+\section{References}+.  (If you want to emulate version 2.09,
+\dots\ ).
+
+
+
+\end{document}
+
+
+------_=_NextPart_001_01C19443.AA4EB8F4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Short form stuff: illustrative documentation, part 2</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>\subsection{Example}</FONT>
+
+<BR><FONT SIZE=3D2>\label{sf-example}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If your input file contains \dots</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; assuming that, in LaTeX 3, \footnote ignores =
+preceding spaces</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\section{First citation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Text text text text</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{\firstcite{simple}.}</FONT>
+
+<BR><FONT SIZE=3D2>text text text text.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Next citation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Text text text text</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{\latercite{simple}, p.\ 1.}</FONT>
+
+<BR><FONT SIZE=3D2>text text text text.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{References}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{reflist}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\sfentry{simple}{Form for first text reference}{Form =
+for</FONT>
+
+<BR><FONT SIZE=3D2>subsequent text references}{Form for entry in =
+reference-list.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{reflist}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; and assuming that LaTeX 3 will ignore blanks =
+before \footnote</FONT>
+
+<BR><FONT SIZE=3D2>a particular \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; structure-to-design mapping</FONT>
+
+<BR><FONT SIZE=3D2>might give \dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\clearpage</FONT>
+
+<BR><FONT SIZE=3D2>{\bf \dots\ First citation}</FONT>
+
+<BR><FONT SIZE=3D2>\vspace{\baselineskip}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Text text text text%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{\firstcite{simple}.}</FONT>
+
+<BR><FONT SIZE=3D2>text text text text.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\vspace{\baselineskip}</FONT>
+
+<BR><FONT SIZE=3D2>{\bf \dots\ Next citation}</FONT>
+
+<BR><FONT SIZE=3D2>\vspace{\baselineskip}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Text text text text%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{\latercite{simple}, p.\ 1.}</FONT>
+
+<BR><FONT SIZE=3D2>text text text text.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\clearpage</FONT>
+
+<BR><FONT SIZE=3D2>{\bf \dots\ References}</FONT>
+
+<BR><FONT SIZE=3D2>\vspace{\baselineskip}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{reflist}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\sfentry{simple}{Form for first text reference}{Form =
+for</FONT>
+
+<BR><FONT SIZE=3D2>subsequent text references}{Form for entry in =
+reference-list.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{reflist}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\clearpage</FONT>
+</P>
+
+<P><FONT SIZE=3D2>You will find some more realistic examples in the file =
+{\tt shortform.tex}</FONT>
+
+<BR><FONT SIZE=3D2>in your local examples directory.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Punctuation}</FONT>
+
+<BR><FONT SIZE=3D2>\label{sf-punct}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A text reference may cite the whole of a source, or a =
+specific unit (e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>a particular page) within the source.&nbsp; The two =
+situations may require</FONT>
+
+<BR><FONT SIZE=3D2>different punctuation.&nbsp; You will probably find =
+it convenient to avoid</FONT>
+
+<BR><FONT SIZE=3D2>having a punctuation character at the end of the {\it =
+first-text-ref\/} and</FONT>
+
+<BR><FONT SIZE=3D2>{\it later-text-ref\/} given in \verb+\sfentry+, and =
+to add punctuation as</FONT>
+
+<BR><FONT SIZE=3D2>necessary after your \verb+\firstcite+ or =
+\verb+latercite+ (as shown in</FONT>
+
+<BR><FONT SIZE=3D2>\ref{sf-example}'s example).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Other facilities}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The standard \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; structure-to-design mappings</FONT>
+
+<BR><FONT SIZE=3D2>provide the following auxiliary commands:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\sfdata+, which is identical to =
+\verb+\sfentry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; except that it has no {\it =
+ref-list-entry} argument and produces no text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; locally.&nbsp; This command is provided =
+to cater for situations such as the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; following:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item you wish to lay a group of =
+reference-list entries out ``by hand''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; instead of relying on {\tt =
+reflist}, but nevertheless wish to supply</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; data for use by =
+\verb+\firstcite+ and \verb+\latercite+.&nbsp; For</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; example, you may wish to =
+group related manuscript references together</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; concisely under a suitable =
+subheading, rather than letting {\tt</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; reflist} format a lot of =
+repetitive {\it ref-list-entry\/}s.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item you intend to let your readers =
+rely on the bibliographic information</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; given by your first text =
+reference.&nbsp; You will not be providing a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; Since the function of \verb+\sfdata+ is =
+to declare text for use in text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; references, rather than to produce text =
+locally, such commands can, in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; theory, be put anywhere in your input =
+file(s).&nbsp; In practice, it is a good</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; idea to put them where they can be =
+checked easily, e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item adjacent to any corresponding =
+reference-list entries that you are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+laying out by hand, or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item together in a file that contains =
+only \verb+\sfdata+ commands.&nbsp; You</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; can =
+\verb+\input+ this file from your root file.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\footfirst+ and \verb+\footlater+, such =
+that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \verb+\footfirst{+{\it key\/}\verb+}+ =
+and \verb+\footlater{+{\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; key\/}\verb+}+ are equivalent to =
+\verb+\footnote{\firstcite{+{\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; key\/}\verb+}}+ and =
+\verb+\footnote{\latercite{+{\it key\/}\verb+}}+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; respectively.&nbsp; These commands =
+reduce the keystrokes needed in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; common situation when a footnote just =
+contains one citation.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; Both commands have an optional argument =
+that allows punctuation to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; inserted between the end of the {\it =
+\dots-text-ref\/} and the end</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; of the footnote (as envisaged in section =
+\ref{sf-punct}).&nbsp; For example,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \verb+\footfirst[.]{simple}+ is =
+equivalent to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\verb+\footnote{\firstcite{simple}.}+.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\item \verb+\endfirst+ and \verb+\endlater+, which =
+bear the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; same relationship to \verb+\endnote+ =
+that \verb+\footfirst+ and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \verb+\footlater+ bear to =
+\verb+\footnote+.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\subsection{Miscellaneous}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Unlike the analogous =
+commands for reference by number and author-date,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\firstcite+ and =
+\verb+\latercite+ have a {\it key\/} argument</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; rather than a {\it =
+key-list\/} argument.&nbsp; Short form citations are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; generally worked into =
+sentences, so it is assumed that you will deal with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; a sequence of citations by =
+working a sequence of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\firstcite+ and =
+\verb+\latercite+ commands into a sentence.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Similarly, there is no =
+optional \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; argument-argument ?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; for the {\it key\/} in =
+\verb+\firstcite+ and \verb+\latercite+.&nbsp; You can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; specify particular pages, =
+etc., as shown in section \ref{sf-example}'s</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; example.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\item If you wish to use terms such as ``ibid.''\ and =
+``loc.\ cit.'', you can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of course do so.&nbsp; If =
+you wish to refer back from a footnote in which a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\latercite+ gives a =
+{\it later-text-ref\/} to the footnote in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; which a \verb+\firstcite+ =
+gives the {\it first-text-ref\/}, you can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; use \verb+\label+ and =
+\verb+\ref+ to ensure that the number of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\firstcite+ footnote =
+appears correctly in the \verb+\latercite+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; footnote.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; But such conventions date =
+from when an author submitted a typed manuscript</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; for a typesetter to =
+re-key.&nbsp; Your readers may have difficulty</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; following citations that =
+refer back to footnotes that are no longer</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; visible (as when an =
+``ibid.'' occurs in the first footnote on a page).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Perhaps, with \LaTeX, you =
+would prefer to use \verb+\latercite+ rather</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; than ``ibid.''\ or ``loc.\ =
+cit.''?&nbsp; Perhaps it would be better to put more</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; detail into your {\it =
+later-text-ref} instead of making cross-references</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; to earlier footnotes?</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\appendix</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{chapter}{4}</FONT>
+
+<BR><FONT SIZE=3D2>\chapter{Further details}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Bibliographic references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{multiple-systems}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The circumstances (mentioned in chapter =
+\ref{bib-refs}) in which two or</FONT>
+
+<BR><FONT SIZE=3D2>three different citation systems may be used in =
+parallel include:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item conference proceedings, if an editor is =
+prepared to allow</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contributors to choose =
+their own citation system</FONT>
+
+<BR><FONT SIZE=3D2>\item series of manuals.&nbsp; A short form system is =
+sometimes used</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for references between =
+one manual and another, with some other</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; system used for =
+references to other literature.</FONT>
+
+<BR><FONT SIZE=3D2>\item documents that may be re-published in different =
+house-styles.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If two house-styles =
+specify two different citation systems, the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; input files may need =
+to contain ``mark up'' for both schemes,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; although only one =
+scheme would be used at a time.&nbsp; For example:\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt ... Marshall and =
+Lewitt's \verb+\dcite{marshall-lewitt}+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; approach =
+\verb+\numcite{marshall-lewitt}+ ... }\\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; where the author-date citation is positioned =
+according to ISO 690</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; recommendations, while the =
+reference-by-number citation is positioned</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; according to American Chemical Society =
+recommendations</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contains ``mark up'' =
+for both the reference-by-number system</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and the author-date =
+system, on the assumption that the \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; mapping files?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will just make one =
+system visible at a time.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\chapter{Specialized facilities for particular =
+disciplines}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{section}{2}</FONT>
+
+<BR><FONT SIZE=3D2>\section{Law}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If you have to prepare documents about law, you may =
+find that the standard</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ facilities are inappropriate:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item although the citation system that is normally =
+used in legal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; publications has a certain =
+amount in common with the ``short form in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; footnotes'' system mentioned =
+in chapter \ref{bib-refs}, some of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; details are different</FONT>
+
+<BR><FONT SIZE=3D2>\item legal publications often need tables of cases, =
+statutes, etc.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; structure of such tables is =
+similar to that of an index, but they</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; generally appear in the =
+front matter and may require a visual design</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; which is similar to that of =
+the table of contents.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Special facilities for authors of documents about law =
+are provided</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ .</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; whatever we call a &quot;definition of law =
+structure&quot; and &quot;mapping of a law</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; structure to a design&quot;</FONT>
+
+<BR><FONT SIZE=3D2>Further details are available in {\tt law-doc.tex} =
+and {\tt law-ex.tex},</FONT>
+
+<BR><FONT SIZE=3D2>which you will find in your local ``supplementary =
+documentation'' and</FONT>
+
+<BR><FONT SIZE=3D2>``examples'' directories respectively.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\chapter{Help for old friends}</FONT>
+
+<BR><FONT SIZE=3D2>\label{old-friends}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\dots\ to avoid confusing structure with design \dots\ =
+``mapping files''</FONT>
+
+<BR><FONT SIZE=3D2>rather than ``style files'' \dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{section}{6}</FONT>
+
+<BR><FONT SIZE=3D2>\section{Bibliographic references}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ \LaTeX\ 2.09's \verb+\cite+ command has been =
+superseded by commands</FONT>
+
+<BR><FONT SIZE=3D2>tailored to the three supported citation =
+systems.&nbsp; (If you want to emulate</FONT>
+
+<BR><FONT SIZE=3D2>version 2.09 for citations that do not require =
+optional arguments, you can</FONT>
+
+<BR><FONT SIZE=3D2>define \verb+\newcommand{\cite}{\numcite}+.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ \LaTeX\ 2.09's {\tt thebibliography} =
+environment has been superseded</FONT>
+
+<BR><FONT SIZE=3D2>by {\tt reflist}, with \verb+\bibitem+s superseded by =
+the various</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\...entry+ commands.&nbsp; Whereas {\tt =
+thebibliography} produced a</FONT>
+
+<BR><FONT SIZE=3D2>heading and formated a list, {\tt reflist} just =
+formats the list: you must</FONT>
+
+<BR><FONT SIZE=3D2>arrange a suitable heading yourself with a command =
+such as</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\section{References}+.&nbsp; (If you want to =
+emulate version 2.09,</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ ).</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.AA4EB8F4--
+

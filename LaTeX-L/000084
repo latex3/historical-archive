@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 20 Apr 90 08:42:52 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Leslie Lamport <lamport@SRC.DEC.COM>
+Subject:      proposal
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 84
+
+
+One of the serious drawbacks of markup languages like TeX is that
+formulas written in the source language are difficult to read.  Below
+are some rambling observations leading to a possible proposal to
+address this problem.
+
+I have occasion to write a lot of logical formulas on-line.  Since I
+have to read them as I write them, I write them in hand-formatted
+ascii.  I have written a variant of the verbatim environment to convert
+some ascii strings to symbols, so I can print the formulas in a more
+readable form than they appear on my screen.  Some of the
+transformations are:
+
+       /\ = \land
+       \/ = \lor
+        ~ = \neg
+       [] = \Box
+       -> = \rightarrow
+       => = \Rightarrow
+       || = \|
+      (+) = \oplus
+
+In addition, :foo: is mapped to $\foo$, which allows me to do things
+like
+
+      :o: = \circ
+     :oo: = \infty
+    :cup: = \cup
+
+The latter turns out to be useful because "A :cup: B" is easier to read
+on the screen than "A \cup B".  I would also like to do things like
+:+/-: = \pm, but haven't been willing to do the large amount of hacking
+that requires.  (Today's TeX puzzle: why won't
+     \expandafter\def\csname +/-\endcsname{...}
+work?)
+
+I would find it quite convenient to write formulas in LaTeX documents
+in a similar way.  For example, $A /\ B => C$ is a lot nicer than
+$A \land B \rightarrow C$.  Of course, while logicians might like the
+translations I use (/\ = \land), physicists would probably prefer their
+own notation.  Moreover, astrophysicists and nuclear physicists might
+want different notations; and perhaps astrophysicists working on
+stellar evolution might want different notations from astrophysicists
+working on galactic dynamics.  Maybe everyone needs their own private
+notation.  So here are some questions:
+
+1.  Can one implement a set of notations that wouldn't cripple ordinary
+features.  For example, it's easy to make [ an active character so [] =
+\Box, but can that be done in such a way that \left[ still works?
+
+2.  If the answer to 1 is yes, is there a reasonably small set of
+notations (logic, analysis, physics, ...) that are useful enough to
+be worth implementing (with style options)?
+
+3.  Is there some way to let the user easily create his own notations?
+
+4.  Is there anyone willing to invest the work needed to answer these
+questions?
+
+Leslie Lamport
+
+

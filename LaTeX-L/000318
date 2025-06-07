@@ -1,0 +1,222 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.407F689C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:50 +0100
+Return-Path: <LATEX-L@DHDURZ1.bitnet>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.407F689C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Re: RE: PUNCTUATION AFTER SECTION HEADS
+Date: Wed, 10 Apr 1991 08:01:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE55C@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Don Hosek" <DHOSEK@HMCVAX.CLAREMONT.EDU>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 318
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.407F689C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+->  (2) just before reading the argument containing the section
+->  title, make !, ? and . active and have them set a flag in
+->  addition to printing the appropriate mark. If that flag is true,
+->  don't add a period onto the end yourself.
+
+-Active characters won't do due to the problems that TeX fixes
+-catcode whenever it reads arguments. The only possibiltiy I see
+-when such a strategy is used is to have all these chars *always*
+-active with a default definition that produces the non active
+-equiv. But this will slow down processing very much.
+-Anyway, something like this will be implmented to provide short
+-references but I think it isn't justified to use this for
+-punctuation in general.
+
+Frank, be a little more creative. Consider the following simple
+version of the above algorithim:
+
+\def\section{\catcode`\.=3D\active\xsection}
+\def\xsection#1{\centerline{#1\ifperiod.\fi}\periodtrue\catcode`\.=3D11\r=
+elax}
+{\catcode`\.=3D\active
+ \gdef.{\periodfalse}}
+\newif\ifperiod
+\periodtrue
+
+(I originally wrote this sort of code to handle the dropped E
+problem of tex.web). Incidentally, the above code won't quite
+work since a period in the middle of the title will gleefully
+supress the final period. Perhaps an \ifnextchar sort of setting
+would work better.
+
+->  (3) take a look at the spacefactor. If it is 3000, we've just
+->  had end-of-sentence punctuation. It's not too difficult to
+->  justify the occasional \@ which would be necessary under these
+->  circumstances.
+
+-That's an interesting idea but assumes that punctuation chars
+-always have a \spacefactor that distinguishs them from other
+-characters. This means that we need to change \frenchspacing and
+-I'm not sure what happens then, how many applications depend
+-on things like this. But it looks certainly promising.
+
+All we need to do is make sure that the chapter titles are set
+with \nonfrenchspacing. Simple enough. In any event,
+\frenchspacing is really not a command that should appear in a
+TeX document anyway (if they need frenchspacing, chances are
+they'll be using a special document style anyway).
+
+-dh
+
+
+------_=_NextPart_001_01C19443.407F689C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: RE: PUNCTUATION AFTER SECTION HEADS</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>-&gt;&nbsp; (2) just before reading the argument =
+containing the section</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; title, make !, ? and . active and have =
+them set a flag in</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; addition to printing the appropriate =
+mark. If that flag is true,</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; don't add a period onto the end =
+yourself.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Active characters won't do due to the problems that =
+TeX fixes</FONT>
+
+<BR><FONT SIZE=3D2>-catcode whenever it reads arguments. The only =
+possibiltiy I see</FONT>
+
+<BR><FONT SIZE=3D2>-when such a strategy is used is to have all these =
+chars *always*</FONT>
+
+<BR><FONT SIZE=3D2>-active with a default definition that produces the =
+non active</FONT>
+
+<BR><FONT SIZE=3D2>-equiv. But this will slow down processing very =
+much.</FONT>
+
+<BR><FONT SIZE=3D2>-Anyway, something like this will be implmented to =
+provide short</FONT>
+
+<BR><FONT SIZE=3D2>-references but I think it isn't justified to use =
+this for</FONT>
+
+<BR><FONT SIZE=3D2>-punctuation in general.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank, be a little more creative. Consider the =
+following simple</FONT>
+
+<BR><FONT SIZE=3D2>version of the above algorithim:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\section{\catcode`\.=3D\active\xsection}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\xsection#1{\centerline{#1\ifperiod.\fi}\periodtrue\catcode`=
+\.=3D11\relax}</FONT>
+
+<BR><FONT SIZE=3D2>{\catcode`\.=3D\active</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\gdef.{\periodfalse}}</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifperiod</FONT>
+
+<BR><FONT SIZE=3D2>\periodtrue</FONT>
+</P>
+
+<P><FONT SIZE=3D2>(I originally wrote this sort of code to handle the =
+dropped E</FONT>
+
+<BR><FONT SIZE=3D2>problem of tex.web). Incidentally, the above code =
+won't quite</FONT>
+
+<BR><FONT SIZE=3D2>work since a period in the middle of the title will =
+gleefully</FONT>
+
+<BR><FONT SIZE=3D2>supress the final period. Perhaps an \ifnextchar sort =
+of setting</FONT>
+
+<BR><FONT SIZE=3D2>would work better.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&gt;&nbsp; (3) take a look at the spacefactor. If it =
+is 3000, we've just</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; had end-of-sentence punctuation. It's not =
+too difficult to</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; justify the occasional \@ which would be =
+necessary under these</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&nbsp; circumstances.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-That's an interesting idea but assumes that =
+punctuation chars</FONT>
+
+<BR><FONT SIZE=3D2>-always have a \spacefactor that distinguishs them =
+from other</FONT>
+
+<BR><FONT SIZE=3D2>-characters. This means that we need to change =
+\frenchspacing and</FONT>
+
+<BR><FONT SIZE=3D2>-I'm not sure what happens then, how many =
+applications depend</FONT>
+
+<BR><FONT SIZE=3D2>-on things like this. But it looks certainly =
+promising.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>All we need to do is make sure that the chapter titles =
+are set</FONT>
+
+<BR><FONT SIZE=3D2>with \nonfrenchspacing. Simple enough. In any =
+event,</FONT>
+
+<BR><FONT SIZE=3D2>\frenchspacing is really not a command that should =
+appear in a</FONT>
+
+<BR><FONT SIZE=3D2>TeX document anyway (if they need frenchspacing, =
+chances are</FONT>
+
+<BR><FONT SIZE=3D2>they'll be using a special document style =
+anyway).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-dh</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.407F689C--
+

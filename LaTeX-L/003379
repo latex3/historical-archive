@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1470" "Mon" "1" "November" "1999" "13:41:00" "+0000" "James Kilfiger" "mapdn@CSV.WARWICK.AC.UK" nil "40" "Re: extending xparse --- any takers?" "^Date:" nil nil "11" nil "extending xparse --- any takers?" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA07649
+	for <schoepf@UNI-MAINZ.DE>; Mon, 1 Nov 1999 14:40:38 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.987BCF8E@mail.listserv.gmd.de>; Mon, 1 Nov 1999 14:41:07 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445169 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 1 Nov 1999 14:41:02 +0100
+Received: from daffodil.csv.warwick.ac.uk (daffodil.csv.warwick.ac.uk
+          [137.205.192.30]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id OAA14959 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 1 Nov
+          1999 14:40:59 +0100 (MET)
+Received: from mimosa.csv.warwick.ac.uk (mapdn@mimosa [137.205.192.34]) by
+          daffodil.csv.warwick.ac.uk (8.9.3/8.9.3) with ESMTP id NAA29301 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 1 Nov 1999 13:41:02 GMT
+Received: (from mapdn@localhost) by mimosa.csv.warwick.ac.uk (8.9.3/8.9.3) id
+          NAA19149; Mon, 1 Nov 1999 13:41:01 GMT
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <199911011341.NAA19149@mimosa.csv.warwick.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910312013.VAA00827@istrati.zdv.uni-mainz.de> from Frank
+              Mittelbach at "Oct 31, 99 09:13:27 pm"
+Date:         Mon, 1 Nov 1999 13:41:00 +0000
+From: James Kilfiger <mapdn@CSV.WARWICK.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: extending xparse --- any takers?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3379
+
+> we had a bit of discussion some time ago on how to extend xparse
+>
+> here is one suggestion which i think might be of interest:
+>
+> suppose we have a parsing class "x" in the second argument of
+> \DeclareUserCommand which would take a list of tokens (for example comma
+> spearated) and parses the input to see if any of those tokens follows. If so
+> it would return \BooleanTrue otherwise \BooleanFalse. eg
+
+I've got an implementation of something like this, but I'm not very
+proud of it (it doesn't do expansion, and
+\DeclareDocumentCommand{x{\foo\bar}m}{} causes errors, x{} must be the
+last argument. and it doesn't use commas).  The internals of the code are:
+
+\long\def\@ddc@x#1#2\toks@{
+   % Need to test that #2=\the, without breaking \@ifnexttokenin
+   \@ifnexttokenin{#1}
+    {\addto@hook\toks@\BooleanTrue #2\toks@}
+    {\addto@hook\toks@\BooleanFalse #2\toks@}}
+
+\def\q@stop{\errmessage{quarky~ thing~ expanded!}}
+\def\@firstofmany#1#2\q@stop{#1}  % Are there internals that already do this?
+\def\@restofmany#1#2\q@stop{#2}
+\long\def\@ifnexttokenin#1#2#3#4{
+   \ifx/#1/
+        #3#4
+     \else
+      \expandafter\@ifnextchar\@firstofmany#1\q@stop
+         {#2\@gobble}
+         {\expandafter\@ifnexttokenin\expandafter
+                         {\@restofmany#1\q@stop} {#2} {#3} #4\@gobble}
+         #4
+   \fi
+}
+
+(you also have to put a parser in \@ddc for x and rename all the
+\ddc@xmmm to avoid a name clash)
+
+Surely this can be done better.
+        James
+

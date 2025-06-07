@@ -1,0 +1,100 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3524" "Sat" "19" "December" "92" "19:56:42" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "73" "overloading of function names" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA24214; Sat, 19 Dec 92 19:56:58 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA03499; Sat, 19 Dec 92 19:56:55 +0100
+Message-Id: <9212191856.AA03499@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4269; Sat, 19 Dec 92 19:57:01 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8175;
+ Sat, 19 Dec 92 19:56:57 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8173;
+ Sat, 19 Dec 92 19:56:54 CET
+Reply-To: LaTeX-L@vm.urz.Uni-Heidelberg.de
+Date:         Sat, 19 Dec 92 19:56:42 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      overloading of function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 912
+
+
+Now that my email situation is becoming slightly better I'm faced with
+a different problem: a huge amount of mails to answer (or not to
+answer :-). I guess I pick them up at random, they are just too many.
+
+
+
+> Paul Taylor's opinion, whatever its validity (which I do not question),
+> has nothing to do with the original question, which is what happens
+> to ' (and `, I suppose) inside the tabbing environment.  For whatever
+> reasons, having nothing to do with EBCDIC or 7 bits or anything I consider
+> it bad form to change a definition of that sort inside an environment.
+> It creates mysterious errors, makes macros fails and is just poor programming.
+> It is all very well for a person who never uses the tabbing environment
+> (till recently he never used latex) to say not to bother, but for those
+> who do, it can be a real mess.  It was an error to do this and latex 3 is
+> the time to repair it.
+
+A lot of people commented on the original question by Dominik and the
+discussion was floating even into the uni-code corner (remember, we are
+not trying to rewrite TeX in this project, do we?)
+
+I think the question boils down to: is overloading of operators
+something sensible or should it be avoided completely?
+
+To give some other example where this is a problem in the current
+latex: \\ is used for a line separator in various places, for example
+in raggedright, tabular, and, and, and. Now everybody who had done
+some latex support will have been faced with the baffled user who
+tried to use \\ inside a p-column of a tabular to denote a linebreak
+rather than a column sep.
+
+In my opinion Michael Barr (I think he wrote that piece above, right?)
+is right by saying that for ltx3 it is time to repair that mess.
+
+The question is how?
+
+One extreme is to avoid overloading completely but I don't think that
+is really the right decision. I understand overloading as something
+which is done to a) ease keying in a document, but also sometimes to
+b) help clarifying the issues. For example, it is nice to think of \\
+as a line separator since that superficial view is correct until you
+try to combine different uses.
+
+Thus I would propose to remove overloading on the basic level (ie
+different functions get different names), eg \newline, \rowsep,
+\acuteaccent, \graveaccent, etc. together with a standard mechanism
+for mapping such basic functions to other names in certain contexts.
+This would mean that some shorthand functions could change meanings if
+the style designer or the user (in the preamble) decides this, but
+there would be always the possibility to resolve conflicts in
+situations where such overloading would be ambiguous and there would
+be the possibility to adjust the conventions to personal taste in a
+standardizied way without making the documents unexchangeable.
+
+this could, for example, be done in ``input convention style files''
+similar to the input conventions styles for the current ltx that
+define shorthands for ease of keying (like german.sty defining various
+double quote short hands, eg "a "s etc.).
+
+In contrast to the current situation we will have in ltx3 a standard
+way of mapping such functions to that the combined use of such files
+would be possible (which is often not the case for such extension like
+german in ltx209, because they change catcodes which other styles
+don't anticipate).
+By the way, a similar mechanism for short-hand strings is already
+developed.
+
+           -- my $0.02 worth of this old discussion
+
+Frank
+
+ps all of you a merry christmas and a happy new year
+

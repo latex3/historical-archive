@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3216" "Sat" "13" "June" "1998" "18:41:03" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "73" "Re: L3PL" "^Date:" nil nil "6" nil "L3PL" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id SAA07751;
+	Sat, 13 Jun 1998 18:43:18 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.97CC627C@listserv.gmd.de>; Sat, 13 Jun 1998 18:43:17 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 359828 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 13 Jun 1998 18:43:12 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA23491 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 13 Jun 1998 18:43:10
+          +0200 (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA181 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 13 Jun 1998
+          18:43:16 +0200
+Received: from [195.122.196.227] by fclients0.redestb.es (Post.Office MTA
+          v3.1.2 release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAB214 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sat, 13 Jun 1998 18:45:47 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199806131643.SAA23491@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 13 Jun 1998 18:41:03 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2555
+
+[This message was originally posted two weeks ago, but I have not
+received it yet. Apologies if someone is receiving it for the second
+time.]
+
+Richard Walker (>>) and David Carlisle (>) wrote:
+
+>> Some features are long overdue:  the naming system (if only it were
+>> more consistently applied) and the different types of arguments (n, o,
+>> x, etc.).
+>
+>If you spot any particular inconsitencies we'd be interested. The
+>details of the naming scheme change from time to time so inconsistencies
+>may relate to older conventions that we ought to update, or it may be
+>that you are viewing some concept in a different way.
+
+A had a quick look at l3.
+
+For many years the LaTeX Team has been encouraging LaTeX-like syntax in
+packages; now, the proposed syntax is quite different from anything known.
+I've found most of tools very useful, but I think their command names are
+a bit clumsy. Why not a combination of the old and the new, say:
+
+  \newcommand{\name}[cn]{definition}
+
+or similar?
+
+In addition, there is a potential danger. If LaTeX is so dramatically
+rewritten, *will* existing packages work? The programming experience
+gained
+over the past years could be lost in part (and the packages themselves)
+and LaTeX3 functionality could be lesser than LaTeX2e one, at least for
+a transition period. How long will be this period?  While
+uncompatibility is acceptable to some extent, perhaps l3 is *too*
+innovatory. (Remember Jobs has partially rejected Rhapsody because of a
+similar reason.)
+
+>> But `fake' integers?  I like hacking TeX too, but I realize
+>> its limitations.  There seems to have been a considerable amount of
+>> effort put into overcoming limitations of TeX which are better
+>> overcome by changing TeX - as has already been done.  If I need more
+>> counters I will use Omega.
+>
+>The fake integer implementations predate etex and omega. Probably it is
+>correct to say that a real L3 implementation would use an extended tex's
+>features for that, but perhaps this implementation may still be useful to
+>provide support for a standard tex.[...]
+
+In my packages I always avoid internal registers as much as possible.
+I even write things like
+ \edef\temporal{\the\counterx}
+and
+ \counterx=\temporal\relax
+if there are no available temporal counters.
+Fake integers is an useful addition which you may use or not; imposing
+Omega and the like is not an alternative, since most of TeX users have not
+even heard of them. TeX is the *standard* language, existing in every
+system and we must improve it. (Actually, fint is a sort of "changed TeX"
+but by another procedure.)
+
+>> In TeX, all macros must be unique across all input files for a job, to
+>> avoid unintended conflicts.> To be true to L3PL, this means using the
+>> <module> component on practically everything.  While I do not object
+>> to this in principle, it is yet another burden for package writers.
+>
+>Some package writers (me, for instance)  already use some kind of module
+>system to try to ensure uniqueness of internal names. eg all longtable
+>internal command names begin \LT@... all tabularx ones begin \TX@...
+
+Me too. The goal is uniqueness of names and the burden is fixing
+uncompatibilities if this device is not used.
+
+Regards
+Javier
+

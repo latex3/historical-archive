@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2312" "Fri" "21" "August" "92" "17:38:11" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "49" "Re: heading names and question" "^Date:" nil nil "8"])
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/6.5.92 )
+	id AA08969; Fri, 21 Aug 92 17:42:18 +0200
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA03063; Fri, 21 Aug 92 17:42:20 +0200
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA00345
+  (5.65c8/IDA-1.4.4(mail.m4[1.11]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Fri, 21 Aug 1992 17:42:18 +0200
+Message-Id: <199208211542.AA00345@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP R1.2.2MX) with BSMTP id 0216; Fri, 21 Aug 92 17:42:22 +02
+Received: from DEARN by TUBVM.CS.TU-BERLIN.DE (Mailer R2.07B) with BSMTP id
+ 0215; Fri, 21 Aug 92 17:42:21 +0200
+Received: from DEARN by DEARN (Mailer R2.08) with BSMTP id 4476; Fri, 21 Aug 92
+ 17:40:40 MET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Date:         Fri, 21 Aug 92 17:38:11 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: Multiple recipients of <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Subject:      Re: heading names and question
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 733
+
+
+
+> Could we get a ruling on what level 6, 7 and beyond heads should
+> be called in LaTeX 2.09? This is related to what they should be
+> called in LaTeX 3.0, but not inexorably linked (i.e., it would be
+> nice if they're going to have the same names in both versions,
+> but if LaTeX 3 completely changes naming of sectioning commands,
+> then I'd rather have it be more consistent with today's
+> interface).
+
+I personally have no idea what kind of names one can come up with if
+the current names are otherwise kept. But I think Don is right in
+asking for suggestions. Are there any?
+
+It would also be interesting to hear ideas on a completely new naming
+convention. Since we do need a converter from ltx209 to ltx3 sources
+anyway it wouldn't make any problems to switch to another set of names
+if we think they are superior.
+
+While we are on the topic of heading, here is another problem which is
+currently bothering me:
+
+In latex 2.09 the \@startsection command is heavily overloaded,
+suppose for example, you have a full baseline as the \parskip. Now how
+do you specify that the postheadskip is half a baseline skip?  You
+don't because you can't make the postheadskip negative since this
+means you get a runin heading. But you have, to because the parskip
+gets inserted between this heading and the following text.
+
+Since I had to make such a format (looking like the bookmaster layout
+from IBM, for those who know that) I played around with the internal
+macros a bit to suppress paragraph skips after a heading. This is in
+principle possible but since there is no decent mechanism in latex209
+for doing such tasks it is difficult. Anyway actual the question I
+came up with is the following:
+
+  - Currently, if two headings follow each other directly, the
+preheadskip of the second one is suppressed completely, in other words
+the spacing between two directly sequenced headings is given by the
+postskip of the first one. My question is: is this the correct
+approach, or should there be a different one? To say it more explicit,
+I would invite you to suggest a set of parameters describing ``display
+headings'' + giving an algorithm for using the parameters in various
+circumstances. With display heading I mean headings which are
+separated by vertical skips from preceding and following text.
+
+Answers?
+
+Frank
+

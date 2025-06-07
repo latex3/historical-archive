@@ -1,0 +1,135 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2883" "Mon" "15" "July" "1996" "15:16:02" "+0100" "Albrecht Mehl, 64291 Darmstadt" "MEHL@HRZ1.HRZ.TH-DARMSTADT.DE" nil "97" "Binding of packages to formats" "^Date:" nil nil "7" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id PAA25419; Mon, 15 Jul 1996 15:36:12 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.CE5F219A@listserv.gmd.de>; Mon, 15 Jul 1996 15:36:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 111932 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 15 Jul 1996 15:16:26 +0200
+Received: from rs2.hrz.th-darmstadt.de (rs2.hrz.th-darmstadt.de [130.83.22.63])
+          by relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id PAA06868
+          for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 15 Jul 1996 15:16:24
+          +0200 (MET DST)
+Received: from hrz1.hrz.th-darmstadt.de (hrz1.hrz.th-darmstadt.de
+          [130.83.47.3]) by rs2.hrz.th-darmstadt.de (8.6.12/8.6.12.1ms) with
+          ESMTP id PAA41634 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 15
+          Jul 1996 15:16:22 +0200
+Received: from HRZ1/SpoolDir by hrz1.hrz.th-darmstadt.de (Mercury 1.21); 15 Jul
+          96 15:16:23 +0100
+Received: from SpoolDir by HRZ1 (Mercury 1.21); 15 Jul 96 15:16:08 +0100
+Priority: normal
+X-mailer: Pegasus Mail for Windows (v2.23DE)
+Message-ID:  <1343D45703A@hrz1.hrz.th-darmstadt.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Organization: Technical University Darmstadt
+Date:         Mon, 15 Jul 1996 15:16:02 +0100
+From: "Albrecht Mehl, 64291 Darmstadt" <MEHL@HRZ1.HRZ.TH-DARMSTADT.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Binding of packages to formats
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1763
+
+If one likes to use many packages within a document the binding prior
+to the actual typesetting can take up considerable time. Therefor it
+is desirable to have this business finished once and for all by
+binding the packages   a l w a y s    u s e d   to the format. In the
+file cfgguide.tex of the latex2e.-distribution this is described at
+the end. Following these instructions  I made up the following file
+for creating the format:
+
+\everyjob{typeout{xart1 1.0 based on LaTeX2e \fmtversion}}
+\makeatletter
+\usepackage{german}
+\nofiles
+\pagestyle{empty}
+\setlength{\parindent}{0em}
+\renewcommand{\labelitemi}{\bf --}
+\renewcommand{\labelitemii}{$\bullet$}
+
+\def \@clsextension {cls}
+\def \@pkgextension {sty}
+
+\let\xar@missingfileerror\@missingfileerror
+
+\def\@missingfileerror#1#2{%
+  \ifx #2\clsextension
+   \InputIfFileExists {#1.cls}%
+     {\wlog {xart1: loading #1.cls rather than #1.#2.}}%
+     {\xar@missingfileerror {#1}{#2}}%
+  \else
+    \ifx #2\@pkgextension
+      \InputIfFileExists {#1.sty}%
+        {\wlog {xart1: loading #1.sty rather than #1.#2.}}%
+        {\xar@missingfileerror {#1}{#2}}%
+    \else
+      \xar@missingfileerror {#1}{#2}}%
+    \fi
+  \fi
+}
+
+\makeatother
+\dump
+
+
+This works, i.e. a format has been created this way, and I could tex
+using this. Nevertheless some questions remain to be answered as I am
+a relative novice to tex - without La - so that I do not completely
+understand what the file cited above is actually doing.
+
+1. Together with this format I would like to use the normal classes
+and packages with their normal extensions .cls and .sty and not some
+fancy extensions as suggested in cfgguide.tex, the reasons being that
+these classes and packages will be used with the standard format, too
+- I don't see a reasons why I should have the same files twice on the
+hard disc with different extensions. If this is possible: what part of
+the above format creating file - especially the branching part? - can
+be omitted?
+
+2. In an earlier version one even was able to bind the class into the
+format, so that the document did   n o t   start with
+
+          documentclass  .....
+
+but rather with
+
+      begin document
+
+or in some cases with
+
+       usepackage ...
+       begin document
+
+if one wanted to use other packages in addition to the normal ones
+bound to the format. Is this still possible, how is one to go about
+it?
+
+3. In the beginning of my file the character starting an item is
+changed from the bullet to --. For some strange reasons the bullet
+still appears in front of an item.
+
+4. As urged in cfgguide.tex I included a typeout indicating that this
+is a nonstandard tex format. Why is this   n o t   seen on the screen?
+
+
+
+Many thanks in advance for any hints.
+
+A. Mehl
+
+Albrecht Mehl
+Hebbelstr. 42
+D-64291 Darmstadt
+Germany
+Tel. (+ 49 6151) 37 39 92
+Albrecht Mehl
+Hebbelstr. 42
+D-64291 Darmstadt
+Germany
+Tel. (+ 49 6151) 37 39 92
+

@@ -1,0 +1,163 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 2 Jan 2009 10:34:29 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n029YNaM012582
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 2 Jan 2009 10:34:24 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n029VLQP029039
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 2 Jan 2009 10:31:21 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n01N1Bdi026899;
+	Fri, 2 Jan 2009 10:31:10 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 199224 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 2 Jan
+          2009 10:31:09 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n029V9Pg014469 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 2 Jan 2009 10:31:09 +0100
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n029UtBK028649 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 2 Jan 2009 10:30:58 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.2]) by
+          lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id 1LIgMo-0007BL-fa
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 02 Jan 2009 09:30:55
+          +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <308a1ed10901010155r78f82ab3v11fef8d4a776813b@mail.gmail.com>      
+            <E33DFD8A-AB6E-4911-873E-DE65C9E369B9@gmail.com>           
+            <308a1ed10901010725t35e1c160m6e361d43655b3cb1@mail.gmail.com>
+            <A7D70C36-6DFF-4C51-AF52-BFB9BA973078@gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <495DDED6.3060504@morningstar2.co.uk>
+Date:         Fri, 2 Jan 2009 09:31:02 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: A Question about the future of LaTeX3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <A7D70C36-6DFF-4C51-AF52-BFB9BA973078@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 02 Jan 2009 09:34:29.0626 (UTC) FILETIME=[4F9085A0:01C96CBD]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5565
+
+Will Robertson wrote:
+
+>> On the other hand, there is a problem with contributed packages in
+>> LaTeX2e. A package that is written by X, would include a command where
+>> its name is already used in the other package and if the user uses
+>> these two packages, then he will be experienceing such problems. Is
+>> there any plan that in LaTeX3, we can control contributed packages to
+>> avoid such problems?
+> 
+> There is a more formal mechanism to name package variables/functions
+> according to a standard naming scheme.
+> 
+> For example, in the expl3 code the functions are split into separate
+> modules, each which takes a standard prefix:
+>    \clist_map_inline:nn
+>    \bool_if:nTF
+>    \int_abs:n
+> and so on. New packages/modules will take their own prefix in the same
+> way that LaTeX package authors use things like \zf@ as a prefix to
+> separate their internal functions and avoid clashes. Without namespacing
+> in TeX, this is the best we can do -- the problem will never be
+> eliminated but it shouldn't be much of a problem. Even now I find it's
+> very rare to run into problems.
+
+For internal macro names, this is true but the issue is more real for
+user-space macros.  Some thoughts:
+
+- It's likely that LaTeX3 will cover a lot of what is currently done by
+packages as part of the kernel.  The kernel namespace will therefore be
+much bigger, but should reduce the number of packages needed (at least
+in the short term).
+
+- Clearer separation of user and internal macros should help here.
+Several packages currently provide programming functions with user-space
+names. I'd hope that the more formal structure in LaTeX3 should avoid this.
+
+- The ideas set out in template (and also some kind of keyval support)
+should mean that a lot more variables are set using optional
+arguments/altered macro functions rather than by new macro names.  This
+should help.
+
+- The vast number of LaTeX2e packages and functions should give a much
+clearer idea for LaTeX3 developers of what is needed.  So I'd expect
+that a lot of LaTeX3 packages will cover what is done by several LaTeX2e
+ones. There are also a lot of clues on things to avoid (for example,
+when I write siunitx for LaTeX3, I won't use \newunit as it is also used
+by biblatex: I'm thinking of \DeclareUnit or \siunitx_unit_new).
+
+With all of that said, I think that there are some things to think about:
+
+1) How are module names/prefixes managed?
+2) How do you ensure that user macros clash less/not at all?
+
+I'd suggest that a more formal system for registering module and
+function names might be useful.  For modules, a simple "I'm developing
+module xxx, which is reserving module prefix yyy" form, with a
+searchable interface would be useful.  For user functions, it would also
+be useful to do something like that.  I wonder about some kind of .mod
+"registration" file (perhaps working with the CTAN people):
+
+\module_new {
+  name  =  ???,
+  prefix = ???,
+  owner = ???,
+  e-mail = ???,
+  webpage = ???,
+ [etc.]
+}
+
+\module_user_functions {module-name} {function1,function2,function3}
+
+With this in a separate file, it would be relatively easy to parse it
+with a web server and build a database of the information for
+developers.  You would also do something like:
+
+\module_description_load {module-name}
+
+at the beginning of a module.  This would read the file outlined above
+and would then give a useful error if there was a clash:
+
+"The module <clashing-module> has reserved the functions names:
+
+<function-names>
+
+which are also defined by <current-module>.  Loading of <current-module>
+has been aborted.  Please report this to the module maintainers:
+
+<current-module>	<e-mail>
+<clashing-module>	<e-mail>
+
+and also the LaTeX3 database team:
+
+module-database@latex-project.org"
+
+Something similar would also be appropriate for the internal module
+prefix names.
+
+I think with the more formalised programming system in LaTeX3 you are
+likely to have less one or two line packages, and more "serious"
+programming.  So I think the above mechanism is workable.
+-- 
+Joseph Wright
+

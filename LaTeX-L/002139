@@ -1,0 +1,384 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["14708" "Fri" "20" "June" "1997" "16:42:29" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "346" "A Language Model for LaTeX (2/2)" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id RAA02178 for <schoepf@UNI-MAINZ.DE>; Fri, 20 Jun 1997 17:24:22 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.34D4180B@listserv.gmd.de>; Fri, 20 Jun 1997 17:24:00 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 156825 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 17:23:45 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id RAA13440
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 20 Jun 1997 17:23:39
+          +0200 (MET DST)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id RAA01870 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 17:21:36 +0200
+          (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          QAA02773; Fri, 20 Jun 1997 16:42:29 +0200
+Message-ID:  <199706201442.QAA02773@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 20 Jun 1997 16:42:29 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      A Language Model for LaTeX (2/2)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2139
+
+\iffalse
+
+   part two of the paper
+
+\fi
+
+
+\subsection{Formatting}
+
+Although each of the examples listed here has been documented as
+characteristic of the typography associated with a particular
+language, they are all also aspects of the design over which a
+document designer may wish to have control that is independent of
+the language of the text.
+
+\paragraph{Direction}
+The direction of the text and, more generally, the writing system used
+are very strongly associated with the language in use.
+
+\paragraph{Micro-rendering}
+This covers the details of rendering at the level of individual glyphs
+and the relationships, often complex, between the characters which
+form the textual part of the logical document and the glyphs used to
+render this text, especially when aiming for the highest levels of
+typographic quality.  These details often depend on what glyphs are
+provided by the available fonts.  Also, when using \TeX, this level of
+formatting is typically controlled entirely by the choice of font,
+whereas it should be possible to specify such details independent of
+the font since they also depend on the language in use.
+
+Some examples:
+\begin{itemize}
+\item The precise positioning of diacritics depends on the
+  language; e.g.,~a language such as German with many umlauts puts
+  them closer to the top of the basic letter than is typically done
+  with the diaeresis in English or French typography.
+\item The use of aesthetic ligatures varies from language to language,
+  e.g.,~the ffl-ligature is traditionally not used in Portuguese and
+  Turkish typography (implementing this is difficult in \TeX{} since
+  these transformations are normally controlled entirely by the font
+  and there is no simple way to `turn them off').
+\end{itemize}
+
+\paragraph{Macro-rendering}
+More global aspects of typography can also be language-dependent, for
+example:
+\begin{itemize}
+\item the formatting of in-line quotes (i.e.~what `quotation marks' to
+  use);
+\item rendering of enumerations;
+\item aspects of page layout (e.g.,~float placement).
+\end{itemize}
+
+As with most language-related actions they usually have a wide range
+of formatting possibilities and can be considered to depend, at least
+partially, on house style or other factors.
+
+\section{Attaching Actions to Change of Language }
+
+Having described some typical changes that need to be made at a
+language tag, we now look at how to tie particular actions to a
+particular tag, noting that it is not sensible, for example, to change
+every aspect of the formatting if only an in-line fragment of a few
+words is to be in a different language.
+
+\subsection{Attaching actions to tags}
+
+First we note the following facts.
+\begin{itemize}
+\item The type of actions that are required at language tags can be
+  modeled by setting the values of a collection of parameters to those
+  appropriate for the new language.
+
+\item Some actions may not make sense at certain levels of the
+  hierarchies. For example, while one wants to use the correct
+  hyphenation algorithm at any level of the hierarchies changing of
+  micro-rendering, such as the positioning of diacritics, might be
+  applied only to language changes for whole paragraphs but not for
+  fragments.
+\item However, for most actions it is not possible to specify one
+  place in the hierarchies that will produce the correct location of
+  that action for \emph{all} documents.  The correct place might, for
+  example, depend on document type or on a particular house style.
+
+\end{itemize}
+
+There are two (at least) possibilities for specifying, for a
+particular document, where in the tag hierarchy an action should be
+`attached' (see Figure~\ref{fig:twohs}).  These are by the
+nesting-level in the hierarchy of language tags or by the visual type
+of the language tags as described in section~\ref{sec:visual}.  These
+visual tag-types implicitly define a partial hierarchy, from the top:
+document, base, block, fragment.
+
+
+In both cases an action is defined to be executed down to a prescribed
+level in the hierarchy.  As noted above, different actions might be
+executed down to different levels so there needs to be a mechanism to
+specify this level for each action.  To limit the complexity of the
+model we think it is advisable to assume that this stopping level
+depends on the action but not on the language.  It was pointed out in
+Tsukuba that this is probably an oversimplification, i.e.~that there
+exist cases where it would be better to model the formatting of
+language-related items by attaching of language/action pairs to
+levels.  However, we think that these cases are sufficiently rare
+that they can be handled by the action itself.\footnote{An action that
+  depends both on language and level could be specified in the model
+  by executing it on all levels with an additional conditional within
+  the action body testing for the current language.}
+
+
+It is also possible to combine these two hierarchies and allow the
+attachment of actions to tags via either hierarchy (see
+Figure~\ref{fig:THD}).  In this case, for each action it is necessary
+to define:
+\begin{itemize}
+\item on which of the two hierarchies the stopping of the action depends;
+\item down to what level the action is carried out in that hierarchy.
+\end{itemize}
+
+
+\subsection{Data structures for this model}
+
+For this model of language tags/actions, the system needs to specify the
+contents of the following three data structures.
+
+\subsubsection{Tag hierarchy diagram (THD)}
+
+While combining the two hierarchies we have simplified their structure
+(compare figures~\ref{fig:twohs} and~\ref{fig:THD}), i.e.~multiple
+nestings of paragraphs are
+collapsed  into a single node.
+At the same time a new root node (document-level) was added. This node
+serves as an anchor point for typographic requirements that should
+stay fixed throughout the document even if the base language changes.
+
+\begin{figure}
+\centering
+\setlength\unitlength{10pt}
+\frame{%
+\begin{picture}(23,12)(-2,-1)
+
+\drawline(10,10)(10,8)(8,6)(8,2)(10,0)
+\dottedline[$\bullet$]{2}(10,10)(10,8)
+\dottedline[$\bullet$]{1}(8,6)(8,2)
+\dottedline[$\bullet$]{2}(10,0)(10,0)
+
+\drawline(10,8)(12,6)(12,2)(10,0)
+\dottedline[$\bullet$]{4}(12,6)(12,2)
+
+\multiputlist(8.5,10)(0,-2)[r]{document level,base language level}
+
+\multiputlist(7,6)(0,-1.5)[r]{first nesting level,second nesting
+         level,\ldots}
+
+\multiputlist(8.5,0)(0,-2)[r]{n\textsuperscript{th} nesting level}
+
+\multiputlist(13,6)(0,-4)[l]{block level,fragment level}
+\multiputlist(11.5,0)(0,-4)[l]{nested fragment level}
+
+
+\end{picture}%
+}
+\caption{Tag hierarchy diagram (THD)}
+\label{fig:THD}
+\end{figure}
+
+The required number of significant nestings in the hierarchy of
+nesting-levels is an open question but probably $n=3$ is
+sufficient to specify typical formatting requirements.
+
+The two end points of the hierarchies (n\textsuperscript{th}
+nesting-level and nested-fragment-level) are combined as they
+essentially mean to carry out attached actions in all cases, thus it
+does not matter on which hierarchy they are specified.
+
+Another interesting point is that the base-language-level of both
+hierarchies are combined.\footnote{From this it follows that in this
+  model a base language change is only allowed between paragraphs.}
+
+Nevertheless, it should be noted that the ``level'' of a tag within
+the THD is logically described by a pair of nodes (one on each
+hierarchy) even though in some cases these nodes collapse into one.
+
+
+\subsubsection{Language actions table (LAT)}
+
+This two-dimensional table (indexed by parameter-group and
+language-label) stores the effect of each action (i.e.~the value for a
+parameter-group) for each language (possibly only a default value if
+no value has been explicitly defined for that language).  Each entry
+is an expression that returns a set of values appropriate to the
+parameter-group.
+
+It may be possible\footnote{Such details can have large effects
+on the efficiency of the implementation, thus we are being cautious
+here.} to also allow special actions to be specified, such as:
+\begin{itemize}
+\item leave unchanged;
+\item use some default (e.g.~the value for the document language).
+\end{itemize}
+
+
+
+\subsubsection{Parameter assignment map (PAM)}
+This one-dimensional table maps each each action (modeled by a
+parameter-group) to a single node in the THD.
+
+Such an assignment means that this parameter group changes its value
+(using the method specified in the LAT) at all levels down to (and
+including) the node to which it is mapped.
+
+
+\section{Special Regions}\label{sec:moving}
+
+The scheme we have outlined so far will work well for the main text of
+many documents but it needs to be supplemented in order to handle
+formatting of the following material (called special regions):
+\begin{itemize}
+\item regions that contain text which has moved from other parts of
+the document, e.g.,~table of contents, running heads;
+\item regions of text that are first formatted and then the whole
+block is moved, e.g.,~(from \LaTeX) floating tables, footnotes;
+\item regions that can contain elements breaking the type hierarchy,
+e.g.,~paragraphs in table-cells.
+\end{itemize}
+
+There are several problems that arise when ``moving things around'' in
+a document: one of these, which arises only when logical (unformatted)
+text is being moved, is the need to move language information with the
+moving text.  This is needed even if the text being moved is in the
+document language since this may not be the current language at the
+point to which it moves.  Thus the data-type for `logical stuff being
+moved' must be the text and a language-label (describing its
+language).
+
+
+\subsection{Formatting special regions}
+
+A problem that affects the formatting of all special regions is how
+to specify the language to be used and the effective level of language
+tags contained within the special region.  It is not possible to simply
+extend the THD and PAM from the main part of the document since these
+assume that the nesting of the language tags in the logical document
+is faithfully represented in the formatted document.  This is very
+clearly not the case with regions such as floats or end-notes which
+appear visually in totally unrelated parts of the document.  It is
+also not true for paragraphs within tables since these can be,
+logically, paragraphs within paragraphs, and our classification of
+language tags into types does not allow for this.
+
+
+One possible solution to this problem is to allow the specification of
+a local PAM for each type of special region.  This requires:
+\begin{itemize}
+\item a method to set the starting-language for the region;
+\item the specification of a local PAM for the region.
+\end{itemize}
+
+The disadvantage of this solution is its inherent complexity: for each
+special region the designer of a document class needs to specify a
+full mapping of all language-related actions to the tag hierarchy (the
+local PAM).  Since the numbers of both the special regions and the
+language-related actions are potentially unlimited, this would result
+in either a very complex set-up mechanism or the use of general
+defaults (e.g., the local PAM nearly always inherits from the global
+document PAM) in which case the solution is unnecessarily complicated.
+
+\subsection{A practical solution}
+
+A simpler solution is to use the PAM from the main document but to
+allow the specification, for each type of special region, of how the
+information from the PAM is used.  This would be done by specifying
+the following:
+\begin{itemize}
+\item a method to set the starting-language for the region;
+\item the actual initialisation-level (init-level) for the change to
+  this starting language;
+\item the effective level (inner-level), as far as imbedded tags are
+  concerned, of this change to the starting-language for the region .
+\end{itemize}
+We now give an expanded description of these items.
+
+\paragraph{Starting language}
+In the case of special regions that receive unformatted text the
+starting-language will directly affect only the text generated by the
+region's tags themselves as each bit of received text will carry its
+own language label (see section~\ref{sec:moving}).  In the case of
+regions that move after being formatted it defines the default
+language used when formatting this region.
+
+\paragraph{Initialization}
+At the start of the region, actions are executed as if the region
+started with a tag whose level (in the THD, i.e.~a pair of nodes) is
+init-level using this starting-language.  This results in setting
+parameters to values suitable for that starting-language whilst
+allowing for a region to move to a different visual context.
+
+\paragraph{Inner processing}
+Within the region, language tags are processed as if the region
+started with a tag whose level (in the THD) is inner-level
+(inner-level must be at least as deep\footnote{An alternative model
+  would be to also allow inner-level to be one less than init-level.
+  This would mean that language tags within the special region are
+  acting as language changes on the same level as the starting
+  language of the region.}
+as init-level in the THD).  This allows finer control over the subset
+of actions executed at imbedded language tags.
+
+
+
+\section{Interfaces for the Rendering Model}
+
+The following interfaces will be provided for use by writers of class
+and package files:
+\begin{itemize}
+\item specifying the THD (this will probably be fixed, at least in the
+  first version);
+\item specifying entries in the PAM;
+\item specifying entries in the LAT;
+\item specifying explicitly that a language-command
+  (i.e.~parameter-group) will potentially be used by the current
+  package or class\footnote{These declarations allow the local
+    customizations for all language actions to be stored in one place
+    (e.g.,~PAM or LAT modifications); the system can then select only
+    those that are actually needed for the current document.};
+\item specifying the starting-language and init/inner levels
+  for special regions;
+\item handling language information for moving text.
+\end{itemize}
+
+In addition to the new commands and environments outlined in
+Section~\ref{sec:newuser}, the following interfaces will be provided
+for use in documents (the first two must be in the preamble):
+\begin{itemize}
+\item specifying the document-language;
+\item specifying all the languages used in a document;
+\item possibly an interface for overwriting the starting language of
+      a particular special region
+\end{itemize}
+The second item above is not strictly necessary as the information can
+be obtained by processing the document; however, a large saving of
+time and space can be made if the full list of languages actually used
+is specified in the preamble.
+
+\end{document}
+

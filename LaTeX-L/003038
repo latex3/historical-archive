@@ -1,0 +1,95 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2987" "Fri" "4" "December" "1998" "08:56:05" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "60" "Re: What is \"base\" LaTeX" "^Date:" nil nil "12" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA04448;
+	Fri, 4 Dec 1998 14:57:32 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.E191995E@listserv.gmd.de>; Fri, 4 Dec 1998 14:57:31 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 411449 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 4 Dec 1998 14:57:25 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA00648 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 4 Dec 1998 14:57:10 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          IAA02253 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 4 Dec 1998
+          08:56:07 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          IAA12575 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Fri, 4 Dec 1998 08:56:05
+          -0500 (EST)
+Message-ID:  <199812041356.IAA12575@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 4 Dec 1998 08:56:05 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: What is "base" LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3038
+
+Sebastian Rahtz writes:
+
+: my (admittedly naive) view is that presentation MathML is like plain
+: TeX maths, ie it provides building blocks for putting practically any
+: math on the page. real users put a layer on top (macros), to let them
+: write commands which have semantic meaning for them.
+
+(But nobody plans to author directly in MathML.)
+
+: if you accept this, then the XML/MathML world is no different. make up
+: a new language, using XML syntax, to say whatever you want
+:   <foo n="3">x<bar>y</bar></foo>
+: (forget the verbose syntax for now), and then provide the XSL
+: transformation script which maps that to presentational MathML. within
+: your own research group, write software which groks <foo> directly.
+:
+: you lose the tight coupling of markup and presentation that TeX
+: provides, but you gain a language considerably more amenable to
+: computer processing, a cleaner mapping layer, and access to the
+: software the rest of the world will be using. your friend TeX will
+: still be there underneath, formatting away for you.
+
+Amen.  Of course, you write not only the software that processes <foo>
+but also a dtd (document type definition) that serves in some sense as
+an outline for the software logic.
+
+: as i say, i may be being naive, but i think the Third Way has
+: advantages, and i dont see how it really constrains Chris' research
+: maths
+
+I, too, see no constraint.  Keep in mind, that xml (if you insist)
+goes far, far beyond html.  It goes as far as you want to take it.
+And the author of the dtd containing <foo> and the processing code
+that goes with it (which *can be* merely config code for existing free
+frameworks) makes the decision how far.
+
+About macros: your whole point of view here changes when you realize
+what you could be authoring.  Not only might you want to think about
+the paper target as an end format, but you also might want to think
+about the www target, the cataloging target, the making of provision
+for clipping segments into sophisticated processors (e.g., if MathML
+is a target), and who knows what else ultimately.  In writing for
+multiple presentation formats it is highly desirable to avoid
+target-conscious bifurcation (such as one sees occasionally in
+Texinfo).  The handling of different target presentation formats is
+done by processors.  Before any serious processing is done your macros
+need to be fully expanded.  (We don't see that expansion with our eyes
+when using TeX-based systems.)
+
+I don't want to assume that MathML is the only math-capable xml
+presentation format.  And one might want to think very carefully about
+exactly when, along the road, "\alpha" (oops, in xml I mean
+"<alpha/>") should be resolved to unicode (which is what happens if I
+write "&alpha;".  For example, for processing toward html if I
+perceive that my audience consists mostly of folk who don't bother to
+grab every possible font, then I might configure my processor to write
+"<b>alpha</b>".
+
+                                   -- Bill
+

@@ -1,0 +1,194 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 31 Aug 2009 22:13:05 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7VKD4c1001386
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 31 Aug 2009 22:13:05 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7VK9eF8029336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 31 Aug 2009 22:09:40 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7VEc4eT004620;
+	Mon, 31 Aug 2009 22:09:39 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 292319 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Aug
+          2009 22:09:38 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7VK9cDQ023598 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 31 Aug 2009 22:09:38 +0200
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n7VK9ROH029190 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 31 Aug 2009 22:09:30 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1MiDBv-0005ms-jP for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Aug
+          2009 20:09:27 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>                              
+            <4A86949D.3090500@morningstar2.co.uk>                              
+            <4A886BA8.2000209@morningstar2.co.uk>                              
+            <0417DF73-EC19-4262-B9DF-5C870D47BFCE@gmail.com>                   
+            <4A893816.2090807@residenset.net>                                 
+            <4A89610D.8060108@morningstar2.co.uk>                      
+            <4A8C71CC.7000006@residenset.net>           
+            <4A8D0048.4070101@morningstar2.co.uk>
+            <4A946AD7.4020506@residenset.net>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4A9C2DF7.6070002@morningstar2.co.uk>
+Date:         Mon, 31 Aug 2009 21:09:27 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A946AD7.4020506@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 31 Aug 2009 20:13:05.0374 (UTC) FILETIME=[73156FE0:01CA2A77]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6047
+
+Lars Hellström wrote:
+> I was thinking more about single spaces, as in
+> 
+>   \moveto 0 0 \curveto 47 0 100 53 100 100
+> 
+> (the idea being to express a bunch of graphic data compactly while still
+> allowing the code to survive reflowing in a text editor), but this is of
+> course on the boundary of what can be considered LaTeX2e-ish syntax.
+
+Personally, I'm not a fan of that input syntax: I prefer something like
+the pgf approach.  However, I did a quick test and as I hoped you can do
+this with
+
+\DeclareDocumentCommand \moveto { u{~} u{~} } { ... }
+
+Not sure how robust this is, but if you really want to do it you can at
+least have a go.
+
+> OK, I think I understand how this part of the system works now:
+> 
+> 1. Processors occur as \xparse_process_arg:n{<code>} items in the
+> sequence of grabbers (the thing being constructed in
+> \l_xparse_signature_toks), _before_ the grabber for the argument to
+> which they will be applied.
+> 
+> 2. At _runtime_ these pieces of code are placed into scratch functions
+> with names on the form \xparse_processor_<N>:n, where N=1,2,3,...
+> depending on how many processors there are.
+> \l_xparse_processor_total_int is the number of processors stored so far
+> (for the current argument).
+> 
+> 3. When a grabber has successfully grabbed an argument, it hands it over
+> to \xparse_add_arg:n. This function applies the processors that have
+> been stored (if any), incrementing \l_xparse_processor_use_int as it
+> goes. Only after all processors have been applied will it append the
+> result to \l_xparse_args_toks.
+
+You'll see that I've now revised this code to make things both (1)
+clearer and (2) actually work! It turned out I was overcomplicating
+things, resulting in non-functioning code.
+
+> One noticable difference to what I believe was discussed is in the order
+> of processors. If ">{A} o" means "grab optional argument, then apply A",
+> then I think it stands to reason that ">{B} >{A} o" should mean "grab
+> optional argument, then apply A, finally apply B", but as implemented in
+> revision 1494 it's B before A. (Reversing the processing order would
+> allow one to do without \l_xparse_processor_use_int.)
+
+Things should now work "as advertised" so that ">{B} >{A} o" applies A
+first, then B.
+
+
+> Finally, there is the issue that a processor has to put the argument in
+> a toks register. I understand this is for generality (only sane way to
+> pass along # tokens), but my experience with this type of API is that
+> one should make it easy to use commands that happen to already exist. In
+> this case, it would mean to also support a processor that would store
+> its result in a macro rather than a toks register, since I'm quite sure
+> this is what people tend to do unless they definitely need a toks register.
+> 
+> In the current implementation, such processors could be supported by
+> defining a relative of >{CODE} that instead of
+> \xparse_process_arg:n{CODE} puts \xparse_process_tl_arg:n{CODE} in the
+> signature, where
+> 
+>   \cs_new:Nn \xparse_process_tl_arg:n {
+>      \int_incr:N \l_xparse_processor_total_int
+>      \cs_set:cn {
+>         xparse_processor_ \int_use:N \l_xparse_processor_total_int :n
+>      } {
+>         #1 {##1}
+>         \toks_set:No \l_xparse_arg_toks \l_xparse_arg_tl
+>      }
+>   }
+> 
+> With a continuation-style implementation of processors, it would not
+> even be necessary to take the detour over \l_xparse_arg_toks.
+
+I can see your point, but I'm also wary of making things too
+complicated. I'll give this some more thought and see if there is a
+better way around the entire business to avoid the variable issue.
+
+>>>  * \l_xparse_processor_int and \l_xparse_processor_use_int are
+>>> documented as "For keeping a count of post-processors and then using
+>>> them." Well, I could guess about as much from the names alone. What
+>>> would be more interesting to see spelt out is /how/ these keeps a track
+>>> of post-processors; what does actual values of these variables mean? At
+>>> what stage in the process are they used?
+>>
+>> I've tried to improve the documentation on this (whether I have I leave
+>> to others). I've also altered the name \l_xparse_processor_int to
+>> \l_xparse_processor_total_int. Trying to explain what has to happen here
+>> is not easy, at least for me. 
+> 
+> That is a catch of literate programming: you can't do it if you can't
+> explain how your program works. (Of course, it might be argued that one
+> shouldn't write programs that one cannot explain, period. :-) ) At least
+> for me, this puts a restriction on how sleepy I can be when programming,
+> as my ability to produce text tends to disappear before my ability to
+> produce code...
+
+As I've pointed out, this particular piece of code was broken in any
+case: no wonder I could not explain it! I hope the fixed version also
+has better comments (I'm concentrating on this to hopefully improve my
+style).
+
+>> the user functions. I've divided internal functions
+>> into what seem to me to be logical "blocks", 
+> 
+> They could do with finer divisions. 12 pages is quite a lot.
+
+I've done some re-arrangement, which I hope breaks the code up more
+logically and also makes the flow a little clearer.
+
+> In the typeset form, there is an index which should provide the same
+> functionality via hyperlinks (although for some reason all the links
+> seem to go to page 1; is that just for me or is it broken in l3doc in
+> general?)
+
+I'd noticed that too: Will is in charge of l3doc! (Seriously, I think
+l3doc needs a good overhaul but Will did take charge of that part of
+expl3, so for the moment I'm leaving well alone. He has lots of plans, I
+think.)
+
+Thanks again for the comments: they are proving to be very useful, and I
+think will result in a better xparse all round.
+-- 
+Joseph Wright
+

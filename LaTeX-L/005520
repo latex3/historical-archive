@@ -1,0 +1,92 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 7 Dec 2008 10:46:57 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mB79ktFi023202
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 7 Dec 2008 10:46:56 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mB79hR9O011390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 7 Dec 2008 10:43:27 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mB6N19KV004736;
+	Sun, 7 Dec 2008 10:43:26 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 194686 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 7 Dec
+          2008 10:43:26 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mB79hQDL024341 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Dec 2008 10:43:26 +0100
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id mB79hIJf024060 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Dec 2008 10:43:22 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1L9GAX-00038j-lX for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 07 Dec
+          2008 09:43:17 +0000
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+References: <493AFBDA.7010406@gmx.de>
+            <9412CF6E-1710-4EEF-B682-8B331A126962@gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: 8bit
+Message-ID:  <493B9AB7.3040309@morningstar2.co.uk>
+Date:         Sun, 7 Dec 2008 09:43:19 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \engine_if_etex:
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <9412CF6E-1710-4EEF-B682-8B331A126962@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Dec 2008 09:46:57.0900 (UTC) FILETIME=[BED492C0:01C95850]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5520
+
+Will Robertson wrote:
+> On 07/12/2008, at 8:55 AM, Arno Trautmann wrote:
+> 
+>> I think, it’s only a tiny typo, but confused me some minutes: On page 17
+>> of l3basics, version 2008/11/24, there is the description of
+>> \engine_if_etex: which says
+>> ”This function detects if we’re running an Aleph-based format.“
+>> It should be ”running an eTeX format“, shouldn’t it?
+> 
+> Yes, silly typo by me :)
+> This command will probably end up being removed, and an error called if
+> eTeX is not being used -- it's too hard (or impossible, for somethings)
+> not to use the extended features that eTeX offers.
+
+Just to point out (again) that I don't see any test in expl3 for eTeX,
+even though the extensions are required (see for example
+\tlp_put_right:, where \unexpanded is used).  Surely l3names should have
+something like
+
+\begingroup
+  \@ifundefined{eTeXversion}{%
+    \PackageError{l3names}{Not running under e-TeX}
+      {This package requires e-TeX. Try compiling the document with
+       \MessageBreak `elatex' instead of `latex'. When using pdfTeX, try
+       `pdfelatex' \MessageBreak instead of `pdflatex'}%
+     \endgroup\endinput
+  }{%
+    \endgroup
+}
+
+near the beginning.
+-- 
+Joseph Wright
+

@@ -1,0 +1,131 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5121" "Fri" "5" "November" "93" "00:22:14" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "104" "Re: latex2e, nfss2 and internal font selection commands" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20481; Fri, 5 Nov 93 00:23:43 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA28475; Fri, 5 Nov 93 00:23:40 +0100
+Message-Id: <9311042323.AA28475@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5359; Fri, 05 Nov 93 00:22:24 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7372;
+ Fri, 05 Nov 93 00:22:05 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7369;
+ Fri, 05 Nov 93 00:22:01 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 5 Nov 93 00:22:14 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: latex2e, nfss2 and internal font selection commands
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1093
+
+
+> Subj:	latex2e, nfss2 and internal font selection commands
+
+> Our users often use pictex.tex and the pictex-exports of the program 'xfig'.
+> The pictex.tex-macro only uses the internal font selection command \fiverm,
+> but 'xfig' exports code, which contains many commands as \tenrm, \sevenrm,
+> etc (mostly of no need, but it does). I see, that it is possible to write
+> such things as
+> \newcommand{\fiverm}{\fontfamily{cmr}\fontseries{m}\fontshape{n}%
+> \fontsize{5}{7}\selectfont}
+> in pictex.tex (though there should be no changes in the original file),
+> but I do not know, how to change 'xfig', so that it does not export
+> these internal font selection commands. So I would have to provide
+> a style-file, which defines these commands (in the way like in the exmple
+> above) or dump them in the format-file. But as I understand, the latter
+> is not a possibility, when all formats of latex2e should be the same (we
+> want to decrease the number of different formats, don't we?).
+>
+> Frank explained, that the internal commands are different at various sites, so
+> it is understandable, that latex2e will not support them.
+> So the question remains: What is the recommended way to get rid of such
+> internal commands, when they are produced by some software (or: who updates
+> the styles (such as pictex.tex) to be nfss2-compatible). Global definiton or
+> style-files do not seem to be a good solution, do they?
+
+we are aware of this problem. First of all, the use of \selectfont is
+not an optimal solution to implementing something like \fiverm (by the
+way good old lfonts doesn't have fiverm :-) for applications like
+pictex where \fivrm is essentially used to type just a single
+character, because there is no need to set up the whole machinery of
+math typesetting for this.  Second, you do not ncessarily want to bind
+something like \fivrm to cmr fonts (if you use times for example).
+
+For this nfss2 under LaTeX2e will offer a better solution which is:
+
+\DeclareFixedFont{\fivrm}{OT1}{cmr}{m}{n}{5pt}
+
+this will define \fivrm to be really the same as fivrm in lfonts
+namely
+
+\font\fivrm= cmr5
+
+but using standard nfss concepts and thus being fully transparent to
+layout changes (eg if on another side the .fd file for OT1cmr contains
+other fonts, for example, scalable ps versions of cmr it will still
+work properly.
+
+The compatibility mode will most certainly define the few ``standard
+misuses out of lfonts.tex' so that something like pictex is accounted
+for. However, programs that hardwired output code not being officially
+latex should probably be changed in the long run to use a proper
+interface. In case this doesn't happen for, say xfig, i don't think it
+is much of a problem to provide a style xfig that defines the
+functions written out by this program in a way that the user can run
+it under latex2e without having to miss the benefits of the new
+functionality because the program is running in compatibility mode.
+
+
+> What do you think about this problem? I think in the compability-mode
+> latex2e will not be fully compatible with latex209 :-).
+
+There is no way to make a program that allows user extensions fully
+compatible when adding anything since this already might hit a user
+definition. However, when i said that using internals of lfonts was
+never portable i meant just this. For example, on the installation in
+Mainz we had \tentt and \sevtt preloaded because they were used in
+math. However, on other installations such a font had probably a name
+like \\ptt\@xpt, not a very typable thing with two backslashes in
+front. Something like this was okay as long as nobody tries to send
+documents containing \tentt around.
+
+
+> So I fear that
+> some people will not upgrade to latex2e because of this. I hope I am
+> wrong. Maybe, when a good solution is provided.
+
+I don't think that there are many of such instances so that the
+compatibility mode should not be a problem. As for upgrading, using
+pictex in latex requires certain startup files and i don't think it
+should be difficult to correct them.
+
+LaTeX2e is a bit different from installing, say, AmS-LaTeX on a
+certain site. It is not another LaTeX flavor, it is the official
+LaTeX. And it will be the only one supported from the point it is
+released. Thus, if something new is claiming to run with LaTeX it has
+to run with LaTeX2e in the future. We will try very hard to have the
+largest possible compatibility (that is theoretically possible) with
+user documents (ie 102% :-) but when there had been changes to
+internal macros in the past (due to bug fixes, for example) packages
+that made use of such undocumented features had to upgrade to run with
+LaTeX properly, and they did so far. I'm confident that this will
+happen in thefew instances where it is necessary.
+
+It is claimed that there are sites that still use amr fonts,
+fortunately, in most cases people from such sites can nevertheless
+send you their documents and your latex will typeset them. But if they
+use a style that says \font\foo=amr10 then most of you will probably
+have to correct it because it isn't something support by your latex,
+is it?
+
+good night
+
+frank
+
+

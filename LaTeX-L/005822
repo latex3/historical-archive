@@ -1,0 +1,131 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 6 Aug 2009 07:58:21 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n765wKx3020671
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 6 Aug 2009 07:58:20 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n765s2rq011040
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 6 Aug 2009 07:54:02 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n75M1snx001169;
+	Thu, 6 Aug 2009 07:53:55 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285467 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 6 Aug
+          2009 07:53:54 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n765rsaa004648 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 07:53:54 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n765reEY010104 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 07:53:43 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id 1MYvv2-0005f9-ZY
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 06 Aug 2009 05:53:40
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>
+            <79B867F8-66E2-4E32-BF89-8967B4F58BA3@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A7A6FE5.6030808@morningstar2.co.uk>
+Date:         Thu, 6 Aug 2009 06:53:41 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <79B867F8-66E2-4E32-BF89-8967B4F58BA3@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Aug 2009 05:58:21.0233 (UTC) FILETIME=[E706CA10:01CA165A]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5822
+
+Will Robertson wrote:
+>> \DeclareDocumentCommand \foo { o[default] m } % now has a default!
+> 
+> Is the syntax to use square brackets or braces? (I thought the latter,
+> which is why I ask. As always, I prefer braces; what if the default is
+> to contain brackets?)
+
+Oops, yes, Will is correct.  The idea here was "optional braced
+argument" (partly for the reasoning that, as Lars says, [ ... ] is
+user-level mark up).
+
+> Lars mentions that he thinks the optional argument is unnecessary; I'm
+> not fussed either way, but I like the simplicity of being able to write
+> {o m} and having a standard boolean test to check whether it's present
+> or not.
+
+That was my thinking: it also means that the \IfNoValue test knows what
+to look for!
+
+>> The current xparse implementation lets you create your own specifier
+>> letters. This is probably very risky:  what if two packages use the same
+>> letter?  I'd drop this idea.
+> 
+> One comment I have here is that in the future I don't see many people
+> defining weird combinations of arguments due to the prevalence of
+> keyval-style argument processing instead. I'd even think about dropping
+> coordinate-style parenthesis input like "(x,y)" based on this. (Which
+> can be emulated easily enough with "d()" and a clist mapping in the input.)
+
+The main reason for keeping a letter for (x,y) is that it can be a
+mandatory argument in LaTeX2e, so needs special handling.
+
+> On the other hand, I've been keen on the idea of an optional braced
+> argument. If it's an all-or-nothing decision about including marginised
+> option types, then I'd rather keep 'c' and also add 'n' (or whatever) to
+> represent that. 
+
+Okay, I'm sure we can work that in. "n" seems as good a letter as any.
+
+>> Will has suggested that we should insist optional arguments follow
+>> directly on, with no spaces, to mean that:
+>>
+>> \foo*{arg}  % #1 = TRUE, #2 = "arg"
+>> and
+>>
+>> \foo   *{arg} % #1 = FALSE, #2 = "*"
+>>
+>> are treated differently. The idea here is that it makes LaTeX syntax
+>> more "regular", useful for translation to other formats.  I think he's
+>> right, but wonder how others see it.  The current xparse allows both
+>> space-skipping and non-space-skipping tests.  I'd certainly say we
+>> should go with only one: either spaces are allowed or they are not.
+> 
+> 
+> Re-reading your approach in xparse-alt, I believe what is currently
+> implemented there is the best approach. It applies sensible defaults and
+> allows overrides; to whit:
+> 
+> {m o}    does not skip spaces
+> {m o m}  does skip spaces
+> {m !o}   does skip spaces
+> {m ^o m} does not skip spaces
+> 
+> Since (a) can't always skip spaces, and (b) never skipping spaces leads
+> to inconsistencies, and (c) only need to ignore spaces when the optional
+> argument is last -- I strongly think xparse-alt has it right.
+
+My main concern is "should we provide the option to change things"?
+Would it be clearer if the same rules always apply (is there a need to
+skip spaces to find trailing optional arguments, for example).
+-- 
+Joseph Wright
+

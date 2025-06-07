@@ -1,0 +1,344 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f7UAes929720 for <rainer.schoepf@proteosys.com>; Thu, 30 Aug 2001 12:40:54 +0200
+Received:  by webgate.proteosys.de (8.11.4/8.11.0) with ESMTP id f7UAerT13545 . for <rainer.schoepf@proteosys.com>; Thu, 30 Aug 2001 12:40:53 +0200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C13140.3E8A3F00"
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f7UAeqG13957 for <rainer.schoepf@proteosys.com>; Thu, 30 Aug 2001 12:40:52 +0200 (MET DST)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA12444 for <schoepf@mail.uni-mainz.de>; Thu, 30 Aug 2001 12:40:51 +0200 (MEST)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de [129.206.100.212]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f7UAepJ04292 for <schoepf@UNI-MAINZ.DE>; Thu, 30 Aug 2001 12:40:51 +0200 (MET DST)
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id f7UAdlb21439; Thu, 30 Aug 2001 12:39:47 +0200 (MET DST)
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.11.3/8.11.3/SuSE Linux 8.11.1-0.5) with ESMTP id f7UAbSo31593; Thu, 30 Aug 2001 12:37:28 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 0473 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 30 Aug 2001 12:32:48 +0200
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.11.3/8.11.3/SuSE          Linux 8.11.1-0.5) with ESMTP id f7UAWmo31563 for          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 30 Aug 2001 12:32:48 +0200
+Received:  from tninet.se (lennier.tninet.se [195.100.94.105]) by          relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id          f7UAXVb20413 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 30 Aug          2001 12:33:31 +0200 (MET DST)
+Received:  from  [195.100.226.133] (du133-226.ppp.su-anst.tninet.se          [195.100.226.133]) by lennier.tninet.se (BLUETAIL Mail Robustifier          2.2.2) with ESMTP id 508869.167609.999lennier-s2 for          <LATEX-L@listserv.uni-heidelberg.de> ; Thu, 30 Aug 2001 12:33:29 +0200
+In-Reply-To:  <15201.23735.553563.824181@istrati.zdv.uni-mainz.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Sender: haberg@pop.matematik.su.se (Unverified)
+Content-class: urn:content-classes:message
+Subject:      Compiling from several files
+Date: Thu, 30 Aug 2001 11:31:49 +0100
+Message-ID:  <v03110700b7b3bff74a9a@[195.100.226.136]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Hans Aberg" <haberg@MATEMATIK.SU.SE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4144
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C13140.3E8A3F00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+I make use of a feature that in a project that consists of several files
+allows me to compile each LaTeX file individually, thus saving some
+compilation time while writing the manuscript. I think such a system =
+might
+be useful for inclusion in LaTeX3.
+
+One way to view it is as a workaround for LaTeX's Pascal preamble style: =
+If
+this preamble declaration style is dropped from LaTeX (replaced by a =
+more
+OO system admitting local definitions), perhaps this feature I suggest
+would not be needed.
+
+So I use two files, "begin.tex" and "end.tex", and each text part file =
+with
+in the project contains:
+  \input begin
+  ...  % Text
+  \input end
+
+The files "begin.tex" and "end.tex" look as follows (with some example =
+user
+code):
+-------------------------------------------------------------
+% File begin.tex:
+%
+\ifx\beginned\relax\message{file already read.}%
+\let\rebeginned\relax\let\mayendfileinput\endinput%
+\else\global\let\beginned\relax\let\mayendfileinput\relax\fi
+%
+\mayendfileinput    % End or not end file input, as set above.
+%
+% Add user commands here below:
+
+\documentclass[leqno]{article}
+
+\usepackage{color}
+\usepackage{hyperref}
+
+% AMS Fonts Package
+\usepackage{amssymb}
+\usepackage{amscal}    % Use AMS calligraphic instead of TeX.
+
+% AMS LaTeX Package
+\usepackage{amsmath}
+\usepackage{amscd}
+
+\usepackage{rsfs}   % Use RSFS to define \mathscr
+
+\usepackage{abergmath}
+
+%\input hyphenations    % Hyphenation file
+%\input definitions     % Definitions file
+
+\begin{document}
+% EOF begin.tex
+---------------------------------------------------------------
+% File end.tex:
+\ifx\rebeginned\relax\message{file: Not yet.}%
+\let\rebeginned\undefined\let\mayendfileinput\endinput%
+\else\message{file: Now.}\let\mayendfileinput\relax\fi
+%
+\mayendfileinput    % End or not end file input, as set above.
+%
+% Add user commands here below:
+
+\end{document}
+%\end
+
+% EOF end.tex
+---------------------------------------------------------------
+
+If one use the stuff above, then if say main.tex contains
+  \input chapter1
+  \input chapter2
+  ...
+and all files, main.tex, chapter1, ..., contain the
+  \input begin
+  ... % text
+  \input end
+pair, then the user defined commands of this pair will only be read =
+once,
+so it becomes possible to compile each chapter1.tex, ... individually.
+However, LaTeX will be confused when later compiling main.tex because of
+multiply defined labels (but only on the level of warnings, I think).
+
+The idea would be to somehow integrate such a system into LaTeX, so that =
+it
+works correctly with respect to labels, perhaps with a \begin{...} ...
+\end{...} pair replacing the \input being ... \input end stuff.
+
+  Hans Aberg
+
+------_=_NextPart_001_01C13140.3E8A3F00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Compiling from several files</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>I make use of a feature that in a project that =
+consists of several files</FONT>
+
+<BR><FONT SIZE=3D2>allows me to compile each LaTeX file individually, =
+thus saving some</FONT>
+
+<BR><FONT SIZE=3D2>compilation time while writing the manuscript. I =
+think such a system might</FONT>
+
+<BR><FONT SIZE=3D2>be useful for inclusion in LaTeX3.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One way to view it is as a workaround for LaTeX's =
+Pascal preamble style: If</FONT>
+
+<BR><FONT SIZE=3D2>this preamble declaration style is dropped from LaTeX =
+(replaced by a more</FONT>
+
+<BR><FONT SIZE=3D2>OO system admitting local definitions), perhaps this =
+feature I suggest</FONT>
+
+<BR><FONT SIZE=3D2>would not be needed.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>So I use two files, &quot;begin.tex&quot; and =
+&quot;end.tex&quot;, and each text part file with</FONT>
+
+<BR><FONT SIZE=3D2>in the project contains:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input begin</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ...&nbsp; % Text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input end</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The files &quot;begin.tex&quot; and =
+&quot;end.tex&quot; look as follows (with some example user</FONT>
+
+<BR><FONT SIZE=3D2>code):</FONT>
+
+<BR><FONT =
+SIZE=3D2>-------------------------------------------------------------</F=
+ONT>
+
+<BR><FONT SIZE=3D2>% File begin.tex:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ifx\beginned\relax\message{file already =
+read.}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>\let\rebeginned\relax\let\mayendfileinput\endinput%</FONT>
+
+<BR><FONT =
+SIZE=3D2>\else\global\let\beginned\relax\let\mayendfileinput\relax\fi</FO=
+NT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\mayendfileinput&nbsp;&nbsp;&nbsp; % End or not end =
+file input, as set above.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Add user commands here below:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentclass[leqno]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage{color}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{hyperref}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% AMS Fonts Package</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{amssymb}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{amscal}&nbsp;&nbsp;&nbsp; % Use AMS =
+calligraphic instead of TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% AMS LaTeX Package</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{amsmath}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{amscd}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage{rsfs}&nbsp;&nbsp; % Use RSFS to define =
+\mathscr</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage{abergmath}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%\input hyphenations&nbsp;&nbsp;&nbsp; % Hyphenation =
+file</FONT>
+
+<BR><FONT SIZE=3D2>%\input definitions&nbsp;&nbsp;&nbsp;&nbsp; % =
+Definitions file</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>% EOF begin.tex</FONT>
+
+<BR><FONT =
+SIZE=3D2>---------------------------------------------------------------<=
+/FONT>
+
+<BR><FONT SIZE=3D2>% File end.tex:</FONT>
+
+<BR><FONT SIZE=3D2>\ifx\rebeginned\relax\message{file: Not yet.}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>\let\rebeginned\undefined\let\mayendfileinput\endinput%</FONT>
+
+<BR><FONT SIZE=3D2>\else\message{file: =
+Now.}\let\mayendfileinput\relax\fi</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\mayendfileinput&nbsp;&nbsp;&nbsp; % End or not end =
+file input, as set above.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Add user commands here below:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT SIZE=3D2>%\end</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% EOF end.tex</FONT>
+
+<BR><FONT =
+SIZE=3D2>---------------------------------------------------------------<=
+/FONT>
+</P>
+
+<P><FONT SIZE=3D2>If one use the stuff above, then if say main.tex =
+contains</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input chapter1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input chapter2</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>and all files, main.tex, chapter1, ..., contain =
+the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input begin</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ... % text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \input end</FONT>
+
+<BR><FONT SIZE=3D2>pair, then the user defined commands of this pair =
+will only be read once,</FONT>
+
+<BR><FONT SIZE=3D2>so it becomes possible to compile each chapter1.tex, =
+... individually.</FONT>
+
+<BR><FONT SIZE=3D2>However, LaTeX will be confused when later compiling =
+main.tex because of</FONT>
+
+<BR><FONT SIZE=3D2>multiply defined labels (but only on the level of =
+warnings, I think).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The idea would be to somehow integrate such a system =
+into LaTeX, so that it</FONT>
+
+<BR><FONT SIZE=3D2>works correctly with respect to labels, perhaps with =
+a \begin{...} ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{...} pair replacing the \input being ... \input =
+end stuff.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; Hans Aberg</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C13140.3E8A3F00--
+

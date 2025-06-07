@@ -1,0 +1,201 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.A77A5B44@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:43 +0100
+In-Reply-To: CHAA006@VAX.RHBNC.AC.UK's message of Wed, 22 Apr 92 14:03:32 BST <199204221306.AA18373@mail.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.A77A5B44"
+Organization: Konrad-Zuse-Zentrum fuer Informationstechnik Berlin
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Return-Path: <rainer>
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-class: urn:content-classes:message
+Subject: RE: Ignore spaces before \footnote ?
+Date: Wed, 22 Apr 1992 14:49:52 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE994@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Rainer Schoepf" <rainer>
+To: <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Reply-To: <Schoepf@sc>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 677
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.A77A5B44
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+   >> Nelson Beebe writes:
+
+   >>    Another macro I'd like to see changed the same way is \index{} =
+and its
+   >>    relatives like \glossary, where it is equally vital that the =
+index
+   >>    reference be tagged to the preceding word.  I've more than once =
+been
+   >>    bitten by text like this:
+
+   >> 	   text text text
+   >> 	   \index{first entry}
+   >> 	   \index{second entry}
+   >> 	   text text text
+
+   >> But neither \index nor \glossary produce a reference, so what is =
+it
+   >> that you want to see changed?
+
+   `Produce a reference' seems somewhat ambiguous to me.  But I can =
+certainly
+   see what Nelson means:
+
+	   <word> <space> <index-marker>
+
+   could line-break (and subsequently page-break) between <word> and
+   <index marker>, yielding an erroneous index entry.  It would =
+therefore
+   be highly advantageous to ensure that <index marker> was always tied
+   to the preceding <non-lwsp> material.  ** Phil.
+
+Actually, Phil, the situation is much more complicated. The crucial
+point is that \index should behave as if it wasn't there---which it
+does, if you have only one \index command or if you have several of
+them, but do not write any index entries. It does this by checking
+whether it is preceded by whitespace, and, if so, by executing an
+\ignorespaces at the end. However, this goes wrong if there is more
+than one \index since the second doesn't see the whitespace preceding
+the first, and the \ignorespaces executed by the first one prevents
+the second one to see the whitespace in between.
+
+Have a look at latex.tex and tell me if you can come up with a
+solution that works in both inner and outer horizontal and vertical
+mode. (Outer vertical mode is, of course, one of the tricky bits.)
+
+Rainer
+
+
+------_=_NextPart_001_01C19443.A77A5B44
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>RE: Ignore spaces before \footnote ?</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; Nelson Beebe writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp;&nbsp; Another macro =
+I'd like to see changed the same way is \index{} and its</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp;&nbsp; relatives =
+like \glossary, where it is equally vital that the index</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp;&nbsp; reference be =
+tagged to the preceding word.&nbsp; I've more than once been</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp;&nbsp; bitten by =
+text like this:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; &nbsp; &nbsp;&nbsp; text text =
+text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; &nbsp; &nbsp;&nbsp; =
+\index{first entry}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; &nbsp; &nbsp;&nbsp; =
+\index{second entry}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; &nbsp; &nbsp;&nbsp; text text =
+text</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; But neither \index nor \glossary =
+produce a reference, so what is it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &gt;&gt; that you want to see =
+changed?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; `Produce a reference' seems somewhat =
+ambiguous to me.&nbsp; But I can certainly</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; see what Nelson means:</FONT>
+</P>
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
+SIZE=3D2>&nbsp;&nbsp; &lt;word&gt; &lt;space&gt; =
+&lt;index-marker&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; could line-break (and subsequently =
+page-break) between &lt;word&gt; and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;index marker&gt;, yielding an =
+erroneous index entry.&nbsp; It would therefore</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; be highly advantageous to ensure that =
+&lt;index marker&gt; was always tied</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; to the preceding &lt;non-lwsp&gt; =
+material.&nbsp; ** Phil.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Actually, Phil, the situation is much more =
+complicated. The crucial</FONT>
+
+<BR><FONT SIZE=3D2>point is that \index should behave as if it wasn't =
+there---which it</FONT>
+
+<BR><FONT SIZE=3D2>does, if you have only one \index command or if you =
+have several of</FONT>
+
+<BR><FONT SIZE=3D2>them, but do not write any index entries. It does =
+this by checking</FONT>
+
+<BR><FONT SIZE=3D2>whether it is preceded by whitespace, and, if so, by =
+executing an</FONT>
+
+<BR><FONT SIZE=3D2>\ignorespaces at the end. However, this goes wrong if =
+there is more</FONT>
+
+<BR><FONT SIZE=3D2>than one \index since the second doesn't see the =
+whitespace preceding</FONT>
+
+<BR><FONT SIZE=3D2>the first, and the \ignorespaces executed by the =
+first one prevents</FONT>
+
+<BR><FONT SIZE=3D2>the second one to see the whitespace in =
+between.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Have a look at latex.tex and tell me if you can come =
+up with a</FONT>
+
+<BR><FONT SIZE=3D2>solution that works in both inner and outer =
+horizontal and vertical</FONT>
+
+<BR><FONT SIZE=3D2>mode. (Outer vertical mode is, of course, one of the =
+tricky bits.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Rainer</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.A77A5B44--
+

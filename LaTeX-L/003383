@@ -1,0 +1,146 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3826" "Tue" "2" "November" "1999" "20:35:18" "+0100" "Marcel Oliver" "oliver@NA.UNI-TUEBINGEN.DE" nil "111" "Re: section headings, sequences of identical elements" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA25539
+	for <schoepf@UNI-MAINZ.DE>; Tue, 2 Nov 1999 20:35:03 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.41E6CB38@mail.listserv.gmd.de>; Tue, 2 Nov 1999 20:35:26 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446046 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 2 Nov 1999 20:35:22 +0100
+Received: from na.uni-tuebingen.de (root@na.mathematik.uni-tuebingen.de
+          [134.2.161.64]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id UAA08262 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 2 Nov
+          1999 20:35:20 +0100 (MET)
+Received: from na6.mathematik.uni-tuebingen.de (na6 [134.2.161.170]) by
+          na.uni-tuebingen.de (8.8.8+Sun/8.8.8) with ESMTP id UAA17521; Tue, 2
+          Nov 1999 20:35:19 +0100 (MET)
+Received: (from oliver@localhost) by na6.mathematik.uni-tuebingen.de
+          (8.8.8+Sun/8.8.8) id UAA16373; Tue, 2 Nov 1999 20:35:18 +0100 (MET)
+Message-ID:  <199911021935.UAA16373@na6.mathematik.uni-tuebingen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 2 Nov 1999 20:35:18 +0100
+From: Marcel Oliver <oliver@NA.UNI-TUEBINGEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section headings, sequences of identical elements
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3383
+
+First a follow-up on my earlier posting on relative sectioning:
+
+Frank Mittelbach wrote:
+> having read this far i thought that you meant something like this:
+>
+>    \begin{head}{Main heading}
+>
+>       text text text
+>
+>       \begin{head}{Sub heading}
+>         text text
+>       \end{head}
+>       \begin{head}{Another sub heading}
+>         text text
+>       \end{head}
+>    \end{head}
+
+I guess this is the "correct" approach from an academic point of view.
+But unfortunately it's not upward compatible with current LaTeX, and I
+don't see any important reason to break existing user-level syntax.
+Moreover, in my experience non-technical users have lots of problems
+getting \begin and \end's to match up (it doesn't help advocating
+smart editors---what can go wrong, will go wrong), thus I think
+environments should be avoided whereever it is possible to do so.
+
+"William F. Hammond" wrote:
+> Or perhaps one could simply descend a level with
+>
+>              \downsection{heading}
+
+This also has problems, namely if you want to change the level of a
+single (sub)section, you have to also adjust the relative section
+marking of the following sectioning command.  This might be a real
+mess in practice.  However, one may have the following variation:
+
+  \begin{downsection}
+    \section{AAA}
+    \subsection{BBB}
+    ...
+  \end{downsection}
+
+which would cause the enclosed material to be set one level down from
+what is explicitly indicated.
+
+Since I'd like to avoid environments (although I suppose one could
+make the case that an environment is really not too bad for this
+purpose), one could also have the following syntax:
+
+ \downsection[2]
+ \section{AAA}
+
+which would make AAA a subsubsection, and all of AAA's daughters
+\paragraphs thereof.
+
+This leads to an issue that has been raised in some other posts: A
+general high-level lookahead mechanism within xparse which could be
+for this as well as for things like \cite{A}\cite{B} etc.
+
+So maybe it would be useful to add a new argument specifier to xparse,
+namely the next token (and possibly also store its arguments in
+well-defined places).  So let's call this argument specifier l for
+look-ahead, and assume that the arguments of the prescanned token are
+in the slots #(n+1) up to #(n+m) if n is the number of formal
+arguments of the current command, and m is the number of formal
+arguments to the prescanned command.
+
+The the following would be possible (excuse my bad TeX, I know it
+doesn't work like this, but I am not doing this every day, and I don't
+want to look up stuff just to explain the concept):
+
+  \DeclareDocumentCommand \downsection { O{1} l }
+    { \if #2=\section
+          \then \head {1+#1} {#3}
+      \elif #2=\subsection
+          \then \head {2+#1} {#3}
+      ...
+    }
+
+where I assume for simplicity that \section takes only one mandatory
+argument, and \head{n}{caption} actually typesets the section heading
+at level n with text "caption".
+
+Or the \cite\cite problem could be solved like (ignoring the optional
+argument of \cite for the moment):
+
+  \DeclareDocumentCommand \cite { m l }
+    { \if #2=\cite
+          \then \cite {#1,#3}
+          \else \typeset_citation {#1}
+      \fi
+    }
+
+So this would gobble up an arbitrary number of \cite's and spit out a
+\typeset_citation where the single arguments of the \cite's are comma
+separated.
+
+I don't know enough TeX to really judge if this has a good ratio of
+usefulness to difficulty, but it seems it could solve a lot of
+problems that would otherwise require some serious TeX.
+
+By the way, I still think that using the \ref mechanism for relative
+sectioning is neat (even if it probably needs a lot of internal
+changes to the .aux file handling).  Maybe one could write
+
+  \section{AAA} \label{aaa}
+  \anchor{aaa}
+  \section{BBB}
+
+which would "anchor" BBB as a subsection of AAA.
+
+Marcel
+

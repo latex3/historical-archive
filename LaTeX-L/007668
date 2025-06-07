@@ -1,0 +1,78 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id t22DESsV007744
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Mon, 2 Mar 2015 14:14:28 +0100
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t22DDpbf032212;
+	Mon, 2 Mar 2015 14:13:54 +0100
+Received: from smtp3.easily.co.uk (smtp3.easily.co.uk [91.194.151.18])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t22DDlSx032203
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+ for <latex-team@latex-project.org>; Mon, 2 Mar 2015 14:13:48 +0100
+Received: from [131.111.184.86] (port=36849 helo=palladium.local)
+ by smtp3.easily.co.uk with esmtpa (Exim 4.43)
+ id 1YSQAN-0000N3-2V; Mon, 02 Mar 2015 13:13:47 +0000
+Message-ID: <54F4620A.9060803@morningstar2.co.uk>
+Date: Mon, 02 Mar 2015 13:13:46 +0000
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10;
+ rv:31.0) Gecko/20100101 Thunderbird/31.5.0
+MIME-Version: 1.0
+To: David Carlisle <d.p.carlisle@gmail.com>
+Subject: Re: LaTeX2e Update 2015 problem
+References: <1o9mof44i4wtd$.dlg@nililand.de>	<54F38900.7070208@morningstar2.co.uk>	<CAEW6iOhKsw65aC33sJiuggSXet4KEWRdWvgBwMZsY8oc2jzZrA@mail.gmail.com>	<54F39162.2040608@morningstar2.co.uk>	<54F3928C.2020707@morningstar2.co.uk>
+ <CAEW6iOjJ-Ud7dbqF+E2egNXLph8nwVd_ST+9Qi5a+TpkMooW=g@mail.gmail.com>
+In-Reply-To: <CAEW6iOjJ-Ud7dbqF+E2egNXLph8nwVd_ST+9Qi5a+TpkMooW=g@mail.gmail.com>
+X-DANTE-Spam-Score: -1.9 () BAYES_00
+X-Scanned-By: MIMEDefang 2.71 on 85.214.41.38
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+Cc: LaTeX Team <latex-team@latex-project.org>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7668
+
+On 01/03/2015 22:51, David Carlisle wrote:
+> I'm wondering if after all we should "suggest" an update to etex.sty
+> that doesn't over-write the allocation system on new formats. If (as
+> in this case) etex.sty is loaded late after the new allocation scheme
+> has already allocated into the extended range, the etex scheme won't
+> look in count11-19 to see where to pick up the extended range it will
+> always start allocating from 271 so you will get double allocations.
+> It would be possible to fix that echoing the allocation numbers into
+> the etex counts
+> but that adds a lot of complication for what should be a temporary problem.
+> 
+> I think having etex.sty detect 2015 and not trample on the new
+> allocation scheme (but define
+> stubs for \resereinserts and \globcount etc may work better, despite
+> having argues against that earlier.
+
+Updating etex.sty is fine but I don't think that the cost can be
+disabling \loccount, etc. That's a fundamental part of etex.sty and more
+importantly having it perhaps work one way and perhaps another
+(depending on kernel version) seems like a very bad idea.
+
+Joseph
+
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

@@ -1,0 +1,103 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 4 Jan 2009 11:49:08 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n04An461000736
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 4 Jan 2009 11:49:05 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n04AjC00007196
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 4 Jan 2009 11:45:12 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n03N1HCj012441;
+	Sun, 4 Jan 2009 11:44:58 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 181444 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 4 Jan
+          2009 11:44:58 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n04AiwMS003591 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 4 Jan 2009 11:44:58 +0100
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+          [195.173.77.148]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n04AikjX012120 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 4 Jan 2009 11:44:49 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          lon1-post-1.mail.demon.net with esmtp (Exim 4.69) id 1LJQTM-00072B-Ya
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 04 Jan 2009 10:44:44
+          +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <495F8D32.3080703@morningstar2.co.uk> <495F95F9.5060801@gmx.de>
+            <495FA975.4070309@morningstar2.co.uk>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4960931D.6040302@morningstar2.co.uk>
+Date:         Sun, 4 Jan 2009 10:44:45 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \begin{<env>} ... \end{<env>}
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <495FA975.4070309@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Jan 2009 10:49:08.0743 (UTC) FILETIME=[12270970:01C96E5A]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5578
+
+Joseph Wright wrote:
+> 
+> \latexstart
+> 
+> \loadclass{article}
+> 
+> \loadmodule{whatever-module}
+> 
+> \documentstart
+> 
+> Some text
+> 
+> \itemizestart
+>   \item An item
+>   \item Another one
+> \itemizeend
+> 
+> \documentend
+> 
+> \latexend
+
+Looking back over this, I suspect that the current LaTeX model is pretty
+good at the user level.  Of course, there will be a need to
+differentiate LaTeX3 and LaTeX2e documents, but I guess \NeedsTeXFormat
+should work fine there.  So the structure:
+
+\NeedsTeXFormat{LaTeX3}
+\documentclass{article} % Loads something like article.cls3
+                        % or article.ltx3.cls
+\usepackage{whatever} % Perhaps \usemodule or \loadmodule better?
+                      % Perhaps .mod extension rather than .sty,
+                      % or perhaps whatever.ltx3.sty?
+\begin{document}
+Some text
+\begin{some-env}
+  Text
+\end{some-env}
+\emph{With emphasis} or not.
+\end{document}
+
+still looks like the best plan to me.  Of course, that leaves a lot of
+other questions, but you have to start somewhere.
+--
+Joseph Wright
+

@@ -1,0 +1,101 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 13 Aug 2007 23:53:18 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l7DLrF0U029774
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 13 Aug 2007 23:53:15 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l7DLljMI014990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 13 Aug 2007 23:47:45 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l7CM1X8w006074;
+	Mon, 13 Aug 2007 23:47:53 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 120201 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 13 Aug
+          2007 23:47:52 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l7DLlqCP003887 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 13 Aug 2007 23:47:52 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id l7DLlTie014802 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 13 Aug 2007 23:47:34 +0200
+Received: from [84.169.183.6] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu1) with ESMTP (Nemesis),
+          id 0MKwpI-1IKhlL2QGF-0007kg; Mon, 13 Aug 2007 23:47:48 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id DD13313281; Mon, 13 Aug 2007 23:47:46 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <46C0AE5B.7010308@arcor.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX193PUBxYr2kkGsCirJBTg1d+lVwhozk3AHVCy1
+              XBB5x+AjWUWv7T23bbN2SOsP0UCUOwaT7nhu7HP9PA4h8046Kq
+              qtWjxY4ICkce1BBznpdMtA8Bh4Q8gwA
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18112.53634.669944.358049@morse.mittelbach-online.de>
+Date:         Mon, 13 Aug 2007 23:47:46 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: xinitials and graphicx, xcolor
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <46C0AE5B.7010308@arcor.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Aug 2007 21:53:18.0674 (UTC) FILETIME=[5BE37320:01C7DDF4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5019
+
+Stephan,
+
+ > the attached example with xinitials works as long as neither graphicx
+ > nor xcolor is used.  Loading any of those packages (and possibly others)
+ > causes LaTeX to stop with an error, see below.  In slides from TUG99 I read:
+ > 
+ > > LATEX2e* is a collection of packages that run on top of LATEX2e
+
+you have to read the 1999/2000 statement as "runs on top of the 2e kernel",
+but the more you stray away from that (by adding additional packages/third
+party or not) the more fragile the situation gets.
+
+since the l3 experimental packages implement quite a number of totally new
+concepts (in case of xinitial, the underlying galley handling) other 2e
+packages not written with anything like that in mind are likely to fail
+especially if the implement some of the ideas used in the experimental
+package, but in a different manner. graphicx and xcolor are likely candidate
+as they extend the 2e option handling via key/vals and so does the l3 code
+(but differently).
+
+Basially, the packages back then where meant to be proof of concepts for a
+number of ideas with the intention to complement them with others and then
+reimplement a larger fraction of the important package using the expl3
+language to get to a sound basis of code that could effectively be used for
+production jobs and which could be used for extensions in various directions.
+
+unfortunately shortly afterwards my work on LaTeX came to an abrupt stop for
+personal health reasons and when I returned to it the books TLC2, LB2 and LGC2
+took all my time and that of several others. So it is only now that we are
+gradually starting to work on this
+
+ > I'm not really sure if that applies to xinitials.  If not, what's the
+ > preferred way to put an image into the background and deal with colours,
+ > while xinitials is loaded?
+
+i'm not sure there is one right now, it would probably require reimplementing
+graphicx and xcolor using the xpl3 language first.
+
+frank
+

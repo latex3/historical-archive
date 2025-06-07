@@ -1,0 +1,96 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2552" "Thu" "13" "August" "1998" "09:56:53" "+0200" "Bernd Raichle" "raichle@INFORMATIK.UNI-STUTTGART.DE" nil "56" "Re: Modules" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id JAA21327;
+	Thu, 13 Aug 1998 09:57:07 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.313A8F4A@listserv.gmd.de>; Thu, 13 Aug 1998 9:57:06 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 395001 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 13 Aug 1998 09:57:01 +0200
+Received: from ifi.informatik.uni-stuttgart.de (ifi.informatik.uni-stuttgart.de
+          [129.69.211.1]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id JAA07954 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 13 Aug
+          1998 09:56:59 +0200 (MET DST)
+Received: by isidor.informatik.uni-stuttgart.de; Thu, 13 Aug 1998 09:56:55
+          +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+            <VHf01AiKBh108h@dream.kn-bremen.de>
+X-Mailer: VM 6.51 under Emacs 19.34.1
+Message-ID:  <13778.40005.889304.525595@isidor>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <VHf01AiKBh108h@dream.kn-bremen.de>
+Date:         Thu, 13 Aug 1998 09:56:53 +0200
+From: Bernd Raichle <raichle@INFORMATIK.UNI-STUTTGART.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2675
+
+On Wed, 12 August 1998 21:49:41 +0200,
+Martin Schroeder <ms@DREAM.KN-BREMEN.DE> writes:
+ > In <199806271853.UAA29351@frank.zdv.uni-mainz.de> Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE> writes:
+ > >b) will be drastic: a current LaTeX format (without any packages
+ > >loaded) uses about 51088 words of memory before begin document; if the
+ > >average word length in commands is 10 (which is far too low with a
+ > >consequent implemented module concept) then this gets basically blown
+ > >to 500000 which is twice the amount of main mem
+[...]
+
+Frank, either I misunderstand your ``word'' or you are wrong with this
+analysis.  A control sequence is one token and will use exactly the
+same amount of TeX's ``main memory'' independent on the length of its
+name.  The names of control sequences are put in TeX's ``string
+pool'', thus the string pool will grow if the lengths of control
+sequence's name will be enlarged in a module concept.
+
+ > >                                                that i have available
+ > >on this machine for everything. i just looked: when we compiled the
+ > >Companion the log file showed 208957 words of memory out of 262141
+ > >try to imagine to what size this would grow.
+
+... which had other reasons (a bunch of macro definitions/packages,
+many and complex box constructions, large and detailed (PicTeX?)
+figures etc.), hadn't it?
+
+
+ > I just looked: emTeX has an hTeX version where main memory can be configured
+ > to be between 2097152 (2^21) and 4194304 (2^22). And I don't think there's a
+ > limit in TeX to make it even bigger if needed. :-)
+
+There are limits for TeX's main memory size, for a ``bigTeX'' version
+with double-sized mem words it's upto 2^32, which should be fairly
+enough for the next years. ;-)
+
+
+ > But I agree that this should be avoided -- but not a taboo.
+
+IMHO a module concept will be a good idea, but the extended use of the
+string pool because of a long common csname prefix
+(e.g. \contributed/supported/...) should be avoided.  String pool
+space is cheap (one byte for each character) in comparison to a main
+memory word (4 resp. 8 bytes for each word = token in a token list,
+hlist character node etc.), nonetheless it should be used reasonable.
+
+
+Just my $0.02.
+
+
+Best wishes,
+  -bernd
+  member of the e-TeX team
+_____________________________________________________________________
+Bernd Raichle                                  "Le langage est source
+Autor des `german.sty' (aktuell: v2.5e)         de malentendus"
+                                               (A. de Saint-Exupery)
+

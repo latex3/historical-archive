@@ -1,0 +1,146 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f1CBEB917938 for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:14:11 +0100
+Received:  by webgate.proteosys.de (8.11.0/8.11.0) with ESMTP id f1CBEAd28850 . for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:14:10 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C094E4.ECA40380"
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1CBEA706485 for <schoepf@proteosys.de>; Mon, 12 Feb 2001 12:14:10 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA22578 for <schoepf@mail.uni-mainz.de>; Mon, 12 Feb 2001 12:14:09 +0100 (MET)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1CBE9706480 for <schoepf@UNI-MAINZ.DE>; Mon, 12 Feb 2001 12:14:09 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.C01DFC2B@mail.listserv.gmd.de>; Mon, 12 Feb 2001 12:14:02 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 487987 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 12 Feb 2001 12:14:05 +0100
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id MAA04427 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 12          Feb 2001 12:14:04 +0100 (MET)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id MAA27522 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 12 Feb          2001 12:14:05 +0100
+Received:  from nag.co.uk (openmath.nag.co.uk [62.232.54.144]) by          relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id          f1CBE2u19058 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 12 Feb 2001          12:14:02 +0100 (MET)
+Received:  (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id          LAA03110; Mon, 12 Feb 2001 11:13:33 GMT
+In-Reply-To:  <Pine.LNX.4.10.10102111920000.11902-100000@Sina.sharif.ac.ir>              (message from Roozbeh Pournader on Sun, 11 Feb 2001 19:47:44              +0330)
+References:  <Pine.LNX.4.10.10102111920000.11902-100000@Sina.sharif.ac.ir>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Content-class: urn:content-classes:message
+Subject:      Re: LaTeX's internal char prepresentation (UTF8 or Unicode?)
+Date: Mon, 12 Feb 2001 12:13:33 +0100
+Message-ID:  <200102121113.LAA03110@nag.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "David Carlisle" <davidc@NAG.CO.UK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3842
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C094E4.ECA40380
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> But I don't know what are you going to do with the combining accent
+> appearing after the letter.
+
+Three possibilities occur to me.
+
+1) make every character active and look ahead to see if it is being
+   followed by a combining char.
+   This is possible and fun to code in TeX but I don't really think it
+   is a long term stable solution.
+
+2) use perl (or anything else) to detect all combining characters
+   and replace them by some command placed before the base.
+   This is quick and easy to arrange, but if you are having a perl
+   pre-pass before TeX, it may as well go further and decode the
+   entire character stream into "latex internal form" ie 7bit ascii tex
+   markup. In which case we may as well stay with that markup as latexs
+   internal form.
+
+3) use an underlying "tex" engine that understands unicode combining
+   characters (and the unicode bidirectional algorithm) and other
+   features of the unicode character properties. (and probably also xml
+   document syntax as well)
+   One day.
+
+David
+
+------_=_NextPart_001_01C094E4.ECA40380
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: LaTeX's internal char prepresentation (UTF8 or =
+Unicode?)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; But I don't know what are you going to do with =
+the combining accent</FONT>
+
+<BR><FONT SIZE=3D2>&gt; appearing after the letter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Three possibilities occur to me.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1) make every character active and look ahead to see =
+if it is being</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; followed by a combining char.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; This is possible and fun to code in TeX =
+but I don't really think it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; is a long term stable solution.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2) use perl (or anything else) to detect all combining =
+characters</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; and replace them by some command placed =
+before the base.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; This is quick and easy to arrange, but =
+if you are having a perl</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; pre-pass before TeX, it may as well go =
+further and decode the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; entire character stream into &quot;latex =
+internal form&quot; ie 7bit ascii tex</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; markup. In which case we may as well =
+stay with that markup as latexs</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; internal form.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>3) use an underlying &quot;tex&quot; engine that =
+understands unicode combining</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; characters (and the unicode =
+bidirectional algorithm) and other</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; features of the unicode character =
+properties. (and probably also xml</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; document syntax as well)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; One day.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>David</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C094E4.ECA40380--
+

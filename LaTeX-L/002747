@@ -1,0 +1,135 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4602" "Fri" "6" "November" "1998" "17:49:17" "+0100" "Marcel Oliver" "oliver@NA.MATHEMATIK.UNI-TUEBINGEN.DE" nil "98" "pattern matching in LaTeX" "^Date:" nil nil "11" nil "pattern matching in LaTeX" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA13211;
+	Fri, 6 Nov 1998 17:49:32 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.456D30AC@listserv.gmd.de>; Fri, 6 Nov 1998 17:49:31 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407652 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 6 Nov 1998 17:49:25 +0100
+Received: from na.uni-tuebingen.de (root@na.mathematik.uni-tuebingen.de
+          [134.2.161.64]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id RAA02958 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 6 Nov
+          1998 17:49:22 +0100 (MET)
+Received: from na6.mathematik.uni-tuebingen.de (na6 [134.2.161.170]) by
+          na.uni-tuebingen.de (8.8.8+Sun/8.8.8) with ESMTP id RAA05244 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 6 Nov 1998 17:49:18 +0100 (MET)
+Received: (from oliver@localhost) by na6.mathematik.uni-tuebingen.de
+          (8.8.8+Sun/8.8.8) id RAA18880; Fri, 6 Nov 1998 17:49:17 +0100 (MET)
+X-Authentication-Warning: na6.mathematik.uni-tuebingen.de: oliver set sender to
+                         oliver@na.uni-tuebingen.de using -f
+Message-ID:  <199811061649.RAA18880@na6.mathematik.uni-tuebingen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 6 Nov 1998 17:49:17 +0100
+From: Marcel Oliver <oliver@NA.MATHEMATIK.UNI-TUEBINGEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      pattern matching in LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2747
+
+Back to the "Quotes and punctuation" problem:  So the main problem in
+TeX which makes pattern matching/lookahead/parsing very difficult in
+TeX is that the parsing routine cannot know into what kind of stuff
+future tokens expand without literally expanding the whole document.
+
+Would a two-tier expansion mechanism (to be implemented as an
+extension to TeX-the program) help? I am thinking along these lines:
+Both macro names and each of their arguments would get one of the
+attributes TRANSPARENT (T) or OBLIQUE (O). One could then have a
+first-tier expansion (T-expansion, say) in which only those macros and
+arguments which have the T feature are expanded. The result could then
+be processed with traditional methods (regular expression matching,
+tansformation patterns etc.) before final expansion of the O-macros
+takes place.
+
+Below I indicate the expansion categories for a few standard LaTeX
+macros in a sort of Pascal like fashion, i.e., the first category
+refers to the macro itself, the others to the arguments:
+
+TRANSPARENT \ref{TRANSPARENT}
+OBLIQUE \section[OBLIQUE]{TRANSPARENT}
+OBLIQUE \label{OBLIQUE}
+OBLIQUE \newcounter{OBLIQUE}[OBLIQUE]
+OBLIQUE \flushbottom
+OBLIQUE \begin{tabular}[OBLIQUE] TRANSPARENT \end{tabular}
+OBLIQUE \makebox(OBLIQUE,OBLIQUE)[OBLIQUE]{TRANSPARENT}
+TRANSPARENT \cite{TRANSPARENT}
+OBLIQUE \bibitem[OBLIQUE,OBLIQUE]
+OBLIQUE \emph{TRANSPARENT}
+OBLIQUE \itshape
+TRANSPARENT \newcommand{OBLIQUE}[OBLIQUE][OBLIQUE]{OBLIQUE}
+
+Assume, e.g., that the \ref command is defined to typset boldface,
+and a command \last has been defined which expands into "last".
+Let's T-expand the line
+
+  Theorem \ref{fermat} was his \emph{\last}.
+
+Since \ref is TRANSPARENT, it expands, while \emph is OBLIQUE, but has
+a TRANSPARENT argument, which expands.  So the result may look like
+
+  Theorem \textbf{1.3} was his \emph{last}.
+
+A pattern matcher could now e.g. ignore all OBLIQUE tokens in this
+text, and thus match on "his last".
+
+How will this help with the quote problem?  The text
+
+  \newTcommand{\story}[T]{There was a man, who said, <I'll tell you a
+  story>, and he began: <#1>}
+
+  \story{\story{\story{\ldots}}}}
+
+will T-expand into
+
+  There was a man, who said, <I'll tell you a story>, and he began:
+  <There was a man, who said, <I'll tell you a story>, and he began:
+   <There was a man, who said, <I'll tell you a story>, and he began:
+    <\ldots>>>
+
+I assume that < and > are active characters of category OBLIQUE, so
+they do not expand at this stage. When full expansion takes place, the
+> can do a lookahead and, e.g., detect the following > from which it
+can determine optimal spacing (keeping track of the nesting level
+should be easy, I guess). The problem with braces (e.g. when a font
+change takes place) does seem linked to the particular way that
+\futurelet works, but I don't see how this poses a fundamental problem
+with a lookahead-type strategy.
+
+Two comments regarding other points that came up in the discussion:
+
+While I think that this quote problem might be useful to illustrate
+general parsing problems, I don't think it is reasonable to expect any
+author to write \quote{Quoted text}, or to make super smart decisions
+about the placement of punctuation.  Any author who cares will do it
+right, and those who don't care won't want to write \quote, anyway.
+
+Related to this: Yes, I do believe that the primary goal of LaTeX
+should be to provide a human readable direct input typesetting
+language. If the abstract structure of the document can be completely
+specified, the better, but it seems that these two goals may be
+ultimately incompatible. I really know SGML/XML (Sebastian, what do
+you hope to get out of the LaTeX3 project that you think you cannot
+get out of SGML?), but I seem to understand that SGML is well suited
+to provide complete logical markup. So why re-do something that
+already exists and supposedly works well? Moreover, especially when
+typing Mathematics, complete logical mark-up is way beyond what most
+authors need in practice. If I need a tool which is optimized w.r.t.
+typsetting, I use LaTeX. I don't care whether the mark-up is sloppy in
+certain places---it is not important to me whether I can re-use the
+input in more structured applications. An example: for humans it makes
+perfect sense to use \ldots in a formula, but I could not even expect
+a symbolic system like Mathematica to understand what I mean. If my
+requirements go beyond publishing, my primary tools are different
+(although it would help if they could export to LaTeX when it comes to
+publishing), but then I don't mind the extra effort required.
+
+Marcel
+

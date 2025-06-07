@@ -1,0 +1,133 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 6 Nov 2008 16:36:59 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mA6FaqGf020863
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 6 Nov 2008 16:36:52 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mA6FUqBu002616
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 6 Nov 2008 16:30:52 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mA6DuqLn021272;
+	Thu, 6 Nov 2008 16:30:46 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 100514 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 6 Nov
+          2008 16:30:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mA6FUjgH008741 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 6 Nov 2008 16:30:45 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.243])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mA6FUeCV002311 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 6 Nov
+          2008 16:30:44 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so680864rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 06 Nov 2008 07:30:40 -0800
+          (PST)
+Received: by 10.141.29.8 with SMTP id g8mr1256186rvj.224.1225985439968; Thu, 06
+          Nov 2008 07:30:39 -0800 (PST)
+Received: by 10.140.173.16 with HTTP; Thu, 6 Nov 2008 07:30:39 -0800 (PST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <859ec5630811060730t6d8689t43ec0af09a23b911@mail.gmail.com>
+Date:         Thu, 6 Nov 2008 16:30:39 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: Some implementation details of \let:XX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Nov 2008 15:36:59.0903 (UTC) FILETIME=[8231A8F0:01C94025]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5419
+
+On Thu, Nov 6, 2008 at 9:34 AM, Will Robertson <wspr81@gmail.com> wrote:
+
+> Taking a look at how \let:NN and friends are implemented strongly tempted my
+> "clean up" urge. Rather than delay it for the "big future refactor" that's
+> going to happen at some stage, I thought it small enough to address
+> immediately.
+[...]
+
+> Here's the offending code:
+>
+> \def_protected_long_new:Npn \let:NN #1{\let:NwN #1=~}
+> \def_new:Npn\let:cN #1 {\exp_after:NN\let:NN\cs:w#1\cs_end:}
+> \def_new:Npn\let:Nc{\exp_args:NNc\let:NN}
+> \def_new:Npn\let:cc{\exp_args:Ncc\let:NN}
+>
+> Yielding concerns:
+>  - Why is \let:NN long?
+
+\let:NN\par\GAL_normal_par:
+
+General remark: Almost all of the kernel ought to be "long". You just
+never know what is input at the user level. I had one case where the
+code would grab the first three characters (excluding \) of a csname,
+then form a new to use in some tests. All went well until the the
+csname to be tested was \parens. Same situation with some
+\AtBeginDocument redefinitions that wound up containing \par.
+\exp_args:No, which was used at some point in this process, did not
+like that one bit. So it was made long.
+
+In summary, the kernel should not prevent user lever input - that's
+for user level macros to do that. Currently, there is a long way to go
+in the kernel in this respect (no pun intented) and it makes me think
+that perhaps it would be better to change the logic of the naming. The
+common case ought to be the the easiest to type so I'd propose
+  \def:Npn = \tex_long:D \tex_def:D
+  \def_restricted:Npn = \tex_def:D
+
+tlp's should of course still use the restricted version as they take
+no arguments.
+
+>  - Shouldn't the variants be protected as well?
+
+See below.
+
+>  - I'd be surprised if \let:cN *really* needs to be hand-optimised, given
+> the definition of \exp_args:Nc :
+
+It doesn't need it, it's just the matter of how early on the expansion
+module is defined and utilized.
+
+> I'd like to propose this change:
+>
+> \def_protected_new:Npn \let:NN #1 { \let:NwN #1=~ }
+> \def_protected_new:Npn \let:cN { \exp_args:Nc  \let:NN }
+> \def_protected_new:Npn \let:Nc { \exp_args:NNc \let:NN }
+> \def_protected_new:Npn \let:cc { \exp_args:Ncc \let:NN }
+>
+> Any comments?
+
+Question is if you want to have the non-NN variants to be protected.
+If you do, then funny things can happen expansion-wise if you have
+active characters in the c-argument. Case in question: An active
+character appears in the c-argument (say, a colon in a reference
+label). If such a character uses the \ifincsname feature to turn
+normal in critical places, this will not kick in if \let:cN is
+protected and you can wind up with some strange things in place. If
+the functions are non-protected, they will perform argument expansion
+as usual and then stop once \let:NN is met.
+
+For the reasons listed above, I think the current implementation is correct.
+
+-- 
+Morten
+

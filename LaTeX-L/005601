@@ -1,0 +1,98 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 20 Jan 2009 12:03:28 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0KB3QAw022595
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 20 Jan 2009 12:03:27 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n0KAxsOt031821
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 20 Jan 2009 11:59:54 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0JN6O9t030737;
+	Tue, 20 Jan 2009 11:59:53 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 173128 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 20 Jan
+          2009 11:59:53 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0KAxrZi001236 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 20 Jan 2009 11:59:53 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n0KAxd8K031573
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 20 Jan 2009 11:59:42
+          +0100
+Received: from [139.222.131.131] (helo=ueams02.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1LPEKZ-0004hO-4A for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 20 Jan 2009 10:59:39 +0000
+Received: from [139.222.114.191] by ueams02.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1LPEKZ-0006DF-3b for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 20 Jan
+          2009 10:59:39 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <A090407D-1D20-4C65-86FE-89EA7DF3AB25@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4975AE9B.4020409@morningstar2.co.uk>
+Date:         Tue, 20 Jan 2009 10:59:39 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Missing primitives' functionality in expl3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <A090407D-1D20-4C65-86FE-89EA7DF3AB25@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 20 Jan 2009 11:03:28.0173 (UTC) FILETIME=[B905A5D0:01C97AEE]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5601
+
+Will Robertson wrote:
+> Hi Joseph and others,
+> 
+> Sorry to have to ask this but I was a bit disorganised last year... a
+> few primitives have been brought up that don't have proper interfaces in
+> expl3 yet. I left myself a note to look at this but neglected to write
+> down which ones were actually missing!
+> 
+> At the moment I've got
+> 
+>   \scantokens
+>   \everyeof
+>   \endlinechar
+> 
+> with proposals
+> 
+>   l3toks:  \toks_rescan:n
+>   l3io:    \l_ior_eof_toks
+>   l3token: \l_char_end_line_int (?)
+> 
+> (All from a thread last year on the same topic.)
+> 
+> Do you happen to remember if there are any others?
+> 
+> Will
+> 
+
+Those were the three that I wanted to use and couldn't in any other way.
+ Although they are all low-level, I'd say that they are also legitimate
+to want outside of the kernel.
+
+A quick look at l3names and source3.pdf suggests there are a lot of
+other primitives which only have :D names (particularly the pdfTeX
+ones).  However, I suspect most of these should only be available within
+the kernel, so it's probably not an issue.  (For example, things like
+\skipdef are only :D, as far as I can see.)
+-- 
+Joseph Wright
+

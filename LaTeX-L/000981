@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2450" "Wed" "24" "February" "93" "15:22:49" "CET" "Michael Downes" "MJD@MATH.AMS.ORG" nil "46" "subdocuments" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA22199; Wed, 24 Feb 93 15:23:01 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA09477; Wed, 24 Feb 93 15:22:55 +0100
+Message-Id: <9302241422.AA09477@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 9865; Wed, 24 Feb 93 15:23:28 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0852;
+ Wed, 24 Feb 93 15:23:24 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0850;
+ Wed, 24 Feb 93 15:23:21 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 24 Feb 93 15:22:49 CET
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      subdocuments
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 981
+
+
+There was some discussion at the 1992 TUG meeting in Portland Oregon,
+at the LaTeX3 BOF, about subdocuments inside documents. Would
+interested persons (Nelson, are you reading this?) please provide
+descriptions of real-world examples, so that the problem can be
+understood more clearly? The general types of examples that I know
+about are:
+
+---A conference proceedings consisting of a collection of `article'
+class documents. The proceedings documentstyle may enforce some
+style settings that differ from settings that were used by the
+article-class documentstyles of individual documents.
+
+One approach for doing a proceedings volume is to send the proceedings
+documentstyle to all the authors and require them to change from their
+previous article-class documentstyle to the new documentstyle, and
+clear up all discrepancies introduced by this change, before
+submitting their electronic document for the volume. But if it is
+possible, I think a proceedings editor would rather be able to put
+together a collection of documents with various article-class
+documentstyles (article, xxxart, yyyart, ...) and run them with a
+driver file that automatically handles the \documentstyle,
+\begin{document}, \maketitle, \end{document} inside each article. This
+way (ideally) the editor would not have to modify the individual
+articles at all.  However, there are some difficult problems with
+processing together a collection of articles by different authors.
+
+---In documentation, it is sometimes useful to be able to print an
+example containing a small piece of a document. The example might
+contain arbitrary commands, but we do not want those commands to have
+side effects in the parent document, e.g. a \chapter command inside
+the example should not execute a \cleardoublepage or change the
+running heads, and a \setcounter command should not affect the value
+of that counter outside the example.
+
+---In putting together a collection of files one might want to write
+each file as if it were a self-contained article, so that it can be
+processed individually by LaTeX for some purposes, but then have the
+sectioning levels shift down \maketitle-->\section,
+\section-->\subsection, \subsection-->\subsubsection, and so on, when
+the files are combined in a larger article.
+
+More specific instances of each of these examples, with notes about
+difficulties that arose, would be useful.
+
+Michael Downes                              mjd@math.ams.org (Internet)
+

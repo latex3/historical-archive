@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1963" "Mon" "15" "June" "1998" "16:26:11" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "39" "Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id QAA31734;
+	Mon, 15 Jun 1998 16:31:16 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.DB9A9CB4@listserv.gmd.de>; Mon, 15 Jun 1998 16:26:48 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 361671 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 15 Jun 1998 16:26:27 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id QAA04893 for
+          <LaTeX-l@relay.urz.uni-heidelberg.de>; Mon, 15 Jun 1998 16:26:25
+          +0200 (MET DST)
+Received: from [130.237.37.102] (sl76.modempool.kth.se [130.237.37.102]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id QAA06321 for
+          <LaTeX-l@relay.urz.uni-heidelberg.de>; Mon, 15 Jun 1998 16:26:17
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b1aadba130ed@[130.237.37.136]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 15 Jun 1998 16:26:11 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2561
+
+  When I did some modules programming, I arrived at a more general idea
+than the one in the expl3 draft:
+
+  The construction \<module_1>/.../<module_k>/<object> should be
+interpreted as though the <object> is called within the <module_k>, which
+is a submodule of <module_(k-1)>, and so forth. In LaTeX3, one could have a
+naming convention that there should be a command with the same name.
+
+  However, the actual interpretation is somewhat deeper: The <object> is
+called within the module whose full name is \<module_1>/.../<module_k>/,
+and it should be called within the conventions that this module determines
+to fit.
+
+  Therefore not merely the command name \<module_1>/.../<module_k>/<object>
+is called, but the command name \<module_1>/.../<module_k>/ with <object>
+as an argument: Then the command \<module_1>/.../<module_k>/ can determine
+what conventions to use; for example, it could merely expand to
+\<module_1>/.../<module_k>/<object>.
+
+  The point is that one could define modules with more flexible syntax.
+This could be a module with HTML syntax, even though if just that is
+possible.
+
+  Therefore I am inclined to believe that in the syntax
+\<module>_<description>:<arg-spec>, the :<arg-spec> should not be a part of
+the name of the command, but something that can be extracted when knowing
+the name \<module>_<description>.
+
+  But perhaps this is too complicated (or too inefficient) to implement on
+the development level: Perhaps one could implement user level commands with
+simplified names instead. The best would perhaps to let an improved version
+of TeX itself sort out which of the different copies of
+\<module>_<description>:<arg-spec> should be used for a given
+\<module>_<description> (in so called "name overloading").
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

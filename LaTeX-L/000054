@@ -1,0 +1,156 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 19 Mar 90 23:23:34 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Sections, generic headers, and other things
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 54
+
+No reactions yet to my ideas of last month on how flexible/generic
+sectioning should be for the designer!
+
+Do I assume that you all agree with me, or think my suggestions are
+too dumb to be worth reacting to (apologies to Don H for my appalling
+style of English) or has everyone (very wisely) decided that they,
+like Rainer, have better things to do in Spring than tap away at their
+terminals.
+
+I have: I am off "on vacation" for a few weeks from Thursday.
+
+But before I go, here are a few thoughts on Frank's \genericheader
+message (which has also attracted zero comment)
+---some specific and some general.
+
+1.  In addition to all the logical information which is not handled at
+all by it, here are some typographic features which it does not seem to
+cover: some would be easy to incorporate but others, particularly those
+concerned with special features of the first line(s) of the first
+paragraph of the section being started, may not be so easy to
+incorporate into this designer interface.
+
+Please note that I am NOT saying that 2.10, or even 3.0, must cater
+for all these possibilities, and I am certainly not claiming that they
+are good typographic practice.  I do, however, think that we should be
+clear about what we are NOT providing as well as about what we
+are providing so that we can produce clear documentation.
+
+
+a: Special treatment of first line(s) of section:
+The following are amongst things I have seen or heard about,
+there may be others, and they may be combined (some apply whether the
+heading is run-in or not).
+
+        Other indents (including negative), eg the first n lines may
+be set to a wider/narrower/displaced measure, possibly lined up with
+the headline itself.
+
+        Dropped caps.
+
+        Special font for first line(s) (see TUGBOAT Vol 8 no 2 july 87).
+
+        Heading set in "a bite out of the text" either out of the first
+few lines on the right or the left or (ugh!) the center!
+
+        Extra space after first line, especially in run-in style.
+
+
+b:  Many column headings in multicol text (very common).
+
+
+c:  Do we need to make it possible to override the autonumbering
+(other than by resetting the counter and/or \the<counter>).
+
+Some specific detailed comments on:
+> \generic@header{LEVEL}{NAME}{SPECIAL CMDS}{NUMBER LAYOUT}
+>                 {HEADING LAYOUT}
+
+> LEVEL and NAME as in LaTeX
+As I have already argued (in my last message to the list),
+more is needed here.
+
+> SPECIAL CMDS contains declarations and actions to be executed just
+>              before the header and its vertical before space.
+>              At the moment I suggest the following cmds (my names
+>              are more or less arbitrary):
+It would be better to separate assignments/declarations from actions
+(ie typesetting actions), see below.
+
+>   Switches:
+>
+> \@afterindenttrue to get indentation of the paragraph following the heading.
+>                   (default false)
+> \@runintrue       to get a run-in heading. (default false).
+>                   Of course this implies \@afterindentfalse.
+There are a lot more possibilities than just indenting or not,
+see above.
+
+> I can think of \clearpage or something like this but there are perhaps other
+> uses aswell.
+This should be in the "actions" parameter.
+
+> Thinks like rules however should be placed (in my opinion) into
+> the argument HEADING LAYOUT.
+OK for rules that are part of the heading, but what about those which
+are part of the ending of the previous section, the ""trailing??"".
+
+> This would also be the place where \thispagestyle could be used, of
+> course only are something like \clearpage.
+> Does anybody think we also need an argument for things after the
+> heading?
+More than just an argument, see above.
+
+> NUMBER LAYOUT  This argument should contain the layout for the object `number'
+>                i.e. everything which is attached to it.
+>                The kernel will pass it back in \headernumber to the style
+>                if a number should be produced. Otherwise \headernumber
+>                will be empty.
+Should it be passed back in an \hbox?
+Does the actual text to be typeset get resolved at this stage?
+Does the value of the counter get resolved at this stage?
+
+
+> HEADING LAYOUT This is the playground for the designer
+>                where he has to specify the exact layout
+>                of the heading. The heading will be a
+>                vbox if it is not a run-in heading.
+And in an \hbox if it is "run-in"?
+Also need to allow for "run-in unless more than a given length", how
+does this fit with a single parameter \headpostskip??
+
+> \@ifpresent{<Command>}{<yes case>}{<no case>}
+Sounds generally useful:
+I am assuming it tests whether <command> expands to "empty"?
+
+> \@iffitts{<Test text>}{Test dim}{<yes case>}{<no case>}
+>                This test allows to make certain actions depending on
+>                the length of a trial text (like header + number).
+Good:
+May want to test the vertical size as well as the "total length", but
+perhaps you meant that?
+
+2.  More general comments (ie not related to sections alone):
+
+A:  Typographic specs (at least in this part of the galaxy) commonly
+use baseline-to-baseline measurements: a designer interface therefore
+needs to make these easy to use directly.
+
+B:  It would be nice if the designer could be assured that the
+assignments made in an argument which is purely for this purpose, eg
+possibly the SPECIAL CMDS one in \genericheader and, possibly,
+the one in \list, would be executed in an "Assignment Environment"
+(ie with end-of-line and empty lines made no-ops, plus, possibly,
+space made a no-op so all typographic spaces must be explicit).
+
+C:  Also, will 2.10 be \protect-free (or just the "redone" bits?)
+
+
+Happy Easter to one and all
+
+
+chris
+
+

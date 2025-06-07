@@ -1,0 +1,719 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.A2F2743C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:36 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.A2F2743C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      {2} Re: {1} Transition from LaTeX 2.09 to LaTeX 3.0
+Date: Fri, 20 Mar 1992 14:07:59 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE96B@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Frank Mittelbach" <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Multiple recipients of" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 630
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.A2F2743C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+Subj:	{1} Transition from LaTeX 2.09 to LaTeX 3.0
+
+
+David said:
+
+> Various people have various bright ideas about the form that LaTeX 3 =
+might
+> take.  Unfortunately, the project is being done on a voluntary basis, =
+with
+> hardly any funding, and with finite personnel.
+>
+> Is there anything to be said for not worrying too much about providing
+> a compatibility module for LaTeX 2.09?  It would be one less thing to =
+do.
+
+I think a few words are in order. What kind of compatibility should be
+there? We have to distinguish between to areas:
+
+ 1) User documents, i.e. syntax for describing the logical (and
+formatting) structure of documents
+
+ 2) Style sheets and their internal coding.
+
+For 2) I would say that compatibility is out of question. If we like
+to achieve the goal of designing and implementing a suitable designer
+interface this means that we hopefully get rid of all internal kludges
+that are currently necessary to implement a certain layout in a style
+file. As a result the generation of a document-style should become
+much more straight forward, and therefore converting an existing style
+to the new syntax should be an easy task even if it is necessary to
+do this manually.
+
+For 1) the situation is slightly different. There will be certainly
+some changes in the command syntax to make the user interface more
+consistent and extend the functionality in certain areas. Mixing old
+and new syntax is probably something that is difficult to provide.
+Writing a ``compatibility style'' that implements the old syntax
+within the new program is in principle possible but a hard task too.
+On the other hand it is certainly necessary for people to run the
+thousands of already tagged documents when ltx3 is available.
+
+Now for this several strategies can be used:
+
+ 1) run latex209 and ltx3 in parallel as David suggest
+
+ 2) provide a compatibility style to run 209 documents within ltx3
+
+ 3) provide a converter program that converts 209 sources to ltx3
+sources.
+
+I'm sure that we will have 209 and ltx3 in parallel for some time.
+However, reproducing already finished documents is not the only
+possible application for documents written in 209 syntax. Much more
+important in my eyes is the ability to reuse documents are part of
+documents and at the same time make use of the additional
+functionality of ltx3. This is certainly not possible with a scheme
+like 1). Such a parallel running will only result that people use the
+frozen 209 and building stuff around it instead of switching over to
+the new system. As a result we will have all kind of confusion where
+people are searching for this and that for 209 requesting bug fixes
+etc. Even if one firmly says, no support on 209 any longer this means
+a lot of time-consuming work. And it certainly not helpful for ltx3.
+
+2) is also not the right choice for similar reasons. First of all,
+writing such a beast will be non-trivial. Second you will soon find
+all kind of mixtures where people write partly in 209 and partly in
+ltx3 syntax and surely such mixtures are dangerous as it is nearly
+impossible to catch all possible kind of interactions between
+different concepts when applied interchangeably. Think of the problems
+that people currently have if the try to mix plain and latex commands
+without having a deep understanding of the interactions within the
+latex modules. As a result such mixtures nearly always bomb sooner or
+later at unsuspected places. For these reasons I think such a
+compatibility style is out.
+
+This leaves us with 3). Now, certainly writing a parser that inputs a
+209 document and outputs a ltx3 version of it is non-trivial too. But
+in my eyes working on something like this is spending the time in a
+much better way then trying to do in the same time a comp-style. Of
+course, such a converter will probably need user interventions once a
+while, either because it isn't able to handle certain structures
+correctly or because there is a complicated mixture of plain and ltx
+commands. But even if the conversion needs some user help, if it gets
+98\% of the document over this would be okay. Remember this is a
+one-time operation, it is necessary only once per document. Now the
+next question is how to write such a converter and in what language?
+Well I don't care about the language of the first version but the
+final version that gets distributed together with ltx3 will be
+probably written in TeX. Yes TeX, as this is the only language that
+happens to be around on every installation that has LaTeX. This will
+certainly be a slow converter but this doesn't matter.
+
+> This scenario might give "the project team" one less thing to do than =
+the
+> "provide a LaTeX 2.09 compatibility module for LaTeX 3.0" scenario.  =
+Might
+> it be better to spend the finite time that is available looking to the
+> future than trying to be compatible with the past?
+
+Yes, not trying to be compatible to the past but allowing the past to
+catch up soon.
+
+Dr. Willibald Kraml commented on David
+>
+> I agree with this. I would even go one step further: should the name =
+"LaTeX
+> 3.0" be kept at all, which might suggest to all users a degree of
+> compatibility which might not be there?
+> Why not `NewLaTeX 1.0' or `NLaTeX 1.0'
+>
+> (I hope this discussion has not been raised before - after all: what's =
+in
+> a name?!)>
+
+No the discussion hasn't beed raised at least on a list. ltx3 is just
+a working name which may or may not change when we are about to give
+everything out. At the moment I think it is fine enough as it
+indicates at least a major release change.
+
+
+And from Phil:
+>
+> >>> Is there anything to be said for not worrying too much about =
+providing
+> >>> a compatibility module for LaTeX 2.09?  It would be one less thing =
+to do."
+>
+> I would support this.  There are sufficient kludges in LaTeX-2 that =
+the hassle
+> of emulating them surely outweighs the advantages.  Let us take =
+advantage of
+> the total rewrite to \stress {get it right this time}.
+
+Yes, get it right this time, that's what I hope we can achieve, even
+with the limited resources.
+
+But even if there are sufficient kludges in LaTeX-2 there is one thing
+which is very important about latex209 and should be also there for
+ltx3. latex209 was stable for about 6 1/2 years this is most
+certainly one of the reasons for its popularity. ltx3 should and will
+come with a similar guarantee that code written for it and documents
+written in it will be processable at any ltx3 installation for at
+least a similar or longer period of time. So it is not only important
+to ``get it right'' but to get it right with the first try.
+
+
+ Rolf Lindgren said:
+
+> I would support not caring too much about providing campatilbility.
+> Wouldn't it be more relevant to find out which options are most =
+popular,
+> and try to make them unnecessary or easy to reimplement?
+>
+> That way, most latex docs would port OK, which certainly should be a =
+goal.
+
+Yes certainly, I already said this in many messages and on talks. ltx3
+will come with a broader range of standard styles and it will come in
+a way that converting the local variant of ``report'' etc. should be
+easy. I also requested to get send special document-styles so that we
+can what are the popular changes, etc.
+
+Finally during the beta test phase (or even earlier) I think of
+bowsing through all archives and converting the ``most important
+styles'' into new syntax. This would then also include options that
+provide coding.
+
+> BTW, does there exist some formal plan regarding what to support in =
+ltx3?
+> Is somebody compiling this? Can a draft be ftp'd from somewhere?
+
+This question is a bit too broad for me to answer. Yes there are plans
+and they are partly laid down in working papers. But so far there is
+nothing which can be ftp'd or something as none of these papers are in
+a shape to give them out, except perhaps for one. I will check and let
+you know on the list. Okay?
+
+Given your suggestion of finding out what options are popular. This is
+certainly a good idea. Only point is I would need a volounteer for
+this. Would you do this? I could think of something like a short info
+that you would like to get the following information, e.g.
+
+- what kind of latex style options are in use at the particluar
+installation
+
+- are there local variants?
+
+- if so, what are the originals?
+
+- what are the five or ten most popular document styles/ option-styles
+in use at the installation
+
+Perhaps some other questions. Answers then back to you so that you can
+compile a summary.  A good starting point would be this list and I
+think everyone on the list should take five minutes to answer such
+questions (only don't send them over the list back :-)
+
+Would you take it, Rolf? (you see it is dangerous to open ones mouth)
+
+
+
+
+
+
+Frank
+
+
+------_=_NextPart_001_01C19443.A2F2743C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     {2} Re: {1} Transition from LaTeX 2.09 to LaTeX 3.0</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>Subj:&nbsp;&nbsp; {1} Transition from LaTeX 2.09 to =
+LaTeX 3.0</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>David said:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Various people have various bright ideas about =
+the form that LaTeX 3 might</FONT>
+
+<BR><FONT SIZE=3D2>&gt; take.&nbsp; Unfortunately, the project is being =
+done on a voluntary basis, with</FONT>
+
+<BR><FONT SIZE=3D2>&gt; hardly any funding, and with finite =
+personnel.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Is there anything to be said for not worrying =
+too much about providing</FONT>
+
+<BR><FONT SIZE=3D2>&gt; a compatibility module for LaTeX 2.09?&nbsp; It =
+would be one less thing to do.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think a few words are in order. What kind of =
+compatibility should be</FONT>
+
+<BR><FONT SIZE=3D2>there? We have to distinguish between to =
+areas:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;1) User documents, i.e. syntax for describing =
+the logical (and</FONT>
+
+<BR><FONT SIZE=3D2>formatting) structure of documents</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;2) Style sheets and their internal =
+coding.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For 2) I would say that compatibility is out of =
+question. If we like</FONT>
+
+<BR><FONT SIZE=3D2>to achieve the goal of designing and implementing a =
+suitable designer</FONT>
+
+<BR><FONT SIZE=3D2>interface this means that we hopefully get rid of all =
+internal kludges</FONT>
+
+<BR><FONT SIZE=3D2>that are currently necessary to implement a certain =
+layout in a style</FONT>
+
+<BR><FONT SIZE=3D2>file. As a result the generation of a document-style =
+should become</FONT>
+
+<BR><FONT SIZE=3D2>much more straight forward, and therefore converting =
+an existing style</FONT>
+
+<BR><FONT SIZE=3D2>to the new syntax should be an easy task even if it =
+is necessary to</FONT>
+
+<BR><FONT SIZE=3D2>do this manually.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For 1) the situation is slightly different. There will =
+be certainly</FONT>
+
+<BR><FONT SIZE=3D2>some changes in the command syntax to make the user =
+interface more</FONT>
+
+<BR><FONT SIZE=3D2>consistent and extend the functionality in certain =
+areas. Mixing old</FONT>
+
+<BR><FONT SIZE=3D2>and new syntax is probably something that is =
+difficult to provide.</FONT>
+
+<BR><FONT SIZE=3D2>Writing a ``compatibility style'' that implements the =
+old syntax</FONT>
+
+<BR><FONT SIZE=3D2>within the new program is in principle possible but a =
+hard task too.</FONT>
+
+<BR><FONT SIZE=3D2>On the other hand it is certainly necessary for =
+people to run the</FONT>
+
+<BR><FONT SIZE=3D2>thousands of already tagged documents when ltx3 is =
+available.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now for this several strategies can be used:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;1) run latex209 and ltx3 in parallel as David =
+suggest</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;2) provide a compatibility style to run 209 =
+documents within ltx3</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;3) provide a converter program that converts 209 =
+sources to ltx3</FONT>
+
+<BR><FONT SIZE=3D2>sources.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'm sure that we will have 209 and ltx3 in parallel =
+for some time.</FONT>
+
+<BR><FONT SIZE=3D2>However, reproducing already finished documents is =
+not the only</FONT>
+
+<BR><FONT SIZE=3D2>possible application for documents written in 209 =
+syntax. Much more</FONT>
+
+<BR><FONT SIZE=3D2>important in my eyes is the ability to reuse =
+documents are part of</FONT>
+
+<BR><FONT SIZE=3D2>documents and at the same time make use of the =
+additional</FONT>
+
+<BR><FONT SIZE=3D2>functionality of ltx3. This is certainly not possible =
+with a scheme</FONT>
+
+<BR><FONT SIZE=3D2>like 1). Such a parallel running will only result =
+that people use the</FONT>
+
+<BR><FONT SIZE=3D2>frozen 209 and building stuff around it instead of =
+switching over to</FONT>
+
+<BR><FONT SIZE=3D2>the new system. As a result we will have all kind of =
+confusion where</FONT>
+
+<BR><FONT SIZE=3D2>people are searching for this and that for 209 =
+requesting bug fixes</FONT>
+
+<BR><FONT SIZE=3D2>etc. Even if one firmly says, no support on 209 any =
+longer this means</FONT>
+
+<BR><FONT SIZE=3D2>a lot of time-consuming work. And it certainly not =
+helpful for ltx3.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2) is also not the right choice for similar reasons. =
+First of all,</FONT>
+
+<BR><FONT SIZE=3D2>writing such a beast will be non-trivial. Second you =
+will soon find</FONT>
+
+<BR><FONT SIZE=3D2>all kind of mixtures where people write partly in 209 =
+and partly in</FONT>
+
+<BR><FONT SIZE=3D2>ltx3 syntax and surely such mixtures are dangerous as =
+it is nearly</FONT>
+
+<BR><FONT SIZE=3D2>impossible to catch all possible kind of interactions =
+between</FONT>
+
+<BR><FONT SIZE=3D2>different concepts when applied interchangeably. =
+Think of the problems</FONT>
+
+<BR><FONT SIZE=3D2>that people currently have if the try to mix plain =
+and latex commands</FONT>
+
+<BR><FONT SIZE=3D2>without having a deep understanding of the =
+interactions within the</FONT>
+
+<BR><FONT SIZE=3D2>latex modules. As a result such mixtures nearly =
+always bomb sooner or</FONT>
+
+<BR><FONT SIZE=3D2>later at unsuspected places. For these reasons I =
+think such a</FONT>
+
+<BR><FONT SIZE=3D2>compatibility style is out.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This leaves us with 3). Now, certainly writing a =
+parser that inputs a</FONT>
+
+<BR><FONT SIZE=3D2>209 document and outputs a ltx3 version of it is =
+non-trivial too. But</FONT>
+
+<BR><FONT SIZE=3D2>in my eyes working on something like this is spending =
+the time in a</FONT>
+
+<BR><FONT SIZE=3D2>much better way then trying to do in the same time a =
+comp-style. Of</FONT>
+
+<BR><FONT SIZE=3D2>course, such a converter will probably need user =
+interventions once a</FONT>
+
+<BR><FONT SIZE=3D2>while, either because it isn't able to handle certain =
+structures</FONT>
+
+<BR><FONT SIZE=3D2>correctly or because there is a complicated mixture =
+of plain and ltx</FONT>
+
+<BR><FONT SIZE=3D2>commands. But even if the conversion needs some user =
+help, if it gets</FONT>
+
+<BR><FONT SIZE=3D2>98\% of the document over this would be okay. =
+Remember this is a</FONT>
+
+<BR><FONT SIZE=3D2>one-time operation, it is necessary only once per =
+document. Now the</FONT>
+
+<BR><FONT SIZE=3D2>next question is how to write such a converter and in =
+what language?</FONT>
+
+<BR><FONT SIZE=3D2>Well I don't care about the language of the first =
+version but the</FONT>
+
+<BR><FONT SIZE=3D2>final version that gets distributed together with =
+ltx3 will be</FONT>
+
+<BR><FONT SIZE=3D2>probably written in TeX. Yes TeX, as this is the only =
+language that</FONT>
+
+<BR><FONT SIZE=3D2>happens to be around on every installation that has =
+LaTeX. This will</FONT>
+
+<BR><FONT SIZE=3D2>certainly be a slow converter but this doesn't =
+matter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; This scenario might give &quot;the project =
+team&quot; one less thing to do than the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &quot;provide a LaTeX 2.09 compatibility module =
+for LaTeX 3.0&quot; scenario.&nbsp; Might</FONT>
+
+<BR><FONT SIZE=3D2>&gt; it be better to spend the finite time that is =
+available looking to the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; future than trying to be compatible with the =
+past?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, not trying to be compatible to the past but =
+allowing the past to</FONT>
+
+<BR><FONT SIZE=3D2>catch up soon.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Dr. Willibald Kraml commented on David</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I agree with this. I would even go one step =
+further: should the name &quot;LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 3.0&quot; be kept at all, which might suggest to =
+all users a degree of</FONT>
+
+<BR><FONT SIZE=3D2>&gt; compatibility which might not be there?</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Why not `NewLaTeX 1.0' or `NLaTeX 1.0'</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; (I hope this discussion has not been raised =
+before - after all: what's in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; a name?!)&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>No the discussion hasn't beed raised at least on a =
+list. ltx3 is just</FONT>
+
+<BR><FONT SIZE=3D2>a working name which may or may not change when we =
+are about to give</FONT>
+
+<BR><FONT SIZE=3D2>everything out. At the moment I think it is fine =
+enough as it</FONT>
+
+<BR><FONT SIZE=3D2>indicates at least a major release change.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>And from Phil:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt;&gt; Is there anything to be said for =
+not worrying too much about providing</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt;&gt; a compatibility module for LaTeX =
+2.09?&nbsp; It would be one less thing to do.&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I would support this.&nbsp; There are sufficient =
+kludges in LaTeX-2 that the hassle</FONT>
+
+<BR><FONT SIZE=3D2>&gt; of emulating them surely outweighs the =
+advantages.&nbsp; Let us take advantage of</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the total rewrite to \stress {get it right this =
+time}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, get it right this time, that's what I hope we can =
+achieve, even</FONT>
+
+<BR><FONT SIZE=3D2>with the limited resources.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But even if there are sufficient kludges in LaTeX-2 =
+there is one thing</FONT>
+
+<BR><FONT SIZE=3D2>which is very important about latex209 and should be =
+also there for</FONT>
+
+<BR><FONT SIZE=3D2>ltx3. latex209 was stable for about 6 1/2 years this =
+is most</FONT>
+
+<BR><FONT SIZE=3D2>certainly one of the reasons for its popularity. ltx3 =
+should and will</FONT>
+
+<BR><FONT SIZE=3D2>come with a similar guarantee that code written for =
+it and documents</FONT>
+
+<BR><FONT SIZE=3D2>written in it will be processable at any ltx3 =
+installation for at</FONT>
+
+<BR><FONT SIZE=3D2>least a similar or longer period of time. So it is =
+not only important</FONT>
+
+<BR><FONT SIZE=3D2>to ``get it right'' but to get it right with the =
+first try.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&nbsp;Rolf Lindgren said:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I would support not caring too much about =
+providing campatilbility.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Wouldn't it be more relevant to find out which =
+options are most popular,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; and try to make them unnecessary or easy to =
+reimplement?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; That way, most latex docs would port OK, which =
+certainly should be a goal.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes certainly, I already said this in many messages =
+and on talks. ltx3</FONT>
+
+<BR><FONT SIZE=3D2>will come with a broader range of standard styles and =
+it will come in</FONT>
+
+<BR><FONT SIZE=3D2>a way that converting the local variant of ``report'' =
+etc. should be</FONT>
+
+<BR><FONT SIZE=3D2>easy. I also requested to get send special =
+document-styles so that we</FONT>
+
+<BR><FONT SIZE=3D2>can what are the popular changes, etc.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Finally during the beta test phase (or even earlier) I =
+think of</FONT>
+
+<BR><FONT SIZE=3D2>bowsing through all archives and converting the =
+``most important</FONT>
+
+<BR><FONT SIZE=3D2>styles'' into new syntax. This would then also =
+include options that</FONT>
+
+<BR><FONT SIZE=3D2>provide coding.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; BTW, does there exist some formal plan regarding =
+what to support in ltx3?</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Is somebody compiling this? Can a draft be ftp'd =
+from somewhere?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This question is a bit too broad for me to answer. Yes =
+there are plans</FONT>
+
+<BR><FONT SIZE=3D2>and they are partly laid down in working papers. But =
+so far there is</FONT>
+
+<BR><FONT SIZE=3D2>nothing which can be ftp'd or something as none of =
+these papers are in</FONT>
+
+<BR><FONT SIZE=3D2>a shape to give them out, except perhaps for one. I =
+will check and let</FONT>
+
+<BR><FONT SIZE=3D2>you know on the list. Okay?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Given your suggestion of finding out what options are =
+popular. This is</FONT>
+
+<BR><FONT SIZE=3D2>certainly a good idea. Only point is I would need a =
+volounteer for</FONT>
+
+<BR><FONT SIZE=3D2>this. Would you do this? I could think of something =
+like a short info</FONT>
+
+<BR><FONT SIZE=3D2>that you would like to get the following information, =
+e.g.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- what kind of latex style options are in use at the =
+particluar</FONT>
+
+<BR><FONT SIZE=3D2>installation</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- are there local variants?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- if so, what are the originals?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- what are the five or ten most popular document =
+styles/ option-styles</FONT>
+
+<BR><FONT SIZE=3D2>in use at the installation</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Perhaps some other questions. Answers then back to you =
+so that you can</FONT>
+
+<BR><FONT SIZE=3D2>compile a summary.&nbsp; A good starting point would =
+be this list and I</FONT>
+
+<BR><FONT SIZE=3D2>think everyone on the list should take five minutes =
+to answer such</FONT>
+
+<BR><FONT SIZE=3D2>questions (only don't send them over the list back =
+:-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Would you take it, Rolf? (you see it is dangerous to =
+open ones mouth)</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>Frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.A2F2743C--
+

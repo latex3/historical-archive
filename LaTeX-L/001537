@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2691" "Fri" "11" "February" "1994" "11:09:25" "+0000" "Rainer Schoepf" "schoepf@SC" "<199402111010.AA18345@mail.cs.tu-berlin.de>" "64" "Re: On compatibility in LaTeX2e [was: Re: keyed options lis" "^Date:" nil nil "2" "1994021111:09:25" "On compatibility in LaTeX2e [was: Re: keyed options lis" nil "<199402101948.AA29755@mail.cs.tu-berlin.de*@MHS>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20630; Fri, 11 Feb 94 11:10:29 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA06780; Fri, 11 Feb 94 11:10:28 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18345
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 11 Feb 1994 11:10:26 +0100
+Message-Id: <199402111010.AA18345@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1878; Fri, 11 Feb 94 11:10:13 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1872; Fri,
+ 11 Feb 1994 11:10:10 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3090; Fri,
+ 11 Feb 1994 11:09:30 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Organization: Konrad-Zuse-Zentrum fuer Informationstechnik Berlin
+In-Reply-To:  <199402101948.AA29755@mail.cs.tu-berlin.de*@MHS>
+Date:         Fri, 11 Feb 1994 11:09:25 +0000
+From: Rainer Schoepf <schoepf@SC>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: On compatibility in LaTeX2e [was: Re: keyed options lis
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1537
+
+Frank Poppe writes:
+
+ > What I have been missing in some notes is the distinction between
+ > compatiblity for style designers and maintainers, and compatibility for
+ > users.
+ > It seems we'll have to accept quite some changes in the way styles
+ > (packages/options/classes...) can "hook into" the LaTeX code. That may
+ > be a point of concern in itself, but compatibility towards the users
+ > seems more important to me.
+
+That's a very valid point.
+
+ > [...]
+ > Although using the same command with a new syntax would be even worse
+ > then a new command, a syntax that would be "upwards compatible" should
+ > be the goal.
+
+Agreed.
+
+ > That's why my suggestion for a keyed option list was in the form
+ >   \command[[key1]value1[key2]value2]{required}
+ > and not
+ >   \command[key1=value1,key2=value2]{required}
+ > because the latter would mean that using a = in the "old fashioned" syntax
+ > would wreck the whole run. My suggestion makes it impossible to start an
+ > "old fashioned" optional value with [, but I don't even know if that is
+ > possible right now.
+
+I checked what Leslie Lamport wrote in his book: if you have a closing
+square bracket in an optional argument, you have to enclose it in
+curly braces. So, it is possible to have an extra [ in an optional
+argument, but not an extra ]. Assuming that arguments are parsed by
+TeX's internal macro parameter scanner, and not by some hand crafted
+mechanism, this is the best you can get in general.
+
+Coming back to the proposal above for LaTeX3, namely using the syntax
+
+\command[[key1]value1[key2]value2]{required}
+
+this is a problem as you cannot have TeX grab everything between
+matching pairs of square brackets, only between [ and the next ].
+That leaves only the hand-crafted argument scanning mechanism, which
+might lead to a performance problem. This statement is very tentative,
+we haven't actually tried this, so I can't say that this is much
+slower.
+
+On the other hand, I find the syntax with the equal sign easier to
+understand. The only possible incompatibility is if an optional
+argument in the current system would contain an equal sign. However,
+that is very unlikely, as most optional arguments are either from a
+fixed set [thb], or of a fixed type (e.g., a length). \documentclass
+and \usepackage seem to be the only exception, plus any new command
+that a package might possibly define. This cannot be ruled out
+completely, but I think that package writers are not likely to invent
+options with equal signs in them.
+
+
+   Rainer Schoepf
+   Konrad-Zuse-Zentrum
+    fuer Informationstechnik Berlin
+   Heilbronner Strasse 10
+   D-10711 Berlin
+   Germany
+   <Schoepf@sc.ZIB-Berlin.de> or <Schoepf@sc.ZIB-Berlin.d400.de>
+

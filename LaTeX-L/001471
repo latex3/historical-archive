@@ -1,0 +1,58 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["702" "Tue" " 8" "February" "1994" "16:30:00" "GMT" "Alan Jeffrey" "alanje@COGS.SUSSEX.AC.UK" "<199402081634.AA20126@mail.cs.tu-berlin.de>" "25" "Re: A philosophical question about packages and options" "^Date:" nil nil "2" "1994020816:30:00" "A philosophical question about packages and options" nil "<m0pTuJ1-0006SAC@rsuna.crn.cogs.susx.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08949; Tue, 8 Feb 94 17:35:02 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA19292; Tue, 8 Feb 94 17:34:59 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA20126
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 17:34:56 +0100
+Message-Id: <199402081634.AA20126@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 7616; Tue, 08 Feb 94 17:34:47 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 7615; Tue,
+ 8 Feb 1994 17:34:47 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3321; Tue,
+ 8 Feb 1994 17:34:17 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <m0pTuJ1-0006SAC@rsuna.crn.cogs.susx.ac.uk> (message from Mike
+              Piff on Tue, 8 Feb 1994 14:55:56 LCL)
+Date:         Tue, 8 Feb 1994 16:30:00 GMT
+From: Alan Jeffrey <alanje@COGS.SUSSEX.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: A philosophical question about packages and options
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1471
+
+I've already posted replies to Mike about this, but for the record...
+
+>1) somas.sty was loaded from another directory rather than somas.cls from the
+>current directory.
+
+Yup.  Packages are called foo.sty rather than foo.cls.
+
+>2) I then tried:
+
+>%somas.sty
+>\ProvidesPackage{somas}
+>\DeclareOption*{%
+>   \InputIfFileExists{\CurrentOption.clo}{}{\OptionNotUsed}%
+>}
+>\endinput
+
+The option-handling code relies on the package-writer to include a
+\ProcessOptions command.  In this case it should go just before the
+\endinput.
+
+It would be nice if the error-recovery for all this was nicer, but
+that would probably add a large performance overhead, and people
+grumble enough about speed as it is!
+
+Alan.
+

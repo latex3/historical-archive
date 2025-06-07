@@ -1,0 +1,171 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4230" "Mon" "6" "July" "1998" "18:10:59" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "132" "Re: First experience with xr under L3PL" "^Date:" nil nil "7" nil "First experience with xr under L3PL" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id KAA16702;
+	Mon, 6 Jul 1998 10:11:32 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.E67EC5BC@listserv.gmd.de>; Mon, 6 Jul 1998 10:11:26 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 379613 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Jul 1998 10:11:21 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id KAA20533
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Jul 1998 10:11:16
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.8) id
+          SAA24960; Mon, 6 Jul 1998 18:10:59 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199807020724.RAA19706@ricetub.anu.edu.au>
+            <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Message-ID:  <199807060810.SAA24960@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+Date:         Mon, 6 Jul 1998 18:10:59 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: First experience with xr under L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2649
+
+Frank Mittelbach writes:
+ > fine, however you could take the exercise further and actually apply
+ > some of the functionality of L3PL. i've appended my version below
+
+Yes, I could have done that if I knew what I was doing!
+
+ >  > %<notpackage>\RequirePackage{l3io}
+ > actually it works if there is a blank line after the \RequirePackage
+
+Indeed (I checked) - very interesting!
+
+ >  > \def_new:Npn\tools/xr/loop:n#1{\ior_open:Nn\@inputcheck{#1}\scan_stop:
+ >  >
+ >  > A gotcha:  you now need the braces around #1.
+ >
+ > and no \scan_stop: :-)
+
+Yes, that's the sort of thing that happens when you don't think
+carefully about what you're doing.  I plead that I was (and still am)
+suffering from a bad cold.
+
+ >  > The \\ in both these lines was \XR@.  I wanted to change that to
+ >  > \tools/xr/dummy or something like that, but this doesn't work because
+ >  > \tools/xr/test:nnnn gets invoked when reading the .aux file, and at
+ >  > that stage / has catcode 12 again.  (Using a _ wouldn't work either,
+ >  > of course.)
+ >
+ > ???? works i'd say in my implementation
+
+As usual you are right, and I can't even reproduce this problem.  I
+think it happened when I was using the \RequirePackage, but it's not
+worth tracking down further at this stage.
+
+ > ----------------- test
+ >
+ > \begin{filecontents}{l3xr}
+
+l3xr.sty, natch . . .
+
+ > % well, that has already an interface in 2e
+ >
+ > \newcommand\externaldocument[2][]
+ > {
+ >  {
+ >   \makeatletter
+ >   \def:Npn \l_xr_prefix_tlp {#1}
+ >   \seq_push:Nn \l_xr_subfiles_seq {#2.aux}
+ >   \xr_loop:
+ >  }
+ > }
+ >
+ > \seq_new:N \l_xr_subfiles_seq
+
+No, if you want to do it `properly' you must say:
+
+\newcommand\externaldocument[2][]
+{
+ {
+  \makeatletter
+  \tlp_set:Nn \l_xr_prefix_tlp {#1}
+  \seq_push:Nn \l_xr_subfiles_seq {#2.aux}
+  \xr_loop:
+ }
+}
+
+\tlp_new:Nn \l_xr_prefix_tlp {}
+\seq_new:N \l_xr_subfiles_seq
+
+ > \def_new:Npn \xr_loop:
+ >  {
+ >   \seq_pop:NN  \l_xr_subfiles_seq \l_xr_file_tlp
+ >   \ior_open:Nn \@inputcheck {\l_xr_file_tlp}
+ >   \ior_eof:NTF \@inputcheck
+ >     {
+ >      \PackageWarning{l3xr}{^^JNo~ file~ \l_xr_file_tlp^^JLABELS~ NOT~ IMPORTED.^^J}
+ >     }
+ >     {
+ >      \PackageInfo{l3xr}{IMPORTING~ LABELS~ FROM~ \l_xr_file_tlp}
+ >      \xr_read_file:
+ >     }
+ >   \seq_empty:NF \l_xr_subfiles_seq
+ >                 { \xr_loop: }
+ > }
+
+\seq_pop:NN is not listed in the first part of the l3seq
+documentation.  It was not obvious that one is allowed/supposed to use
+it.
+
+And you to `declare' this as well:
+
+\tlp_new:N \l_xr_file_tlp {}
+
+The rest seems OK . . . .
+
+Tim's questions are really quite important for the `average' package
+writer, because they will be programing `in-the-small', and the xr
+example is quite a good one for that.  Even such a small package has
+needed a total re-think and re-writing.
+
+Clearly I haven't yet got my brain around what one is supposed to do
+with all of the new data types (prop, seq, tlp) - and I doubt anyone
+else listening has.  Because there are no examples I have to do a lot
+of mind-reading.  So I am going to study your l3xr more carefully and
+have a go at a larger package.  (I've been in Melbourne since February
+and I'm moving back to Canberra this week, so don't hold your breath -
+but I'll do my best!)
+
+> com'on. with a spec as is you can experiment with modules if you
+> really want to as easily as with some other. just introduce / as a
+> sub-module separator in the first word. you may be right that it would
+> look perhaps look ugly but it would work without any problem and would
+> prove either me or you wrong.
+>
+> so \foo_bar:nn would be module foo function bar
+> and \foo/baz_bar:nn would be module foo submodule baz function bar
+>
+> so what? (and it doesn't look so bad actually)
+
+I am going to think about that one for a while.
+
+First impressions, using my example:
+
+\tools/xr/exp_list:   becomes    \tools/xr_exp_list:
+
+It has a certain `cringe factor' about it, because `xr' has somehow
+moved from the name of the package to the name of the function.
+To me, allowing _ within the <description> part and using it as the
+separator is really ugly.
+
+ObPolemic: But maybe the LaTeX world is too small for a hierarchical
+naming scheme - even though CTAN (not to mention TDS) would suggest
+otherwise.
+

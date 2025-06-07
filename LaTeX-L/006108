@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 23 Oct 2009 08:09:01 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n9N68x5W029559
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 23 Oct 2009 08:08:59 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n9N64Qph032710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 23 Oct 2009 08:04:27 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n9MMACxe030292;
+	Fri, 23 Oct 2009 08:04:20 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 339059 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 23 Oct
+          2009 08:04:20 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n9N64KQI000578 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 23 Oct 2009 08:04:20 +0200
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n9N64B4j032523 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 23 Oct 2009 08:04:15 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1N1DFz-0006rj-f0 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 23 Oct
+          2009 06:04:11 +0000
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <4AE0BFB3.7080905@morningstar2.co.uk>
+            <8A015AE0-022B-4462-B8D5-CC1010E49205@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4AE1475B.9070905@morningstar2.co.uk>
+Date:         Fri, 23 Oct 2009 07:04:11 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse processors
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <8A015AE0-022B-4462-B8D5-CC1010E49205@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 23 Oct 2009 06:09:01.0408 (UTC) FILETIME=[50D23E00:01CA53A7]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6108
+
+Will Robertson wrote:
+> On 23/10/2009, at 6:55 AM, Joseph Wright wrote:
+> 
+>> This would allow things like:
+>>
+>> > \ReturnVariable { \MakeHarmless\ReturnVariable }
+>>  % Will absorb one more argument, as required
+>>
+>> (using \MakeHarmless from xdoc). That doesn't work at present as the 
+>> return has to be in a toks.
+>>
+>> As Lars points out, that is quite a bit more flexible at the cost of a 
+>> little complexity in the syntax.
+> 
+> 
+> I'm not sure that I see how this is any more flexible?
+> Oh, simply that your argument processor doesn't have to be hard-coded to 
+> use \l_xparse_arg_toks.
+> But hang on, can't you do the same thing at present by just writing
+> 
+>     > { \MakeHarmless\l_xparse_arg_toks }
+> 
+> ?
+
+No. \MakeHarmless has the syntax:
+
+\MakeHarmless <macro> <input>
+
+where <macro> is used for the output. So if you try to use a toks here, 
+it will fail to work correctly. You'd need a wrapper function, which is 
+what Lars is suggesting we should avoid.
+--
+Joseph Wright
+

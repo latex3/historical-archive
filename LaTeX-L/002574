@@ -1,0 +1,82 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2019" "Sat" "20" "June" "1998" "21:55:48" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "44" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id VAA09345;
+	Sat, 20 Jun 1998 21:56:02 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.AD114126@listserv.gmd.de>; Sat, 20 Jun 1998 21:56:00 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 365856 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 20 Jun 1998 21:55:54 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id VAA19422 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 20 Jun 1998 21:55:52
+          +0200 (MET DST)
+Received: from [130.237.37.43] (sl23.modempool.kth.se [130.237.37.43]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id VAA20192 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 20 Jun 1998 21:55:45
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b1b1beeacfb1@[130.237.37.116]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <m0ynSs5-000DLbC@bilbo.yavuz.de>
+Date:         Sat, 20 Jun 1998 21:55:48 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2574
+
+  In general, there is no point in abbreviating the names while loading a
+module: One loads them in full and then, as needs arise, one use local,
+more convenient definitions. This way the user can use different kinds of
+mixtures of modules in different localities.
+
+  One example might be when putting together different manuscripts of
+different authors: Each author might have a different blend of say the math
+or phys module. By not abbreviating the names when loading those modules,
+the different manuscripts will not clash.
+
+  (So, in particular, I think that LaTeX3 should make the environment
+"document" to a locality, and the definitions of that document that the
+user might add should be made within that environment: The commands that
+need to be global should be named \document/<document name>/<command name>.
+Then the commands of different documents will not clash when run together.)
+
+
+At 21:00 +0200 98/06/20, Volkan Yavuz wrote:
+>* Specifying the Local Scope
+...
+>        \ProvidesPackage{latex3/contrib/math}
+>
+>after this declaration, all macros that are \newcommand'ed within this
+>package are auto-magically[1] prefixed with something like
+>"latex3/contrib/math".
+
+  So a command like this could be useful to load all macros in
+latex3/contrib/math, but it would not abbreviate the names. Instead an user
+would define a special environment which abbreviates the names. Inventing
+something:
+    \module{short}{latex3/contrib/math}{m}
+and as long as the locality is valid, names \m/foo would expand to
+\latex3/contrib/math/foo.
+
+  One reason for doing it this way is that it is difficult know in advance
+what kind of blends of modules users may make use of.
+
+  Then one could of course think of more complicated things (like search
+paths etc), but I think this would suffice quite far.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

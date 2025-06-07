@@ -1,0 +1,104 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id oAAIU5mG021606
+	for <rainer@rainer-schoepf.de>; Wed, 10 Nov 2010 19:30:06 +0100
+Received: (qmail 26278 invoked by alias); 10 Nov 2010 18:29:59 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 10 Nov 2010 18:29:59 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx107) with SMTP; 10 Nov 2010 19:29:59 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id oAAHYqKB012288
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Nov 2010 18:34:53 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id oAAEsdOx004690;
+	Wed, 10 Nov 2010 18:35:30 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 699230 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Nov
+          2010 18:35:30 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+          by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id
+          oAAEsdO3004690 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 10 Nov
+          2010 18:25:30 +0100
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id oAAHPUk3027313
+Message-ID:  <5912573863497554.WA.remyoudomphenggmail.com@listserv.uni-heidelberg.de>
+Date:         Wed, 10 Nov 2010 18:25:30 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: R=?UTF-8?Q?=C3=A9my_Oudompheng?= <remyoudompheng@GMAIL.COM>
+Subject: Rewriting polyglossia in LaTeX3
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4U4jfdfC5HDevlx1X2sAZg1MkugZcpwIdDb8z5l6KEaP+LdZ7QLw+5CKzyp
+ k5HTLZ1v8wPRqFdQdQapWq9qz59Rr52fCiljKsM85i3sbXAJVBjnzZkoSL42zBmmwDa5vja6zT3o
+ 7boow==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6469
+
+Hello everybody,
+
+I am interested in Unicode-capable TeX engines, and as such felt
+that after fontspec and unicode-math, polyglossia would deserve
+a rewrite for expl3. polyglossia currently uses etoolbox to
+provide features much similar to what is offered by the LaTeX3
+packages, notably a lot of keyval-like features. I found benefits
+in the nice syntax offered by l3keys, and the \prg_case_str
+function for example.
+
+You may find a Git repository at
+  http://github.com/remyoudompheng/polyglossia
+
+I am looking for help in testing this, hoping that you will like it,
+and I have also a question: for some reason, in polyglossia
+we need to (un)capitalize words for use in csnames.
+
+I think I can produce somthing like this in LaTeX 3:
+
+\def\art{abc}
+\def\func#1{\tl_to_uppercase:n{\tl_head:n{#1}}{\tl_tail:n #1}}
+\def\frou#1{\exp_args:Nf\func#1}
+\frou\art
+
+produces Abc as expected.
+
+The TeX code is polyglossia is like this:
+
+\def\xpg@uppercasefirst#1{\expandafter\xpg@@uppercasefirst #1}
+\def\xpg@@uppercasefirst#1{%
+       \if a#1A\else
+       \if b#1B\else
+       \if c#1C\else
+       \if d#1D\else
+         ... \fi\fi\fi\fi
+
+I have been trying to replace it by something like
+
+\cs_new:Npn \polyg_uppercase_first:x{\tl_to_uppercase:n{\tl_head:n{#1}{\tl_tail:n
+#1}}
+
+or some combination using \exp_args but the result was never
+equivalent, since in polyglossia the input may be a complicated
+macro and the output will be surrounded by \csname..\endcsname
+
+How should I do that ?
+
+Regards,
+  Rémy Oudompheng.
+

@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3475" "Mon" "10" "April" "1995" "11:32:49" "-0300" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "63" "Re: modularity" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzj.zdv.Uni-Mainz.DE [134.93.8.16]) by trudi.zdv.Uni-Mainz.DE (8.6.11/8.6.11) with ESMTP id PAA32627 for <schoepf@goofy.zdv.uni-mainz.de>; Mon, 10 Apr 1995 15:58:53 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP6H2WX8OGA3CKFU@MZDMZA.ZDV.UNI-MAINZ.DE>; Mon,
+ 10 Apr 1995 15:58:28 +0100
+Received: from degate.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP6H2QAIXC9TDG4C@MZDMZA.ZDV.UNI-MAINZ.DE>; Mon,
+ 10 Apr 1995 15:58:20 +0100
+Received: from vm.gmd.de by degate.gmd.de (SF for OpenVMS v1.0-a)
+ with SMTP id 5DA95BCA ; Mon, 10 Apr 1995 15:58:20 +0200
+Received: from VM.GMD.DE by vm.gmd.de (IBM VM SMTP V2R2)
+ with BSMTP id 1612; Mon, 10 Apr 95 13:44:32 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2a/1.8a) with BSMTP id 1805; Mon,
+ 10 Apr 1995 13:43:37 +0200
+In-reply-to: <9504071807.AA00831@m1.cs.man.ac.uk> (message from Matthew Swift
+ on Fri, 7 Apr 1995 13:55:31 -0500)
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Message-id: <01HP6H2QNDW29TDG4C@MZDMZA.ZDV.UNI-MAINZ.DE>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Mon, 10 Apr 1995 11:32:49 -0300 (BST)
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Subject: Re: modularity
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1638
+
+> This would require (at least) two changes in convention: (1)
+> (mentioned above) that no markup (e.g., \title) ever occur in
+> preambles; (2) that packages never redefine environments in a way
+> that alters the user syntax of the markup commads inside them.  That
+> is, no new commands, just redefinitions.  Number (2) is a pain in
+> the neck.  Specifically, it prohibits things like tabularx, which
+> add new placement specifiers.  I do not say I have solved these
+> problems, I have just begun to think about them.
+
+One thing that is most definitely `on the list' of things to think
+about for LaTeX3 is problem (2).  (Problem (1) is also an issue, but
+probably can be easily solved once the general guidelines for how a
+preamble solving (2) should look are decided.)
+
+As you describe it above, `prohibits...', it sounds rather drastic, but
+probably a better description of what you (and I) want is a clearer
+separation of the `signature' of a package, ie the document level
+markup it defines, and the `implementation' of the package ie the
+mechanics of how the user-level markup gets transformed into boxes and
+glue (or PL files if you are Alan). If these were separated, a lot of
+portability issues would be simplified. This is most noticeable in the
+case of class files. Many article.cls `replacements' also can not
+resist the temptation to define one or two extra commands, which is
+fine until you want to process a document with a different article class
+`replacement' and suddenly find that the various extensions are not
+really compatible. Ideas from SGML, which has a very definite notion
+`DTD' of the specification of the allowable markup are probably very
+relevant here, but how this should all fit into a TeX based system is
+not yet clear, and if anyone has any brilliant suggestions in this
+area, they should post them to this list:-)
+
+>  In interactive preamble parser would be an interesting compromise;
+>  and so would a name-convention on packages that alter kernel syntax
+>  (it looks like *x is already such a convention; is it?).  But now I
+>  am getting pretty far off track.
+
+The *x convention isn't really a convention at all as far as I know.
+tabularx got called tabularx because it was a bit like tabular* and an
+x is a bit like a *...
+
+graphicx.sty got called that in desperation of trying to find a name
+for an extension of graphics.sty given that the latter had already
+used up the full 8.3 namespace allowed on a certain well known
+operating system.
+
+But to return to your suggestion, I do not think that a `naming'
+convention will ever be enforceable, which would mean that you could
+not rely on it when merging documents in the way you suggested.
+If this kind of separation is required, then probably you really have
+to make the break and have separate document-level declarations of
+signature and implementation. As most packages that define new markup
+probably do have an initial `default' implementation. one could
+envision a command like the current \usepackage which was just a
+shorthand for declaring both the new markup and its default
+implementation. So in simple cases probably very little would change,
+but then if you later wanted to do major changes on a document's
+typesetting, you could load in alternative implementations for any
+packages loaded by the document using a specific command for that
+purpose.  With such an `implementation' loading it should (somehow:-)
+be impossible to define any new user-level commands.
+
+
+David
+

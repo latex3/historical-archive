@@ -1,0 +1,235 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6039" "Thu" "11" "November" "1999" "21:52:48" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "192" "Re: xcontents" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA16795
+	for <schoepf@UNI-MAINZ.DE>; Thu, 11 Nov 1999 22:58:09 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.AD31FB24@mail.listserv.gmd.de>; Thu, 11 Nov 1999 22:58:05 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445871 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 11 Nov 1999 22:57:52 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id WAA23610 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 11 Nov
+          1999 22:57:50 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id WAA27394 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 11 Nov 1999 22:58:04 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin370.zdv.Uni-Mainz.DE
+          [134.93.175.70]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA11136 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 11 Nov 1999
+          22:58:01 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          VAA00641; Thu, 11 Nov 1999 21:52:48 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <14375.58629.679692.883454@n15ux24.nets.de.eds.com>
+            <199911101918.TAA11009@mimosa.csv.warwick.ac.uk>
+Message-ID:  <199911112052.VAA00641@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199911101918.TAA11009@mimosa.csv.warwick.ac.uk>
+Date:         Thu, 11 Nov 1999 21:52:48 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3396
+
+James,
+
+ > I'll append it below.
+
+thanks. it is good to see somebody having a go :-) and ...
+
+ > It is almost entirely copied from latex.ltx
+
+who cares at this point (though at a later point one should)
+
+ > I'm not sure what you mean by the collection-id key of processcontents
+ > I don't think I've done the right thing with it.
+
+i think you did. see my example file below.
+
+ > \DeclareUserCommand?  is this \DeclareDocumentCommand -- The Next
+ > Generation? Help for commands used could be saved and written to a
+
+heaven's no. slip of tongue more likely, age or stress. at one point David and
+i called the the UserCommand but then settled for DeclareDocumentCommand even
+though a bit longer --- just couldn't remember what we called it :-)
+
+===================
+
+okay, so now we have an implementation by James and if you put that into a
+file called xcontentsJK.sty then you should be able to run the test file i
+appended below.
+
+my questions to this list would be now:
+
+ a) have a look at the output
+
+ b) have a try to define your own TOC layout (take my abstract spec of the
+    available keys from the previous mail)
+
+ c) can you define the layout you are looking for?
+    if not:
+    - are there keys missing for the current templates?
+    - are there other templates missing that do radically different things?
+    - are the keys perhaps the wrong ones?
+
+ d) share your thoughts and sample trials with us
+
+ e) how difficult is it to implement a given design?
+
+again thanks James to get us to this point
+
+frank
+
+================= xcontents-test.tex
+
+\documentclass{article}
+
+\usepackage{xcontentsJK}
+
+\IgnoreWhiteSpace
+
+% small fixes (still doesn't exactly implement the spec
+% but fine for now):
+
+\DeclareTemplate{contentsobject}{JKpnumfirst2}{6}{
+  pre-v-action     =f0 [\endgraf] \COpre@action,
+  object-decls     =f0 [\relax]   \COobject@decl,
+  object-indent    =l  [0pt]      \leftskip,
+  object-width     =L  [\DelayEvaluation{\linewidth}]
+                                  \COobject@width,
+  pnum-width       =l  [30pt]     \@tempdimb,
+  title-format     =f1 [#1]       \COtitle@format,
+%FMi default supposed to be flush right
+  pnum-format      =f1 [\hfil #1]  \COpnum@format,
+  pnum-title-sep   =l  [5pt]      \@tempskipa}
+{
+  \IfNoValueF{#3}
+     {\PackageWarning{xcontents}{Number~of~contents~object~was~ignored.}{}}
+  \ifnum #2>\c@tocdepth \else {
+    \DoParameterAssignments
+    \parindent=0pt
+%FMi force par for v-action
+    \par
+    \COpre@action
+    \COobject@decl
+    \leavevmode
+    \hbox to \COobject@width {
+%FMi default supposed to be flush right
+        \hbox to \@tempdimb{\COpnum@format{#6}}
+        \hspace{\@tempskipa}
+        \COtitle@format{#4}\hfil}}
+%FMi was missing:
+  \fi
+}
+
+
+\DeclareInstance{contentsobject}{section}{JK}{
+  pre-v-action     = \DelayEvaluation{\addpenalty{10000}
+                     \addvspace{1em plus 1pt}},
+  right-margin-sep = 15pt,
+  title-format     = \textbf{#1},
+  number-format    = \textbf{#1\hfil},
+  pnum-format      = \textbf{\hfil#1},
+  leaders-action   = ~,
+  number-width     = \DelayEvaluation{1.5em}}
+
+\DeclareInstance{contentsobject}{subsection}{JK}{
+  object-indent = \DelayEvaluation{1.5em},
+  number-width  = \DelayEvaluation{2.3em}}
+
+\DeclareInstance{contentsobject}{subsubsection}{JK}{
+  object-indent = \DelayEvaluation{3.8em},
+  number-width  = \DelayEvaluation{3.2em}}
+
+\DeclareInstance{contentsobject}{paragraph}{JK}{
+  object-indent = \DelayEvaluation{7.0em},
+  number-width  = \DelayEvaluation{4.1em}}
+
+\DeclareInstance{contentsobject}{subparagraph}{JK}{
+  object-indent = \DelayEvaluation{10em},
+  number-width  = \DelayEvaluation{5em}}
+
+\DeclareInstance{contentsobject}{pnumsubsection}{JKpnumfirst}
+{object-width=4cm}
+\DeclareInstance{contentsobject}{pnumsection}{JKpnumfirst}
+{object-width=4cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareCollectionInstance{summary}{contentsobject}{section}{JKpnumfirst2}
+  {
+    pre-v-action = \endgraf\addvspace{3pt plus .2pt},
+    object-decls = \sffamily,
+    object-indent = 0pt,
+    pnum-title-sep = 5pt,
+    pnum-format    = \hfill#1,
+    }
+
+\DeclareCollectionInstance{summary}{contentsobject}{subsection}{JKpnumfirst2}
+  {
+    object-decls = \sffamily,
+    object-indent = 0pt,
+    pnum-title-sep = 15pt,
+    pnum-format    = \hfill#1,
+    }
+
+\DeclareCollectionInstance{summary}{contentsobject}{subsubsection}{JKpnumfirst2}
+  {
+    object-decls = \sffamily,
+    object-indent = 0pt,
+    pnum-format =,
+    pnum-title-sep = 30pt,
+    pnum-format    = \hfill#1,
+    }
+
+\begin{document}
+
+\newcommand\testtoc[1]{
+\section*{THE TEST: #1}
+\contentsobject {1}{1}{section}{1}{A first section}{}{1}
+\contentsobject {2}{2}{subsection}{1.1}{A first subsection}{}{1}
+\contentsobject {3}{2}{subsection}{1.2}{A second subsection with an
+   awful long title: some text or other to get us going right?}{}{1}
+\contentsobject {4}{3}{subsubsection}{1.2.1}{A direct subsubsection}{}{1}
+\contentsobject {5}{1}{section}{\NoValue }{Heading two as section}{}{1}
+\contentsobject {6}{2}{subsection}{1.3}{With a direct subsection}{}{1}
+\contentsobject {7}{3}{subsubsection}{1.3.1}{And some subsubsection}{}{1}
+\contentsobject {8}{4}{paragraph}{\NoValue }{A runin paragraph}{}{1}
+\contentsobject {9}{4}{paragraph}{\NoValue }{Another runin paragraph}{}{1}
+\contentsobject {10}{5}{subparagraph}{\NoValue }{Another runin
+  subparagraph}{}{1}
+\contentsobject {11}{5}{subparagraph}{\NoValue }{Another runin
+  subparagraph number two}{}{1}
+\contentsobject {12}{5}{subparagraph}{\NoValue }{Another runin
+  subparagraph number three}{}{1}
+\contentsobject {13}{1}{section}{2}{And another section}{}{1}
+\contentsobject {14}{2}{subsection}{2.1}{that has a subsection}{}{1}
+\contentsobject {15}{1}{section}{3}{A test}{}{2}
+\contentsobject {16}{2}{subsection}{\NoValue }{with an unnumbered
+  subsection}{}{2}
+}
+
+\testtoc{1}
+
+\UseCollection{contentsobject}{summary}
+\testtoc{2}
+
+% to add another toc example (chose a collection name FOO)
+% add some CollectionInstances above and do:
+
+%\UseCollection{contentsobject}{FOO}
+%\testtoc{3}
+
+\stop
+

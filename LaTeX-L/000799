@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1992" "Mon" "28" "September" "92" "18:57:15" "CET" "\"J%org Knappen\"" "KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE" nil "40" "Re: Converse of \\nonumber" "^Date:" nil nil "9"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA26933; Mon, 28 Sep 92 18:57:37 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA11528; Mon, 28 Sep 92 18:57:12 +0100
+Message-Id: <9209281757.AA11528@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3308; Mon, 28 Sep 92 18:57:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3287;
+ Mon, 28 Sep 92 18:57:52 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3278;
+ Mon, 28 Sep 92 18:57:47 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 28 Sep 92 18:57:15 CET
+From: "J%org Knappen" <KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Converse of \nonumber
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 799
+
+
+David Mermin said some time ago in the column ``reference frame'' of
+Physics Today: ``every equation must be numbered''. The argument (very
+neatly presented) goes that no-one including the author themself knows
+which equation will be referenced -- by the author, or by some reader of
+the paper.
+
+The other thing is that a whole bunch of commands and environments have a
+*-form with no numbers (\chapter, \section, eqnarray), but other similar
+ones do not (personally, I missed equation*, which is called
+displaymath). I'd like a more consistent naming scheme.
+
+But...is this really our aim ? Or should the numbering/nonumbering be a
+part of the style description ? Should really the author care of numbering
+details ? Of course there are cases, where hand-adjusting is need, e. g.
+with equations broken over several lines (will LaTeX3 have an algorithm to
+do this automatically, say a {longeqn} environment ?). And of course,
+there are authors who want to care about these things and they should have
+the opportunity to do so.
+
+If I were the LaTeX style designer of some journal that requires each
+equation to be numbered, I'd probably like commands like these:
+\letenvironment{displaymath}{equation}% number all equations, even if the
+                                      % author uses displaymath
+or:
+\undefineenvironment{eqnarray*}       % in our style, the eqnarray*
+                                      % environment is undefined
+                                      % (if you try to use it, you get an
+                                      % error message)
+
+And for proofreading maybe I liked a utility which manipulates the .tex
+source for my work by inserting at each equation comments showing the
+actual number. This would allow me to search for the equation number in the
+case I want to do a correction there.
+
+
+The thoughts above may be inconsistent or impossible to realise (I have not
+ernestly checked this), but I hope they are still worth posting...
+
+Yours, J"org Knappen.
+

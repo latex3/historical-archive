@@ -1,0 +1,122 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3244" "Thu" "10" "April" "1997" "17:32:14" "+0200" "Johannes Kuester" "kuester@MATHEMATIK.TU-MUENCHEN.DE" nil "78" "gcd and lcm (was: Re: math fonts)" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id RAA09835; Thu, 10 Apr 1997 17:32:58 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.B167B2AB@listserv.gmd.de>; Thu, 10 Apr 1997 17:32:57 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123261 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 17:32:53 +0200
+Received: from tuminfo2.informatik.tu-muenchen.de
+          (root@tuminfo2.informatik.tu-muenchen.de [131.159.0.81]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id RAA23190 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10 Apr 1997 17:32:52
+          +0200 (MET DST)
+Received: from sunbulirsch4.mathematik.tu-muenchen.de ([131.159.68.4]) by
+          tuminfo2.informatik.tu-muenchen.de with SMTP id <109518-234>; Thu, 10
+          Apr 1997 17:32:44 +0200
+Received: from sgibulirsch6.mathematik.tu-muenchen.de ([131.159.68.57]) by
+          sunbulirsch4.mathematik.tu-muenchen.de with SMTP id <20788>; Thu, 10
+          Apr 1997 17:32:20 +0200
+Received: by sgibulirsch6.mathematik.tu-muenchen.de (931110.SGI/930416.SGI) for
+          @sunbulirsch4.mathematik.tu-muenchen.de:LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE id AA08494; Thu, 10 Apr 97
+          17:32:14 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-ID:  <9704101532.AA08494@sgibulirsch6.mathematik.tu-muenchen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199704101357.PAA03591@macbeth.uni-duesseldorf.de> from "Ulrik
+              Vieth" at Apr 10, 97 03:57:41 pm
+Date:         Thu, 10 Apr 1997 17:32:14 +0200
+From: Johannes Kuester <kuester@MATHEMATIK.TU-MUENCHEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      gcd and lcm (was: Re: math fonts)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1917
+
+As I just sent a copy of my own tries at METAFONT to Joerg Knappen,
+I feel I should comment on some symbols my fonts contain, as I never
+published them in any way, but I think they could be useful and
+could be included in the new math fonts. These are delimiters
+to denote greatest common divisor and least common muptiple.
+Currently, there is no real standard for these, one is to use
+gcd(a,b) in English, ggT(a,b) in German and so on, one is to
+simply use (a,b) which is a notation overloaded with different
+meanings and often causes confusion when read, also,
+(a,b) lacks a standard counterpart for lcm
+(I've seen {a,b} and [a,b] for this, both are very original and
+unambiguous notations...)
+
+So I propose the following symbols for this (first some ASCII art,
+see below for my metafont code (only base size here; of course,
+they should come with extensibles, which I have prepared, too):
+  __        __
+  \          /                      /       \
+   \  a, b  /    for the gcd and   /  a, b,  \ for the lcm
+    \      /                      /_        __\
+
+The idea here is to represent two angles of a downward pointing
+triangle (as the gcd of a and b is \leq \min(a,b)) and of an
+upward pointing triangle (analogous reason for the lcm), respectively.
+
+These symbols seem to match all criteria I could think of for new math
+symbols, e.g. they are unambiguous, international, mnemonic, consistent
+(they are not to far away from at least one existing notation, yet
+different enough), and concepts belonging together are represented
+by resembling symbols. So much for this proposal.
+
+Here's my metafont code (rather simple changes to cm's slash and backslash
+programs), I also prepared macros to use these symbols (my suggestion
+here is \gcd{a,b} and \lcm{a,b}, with \biggcd etc for the other sizes
+and \Gcd and \Lcm for automatic \left and \right insertion).
+
+cmchar "Left least common multiple delimiter";
+beginchar(oct"002",10u#,body_height#,paren_depth#);
+italcorr body_height#*slant-.5u#;
+adjust_fit(0,0); pickup rule.nib;
+rt x1=hround(w-u)+eps; top y1=h+eps;
+lft x2=hround 2u-eps; bot y2=-d-eps;
+x3=x1; y3=y2;
+draw z1--z2--z3;  % diagonal and horizontal
+penlabels(1,2,3); endchar;
+
+cmchar "Right least common multiple delimiter";
+beginchar(oct"003",10u#,body_height#,paren_depth#);
+adjust_fit(0,0); pickup rule.nib;
+lft x1=hround u-eps; top y1=h+eps;
+rt x2=hround(w-2u)+eps; bot y2=-d-eps;
+x3=x1; y3=y2;
+draw z1--z2--z3;  % diagonal and horizontal
+penlabels(1,2,3); endchar;
+
+cmchar "Left greatest common divisor delimiter";
+beginchar(oct"004",10u#,body_height#,paren_depth#);
+adjust_fit(0,0); pickup rule.nib;
+lft x2=hround 2u-eps; top y2=h+eps;
+rt x3=hround(w-u)+eps; bot y3=-d-eps;
+x1=x3; y1=y2;
+draw z1--z2--z3;  % horizontal and diagonal
+penlabels(1,2,3); endchar;
+
+cmchar "Right greatest common divisor delimiter";
+beginchar(oct"005",10u#,body_height#,paren_depth#);
+italcorr body_height#*slant-.5u#;
+adjust_fit(0,0); pickup rule.nib;
+rt x2=hround(w-2u)+eps; top y2=h+eps;
+lft x3=hround u-eps; bot y3=-d-eps;
+x1=x3; y1=y2;
+draw z1--z2--z3;  % horizontal and diagonal
+penlabels(1,2,3); endchar;
+
+--
+Johannes Kuester                    kuester@mathematik.tu-muenchen.de
+Mathematisches Institut der
+Technischen Universitaet Muenchen
+

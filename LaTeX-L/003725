@@ -1,0 +1,161 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f16HDqH19473 for <schoepf@proteosys.de>; Tue, 6 Feb 2001 18:13:52 +0100
+Received:  by webgate.proteosys.de (8.11.0/8.11.0) with ESMTP id f16HDqd05446 . for <schoepf@proteosys.de>; Tue, 6 Feb 2001 18:13:52 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C09060.2D70C800"
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f16HDp725167 for <schoepf@proteosys.de>; Tue, 6 Feb 2001 18:13:51 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id SAA25953 for <schoepf@mail.uni-mainz.de>; Tue, 6 Feb 2001 18:13:51 +0100 (MET)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f16HDn725158 for <schoepf@UNI-MAINZ.DE>; Tue, 6 Feb 2001 18:13:50 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.01847DB1@mail.listserv.gmd.de>; Tue, 6 Feb 2001 18:13:44 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 488926 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 6 Feb 2001 18:13:27 +0100
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id SAA11255 for <latex-l@relay.urz.uni-heidelberg.de>; Tue, 6          Feb 2001 18:13:26 +0100 (MET)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id SAA20938 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 6 Feb          2001 18:13:25 +0100
+Received:  from nag.co.uk (openmath.nag.co.uk [62.232.54.144]) by          relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id          f16HDKu22206 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 6 Feb 2001          18:13:20 +0100 (MET)
+Received:  (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id          RAA22236; Tue, 6 Feb 2001 17:13:04 GMT
+In-Reply-To:  <200102061701.MAA21339@pluto.math.albany.edu>              (hammond@CSC.ALBANY.EDU)
+References:  <200102061701.MAA21339@pluto.math.albany.edu>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Content-class: urn:content-classes:message
+Subject:      Re: default inputenc/fontenc tight to language
+Date: Tue, 6 Feb 2001 18:13:04 +0100
+Message-ID:  <200102061713.RAA22236@nag.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "David Carlisle" <davidc@NAG.CO.UK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3725
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C09060.2D70C800
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> But isn't \'e an abbreviation for \acute{e},
+No.
+
+No on two levels, firstly \' doesn't expand to any (document usable)
+command form, it is essentially, but more importantly the latex internal
+form should be thought of as a symbolic name consisting of those
+characters. \'e (actually the internal form isn't quite that because of
+the annoying tabbing restrictions, but ignore that for now).
+
+\'e is a three letter name for taht character, like e-acute or
+U+E9 or &#xe9;
+
+Sometimes latex passes it round as a string of three tokens, and
+sometimes the \' is tokenised but again this is an implementation
+detail. Conceptually it is just latex's cannonical name for an e acute.
+
+> I see \'e and \uE9 as formally different things,
+
+That isn't the latex way. If you use a latin 1 input encoding and enter
+a =E9 (which was an e acute if this mail path isn't 8bit safe)
+then latex will convert that to \=E9 internally before converting that
+back to the same byte as it started with if typesetting in T1 encoding.
+
+This in fact is similar to a unicode combining character if you do e'
+where 'is teh combining acute it is (to a unicode/xml system)
+supposed to be the same as if you'd entered the e acute character
+(but don't try it in xmltex)
+
+David
+
+------_=_NextPart_001_01C09060.2D70C800
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: default inputenc/fontenc tight to language</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; But isn't \'e an abbreviation for =
+\acute{e},</FONT>
+
+<BR><FONT SIZE=3D2>No.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>No on two levels, firstly \' doesn't expand to any =
+(document usable)</FONT>
+
+<BR><FONT SIZE=3D2>command form, it is essentially, but more importantly =
+the latex internal</FONT>
+
+<BR><FONT SIZE=3D2>form should be thought of as a symbolic name =
+consisting of those</FONT>
+
+<BR><FONT SIZE=3D2>characters. \'e (actually the internal form isn't =
+quite that because of</FONT>
+
+<BR><FONT SIZE=3D2>the annoying tabbing restrictions, but ignore that =
+for now).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\'e is a three letter name for taht character, like =
+e-acute or</FONT>
+
+<BR><FONT SIZE=3D2>U+E9 or &amp;#xe9;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Sometimes latex passes it round as a string of three =
+tokens, and</FONT>
+
+<BR><FONT SIZE=3D2>sometimes the \' is tokenised but again this is an =
+implementation</FONT>
+
+<BR><FONT SIZE=3D2>detail. Conceptually it is just latex's cannonical =
+name for an e acute.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I see \'e and \uE9 as formally different =
+things,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That isn't the latex way. If you use a latin 1 input =
+encoding and enter</FONT>
+
+<BR><FONT SIZE=3D2>a =E9 (which was an e acute if this mail path isn't =
+8bit safe)</FONT>
+
+<BR><FONT SIZE=3D2>then latex will convert that to \=E9 internally =
+before converting that</FONT>
+
+<BR><FONT SIZE=3D2>back to the same byte as it started with if =
+typesetting in T1 encoding.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This in fact is similar to a unicode combining =
+character if you do e'</FONT>
+
+<BR><FONT SIZE=3D2>where 'is teh combining acute it is (to a unicode/xml =
+system)</FONT>
+
+<BR><FONT SIZE=3D2>supposed to be the same as if you'd entered the e =
+acute character</FONT>
+
+<BR><FONT SIZE=3D2>(but don't try it in xmltex)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>David</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C09060.2D70C800--
+

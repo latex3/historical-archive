@@ -1,0 +1,1528 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.445C2724@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:57 +0100
+Return-Path: <LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.445C2724"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      This is what I meant to send to the list
+Date: Thu, 13 Jun 1991 09:36:01 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE581@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <CA_ROWLEY@VAX.ACS.OPEN.AC.UK>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.uucp>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 345
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.445C2724
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+\documentstyle[a4,array,newdoc]{article}
+
+\title{Scaled font loading within the NFSS\\
+       and some other upgrades (version 2)}
+\author{Frank Mittelbach\\
+with comments and additions by\\
+Chris Rowley}
+\date{10 June 1991}
+
+\addtolength\oddsidemargin{1.5cm}
+\MakeShortVerb\|
+% Defn changed by Chris so he can use it in maths-mode:
+\def\m#1{\mbox{$\langle${\rm\it#1}$\rangle$}}
+
+% layout changes by Chris
+\marginparpush 2pt
+\advance \topmargin -2cm
+
+\def\nonterminal#1>{\m{#1}}
+{\catcode`\<\active
+ \catcode`\|\active
+\gdef\bnf{%
+  \let<\nonterminal
+  \def|{$\vert$\penalty-501 }%
+  \MakeShortVerb{\"}%
+  \catcode`\<\active
+  \catcode`\|\active
+  \small\tt
+  \vskip-\topsep
+  \flushright
+  \tabular{@{}p{.25\linewidth}%
+           @{\,::=3D\,\ }%
+           >{\rightskip0pt plus 2em\relax}p{.65\linewidth}@{}}%
+}}
+\def\endbnf{\endtabular\endflushright}
+
+\def\comment#1{\marginpar{\sl\small\raggedright #1}}
+\def\ccc#1{\comment{{\bf CAR: 91/06/01 } #1}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+ This document describes the syntax for the |\newfont@shape| command
+and gives additional information on its usage with automatically scaled
+fonts. It also contains some discussion of open questions about math
+fonts handling.
+
+Suggestions for a |\normalfont| command form the last section.
+ \end{abstract}
+
+\section{A formal syntax for \protect\\
+         the {\tt\string\newfont@shape} command}
+
+ This section deals with the new syntax for the |\newfont@shape|
+command. It is suitable for integrating specification of fonts scaled
+by the output device such as {\sc PostScript} printer and also allows
+for arbitrary extensions for mapping internal and external fonts. One
+of the aims was to provide a readable interface for the major
+applications, i.e.\ fixed size mapping and scaling within a range,
+without loosing the ability to define mappings that depend on the
+|\time| of the \TeX-run, if somebody cares for something like this.
+
+
+ The general syntax for the command |\newfont@shape| is:
+ \begin{bnf}
+  <shape-spec>    & "\newfont@shape"
+                      "{" <fam-name> "} {" <series-name> "}"
+                      "{" <shape-name> "}"
+                      "{" <font-maps> "} {" <font-prop> "}"
+\end{bnf}
+
+ The first three arguments are used by the |\family|, |\series|, and
+|\shape| commands to access this particular font shape.
+ \begin{bnf}
+  <fam-name>      & <letter-string> \\
+  <series-name>   & <letter-string> \\
+  <shape-name>    & <letter-string> \\
+\end{bnf}
+
+ The \m{font-prop} argument is an extension argument that is currently
+unused. It is supposed to contain code that is executed either every
+time the font is accessed, or when the font is loaded, thereby being an
+extension to the |\extra@def| function that implements such a concept
+for the whole family. This decision still has to be made.
+ \begin{bnf}
+  <font-prop>     & <empty>
+\end{bnf}
+
+ The \m{font-maps} argument describes the mapping from individual sizes
+to external fonts.
+ \begin{bnf}
+  <font-maps>     & <size-maps> <range-maps> <function-maps> \\
+\end{bnf}
+
+ There is the possibility to describe that an \m{external-font}
+is
+ \begin{enumerate}
+ \item
+   tightly bound to a specific size (\m{size-maps})
+ \item
+   is supposed to be scaled if it lies within a specified range of sizes
+   (\m{range-maps})
+ \item
+   is used in a particular way if the current size (|\f@size|) passed a
+   particular  test (\m{function-maps}). Both the test and the use of
+   the \m{external-font} are defined by the function given through
+   \m{function-name}.
+ \end{enumerate}
+ \begin{bnf}
+  <size-maps>     & <empty> | <size-map> <size-maps> \\
+  <size-map>      & \string< <simple-size> > <map-type> <external-font> =
+\\
+  <range-maps>     & <empty> | <range-map> <range-maps> \\
+  <range-map>      & \string< <size-range> > <map-type> <external-font> =
+\\
+  <function-maps>     & <empty> | <function-map> <function-maps> \\
+  <function-map>      & \string< <size-function> > <map-type> =
+<external-font>
+\end{bnf}
+
+ The \m{simple-size} is internally interpreted in units of points ({\tt
+pt}).  For fraction of points a decimal number can be used although the
+syntax doesn't allow to use `{\tt,}' as a decimal point. The use of
+different units of measure could be accomplished by providing a special
+style designer interface that turns the description into the syntax of
+the |\newfont@shape| command. The syntax of this command was kept
+simple to make sure that processing time is reasonably fast. Note, that
+this syntax doesn't allow any longer the use of arbitrary strings as
+\m{simple-size}s.
+
+As a  special rule, the size specifications (\m{simpe-size}) within the
+\m{size-maps} must be given in increasing order to allow for efficient
+implementation of substitution algorithms.
+ \begin{bnf}
+  <simple-size>   & <unsigned-integer> |
+                      <unsigned-integer>.<unsigned-integer>
+\end{bnf}
+
+ The\ccc{I thought we were not allowing just a {\tt *} so that a
+ fontdef designer is forced to think about a sensible range for
+ scaling each `master font' (but it is probably just
+my prejudice).}
+ \m{size-range} is either a single `{\tt*}' standing for an
+arbitrary range or a star followed by a lower and upper boundary
+separated by a minus sign. Both the upper and the lower boundary are
+considered to lie within the range. If overlapping ranges are specified
+the one that comes first within \m{size-ranges} is used. To exclude one
+or both of the boundaries \m{simple-size} specification can be used.
+ \begin{bnf}
+  <size-range>    & "*" | "*" <simple-size> "-" <simple-size> \\
+\end{bnf}
+
+ The \m{function-name} of a \m{size-function} is
+converted\comment{Conversion could be done by adding a prefix.} to some
+\TeX{} function with two arguments that has to be defined. The
+arguments given to this function are the requested size (to perform
+some tests on it) and the \m{font-name} given in the \m{size-spec}.
+ \begin{bnf}
+  <size-function> & "**" <function-name> \\
+  <function-name> & <letter-string> \\
+\end{bnf}
+ Possible variants of the syntax for \m{size-function} could be the use
+of a |\| catcoded to $12$ or a single star in front.
+ \begin{bnf}
+  <size-function> & "\" <function-name> \\
+\end{bnf}
+ The advantage of using the same starting character as in
+\m{size-range} would be that one could interpret the single star in the
+syntax rule for \m{size-range} as a \m{size-function} with an empty
+name.
+ \begin{bnf}
+  <size-function> & "*" <function-name> \\
+  <function-name> & <empty> | <letter-string>
+\end{bnf}
+
+ The \m{map-type} describes the nature of the mapping between internal
+and external font. \comment{Having a more general size specification
+available it should be considered to specify the mapping type in a
+different way. {\bf CAR added:} not sure I see any reason to change.}
+The empty \m{map-type} is equivalent to the
+\m{map-type} `0'. Currently, the following types are defined:
+ \begin{enumerate}
+ \item[0]
+   The mapping is the desired one.
+ \item[1]
+   The mapping uses a substitution font instead of the desired font in
+   the  wanted size.
+ \item[2]
+   The mapping uses a substitution font instead of the desired font in
+   a different size.
+ \end{enumerate}
+ Further types could be added.
+ \begin{bnf}
+  <map-type>      & <empty> | <unsigned-integer>
+\end{bnf}
+
+ The \m{external-font} comes in three variants but the second and third
+one can be used only within a \m{simple-size}. Note, that the
+\m{font-name} cannot start with a \m{digit} to avoid confusion with the
+\m{map-type}.
+ \begin{bnf}
+  <external-font> & <font-name> | <font-name> "at" <dimen> |
+                      <font-name> "scaled" <unsigned-integer> \\
+  <font-name>     & <letter><string>
+\end{bnf}
+
+
+\subsection{Processing}
+
+If a new font has to be loaded (because
+|\|\m{family}|/|\m{series}|/|\m{shape}|/|\m{size} is undefined) then the
+corresponding |\new@fontshape| definition is looked up. Then a suitable
+external font is searched for in the following way:
+ \begin{enumerate}
+ \item
+   A size specification (\m{simple-size}) is searched that exactly match
+the requested \m{size}.
+ \item
+   If this fails, a range specification (\m{range-map}) is searched for
+that contain the requested \m{size}. This search is carried out
+sequentially in the order of the \m{range-map}s given in \m{range-maps}.
+ \item
+ \label{funct}
+   If this fails, all the function specifications (\m{function-map}s) =
+are
+applied sequentially in  the order they appear in \m{function-maps}
+until a font is loaded or no further functions are available.
+ \item
+   If no font was loaded during this process an error occurs.
+ \end{enumerate}
+
+The functions in step \ref{funct} are allowed to do arbitrary
+processing, there is no need to use the \m{external-font} at all. They
+have access to all known facts about the requested font (e.g.\
+\m{family}, etc.) and can therefore even start a scan in other font
+shape definitions, or a re-scan of the current one for that matter. For
+example, a useful function could be a |**substnearby| that re-scans the
+current font shape and chooses the \m{simple-map} that is nearest to the
+requested \m{size}.
+
+
+
+\section{Math fonts at arbitrary sizes}
+
+If some arbitrary size is selected via the |\size| command, different
+strategies for handling corresponding math font sizes could be used:
+ \begin{enumerate}
+ \item
+   One can interactively ask the user to supply a set of math sizes if =
+he
+   hasn't suppressed math font settings before selecting the size.
+   \begin{itemize}
+   \item
+     A command to declare math fonts suppression needs to be defined at
+     user level. At the moment there exist only two possibilities at
+     the style designer level.
+   \item
+     The interactive setting should allow the possibilities for 1) no
+     math fonts and 2) a substitution setting, e.g.\ ``use 12pt math
+     fonts for size 12.7pt''.
+   \item
+     One should also perhaps make the |\define@mathsizes| and
+     |\define@nomathsize| available at user level for this purpose.
+     Also a combination with the next variant should be considered.
+   \end{itemize}
+ \item
+   Extend the syntax of |\define@mathsizes| to allow the specification
+   of ranges (similar to \m{size-range}) together with computing =
+functions
+   in the second and third argument.
+   \begin{itemize}
+   \item
+     This means that math size handling has to be redefined using an =
+internal
+     list structure. Since the computation has to be redone every time =
+the
+     size is selected (in contrast to the font loading mechanism) the
+     processing time is critical. Computed math font sizes should =
+therefore
+     be integrated at the beginning of the list to avoid recomputation.
+   \item
+     If the requested size lies outside of all ranges the ``no math =
+fonts''
+     switch should be turned on for this particular size.
+   \end{itemize}
+ \item
+   One could allow only a fixed set of sizes to be used within math,
+   i.e.\ the ones defined by |\define@mathsizes| and extend the NFSS to
+   disable math fonts for all other sizes.
+   \begin{itemize}
+   \item
+     This is probably the easiest way since only a test for =
+|\S@|\m{size}
+     has to be added into one function of the NFSS.
+   \end{itemize}
+ \end{enumerate}
+ In any case we need to define whether or not (and how) the NFSS
+handles the use of math within a nomath size. At the moment subscript
+etc.\ simply come out in the wrong size which is not very user
+friendly. However, we can not simply forbid math within such a size
+since a lot of internal functions make use of some math features (like
+|\vcenter|) which are independent of the font in use (what Chris call
+`hidden maths', below).
+
+\subsubsection{Chris' comments on this section}
+One thing that needs to be sorted out before any decision can be taken
+on the above is the issue of `hidden maths'.  In {\tt plain} and,
+even more so, in current \LaTeX{} there are a lot of implicit uses of =
+maths.
+Examples are:
+
+\begin{itemize}
+\item things produced with |\mathhexbox| and eg |$\bullet$|:
+here it is easy to remove the `hidden maths';
+\item various fills and |\ldots|: these may need a little thought but
+can be removed;
+\item |\underline{}|, |\underbar{}|:
+only the former is documented in \LaTeX{} and it is only here that it
+becomes an example of `hidden maths'; these two do not
+actually typeset anything in maths mode  (they thus are similar to the =
+uses of
+|\vcenter|) but use |\fontdimen8| for the size of
+rule and space around it (so perhaps the effect could be emulated by
+directly building up such a box);
+\item the major problem is the impossibility of preventing
+user/designer created macros from using hidden maths (eg I have
+written lots of such macros!);
+this may even be undesirable as it is the only sensible way to
+produce such things as raised footnote marks.
+\end{itemize}
+
+Only if hidden-maths (a concept introduced and classified as a
+deficiency of \TeX{} by SPQR) were outlawed, would it make sense to
+have `nomathsizes': sizes in which any attempt to use maths produces
+an error.
+
+I think that it would then be sensible for any size to be a
+`nomathsize' unless it is listed as the first parameter of a
+`definemathsizes' command.
+
+At present we have no maths-typesetting system using scalable fonts
+(despite my heavy lobbying to persuade someone to pay Richard Southall
+to help provide one), therefore I can see no point in providing
+`calculated math sizes' unless they are essential on account of the
+`hidden-maths' problem described above.
+
+[Which raises the question: what happens to the |\fontdimen|s when the
+info from a {\tt TFM} file is scaled?---answer is on p433: and I
+suspect it will give undesirable results thus perhaps there never
+should be a (linearly-)scalable maths-typesetting system.]
+
+If `calculated math sizes' are essential, then the calculation should
+be done only if there is not already an entry in the `math-sizes
+table' (the table created by the `definemathsizes' commands). Also,
+whenever such a calculation is done, a new entry should be
+created in the `math-sizes table' to store the answers so that they
+need not be recalculated.
+
+
+\section{Reconsidering the `default' font concepts}
+
+\comment{%to be written
+(Some suggestions by Chris!)}
+
+The major aim of these suggestions is to introduce the idea that each
+document (or, better, class of documents) has a `normal font': this is,
+inter alia, what the current font should be set to at the beginning of
+the document and anywhere that the visual context is not to be
+inherited from the surrounding logical entity (typically in floats,
+footnotes, marginals, table of contents, etc). Of course, each class of
+documents should specify the font to be used in specific entities, such
+as footnotes, but it should not be necessary to do this explicitly if
+this normal font is intended.
+
+I therefore suggest providing the following groups of user/designer
+commands.
+\begin{description}
+\item [Minor changes plus additions to the current commands.]\mbox{}
+
+|\normal|\m{param}\quad expands to\quad
+|\normal|\m{param}|default \selectfont|
+\comment{This provides a synonym for the current
+`mediumseriesdefault}
+
+where $\m{param} \ \,::=3D\,\ ${\tt family $\vert$ series $\vert$ shape}
+
+but
+
+|\normalfont|\quad expands to\\\mbox{\qquad}
+|\normalfamilydefault \normalseriesdefault|\\\mbox{\qquad}
+|\normalshapedefault \selectfont|
+\comment{I am not very happy about the syntax for `setnormalfont:
+is just three
+parameters OK?  Any other suggestions?\\
+Also, the names `set\ldots\ may
+not be the best but I think that these are a new type of command at
+the user level so we have a certain amount of freedom in choosing the
+name---and `set\ldots\ commands are present in \LaTeX.}
+
+\item [Extra user/designer commands.] (For the preamble only,
+probably.)
+
+|\setdefault{|\m{param}|}{|\m{value}|}|\quad expands to\quad
+|\def \normal|\m{param}|default {|\m{value}|}|
+
+|\setnormalfont{|\m{family}|}{|\m{series}|}{|\m{shape}|}|\quad
+makes each of its three
+parameters the replacement texts of the corresponding
+|\normal|\m{param}|default| command and hence defines the font which
+is called up by |\normalfont|.
+\end{description}
+
+For my purposes it seemed best to make this `normal font' not include
+\comment{An alternative is to extend the above ideas to
+`normalsizedefault.}
+a specific size, but it could do so by including a call to
+|\normalsize|.
+A pragmatic reason for not including size is in this way is
+to avoid sequences such
+as |\normalfont\small| making two size-changes.\footnote{Recall that,
+in general, size-changes involve changes to all math font
+assignments.}
+
+Note that these |\normal...| commands are completely independent of
+the |\default@|\ldots\
+commands.  My reason for making this a clear distinction is that
+that these latter are clearly intended to be
+set once in a fontdef file to provide fall-backs when the requested
+font is not available. They should therefore be kept under the control
+of whoever provides that fontdef file (since she/he can then ensure
+that they are fonts which exist externally) and should not be =
+subsequently
+changeable.  For this reason, perhaps their names should be far more
+bizarre and
+this unchangeability enforced somehow.
+
+\end{document}
+
+
+------_=_NextPart_001_01C19443.445C2724
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     This is what I meant to send to the list</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>\documentstyle[a4,array,newdoc]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{Scaled font loading within the NFSS\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and some other =
+upgrades (version 2)}</FONT>
+
+<BR><FONT SIZE=3D2>\author{Frank Mittelbach\\</FONT>
+
+<BR><FONT SIZE=3D2>with comments and additions by\\</FONT>
+
+<BR><FONT SIZE=3D2>Chris Rowley}</FONT>
+
+<BR><FONT SIZE=3D2>\date{10 June 1991}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\addtolength\oddsidemargin{1.5cm}</FONT>
+
+<BR><FONT SIZE=3D2>\MakeShortVerb\|</FONT>
+
+<BR><FONT SIZE=3D2>% Defn changed by Chris so he can use it in =
+maths-mode:</FONT>
+
+<BR><FONT SIZE=3D2>\def\m#1{\mbox{$\langle${\rm\it#1}$\rangle$}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% layout changes by Chris</FONT>
+
+<BR><FONT SIZE=3D2>\marginparpush 2pt</FONT>
+
+<BR><FONT SIZE=3D2>\advance \topmargin -2cm</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\nonterminal#1&gt;{\m{#1}}</FONT>
+
+<BR><FONT SIZE=3D2>{\catcode`\&lt;\active</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\catcode`\|\active</FONT>
+
+<BR><FONT SIZE=3D2>\gdef\bnf{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \let&lt;\nonterminal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def|{$\vert$\penalty-501 }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \MakeShortVerb{\&quot;}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \catcode`\&lt;\active</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \catcode`\|\active</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \small\tt</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \vskip-\topsep</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \flushright</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \tabular{@{}p{.25\linewidth}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+@{\,::=3D\,\ }%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&gt;{\rightskip0pt plus 2em\relax}p{.65\linewidth}@{}}%</FONT>
+
+<BR><FONT SIZE=3D2>}}</FONT>
+
+<BR><FONT SIZE=3D2>\def\endbnf{\endtabular\endflushright}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\comment#1{\marginpar{\sl\small\raggedright =
+#1}}</FONT>
+
+<BR><FONT SIZE=3D2>\def\ccc#1{\comment{{\bf CAR: 91/06/01 } #1}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{abstract}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;This document describes the syntax for the =
+|\newfont@shape| command</FONT>
+
+<BR><FONT SIZE=3D2>and gives additional information on its usage with =
+automatically scaled</FONT>
+
+<BR><FONT SIZE=3D2>fonts. It also contains some discussion of open =
+questions about math</FONT>
+
+<BR><FONT SIZE=3D2>fonts handling.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Suggestions for a |\normalfont| command form the last =
+section.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{abstract}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{A formal syntax for \protect\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the =
+{\tt\string\newfont@shape} command}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;This section deals with the new syntax for the =
+|\newfont@shape|</FONT>
+
+<BR><FONT SIZE=3D2>command. It is suitable for integrating specification =
+of fonts scaled</FONT>
+
+<BR><FONT SIZE=3D2>by the output device such as {\sc PostScript} printer =
+and also allows</FONT>
+
+<BR><FONT SIZE=3D2>for arbitrary extensions for mapping internal and =
+external fonts. One</FONT>
+
+<BR><FONT SIZE=3D2>of the aims was to provide a readable interface for =
+the major</FONT>
+
+<BR><FONT SIZE=3D2>applications, i.e.\ fixed size mapping and scaling =
+within a range,</FONT>
+
+<BR><FONT SIZE=3D2>without loosing the ability to define mappings that =
+depend on the</FONT>
+
+<BR><FONT SIZE=3D2>|\time| of the \TeX-run, if somebody cares for =
+something like this.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&nbsp;The general syntax for the command =
+|\newfont@shape| is:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;shape-spec&gt;&nbsp;&nbsp;&nbsp; &amp; =
+&quot;\newfont@shape&quot;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;{&quot; &lt;fam-name&gt; &quot;} {&quot; &lt;series-name&gt; =
+&quot;}&quot;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;{&quot; &lt;shape-name&gt; &quot;}&quot;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;{&quot; &lt;font-maps&gt; &quot;} {&quot; &lt;font-prop&gt; =
+&quot;}&quot;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The first three arguments are used by the =
+|\family|, |\series|, and</FONT>
+
+<BR><FONT SIZE=3D2>|\shape| commands to access this particular font =
+shape.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;fam-name&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;letter-string&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;series-name&gt;&nbsp;&nbsp; &amp; =
+&lt;letter-string&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;shape-name&gt;&nbsp;&nbsp;&nbsp; &amp; =
+&lt;letter-string&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{font-prop} argument is an extension =
+argument that is currently</FONT>
+
+<BR><FONT SIZE=3D2>unused. It is supposed to contain code that is =
+executed either every</FONT>
+
+<BR><FONT SIZE=3D2>time the font is accessed, or when the font is =
+loaded, thereby being an</FONT>
+
+<BR><FONT SIZE=3D2>extension to the |\extra@def| function that =
+implements such a concept</FONT>
+
+<BR><FONT SIZE=3D2>for the whole family. This decision still has to be =
+made.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;font-prop&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;empty&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{font-maps} argument describes the mapping =
+from individual sizes</FONT>
+
+<BR><FONT SIZE=3D2>to external fonts.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;font-maps&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;size-maps&gt; &lt;range-maps&gt; &lt;function-maps&gt; =
+\\</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;There is the possibility to describe that an =
+\m{external-font}</FONT>
+
+<BR><FONT SIZE=3D2>is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; tightly bound to a specific size =
+(\m{size-maps})</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; is supposed to be scaled if it lies =
+within a specified range of sizes</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (\m{range-maps})</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; is used in a particular way if the =
+current size (|\f@size|) passed a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; particular&nbsp; test =
+(\m{function-maps}). Both the test and the use of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; the \m{external-font} are defined by the =
+function given through</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \m{function-name}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-maps&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;empty&gt; | &lt;size-map&gt; &lt;size-maps&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-map&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; \string&lt; &lt;simple-size&gt; &gt; &lt;map-type&gt; =
+&lt;external-font&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;range-maps&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;empty&gt; | &lt;range-map&gt; &lt;range-maps&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+&lt;range-map&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; \string&lt; =
+&lt;size-range&gt; &gt; &lt;map-type&gt; &lt;external-font&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;function-maps&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;empty&gt; | &lt;function-map&gt; &lt;function-maps&gt; =
+\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+&lt;function-map&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; \string&lt; =
+&lt;size-function&gt; &gt; &lt;map-type&gt; &lt;external-font&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{simple-size} is internally interpreted in =
+units of points ({\tt</FONT>
+
+<BR><FONT SIZE=3D2>pt}).&nbsp; For fraction of points a decimal number =
+can be used although the</FONT>
+
+<BR><FONT SIZE=3D2>syntax doesn't allow to use `{\tt,}' as a decimal =
+point. The use of</FONT>
+
+<BR><FONT SIZE=3D2>different units of measure could be accomplished by =
+providing a special</FONT>
+
+<BR><FONT SIZE=3D2>style designer interface that turns the description =
+into the syntax of</FONT>
+
+<BR><FONT SIZE=3D2>the |\newfont@shape| command. The syntax of this =
+command was kept</FONT>
+
+<BR><FONT SIZE=3D2>simple to make sure that processing time is =
+reasonably fast. Note, that</FONT>
+
+<BR><FONT SIZE=3D2>this syntax doesn't allow any longer the use of =
+arbitrary strings as</FONT>
+
+<BR><FONT SIZE=3D2>\m{simple-size}s.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As a&nbsp; special rule, the size specifications =
+(\m{simpe-size}) within the</FONT>
+
+<BR><FONT SIZE=3D2>\m{size-maps} must be given in increasing order to =
+allow for efficient</FONT>
+
+<BR><FONT SIZE=3D2>implementation of substitution algorithms.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;simple-size&gt;&nbsp;&nbsp; &amp; =
+&lt;unsigned-integer&gt; |</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;unsigned-integer&gt;.&lt;unsigned-integer&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The\ccc{I thought we were not allowing just a =
+{\tt *} so that a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;fontdef designer is forced to think about a =
+sensible range for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;scaling each `master font' (but it is probably =
+just</FONT>
+
+<BR><FONT SIZE=3D2>my prejudice).}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\m{size-range} is either a single `{\tt*}' =
+standing for an</FONT>
+
+<BR><FONT SIZE=3D2>arbitrary range or a star followed by a lower and =
+upper boundary</FONT>
+
+<BR><FONT SIZE=3D2>separated by a minus sign. Both the upper and the =
+lower boundary are</FONT>
+
+<BR><FONT SIZE=3D2>considered to lie within the range. If overlapping =
+ranges are specified</FONT>
+
+<BR><FONT SIZE=3D2>the one that comes first within \m{size-ranges} is =
+used. To exclude one</FONT>
+
+<BR><FONT SIZE=3D2>or both of the boundaries \m{simple-size} =
+specification can be used.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-range&gt;&nbsp;&nbsp;&nbsp; &amp; =
+&quot;*&quot; | &quot;*&quot; &lt;simple-size&gt; &quot;-&quot; =
+&lt;simple-size&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{function-name} of a \m{size-function} =
+is</FONT>
+
+<BR><FONT SIZE=3D2>converted\comment{Conversion could be done by adding =
+a prefix.} to some</FONT>
+
+<BR><FONT SIZE=3D2>\TeX{} function with two arguments that has to be =
+defined. The</FONT>
+
+<BR><FONT SIZE=3D2>arguments given to this function are the requested =
+size (to perform</FONT>
+
+<BR><FONT SIZE=3D2>some tests on it) and the \m{font-name} given in the =
+\m{size-spec}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-function&gt; &amp; &quot;**&quot; =
+&lt;function-name&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;function-name&gt; &amp; =
+&lt;letter-string&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Possible variants of the syntax for =
+\m{size-function} could be the use</FONT>
+
+<BR><FONT SIZE=3D2>of a |\| catcoded to $12$ or a single star in =
+front.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-function&gt; &amp; &quot;\&quot; =
+&lt;function-name&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;The advantage of using the same starting =
+character as in</FONT>
+
+<BR><FONT SIZE=3D2>\m{size-range} would be that one could interpret the =
+single star in the</FONT>
+
+<BR><FONT SIZE=3D2>syntax rule for \m{size-range} as a \m{size-function} =
+with an empty</FONT>
+
+<BR><FONT SIZE=3D2>name.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;size-function&gt; &amp; &quot;*&quot; =
+&lt;function-name&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;function-name&gt; &amp; &lt;empty&gt; | =
+&lt;letter-string&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{map-type} describes the nature of the =
+mapping between internal</FONT>
+
+<BR><FONT SIZE=3D2>and external font. \comment{Having a more general =
+size specification</FONT>
+
+<BR><FONT SIZE=3D2>available it should be considered to specify the =
+mapping type in a</FONT>
+
+<BR><FONT SIZE=3D2>different way. {\bf CAR added:} not sure I see any =
+reason to change.}</FONT>
+
+<BR><FONT SIZE=3D2>The empty \m{map-type} is equivalent to the</FONT>
+
+<BR><FONT SIZE=3D2>\m{map-type} `0'. Currently, the following types are =
+defined:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item[0]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; The mapping is the desired one.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item[1]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; The mapping uses a substitution font =
+instead of the desired font in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; the&nbsp; wanted size.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item[2]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; The mapping uses a substitution font =
+instead of the desired font in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; a different size.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Further types could be added.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;map-type&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;empty&gt; | &lt;unsigned-integer&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;The \m{external-font} comes in three variants =
+but the second and third</FONT>
+
+<BR><FONT SIZE=3D2>one can be used only within a \m{simple-size}. Note, =
+that the</FONT>
+
+<BR><FONT SIZE=3D2>\m{font-name} cannot start with a \m{digit} to avoid =
+confusion with the</FONT>
+
+<BR><FONT SIZE=3D2>\m{map-type}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{bnf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;external-font&gt; &amp; &lt;font-name&gt; =
+| &lt;font-name&gt; &quot;at&quot; &lt;dimen&gt; |</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;font-name&gt; &quot;scaled&quot; &lt;unsigned-integer&gt; \\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;font-name&gt;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp; &lt;letter&gt;&lt;string&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{bnf}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\subsection{Processing}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If a new font has to be loaded (because</FONT>
+
+<BR><FONT SIZE=3D2>|\|\m{family}|/|\m{series}|/|\m{shape}|/|\m{size} is =
+undefined) then the</FONT>
+
+<BR><FONT SIZE=3D2>corresponding |\new@fontshape| definition is looked =
+up. Then a suitable</FONT>
+
+<BR><FONT SIZE=3D2>external font is searched for in the following =
+way:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; A size specification (\m{simple-size}) =
+is searched that exactly match</FONT>
+
+<BR><FONT SIZE=3D2>the requested \m{size}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; If this fails, a range specification =
+(\m{range-map}) is searched for</FONT>
+
+<BR><FONT SIZE=3D2>that contain the requested \m{size}. This search is =
+carried out</FONT>
+
+<BR><FONT SIZE=3D2>sequentially in the order of the \m{range-map}s given =
+in \m{range-maps}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\label{funct}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; If this fails, all the function =
+specifications (\m{function-map}s) are</FONT>
+
+<BR><FONT SIZE=3D2>applied sequentially in&nbsp; the order they appear =
+in \m{function-maps}</FONT>
+
+<BR><FONT SIZE=3D2>until a font is loaded or no further functions are =
+available.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; If no font was loaded during this =
+process an error occurs.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The functions in step \ref{funct} are allowed to do =
+arbitrary</FONT>
+
+<BR><FONT SIZE=3D2>processing, there is no need to use the =
+\m{external-font} at all. They</FONT>
+
+<BR><FONT SIZE=3D2>have access to all known facts about the requested =
+font (e.g.\</FONT>
+
+<BR><FONT SIZE=3D2>\m{family}, etc.) and can therefore even start a scan =
+in other font</FONT>
+
+<BR><FONT SIZE=3D2>shape definitions, or a re-scan of the current one =
+for that matter. For</FONT>
+
+<BR><FONT SIZE=3D2>example, a useful function could be a |**substnearby| =
+that re-scans the</FONT>
+
+<BR><FONT SIZE=3D2>current font shape and chooses the \m{simple-map} =
+that is nearest to the</FONT>
+
+<BR><FONT SIZE=3D2>requested \m{size}.</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\section{Math fonts at arbitrary sizes}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If some arbitrary size is selected via the |\size| =
+command, different</FONT>
+
+<BR><FONT SIZE=3D2>strategies for handling corresponding math font sizes =
+could be used:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; One can interactively ask the user to =
+supply a set of math sizes if he</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; hasn't suppressed math font settings =
+before selecting the size.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; A command to declare math =
+fonts suppression needs to be defined at</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; user level. At the moment =
+there exist only two possibilities at</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the style designer =
+level.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; The interactive setting =
+should allow the possibilities for 1) no</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; math fonts and 2) a =
+substitution setting, e.g.\ ``use 12pt math</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; fonts for size =
+12.7pt''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; One should also perhaps make =
+the |\define@mathsizes| and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; |\define@nomathsize| =
+available at user level for this purpose.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Also a combination with the =
+next variant should be considered.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; Extend the syntax of |\define@mathsizes| =
+to allow the specification</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; of ranges (similar to \m{size-range}) =
+together with computing functions</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; in the second and third argument.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; This means that math size =
+handling has to be redefined using an internal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; list structure. Since the =
+computation has to be redone every time the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; size is selected (in =
+contrast to the font loading mechanism) the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; processing time is critical. =
+Computed math font sizes should therefore</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; be integrated at the =
+beginning of the list to avoid recomputation.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; If the requested size lies =
+outside of all ranges the ``no math fonts''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; switch should be turned on =
+for this particular size.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; One could allow only a fixed set of =
+sizes to be used within math,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; i.e.\ the ones defined by =
+|\define@mathsizes| and extend the NFSS to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; disable math fonts for all other =
+sizes.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; This is probably the easiest =
+way since only a test for |\S@|\m{size}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; has to be added into one =
+function of the NFSS.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;In any case we need to define whether or not =
+(and how) the NFSS</FONT>
+
+<BR><FONT SIZE=3D2>handles the use of math within a nomath size. At the =
+moment subscript</FONT>
+
+<BR><FONT SIZE=3D2>etc.\ simply come out in the wrong size which is not =
+very user</FONT>
+
+<BR><FONT SIZE=3D2>friendly. However, we can not simply forbid math =
+within such a size</FONT>
+
+<BR><FONT SIZE=3D2>since a lot of internal functions make use of some =
+math features (like</FONT>
+
+<BR><FONT SIZE=3D2>|\vcenter|) which are independent of the font in use =
+(what Chris call</FONT>
+
+<BR><FONT SIZE=3D2>`hidden maths', below).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection{Chris' comments on this section}</FONT>
+
+<BR><FONT SIZE=3D2>One thing that needs to be sorted out before any =
+decision can be taken</FONT>
+
+<BR><FONT SIZE=3D2>on the above is the issue of `hidden maths'.&nbsp; In =
+{\tt plain} and,</FONT>
+
+<BR><FONT SIZE=3D2>even more so, in current \LaTeX{} there are a lot of =
+implicit uses of maths.</FONT>
+
+<BR><FONT SIZE=3D2>Examples are:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item things produced with |\mathhexbox| and eg =
+|$\bullet$|:</FONT>
+
+<BR><FONT SIZE=3D2>here it is easy to remove the `hidden maths';</FONT>
+
+<BR><FONT SIZE=3D2>\item various fills and |\ldots|: these may need a =
+little thought but</FONT>
+
+<BR><FONT SIZE=3D2>can be removed;</FONT>
+
+<BR><FONT SIZE=3D2>\item |\underline{}|, |\underbar{}|:</FONT>
+
+<BR><FONT SIZE=3D2>only the former is documented in \LaTeX{} and it is =
+only here that it</FONT>
+
+<BR><FONT SIZE=3D2>becomes an example of `hidden maths'; these two do =
+not</FONT>
+
+<BR><FONT SIZE=3D2>actually typeset anything in maths mode&nbsp; (they =
+thus are similar to the uses of</FONT>
+
+<BR><FONT SIZE=3D2>|\vcenter|) but use |\fontdimen8| for the size =
+of</FONT>
+
+<BR><FONT SIZE=3D2>rule and space around it (so perhaps the effect could =
+be emulated by</FONT>
+
+<BR><FONT SIZE=3D2>directly building up such a box);</FONT>
+
+<BR><FONT SIZE=3D2>\item the major problem is the impossibility of =
+preventing</FONT>
+
+<BR><FONT SIZE=3D2>user/designer created macros from using hidden maths =
+(eg I have</FONT>
+
+<BR><FONT SIZE=3D2>written lots of such macros!);</FONT>
+
+<BR><FONT SIZE=3D2>this may even be undesirable as it is the only =
+sensible way to</FONT>
+
+<BR><FONT SIZE=3D2>produce such things as raised footnote marks.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Only if hidden-maths (a concept introduced and =
+classified as a</FONT>
+
+<BR><FONT SIZE=3D2>deficiency of \TeX{} by SPQR) were outlawed, would it =
+make sense to</FONT>
+
+<BR><FONT SIZE=3D2>have `nomathsizes': sizes in which any attempt to use =
+maths produces</FONT>
+
+<BR><FONT SIZE=3D2>an error.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that it would then be sensible for any size to =
+be a</FONT>
+
+<BR><FONT SIZE=3D2>`nomathsize' unless it is listed as the first =
+parameter of a</FONT>
+
+<BR><FONT SIZE=3D2>`definemathsizes' command.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At present we have no maths-typesetting system using =
+scalable fonts</FONT>
+
+<BR><FONT SIZE=3D2>(despite my heavy lobbying to persuade someone to pay =
+Richard Southall</FONT>
+
+<BR><FONT SIZE=3D2>to help provide one), therefore I can see no point in =
+providing</FONT>
+
+<BR><FONT SIZE=3D2>`calculated math sizes' unless they are essential on =
+account of the</FONT>
+
+<BR><FONT SIZE=3D2>`hidden-maths' problem described above.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[Which raises the question: what happens to the =
+|\fontdimen|s when the</FONT>
+
+<BR><FONT SIZE=3D2>info from a {\tt TFM} file is scaled?---answer is on =
+p433: and I</FONT>
+
+<BR><FONT SIZE=3D2>suspect it will give undesirable results thus perhaps =
+there never</FONT>
+
+<BR><FONT SIZE=3D2>should be a (linearly-)scalable maths-typesetting =
+system.]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If `calculated math sizes' are essential, then the =
+calculation should</FONT>
+
+<BR><FONT SIZE=3D2>be done only if there is not already an entry in the =
+`math-sizes</FONT>
+
+<BR><FONT SIZE=3D2>table' (the table created by the `definemathsizes' =
+commands). Also,</FONT>
+
+<BR><FONT SIZE=3D2>whenever such a calculation is done, a new entry =
+should be</FONT>
+
+<BR><FONT SIZE=3D2>created in the `math-sizes table' to store the =
+answers so that they</FONT>
+
+<BR><FONT SIZE=3D2>need not be recalculated.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\section{Reconsidering the `default' font =
+concepts}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\comment{%to be written</FONT>
+
+<BR><FONT SIZE=3D2>(Some suggestions by Chris!)}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The major aim of these suggestions is to introduce the =
+idea that each</FONT>
+
+<BR><FONT SIZE=3D2>document (or, better, class of documents) has a =
+`normal font': this is,</FONT>
+
+<BR><FONT SIZE=3D2>inter alia, what the current font should be set to at =
+the beginning of</FONT>
+
+<BR><FONT SIZE=3D2>the document and anywhere that the visual context is =
+not to be</FONT>
+
+<BR><FONT SIZE=3D2>inherited from the surrounding logical entity =
+(typically in floats,</FONT>
+
+<BR><FONT SIZE=3D2>footnotes, marginals, table of contents, etc). Of =
+course, each class of</FONT>
+
+<BR><FONT SIZE=3D2>documents should specify the font to be used in =
+specific entities, such</FONT>
+
+<BR><FONT SIZE=3D2>as footnotes, but it should not be necessary to do =
+this explicitly if</FONT>
+
+<BR><FONT SIZE=3D2>this normal font is intended.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I therefore suggest providing the following groups of =
+user/designer</FONT>
+
+<BR><FONT SIZE=3D2>commands.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item [Minor changes plus additions to the current =
+commands.]\mbox{}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|\normal|\m{param}\quad expands to\quad</FONT>
+
+<BR><FONT SIZE=3D2>|\normal|\m{param}|default \selectfont|</FONT>
+
+<BR><FONT SIZE=3D2>\comment{This provides a synonym for the =
+current</FONT>
+
+<BR><FONT SIZE=3D2>`mediumseriesdefault}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>where $\m{param} \ \,::=3D\,\ ${\tt family $\vert$ =
+series $\vert$ shape}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>but</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|\normalfont|\quad expands to\\\mbox{\qquad}</FONT>
+
+<BR><FONT SIZE=3D2>|\normalfamilydefault =
+\normalseriesdefault|\\\mbox{\qquad}</FONT>
+
+<BR><FONT SIZE=3D2>|\normalshapedefault \selectfont|</FONT>
+
+<BR><FONT SIZE=3D2>\comment{I am not very happy about the syntax for =
+`setnormalfont:</FONT>
+
+<BR><FONT SIZE=3D2>is just three</FONT>
+
+<BR><FONT SIZE=3D2>parameters OK?&nbsp; Any other suggestions?\\</FONT>
+
+<BR><FONT SIZE=3D2>Also, the names `set\ldots\ may</FONT>
+
+<BR><FONT SIZE=3D2>not be the best but I think that these are a new type =
+of command at</FONT>
+
+<BR><FONT SIZE=3D2>the user level so we have a certain amount of freedom =
+in choosing the</FONT>
+
+<BR><FONT SIZE=3D2>name---and `set\ldots\ commands are present in =
+\LaTeX.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\item [Extra user/designer commands.] (For the =
+preamble only,</FONT>
+
+<BR><FONT SIZE=3D2>probably.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|\setdefault{|\m{param}|}{|\m{value}|}|\quad expands =
+to\quad</FONT>
+
+<BR><FONT SIZE=3D2>|\def \normal|\m{param}|default {|\m{value}|}|</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>|\setnormalfont{|\m{family}|}{|\m{series}|}{|\m{shape}|}|\quad</=
+FONT>
+
+<BR><FONT SIZE=3D2>makes each of its three</FONT>
+
+<BR><FONT SIZE=3D2>parameters the replacement texts of the =
+corresponding</FONT>
+
+<BR><FONT SIZE=3D2>|\normal|\m{param}|default| command and hence defines =
+the font which</FONT>
+
+<BR><FONT SIZE=3D2>is called up by |\normalfont|.</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For my purposes it seemed best to make this `normal =
+font' not include</FONT>
+
+<BR><FONT SIZE=3D2>\comment{An alternative is to extend the above ideas =
+to</FONT>
+
+<BR><FONT SIZE=3D2>`normalsizedefault.}</FONT>
+
+<BR><FONT SIZE=3D2>a specific size, but it could do so by including a =
+call to</FONT>
+
+<BR><FONT SIZE=3D2>|\normalsize|.</FONT>
+
+<BR><FONT SIZE=3D2>A pragmatic reason for not including size is in this =
+way is</FONT>
+
+<BR><FONT SIZE=3D2>to avoid sequences such</FONT>
+
+<BR><FONT SIZE=3D2>as |\normalfont\small| making two =
+size-changes.\footnote{Recall that,</FONT>
+
+<BR><FONT SIZE=3D2>in general, size-changes involve changes to all math =
+font</FONT>
+
+<BR><FONT SIZE=3D2>assignments.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Note that these |\normal...| commands are completely =
+independent of</FONT>
+
+<BR><FONT SIZE=3D2>the |\default@|\ldots\</FONT>
+
+<BR><FONT SIZE=3D2>commands.&nbsp; My reason for making this a clear =
+distinction is that</FONT>
+
+<BR><FONT SIZE=3D2>that these latter are clearly intended to be</FONT>
+
+<BR><FONT SIZE=3D2>set once in a fontdef file to provide fall-backs when =
+the requested</FONT>
+
+<BR><FONT SIZE=3D2>font is not available. They should therefore be kept =
+under the control</FONT>
+
+<BR><FONT SIZE=3D2>of whoever provides that fontdef file (since she/he =
+can then ensure</FONT>
+
+<BR><FONT SIZE=3D2>that they are fonts which exist externally) and =
+should not be subsequently</FONT>
+
+<BR><FONT SIZE=3D2>changeable.&nbsp; For this reason, perhaps their =
+names should be far more</FONT>
+
+<BR><FONT SIZE=3D2>bizarre and</FONT>
+
+<BR><FONT SIZE=3D2>this unchangeability enforced somehow.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.445C2724--
+

@@ -1,0 +1,132 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3233" "Sun" "31" "October" "1999" "14:29:20" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "84" "Re: footnote templates (was Experimental `template' interface               code)" "^Date:" nil nil "10" nil "footnote templates (was Experimental `template' interface               code)" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA32172
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 21:10:59 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.F2EC1B83@mail.listserv.gmd.de>; Sun, 31 Oct 1999 21:11:23 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445085 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 22:11:20 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id VAA09975
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 21:11:12 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin403.zdv.Uni-Mainz.DE
+          [134.93.175.103]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          VAA26293 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999
+          21:10:42 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          OAA00567; Sun, 31 Oct 1999 14:29:20 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <l03130300b42ca80fac07@[130.239.20.144]>
+            <l03130300b423b9fbbac9@[130.239.20.144]>
+            <199910041250.NAA27424@mimosa.csv.warwick.ac.uk>
+            <199910011238.OAA00640@istrati.zdv.uni-mainz.de>
+            <199910070958.LAA00712@istrati.zdv.uni-mainz.de>
+            <199910081840.UAA01185@istrati.zdv.uni-mainz.de>
+            <199910252203.AAA00837@istrati.zdv.uni-mainz.de>
+            <l03130301b43b845de16b@[130.239.20.144]>
+Message-ID:  <199910311329.OAA00567@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <l03130301b43b845de16b@[130.239.20.144]>
+Date:         Sun, 31 Oct 1999 14:29:20 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: footnote templates (was Experimental `template' interface
+              code)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3372
+
+Lars,
+
+ > A technical case where I later realized it might be needed is that of
+ > footnotes saved for later typesetting by the template. In that case the
+ > number has already been assigned.
+
+true. this together with the fact that a template for LaTeX footnotes should
+probably (at least if wanted) support features already in 2e, suggests that
+one argument to the template should in fact be a supplied number for the
+footnote.
+
+ > >- more something to solve a technical problem (because it is rather difficult
+ > >  in TeX): have one argument that is a boolean and states that the current
+ > >  footnote is one in a row of footnotes which belong together
+ > >  example:
+ > >
+ > >  text text\footnote{first}\footnote{second}
+ > >
+ > >in most case this would be supposed to come out as
+ > >
+ > >            1, 2
+ > >  text text
+ > >
+ > >and not as
+ > >
+ > >            12
+ > >  text text
+ > >
+ > >as it would in current LaTeX.
+ >
+ > This is an interesting one! It touches another difficulty regarding link
+ > footnotes, namely that there may be punctuation which should be placed
+ > between the text made a link and the footnote number. Anyway, I think the
+ > boolean Frank suggests here should definately be an argument of footnote
+ > templates.
+
+okay, i've convinced myself too that this boolean would be useful whether or
+not it is passed onto the user syntax level (instead one could think, for
+example, of extending xparse to be able to check for a certain command
+following and if so setting such a boolean)
+
+so for me the current working definition of the template types related to
+footnotes would look like this:
+
+  Type: notemark
+
+  Args: boolean         true if followed by another notemark
+        integer/NoValue value to produce the mark, if NoValue internally
+                        generate the number by incrementing a counter whose
+                        name is supplied by the template
+
+  Type: notetext
+
+  Args: integer/NoValue value to produce the mark in front of the note text;
+                        if NoValue use the current value of a counter provided
+                        by the template
+        text            text of the note
+
+
+Current LaTeX2e definitions would then become
+
+\DeclareUserCommand \footnotemark { o }
+  { \UseInstance {notemark}{footnote} \BooleanFalse {#1} }
+\DeclareUserCommand \footnotetext { o m }
+  { \UseInstance {notetext}{footnote} {#1} {#2} }
+\DeclareUserCommand \footnote { o m }
+  { \UseInstance {notemark}{footnote} \BooleanFalse {#1}
+    \UseInstance {notetext}{footnote} {#1} {#2} }
+
+and extended versions could make use of the boolean which is above always set
+to false.
+
+this does not take into account the thoughts on specifying textual areas for
+links if the document is typeset for display on the web or more generally in a
+hypertext environment.
+
+did anybody have some additional thoughts on what one would like to be able to
+specify in a document for an individual footnote? (remember the question is
+not what formatting should be applied to all footnotes, for this the actual
+templates will have attributes, the question is whether or not that is varying
+data that one would like (sometimes) pass to a single instance of a footnote
+(or note in general)
+
+frank
+

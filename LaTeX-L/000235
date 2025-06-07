@@ -1,0 +1,1461 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D489F184@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:49 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D489F184"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      indentation
+Date: Mon, 8 Oct 1990 16:18:07 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1FC@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <eijkhout@CSRD.UIUC.EDU>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer Schoepf" <JL2@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 235
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D489F184
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+when I was looking into the LaTeX style files, I found the
+treatment of \everypar, and the way it is handled to
+prevent indentation not particularly elegant.
+You're taking \everypar away from the user, effectively.
+
+Here is a little bit that I wrote for TUGboat
+about indentation. A second article on \parskip
+(a much harder topic) follows.
+
+--------------------------------------------
+\documentstyle[ltugboat]{article}
+
+\chardef\busje=3D`\\
+\newcommand{\cs}[1]{{\tt\busje#1}}
+\frenchspacing
+
+\begin{document}
+
+\title{An indentation scheme}
+\author{Victor Eijkhout}
+\address{Department of Mathematics\\
+        University of Nijmegen\\
+        Toernooiveld 5\\
+        6525 ED Nijmegen, The Netherlands}
+\netaddress[\network{Bitnet}]{u641001@HNYKUN11}
+\maketitle
+
+\noindent
+Indentation is one of the simpler things in \TeX:
+if you leave one input line open you get a new
+paragraph, and it is indented unless you say \cs{noindent}.
+And if you get tired of writing \cs{noindent}
+all of the time, you declare =
+\begin{verbatim}\parindent=3D0pt\end{verbatim}
+at the start of your document. Easy.
+
+More sophisticated approaches to indentation are possible,
+however. In this article I will sketch a quite general approach
+that can easily be incorporated in existing macro packages.
+For a better appreciation of what goes on, I will start
+with a tutorial section on what happens when
+\TeX\ starts a paragraph.
+
+\section{Tutorial: paragraph start}
+
+When \TeX\ is not busy typesetting mathematics, it is processing
+in {\em horizontal mode}, or {\em vertical mode}. In horizontal
+mode it is putting objects --~usually characters~-- next to each other,
+in vertical mode it is putting objects --~usually lines of
+text~-- on top of each other.
+
+To see that there is a difference, run the following pieces of
+code through \TeX:
+\begin{verbatim}
+\hbox{a}
+\hbox{b}
+\bye\end{verbatim}
+and
+\begin{verbatim}
+a
+\hbox{b}
+\hbox{c}
+\bye\end{verbatim}
+You notice that the same objects are treated in two different ways.
+The reason for this is that \TeX\ starts each job in vertical mode,
+that is, stacking material. In the second piece of input
+\TeX\ saw the character `a' before it saw the boxes. A~character
+is for \TeX\ the sign to switch to horizontal mode, that is,
+lining up material, and start building a paragraph.
+
+Commands that can make \TeX\ switch to horizontal mode
+are called `horizontal commands'. As appeared from the above
+two examples characters are horizontal commands, but boxes
+are not.
+Let us now look at the two most obvious horizontal commands:
+\cs{indent} and \cs{noindent}.
+
+\subsection{\cs{indent} and \cs{noindent}}
+
+\cs{indent} is the command to start a paragraph with
+indentation. \TeX\ realizes the indentation by inserting
+a box of width \cs{parindent}. If you say \cs{indent}
+somewhere in the middle of a paragraph you get some white
+space there, caused by the empty box.
+
+\cs{noindent} is the command to start a paragraph without
+indentation. After this command \TeX\ merely switches to
+horizontal mode; no indentation box is inserted. If you
+give this command somewhere in the middle of a paragraph
+it has no effect at all.
+
+If \TeX\ sees a horizontal command that is not \cs{indent}
+or \cs{noindent}, for instance a character,
+it acts as if the command was preceded
+by \cs{indent}. This is why paragraphs usually start with
+an indentation.
+
+As an illustration here is a small variation on the above
+two examples:
+\begin{verbatim}
+\noindent
+\hbox{a}
+\hbox{b}
+
+\indent
+\hbox{a}
+\hbox{b}
+\bye\end{verbatim}
+
+\subsection{\cs{everypar}}
+
+\TeX\ performs another action when it starts a paragraph:
+it inserts whatever is currently the contents of the
+token list \cs{everypar}. Usually you don't notice this,
+because the token list is empty in plain \TeX\ (the
+\TeX\ book~\cite{DeK} gives only a simple example,
+and the exhortation `if you let your imagination
+run you will think of better applications').
+\LaTeX~\cite{LL}, however, makes regular use of  \cs{everypar}.
+Some mega-trickery with \cs{everypar} can be found in~\cite{E}.
+
+\everypar{$\bullet\quad$}
+Just to show how this works, I put in front of this
+paragraph the statement
+%V I just love this
+\[\hbox to \hsize{\verb>\everypar=3D{$\bullet\quad$}>\hfil}\]
+That is, I~told \TeX\ that \verb-$\bullet\quad$-
+should be inserted in front of a paragraph.
+
+There's nothing specified for this paragraph; I get the
+bullet for  free, as \cs{everypar} does exactly what
+its name promises: it is inserted in front of {\em every\/}
+paragraph.\everypar{}
+
+At the end of the previous paragraph I specified
+\begin{verbatim}\everypar=3D{}\end{verbatim}
+so nothing is inserted from this paragraph onwards.
+
+\subsection{Removing indentation}
+
+Every \TeX\ user knows that
+indentation can be prevented
+globally by setting \cs{parindent} to zero. However, this
+is rather crude, and if you use the plain \TeX\ macros
+you may notice several rather unpleasant side effects of this action,
+for instance when you use the macros \cs{item} and \cs{footnote}.
+
+It is possible to use \cs{everypar} to prevent indentation,
+or more correctly: to remove indentation. This can be achieved
+by \begin{verbatim}\everypar=3D{{\setbox0=3D\lastbox}}\end{verbatim}
+This needs some explanation.
+
+If the last item that was processed by \TeX\ is a box, then that
+box is accessible by the command \cs{lastbox}. If the last item
+was not a box then \cs{lastbox} is an empty box, but no error
+ensues. As the \cs{everypar}
+list is inserted after any indentation box, the
+\cs{lastbox} command will get hold of the indentation box if
+there is one.
+By assigning the last box to another box register --~here
+\cs{box0}~-- it is removed from where it was previously.
+
+Finally, the statement \begin{verbatim}\setbox0=3D\lastbox\end{verbatim}
+is enclosed in braces. \TeX's grouping mechanism restores values
+when the group ends that were current when the group began.
+In this case it has the effect of totally removing the indentation
+box: first it is taken and assigned to \cs{box0}, then the value
+of \cs{box0} is restored to whatever it was before the group began.
+
+\subsection{Other actions at the start of a paragraph}
+
+In the above discussion I have omitted one action that takes
+place at the start of a paragraph: \TeX\ inserts
+(vertical) \cs{parskip}
+glue above the paragraph. As this has no relevance for
+the subject of indentation I will not go into it any further.
+However, in a subsequent article I will give more
+information about \cs{parskip}.
+
+\section{To indent or not to indent}
+
+In classical book typography~\cite{M} every paragraph
+is indented, with
+the exception of the first paragraph of a chapter.
+Nowadays a design where no paragraph indents is quite
+common.
+There are two mixtures between
+always indenting and never indenting: occasionally indenting, and
+occasionally not indenting.
+Thus it seems possible to
+characterize indentation strategies by two yes/no
+parameters: one that decides whether paragraphs
+should indent in principle, and another parameter that can overrule
+those decisions. Let us now see how this can be implemented in \TeX.
+
+\subsection{Implementation}
+
+Above I have already indicated that changes to \cs{parindent} should
+be avoided. Let us then assume that \cs{parindent} is greater
+than zero, even if we will never indent a paragraph
+(see \cite{BEP} for other uses for the \cs{parindent} quantity).
+We must then realize unindented paragraphs by removing their
+indentation as explained above.
+
+First we need a macro for removing the indentation:
+\begin{verbatim}
+\def\removeindentation
+    {{\setbox0=3D\lastbox}}
+\end{verbatim}
+Then we need the switches that control indentation:
+\begin{verbatim}
+\newif\ifNeedIndent %as a rule
+\newif\ifneedindent %special cases
+\end{verbatim}
+Now for the definition of \cs{everypar}. This is a bit tricky.
+
+Let us first collect some bits and pieces. The main question
+is to decide when \cs{removeindent} should be called.
+This is for instance the case if \cs{NeedIndentfalse},
+and that parameter is not overruled by \cs{needindenttrue}.
+\begin{verbatim}
+\ifNeedIndent
+    \ifneedindent
+    \else \removeindentation
+\fi \fi
+\end{verbatim}
+Indentation should also be removed
+in case \cs{NeedIndenttrue},
+but when that parameter is overruled by \cs{needindentfalse}.
+\begin{verbatim}
+\ifNeedIndent
+\else \ifneedindent
+      \else \removeindentation
+\fi   \fi
+\end{verbatim}
+Next we should make sure that \cs{ifneedindent} is used
+only for exceptional cases: if the user or a macro
+sets this parameter to a different value from \cs{ifNeedIndent},
+then that should be obeyed exactly once.
+\begin{verbatim}
+\ifNeedIndent
+      \ifneedindent
+      \else \needindenttrue \fi
+\else \ifneedindent \needindentfalse
+\fi   \fi
+\end{verbatim}
+This is then the full definition of \cs{everypar}:
+\begin{verbatim}
+\everypar=3D{\controlledindentation}
+\def\controlledindentation
+   {\ifNeedIndent
+          \ifneedindent
+          \else \removeindentation
+                \needindenttrue
+          \fi
+    \else \ifneedindent
+                \needindentfalse
+          \else \removeindentation
+    \fi   \fi}
+\end{verbatim}
+
+Another implementation would be possible:
+\begin{verbatim}
+\def\controlledindentation
+   {\ifneedindent
+    \else \removeindentation \fi
+    \let\ifneedindent=3D\ifNeedIndent}
+\end{verbatim}
+This saves one conditional, but for most paragraphs
+it involves an unnecessary \cs{let} command.
+
+\subsection{Usage}
+
+My aim in developing this indentation scheme was to hide all
+commands pertaining to indentation in macros.
+The user should have to specify only once whether paragraphs
+should indent as a rule:
+\begin{verbatim}\NeedIndenttrue\end{verbatim}
+and then macros should declare the exceptions:
+\begin{verbatim}
+\def\section#1{...
+    \needindentfalse
+    ...}\end{verbatim}
+
+\subsection{But couldn't you simply \dots?}
+
+Maybe people who read this have written macros themselves that
+end like
+\begin{verbatim}
+\def\section#1{...
+    ...
+    \noindent}\end{verbatim}
+or
+\begin{verbatim}
+\def\section#1\par{...
+    ...
+    \noindent}\end{verbatim}
+This works reasonably well, but it is not completely safe.
+In the first case there shouldn't be an empty line after
+a \begin{verbatim}\section{...}\end{verbatim} call,
+and in the second case there can only be one empty line
+after \begin{verbatim}\section ... \end{verbatim}
+The reason for this is that {\em every\/} empty line
+generates a \cs{par} command, which annuls the effect
+of the \cs{noindent}. Hence the more drastic approach.
+
+An argument the other way around can also be found, by the
+way. As Ron Whitney pointed out to me, the following
+piece of code causes trouble:
+\begin{verbatim}
+\section{Title}
+{\smallcaps The first} words are ...
+\end{verbatim}
+Any  changes made by \cs{everypar} are now effected
+{\em inside a group}. In this case one remedy is to
+insert a \cs{leavevmode} command, or to define
+\begin{verbatim}
+\def\smallcapswords#1{\leavevmode
+   {\smallcaps #1}}
+\end{verbatim}
+which can be used at any place.
+
+Another remedy would be to let all assignments controlling
+indentation be global. However, there are some subtle
+objections to this.
+
+\section{About macro packages and users}
+
+Above I remarked that plain \TeX\ does not use \cs{everypar},
+and that \LaTeX\ redefines it a lot. This means that in plain \TeX\
+the user is free to take every value of \cs{everypar} that
+he or she likes; in \LaTeX\ every attempt of the user
+to use \cs{everypar} is immediately thwarted.
+
+One might ask %xV(and Ron did)
+how the use of \cs{everypar} that I~have sketched compares to this.
+Can the user be allowed to access \cs{everypar}, even if
+the macro package needs it all the time?
+
+In my own `Lollipop' format I have taken the following way
+out. The user or the style designer is allowed to fill in
+\cs{everypar}, as long the statement
+\begin{verbatim}\the\everyeverypar\end{verbatim}
+is included.
+Here \cs{everyeverypar} is the token list with the constant
+actions such as indentation control that should be performed
+always.
+
+A format designer who wishes to hide even this from the user
+or the style designer, could use the following piece of code
+\begin{verbatim}
+\newtoks\temppar
+\def\everyparagraph
+   {\afterassignment\xevpar
+    \temppar}
+\def\xevpar
+   {\edef\act{\everypar=3D
+        {\the\temppar
+         \the\everyeverypar
+        }}%
+    \act}
+\end{verbatim} so that it becomes possible to write
+\begin{verbatim}
+\everyparagraph=3D{\DoSomething
+    \everyparagraph=3D{}}
+\end{verbatim}
+while the \cs{everypar} will still contain all of the
+constant actions.
+
+Short explanation: \cs{everyparagraph} is a macro that is
+made to look like a token parameter by the use
+of \cs{afterassignment}. This latter command sets aside the
+token \cs{xevpar} for insertion after the first assignment
+occurring; then whatever follows is assigned to \cs{temppar}.
+After this assignment
+the macro \cs{xevpar} unwraps the \cs{temppar} token list and the
+constant actions into \cs{everypar}.
+
+\section{Conclusion}
+
+In a systematic layout indentation commands need never be
+typed by the user; they can all be hidden in macros.
+Using \cs{everypar} it is possible to prevent indentation
+both in single instances, and throughout the document.
+This has the advantage that is is not necessary
+to zero the \cs{parindent} parameter or use \cs{indent} and
+\cs{noindent} instructions.
+
+The approach of employing \cs{everypar} as sketched above
+can  also be used for a paragraph skip scheme, as I will
+show in a subsequent article.
+
+\begingroup
+\parskip=3D6pt plus 3pt \parindent=3D0pt
+\begin{thebibliography}9
+
+\bibitem{DeK}Donald Knuth, The \TeX\ book,
+Addison-Wesley Publishing Company, 1984.
+%Donald Knuth, \TB, 1984.
+
+\bibitem{LL} Leslie Lamport, \LaTeX, a document preparation
+system, Addison-Wesley Publishing Company, 1986.
+
+\bibitem{E}Victor Eijkhout,
+Unusual paragraph shapes, Tugboat vol.~11 (1990) \#1, pp.~51--53.
+
+\bibitem{M} Stanley Morison, First principles of typography,
+Cambridge University Press, 1936.
+
+\bibitem{BEP}J. Braams, V.~Eijkhout, N.A.F.M.~Poppelier,
+The development of national \LaTeX\ styles,
+TUGboat vol.~10 (1989) \#3, pp.~401--406.
+
+\end{thebibliography}\endgroup
+
+\makesignature
+
+\end{document}
+
+----------------------------------------------
+Victor Eijkhout                     phone: +1 217 244-0047
+ Center for Supercomputing Research and Development
+ University of Illinois at Urbana-Champaign
+ 305 Talbot laboratory
+ 104 South Wright street
+ Urbana, Illinois 61801-2932, USA
+
+home: 2503 W. Springfield Av, Apt. K-4, Champaign 61821, USA
+
+
+------_=_NextPart_001_01C19442.D489F184
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     indentation</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hello,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>when I was looking into the LaTeX style files, I found =
+the</FONT>
+
+<BR><FONT SIZE=3D2>treatment of \everypar, and the way it is handled =
+to</FONT>
+
+<BR><FONT SIZE=3D2>prevent indentation not particularly elegant.</FONT>
+
+<BR><FONT SIZE=3D2>You're taking \everypar away from the user, =
+effectively.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here is a little bit that I wrote for TUGboat</FONT>
+
+<BR><FONT SIZE=3D2>about indentation. A second article on =
+\parskip</FONT>
+
+<BR><FONT SIZE=3D2>(a much harder topic) follows.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--------------------------------------------</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[ltugboat]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\chardef\busje=3D`\\</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\cs}[1]{{\tt\busje#1}}</FONT>
+
+<BR><FONT SIZE=3D2>\frenchspacing</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{An indentation scheme}</FONT>
+
+<BR><FONT SIZE=3D2>\author{Victor Eijkhout}</FONT>
+
+<BR><FONT SIZE=3D2>\address{Department of Mathematics\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; University =
+of Nijmegen\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Toernooiveld 5\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6525 ED =
+Nijmegen, The Netherlands}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\netaddress[\network{Bitnet}]{u641001@HNYKUN11}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>Indentation is one of the simpler things in =
+\TeX:</FONT>
+
+<BR><FONT SIZE=3D2>if you leave one input line open you get a new</FONT>
+
+<BR><FONT SIZE=3D2>paragraph, and it is indented unless you say =
+\cs{noindent}.</FONT>
+
+<BR><FONT SIZE=3D2>And if you get tired of writing \cs{noindent}</FONT>
+
+<BR><FONT SIZE=3D2>all of the time, you declare =
+\begin{verbatim}\parindent=3D0pt\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>at the start of your document. Easy.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>More sophisticated approaches to indentation are =
+possible,</FONT>
+
+<BR><FONT SIZE=3D2>however. In this article I will sketch a quite =
+general approach</FONT>
+
+<BR><FONT SIZE=3D2>that can easily be incorporated in existing macro =
+packages.</FONT>
+
+<BR><FONT SIZE=3D2>For a better appreciation of what goes on, I will =
+start</FONT>
+
+<BR><FONT SIZE=3D2>with a tutorial section on what happens when</FONT>
+
+<BR><FONT SIZE=3D2>\TeX\ starts a paragraph.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Tutorial: paragraph start}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>When \TeX\ is not busy typesetting mathematics, it is =
+processing</FONT>
+
+<BR><FONT SIZE=3D2>in {\em horizontal mode}, or {\em vertical mode}. In =
+horizontal</FONT>
+
+<BR><FONT SIZE=3D2>mode it is putting objects --~usually characters~-- =
+next to each other,</FONT>
+
+<BR><FONT SIZE=3D2>in vertical mode it is putting objects --~usually =
+lines of</FONT>
+
+<BR><FONT SIZE=3D2>text~-- on top of each other.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To see that there is a difference, run the following =
+pieces of</FONT>
+
+<BR><FONT SIZE=3D2>code through \TeX:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{a}</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{b}</FONT>
+
+<BR><FONT SIZE=3D2>\bye\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>and</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>a</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{b}</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{c}</FONT>
+
+<BR><FONT SIZE=3D2>\bye\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>You notice that the same objects are treated in two =
+different ways.</FONT>
+
+<BR><FONT SIZE=3D2>The reason for this is that \TeX\ starts each job in =
+vertical mode,</FONT>
+
+<BR><FONT SIZE=3D2>that is, stacking material. In the second piece of =
+input</FONT>
+
+<BR><FONT SIZE=3D2>\TeX\ saw the character `a' before it saw the boxes. =
+A~character</FONT>
+
+<BR><FONT SIZE=3D2>is for \TeX\ the sign to switch to horizontal mode, =
+that is,</FONT>
+
+<BR><FONT SIZE=3D2>lining up material, and start building a =
+paragraph.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Commands that can make \TeX\ switch to horizontal =
+mode</FONT>
+
+<BR><FONT SIZE=3D2>are called `horizontal commands'. As appeared from =
+the above</FONT>
+
+<BR><FONT SIZE=3D2>two examples characters are horizontal commands, but =
+boxes</FONT>
+
+<BR><FONT SIZE=3D2>are not.</FONT>
+
+<BR><FONT SIZE=3D2>Let us now look at the two most obvious horizontal =
+commands:</FONT>
+
+<BR><FONT SIZE=3D2>\cs{indent} and \cs{noindent}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\cs{indent} and \cs{noindent}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\cs{indent} is the command to start a paragraph =
+with</FONT>
+
+<BR><FONT SIZE=3D2>indentation. \TeX\ realizes the indentation by =
+inserting</FONT>
+
+<BR><FONT SIZE=3D2>a box of width \cs{parindent}. If you say =
+\cs{indent}</FONT>
+
+<BR><FONT SIZE=3D2>somewhere in the middle of a paragraph you get some =
+white</FONT>
+
+<BR><FONT SIZE=3D2>space there, caused by the empty box.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\cs{noindent} is the command to start a paragraph =
+without</FONT>
+
+<BR><FONT SIZE=3D2>indentation. After this command \TeX\ merely switches =
+to</FONT>
+
+<BR><FONT SIZE=3D2>horizontal mode; no indentation box is inserted. If =
+you</FONT>
+
+<BR><FONT SIZE=3D2>give this command somewhere in the middle of a =
+paragraph</FONT>
+
+<BR><FONT SIZE=3D2>it has no effect at all.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If \TeX\ sees a horizontal command that is not =
+\cs{indent}</FONT>
+
+<BR><FONT SIZE=3D2>or \cs{noindent}, for instance a character,</FONT>
+
+<BR><FONT SIZE=3D2>it acts as if the command was preceded</FONT>
+
+<BR><FONT SIZE=3D2>by \cs{indent}. This is why paragraphs usually start =
+with</FONT>
+
+<BR><FONT SIZE=3D2>an indentation.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As an illustration here is a small variation on the =
+above</FONT>
+
+<BR><FONT SIZE=3D2>two examples:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{a}</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{b}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\indent</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{a}</FONT>
+
+<BR><FONT SIZE=3D2>\hbox{b}</FONT>
+
+<BR><FONT SIZE=3D2>\bye\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\cs{everypar}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\TeX\ performs another action when it starts a =
+paragraph:</FONT>
+
+<BR><FONT SIZE=3D2>it inserts whatever is currently the contents of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>token list \cs{everypar}. Usually you don't notice =
+this,</FONT>
+
+<BR><FONT SIZE=3D2>because the token list is empty in plain \TeX\ =
+(the</FONT>
+
+<BR><FONT SIZE=3D2>\TeX\ book~\cite{DeK} gives only a simple =
+example,</FONT>
+
+<BR><FONT SIZE=3D2>and the exhortation `if you let your =
+imagination</FONT>
+
+<BR><FONT SIZE=3D2>run you will think of better applications').</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX~\cite{LL}, however, makes regular use of&nbsp; =
+\cs{everypar}.</FONT>
+
+<BR><FONT SIZE=3D2>Some mega-trickery with \cs{everypar} can be found =
+in~\cite{E}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\everypar{$\bullet\quad$}</FONT>
+
+<BR><FONT SIZE=3D2>Just to show how this works, I put in front of =
+this</FONT>
+
+<BR><FONT SIZE=3D2>paragraph the statement</FONT>
+
+<BR><FONT SIZE=3D2>%V I just love this</FONT>
+
+<BR><FONT SIZE=3D2>\[\hbox to =
+\hsize{\verb&gt;\everypar=3D{$\bullet\quad$}&gt;\hfil}\]</FONT>
+
+<BR><FONT SIZE=3D2>That is, I~told \TeX\ that =
+\verb-$\bullet\quad$-</FONT>
+
+<BR><FONT SIZE=3D2>should be inserted in front of a paragraph.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There's nothing specified for this paragraph; I get =
+the</FONT>
+
+<BR><FONT SIZE=3D2>bullet for&nbsp; free, as \cs{everypar} does exactly =
+what</FONT>
+
+<BR><FONT SIZE=3D2>its name promises: it is inserted in front of {\em =
+every\/}</FONT>
+
+<BR><FONT SIZE=3D2>paragraph.\everypar{}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At the end of the previous paragraph I =
+specified</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}\everypar=3D{}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>so nothing is inserted from this paragraph =
+onwards.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Removing indentation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Every \TeX\ user knows that</FONT>
+
+<BR><FONT SIZE=3D2>indentation can be prevented</FONT>
+
+<BR><FONT SIZE=3D2>globally by setting \cs{parindent} to zero. However, =
+this</FONT>
+
+<BR><FONT SIZE=3D2>is rather crude, and if you use the plain \TeX\ =
+macros</FONT>
+
+<BR><FONT SIZE=3D2>you may notice several rather unpleasant side effects =
+of this action,</FONT>
+
+<BR><FONT SIZE=3D2>for instance when you use the macros \cs{item} and =
+\cs{footnote}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It is possible to use \cs{everypar} to prevent =
+indentation,</FONT>
+
+<BR><FONT SIZE=3D2>or more correctly: to remove indentation. This can be =
+achieved</FONT>
+
+<BR><FONT SIZE=3D2>by =
+\begin{verbatim}\everypar=3D{{\setbox0=3D\lastbox}}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>This needs some explanation.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If the last item that was processed by \TeX\ is a box, =
+then that</FONT>
+
+<BR><FONT SIZE=3D2>box is accessible by the command \cs{lastbox}. If the =
+last item</FONT>
+
+<BR><FONT SIZE=3D2>was not a box then \cs{lastbox} is an empty box, but =
+no error</FONT>
+
+<BR><FONT SIZE=3D2>ensues. As the \cs{everypar}</FONT>
+
+<BR><FONT SIZE=3D2>list is inserted after any indentation box, =
+the</FONT>
+
+<BR><FONT SIZE=3D2>\cs{lastbox} command will get hold of the indentation =
+box if</FONT>
+
+<BR><FONT SIZE=3D2>there is one.</FONT>
+
+<BR><FONT SIZE=3D2>By assigning the last box to another box register =
+--~here</FONT>
+
+<BR><FONT SIZE=3D2>\cs{box0}~-- it is removed from where it was =
+previously.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Finally, the statement =
+\begin{verbatim}\setbox0=3D\lastbox\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>is enclosed in braces. \TeX's grouping mechanism =
+restores values</FONT>
+
+<BR><FONT SIZE=3D2>when the group ends that were current when the group =
+began.</FONT>
+
+<BR><FONT SIZE=3D2>In this case it has the effect of totally removing =
+the indentation</FONT>
+
+<BR><FONT SIZE=3D2>box: first it is taken and assigned to \cs{box0}, =
+then the value</FONT>
+
+<BR><FONT SIZE=3D2>of \cs{box0} is restored to whatever it was before =
+the group began.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Other actions at the start of a =
+paragraph}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the above discussion I have omitted one action that =
+takes</FONT>
+
+<BR><FONT SIZE=3D2>place at the start of a paragraph: \TeX\ =
+inserts</FONT>
+
+<BR><FONT SIZE=3D2>(vertical) \cs{parskip}</FONT>
+
+<BR><FONT SIZE=3D2>glue above the paragraph. As this has no relevance =
+for</FONT>
+
+<BR><FONT SIZE=3D2>the subject of indentation I will not go into it any =
+further.</FONT>
+
+<BR><FONT SIZE=3D2>However, in a subsequent article I will give =
+more</FONT>
+
+<BR><FONT SIZE=3D2>information about \cs{parskip}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{To indent or not to indent}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In classical book typography~\cite{M} every =
+paragraph</FONT>
+
+<BR><FONT SIZE=3D2>is indented, with</FONT>
+
+<BR><FONT SIZE=3D2>the exception of the first paragraph of a =
+chapter.</FONT>
+
+<BR><FONT SIZE=3D2>Nowadays a design where no paragraph indents is =
+quite</FONT>
+
+<BR><FONT SIZE=3D2>common.</FONT>
+
+<BR><FONT SIZE=3D2>There are two mixtures between</FONT>
+
+<BR><FONT SIZE=3D2>always indenting and never indenting: occasionally =
+indenting, and</FONT>
+
+<BR><FONT SIZE=3D2>occasionally not indenting.</FONT>
+
+<BR><FONT SIZE=3D2>Thus it seems possible to</FONT>
+
+<BR><FONT SIZE=3D2>characterize indentation strategies by two =
+yes/no</FONT>
+
+<BR><FONT SIZE=3D2>parameters: one that decides whether =
+paragraphs</FONT>
+
+<BR><FONT SIZE=3D2>should indent in principle, and another parameter =
+that can overrule</FONT>
+
+<BR><FONT SIZE=3D2>those decisions. Let us now see how this can be =
+implemented in \TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Implementation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Above I have already indicated that changes to =
+\cs{parindent} should</FONT>
+
+<BR><FONT SIZE=3D2>be avoided. Let us then assume that \cs{parindent} is =
+greater</FONT>
+
+<BR><FONT SIZE=3D2>than zero, even if we will never indent a =
+paragraph</FONT>
+
+<BR><FONT SIZE=3D2>(see \cite{BEP} for other uses for the \cs{parindent} =
+quantity).</FONT>
+
+<BR><FONT SIZE=3D2>We must then realize unindented paragraphs by =
+removing their</FONT>
+
+<BR><FONT SIZE=3D2>indentation as explained above.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>First we need a macro for removing the =
+indentation:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\removeindentation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; {{\setbox0=3D\lastbox}}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Then we need the switches that control =
+indentation:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifNeedIndent %as a rule</FONT>
+
+<BR><FONT SIZE=3D2>\newif\ifneedindent %special cases</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Now for the definition of \cs{everypar}. This is a =
+bit tricky.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Let us first collect some bits and pieces. The main =
+question</FONT>
+
+<BR><FONT SIZE=3D2>is to decide when \cs{removeindent} should be =
+called.</FONT>
+
+<BR><FONT SIZE=3D2>This is for instance the case if =
+\cs{NeedIndentfalse},</FONT>
+
+<BR><FONT SIZE=3D2>and that parameter is not overruled by =
+\cs{needindenttrue}.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\ifNeedIndent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifneedindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \removeindentation</FONT>
+
+<BR><FONT SIZE=3D2>\fi \fi</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Indentation should also be removed</FONT>
+
+<BR><FONT SIZE=3D2>in case \cs{NeedIndenttrue},</FONT>
+
+<BR><FONT SIZE=3D2>but when that parameter is overruled by =
+\cs{needindentfalse}.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\ifNeedIndent</FONT>
+
+<BR><FONT SIZE=3D2>\else \ifneedindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\removeindentation</FONT>
+
+<BR><FONT SIZE=3D2>\fi&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Next we should make sure that \cs{ifneedindent} is =
+used</FONT>
+
+<BR><FONT SIZE=3D2>only for exceptional cases: if the user or a =
+macro</FONT>
+
+<BR><FONT SIZE=3D2>sets this parameter to a different value from =
+\cs{ifNeedIndent},</FONT>
+
+<BR><FONT SIZE=3D2>then that should be obeyed exactly once.</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\ifNeedIndent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \ifneedindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else \needindenttrue =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>\else \ifneedindent \needindentfalse</FONT>
+
+<BR><FONT SIZE=3D2>\fi&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>This is then the full definition of =
+\cs{everypar}:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\everypar=3D{\controlledindentation}</FONT>
+
+<BR><FONT SIZE=3D2>\def\controlledindentation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\ifNeedIndent</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifneedindent</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\removeindentation</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \needindenttrue</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \ifneedindent</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \needindentfalse</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\removeindentation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Another implementation would be possible:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\controlledindentation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\ifneedindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \removeindentation =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\let\ifneedindent=3D\ifNeedIndent}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>This saves one conditional, but for most =
+paragraphs</FONT>
+
+<BR><FONT SIZE=3D2>it involves an unnecessary \cs{let} command.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Usage}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My aim in developing this indentation scheme was to =
+hide all</FONT>
+
+<BR><FONT SIZE=3D2>commands pertaining to indentation in macros.</FONT>
+
+<BR><FONT SIZE=3D2>The user should have to specify only once whether =
+paragraphs</FONT>
+
+<BR><FONT SIZE=3D2>should indent as a rule:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}\NeedIndenttrue\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>and then macros should declare the exceptions:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\section#1{...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \needindentfalse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...}\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{But couldn't you simply \dots?}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe people who read this have written macros =
+themselves that</FONT>
+
+<BR><FONT SIZE=3D2>end like</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\section#1{...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \noindent}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>or</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\section#1\par{...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \noindent}\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>This works reasonably well, but it is not completely =
+safe.</FONT>
+
+<BR><FONT SIZE=3D2>In the first case there shouldn't be an empty line =
+after</FONT>
+
+<BR><FONT SIZE=3D2>a \begin{verbatim}\section{...}\end{verbatim} =
+call,</FONT>
+
+<BR><FONT SIZE=3D2>and in the second case there can only be one empty =
+line</FONT>
+
+<BR><FONT SIZE=3D2>after \begin{verbatim}\section ... =
+\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The reason for this is that {\em every\/} empty =
+line</FONT>
+
+<BR><FONT SIZE=3D2>generates a \cs{par} command, which annuls the =
+effect</FONT>
+
+<BR><FONT SIZE=3D2>of the \cs{noindent}. Hence the more drastic =
+approach.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>An argument the other way around can also be found, by =
+the</FONT>
+
+<BR><FONT SIZE=3D2>way. As Ron Whitney pointed out to me, the =
+following</FONT>
+
+<BR><FONT SIZE=3D2>piece of code causes trouble:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\section{Title}</FONT>
+
+<BR><FONT SIZE=3D2>{\smallcaps The first} words are ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>Any&nbsp; changes made by \cs{everypar} are now =
+effected</FONT>
+
+<BR><FONT SIZE=3D2>{\em inside a group}. In this case one remedy is =
+to</FONT>
+
+<BR><FONT SIZE=3D2>insert a \cs{leavevmode} command, or to define</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\def\smallcapswords#1{\leavevmode</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\smallcaps #1}}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>which can be used at any place.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Another remedy would be to let all assignments =
+controlling</FONT>
+
+<BR><FONT SIZE=3D2>indentation be global. However, there are some =
+subtle</FONT>
+
+<BR><FONT SIZE=3D2>objections to this.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{About macro packages and users}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Above I remarked that plain \TeX\ does not use =
+\cs{everypar},</FONT>
+
+<BR><FONT SIZE=3D2>and that \LaTeX\ redefines it a lot. This means that =
+in plain \TeX\</FONT>
+
+<BR><FONT SIZE=3D2>the user is free to take every value of \cs{everypar} =
+that</FONT>
+
+<BR><FONT SIZE=3D2>he or she likes; in \LaTeX\ every attempt of the =
+user</FONT>
+
+<BR><FONT SIZE=3D2>to use \cs{everypar} is immediately thwarted.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One might ask %xV(and Ron did)</FONT>
+
+<BR><FONT SIZE=3D2>how the use of \cs{everypar} that I~have sketched =
+compares to this.</FONT>
+
+<BR><FONT SIZE=3D2>Can the user be allowed to access \cs{everypar}, even =
+if</FONT>
+
+<BR><FONT SIZE=3D2>the macro package needs it all the time?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In my own `Lollipop' format I have taken the following =
+way</FONT>
+
+<BR><FONT SIZE=3D2>out. The user or the style designer is allowed to =
+fill in</FONT>
+
+<BR><FONT SIZE=3D2>\cs{everypar}, as long the statement</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{verbatim}\the\everyeverypar\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>is included.</FONT>
+
+<BR><FONT SIZE=3D2>Here \cs{everyeverypar} is the token list with the =
+constant</FONT>
+
+<BR><FONT SIZE=3D2>actions such as indentation control that should be =
+performed</FONT>
+
+<BR><FONT SIZE=3D2>always.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A format designer who wishes to hide even this from =
+the user</FONT>
+
+<BR><FONT SIZE=3D2>or the style designer, could use the following piece =
+of code</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\newtoks\temppar</FONT>
+
+<BR><FONT SIZE=3D2>\def\everyparagraph</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\afterassignment\xevpar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \temppar}</FONT>
+
+<BR><FONT SIZE=3D2>\def\xevpar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\edef\act{\everypar=3D</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\the\temppar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\the\everyeverypar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \act}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim} so that it becomes possible to =
+write</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\everyparagraph=3D{\DoSomething</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \everyparagraph=3D{}}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>while the \cs{everypar} will still contain all of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>constant actions.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Short explanation: \cs{everyparagraph} is a macro that =
+is</FONT>
+
+<BR><FONT SIZE=3D2>made to look like a token parameter by the use</FONT>
+
+<BR><FONT SIZE=3D2>of \cs{afterassignment}. This latter command sets =
+aside the</FONT>
+
+<BR><FONT SIZE=3D2>token \cs{xevpar} for insertion after the first =
+assignment</FONT>
+
+<BR><FONT SIZE=3D2>occurring; then whatever follows is assigned to =
+\cs{temppar}.</FONT>
+
+<BR><FONT SIZE=3D2>After this assignment</FONT>
+
+<BR><FONT SIZE=3D2>the macro \cs{xevpar} unwraps the \cs{temppar} token =
+list and the</FONT>
+
+<BR><FONT SIZE=3D2>constant actions into \cs{everypar}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Conclusion}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In a systematic layout indentation commands need never =
+be</FONT>
+
+<BR><FONT SIZE=3D2>typed by the user; they can all be hidden in =
+macros.</FONT>
+
+<BR><FONT SIZE=3D2>Using \cs{everypar} it is possible to prevent =
+indentation</FONT>
+
+<BR><FONT SIZE=3D2>both in single instances, and throughout the =
+document.</FONT>
+
+<BR><FONT SIZE=3D2>This has the advantage that is is not =
+necessary</FONT>
+
+<BR><FONT SIZE=3D2>to zero the \cs{parindent} parameter or use =
+\cs{indent} and</FONT>
+
+<BR><FONT SIZE=3D2>\cs{noindent} instructions.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The approach of employing \cs{everypar} as sketched =
+above</FONT>
+
+<BR><FONT SIZE=3D2>can&nbsp; also be used for a paragraph skip scheme, =
+as I will</FONT>
+
+<BR><FONT SIZE=3D2>show in a subsequent article.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>\parskip=3D6pt plus 3pt \parindent=3D0pt</FONT>
+
+<BR><FONT SIZE=3D2>\begin{thebibliography}9</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{DeK}Donald Knuth, The \TeX\ book,</FONT>
+
+<BR><FONT SIZE=3D2>Addison-Wesley Publishing Company, 1984.</FONT>
+
+<BR><FONT SIZE=3D2>%Donald Knuth, \TB, 1984.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{LL} Leslie Lamport, \LaTeX, a document =
+preparation</FONT>
+
+<BR><FONT SIZE=3D2>system, Addison-Wesley Publishing Company, =
+1986.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{E}Victor Eijkhout,</FONT>
+
+<BR><FONT SIZE=3D2>Unusual paragraph shapes, Tugboat vol.~11 (1990) \#1, =
+pp.~51--53.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{M} Stanley Morison, First principles of =
+typography,</FONT>
+
+<BR><FONT SIZE=3D2>Cambridge University Press, 1936.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{BEP}J. Braams, V.~Eijkhout, =
+N.A.F.M.~Poppelier,</FONT>
+
+<BR><FONT SIZE=3D2>The development of national \LaTeX\ styles,</FONT>
+
+<BR><FONT SIZE=3D2>TUGboat vol.~10 (1989) \#3, pp.~401--406.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{thebibliography}\endgroup</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makesignature</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>----------------------------------------------</FONT>
+
+<BR><FONT SIZE=3D2>Victor =
+Eijkhout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phone: +1 217 =
+244-0047</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Center for Supercomputing Research and =
+Development</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;University of Illinois at =
+Urbana-Champaign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;305 Talbot laboratory</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;104 South Wright street</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Urbana, Illinois 61801-2932, USA</FONT>
+</P>
+
+<P><FONT SIZE=3D2>home: 2503 W. Springfield Av, Apt. K-4, Champaign =
+61821, USA</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D489F184--
+

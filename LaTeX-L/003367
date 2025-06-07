@@ -1,0 +1,208 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6338" "Fri" "29" "October" "1999" "17:51:51" "+0200" "Frank Mittelbach" "frank.mittelbach@SMC.EDS.DE" nil "166" "Re: section heading templates" "^Date:" nil nil "10" nil "section heading templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA03629
+	for <schoepf@UNI-MAINZ.DE>; Fri, 29 Oct 1999 17:51:51 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.C247DE0C@mail.listserv.gmd.de>; Fri, 29 Oct 1999 17:51:58 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445251 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 29 Oct 1999 17:51:57 +0200
+Received: from gate.eds.de (gate.eds.de [205.191.194.5]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id RAA00288 for
+          <LATEX-L@urz.uni-heidelberg.de>; Fri, 29 Oct 1999 17:51:55 +0200 (MET
+          DST)
+Received: from n15ux24.nets.de.eds.com by gate.eds.de with SMTP id RAA23367
+          (InterLock SMTP Gateway 4.2 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>);
+          Fri, 29 Oct 1999 17:52:47 +0200
+Received: by n15ux24.nets.de.eds.com (1.37.109.16/16.2) id AA082952312; Fri, 29
+          Oct 1999 17:51:52 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199910011527.LAA04020@hilbert.math.albany.edu>
+            <199910281728.SAA15046@mimosa.csv.warwick.ac.uk>
+X-Mailer: VM 6.62 under Emacs 19.34.1
+Message-ID:  <14361.49815.612920.201449@n15ux24.nets.de.eds.com>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910281728.SAA15046@mimosa.csv.warwick.ac.uk>
+Date:         Fri, 29 Oct 1999 17:51:51 +0200
+From: Frank Mittelbach <frank.mittelbach@SMC.EDS.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3367
+
+James Kilfiger writes:
+
+ > I was thinking rather vaguely about templates for sectional heading.
+ > I can think of at three style for authors to make sectional headings.
+ > As now, with section commands, with section evironments, and in a
+ > list-like manner. Templates for headings should be able of supporting
+ > classes that use a mixture of these styles.
+
+right, templates should support different styles of user syntax but
+then the separation between user syntax, via xparse for example, and
+actual formatting etc via the template mechanism does support this (or
+should).
+
+as far as section commands ala latex and section environments are
+concerned i don't see any difficulties. can you be a bit more specific
+in what you mean by "in a list-like manner"? e.g. show a syntax
+example of what you mean
+
+
+ >   About the syntax for sectional commands, the most useful thing would
+ > be a separation of the numbering/nonumbering and table of contents
+ > options.
+
+well i would be interested in hearing some additional opinions on
+that. questions:
+
+ o should there be user level control on whether or not a heading has
+   a number? (or are those things logically simply different tags and
+   we are only used to saying \chapter* instead of \frontmatterchapter
+   or whatever because nothing else was available)
+
+   in other words is this really a flexibility that is needed/wanted
+   or only there to hide the fact that some general functionality is
+   missing?
+
+ o assuming that such flexibility above is wanted, should it be
+   possible to individually change
+
+     - number on/off
+     - heading in TOC (yes/no)
+     - heading in running head (yes/no)
+
+   clearly it does not make sense to have a numbered heading but not
+   put it into the TOC if other headings of the same level appear in
+   the TOC. on the other hand in many cases were a heading has no
+   number (eg in front or back matter) it is still desirable to have a
+   TOC entry, typical example being "Bibliography".  Normally i would
+   claim, however, that all this is something that really ought be
+   decided by the document class rather than manually by the user
+   (even though there might be a good argument to allow the user a
+   manual overwrite possibility)
+
+   as for the running head info i don't really see that there is any
+   reason for the user to meddle with the decision to put some info in
+   or not (on an individual basis that is). there is a good argument
+   for enabling the user to input a text variation, eg if the heading
+   title is rather long, there should be a possibility to specify a
+   meaningful abbreviation, but i can't think of any case where i
+   would like to say: "don't put the heading text for this heading
+   into the running head but do so for all others".
+
+   anybody having a good argument against this? or a good example when
+   this is helpful/needed?
+
+
+
+ > A possible approach would be two true/false arguments, would
+ > a specification like {s o m s} be hard to remember and use? so perhaps
+ > the specification should be something like {s o m o}, the final argument
+ > defaulting to [t] for `table of contents' or [ht] for header and table
+ > of contents.  (BTW this seems to show a general problem in Latex syntax
+ > when two or more indepedent optional arguments are required.)
+
+it is correct that the current LaTeX syntax is a bit poor in this respect
+but so it is. by separating xparse and templates we are free to
+provide a better front-end one day by using something else than xparse.
+
+as far as the template arguments are concerned i think they should be
+of type boolean here (how this is mapped to latex top level syntax is
+a different matter)
+
+my current idea about the template type heading is like this:
+
+  #1    boolean         number or not
+  #2    boolean         text into toc or not
+  #3    boolean         text into running head/foot or not
+  #4    text            heading text (required)
+  #5    text/NoValue    text for toc (use #4 if NoValue)
+  #6    text/NoValue    text for runhead (use #4 if NoValue)
+  #7    text/NoValue    supplementary text like a motto
+
+as i said above i'm not at all sure about the need or the
+"sensibility" of #2/#3 except perhaps for compatibility purposes to
+latex2e classes --- to tell me your thoughts.
+
+with the above type the current chapter command could look like this
+(ignoring most of the added functionality):
+
+ \DeclareDocumentCommand \chapter { s o m }
+   {
+     \UseInstance{heading}{chapter}
+         {#1} {#1} {#1} {#3} {#2} {#2} \NoValue
+   }
+
+ie if thereis a star we suppress number toc and runhead (first three
+args) we pass the mandatory argument as the forth template arg and the
+optional goes into the variant for toc and runhead and we never
+typeset a motto
+
+who could we make the extended functionality available in latex like
+syntax? in many ways of course, here is one, whether it is a good one
+i don't know:
+
+ \DeclareDocumentCommand \chapter { s o s o s m o }
+   {
+     \UseInstance{heading}{chapter}
+         {#1} {#3} {#5} {#6} {#2} {#4} {#7}
+   }
+
+this may look like madness :-) but there is some logic behind it:
+
+ *   means no number
+ []  the text for the toc
+ *   don't put text in toc
+ []  text for runhead
+ *   don't put text in runhead
+ {}  main heading text
+ []  motto if any
+
+so
+
+ \chapter*{BAR}
+
+makes a heading with no number but BAR in the toc and in runhead
+
+ \chapter**{BAR}
+
+makes a heading with no number and no toc entry but BAR  in runhead
+
+if you really would like to have a number but no toc entry this would
+be possible as well but only with some difficulty:
+
+ \chapter[]*{BAR}
+
+ie we have to give an alternate toc entry and then say we don't really
+meant this :-)
+
+and so on.
+
+comments?
+
+
+ >   It would be useful if the templates allowed putting stuff before or
+ > after the section heading, useful for drawing rules and so on.  Is this
+ > worthy of a an argument to the template.
+
+it would definitley be useful if templates allowed putting stuff like
+rules etc before and after a heading text, but would it reall be
+correct to give this functionality to the user level? i think
+not. this is something that would be a key to the individual template
+and it would be fixed by the instance, ie headings in this layout have
+rules and in other layouts (read document classes) they have not.
+
+or do you see this differently?
+
+frank
+

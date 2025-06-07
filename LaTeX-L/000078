@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Apr 90 14:33:06 MET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Victor Eijkhout <U641000@HNYKUN11.bitnet>
+Subject:      Aux file blues.
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 78
+
+Hello,
+
+I would like to raise a new topic:
+
+            Using or Abusing the AUX File.
+
+Small introduction.
+I have written replacement styles for the standard LaTeX document
+styles (check out the TeX-nl FILELIST of the LISTSERV@HEARN.BITNET),
+and in some of these I implemented the following layout:
+
+  1.     Section
+  1.1.   Sub
+  1.1.1. Subsub
+
+  Paragraph.....
+         Next paragraph is
+  rather indented....
+
+Now the problem arises: I take a certain parindent that is sufficient
+up till 9.9.9., after that I'm in trouble. Solution taken:
+everytime a heading is set I measure the label width (including 1em
+or so), and if at the end of the run the original parindent
+has been changed I (want to!) tell this to the next run.
+
+Now for the real problem: I can write an instruction to the
+aux-file that will set the parindent in the next run, but the
+aux-file is read inside a group. So I will have to \global
+the assignment. However (now comes the fun part!),
+the Aux is also read at the end of the run, and then
+there is a line in \enddocument which says:
+\def\global\@namedef#1#2{}
+Raaaaaaaaaaaaaaaggggggggggggggghhhhhhhhhhhhh!!!!!!!!!!!!!!
+
+So I have my own version of \enddocument which simply
+leaves out this line, and it doesn't seem to hurt anyone.
+
+Should we discuss to what extent this sort of use
+of the aux file should be permitted? Would it be appropriate
+to support such activity?
+
+Should hooks for this sort of thing be provided? Certainly
+this would come in handy, because now the people who use
+my styles run into (very occasional) problems when they
+use the old 'article' etc. styles: the aux-file contains
+an instruction that is undefined.
+
+Give it a thought or two.
+
+(remark aside: Frank, the discussion on this list does feel
+a bit strange. After all, we can discuss all we like, you are still
+the sole implementor. Maybe if you give some more hints of
+your decision processes that arguments will flow more freely.)
+
+
+Victor Eijkhout                 Department of Mathematics
+                                University of Nijmegen
+                                Toernooiveld 5
+  "Far out in the uncharted     6525 ED Nijmegen, the Netherlands
+   backwaters of the unfash-
+   ionable end of the           +31 80  61 3169 (switchboard: 61 1111)
+   western spiral arm           fax: +31 80 55 3450
+   of the galaxy"
+                                u641000@HNYKUN11.BITNET
+
+

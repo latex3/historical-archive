@@ -1,0 +1,200 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 3 Sep 2009 00:16:47 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n82MGlQu032578
+	for <rainer.schoepf@proteosys.com>; Thu, 3 Sep 2009 00:16:47 +0200
+Received: from comedy.dante.de (localhost. [127.0.0.1])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9) with ESMTP id n82MGkb1019978;
+	Thu, 3 Sep 2009 00:16:46 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de [212.227.17.8])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9) with ESMTP id
+	n82MGg3G019959
+	for <latex-team@latex-project.org>; Thu, 3 Sep 2009 00:16:43 +0200
+Received: from morse.mittelbach-online.de (p54A84256.dip.t-dialin.net
+	[84.168.66.86])
+	by mrelayeu.kundenserver.de (node=mrbap1) with ESMTP (Nemesis)
+	id 0MKt2u-1Miy7v3kPj-000SYR; Thu, 03 Sep 2009 00:16:30 +0200
+Received: by morse.mittelbach-online.de (Postfix, from userid 501)
+	id 0B1766F9BE; Thu,  3 Sep 2009 00:16:25 +0200 (CEST)
+MIME-Version: 1.0
+Message-ID: <19102.61113.5725.255616@morse.mittelbach-online.de>
+Date: Thu, 3 Sep 2009 00:16:25 +0200
+From: Frank Mittelbach <frank.mittelbach@latex-project.org>
+To: Will Robertson <wspr81@gmail.com>
+Subject: Re: AW: parameters of templates
+In-Reply-To: <55157049-4A31-460D-BC56-1F1285F655F4@gmail.com>
+References: <4A7921CF.5020803@morningstar2.co.uk>
+	<4A8D00F4.4090300@morningstar2.co.uk>
+	<19085.30661.616945.32104@morse.mittelbach-online.de>
+	<4A9C2A94.30108@morningstar2.co.uk>
+	<8D5403E89293A448A409DDDD1531CE1802CD3FA2@defrm202.emea.corp.eds.com>
+	<55157049-4A31-460D-BC56-1F1285F655F4@gmail.com>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1/HyHx12uTNEQqPaADcTP3+/Dioj+gB3UfY1fb
+	Y/PP5hmE9E/bnpr3swmyt3kdx3q6JhRUgKX29QflGHElRFEp91
+	rV06g8OPOoE5YyyFOOnXQ==
+X-DANTE-Spam-Score: -2.6 () BAYES_00,SPF_HELO_PASS
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+X-Scanned-By: MIMEDefang 2.67 on 80.237.159.15
+X-Scanned-By: MIMEDefang 2.67 on 80.237.159.15
+Cc: List team-latex <latex-team@latex-project.org>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.12
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: latex-team-bounces@latex-project.org
+Errors-To: latex-team-bounces@latex-project.org
+X-ProteoSys-SPAM-Score: -102.599 () BAYES_00,USER_IN_WHITELIST
+Return-Path: latex-team-bounces@latex-project.org
+X-OriginalArrivalTime: 02 Sep 2009 22:16:48.0091 (UTC) FILETIME=[1031AAB0:01CA2C1B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6079
+
+Will,
+
+ > Consider three main users:
+ > 1. Writer of the template
+ > 2. Designer of the class
+ > 3. Author of the document
+
+yep
+
+ > With three main needs: (respectively)
+ > 1. Express template keytypes easily
+ > 2. Use keys without necessarily understanding the implementation
+ > 3. Use keys without necessarily understanding the keytype definitions
+ > 
+ > Which can be achieved with:
+ > 1. Keytype definitions that are unambiguous yet concise (yet easy to  
+ > learn/remember)
+ > 2. Being able to infer from the keytype definition how the keys should  
+ > be used
+ > 3. As #2 but moreso
+ > 
+
+yep
+
+ > * * *
+ > 
+ > The most basic solution is to do everything by hand: (I suppose this  
+ > is like the old keyval.sty approach)
+ > 
+ >      above-skip    =x [0pt]     { \skip_set:Nn \l_caption_above_skip  
+ > {#1} }   ,
+ >      number-format =x [#1~#2:~] { \cs_set:Nn \caption_number_format:nn  
+ > {#1} } ,
+ > 
+ > And then template takes things from there with simpler keytypes:
+ > 
+ >      above-skip    =l  [0pt]     \l_caption_above_skip     ,
+ >      number-format =f2 [#1~#2:~] \caption_number_format:nn ,
+ > 
+ > For the writer of the template this is fine, as would the other  
+ > suggested interfaces, since all the information is necessary and sits  
+ > right there. If we're happy to infer the variable and function types  
+ > then this can be simplified a little bit more.
+ > 
+ > What about for the class designer and document author? As Joseph  
+ > acknowledges, template-alt's more verbose and technical syntax makes  
+ > things harder for them. And as Frank says, they don't even care what  
+ > variables are used in the template implementation, so for them it  
+ > might make more sense to de-emphasise the variable names and highlight  
+ > their specification. In which case my "automagic" idea is completely  
+ > in the wrong direction, since those people who don't know that :nn  
+ > means a function with two arguments won't know what's going on at all.
+
+that's my point I just made prior to reading this mail
+
+ > But how far do we want to go to improve readability at the expense of  
+ > writability? Personally I would be inclined to write (if I could):
+ > 
+ >    \DeclareTemplate{typ}{plate}
+ >    {
+ >      above-skip    =* \l_caption_above_skip     ,
+ >      number-format =* \caption_number_format:nn ,
+ >    }{...}
+ > 
+ >    \DeclareTemplateDefaults{typ}{plate}{
+ >      above-skip = 0pt ,
+ >      number-format = {#1~#2:~} ,
+ >    }
+ > 
+ > which to me comes off as the least cluttered and easiest to read *and*  
+ > write (although one might say 'why is the star there?'). If a document  
+ > author (a) doesn't know expl3, and (b) doesn't read the documentation,  
+ > I'm not sure if writing '=f2' is any clearer in this case.
+
+if the user doesn't know what f2 is it will not help him, agreed. but my
+stress was more on easily seeing things, you still have to have some level of
+understanding
+  
+ > Furthermore, it seems like it would be easiest for the unknowledgeable  
+ > user to infer the usages of the keys from the context of the default  
+ > values, which doesn't seem altogether unreasonable in the above example.
+
+yes looks tempting. but the external defaults aren't required; for some keys
+defaults simply make no sense and in case of functions the default may give me
+the wrong clue
+
+
+ > As a final comment (from Joseph's parallel response), I can't put my  
+ > finger on it but I'm just not buying the idea of using csname tokens  
+ > instead of single characters to specify keytypes.
+
+i have difficulties with that too I confess
+
+ > Could write:    above-skip =\skip \l_caption_above_skip {0pt},
+ > Or:             \skip {above-skip} {\l_caption_above_skip} {0pt}
+ > 
+ > Or whatever but I dunno. It just doesn't smell right to me :)  
+
+yes, both don't pass my easy to read test (biased as it is)
+
+ > Perhaps  
+ > I'd like it more if it were
+ > 
+ >       \key_skip:nNn {above-skip}  \l_caption_above_skip {0pt}
+ >       \key_func:nNn {number-format} \caption_number_format:nn {#1~#2:~}
+ > 
+ > But that's back to a programmer-friendly notation. (Although I really  
+ > like the lack of commas!)
+
+yes that is programmers lingo. and also masking the important parts behind
+unecessary stuff somewhat. by the way your example requires deduction of the
+number of args for the function, yes I know that works but here I find it even
+worse than in expl3 (where i don't like it either very much)
+
+what about something like that instead?
+
+
+skip:    above-skip    = [0pt]               \l_caption_above_skip 
+func:2   number-format = [#1~#2:~]           \caption_number_format:nn
+
+
+
+ > 
+ > * * *
+ > 
+ > In conclusion, I think I've started off with preconceived notions and  
+ > not managed to argue my way out of them. Does any of this 'gel' with  
+ > all of your thoughts on the matter?
+
+well too much colloquial here I guess to parse this sentence ... I'm a
+designer remember? :-)
+
+frank
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

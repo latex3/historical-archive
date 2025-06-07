@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2600" "Tue" "7" "October" "1997" "20:22:32" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "58" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id UAA23728
+	for <schoepf@UNI-MAINZ.DE>; Tue, 7 Oct 1997 20:26:15 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.B84EB8CF@listserv.gmd.de>; Tue, 7 Oct 1997 20:26:13 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 210066 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997 20:26:07 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id UAA13326
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Oct 1997 20:26:06
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) id
+          UAA05474 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997
+          20:26:06 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          UAA00483; Tue, 7 Oct 1997 20:22:32 +0100
+References: <9083-Mon06Oct1997144554+0100-s.rahtz@elsevier.co.uk>
+            <3997-Mon06Oct1997095918+0100-s.rahtz@elsevier.co.uk>
+            <E0xIDEl-0004al-00@heaton.cl.cam.ac.uk>
+            <199710062136.WAA00429@frank.zdv.uni-mainz.de>
+            <v0311071ab05f11411694@[130.237.37.113]>
+Message-ID:  <199710071922.UAA00483@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v0311071ab05f11411694@[130.237.37.113]>
+Date:         Tue, 7 Oct 1997 20:22:32 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2385
+
+Hans Aberg writes:
+ > >and this is basically it.
+ >
+ >   Could you give some hints of why this stuff is needed? It can't be in
+ > order to merely keep the references right, because that could be solved by
+ > avoiding having multiple aux files.
+
+well, the number of aux files have nothing to do with solving
+references or nearly nothing.
+
+why do you need to keep track of the stuff i outlined:
+
+because the whole purpose of the include idea is to allow the
+following: to be able to process parts of the document and do get a
+correct and identical output for that part. e.g. if you format the
+whole document and print page 55 then the output is not changed if you
+later on process only the part that contains page 55 and then print
+page 55.
+
+this means that on this page
+
+1) that everything is in the same place
+2) the references to things in other places are the same
+3) the floats appear identically
+4) ...
+
+if you don't care about that then you can just use \input and process
+only those parts you are currently working on (which is what i usually
+do) and you can devise a simple mechanism that inputs only those files
+you want. but then on the other hand you can also use the current
+include since who cases about those extra page breaks in that case?
+for the final run you can still go \let\include\input and process
+everything without extra pages.
+
+now to achieve 1) you need to store information about the stuff that i
+described (ie float lists and positions on the pages at the beginning
+and end) since if you leave out say the first part you have to start
+the second part not on the top of a page but somewhere on the page (ie
+where the first part would have ended if typeset) and you need to know
+the status of your float lists after the end of the first part, since
+these lists contain the floats which haven't been typeset (from part
+one) and thus will get typeset while part two is processed (if the
+full document is typeset)
+
+to resolve crossreference you need to know what labels did appear in
+part one (as they might get referred to in other parts). this is what
+the aux files contain but it isn't really necessary to use separate
+files for each include. that is just a technical solution and an easy
+one.
+
+in fact for some prototype kernel (long time ago) i implemented a
+scheme that always used two aux files: one to read from and one to
+write to. the advantage was that a) less files and b) much better
+control in error situations, ie in case your run ended in the middle
+LaTeX would not use the file that was only partly written but the one
+that was fully written last time.
+
+frank
+

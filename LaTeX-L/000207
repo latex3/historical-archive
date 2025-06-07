@@ -1,0 +1,122 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 26 Jul 90 18:24:35 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Footnotes: from David Rhead
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 207
+
+I have been consulted by a historian who doesn't like the way that
+LaTeX splits footnotes (when the line containing the footnote marker
+is the last non-footnote line, so that LaTeX must either move the line with
+the marker to the next page or split the footnote).
+
+My first response was to:
+*  find 4 history books that split foonotes in just the same way as LaTeX
+*  tell him that there are plenty of publishing precedents for what LaTeX does
+*  ask why he wasn't pleased that LaTeX follows publishing precedents.
+
+However, I've also found history books that don't seem to split footnotes
+(I assume by design rather than by chance).  So I thought that it might be
+worth seeing if LaTeX could be persuaded to try leaving a couple of
+\baselineskips of white space
+either at the bottom of the page
+or     before the footnotes
+rather than splitting a footnote.  I tried changing
+\skip\footins 10pt plus 30pt minus 2pt
+in rep11.sty, but this doesn't seem to help when the split footnote is
+the only one on the page.  It looks as though
+either \textheight would have to be a rubber length
+or     a space, generally zero, would have to be added to the bottom
+       of every text-column just in case it needs to stretch to avoid
+       splitting a footnote
+or     \footnote would have to be able to trigger a \clearpage.
+
+It might be worthwhile if something was done in LaTeX 3.0 to make this
+task easier (even if it's just a comment in the code somewhere saying
+"If you want a design that prefers having ragged-bottom above footnotes to
+having split footnotes, then ... ").
+
+                                                                     David
+
+Via: UK.AC.NOTTINGHAM.PRODENG; Thu, 26 Jul 90  15:55 GMT
+Via:          uk.ac.nottingham.ccc.vme; Thu, 26 Jul 90 15:57:48 GMT
+              (NMPA/19.302r)
+Date: Thu,26 Jul 90 15:54:28 BST
+From: David_Rhead@uk.ac.nottingham.ccc.vme
+Subject: An example file that generates a split footnote
+To: ca_rowley@uk.ac.open.acs.vax
+Message-ID: <26 Jul 90 15:54:28 A1069A@UK.AC.NOTT.VME>
+
+% -------------------------------------------------------------------------
+\documentstyle[11pt]{report}
+
+\begin{document}
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text
+text.\footnote{%
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.}
+Text text text text text text text text text text text text text text text
+text.\footnote{%
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.
+Footnote text footnote text footnote text footnote text footnote text.}
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text.
+
+\end{document}
+
+

@@ -1,0 +1,136 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6300" "Sun" "2" "May" "93" "23:12:51" "-0500" "Cameron Smith" "cameron@SYMCOM.MATH.UIUC.EDU" nil "109" "Re: documentstyle option versions" "^Date:" nil nil "5"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA22707; Mon, 3 May 93 06:24:02 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA09419; Mon, 3 May 93 06:23:57 +0200
+Message-Id: <9305030423.AA09419@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2344; Mon, 03 May 93 06:23:30 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5532;
+ Mon, 03 May 93 06:23:27 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5530;
+ Mon, 03 May 93 06:23:23 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 2 May 93 23:12:51 -0500
+From: Cameron Smith <cameron@SYMCOM.MATH.UIUC.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: documentstyle option versions
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1026
+
+
+I've been away from email for a bit and just got a chance to see some
+discussions that took place a few days ago.  Sorry for the belated response.
+
+Michael Downes asks how one may guard against "subtly wrong results"
+when A sends B a LaTeX document that uses a non-standard but widely
+popular foobar.sty and B uses an older version of foobar than A used
+in creating the document.
+
+David Carlisle suggests testing \foobarversion (or some other macro
+known to have changed between versions); Kresten Krab Thorup
+suggests incorporating version control into LaTeX by allowing
+\documentstyle options to specify what version they expect;
+Nelson Beebe points out that languages "like Lisp and Bliss" have
+this functionality, but he recommends packaging all but the most
+stable and "major" style files with your documents when you send
+them out into the world.
+
+I ask a counter-question: what kind of "subtly wrong results" are we
+worried about?  If they're that "subtle", what difference do they make?
+
+LaTeX is supposed to be a structural rather than a visual markup system.
+(It's not perfect, but that is and always was the ideal that LaTeX
+was supposed to be about.)  If a change in a style file merely causes
+a paragraph to re-flow or a figure to be re-positioned or some other
+"subtle" *visual* incompatibility, then I claim that that is not a
+problem.  It's not even an error, really -- after all, the theory is
+and always was that in principle you should be able to completely re-format
+a document by simply changing the \documentstyle from (say) "article"
+to "report".  (I know that this is not practical in general, and that
+there was some discussion on this list a few weeks ago about defining
+families of interchangeable styles for this very reason.  But again,
+the fact that reality isn't perfect doesn't change the ideal.)  As long
+as the text of the document isn't mangled (and what kind of style file
+change would actually cause text to be lost?) we should not (I claim)
+worry too much if "subtly wrong results" mean only changes of appearance
+and not changes in content.  (I'm assuming -- based on Michael's use
+of "subtle" -- that we agree that an incompatibility that causes major
+hunks of a document to be mangled would be so obvious that no warning
+messages were needed.)
+
+I think the point I'm trying to make is this: if what you want is to
+be able to cause a colleague's printer 3000 miles away to spit out
+identical pages to the ones your printer produced, then you don't really
+need a content markup language like LaTeX; you need a page description
+language like PostScript.  Conversely a structural markup language like
+LaTeX should *not* bog itself too deeply in questions of visual markup.
+I would not consider it a great advantage to "enhance" LaTeX with
+a lot of features whose underlying design goal is to turn it into a
+system that can ensure that identical pages are always produced from
+the same source file -- I think the fact that LaTeX is somewhat "aloof"
+from such concerns is one of its strengths.
+
+I know that if you're doing professional-quality publishing (books,
+journals -- as opposed to classroom handouts and seminar announcements)
+you have to be able to exert fine control over the appearance of the
+finished document, and I don't mean to say that I don't want LaTeX
+to be *able* to do that sort of thing.  But that kind of work necessarily
+involves exact knowledge of the fonts being used (sometimes even to
+the point of knowing which vendor's version of the font is being used),
+what output device is being used, what kind of paper and ink are being
+used, etc. etc.  This level of production detail is necessary when you're
+producing finished work -- but it is inherently site-specific, and it
+is emphatically *not* the kind of thing that LaTeX should concern itself
+with when it is being used as a document exchange language.
+
+Part of the problem is that LaTeX wears several hats.  When it is used
+to produce (say) pages for a book, fine control over output appearance
+is needed -- and the document becomes inherently non-portable.
+When LaTeX is used as a medium of exchange among colleagues who are
+using different computers and different output devices and different
+previewers and different fonts, portability is necessary -- and quibbles
+over "subtly wrong results" are unimportant.
+
+Please don't let either of these two very different applications of
+LaTeX outweigh the other, and please don't mix them up!  As I see it,
+there is no "right" answer to the question Michael asked because the
+question itself calls for incompatible premises (that a document at
+once be portable from site to site but also exert rigid control over
+the appearance of the output).  I don't really object to the idea that
+a document should be able to declare what version of each component
+it expects to use, and should be able to complain if it gets the wrong
+version.  What I do object to is the (as I understand it) underlying
+idea that LaTeX should be able to wear both its hats at once.  I think
+that is an un-achievable goal, and I think we could do major harm to
+LaTeX (and possibly to ourselves!) if we set our hearts on achieving it
+and try to re-design LaTeX accordingly.
+
+All IMHO, of course.  Just an off-the-cuff reaction.
+
+Finally, let's remember that many posters to comp.text.tex (including
+some members of this list) seem to consider the right answer to all such
+questions as Michael's to be something along the lines of:
+
+  "You have been found guilty of using outdated software.  The problem
+   you reported was fixed in the September 1943 release of foobar.sty.
+   Please don't burden the net with complaints about incompatibility
+   if you can't be bothered to keep your style files up to date."
+
+This is meant with only 1/2 of a :-)
+I really am somewhat in sympathy with the position that if you're going
+to use foobar.sty and you want to be able to receive documents that use
+foobar.sty and have them work right, then it's your responsibility to
+maintain your local copy of foobar.sty.  Nobody else can do it for you.
+Even if we work out a way to automatically complain because you haven't
+done it, you *still* won't be able to get the right output until you fix
+your problem.  So get off your arse, B, and update your foobar.sty!  :-)
+
+--Cameron Smith
+

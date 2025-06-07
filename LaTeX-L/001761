@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1581" "Tue" "9" "July" "1996" "11:17:55" "+0200" "Werner Lemberg" "a7971428@UNET.UNIVIE.AC.AT" nil "45" "Re: latex/2192: \\DeclareFont{Family,Shape} behave unexpectedly" "^Date:" nil nil "7" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id LAA04165; Tue, 9 Jul 1996 11:30:18 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.77714300@listserv.gmd.de>; Tue, 9 Jul 1996 11:30:16 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 104531 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 9 Jul 1996 11:29:41 +0200
+Received: from email.univie.ac.at (email.univie.ac.at [131.130.1.19]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id LAA28364 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 9 Jul 1996 11:29:26 +0200
+          (MET DST)
+Received: from unet.univie.ac.at by email.univie.ac.at with SMTP (PP); Tue, 9
+          Jul 1996 11:17:58 +0200
+Received: (from a7971428@localhost) by unet.univie.ac.at (8.7.1/8.7.1) id
+          LAA25524; Tue, 9 Jul 1996 11:17:56 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.A32.3.91.960709110729.26348A-100000@unet.univie.ac.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <E9b4xAXOBh107h@dream.hb.north.de>
+Date:         Tue, 9 Jul 1996 11:17:55 +0200
+From: Werner Lemberg <a7971428@UNET.UNIVIE.AC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: latex/2192: \DeclareFont{Family,Shape} behave unexpectedly
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1761
+
+On Mon, 8 Jul 1996, Martin Schroeder wrote:
+
+> > > Maybe it's the wrong way now. But can you offer any other solution? I need
+> > > this feature, and if you introduce some new features I will immediately
+> > > update. Theoretically I could check whether \selectfont has been modified by
+> > > any other package...
+>
+> >you should do that definitely for all internal commands you modify, it
+> >will help you to maintain your stuff and avoids some of the hard to find bugs
+>
+> May I suggest a look at
+>         macros/latex/contrib/supported/everysel
+> this contains my package
+> ...
+> %  \section{Introduction}
+> %  ^^A
+> %  This package provides the hooks \cs{EverySelectfont} and
+> %  \cs{AtNextSelectfont} whose arguments are executed just after
+> %  \LaTeX{} has loaded a new font using \cs{selectfont} (which means
+> %  that it will be executed after \emph{every} font loaded via NFSS).
+> %
+>
+> Does this solve some of your problems? :-)
+>
+
+Not really.
+
+Be careful if you say `loading' a font. What you mean is `switching' to a
+font. This is a great difference: e.g. the loading-settings in
+\DeclareFontShape are executed only _once_ when you really load the font
+into TeX's memory. They are not executed afterwards if you switch to this
+font again.
+
+Your interface will also fail for nested fonts, as Frank explained to me.
+
+\foo{\bar{...}...}
+              ^^^
+
+After leaving the group \selectfont will not be called...
+
+Such a situation cannot happen for my CJK package since I have to select a
+new (only in very few cases identical) font for _each_ character.
+
+
+    Werner
+

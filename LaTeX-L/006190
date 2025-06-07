@@ -1,0 +1,117 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 28 Nov 2009 16:49:00 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nASFmw9R003127
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 28 Nov 2009 16:48:58 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nASFjdKb021366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 28 Nov 2009 16:45:39 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nAS5vXdC015472;
+	Sat, 28 Nov 2009 16:45:29 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 358424 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 28 Nov
+          2009 16:45:28 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nASFjSbS025895 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 28 Nov 2009 16:45:28 +0100
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nASFjD1c017092
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 28 Nov 2009 16:45:17
+          +0100
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id CAAD5186610 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 28 Nov 2009 16:43:37 +0100
+          (CET)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <19209.8773.325233.396932@morse.mittelbach-online.de>           
+            <4B0C694B.1080803@residenset.net>           
+            <4B0E8600.6000003@residenset.net>,<19215.63158.760427.5070@morse.mittelbach-online.de>
+            <A969C9F865F27B428A8E60E39D3CED1522F5AAE763@KIELDERCMS1.open.ac.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id nASFjSbS025896
+Message-ID:  <4B11459C.4070305@residenset.net>
+Date:         Sat, 28 Nov 2009 16:45:32 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: object type / instance arguments
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <A969C9F865F27B428A8E60E39D3CED1522F5AAE763@KIELDERCMS1.open.ac.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 28 Nov 2009 15:49:01.0011 (UTC) FILETIME=[4DDF4230:01CA7042]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6190
+
+J.Fine skrev:
+> The quadratic running time may be poison.  Once that feature is
+> there, users may use it heavily.
+> 
+> It would be sensible to estimate the running time for a dictionary
+> with 100 keys.
+
+Note that even this implementation is strongly linear in the number of
+dictionary entries; to notice the quadratic term behaviour you'd rather
+have to consider a dictionary where all keys are 100 characters long --
+and even then you might discover that linear terms dominate the
+complexity, since the inner loop of what contributes that quadratic
+term to the complexity is TeX grabbing tokens for a macro argument.
+
+> Here's an alternative suggestion.  When TeX boots, do a 
+> \fontdimen\nullfont = 100000
+
+I suppose you mean \fontdimen 100000\nullfont=1sp. I wouldn't be
+surprised if there is a 15-bit limit on fontdimen numbers though; there
+certainly is such a limit if you get them from a TFM.
+
+> to get sufficient linear memory.  Now write a 'Turing machine' or
+> 'CPU' that will use this linear memory (in TeX macros of course).
+
+Oooh! That must be the corniest idea I've seen for months. :-) Impressive!
+
+> One will then be able to implement a linear time dictionary.
+> 
+> You might find this suggestion a little unusual but after
+> investigation I think you will find that it gives a better
+> architecture and performance than a pure TeX macros approach.
+> 
+> I look forward to discussing this.
+
+While I generally enjoy exploring new TeX programming tricks, I don't 
+see how this would buy you _anything_ for the problem at hand. What 
+this (ab)use of the the fontdimens of \nullfont would provide is a 
+compact <number> -> <number> table accessed by saying
+
+   \fontdimen <number> \nullfont
+
+but that's pretty much it. You can use the table for storing the 
+transition function of a finite automaton, by combining input symbol 
+and current state into an <integer constant>, but setting that up and 
+then reacting to the state change will take a couple of macro 
+expansions at least, so I doubt you're much better off than if doing it 
+purely in terms of macros. There's certainly no extra-tight inner loop 
+that you could take advantage of.
+
+If one feels like implementing some new mathematical function -- like 
+xor, the float placement bit-fiddling, or GF(16) arithmetic -- in TeX 
+then this is probably a useful trick, but otherwise not.
+
+Lars Hellström
+

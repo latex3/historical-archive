@@ -1,0 +1,138 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 15 Sep 2007 22:45:11 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l8FKj21T011973
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 15 Sep 2007 22:45:02 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l8FKeKMf014307
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 15 Sep 2007 22:40:20 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l8EM12fF028131;
+	Sat, 15 Sep 2007 22:40:04 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 122518 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 15 Sep
+          2007 22:40:04 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l8FKe48i006595 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 15 Sep 2007 22:40:04 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id l8FKdq0s030385 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 15 Sep 2007 22:39:57 +0200
+Received: from p54A9B105.dip0.t-ipconnect.de [84.169.177.5]
+          (helo=morse.mittelbach-online.de) by mrelayeu.kundenserver.de
+          (node=mrelayeu8) with ESMTP (Nemesis),
+          id 0ML31I-1IWeQo1FNw-0001NO; Sat, 15 Sep 2007 22:39:58 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 5405B137D6; Sat, 15 Sep 2007 22:39:57 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <87abrn26y6.fsf@buckbeak.hogwarts>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1/VplLpzyN/LNUOo6KFN0rnAK5bpQpEDR4Jmxv
+              Tn20IDgGnNqZmkJpp+h6pLzBfy4gCgfqWQRHbRsQ6iMktmMs56
+              1thfhmIpwP/dEkpk3g4yOzaHt8oxVMx
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18156.17180.930651.165216@morse.mittelbach-online.de>
+Date:         Sat, 15 Sep 2007 22:39:56 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: \tlp_use:N considered harmful?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <87abrn26y6.fsf@buckbeak.hogwarts>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Sep 2007 20:45:11.0701 (UTC) FILETIME=[4F7E9C50:01C7F7D9]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5064
+
+Andreas,
+
+I think you got the subject quite right when you wrote that \tlp_use:N is
+harmful. When we experimented with the various data types it seemed logical at
+first glance to include a "use" for tlps but personally I always was kind of
+sceptical (and usually didn't use it) and your example gives a good reason why
+it isn't really workable.
+
+So I think the spec here should be that tlps hold tokens and their "use" is to
+put the tlp into the input stream directly. after all TeX's model of execution
+is to simply go through the input token list and expand and execute them one
+by one and a tlp is simply a storage bin for such a sequence of input tokens.
+
+
+However, I'm not sure that from this it should follow that one can use (or
+should use) a tlp in arguments of commands and expect them to automatically
+expand to the tlp content, or more exactly I think one should not, so
+
+  \prop_gput:Ooo \l_tmp_tlp
+
+rather than
+
+  \prop_gput:Noo \l_tmp_tlp
+
+hoping that the prop module will do the expansion to arrive at a plist
+variable in its first argument
+
+
+higher level data types since if you pass
+
+
+ > Here is an example that actually does what I want it to, but might not
+ > be considered clean code since it depends on implementation details:
+ > 
+ >   \RequirePackage{l3prop}
+ >   \ExplSyntaxOn
+ > 
+ >   \tlp_new:Nn \a_tlp {aaa}
+ >   \tlp_new:Nn \b_tlp {bbb\a_tlp}
+ > 
+ >   \prop_new:N \a_plist
+ >   \prop_gput:Nno \a_plist {key} {\b_tlp}
+ >   \showthe\a_plist
+
+the above gives you
+
+   bbb\a_tlp  and not bbbaaa
+
+as value. if that is what you wanted then I would say with the spec that the
+"use" of tlps is to simply put them into the input stream the above wouldn't
+use implementation details but specification details.
+
+ > So I wonder if \tlp_use:N should be considered harmful. It seems
+ > to be equal to \toks_use:N or \int_use:N, but definitely isn't.
+
+yes i agree
+
+ > And then: What's the error message in \tlp_use:N for? It looks
+ > so arbitrarily. Probably it's not?
+
+well I don't know when that was added, but i can see some logic behind it (not
+that i think it is worth having really (as i think one should get rid of the
+whole cmd). I think the idea was that a tlp is a storage bin so could never be
+"\scan_stop:", but either "empty" or contains a list of tokens. So
+"\scan_stop:" means something like \tlp_use:c tried to use a tlp that simply
+doesn't exist
+
+cheers
+frank
+
+
+ps speaking of using implementation details: one of the reason why xor was so
+broken was that xmarks.dtx used the knowledge that plists were implementated
+as sequences (via macros) in a bad manner and after (I think) Morten
+reimplemented the property module using toks that had serious implications
+

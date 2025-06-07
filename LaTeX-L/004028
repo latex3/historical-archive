@@ -1,0 +1,207 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f36CdE418178 for <schoepf@proteosys.de>; Fri, 6 Apr 2001 14:39:15 +0200
+Received:  by webgate.proteosys.de (8.11.0/8.11.0) with ESMTP id f36CcRH09817 . for <schoepf@proteosys.de>; Fri, 6 Apr 2001 14:38:27 +0200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C0BE96.96C15B80"
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate1.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f36Cd8V13480 for <schoepf@proteosys.de>; Fri, 6 Apr 2001 14:39:08 +0200 (MET DST)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA14965 for <schoepf@mail.uni-mainz.de>; Fri, 6 Apr 2001 14:39:08 +0200 (MEST)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f36CcnJ06068 for <schoepf@UNI-MAINZ.DE>; Fri, 6 Apr 2001 14:39:08 +0200 (MET DST)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.AAF2C664@mail.listserv.gmd.de>; Fri, 6 Apr 2001 14:38:11 +0200
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 493574 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 6 Apr 2001 14:38:45 +0200
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id OAA05261 for <latex-l@relay.urz.uni-heidelberg.de>; Fri, 6          Apr 2001 14:38:44 +0200 (MET DST)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id OAA54434 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 6 Apr          2001 14:38:44 +0200
+Received:  from abel.math.umu.se (abel.math.umu.se [130.239.20.139]) by          relay.uni-heidelberg.de (8.10.2+Sun/8.10.2) with ESMTP id          f36Ccif15339 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 6 Apr 2001          14:38:44 +0200 (MET DST)
+Received:  from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by          abel.math.umu.se (8.9.2/8.9.2) with ESMTP id OAA27575 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 6 Apr 2001 14:36:06 +0200 (CEST)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Sender: lars@abel.math.umu.se
+x-mime-autoconverted: from quoted-printable to 8bit by                      relay.urz.uni-heidelberg.de id OAA05262
+Content-class: urn:content-classes:message
+Subject:      Catcodes in .ind and .gls files
+Date: Fri, 6 Apr 2001 13:38:42 +0100
+Message-ID:  <l03130300b6f360c17ac8@[130.239.20.144]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: =?iso-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4028
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C0BE96.96C15B80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+While working on the docindex package, I encountered a problem =
+concerning
+catcodes which has some principal implications, hence I thought it might =
+be
+discussed on this list.
+
+As you may know, gind.ist and gglo.ist insert the following commands at =
+the
+top of each .ind or .gls file they are involved in making:
+
+\makeatletter\scan@allowedfalse
+
+As far as I can see the \scan@allowedfalse is completely redundant =
+(there
+are no macrocode or macrocode* environments in these files) and I =
+thought
+the same was true for the \makeatletter (only used so that
+\scan@allowedfalse could be specified without using \csname), but it =
+turns
+out that removing it breaks things. Some robust (?) LaTeX commands (such =
+as
+\TeX and \@) are not auto-protected and have expansions that contain
+private macros, i.e., macros whose names contain the @ character. When =
+used
+in the argument of e.g. the \changes or \SortIndex commands it is their
+expansions that are written to the .glo/.idx file and these are only
+tokenized correctly if @ is a letter.
+
+I can think of three principal views on this problem:
+
+1. .ind and .gls files are "external" to LaTeX, so they should have =
+normal
+catcodes; hence commands like \TeX and \@ should not be expanded when
+written to them. (This implies that the LaTeX kernel documentation is in
+error, since it has lots of unprotected \TeX's in \changes arguments. =
+Some
+\changes commands also contain \@'s, but these definitely are in error =
+and
+should be @'s instead since they only occur as \cs{\@ ... )
+
+2. The exact catcodes that should be in force when an .ind or .gls file =
+is
+read can be determined by each document separately. (This would be the
+"noone's wrong, really" option.)
+
+3. .ind and .gls files are "internal" to LaTeX (like the .aux file) so @
+should be a letter when they are inputted.
+
+Does anyone on the team or otherwise have any views on this?
+
+Lars Hellstr=F6m
+
+------_=_NextPart_001_01C0BE96.96C15B80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Catcodes in .ind and .gls files</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>While working on the docindex package, I encountered a =
+problem concerning</FONT>
+
+<BR><FONT SIZE=3D2>catcodes which has some principal implications, hence =
+I thought it might be</FONT>
+
+<BR><FONT SIZE=3D2>discussed on this list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As you may know, gind.ist and gglo.ist insert the =
+following commands at the</FONT>
+
+<BR><FONT SIZE=3D2>top of each .ind or .gls file they are involved in =
+making:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter\scan@allowedfalse</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As far as I can see the \scan@allowedfalse is =
+completely redundant (there</FONT>
+
+<BR><FONT SIZE=3D2>are no macrocode or macrocode* environments in these =
+files) and I thought</FONT>
+
+<BR><FONT SIZE=3D2>the same was true for the \makeatletter (only used so =
+that</FONT>
+
+<BR><FONT SIZE=3D2>\scan@allowedfalse could be specified without using =
+\csname), but it turns</FONT>
+
+<BR><FONT SIZE=3D2>out that removing it breaks things. Some robust (?) =
+LaTeX commands (such as</FONT>
+
+<BR><FONT SIZE=3D2>\TeX and \@) are not auto-protected and have =
+expansions that contain</FONT>
+
+<BR><FONT SIZE=3D2>private macros, i.e., macros whose names contain the =
+@ character. When used</FONT>
+
+<BR><FONT SIZE=3D2>in the argument of e.g. the \changes or \SortIndex =
+commands it is their</FONT>
+
+<BR><FONT SIZE=3D2>expansions that are written to the .glo/.idx file and =
+these are only</FONT>
+
+<BR><FONT SIZE=3D2>tokenized correctly if @ is a letter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I can think of three principal views on this =
+problem:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1. .ind and .gls files are &quot;external&quot; to =
+LaTeX, so they should have normal</FONT>
+
+<BR><FONT SIZE=3D2>catcodes; hence commands like \TeX and \@ should not =
+be expanded when</FONT>
+
+<BR><FONT SIZE=3D2>written to them. (This implies that the LaTeX kernel =
+documentation is in</FONT>
+
+<BR><FONT SIZE=3D2>error, since it has lots of unprotected \TeX's in =
+\changes arguments. Some</FONT>
+
+<BR><FONT SIZE=3D2>\changes commands also contain \@'s, but these =
+definitely are in error and</FONT>
+
+<BR><FONT SIZE=3D2>should be @'s instead since they only occur as \cs{\@ =
+... )</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2. The exact catcodes that should be in force when an =
+.ind or .gls file is</FONT>
+
+<BR><FONT SIZE=3D2>read can be determined by each document separately. =
+(This would be the</FONT>
+
+<BR><FONT SIZE=3D2>&quot;noone's wrong, really&quot; option.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>3. .ind and .gls files are &quot;internal&quot; to =
+LaTeX (like the .aux file) so @</FONT>
+
+<BR><FONT SIZE=3D2>should be a letter when they are inputted.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Does anyone on the team or otherwise have any views on =
+this?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Lars Hellstr=F6m</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C0BE96.96C15B80--
+

@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1373" "Fri" " 7" "April" "1995" "12:16:58" "-0300" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "39" "Re: Latex modularity" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzd.zdv.Uni-Mainz.DE [134.93.178.4]) by trudi.zdv.Uni-Mainz.DE (8.6.11/8.6.11) with ESMTP id NAA10838 for <schoepf@goofy.zdv.uni-mainz.de>; Fri, 7 Apr 1995 13:19:53 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP24NNZAKWA0UL3R@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 13:19:25 +0100
+Received: from degate.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP24N5JXEO9TDEOV@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 13:19:00 +0100
+Received: from vm.gmd.de by degate.gmd.de (SF for OpenVMS v1.0-alpha)
+ with SMTP id 9CC4493E ; Fri, 7 Apr 1995 13:19:01 +0100
+Received: from VM.GMD.DE by vm.gmd.de (IBM VM SMTP V2R2)
+ with BSMTP id 5667; Fri, 07 Apr 95 13:13:39 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2a/1.8a) with BSMTP id 2569; Fri,
+ 7 Apr 1995 13:13:33 +0200
+In-reply-to: <9504071100.AA23328@m1.cs.man.ac.uk> (message from Alex Stark on
+ Fri, 7 Apr 1995 11:55:03 CST)
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Message-id: <01HP24N5PJYA9TDEOV@MZDMZA.ZDV.UNI-MAINZ.DE>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Fri, 07 Apr 1995 12:16:58 -0300 (BST)
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Subject: Re: Latex modularity
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1635
+
+It is alreay possible to build formats by sticking \dump in the
+preamble.
+
+Basically you just need to go
+
+initex &latex file
+
+and put \dump in the preamble after the packages are loaded.
+
+This assumes that the packages do not put anything on the main
+vertical list (such as \special's) that would not be preserved by the
+\dump in the way you would want. (This is one of the main reasons for
+the \AtBeginDvi command that was added at Christmas)
+
+
+The main problem then is that your document must be edited  to remove
+the lines
+  \documentclass ... \usepackage ... \dump
+before it can be used with your custom format made by the above
+procedure.
+
+It is possible to make the custom format automatically skip these
+lines, so that your document remains a valid latex file, but processes
+more quickly with the custom format.
+
+See the file `mylatex.ltx' on ctan somewhere for a file that
+implements such a scheme.
+
+mylatex.ltx is rather a hack, but the general idea is sound (and
+textures has its own mechanisms for doing something similar, I
+understand).
+
+There are, as you say, problems with this approach, validating that
+the `custom' format is suitable for a particular document. The above
+file just ducks this issue, as I only wrote it off the top of my head
+as an answer to a question on comp.text.tex, but someone could make a
+more robust version using those ideas.
+
+David
+

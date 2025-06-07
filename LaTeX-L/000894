@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1939" "Fri" "4" "December" "92" "09:25:10" "+0100" "rolf.lindgren@USIT.UIO.NO" "rolf.lindgren@USIT.UIO.NO" nil "48" "Who needs a ?charset primitive (was: structured comments)" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA13909; Fri, 4 Dec 92 09:26:31 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA29173; Fri, 4 Dec 92 09:26:29 +0100
+Message-Id: <9212040826.AA29173@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1349; Fri, 04 Dec 92 09:27:04 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6173;
+ Fri, 04 Dec 92 09:27:02 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6171;
+ Fri, 04 Dec 92 09:26:58 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 4 Dec 92 09:25:10 +0100
+From: rolf.lindgren@USIT.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Who needs a ?charset primitive (was: structured comments)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 894
+
+
+Giving the charset in structured comments or, even, as a macro in the
+preamble isn't good enough.
+
+Imagine somebody using fonts from lots of different font vendors. They may
+have different encodings, contain different glyphs, etc. Like, for
+instance, the difference between CM fonts and Adobe's PostScript fonts.
+
+BTW - you may stumble now, and say "But CM fonts and PostScript fonts have
+the same encoding!" This is not correct, Adobe's PostScript fonts contain
+many more glyphs than the CM fonts, but dvi drivers for PostScript have a
+tendency to pick out a limited amount of the glyphs in the font.
+
+_Furthermore_, one may want to create fonts cointaining glyphs from
+different fonts, and with a non-standard encoding. This is especially true
+if one operates with Adobe's Expert font collection.
+
+The only way I can conceive of to handle this is already present in TeX.
+
+For each font family, create a macro that remaps the code set. Forget
+latin1, latin1 is for programmers, not for typographical convenience.
+
+So I'd create macros for
+
+	\adoberoman % TeX CM ++
+	\adobett    % TeX TT ++ (We want verbatim to work with adobe monospace)
+	\cmroman    % TeX CM ++
+	\cmtt	    % TeX TT ++
+	\adobetextexptert % TeX CM + Expert ligatures + greek chars from
+			  % Symbol, etc.
+
+This would give me an opportunity to swith between CM and PS fonts in the
+same document, and make typographically complex documents. They might be
+hard to port tho, because you'd have to ship the vf fonts as well.
+
+Then I migh define, say, Adobe Garamond as
+
+	\newcommand{AGaramond}{
+		\family{agaramond}
+		\adobetextexpert
+		\setlength{leadingfraction}{1.2}
+			% compensate 20% for tall ascenders
+			% Does there already exist a hook for this?
+	}
+
+       Rolf Lindgren           |       "The opinions expressed above are
+       616 Bjerke Studentheim  |        not necessarily those of anyone"
+       N-0589 OSLO 5           |           rolf.lindgren@usit.uio.no
+

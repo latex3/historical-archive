@@ -1,0 +1,78 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 12 Sep 2008 09:59:37 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8C7xTOJ011405
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 12 Sep 2008 09:59:32 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8C7obpq005021
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 12 Sep 2008 09:50:37 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8BM16Lp032237;
+	Fri, 12 Sep 2008 09:50:22 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 29628 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 12 Sep
+          2008 09:50:22 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8C7oMr2007115 for <latex-l@listserv.uni-heidelberg.de>;
+          Fri, 12 Sep 2008 09:50:22 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8C7o2ih013963
+          for <latex-l@listserv.uni-heidelberg.de>; Fri, 12 Sep 2008 09:50:08
+          +0200
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1Ke3Pm-0001Yx-BW for
+          latex-l@listserv.uni-heidelberg.de; Fri, 12 Sep 2008 08:50:02 +0100
+Received: from [139.222.114.14] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1Ke3Pl-0005PO-Kk for latex-l@listserv.uni-heidelberg.de; Fri, 12 Sep
+          2008 08:50:01 +0100
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48CA1F27.2040902@morningstar2.co.uk>
+Date:         Fri, 12 Sep 2008 08:49:59 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \tlp_put ...
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Sep 2008 07:59:37.0440 (UTC) FILETIME=[807DDE00:01C914AD]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5295
+
+Hello all,
+
+I'm having a slight issue with the \tlp_put macros.  I'd like to store
+something containing a literal `#1'.  Using the current definition:
+
+\def_long_new:Npn \tlp_put_right:Nn #1#2{
+  \tlp_set:Nn \l_exp_tlp{#2}
+  \tlp_set:Nx #1{\exp_not:o{#1}\exp_not:o{\l_exp_tlp}}
+}
+
+I get an error at the \tlp_set:Nn \l_exp_tlp stage.  I wonder if there
+is a reason not to do:
+
+\def_long_new:Npn \tlp_put_right:Nn #1#2{
+  \tlp_set:Nx #1{\exp_not:o{#1}\exp_not:n{#2}}
+}
+
+which does not suffer from the same issue.
+-- 
+Joseph Wright
+

@@ -1,0 +1,259 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Wed, 8 Jan 2003 15:22:32 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h08EMT6C020924 for <rainer.schoepf@PROTEOSYS.COM>; Wed, 8 Jan 2003 15:22:30 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h08ECVwO019413; Wed, 8 Jan 2003 15:12:31 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2B721.61A80400"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h081CYle025022; Wed, 8 Jan 2003 15:05:56 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 5922 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 8 Jan 2003 15:05:56 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h08E5uTk030415 for          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 8 Jan 2003 15:05:56 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail22.messagelabs.com (mail22.messagelabs.com          [193.109.255.115]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with          SMTP id h08ECTEV008293 for <LATEX-L@listserv.uni-heidelberg.de>; Wed,          8 Jan 2003 15:12:29 +0100 (MET)
+Received:  (qmail 27540 invoked from network); 8 Jan 2003 14:12:16 -0000
+Received:  from smtp-5.star.net.uk (212.125.75.74) by          server-10.tower-22.messagelabs.com with SMTP; 8 Jan 2003 14:12:16          -0000
+Received:  (qmail 20629 invoked from network); 8 Jan 2003 14:12:19 -0000
+Received:  from nagmx1.nag.co.uk (HELO nag.co.uk) (62.231.145.242) by          smtp-5.star.net.uk with SMTP; 8 Jan 2003 14:12:19 -0000
+Received:  from penguin.nag.co.uk (IDENT:root@penguin.nag.co.uk          [192.156.217.14]) by nag.co.uk (8.9.3/8.9.3) with ESMTP id OAA07386          for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 8 Jan 2003 14:12:10 GMT
+Received:  by penguin.nag.co.uk (8.9.3) id OAA06820; Wed, 8 Jan 2003 14:12:06 GMT
+In-Reply-To:  <15900.10746.324648.315246@istrati.mittelbach-online.de> (message              from Frank Mittelbach on Wed, 8 Jan 2003 14:39:06 +0100)
+References: <200212031601.gB3G11cQ009558@sun.dante.de>            <15899.14827.804209.458595@istrati.mittelbach-online.de>            <20030108101702392721.GyazMail.jbezos@wanadoo.es>            <15900.10746.324648.315246@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 08 Jan 2003 14:22:32.0584 (UTC) FILETIME=[62012080:01C2B721]
+X-VirusChecked: Checked
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -0.2 () IN_REP_TO,REFERENCES,SPAM_PHRASE_03_05
+X-Env-Sender: davidc@nag.co.uk
+X-Msg-Ref: server-10.tower-22.messagelabs.com!1042035136!2706
+Content-class: urn:content-classes:message
+Subject:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Date: Wed, 8 Jan 2003 15:12:06 +0100
+Message-ID: A<200301081412.OAA06820@penguin.nag.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Thread-Index: AcK3IWIb56vawdZIQiuZx5B9yH1cIg==
+From: "David Carlisle" <davidc@NAG.CO.UK>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4419
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2B721.61A80400
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> BOMs?
+
+Byte Order Mark. (which is mainly for UTF16 to distinguish between big
+and little endian flavours but Microsoft tools in particular tend to
+stick them on utf8 files as well).
+
+I don't think that anything special need be done for these
+since the BOM (if it isn't recognised as a BOM) will be recognised as
+ZERO WIDTH NO-BREAK SPACE (xFEFF) which means for a typesetting system =
+there
+isn't really a lot that needs to be done.
+(except of course for the top level file where perhaps the utf8 will not
+be set up early enough, and typesetting even zero width characters
+before \documentclass doesn't work.
+
+More serious problems (which make me wonder if it's worth the effort of
+supporting utf8 in a standard TeX) are combining characters.
+In xmltex you can make these work by making every possible base
+character active and look ahead for a following combiner, but that is
+turned off by default as it's not exactly fast or robust.
+In LaTeX you can't do much other than make a combining accent generate =
+an
+error as you can't really make the base ascii characters active if you
+are using the \abc style markup.
+
+It's easy to make a prepass with (say) perl to get rid of the
+combining characters and replace them by tex accent markup, but if you
+are doing that you can replace all of the utf8 (and utf16 as well) by
+traditional tex markup. this is slightly less portable but a whole lot
+more robust than doing it in TeX.
+
+The second thing that I have never really fixed in xmltex in this area
+is that the style of mapping the input character to an internal csname
+which you then map to a typesetting instruction is fine for supporting
+small European based character sets, but it soon gets to be pain if
+you are supporting large Asian character sets.
+
+CJK package's utf8 support has an option of mapping utf8 encoded input
+straight to a set of 8bit fonts encoded to map easily from utf8.
+This seems much more reasonable for supporting large Unicode fonts:
+Split them up as 8bit fonts so TeX can see them and trivially map to the
+right font/character from the utf8 sequences. I never got this working
+in xmltex though (as modifying anything in xmltex is a pain. It's not
+the most documented piece of code ever produced)
+
+
+David
+
+________________________________________________________________________
+This e-mail has been scanned for all viruses by Star Internet. The
+service is powered by MessageLabs. For more information on a proactive
+anti-virus service working around the clock, around the globe, visit:
+http://www.star.net.uk
+________________________________________________________________________
+
+------_=_NextPart_001_01C2B721.61A80400
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: latex/3480: Support for UTF-8 missing in =
+inputenc.sty</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; BOMs?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Byte Order Mark. (which is mainly for UTF16 to =
+distinguish between big</FONT>
+
+<BR><FONT SIZE=3D2>and little endian flavours but Microsoft tools in =
+particular tend to</FONT>
+
+<BR><FONT SIZE=3D2>stick them on utf8 files as well).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I don't think that anything special need be done for =
+these</FONT>
+
+<BR><FONT SIZE=3D2>since the BOM (if it isn't recognised as a BOM) will =
+be recognised as</FONT>
+
+<BR><FONT SIZE=3D2>ZERO WIDTH NO-BREAK SPACE (xFEFF) which means for a =
+typesetting system there</FONT>
+
+<BR><FONT SIZE=3D2>isn't really a lot that needs to be done.</FONT>
+
+<BR><FONT SIZE=3D2>(except of course for the top level file where =
+perhaps the utf8 will not</FONT>
+
+<BR><FONT SIZE=3D2>be set up early enough, and typesetting even zero =
+width characters</FONT>
+
+<BR><FONT SIZE=3D2>before \documentclass doesn't work.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>More serious problems (which make me wonder if it's =
+worth the effort of</FONT>
+
+<BR><FONT SIZE=3D2>supporting utf8 in a standard TeX) are combining =
+characters.</FONT>
+
+<BR><FONT SIZE=3D2>In xmltex you can make these work by making every =
+possible base</FONT>
+
+<BR><FONT SIZE=3D2>character active and look ahead for a following =
+combiner, but that is</FONT>
+
+<BR><FONT SIZE=3D2>turned off by default as it's not exactly fast or =
+robust.</FONT>
+
+<BR><FONT SIZE=3D2>In LaTeX you can't do much other than make a =
+combining accent generate an</FONT>
+
+<BR><FONT SIZE=3D2>error as you can't really make the base ascii =
+characters active if you</FONT>
+
+<BR><FONT SIZE=3D2>are using the \abc style markup.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It's easy to make a prepass with (say) perl to get rid =
+of the</FONT>
+
+<BR><FONT SIZE=3D2>combining characters and replace them by tex accent =
+markup, but if you</FONT>
+
+<BR><FONT SIZE=3D2>are doing that you can replace all of the utf8 (and =
+utf16 as well) by</FONT>
+
+<BR><FONT SIZE=3D2>traditional tex markup. this is slightly less =
+portable but a whole lot</FONT>
+
+<BR><FONT SIZE=3D2>more robust than doing it in TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The second thing that I have never really fixed in =
+xmltex in this area</FONT>
+
+<BR><FONT SIZE=3D2>is that the style of mapping the input character to =
+an internal csname</FONT>
+
+<BR><FONT SIZE=3D2>which you then map to a typesetting instruction is =
+fine for supporting</FONT>
+
+<BR><FONT SIZE=3D2>small European based character sets, but it soon gets =
+to be pain if</FONT>
+
+<BR><FONT SIZE=3D2>you are supporting large Asian character sets.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>CJK package's utf8 support has an option of mapping =
+utf8 encoded input</FONT>
+
+<BR><FONT SIZE=3D2>straight to a set of 8bit fonts encoded to map easily =
+from utf8.</FONT>
+
+<BR><FONT SIZE=3D2>This seems much more reasonable for supporting large =
+Unicode fonts:</FONT>
+
+<BR><FONT SIZE=3D2>Split them up as 8bit fonts so TeX can see them and =
+trivially map to the</FONT>
+
+<BR><FONT SIZE=3D2>right font/character from the utf8 sequences. I never =
+got this working</FONT>
+
+<BR><FONT SIZE=3D2>in xmltex though (as modifying anything in xmltex is =
+a pain. It's not</FONT>
+
+<BR><FONT SIZE=3D2>the most documented piece of code ever =
+produced)</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>David</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+
+<BR><FONT SIZE=3D2>This e-mail has been scanned for all viruses by Star =
+Internet. The</FONT>
+
+<BR><FONT SIZE=3D2>service is powered by MessageLabs. For more =
+information on a proactive</FONT>
+
+<BR><FONT SIZE=3D2>anti-virus service working around the clock, around =
+the globe, visit:</FONT>
+
+<BR><FONT SIZE=3D2><A =
+HREF=3D"http://www.star.net.uk">http://www.star.net.uk</A></FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2B721.61A80400--
+

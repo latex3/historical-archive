@@ -1,0 +1,82 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 19 Sep 2008 03:52:30 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8J1qORj014941
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 19 Sep 2008 03:52:25 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8J1m14A009620
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 19 Sep 2008 03:48:02 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8IM16lX020626;
+	Fri, 19 Sep 2008 03:47:58 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 36805 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 19 Sep
+          2008 03:47:58 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8J1lvxY005700 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 19 Sep 2008 03:47:58 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.243])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m8J1lig4022123 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 19 Sep
+          2008 03:47:48 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so181429rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 18 Sep 2008 18:47:43 -0700
+          (PDT)
+Received: by 10.141.201.1 with SMTP id d1mr8050801rvq.117.1221788863723; Thu,
+          18 Sep 2008 18:47:43 -0700 (PDT)
+Received: by 10.141.167.13 with HTTP; Thu, 18 Sep 2008 18:47:43 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <LISTSERV%200809181802060700.039F@LISTSERV.UNI-HEIDELBERG.DE>
+Message-ID:  <27990a880809181847p7f2fa697x5ce693bb9b53e71a@mail.gmail.com>
+Date:         Fri, 19 Sep 2008 11:17:43 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: \scantokens, \everyeof, \endlinechar
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <LISTSERV%200809181802060700.039F@LISTSERV.UNI-HEIDELBERG.DE>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 19 Sep 2008 01:52:30.0493 (UTC) FILETIME=[604CBCD0:01C919FA]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5365
+
+On Fri, Sep 19, 2008 at 1:32 AM, Joseph Wright
+<joseph.wright@morningstar2.co.uk> wrote:
+> I should point out that this was, implicitly, a two-part questions.  Part
+> one was about the primitives, part two is how to execute:
+>
+> \tlp_gset:Nx \g_siunitx_tmpa_tlp {\etex_scantokens:D {#1}}
+>
+> while _ is active (and I guess ideally : is "other").  In my current setup,
+> I only have to worry about @, which I just accept will be a letter.  But I
+> have to have _  active.
+
+Ah :) Bit of a pickle.
+
+I guess I'd do something like
+
+\def:Npn \siunitxtmp {
+  \tlp_gset:Nx \g_siunitx_tmpa_tlp {\etex_scantokens:D {#1}}}
+\char_make_active:N \_
+\siunitxtmp
+
+(unless my brain hasn't woken up yet...I think that will work)
+
+Will
+

@@ -1,0 +1,62 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1246" "Tue" "2" "April" "1996" "15:35:14" "+0200" "Bernard GAULLE" "gaulle@IDRIS.FR" nil "29" "Changing \\hyphenchar" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.6.12/8.6.12) with ESMTP id PAA11486; Tue, 2 Apr 1996 15:37:24 +0200
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.BF35C423@listserv.gmd.de>; Tue, 2 Apr 1996 15:37:21 +0200
+Received: from URZINFO.URZ.UNI-HEIDELBERG.DE by URZINFO.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 65148 for
+          LATEX-L@URZINFO.URZ.UNI-HEIDELBERG.DE; Tue, 2 Apr 1996 14:35:43 +0100
+Received: from lumiere.idris.fr (root@lumiere.idris.fr [130.84.8.14]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with ESMTP id PAA26378 for
+          <LATEX-L@urz.uni-heidelberg.de>; Tue, 2 Apr 1996 15:35:37 +0200 (MET
+          DST)
+Received: from murnau.idris.fr (murnau.idris.fr [130.84.8.20]) by
+          lumiere.idris.fr (8.7.5/8.7.3) with ESMTP id PAA06223; Tue, 2 Apr
+          1996 15:35:15 +0200
+Received: (from gaulle@localhost) by murnau.idris.fr (8.7.5/8.7.1) id PAA03506;
+          Tue, 2 Apr 1996 15:35:14 +0200
+Message-ID:  <199604021335.PAA03506@murnau.idris.fr>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Date:         Tue, 2 Apr 1996 15:35:14 +0200
+From: Bernard GAULLE <gaulle@IDRIS.FR>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Subject:      Changing \hyphenchar
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1731
+
+   The basic problem was revealed with DC 1.1 for French texts.
+
+French compound-word must not be hyphenated otherwise than "compound-"
+and "word". This is the basic linguistic and typographic rule,
+even "compound" and "word" can be hyphenated separately.
+
+With the cmr, as established by DEK, the "hyphen" char (outside maths)
+is "-" ('055) and the printed glyph is font slot '055
+Defaultly \lccode`\-=0 allows "compound-word" to be correctly
+hyphenated with regard to the French rule.
+
+With the dc, the printed glyph is font slot '177 / ^^7f (except with olddc
+package) and DEK "hyphen" char is no more pointing to the font \hyphenchar.
+Consequently:
+with \lccode`\-=0 "compound-word" is wrongly hyphenated on "compound".
+with \lccode`\-=\- "compound-word" is wrongly hyphenated on "compound" and
+                   "word".
+
+Ok, the solution is: type in ^^7f in place of "-" and the problem will
+be solved :-) Or, worst, activate "-"...
+
+Clearly, DEK _input_ hyphen char can't be changed (otherwise let me know)
+and _font_ hyphen char is open via \hyphenchar. As of today .fd files
+of the DC distribution introduce the problem for french texts.
+
+I'ld like (and all French speaking people with me) a general solution
+be found for LaTeX.
+
+  --bg
+

@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1995" "Sun" "2" "March" "1997" "13:48:57" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "36" "Re: Shortref mechanism" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id NAA25111; Sun, 2 Mar 1997 13:52:56 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.7E0EAA94@listserv.gmd.de>; Sun, 2 Mar 1997 13:52:55 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 107680 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 2 Mar 1997 13:52:51 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id NAA06664 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 2 Mar 1997 13:52:02 +0100
+          (MET)
+Received: from [130.237.37.78] (sl58.modempool.kth.se [130.237.37.78]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id NAA26029 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 2 Mar 1997 13:47:11 +0100
+          (MET)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130504af3f1549422d@[130.237.37.139]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 2 Mar 1997 13:48:57 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1844
+
+Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE> wrote:
+
+>The above means that the shortref mechanism either has to be fully
+>expandable or that one can't use it to produce glyphs that might play
+>a part in ligature or kerning tables.
+
+  I cannot follow the details in your reasoning, but I can note that with
+deterministic parsing, the method generally used in LaTeX, conditional
+parsing have such limits.
+  But with non-deterministic parsing more general things can be done:
+  For example, I just made a definition command that can produce commands
+having optional arguments; in this general approach, I had to switch from
+LaTeX style deterministic parsing to non-deterministic parsing.
+
+  A command then picks down a look-ahead portion, like to the next space
+    \def\foo#1 {<def text> } %% Putting back the space consumed by the argument.
+It then examines this argument, and then has the opportunity of rejecting
+whatever non-parsed stuff unaffected, by returning (a part of) the
+_original_ look-ahead portion. Certainly, spaces do count in this approach.
+If the the only problem is the next character (like a brace) after the
+command or active character, perhaps you can combine, doing a simple
+one-token look-ahead, before the argument pickup; otherwise, TeX requires
+arguments to not have an extra "}", so one cannot enclose such a command in
+braces without at least one space occurs within those braces. (So there
+must be a look-ahead token that you can ensure to be on the same group
+level as the command.)
+
+  Actually, what is needed, is a simple extension of the TeX \def command:
+    \def\name<parameter text>{definition text}[exception text]
+If a command somehow is unable to process the parameter text, then the
+original input text (before the parsing of the parameter text began) is
+left unaffected, and the execution passes to the exception text.
+  Then stuff like optional commands could be implemented most easily, and
+perhaps the stuff you are asking for, too.
+
+  Hans Aberg
+

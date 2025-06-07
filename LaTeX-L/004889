@@ -1,0 +1,655 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 31 Oct 2005 06:52:09 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j9V5TJrD024721
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 31 Oct 2005 06:29:20 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id j9V5NrkC029674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 31 Oct 2005 06:23:53 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id j9U1o7Op022995;
+	Mon, 31 Oct 2005 06:23:26 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1004377 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Oct
+          2005 06:23:25 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de
+          [129.206.100.94]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id j9U1o7Ol022995; Mon, 31 Oct 2005 06:23:24 +0100
+Message-ID:  <LISTSERV%200510310623238871.3C11@LISTSERV.UNI-HEIDELBERG.DE>
+Date:         Mon, 31 Oct 2005 06:23:23 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: David Royster <droyster@EMAIL.UNCC.EDU>
+Subject: listoffigures and listoftables not writing to DVI file
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 31 Oct 2005 05:52:10.0009 (UTC) FILETIME=[3BC44090:01C5DDDF]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4889
+
+I am having a strange occurance with listoffigures and listoftables.  The
+lof and lot files are being written (and look standard), but nothing is
+being put into the DVI file.  Using MikTEX and documentstyle{book}. On
+another master file these pages are created.  Thus, the question is, what
+can possibly turn off the writing of a list of figures or tables to the
+DVI file?
+
+The Master File is below followed by the log file
+
+\hfuzz 7.5pt
+\documentclass[11pt,makeidx,openany]{book}
+\usepackage{graphicx,latexsym,amsmath}
+\usepackage{amssymb}
+\usepackage{fancyheadings}
+\usepackage{latexcad}
+\usepackage{calrsfs}
+\usepackage{wrapfig}
+%\makeindex
+
+\setlength{\topmargin}{0pt}
+\setlength{\oddsidemargin}{.4truein}
+\setlength{\evensidemargin}{.4truein}
+\setlength{\textwidth}{6truein}
+\setlength{\textheight}{8.9truein}
+\flushbottom
+
+\pagestyle{fancy}
+
+\newcommand{\bn}{\ensuremath{\mathbb N}}
+\newcommand{\bz}{\ensuremath{\mathbb Z}}
+\newcommand{\br}{\ensuremath{\mathbb R}}
+\newcommand{\bq}{\ensuremath{\mathbb Q}}
+\newcommand{\hp}{\ensuremath{\mathbb H}^2}
+\newcommand{\homeo}{\approx}
+\newcommand{\hyperparallel}{\mathbin{)(}}
+\newcommand{\iso}{\approx}
+\newcommand{\myspace}{\phantom{XX}}
+\newcommand{\overbar}[1]{\overline{#1}}
+\newcommand{\geoline}[1]{\smash{\stackrel{\textstyle\longleftrightarrow}
+{#1}}}
+\newcommand{\ray}[1]{\smash{\overrightarrow{#1}}}
+\newcommand{\darc}[1]{\smash{\stackrel{\frown}{#1}}}
+\newcommand{\angled}[1]{\angle #1^{\circ}}
+\newcommand{\defect}[1]{\mbox{\em defect}\,(\triangle #1)\,}
+\newcommand{\<}{\langle}
+\newcommand{\bh}{\ensuremath{\mathbb H}}
+\newcommand{\sech}{\mathop{\rm sech}}
+\newcommand{\arccosh}{\mathop{\rm arccosh}}
+\newcommand{\arctanh}{\mathop{\rm arctanh}}
+\newcommand{\trace}{\mathop{\rm trace}}
+\newcommand{\csch}{\mathop{\rm csch}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{.5}
+\renewcommand{\bottomfraction}{.5}
+\renewcommand{\>}{\rangle}
+\renewcommand{\iff}{\Leftrightarrow}
+\renewcommand{\:}{\nobreak\hskip.1111em\mathpunct{}\nonscript \mkern-
+\thinmuskip{:}\hskip .3333emplus.0555em\relax}
+
+\newcounter{thmpartno}
+\newcounter{mylist}
+
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{exmple}{Example}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}{Corollary}
+
+\newenvironment{defn}{\begin{definition}\rm}{\end{definition}}
+\newenvironment{example}{\begin{exmple}\rm}{\end{exmple}}
+\newenvironment{proof}{\begin{trivlist}\item[\hskip\labelsep{\sc Proof:}]}%
+   {\unskip\nolinebreak\nopagebreak\hfill\rule{1ex}{2ex}\end{trivlist}}
+
+\newenvironment{thmlist}{\begin{list}%
+ {\roman{thmpartno})}{\usecounter{thmpartno}
+   \setlength{\rightmargin}{\leftmargin}
+    \topsep 10pt\partopsep 10pt}}{\end{list}}
+
+% Headers & Footers
+\lhead[\thepage]{\rightmark} \chead{} \rhead[\leftmark]{\thepage}
+\lfoot{MATH 6118-090} \cfoot{} \rfoot{Spring 2006} \footrulewidth
+0pt \headrulewidth 0pt
+
+%\includeonly{hyperbolic}
+
+\begin{document}
+\include{hgtitle}
+\tableofcontents
+\listoffigures
+\listoftables
+\include{history}
+\include{euclidean}
+\include{transformation}
+\include{startrek}
+\include{euclideanii}
+\include{constructions}
+\include{hyperbolic}
+\include{parallelclassification}
+\include{hypertriangles}
+\include{OtherGeoms}
+\include{hyperarea}
+\include{poincaredisk}
+\include{phalfplane}
+\include{pseudosphere}
+\include{hyperhoro}
+\include{hypertrig}
+\include{hyperanalytic}
+\include{inversion}
+
+
+\end{document}
+
+Log file
+
+This is e-TeX, Version 3.141592-2.2 (MiKTeX 2.4) (preloaded format=latex
+2005.10.30)  30 OCT 2005 22:43
+entering extended mode
+**math6118.tex
+(math6118.tex
+LaTeX2e <2003/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang,
+nohyphenation, loaded.
+(C:\texmf\tex\latex\base\book.cls
+Document Class: book 2004/02/16 v1.4f Standard LaTeX document class
+(C:\texmf\tex\latex\base\bk11.clo
+File: bk11.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (C:\texmf\tex\latex\graphics\graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\texmf\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(C:\texmf\tex\latex\graphics\graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+ (C:\texmf\tex\latex\graphics\trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+) (C:\texmf\tex\latex\00miktex\graphics.cfg
+File: graphics.cfg 2003/03/12 v1.1 MiKTeX 'graphics' configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(C:\texmf\tex\latex\graphics\dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+) (C:\texmf\tex\latex\base\latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+) (C:\texmf\tex\latex\amsmath\amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(C:\texmf\tex\latex\amsmath\amstext.sty
+Package: amstext 2000/06/29 v2.01
+ (C:\texmf\tex\latex\amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen105
+)) (C:\texmf\tex\latex\amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen106
+)
+(C:\texmf\tex\latex\amsmath\amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count88
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count89
+\leftroot@=\count90
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count91
+\DOTSCASE@=\count92
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen107
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count93
+\c@MaxMatrixCols=\count94
+\dotsspace@=\muskip10
+\c@parentequation=\count95
+\dspbrk@lvl=\count96
+\tag@help=\toks16
+\row@=\count97
+\column@=\count98
+\maxfields@=\count99
+\andhelp@=\toks17
+\eqnshift@=\dimen108
+\alignsep@=\dimen109
+\tagshift@=\dimen110
+\tagwidth@=\dimen111
+\totwidth@=\dimen112
+\lineht@=\dimen113
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(C:\localtexmf\tex\latex\amsfonts\amssymb.sty
+Package: amssymb 1996/11/03 v2.2b
+
+(C:\localtexmf\tex\latex\amsfonts\amsfonts.sty
+Package: amsfonts 1997/09/17 v2.2e
+\symAMSa=\mathgroup5
+\symAMSb=\mathgroup6
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 133.
+))
+(C:\localtexmf\tex\latex\fancyheadings\fancyheadings.sty
+\headrulewidth=\dimen114
+\footrulewidth=\dimen115
+\plainheadrulewidth=\dimen116
+\plainfootrulewidth=\dimen117
+\headwidth=\dimen118
+)
+(C:\localtexmf\tex\latex\latexcad\latexcad.sty
+ latexcad.sty (V 1.7 29 July 96) - Support for LaTeXCAD drawing package.
+ John Leis, leis@usq.edu.au Adapted from various CTAN sources.
+\@drawingscale=\skip46
+\@dfltdrawingscale=\skip47
+\@pswidth=\skip48
+\@dfltpswidth=\skip49
+(C:\localtexmf\tex\latex\latexcad\rotate.sty
+\@rotdimen=\dimen119
+\@rotbox=\box28
+)
+(C:\localtexmf\tex\latex\fancybox\fancybox.sty
+\c@tocdepth=\count100
+
+Style option: `fancybox' v1.2 <1998/02/27> (tvz)
+\@fancybox=\box29
+\shadowsize=\dimen120
+\@Sbox=\box30
+\do@VerbBox=\toks20
+\the@fancyput=\toks21
+\this@fancyput=\toks22
+\EndVerbatimTokens=\toks23
+\Verbatim@Outfile=\write3
+\Verbatim@Infile=\read1
+) (C:\localtexmf\tex\latex\latexcad\epic.sty
+Enhancements to Picture Environment. Version 1.2 - Released June 1, 1986
+\@@multicnt=\count101
+\d@lta=\count102
+\@delta=\dimen121
+\@@delta=\dimen122
+\@gridcnt=\count103
+\@joinkind=\count104
+\@dotgap=\dimen123
+\@ddotgap=\dimen124
+\@x@diff=\count105
+\@y@diff=\count106
+\x@diff=\dimen125
+\y@diff=\dimen126
+\@dotbox=\box31
+\num@segments=\count107
+\num@segmentsi=\count108
+\@datafile=\read2
+) (C:\localtexmf\tex\latex\latexcad\eepic.sty
+Extension to Epic and LaTeX. Version 1.1b - Released Febrary 7, 1988
+\@gphlinewidth=\count109
+\@eepictcnt=\count110
+\@tempdimc=\dimen127
+\maxovaldiam=\dimen128
+\@filltype=\box32
+) (C:\localtexmf\tex\latex\latexcad\epsf.sty
+\epsffilein=\read3
+\epsfxsize=\dimen129
+\epsfysize=\dimen130
+\epsftsize=\dimen131
+\epsfrsize=\dimen132
+\epsftmp=\dimen133
+\pspoints=\dimen134
+))
+(C:\localtexmf\tex\latex\calrsfs\calrsfs.sty
+\symrsfscript=\mathgroup7
+)
+(C:\localtexmf\tex\latex\misc\wrapfig.sty
+\wrapoverhang=\dimen135
+\WF@size=\dimen136
+\c@WF@wrappedlines=\count111
+\WF@box=\box33
+\WF@everypar=\toks24
+Package: wrapfig 1999/03/11  v 3.2
+)
+\c@thmpartno=\count112
+\c@mylist=\count113
+\c@definition=\count114
+\c@exmple=\count115
+\c@proposition=\count116
+\c@lemma=\count117
+\c@theorem=\count118
+\c@corollary=\count119
+
+
+(math6118.aux (hgtitle.aux) (history.aux) (euclidean.aux)
+(transformation.aux)
+(startrek.aux) (euclideanii.aux) (constructions.aux) (hyperbolic.aux)
+(parallelclassification.aux) (hypertriangles.aux) (OtherGeoms.aux)
+(hyperarea.aux) (poincaredisk.aux) (phalfplane.aux) (pseudosphere.aux)
+(hyperhoro.aux) (hypertrig.aux) (hyperanalytic.aux) (inversion.aux))
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+
+(hgtitle.tex [1]) (math6118.toc)
+\tf@toc=\write4
+ [2
+
+
+]
+(math6118.lof)
+\tf@lof=\write5
+ [3
+
+] (math6118.lot)
+\tf@lot=\write6
+ [4
+
+] (history.tex
+Chapter 1.
+[5
+
+
+]
+File: Archimedes.ps Graphic file (type eps)
+ <Archimedes.ps>
+[6][7][8][9][10][11][12][13][14][15][16][17][18] (euclidean.tex
+Chapter 2.
+[19]
+File: Earth01.ps Graphic file (type eps)
+ <Earth01.ps>
+[20][21][22][23])[24] (transformation.tex
+Chapter 3.
+[25][26][27][28][29])[30] (startrek.tex
+Chapter 4.
+[31]
+File: startreklogo.eps Graphic file (type eps)
+ <startreklogo.eps>)
+[32] (euclideanii.tex
+Chapter 5.
+[33][34]
+File: fig128a.ps Graphic file (type eps)
+ <fig128a.ps>
+File: fig128b.ps Graphic file (type eps)
+ <fig128b.ps>
+[35]
+File: fig131.ps Graphic file (type eps)
+ <fig131.ps>
+[36][37]
+File: fig135.ps Graphic file (type eps)
+ <fig135.ps>
+[38]
+File: fig138.ps Graphic file (type eps)
+ <fig138.ps>
+[39]
+File: fig140.ps Graphic file (type eps)
+ <fig140.ps>
+[40]
+[41]
+File: fig141.ps Graphic file (type eps)
+ <fig141.ps>
+File: fig143.ps Graphic file (type eps)
+ <fig143.ps>
+[42]
+File: fig001.ps Graphic file (type eps)
+ <fig001.ps>
+File: fig002.ps Graphic file (type eps)
+ <fig002.ps>
+[43]
+File: fig004.ps Graphic file (type eps)
+ <fig004.ps>
+LaTeX Warning: `h' float specifier changed to `ht'.
+[44]
+File: fig005.ps Graphic file (type eps)
+ <fig005.ps>
+[45]
+File: fig006.ps Graphic file (type eps)
+ <fig006.ps>)
+[46] (constructions.tex
+Chapter 6.
+[47]
+File: fig2001.ps Graphic file (type eps)
+ <fig2001.ps>
+Package wrapfig Warning: Collision between wrapping environments on input
+line
+69.
+
+File: fig2002.ps Graphic file (type eps)
+<fig2002.ps>
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 73
+[48][49]
+File: fig35.ps Graphic file (type eps)
+ <fig35.ps>
+[50][51]
+File: quadratrix.ps Graphic file (type eps)
+ <quadratrix.ps>
+File: ArchSpiral.ps Graphic file (type eps)
+ <ArchSpiral.ps>
+[52][53]
+File: dupsquare.ps Graphic file (type eps)
+ <dupsquare.ps>
+
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 50
+[54][55][56]
+File: fig310.ps Graphic file (type eps)
+ <fig310.ps>
+[57][58]
+File: fig37a.ps Graphic file (type eps)
+ <fig37a.ps>
+File: fig37b.ps Graphic file (type eps)
+ <fig37b.ps>
+[59][60])[61] (hyperbolic.tex
+Chapter 7.
+[62][63][64][65][66][67][68][69][70][71][72][73][74][75][76]
+File: fig68.ps Graphic file (type eps)
+ <fig68.ps>
+[77][78][79][80] (parallelclassification.tex
+Chapter 8.
+[81][82][83][84][85][86][87]
+File: 2paralle.ps Graphic file (type eps)
+ <2paralle.ps>
+[88]
+File: paraclas.ps Graphic file (type eps)
+ <paraclas.ps>
+[89]
+File: 2paralle.ps Graphic file (type eps)
+ <2paralle.ps>)
+[90] (hypertriangles.tex
+Chapter 9.
+[91])
+[92] (OtherGeoms.tex
+Chapter 10.
+[93][94][95]
+File: PoincareModel.ps Graphic file (type eps)
+ <PoincareModel.ps>
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 26
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 27
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 27
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 27
+[96]
+File: plines.ps Graphic file (type eps)
+ <plines.ps>
+[97]
+File: CaseIII.ps Graphic file (type eps)
+ <CaseIII.ps>
+[98]
+File: pparallel.ps Graphic file (type eps)
+ <pparallel.ps>
+File: angleofparallelism.ps Graphic file (type eps)
+ <angleofparallelism.ps>
+Package wrapfig Warning: Stationary wrapfigure forced to float on input
+line 43
+[99]
+File: LobThm01.ps Graphic file (type eps)
+ <LobThm01.ps>
+File: LobThm02.ps Graphic file (type eps)
+ <LobThm02.ps>
+[100][101][102])[103] (hyperarea.tex
+Chapter 11.
+[104][105][106][107])[108] (poincaredisk.tex
+Chapter 12.
+File: saccheri.ps Graphic file (type eps)
+<saccheri.ps>
+[109]
+File: acutetriangle.ps Graphic file (type eps)
+ <acutetriangle.ps>
+File: obtusetriangle.ps Graphic file (type eps)
+ <obtusetriangle.ps>
+[110][111][112])[113] (phalfplane.tex
+Chapter 13.
+[114][115][116]
+File: fig7_1.ps Graphic file (type eps)
+ <fig7_1.ps>
+File: fig7_2.ps Graphic file (type eps)
+ <fig7_2.ps>
+[117]
+File: fig7_3.ps Graphic file (type eps)
+ <fig7_3.ps>
+[118]
+File: prob7_4.ps Graphic file (type eps)
+ <prob7_4.ps>
+[119][120][121][122][123][124][125]
+File: fig713.ps Graphic file (type eps)
+ <fig713.ps>
+[126][127][128]
+File: fig7_16.ps Graphic file (type eps)
+ <fig7_16.ps>
+[129]
+File: fig7_17.ps Graphic file (type eps)
+ <fig7_17.ps>
+[130]
+File: fig7_18a.ps Graphic file (type eps)
+ <fig7_18a.ps>
+File: fig7_18b.ps Graphic file (type eps)
+ <fig7_18b.ps>
+[131][132]
+File: pdangleparallelism.ps Graphic file (type eps)
+ <pdangleparallelism.ps>
+File: phpangleparallelism.ps Graphic file (type eps)
+ <phpangleparallelism.ps>)
+[133] (pseudosphere.tex
+Chapter 14.
+File: fig1011.ps Graphic file (type eps)
+<fig1011.ps> [134]
+File: tractrix.ps Graphic file (type eps)
+ <tractrix.ps>
+[135])[136] (hyperhoro.tex
+Chapter 15.
+[137][138]
+File: phorocycle.ps Graphic file (type eps)
+ <phorocycle.ps>
+[139])[140] (hypertrig.tex
+Chapter 16.
+[141][142]
+File: fig7_20a.ps Graphic file (type eps)
+ <fig7_20a.ps>
+File: fig7_20b.ps Graphic file (type eps)
+ <fig7_20b.ps>
+LaTeX Warning: `h' float specifier changed to `ht'.
+[143][144][145][146][147]
+File: pcirclearea.ps Graphic file (type eps)
+ <pcirclearea.ps>
+[148][149])[150] (hyperanalytic.tex
+Chapter 17.
+File: saccheriquad.ps Graphic file (type eps)
+<saccheriquad.ps> [151]
+File: saccquad2.ps Graphic file (type eps)
+ <saccquad2.ps>
+[152]
+File: fig1018.ps Graphic file (type eps)
+ <fig1018.ps>
+File: fig1019.ps Graphic file (type eps)
+ <fig1019.ps>
+File: fig1020.ps Graphic file (type eps)
+ <fig1020.ps>
+[153]
+File: coordinates.ps Graphic file (type eps)
+ <coordinates.ps>
+LaTeX Warning: `h' float specifier changed to `ht'.
+[154]
+File: coordfig.ps Graphic file (type eps)
+ <coordfig.ps>
+[155][156][157]
+File: graphpaper.ps Graphic file (type eps)
+ <graphpaper.ps>)
+[158] (inversion.tex
+Chapter 18.
+File: fig720.ps Graphic file (type eps)
+<fig720.ps> [159]
+File: fig721.ps Graphic file (type eps)
+ <fig721.ps>
+File: fig722.ps Graphic file (type eps)
+ <fig722.ps>
+[160]
+File: fig723.ps Graphic file (type eps)
+ <fig723.ps>
+[161]
+File: fig727.ps Graphic file (type eps)
+ <fig727.ps>
+File: fig729.ps Graphic file (type eps)
+ <fig729.ps>
+[162])[163] (math6118.aux (hgtitle.aux) (history.aux) (euclidean.aux)
+(transformation.aux) (startrek.aux) (euclideanii.aux) (constructions.aux)
+(hyperbolic.aux) (parallelclassification.aux) (hypertriangles.aux)
+(OtherGeoms.aux) (hyperarea.aux) (poincaredisk.aux) (phalfplane.aux)
+(pseudosphere.aux) (hyperhoro.aux) (hypertrig.aux) (hyperanalytic.aux)
+(inversion.aux)))
+Here is how much of TeX's memory you used:
+ 3197 strings out of 95909
+ 32040 string characters out of 1195432
+ 127491 words of memory out of 1113910
+ 5408 multiletter control sequences out of 60000
+ 25006 words of font info for 101 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 4999
+ 28i,18n,27p,12017b,344s stack positions out of
+5000i,500n,10000p,200000b,32768s
+
+Output written on math6118.dvi (163 pages, 636284 bytes).
+

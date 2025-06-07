@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 11 May 2005 10:55:13 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j4B8tA0w027136
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 11 May 2005 10:55:11 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j4B8rWfK000922;
+	Wed, 11 May 2005 10:53:32 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j4AM1Tqw009425;
+	Wed, 11 May 2005 10:50:20 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 211205 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 11 May 2005 10:50:19 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j4B8oId4025941 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 11 May 2005 10:50:19 +0200
+Received: from mail35.messagelabs.com (mail35.messagelabs.com [62.231.131.195])
+          by relay.uni-heidelberg.de (8.12.10/8.12.10) with SMTP id
+          j4B8qmfK000572 for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 11 May
+          2005 10:52:48 +0200 (MET DST)
+X-VirusChecked: Checked
+X-Env-Sender: davidc@nag.co.uk
+X-Msg-Ref: server-22.tower-35.messagelabs.com!1115801426!27889831!1
+X-StarScan-Version: 5.4.11; banners=nag.co.uk,-,-
+X-Originating-IP: [212.125.75.71]
+Received: (qmail 10154 invoked from network); 11 May 2005 08:50:26 -0000
+Received: from smtp-2.star.net.uk (212.125.75.71) by
+          server-22.tower-35.messagelabs.com with SMTP; 11 May 2005 08:50:26
+          -0000
+Received: (qmail 9078 invoked from network); 11 May 2005 08:50:25 -0000
+Received: from unknown (HELO nag.co.uk) (62.231.145.242) by smtp-2.star.net.uk
+          with SMTP; 11 May 2005 08:50:25 -0000
+Received: from penguin.nag.co.uk (IDENT:root@penguin.nag.co.uk
+          [192.156.217.14]) by nag.co.uk (8.9.3/8.9.3) with ESMTP id JAA06166
+          for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 11 May 2005 09:50:17
+          +0100 (BST)
+Received: by penguin.nag.co.uk (8.9.3) id JAA05957; Wed, 11 May 2005 09:50:17
+          +0100
+References: <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <20050427075026.GD10313@mathematik.tu-darmstadt.de>
+            <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <l03102814bea5442baf7d@[192.168.0.103]>
+            <20050510081921.GA19993@mathematik.tu-darmstadt.de>
+            <200505101100.MAA00451@penguin.nag.co.uk>
+            <20050510121612.GB19993@mathematik.tu-darmstadt.de>
+            <200505101300.OAA00961@penguin.nag.co.uk>
+            <20050510132157.GC19993@mathematik.tu-darmstadt.de>
+Message-ID:  <200505110850.JAA05957@penguin.nag.co.uk>
+Date:         Wed, 11 May 2005 09:50:17 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Carlisle <davidc@NAG.CO.UK>
+Subject: Re: new^2 font selection scheme
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <20050510132157.GC19993@mathematik.tu-darmstadt.de> (message from
+              Achim Blumensath on Tue, 10 May 2005 15:21:57 +0200)
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 11 May 2005 08:55:15.0174 (UTC) FILETIME=[25F8A860:01C55607]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4878
+
+> We load it with \globaldefs=1
+
+hmm, keyval might be OK in that case but you see why the general
+restriction on not loading arbitrary packages is there.
+
+If any package goes
+{\catcode\something=something \gdef\xyz{...} ... }
+then it's rather messed up if globaldefs is set as the catcode (or any
+other local) changes leak out.
+Also the { ..} group would leave a mathord atom and affect the spacing
+if the font is first used in math mode.
+
+So in general the class of packages that are safe to load in an fd file
+is a restricted subset of the general set of latex packages. Although
+obviously any particular case may be set (and as I said at the beginning
+I haven't looked at the MinionPro font set up so I didn't mean to imply
+that that was broken, just that skating on thin ice is basically
+dangerous and that it's reasonable to put up a general sign saying no
+skating, even if experts may chose to ignore the signs and go on the ice
+with care.
+
+David
+
+________________________________________________________________________
+This e-mail has been scanned for all viruses by Star. The
+service is powered by MessageLabs. For more information on a proactive
+anti-virus service working around the clock, around the globe, visit:
+http://www.star.net.uk
+________________________________________________________________________
+

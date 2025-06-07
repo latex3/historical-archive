@@ -1,0 +1,140 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4982" "Thu" "2" "July" "1998" "14:03:12" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "99" "Re: Modules and submodules" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA21298;
+	Thu, 2 Jul 1998 14:04:10 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.BE54B953@listserv.gmd.de>; Thu, 2 Jul 1998 14:04:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 376565 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 2 Jul 1998 14:04:03 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA15091 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 2 Jul 1998 14:03:57 +0200
+          (MET DST)
+Received: from [130.237.37.107] (sl111.modempool.kth.se [130.237.37.137]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id OAA09257 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 2 Jul 1998 14:03:42 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <199806220631.QAA11602@ricetub.anu.edu.au>
+            <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110701b1c11a49cb9b@[130.237.37.107]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199807012141.XAA16984@frank.zdv.uni-mainz.de>
+Date:         Thu, 2 Jul 1998 14:03:12 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules and submodules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2638
+
+At 23:41 +0200 98/07/01, Frank Mittelbach wrote:
+>beside "my please stop mail" i do want to explain why i think that a
+>module/submodule concept as suggested by Hans is doomed to failure if
+>applied all levels of programming within TeX.
+>
+>essentially i said this already in my mail a few days ago but perhaps
+>it was not clear enough to people not having written large scale
+>low-level TeX.
+
+  The reason I continued was that I got the impression that Frank
+Mittelbach misunderstood the whole idea of modules. :-)
+
+>Richard suggested at some point a syntax like \foo/bar_baz:nn and said
+>"with catcode 11 for / _ :" now that is beside syntactic sugar exactly
+>what we have now (where the statement is: the module name is the first
+>word up to an _)
+>
+>it may be that this is better to read (although i doubt)[1] it but it is
+>not functionally offering anything new. and importantly it doesn't
+>offer what Hans has in mind (even though in some side remarks it
+>sounds as if he thinks one can combine the two)[2]
+
+>one of the main arguments for submodules (or class structures in OO
+>languages) is the ability to overload functions/procedures
+
+  Not really. So called name overloading does not have anything to do with
+avoiding name clashes, or developing in structured units like modules. Name
+overloading is just another feature that sometimes is convenient. Object
+orientation (OO) is often tied to the concept of derived classes, which in
+its turn is often tied to data with the ability to change class derivation
+dynamically at runtime, and it is not clear to me what that would mean to
+TeX, even though it is an interesting question.
+
+  The main idea with modules, the way I see it, apart from avoiding name
+clashes, is allowing the developer to develop in logical units without
+having to bother about the internals of other modules, only their
+interface. (So the question of writing out the names directly or by some
+parsing mechanism is a question of giving the module a different interface.)
+
+  The question is how much of this that can be made in TeX, but this is
+another question.
+
+>and here is where it stops being usable. if the concept allows for
+>this than at runtime! the binding has to be changed and that means:
+>
+>any expansion text of any macros can't contain something like
+>\foo/bar_baz:nn as above (ie a token) but it must contain things that
+>live on the module/submodule level ie is looked up by some internally
+>programmed module handling interface. and that will bring you to my
+>exponential growth in slowness.
+
+  I think the whole misunderstanding by Frank Mittelbach is that he thinks
+that just because the modules concept admits a certain feature it also
+requires it. Name overloading in TeX, which is already present to some
+extent in LaTeX on the high level by the use of optional commands, would be
+great, but it is clear that TeX has a very limited capacity of achieving
+that and that it is slow. But then simply do not use that in situations
+where unsuitable.
+
+  Summing it up, the use of names \foo_bar_baz:nn and viewing them as a
+part of a group named "foo" is already in some sense a module, where the
+use of "_" confuses the two concept of a module separator and a word
+separator.
+
+>[2] as i said several times: *prove* me wrong by giving me something
+>that i can run through initex which works, ie compiles at least simple
+>documents without needing a minute per page --- don't try to prove me
+>wrong by using applying gut-feeling from experiences in languages like
+>C++, Smalltalk, Java, Modula, you name it. We have heard these
+>arguments by now and we agree about their usefulness but we claim
+>(from our experience) that they can't and shouldn't be applied to that
+>level in TeX.
+
+  Some other good languages one easily gets tired of are LISP, Scheme, SML,
+and Haskell, not to mention Perl, Simula, Pascal and all those database
+languages.
+
+  It is clear that anything in the TeX domain must be on the conditions of
+TeX. But it is possible to state objectives one wants to achieve with those
+languages, and make them useful within TeX. For example:
+1. Avoiding name clashes.
+2. Avoiding being burdened with remembering names.
+3. Ability to develop in logical units, only having to worry about the
+interface with other logical units.
+4. Producing dynamic, runtime data.
+5. Ability to reuse code in another context.
+6. For new logical structures, preferably only having to write code for
+what differs relative already written code.
+(Roughly a translation of the concepts: 1. name-spaces/classes; 2. name
+overloading; 3. name-spaces/classes, 4. runtime derived OO classes; 5. code
+encapsulated in classes; 6. class derivation.)
+
+  Those objectives make sense, even though it can be hard to figure out how
+to do it in TeX.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

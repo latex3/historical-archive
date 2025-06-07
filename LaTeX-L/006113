@@ -1,0 +1,86 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 23 Oct 2009 19:33:49 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n9NHXmFX019797
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 23 Oct 2009 19:33:48 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n9NHUTDu010210
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 23 Oct 2009 19:30:29 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n9NFiruX000756;
+	Fri, 23 Oct 2009 19:30:22 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 347436 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 23 Oct
+          2009 19:30:21 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n9NHULRM010944 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 23 Oct 2009 19:30:21 +0200
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n9NHU5Zf006712
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 23 Oct 2009 19:30:10
+          +0200
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id B390F18668A for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 23 Oct 2009 19:29:52 +0200
+          (CEST)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <4AE0BFB3.7080905@morningstar2.co.uk>                      
+            <8A015AE0-022B-4462-B8D5-CC1010E49205@gmail.com>           
+            <4AE18854.7080704@residenset.net>
+            <4AE1AE63.2000000@morningstar2.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id n9NHULRM010945
+Message-ID:  <4AE1E863.3030307@residenset.net>
+Date:         Fri, 23 Oct 2009 19:31:15 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: xparse processors
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4AE1AE63.2000000@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 23 Oct 2009 17:33:49.0860 (UTC) FILETIME=[FB727640:01CA5406]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6113
+
+Joseph Wright skrev:
+> Taking this idea, I'd probably favour something that doesn't include
+> "xparse" as a document-level function: perhaps \ProcessedArgument or
+> \ProcessingResult?
+
+Yes, that is probably better.
+
+> If I say that it will initially be a toks (for each
+> parsing run), then you can do
+> 
+>   \let\ProcessingResult\YourMacro
+>   \def\ProcessingResult{whtever}
+>   \toks_set:NV\ProcessingResult\Variable
+> 
+> etc. Would that work?
+
+Not sure what you're asking here. It wouldn't work to reset 
+\ProcessingResult to \l_xparse_arg_toks only at the beginning of 
+parsing the arguments of the command, as any processor can redefine it 
+as a macro and then another can come along that expects it to be a toks 
+register again; it would have to be reset before each processor.
+
+Lars Hellström
+

@@ -1,0 +1,140 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5208" "Tue" "15" "April" "1997" "14:18:15" "+0200" "Johannes Kuester" "kuester@MATHEMATIK.TU-MUENCHEN.DE" nil "96" "Re: math fonts, etc" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA19789; Tue, 15 Apr 1997 14:18:48 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.65D49934@listserv.gmd.de>; Tue, 15 Apr 1997 14:18:48 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 125003 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 15 Apr 1997 14:18:40 +0200
+Received: from tuminfo2.informatik.tu-muenchen.de
+          (root@tuminfo2.informatik.tu-muenchen.de [131.159.0.81]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id OAA18988 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 15 Apr 1997 14:18:39
+          +0200 (MET DST)
+Received: from sunbulirsch4.mathematik.tu-muenchen.de ([131.159.68.4]) by
+          tuminfo2.informatik.tu-muenchen.de with SMTP id <109532-17059>; Tue,
+          15 Apr 1997 14:18:30 +0200
+Received: from sgibulirsch6.mathematik.tu-muenchen.de ([131.159.68.57]) by
+          sunbulirsch4.mathematik.tu-muenchen.de with SMTP id <20789>; Tue, 15
+          Apr 1997 14:18:12 +0200
+Received: by sgibulirsch6.mathematik.tu-muenchen.de (931110.SGI/930416.SGI) for
+          @sunbulirsch4.mathematik.tu-muenchen.de:LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE id AA15418; Tue, 15 Apr 97
+          14:18:16 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-ID:  <9704151218.AA15418@sgibulirsch6.mathematik.tu-muenchen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199704132145.XAA06066@frank.zdv.uni-mainz.de> from "Frank
+              Mittelbach" at Apr 13, 97 11:45:40 pm
+Date:         Tue, 15 Apr 1997 14:18:15 +0200
+From: Johannes Kuester <kuester@MATHEMATIK.TU-MUENCHEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: math fonts, etc
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1934
+
+Well, I think I could come up with my own set of three different lines
+that the discussion here follows or should or shouldn't follow.
+
+1. Implementation of the proposal of Justin Ziegler
+2. Design of standard TeX/LaTeX control sequences to access all those
+   glyphs.
+3. Discussion about missing glyphs, fonts, typographical traditions and
+   rules etc.
+
+I admit that I'm rather concerned with the latter two, but I fully
+acknowledge Frank's point here that implementation of the proposal
+should be the first step. Also, taking out some glyphs (at least at
+first) seems to be a good point, as some glyphs are non-existent yet,
+some are questionable as members of the core etc. Hopefully, this will
+also help in having an implementation soon.
+
+Within the confinements of TeX it seems hardly ever possible to have
+an implementation meeting all needs. The ideal user would put together
+some virtual fonts for the glyphs he needs with the proper kerning
+between them, but this is very unrealistic, so I think the proposal
+serves its purpose well enough.
+
+I've seen too many books using Computer Modern only for math with another
+typeface for text (strange enough, many of them typeset in Times), so
+there is really a need to have math fonts for many different typefaces,
+and this is the main goal of the proposal.
+
+
+2. seems to be important and could go well along with the implementation,
+and I think this should be discussed further on this list.
+Many of the new glyphs could be accessed in a yet existent standard way
+(e.g. font switches exist, only lowercase letters to be accessed by that
+are missing in existing fonts; wider accents are only adding in
+functionality), but there are many other new glyphs for which there isn't
+yet a control sequence. Further, for using the upright/slanted rule
+properly, there has to be a way to address the most frequent constants
+falling under this rule (e, i, pi, d etc.), as these are rather frequent,
+I feel that they should bet rather short control sequences. Without
+a standard here, much of the implementation seems quite unusuable.
+And discussing the implementation then when playing with it
+will be hampered, as one has to give slot numbers or to explain one's own
+set of macros to be understood by others.
+
+  This standard could even consider control sequences for concepts
+for which there isn't yet a special symbol (e.g. using \Laplace for the
+Laplace operator and \Diff for a (forward) difference operator when both
+are typeset as \Delta); this could be of interest for forward compatibility,
+e.g. for textbooks where future editions could easily be set then with
+a wider set of glyphs (in the second volume of a textbook that I'm currently
+setting I'm using control sequences for intervals, but the output is
+the usual (a,b), [a,b] etc. notation and not with special delimiters,
+as the author wishes to keep that for compatibility with the first volume
+(which hasn't been set by me); a future edition could easily change this).
+
+  Without a standard, any future manual concerned with math typography
+in TeX must tell the reader something like "The usage of these rules and
+symbols is strongly recommended. But TeX doesn't offer a way to
+use them to give you the possibility to design appropriate macros for
+yourself". Most users would be very glad for this opportunity to become
+an experienced macro programmer and to spend some days or weeks to get
+the needed set of macro, rather than to write the paper they intended.
+[I'm sorry, but partly this is intended especially for Hans Aberg, who
+opposes the proposition of standards on the one hand but complains about
+TeX's difficult usage on the other]
+
+  An experienced user will of course always introduce some of his own
+macro names, e.g. using \let\tensor=\otimes when using this symbol for
+notation of tensor product, but it is a great difference to use essentially
+a set of \let commands (with a standard) or to create all the macros from
+scratch, involving searching the correct font and slot number, choosing
+the right math symbol type etc (without a standard).
+
+
+3. clearly doesn't belong here, but to the math font discussion list.
+To collect all the information in these fields will certainly do no harm
+to LaTeX, but neither it does much service at the moment. We should have
+a compatible standard first; adding more encodings, more fonts and glyphs
+could come at a later stage. At present, we could simply collect all
+propositions, all glyphs, metafont programs etc. May be glyphs yet done
+could be put together in a mere "glyph container" (to use a term from Omega),
+so other users could see them and comment on them, without having a proper
+enconding let alone kerning information etc at first. Later, this could
+result in having some extra LaTeX-cm-mf-only non-standard fonts,
+so that most users could use LaTeX with the proposed implementation,
+but with the font family they like (hopefully); a mathematician demanding
+special symbols or going for an extra bit of typography would have
+to use Computer Modern with the extra fonts then.
+
+
+Johannes Kuester
+
+
+--
+Johannes Kuester                    kuester@mathematik.tu-muenchen.de
+Mathematisches Institut der
+Technischen Universitaet Muenchen
+

@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 28 Sep 2007 21:19:17 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l8SJJ2qD011549
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 28 Sep 2007 21:19:03 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l8SJDe83012173
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 28 Sep 2007 21:13:41 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l8SHbTxV012135;
+	Fri, 28 Sep 2007 21:13:33 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 120758 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 28 Sep
+          2007 21:13:33 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l8SJDXrX018598 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 28 Sep 2007 21:13:33 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.179]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id l8SJDNqu017090 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 28 Sep 2007 21:13:27 +0200
+Received: from [84.169.188.112] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu8) with ESMTP (Nemesis) id
+          0ML31I-1IbLHD2eMK-0001bt; Fri, 28 Sep 2007 21:13:27 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id C0D3113567; Fri, 28 Sep 2007 21:13:26 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <87r6ki4t10.fsf@buckbeak.hogwarts>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+gecQi9L3J7Ogm3zOY/eL5WfvuKx579ez3l3/
+              /rEGW1uIup75ynDrTIQ+RxuNALcAO+CiNohCqAIC44X1AkTM49
+              Q59v4AdR3nRKnhttKlhxIUFF0rQmQ5b
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18173.21078.356751.244461@morse.mittelbach-online.de>
+Date:         Fri, 28 Sep 2007 21:13:26 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: name clash \iow_newline
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <87r6ki4t10.fsf@buckbeak.hogwarts>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 28 Sep 2007 19:19:17.0724 (UTC) FILETIME=[76DAE1C0:01C80204]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5069
+
+Hi Andreas,
+
+ > There is a name clash between l3io and l3messages. l3io  defines
+ > a \iow_newline: (with colon), whereas l3messages requires a
+ > \iow_newline (without colon).
+ > 
+ > I am not sure if it should be a function or a variable.
+
+i think of it as a function though those things are a bit "matter of
+opinion". Basically variables (other than tlps) cannot be used in the input
+stream by themselves. tlps are different as they acknowlegde the fact that TeX
+operates on token streams and tlps are simply containers for parts of the
+stream
+
+but it is interesting to look at the history (opinions change over time)
+... at one stage it was \c_iow_newline .. then .. \iow_newline: ... then ...
+
+
+ > * Since \err_newline: is a function, \iow_newline: should be
+ >   a function, too.
+
+i think it should be \iow_newline: and the documentation and code updated
+
+cheers
+frank
+
+advance warning: I plan to clean up the names used for certain functions in
+l3iow as they are not really fully consistent (probably in 4 weeks) --- will
+send out proposal for changes then for those who are interested.
+

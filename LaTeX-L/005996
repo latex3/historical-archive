@@ -1,0 +1,90 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Aug 2009 13:19:06 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7OBJ5dF014007
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 24 Aug 2009 13:19:06 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7OBFmmD019398
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 24 Aug 2009 13:15:48 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7O8WAWM019680;
+	Mon, 24 Aug 2009 13:15:47 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 288641 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 24 Aug
+          2009 13:15:47 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7OBFlX1024543 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 24 Aug 2009 13:15:47 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n7OBFXWg006747 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 24 Aug 2009 13:15:37 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.2]) by
+          lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id 1MfXWO-0007Gf-aK
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 24 Aug 2009 11:15:32
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>           
+            <4A8EC449.4040509@morningstar2.co.uk>           
+            <19088.5371.517713.176151@morse.mittelbach-online.de>
+            <F935973B-32E8-4FD2-9B02-6F55FCB73674@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A92765A.3040807@morningstar2.co.uk>
+Date:         Mon, 24 Aug 2009 12:15:38 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <F935973B-32E8-4FD2-9B02-6F55FCB73674@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Aug 2009 11:19:06.0603 (UTC) FILETIME=[B198B3B0:01CA24AC]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5996
+
+Will Robertson wrote:
+> Point B is something I think I'd like to work with more in the future,
+> and as layers 0 and -1 start separating (see parallel thread) it may
+> become more useful. Having said that, at this stage it's probably of
+> little use so I don't expect much to happen with
+> \DeclareDocumentCommandInterface at this point in time.
+> 
+> (I sort of feel that if it's to be used, it should be pervasive -- the
+> benefits of separating interface/implementation are diluted if only a
+> subset of commands are defined in such a way.)
+
+I'd wondered about implementing \DeclareDocumentCommand so that it
+always did \DeclareDocumentCommandInterface and
+\DeclareDocumentCommandImplementation. However, I'm not sure this really
+works that well. As I've already pointed out, we still rely on the two
+parts having the same number of arguments.  That will fall down if we
+imagine something like:
+
+\section*[short]{long}
+
+versus
+
+<sectiontitle numbered="false",shorttitle="short">
+  long
+</sectiontitle>
+
+or some such XML-like input, at least without an intermediate layer.
+-- 
+Joseph Wright
+

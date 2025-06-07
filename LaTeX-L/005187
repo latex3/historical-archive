@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 11 Mar 2008 02:22:18 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m2B1MECB024701
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 11 Mar 2008 02:22:14 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m2B1Fc7X031697
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 11 Mar 2008 02:15:39 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m2AN1SFm002568;
+	Tue, 11 Mar 2008 02:15:29 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 218671 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 11 Mar
+          2008 02:15:29 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m2B1FThm004800 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 11 Mar 2008 02:15:29 +0100
+Received: from fencepost.gnu.org (fencepost.gnu.org [140.186.70.10]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m2B1FEOr031053
+          (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NO) for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 11 Mar 2008 02:15:19 +0100
+Received: from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org
+          with esmtp (Exim 4.67) (envelope-from <dak@gnu.org>) id
+          1JYt5F-0003Sk-Hp for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 10 Mar
+          2008 21:15:13 -0400
+Received: by lola.goethe.zz (Postfix, from userid 1002) id 9E7621C4CE2C; Tue,
+          11 Mar 2008 01:55:55 +0100 (CET)
+References: <18385.42387.268037.81145@morse.mittelbach-online.de>
+            <85wsoeto1k.fsf@lola.goethe.zz>
+            <18385.42387.268037.81145@morse.mittelbach-online.de>
+            <5.1.0.14.0.20080310115827.01e05a70@pop3.web.de>
+            <i7pru2hc54.fsf_-_@hilbert.math.albany.edu>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.0.60 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <85zlt66pus.fsf_-_@lola.goethe.zz>
+Date:         Tue, 11 Mar 2008 01:55:55 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Temporary local bugfix in perpage.sty (was: Many labels example)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <i7pru2hc54.fsf_-_@hilbert.math.albany.edu> (William F. Hammond's
+              message of "Mon, 10 Mar 2008 10:44:23 -0400")
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 11 Mar 2008 01:22:18.0248 (UTC) FILETIME=[58CE1880:01C88316]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5187
+
+William F Hammond <hammond@CSC.ALBANY.EDU> writes:
+
+>>>5000 labels is easy to reach if you are using the label mechanism
+>>>extensively.
+>>
+>> This is real life with critical editions in the "classical" style
+>> where footnotes don't refer by footnote marks but by line numbers.
+>> ednotes.sty originally used three labels for one footnote
+>> and broke with, say, 400 pages.
+>
+> A LaTeX translation of the largest of the four religious texts
+> (English language) in Jon Bosak's 1998 XML demos might reasonably have
+> at least 24000 labels.
+> See  http://www.ibiblio.org/bosak/
+>      http://metalab.unc.edu/bosak/xml/eg/rel200.zip
+
+Here is the conditional fix that I am placing in perpage.sty.  It is not
+all too pretty, but I think it should do the trick as long as LaTeX is
+not fixed, and do nothing once this happens.
+
+\begingroup
+\@testdef{}{undefined}{}
+\expandafter\endgroup
+\ifx\@undefined\relax
+\AtBeginDocument{%
+  \let\pp@@testdef\@testdef
+  \def\@testdef#1#2#3{{\pp@@testdef{#1}{#2}{#3}%
+    \if@tempswa\aftergroup\@tempswatrue\fi}}}
+\fi
+
+-- 
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

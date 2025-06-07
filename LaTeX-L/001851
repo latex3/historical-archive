@@ -1,0 +1,100 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3137" "Mon" "3" "March" "1997" "12:14:03" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "64" "Re: Shortref mechanism" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id MAA28856; Mon, 3 Mar 1997 12:13:51 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.C2EA76A0@listserv.gmd.de>; Mon, 3 Mar 1997 12:13:26 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108248 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 12:13:14 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id MAA19280 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 12:12:31 +0100
+          (MET)
+Received: from [130.237.37.43] (sl23.modempool.kth.se [130.237.37.43]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id MAA20598; Mon, 3 Mar 1997
+          12:12:17 +0100 (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130502af405d818a74@[130.237.37.78]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 3 Mar 1997 12:14:03 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1851
+
+"Randolph J. Herber" <herber@fnal.gov> writes:
+
+>|  I cannot follow the details in your reasoning, but I can note that with
+>|deterministic parsing, the method generally used in LaTeX, conditional
+> ^^^^^^^^^^^^^ ^^^^^^^                                      ^^^^^^^^^^^
+>|parsing have such limits.
+> ^^^^^^^
+>|  But with non-deterministic parsing more general things can be done:
+>            ^^^^^^^^^^^^^^^^^
+>|  For example, I just made a definition command that can produce commands
+>|having optional arguments; in this general approach, I had to switch from
+>|LaTeX style deterministic parsing to non-deterministic parsing.
+
+>To someone that has written several small compilers and has studied automata
+>theory at the doctorate level, your word choice as high-lighted above is
+>quite jarring.  By using a power automaton, a non-deterministic automaton
+>can be reduced to a deterministic automaton.  Therefore, one does not gain
+>any power of expression by using a non-deterministic automaton, rather one
+>only gains compaction of the description.
+
+  This reasoning would be true in a ny sufficiently general purpose, but
+TeX is not such a language (or it is unknown if it is).
+  The second thing is that, even though something may be theoretically
+possible, it may be practically impossible, because you simply do not have
+time to both  doing that implemntation, and pay your bills.
+  The third thing one must consider, is that a computer language is not
+only used to manipulate logical data, but logical data that has a semantic
+interpreation attached to it. Any logical transformation must keep track of
+that semantic interpretation, and this is related to the practicality
+question, I guess.
+
+  With TeX the problem is this:
+
+  You have a variable #1 equal to some parameter text, say ##1##2.
+When #1 pick up an argument, in the first pass, an argument of the form
+    {section}{theorem}
+will be transformed into
+    sectiontheorem,
+so, when writing an deterministic parser by hand, on puts back the argument
+to the next command as {##1}{##2}, say if you want to put it back all. Now,
+working in this generality, there is no obvious way of transforming
+    #1 --> #1_new
+by a command doing
+    ##1##2 --> {##1}{##2}
+implicitly.
+
+  By reverting to non-deterministic parsing, one can get around this
+problem, by first picking up some text that surely contains the original
+##1##2, and then sending this original text to the next command, instead of
+the partially parsed by #1 (which may be corrupted).
+
+  But this does not solve Frank Mittelbach's problem, as he pointed out.
+
+>I believe that what you intended is the distinction of context free and
+>context sensitive languages.  From what I have read in the TeX book, the
+>tokenizer of TeX is context sensitive with a single character look-ahead
+>and the TeX language based on the recognized tokens is context free.
+
+  TeX is highly context sensitive, and this is much of the point with TeX:
+Each environment or grouping has its own set of local variables, which can
+be used to change the context rather radically. This is unrelated to the
+stuff I discussed above.
+
+  Hans Aberg
+

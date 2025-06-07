@@ -1,0 +1,157 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6356" "Mon" "13" "December" "93" "14:50:40" "GMT" "Sebastian Rahtz" "spqr@FTP.TEX.AC.UK" nil "126" "ideas for floats (forwarded)" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.hd-net.uni-heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA24445; Mon, 13 Dec 93 15:59:01 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA08582; Mon, 13 Dec 93 15:58:19 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA25992
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 13 Dec 1993 15:58:07 +0100
+Message-Id: <199312131458.AA25992@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6675; Mon, 13 Dec 93 15:58:44 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6673; Mon,
+ 13 Dec 1993 15:58:44 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9165; Mon,
+ 13 Dec 1993 15:55:16 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Mon, 13 Dec 93 14:50:40 GMT
+From: Sebastian Rahtz <spqr@FTP.TEX.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      ideas for floats (forwarded)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1199
+
+
+------- Start of forwarded message -------
+
+Figure environment and floats in particular currently behave in a way
+that makes page design inconvenient. Programs like PageMaker look
+attractive compared with LaTeX. Even stupid programs like MS-Word and
+WordPerfect look attractive compared with LaTeX.
+
+This should not be so. The LaTeX design COULD be better than all of
+them. The features needed:
+
+  1. A figure option to place a figure on the current page directly
+     after its citation. This implies that a figure citation exist which
+     marks a page and a page location where the figure is to appear.
+
+  2. Item 1, but the figure goes in a particular place on the page: top,
+     bottom, margin or here.
+
+  3. Failure algorithm. If the figure cannot be placed where it is
+     desired, say page 10, then the page markup system creates page 10a,
+     10b, 10c, etc, and dumps the troublesome figures onto these pages.
+     This is easy to implement in LaTeX and an acceptable kind of
+     failure resolution. Everyone consulted dislikes the mystery page of
+     floats that appears later on God Knows Where (application of the
+     float algorithm in LaTeX). Evidence: Lamport advises people NOT to
+     report this "error".
+
+  4. A figure option to place the figure at a given location on the page
+     supplied by the figure citation or on the next page in a certain
+     location. The options must be ordered, with the first one taken if
+     it is possible, then the next, if possible, and finally the failure
+     algorithm is applied (see 3 above).
+
+     Example: Put the figure after the citation now given (some macro
+              construct) on the bottom of this page, or if it does not
+              fit, onto the top of the next page, or if that fails, then
+              on a page of floats by itself, so I can figure out what to
+              do with the figure manually.
+
+  5. A figure option with a list of pages and places to put a figure.
+     The failure algorithm applies if none of the requests can be
+     honored. This is a generalization of item 4.
+
+  6. A figure macro that wraps text around a figure. There is a style
+     file called wrapfig.sty that attempts to do this, but it is not an
+     integrated part of LaTeX and does not work on certain kinds of
+     figures (pictex, for example). Feasibility is proven.
+
+     More generally, it should be possible to lay out a page with boxes
+     assigned to the page in advance, the text being required to flow
+     around the boxes. This request is similar to what has been done by
+     multicol.sty but even there it is a hack because the output routine
+     of LaTeX is not presently suited to these ideas.
+
+  7. Figure options should exist for placing figures on certain pages,
+     for example, large figures on even pages, and only margin figures
+     on odd pages. Currently, this is nearly impossible to achieve.
+
+  8. The clearpage command needs some clones that do not eject the page.
+     It should be possible to dump the figures without ejecting a page.
+     For example, a figure might be saved from the previous page, and it
+     is desired to dump it onto the current page and continue with
+     paragraphs. Presently, the method is a hack at best, positioning
+     the clearpage to some magic position by trial and error.
+
+     A special case would be a thesis or book where several figures are
+     to appear in order, the first at the bottom of the current page,
+     then a page of floats, and the last figure is at the top of the
+     next page of text. This is maddening in LaTeX but usual in the
+     production of manuscripts! To maintain such a document is a
+     trouble: a few words before the first figure can change everything,
+     including the number of pages of floats!
+
+  9. Plain TeX has a macro for building paragraphs of a certain shape
+     decided upon by macro arguments. Knuth gives an example in the
+     TeXbook. LaTeX needs something like this, but with realistic design
+     parameters, not just a fixed list of dimensions. Part of the answer
+     is in a wrapfigure macro.
+
+     A general page-layout macro would allow certain portions of the
+     page to be assigned in advance or reserved for pasteup. The text
+     would be required to flow down the page with changing margins
+     spanning many columns. Basically, this is handled at present by the
+     tabular environment, but that mechanism is too clumsy for daily
+     use.
+
+     A way to voice what is wanted would be to say: I want a default
+     tabular environment that defines a page, in which I can specify
+     where the tables and figures are to be placed on that page, with
+     the ability to remove figure and table objects on the fly and move
+     them to the next unprocessed page, subject to an algorithm. The
+     default page layout should be redefinable on each and every page,
+     with the idea of book design driving the features.
+
+ 10. Alignment of figures and tables into the adjoining text is handled
+     presently by mysterious rules. The rules of alignment need detailed
+     documentation. For example, how can one make a replica in LaTeX of
+     the New York skyline? How can I line up two tables along a certain
+     row or position? How can I stack tables so they look good?
+
+ 11. The box macros fbox, framebox and relatives in the tabular and
+     array environments need to be collected into a single family for
+     uniformity. It should be possible to have in LaTeX all the popular
+     boxes in fancybox.sty. Furthermore, these should be at the page
+     level and the TeX BOX level and easy to use. It is an embarrassment
+     to LaTeX that MS-Word and WordPerfect have easier and better box
+     features!
+
+ 12. The figure experts should be consulted by invitation: the authors
+     of fancybox.sty, PStricks, texdraw, PSlatex, gnuplot, xfig, plot79,
+     ncar, maple-graphics to name a few. Each person who has created
+     figure capabilities has ideas about what is missing and the list of
+     missing features is LONG!
+
+Best regards,
+
+  Grant
+
+*================================*
+| Grant B. Gustafson             |
+| 113 JWB, Dept Math, U. of Utah |
+| Salt Lake City, UT 84112       |
+| (801) 581-6879                 |
+| email: gustafso@math.utah.edu  |
+*================================*
+------- End of forwarded message -------
+

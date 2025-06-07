@@ -1,0 +1,260 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 25 May 90 16:04:37 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 114
+
+Now to the attributes discussion.
+Leslie wrote:
+
+      Here's an idea I just had about parameters.  How
+      about giving every environment an optional
+      argument, and letting
+
+        \begin{foo}[args] ... \end{foo}
+
+      effectively expand to {\foo args ...  }.  The
+      user could put arbitrary declarations, which
+      could be used to set parameters.  Thus, instead
+      of writing \begin{itemize|compact|tick=---}, the
+      user would write
+
+         \begin{itemize}[\compact\renewcommand{\tick}{---}]
+
+      The disadvantage of this approach is that what
+      you type looks uglier.
+
+There are more disadvantages than looking ugly (which is bad
+enough). First of all it is incompatible with many environments
+which happen to have optional arguments already. This could be curred
+of course by moving the attribute argument before the first
+argument, i.e., \begin[\compact]{itemize} but this is
+ilogical in my eyes.
+Second and even more important it will make the number of
+optional arguments even greater and it is in the current LaTeX
+already difficult enough to remember what optional argument
+has what meaning.
+
+Now to what Leslie think are the advantages:
+
+      * It re-uses an existing concept (declarations)
+        rather than introducing a new one (parameters).
+
+This is a new concept all right but it is more logical in certain
+situations (if one doesn't overuse it) and it isn't from the
+experience I have (by supporting both TeX and DCF which has this
+sort of attribute concept) easier to understand by the user then
+a sole declaration concept.
+
+      * It is more powerful.  For example, one can
+      write
+
+         \begin{itemize}[\ifthenelse{\journalversion}
+                 {\runin}{\compact}]
+
+Excuse me but this one looks like a joke to me. This is
+certainly nothing that should go into a user document but rather
+in a style file. It is really a bad hack to support such features
+in my eyes.
+
+      * It makes it easy for user-defined environments
+        to employ parameters.  A command \optionalargs
+        in the environment definition would expand to
+        the contents of the optional argument.  (With
+        Frank's proposed scheme, to allow parameters in
+        user-defined environments, the manual would
+        have to explain whatever mechanism is employed
+        to translate parameter specifications into
+        declarations.)
+
+It is correct that one has to explain who to write such a attribute
+driven environment but this doesn't makes it undesirable.
+The implementation I have in mind wouldn't make too difficult and
+anyway I'm not sure whether it is really necessary to give this
+to the user in a first step and not only to the style designer.
+After all, optional arguments or special commands which involve
+star versions or special notations like () for delimiting arguments
+are also unavailable to the ordinary user.
+
+      * It makes changing ALL parameters for an
+         environment much nicer.  For example, to
+         change \arraycolsep for a single array, one
+         must now write
+
+           {\setlength{\arraycolsep}{...}\begin{array}[t]...
+
+        With my proposal, one would write
+
+           \begin{array}[\top \setlength...]
+
+This would be possible in the syntax I propose, too. Simply by
+specifying
+
+   \begin{array|arraycolsep=3pt}
+
+or if we want to keep the notation of delarations
+by proposing a decl attribute which can take any declaration
+and overwrites the defaults, e.g., something like
+
+   \begin{array|decls=\addtolength{\arraycolsep}{3pt}}
+
+
+      * It extends easily to commands--including
+        user-defined commands.  For example:
+
+          \section [\nonumber
+                    \renewcommand{\tochead}{Gnats and Gnus Forever}%
+                    \renewcommand{\runninghead}{Gnats and Gnus}]%
+                   {Gnats and Gnus: The Example Goes on Forever}
+
+         Of course, \renewcommand{\foo}{...} could
+         probably be replaced by something nicer, like
+         \set{foo}{...}.
+
+Well, that's actually a problem where  my proposed syntax wouldn't
+work because there is no argument where we can put the attributes
+into. But again such a notation would be incompatible and it would
+be difficult to make a compatible style option which could handle
+the old meaning of the \section's optional argument and the new
+meaning. Anyway that switch would be difficult for the user who happens
+to know the old LaTeX because he would need to learn the the old syntax
+now has a *new* meaning.
+
+Therefore I propose a different solution:
+
+View all commands with arguments that contain text to typeset
+(like \section, \footnote etc.) simply as short forms of an
+enviroment form. Or say it the other way arround: I would like
+to allow the user to type
+
+\begin{footnote} .... \end{footnote}
+
+instead of \footnote{...} if he feels like it for all such commands.
+This would makes it possible to say the attributes are only available
+in the long form and only the most important attributes are supported
+via star form in the short form. This would mean that
+
+   \section*{...}
+
+is aquivalent to
+
+   \begin{section|nonumber} ... \end{section}
+
+and
+
+   \section[ bla 1]{ bla 2 }
+
+is aquivalent to
+
+   \begin{section|runninghead= bla 1|tocentry= bla1}
+        bla 2
+   \end{section}
+
+(as before) but if the user only wants to change the running head
+he has to use the long form.
+
+A rough estimation about number of additional internal macro names
+shows that such a scheme would even run on systems with severe
+hashtable limitations like PCs.
+A quick glance over the reference card of the LaTeX book shows
+23 macros which should get enviroment forms. This already includes
+things like \mbox etc.
+As you might not know the new version of PCTeX supports
+5000 macro names so that even those systems pose no real restrictions.
+
+      * It is trivial to implement.  (Hence, less
+      likely to have bugs.)
+
+This is simply incorrect as Leslie already found out, because using
+actual macro names like \compact will make it necessary to reset
+everything in every circumstance. This is likely to break, time
+comsuming and just the oppposite of good programming technique
+(not that I want to say that TeX language makes it easy to make
+reasonable programs).
+
+      In principle, all the advantages of my scheme
+      could be incorporated into parameters.  One
+      should be able to write
+
+           \begin{itemize|topsep=12pt|tick=---}
+
+      However, imagine trying to implement that in TeX!
+      (Note that \def{\topsep}{12pt} would be a
+      disaster--e.g., if the itemize environment has
+      \foo=.5\topsep.)
+
+Of course \def{\topsep}{12pt} would produce a disaster and
+I also agree that 99.99% of what most people, who feel like
+TeX gurus, implement will break before the evening.
+(This is not meant for Chris, I know his quality in programming
+TeX macros.)
+But I think that there exists a simple posibility to implement
+my scheme without loosing to many tears. I already implemented it
+partly in the horrible code I send over the list a few days ago.
+
+Let me explain:
+
+1) I would implement a macro \execute@attribs{<prefix>}
+   which would execute the list of assembled attributes (by
+   the \begin macro) in a form that it looks whether
+   \csname <prefix><attrib>\endcsname is defined.
+   If so it will call this macro with the attribute value
+   as an argument. If not it will produce an error message or
+   a warning telling the user that his arribute is invalide in
+   this context.
+   In this way it is possible to make the same attribute
+   (for example nonumber) behave differently if used in a different
+   environment.
+
+2)  Oh I forgot: if the attribute has no value, e.g., nonumber,
+    the prefix macro will will get an empty argument because this
+    is the most simple way to implement such a scheme.
+
+3)  We also need a \some@attribs{<prefix>} macro (bad name)
+    that will do the same operation as the \execute@attribs macro
+    except that it will i) remove sucessfully matched attributes from
+    the assembled attribute list  and ii) keeps silent when an
+    undefined attribute is encountered. This allows that a high level
+    enviroment uses some of the attributes itself by running
+    \some@attribs with a special <prefix> and then calls a lower
+    level enviroment which will match all remaining attributes
+    on the list.
+
+4)  Of course, in 3) we have to implement a way to produce a decent
+    error message since we don't want the itemize enviroment produce
+    errors telling that the list enviroment found something wrong
+    with the attributes. But this shouldn't be difficult.
+
+Examples:
+
+1)  array env. could say \use@attribs{ar@} and then we have to define
+    for example \def\ar@arraycolsep#1{\arraycolsep#1\relax}
+
+2)  If it is necessary to defer such an execution to a later place
+    one could use the standard mechanism of a hook,i.e., defining
+    \def\ar@arraycolsep#1{\addto@hook<hook name>{<to be done>}}
+    and execute the hook when desired.
+
+3)  I don't actually propose to make every parameter available
+    via this method, actually I never intended to use the attributes
+    concept in this way. What I would propose for such parameters
+    instead is to have a general decls attribute which will
+    get all possible parameters which are to be changed.
+    The definition of \<prefix>decls will then simply look
+    like \def\<prefix>decls#1{#1} if the \use@attribs macro is
+    used after all parameters got their defaults. (In case
+    of the list enviroment, for example, after \list<romannumeral>
+    is read in)
+
+Such a scheme would be expensive in macro names but again it is
+actually only a small number of attributes which make sense
+so that the final number is not very large to make this problematical.
+
+Frank
+
+

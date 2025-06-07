@@ -1,0 +1,213 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 28 Feb 90 11:10:47 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Some responses to frank's thoughts on \@startsection etc.
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 38
+
+Frank writes:
+> I spend some time this weekend on the problem of ...
+> finding a good syntax for generic commands like \@startsection.
+OK, so I must now make this subject a priority!
+
+> ...
+> We have to remember that there is not only the case of \section
+> versus \section*; generation of a number heading also depends
+> on the value of the counter secnumdepth. So if level > secnumdepth
+> we either have to generate the header from the stared specification
+> (I will comment on this approach below) or give the designer an
+> object named \headingnumber (see above). Otherwise the designer has
+> to use such monsters like \ifnum level > \c@secnumdepth ...\else
+> in the definition of the unstared heading layout, brrrr.
+A good point (whatever one thinks of the "*-notation"): these should
+be treated in a uniform way.
+
+
+> I strongly disagree with the the use of beforeskip, afterskip and
+> its special - syntax to denote things like run-in heading
+> and afterindent. The task of a designer is difficult enough.
+> Therefore I don't think we should propose a syntax which is
+> unreadable and not easy to remember. I would suggest to
+> provide one argument similar to the one in the list environment
+> where declarations are to be made. Then a generic
+> command definition could look like
+>
+> \@startsection{section}{1}{\afterindentfalse
+>                            \runinfalse
+>                            \headbeforeskip 10pt plus 5 pt
+>                            \headafterskip 5pt plus 3 pt
+>                            ...}
+>                           {....}...
+>
+> instead of
+>
+> \@startsection{section}{1}{-10pt plus -5pt}{-5pt plus -3pt}...
+Frank, Rainer and I have discussed this particular issue at length
+before: so, no surprise, I agree with Frank's suggested syntax, with
+all the "typographic information" listed in a clear, non syntax-
+dependent way.
+
+This still leaves the question of how much flexibility is allowed for
+the designer (ie what commands are legal within this "???"---we need a
+word for this), but it makes it easier to leave this question
+open, at least for the present, since extra features just need some
+more legal commands/assignments here.
+
+It also raises the question as to whether, what I shall name
+"structural information" (see, I can invent terms!) such as the
+first 2 arguments ({section} and {1}, above), should also be specified
+in this way (there may well be other such information required, see my
+suggestions below).
+
+The third type of information which is essentially contained
+in the arguments of \@startsection (at present)
+is "author-supplied" so may not be pertinent to the present
+discussion, but it still has to be processed (possibly) supplied to both
+the "formatter"*---the code that actually specifies the typesetting---
+and to the "structure-handler"---the code which, amongst other things,
+deals with the information necessary to produce the table-of-contents,
+running heads, etc. Thus this information is typically both
+"typographic" and "structural".
+[* or possibly a "pre-formatter" if, for example, it is required
+to see how long the title is before deciding how to typeset it.]
+The syntax for supplying this type of information must
+conform to the user-interface (another reason why it may not be
+pertinent to this discussion). BUT it would not be impossible, and may
+be desirable at some stage, to extend the user-interface
+to include Optional or Required arguments involving
+"Attributes referred to By Name".
+I have sent Frank some examples of such extensions which I have
+already made for use in the "Latex++" system which I am building for
+The OU: I don't know if he has looked at them yet, I do not claim that
+they are well-coded but I do think that such an extension to the
+user-inteface should be sertiously considered as we ahve found it very
+useful.
+
+
+Thus, it would appear that (at least for sectioning commands) the
+information can be classified into:
+
+1. structural
+
+2. typographic
+
+3. author supplied
+
+Another advantage of Frank's suggested syntax is that it makes
+possible a further useful classification of the information about an
+entity required by the system, as follows:
+
+A. Required (no default)
+
+B. Required* (default value defined)
+
+C. Optional
+
+The classification pf each piece of information under this head could
+different for different meta-styles ("document types"??)
+
+
+> This has the additional advantage that it is much shorter
+> because one does not have to retrieve implicit information
+> (i.e. convert - syntax internally into \afterindentfalse etc.)
+> and for every explicit command like \headbeforskip we have
+> two braces removed. So its not only more reabale it is also
+> shorter.
+Agreed: their is, however, an overhead in terms of the number of
+control sequence names needed.
+I do not consider this a major problem,
+even for "small systems" as (correct me if I am mistaken) I
+think that the only practical consequence of this is that the
+appropriate "hash-table" may need to be bigger than in some
+present-day systems and even doubling its size would make a
+relatively minor impact on the total memory requirements of such
+systems.  (Also, the AMSTEX style for Latex, particularly if it
+includes all the names for the AMS symbols fonts, will be requiring
+this to be up around 5500 long before Latex 2.10---right, Barbara?)
+
+(I shall correct myself: there will be, indeed there already is, a
+problem with 1MB MACs with "loads of DAs, Finders, etc in use", but
+...)
+
+> I'm not sure if the idea of a stared and unstared argument is
+> really useful. It actually means that there is one definition
+> for each combination of number (present/not present) and
+> heading text (present/not present). ...
+>
+> ... My question here is: do we really need to
+> distinguish normally between present/not present of numbers etc.
+> I would assume (please comments!) that one definition would
+> be enough ...
+I presume you mean for \@startsection itself, rather than in the
+user-interface.
+My answer is `avoid them if possible (and I think it is)'.
+
+> Another point is that we have to provide a few more utility macros
+> like \@hangfrom which would help the designer to specify the
+> layout of a heading or a tableofcontents entry without too many
+> tears in the standard cases.
+Yes, please; lots of "goodies" like \@hangfrom would be appreciated!
+ After all: designers have to do real hands-on formatting, so they
+need all the help they can get, especially since they may not be very
+familiar with how "basic TeX" works---I know, I work with them!
+
+>  Nelson sent me
+> a list of all commands sorted by style which I will redistribute.
+Sounds useful: should we also be producing DTDs (SGML jargon for a
+description of the "structure" of a
+document type (approx= meta-style)) for all the meta-types?).
+
+
+
+Which leads me on to some further ideas on sectioning commands:
+
+
+1. Extra "structural information" which could be included.
+
+If we think that latex should do more checking of the syntax of a
+document then each section command would need to be supplied with the
+required information, eg:
+
+what entities can it contain/be contained in;
+what entities end it (this is needed because it is not an
+"environment" so, in SGML jargon, it has "omitted end-tags");
+
+
+2. Extra "typographic information" which should be included.
+
+a. One important typographic attribute of a sectioning command which
+no-one (I think) has yet mentioned in this discussion is information
+about page-breaking between sections. The possibilities to be catered
+for here range from the simple:
+
+  start a new page
+
+to the complex:
+
+  start a new, recto page unless there is room for at least 10 lines of the
+  new section AND a suitable breakpoint thereafter; if this leaves an
+  empty verso page fill it with a randomly chosen "Duane Bibby cartoon"
+
+get the idea?
+
+b. There may be some typesetting to do to finish off the previous
+section: apart from the obvious need to remove excess white space
+(particularly that coming from the end of a list or of displayed
+maths) the design may also, for example, require an \hrule (whatever
+that is!) at the end of a section.
+
+
+I knew that this was going to go on for a long time once I got
+started, so I shall leave you with those few thoughts for now, and see
+what the response is (plus ways of "validating" it all, of course).
+
+
+chris
+
+

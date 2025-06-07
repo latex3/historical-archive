@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2118" "Mon" "6" "October" "1997" "22:36:24" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "56" "Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id WAA18511
+	for <schoepf@UNI-MAINZ.DE>; Mon, 6 Oct 1997 22:48:38 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.71910A68@listserv.gmd.de>; Mon, 6 Oct 1997 22:48:36 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209134 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Oct 1997 22:48:29 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id WAA02842
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Oct 1997 22:48:28
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) id
+          WAA13746 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Oct 1997
+          22:48:28 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA00429; Mon, 6 Oct 1997 22:36:24 +0100
+References: <3997-Mon06Oct1997095918+0100-s.rahtz@elsevier.co.uk>
+            <E0xIDEl-0004al-00@heaton.cl.cam.ac.uk>
+            <9083-Mon06Oct1997144554+0100-s.rahtz@elsevier.co.uk>
+Message-ID:  <199710062136.WAA00429@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <9083-Mon06Oct1997144554+0100-s.rahtz@elsevier.co.uk>
+Date:         Mon, 6 Oct 1997 22:36:24 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2363
+
+i really wonder why discussions always stick with one
+subject. discussing mime advantages might be interesting but when i
+scan my archives later for LaTeX journal classes finding all that
+stuff under this heading ...
+
+anyway
+
+Sebastian Rahtz writes:
+ >  > I looked at using it for TUGboat, but it didn't quite meet the
+ >  > requirement, since regular issues of TUGboat run articles together on
+ >  > the same page.  It would work OK for proceedings issues, but they're
+ >
+ > Barbara Beeton has talked about this often as well, and it always
+ > seems to founder on the rock of changing document in mid page. you
+ > wouldnt *think* it was so hard, would you?
+ >
+ > Perhaps some one with a fresh mind and some time to spare should take
+ > up the cudgels and have another crack at \includex
+
+it is not that hard but is it really worth the effort? it is hard
+enough :-)
+
+what you need to do is:
+
+ 1) capture the exact position on the page when some \includex file
+ends; this means stretch and shrink etc
+
+ 2) capture the content info of all internal float lists, ie type of
+   float size etc
+
+then when you exclude some file you finish the current page (assuming
+that start page of your exclusion is not equal end page of your
+exclusion) then you start a new page in a what that you end up at
+exactly the point as given by 1) (which is the real hard bit and which
+will be wrong for a long time even after reading and reading output
+routine chapter in the TeX book :-) and you make sure that your info
+about 2) is used to replace the float lists.
+
+and this is basically it.
+
+only point is and David pointed this out already: how accurate is the
+result? normally what you will produce is rubbish, any or nearly any
+change in preceeding includes will make everything obsolete. this is
+bad enough with the current \include but there in most cases it does
+work reasonably well. but here?
+
+what do you gain? you gain processing speed as you go along since you
+can work from front to back and only process one include at a time
+(unless you have forward references which change your earlier
+material ....
+
+so?
+
+any takers?
+
+frank
+

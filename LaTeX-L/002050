@@ -1,0 +1,93 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2645" "Sun" "15" "June" "1997" "23:45:34" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "56" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA21530; Sun, 15 Jun 1997 23:41:26 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.19A3F31D@listserv.gmd.de>; Sun, 15 Jun 1997 23:41:24 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153563 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 23:41:20 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id XAA13800 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15
+          Jun 1997 23:41:19 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Sun, 15 Jun 1997 23:41:17 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          XAA26598; Sun, 15 Jun 1997 23:45:35 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970615233240.26579B-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A44D28.37ECD856@vvv.vsu.ru>
+Date:         Sun, 15 Jun 1997 23:45:34 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2050
+
+On Mon, 16 Jun 1997, Vladimir Volovich wrote:
+
+> > > Both approaches work well (the former I've used in my vncmr package for
+> > > Vietnamese to define an ET5 encoding, the latter for a experimental LLW
+> > > encoding using the `fil' option of the LH fonts to get more characters)
+> > > for *all* encodings in the range 0x80-0xFF since the interface used here
+> > > for TeX is only 7bit, and \uccode and \lccode for characters >= 0x80 will
+> > > be never used.
+> >
+> > This is misleading, sorry. Of course I meant case changing only. For
+> > proper hyphenation you still need T2 encoded fonts if you don't want to
+> > change the lccodes.
+>
+> Then, if we assume the default lccode and uccode values for characters 0x00..0x7f,
+> then \uppercase and \lowercase will work properly independently of lccode and uccode
+> settings for characters 0x80..0xff?
+> Is that what you meant by the phrase "both approaches work well for *all* encodings"?
+> Then I did not catch the idea, why "for proper hyphenation you still need T2 encoded fonts"?
+
+Not \uppercase and \lowercase but \MakeUppercase and \MakeLowercase. And
+yes, casification will work independently of \lccodes and \uccodes in the
+range 0x80..0xff with the code fragments I've sent previously. But since
+hyphenation *always* use \lccode this trick will fail.
+
+> BTW, is a ET5 encoding similar to LWN encoding in sence of using sequences
+> of latin letters to typeset vietnamese letters via ligatures?
+> How many letters are there in vietmamese alphabet?
+> And what about Chinese? (are the principles the same there, too?) ;-)
+
+Vietnamese has about 160 letters. ET5 encoded fonts use no ligatures
+(besides the original cm ones); all accented characters are precomposed,
+and you should use a Vietnamese input encoding (or Mule) to input.
+
+Chinese Big 5 encoding has more than 13000 characters---my CJK package
+needs 55 subfonts to represent it.
+
+ET5 only works because Vietnamese basically has no hyphenation. The
+same is true for CJK languages.
+
+> It is also interesting to know, is this `latin based' encoding popular
+> in Vietnam?
+
+What do you mean with `latin based'? Vietnamese is the only south-Asian
+script written with Latin letters!
+
+> I'd like to say, that I'm 99.99% sure that the LWN encoding will not be widely
+> used as a native encoding in Russia (where Russian language is the main).
+> The LWN encoding (and all other `latin-based' russian encodings) is
+> only useful for typesetting small text pieces (such as bibliography references)
+> in a big non-russian text. Or maybe, when there are no packages available
+> to russify screen fonts and keyboard.
+
+I fully agree.
+
+
+    Werner
+

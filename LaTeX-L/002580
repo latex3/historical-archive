@@ -1,0 +1,90 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2703" "Mon" "22" "June" "1998" "12:42:38" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "51" "Re: Modules" "^Date:" nil nil "6" nil "Modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id MAA31634;
+	Mon, 22 Jun 1998 12:53:13 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.1F75AF57@listserv.gmd.de>; Mon, 22 Jun 1998 12:52:48 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 367388 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 22 Jun 1998 12:52:36 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA06564 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 22 Jun 1998 12:52:32
+          +0200 (MET DST)
+Received: from [130.237.37.30] (sl81.modempool.kth.se [130.237.37.107]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id MAA07009 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 22 Jun 1998 12:52:29
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de> <m0ynSs5-000DLbC@bilbo.yavuz.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110703b1b3df3f0cc6@[130.237.37.30]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806220631.QAA11602@ricetub.anu.edu.au>
+Date:         Mon, 22 Jun 1998 12:42:38 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2580
+
+  I think there are two concerns, the logical (keeping the code straight,
+so different chunks of code do not clash), and how to make this workable
+and useful to those who use it, both developers and users.
+
+  For the logical part, I think that module names should always be long,
+unless there is some technical reason against, like TeX does not like it.
+But I think TeX does not bother so much; it replaces long names by a short
+internal macro representation, I think.
+
+  Then one may discuss how long the long names should be: Certainly, one
+cannot diminish the number of module separators (like "/" in these
+discussions), because they tell something about the logical structure. But
+it is possible to let the module named "environment" have names starting
+"envir/" by simply letting the command \environment/ expand
+\environment/<command name> to \envir/<command name>. But then the module
+name "envir" cannot be used.
+
+  Similarly, the module named "environment" should not be required be in a
+file named like that; if one wants to specify a special file or file
+position, there should be command doing this. (Such command could be made
+to be platform independent between say UNIX, MacOS and MSOS if there is
+another command telling which platform it is.)
+
+At 16:31 +1000 98/06/22, Richard Walker wrote:
+>1.  Macro/symbol names should follow a consistent scheme, be easy to
+>remember and use.  Hence `long' names.
+>
+>2.  I was addressing the problem of keeping format file size and
+>control sequence space requirements to a minimum.  This has been one
+>of the stated aims of the project.  Hence `short' names.  Is this no
+>longer a concern?  Is it OK if all macro names are thirty or more
+>characters long?  If so, dump the short names altogether, and stick
+>with the long names.  We use smart editors.
+
+  So here, they way I see it, the long names (1) are only used really in
+order to keep the code straight and avoid code clashes. The user
+(preferably also developers) should only need to use short names by various
+of simplifying schemes; this is (2) then. But non-local names should expand
+to long names.
+
+  When developing the simplifying schemes (2), I do not know how to do it
+for the simple reason that TeX is too tricky to program. One can simply not
+invent some nice general schemes, then sit down, program it in TeX and hope
+it is going to work. Generalities is evidently not Knuth's strong side.
+
+  So (2) must be developed together with (1), so that the two cooperate.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

@@ -1,0 +1,117 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2438" "Tue" "14" "October" "1997" "11:35:30" "+0100" "Sebastian Rahtz" "s.rahtz@ELSEVIER.CO.UK" nil "74" "frontmatter 98" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id NAA29652;
+	Tue, 14 Oct 1997 13:39:32 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.0FA4AE92@listserv.gmd.de>; Tue, 14 Oct 1997 13:39:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 214864 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 13:39:24 +0200
+Received: from pillar.elsevier.co.uk (root@pillar.elsevier.co.uk
+          [193.131.222.35]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id NAA25354 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14
+          Oct 1997 13:39:20 +0200 (MET DST)
+Received: from snowdon.elsevier.co.uk (snowdon.elsevier.co.uk
+          [193.131.197.164]) by pillar.elsevier.co.uk (8.8.5/8.8.5) with ESMTP
+          id MAA18710 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14 Oct
+          1997 12:37:56 +0100 (BST)
+Received: from SRAHTZ (actually host srahtz.elsevier.co.uk) by
+          snowdon.elsevier.co.uk with SMTP (PP); Tue, 14 Oct 1997 12:38:26 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <97100911582847@multivac.jb.man.ac.uk>
+            <199710132045.VAA09228@frank.zdv.uni-mainz.de>
+X-Mailer: VM 6.33 under Emacs 19.34.6
+Message-ID:  <1622-Tue14Oct1997113530+0100-s.rahtz@elsevier.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199710132045.VAA09228@frank.zdv.uni-mainz.de>
+Date:         Tue, 14 Oct 1997 11:35:30 +0100
+From: Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      frontmatter 98
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2462
+
+If any part of fm98 (you see i use a new subject line, i propose we
+start referring to this new specification in that way) uses
+keyword=value, then we might as use it for *everything*. and it does
+get more and more like BibTeX (for good reason, bibliographies have
+had a lot of study). thus:
+
+\author{surname=Rahtz, inits=S.,
+    mainauthor=true,
+    forename=Sebastian Patrick,
+    qual=AJFL,
+    title={},
+    address=add1, affiliation=aff1}
+\author{surname=Einstein, inits=A.,forename=Albert,title=Dr,address=add2}
+\author{forename=Maria de Dolores de Garcia,surname=de la
+   Vega,inits=M.,title=Professor,address=add1, email=md@x.y.z}
+
+\address{name=add1,address={Le Petit Mignon, Despair Street, Ash
+      Mountain}}
+\address{id=add2,address=Eternity}
+\affiliation{id=aff1,name=Devils Island}
+
+\date{revised=,accepted=...}
+
+\journalinfo{volume=33,issue=6,startpage=67,endpage=94,
+     pii=xxxxxxxxxxxxxxxxxxxx}
+
+(BTW I like the idea of the portable database fragment that we paste
+into our papers. if we want to get trendy, how about a short form of
+ \author{url=http://x.y.z/~rahtz/artheader.cfg}
+or, perhaps more likely, if we have used BibTeX,
+ \author{bibkey=rahtz:data}
+and store the fragment in the .bib file with the article....
+ )
+
+Bothers
+------
+
+1)  Jean-Francois's point about using addresses for
+mailing. how about no more and no less than
+
+\address{name=add1,address={Le Petit Mignon,\\ Despair Street,\\ Ash
+      Mountain}}
+
+where the class throws away the \\ if they are not appropriate?
+
+2) multiple addresses and affiliations. how do i indicate that person
+A has address X, and person B address Y, but A is on study leave at Y?
+We don't want to repeat address Y, do we?  do we simply add more and
+more keys to \author, to cover such situations?
+
+Summary
+-------
+Assuming you buy a key-val interface, and accept that journals can and
+will use different extra keys in some fields, beyond the bare minimum
+required by the fm98 spec, then the question is how many top level
+commands there are. i have used above:
+
+ \author
+ \address
+ \affiliation
+ \journalinfo
+ \date
+
+(the latter two could be combined together, actually; do we also
+combine affiliation and address?)
+
+but what else is there?
+
+Thinking of Barbara's post last week, where she listed the many tags
+the AMS apply to an article, the keyval approach has the great
+advantage that she need not commit herself immediately to what all
+those tags are
+
+Sebastian
+

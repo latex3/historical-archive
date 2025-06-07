@@ -1,0 +1,133 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2795" "Tue" "7" "December" "1999" "23:02:53" "+0100" "Marcin Wolinski" "wolinski@MIMUW.EDU.PL" nil "84" "Re: Classes -- a generalization of templates" "^Date:" nil nil "12" nil "Classes -- a generalization of templates" nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 7 Dec 1999 23:25:03 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+	by mailserver1.zdv.Uni-Mainz.DE (8.9.1b+Sun/8.9.1) with ESMTP id XAA03811
+	for <schoepf@mailserver.zdv.uni-mainz.de>; Tue, 7 Dec 1999 23:24:59 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id XAA09349
+	for <schoepf@UNI-MAINZ.DE>; Tue, 7 Dec 1999 23:24:56 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.B91CC2AD@mail.listserv.gmd.de>; Tue, 7 Dec 1999 23:24:50 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446392 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Dec 1999 23:24:16 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id XAA17630 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 7 Dec
+          1999 23:24:14 +0100 (MET)
+Received: from duch.mimuw.edu.pl (duch.mimuw.edu.pl [193.0.96.2]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id XAA17567 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 7 Dec 1999 23:24:52 +0100 (MET)
+Received: (qmail 26734 invoked from network); 7 Dec 1999 22:21:50 -0000
+Received: from pe7.warszawa.ppp.tpnet.pl (HELO Wincenty.nowhere.edu.pl)
+          (marcin@212.160.56.7) by duch.mimuw.edu.pl with SMTP; 7 Dec 1999
+          22:21:50 -0000
+Received: (from marcin@localhost) by Wincenty.nowhere.edu.pl
+          (8.9.3/8.9.3/Debian/GNU) id XAA00401; Tue, 7 Dec 1999 23:02:54 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <417f4014@corona.oche.de> <v03110701b4709b1706c2@[195.100.226.138]>
+X-Mailer: VM 6.62 under Emacs 19.34.1
+Message-ID:  <14413.33805.485658.811893@Wincenty.nowhere.edu.pl>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110701b4709b1706c2@[195.100.226.138]>
+Date:         Tue, 7 Dec 1999 23:02:53 +0100
+From: Marcin Wolinski <wolinski@MIMUW.EDU.PL>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Classes -- a generalization of templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3448
+
+Hans Aberg wrote:
+> There are two separate aspects of what is called OOP  or object oriented
+> programming, one that the objects are dynamic (as you say), and another
+> that the objects constitute localized namespaces.
+> [...]
+> I think I pointed that the dynamic aspect does not appear to make sense in
+> TeX. Therefore I concentrated on the static, namespace, aspect, which just
+> as templates just requires macro expansions.
+
+The problem is you cannot fully implement static namespaces in TeX ---
+not for all primitive datatypes present.
+
+Note that templates do not allocate <storage-bin>s.  For some types
+(e.g. macro names) this is not needed.  For others (dimension
+registers, counters) it is.  But precisely for those we do not want to
+allocate registers inside the template code.  Moreover assignments
+done by template code are not local to that piece of code --- no
+grouping done by the template mechanism itself.
+
+Some more perverse templates use for <storage-bin>s TeX's internal
+parameters such as \leftskip, \rightskip or \parindent.  And the
+assignment done has to last past the end of execution of template
+code.  It can be argued whether this is use or abuse, anyway it seems
+very useful.
+
+So the seemingly obvious similarity to objects is in fact rather
+misleading.
+
+A real TeX hacker would probably say that templates are a useless thin
+wrapper around calc that provides no new interesting features besides
+the ability to freeze calc computed values.  :-)
+
+Here is real hacker's implementation of templates:
+
+\newskip\barskip
+
+% \DeclareTemplate{mytemplate} (two template arguments):
+
+\def\mytemplate#1#2#3{%
+        \def\foo##1{##1}% default \foo
+        \barskip=42dd   % default \barskip
+        #1%  this is DoParametersAssignments
+        % template code here:
+        \vskip\barskip
+        \hbox@to\textwidth{\foo{#2}\hfil #3}% whatever
+        \vskip\barskip
+}
+
+% UseTemplate:
+
+% \mycommand accepts two arguments
+\def\mycommand{%
+        \mytemplate{\def\foo##1{\textbf{##1}}% not sure whether to
+                                             % quadruple #'s here - i'm
+                                             % not a real TeX hacker
+        }}
+% we use the default value for \barskip here
+
+% And in the document:
+
+\mycommand{real hacker}{13}
+
+
+And an optimizing hacker with syntactic sugar would provide this
+implementation instead:
+
+\def\mytemplate#1#2#3{{%
+        \def\foo##1{##1}%
+        \let\barskip\@tempskipa
+        \@tempskipa=42dd
+        #1%  this is DoParametersAssignments
+        % template code here:
+        \vskip\barskip
+        \hbox@to\textwidth{\foo{#2}\hfil #3}% whatever
+        \vskip\barskip
+}}
+
+(with instantiation as above)
+
+So maybe we should abandon all this strange template stuff and start
+real programming?  Just kidding.
+
+Marcin
+

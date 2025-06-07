@@ -1,0 +1,148 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4929" "Sun" "28" "February" "1999" "15:51:09" "+0100" "Frank Mittelbach" "frank.mittelbach@UNI-MAINZ.DE" nil "108" "Re: Suggestion: Safe font commands" "^Date:" nil nil "2" nil "Suggestion: Safe font commands" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id QAA15898;
+	Sun, 28 Feb 1999 16:06:11 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.B6B17275@listserv.gmd.de>; Sun, 28 Feb 1999 16:06:07 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 426870 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 28 Feb 1999 16:06:07 +0100
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id QAA19528
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 28 Feb 1999 16:06:05 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (dialin375.zdv.Uni-Mainz.DE
+          [134.93.175.75]) by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id
+          QAA12979 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 28 Feb 1999
+          16:06:03 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.8.8/8.8.8) id
+          PAA00589; Sun, 28 Feb 1999 15:51:09 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <l03102800b2ec71178e2a@[130.239.20.144]>
+Message-ID:  <199902281451.PAA00589@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <l03102800b2ec71178e2a@[130.239.20.144]>
+Date:         Sun, 28 Feb 1999 15:51:09 +0100
+From: Frank Mittelbach <frank.mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Suggestion: Safe font commands
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3248
+
+Lars,
+
+ > It occured to me some while back that there is a need for some kind of
+ > "safe" font selection commands---where "safe" is to be interpreted as with
+ > the safe file commands \InputIfFileExists etcetera---in LaTeX. Safe font
+ > commands would provide the ability to test if a font is available before
+ > actually trying to typeset anything in it, and thus also the ability to
+ > take some alternative action should the font not be available.
+
+LaTeX already does have this feature if you think about, part of the font
+selection mechanism was done explicitly to provide this
+
+ > I know that this is more complicated with fonts than it is with input
+ > files, since there is in general no way of testing if there is a TFM file
+ > for the font in question short of actually trying to load the font (and I
+ > don't think that can be used in general since it results in a visible error
+ > message if the result of the test is false). One can however check if there
+ > is a font definition file which defines the font in question, so that is
+ > what I suggest the safe font commands should do.
+
+there exists a trick to test for a font by going into \batchmode and loading
+it and then checking if you got \nullfont as a result. the problem with this
+approach (if you don't use eTeX) is that a) there is no way to be sure which
+mode was in use (and \batchmode and friends are global operations) and b) it
+uses a fair amount of string pool etc. the latter is unfortunately also true
+if you try loading a normal file.
+
+ > One example of how to use them is to make a command that typesets some
+ > symbol if that symbol is available and which typesets some fake of it
+ > otherwise.
+ > [...]
+
+what's wrong with using the \DeclareTextSymbolDefault (and friends) for that
+purpose? that is exactly doing what you ask for as far as i can see.
+
+eg instead of
+
+ >   \DeclareRobustCommand\euro{%
+ >      \UseTextSymbolIFE{TS1}{\texteuro}{EUR}%
+ >   }
+
+you could
+
+ \DeclareTextCommandDefault\texteuro{some definition}
+
+and then your statement:
+ >
+ > to get a \euro command that gives something understandable regardless of
+ > whether it is typeset on a site with or without a TS1 encoded symbol font.
+
+holds as well.
+
+the catch is that this works best if TS1 is something that is either there
+(for all fonts) or not there at all. if it is there only for a small fraction
+of the fonts then the scheme using Defaults works less good than the proposed
+one.
+
+In particular it works not very well in the current situation where the TS1 is
+effectively ony correctly implemented in CM fonts while all the PS fonts
+contain huge gaps in the encodings that claim to be TS1.
+
+BUT ... in my opinion there error here lies in calling those font encodings
+TS1. My approach would be to distangle TS1 into several sub-encodings, eg
+
+ TSA = Text Symbol Adobe basics
+ TSX = Text Symbol Adobe basics + expert
+ TS1 = Text Symbol as defined by Joerg
+
+with those encodings being TSA < TSX < TS1
+
+and a change in textcomp to allow loading a subset
+
+This needs some further thoughts i'm sure but the current situation is not
+good where the problem appears only at the printing stage (and it does violate
+the invariant of the encoding, ie that 2 fonts in the same encoding produce
+the same glyph set)
+
+-----------------------------------------
+
+I'm not saying that the proposed test commands for certain font
+characteristics aren't worth having, but i think they should not be used to
+handle something like \textdegree or \texteuro on a large scale. The amount of
+processing etc would be extremely high and i think this is fixing the symptoms
+of a (one of the) problem(s) with NFSS2 instead of providing the right basic
+interfaces for that problem.
+
+
+ > It seems to me that much of the code needed to implement these commands
+ > already exists in the LaTeX kernel, in particular in \define@newfont and
+ > \try@load@fontshape, so it should not have to be that much work
+ > implementing them. (It should reside in the kernel, since one place one
+ > might want to use these commands are in the definitions in an encoding
+ > definition file, and such files cannot load a package (which would have
+ > been the alternative place to define these commands) because the fontenc
+ > package loads such files during option processing.)
+
+code like this should eventually reside in the kernel but the kernel of
+LaTeX2e is frozen in this respect (and so are the interfaces for .fd and
+enc.def files for 2e), ie we do not intend to extend it incrementally so that
+we get to a situation where documents running 2e maintenance release X don't
+work on maintenance release X-1
+
+In my opinion it is time to start thinking about the errors and problems with
+the NFSS2 approach and start experiments for developing NFSS3 but the first
+step for doing this should be via experimental packages that one has to load
+in the document somehow (ie either in a class file or in the preamble)
+
+frank
+

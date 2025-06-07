@@ -1,0 +1,104 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3226" "Mon" "12" "October" "92" "17:10:33" "CET" "\"J%org Knappen\"" "KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE" nil "77" "Some thoughts on makeindex" "^Date:" nil nil "10"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA19614; Mon, 12 Oct 92 17:13:29 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA24445; Mon, 12 Oct 92 17:12:03 +0100
+Message-Id: <9210121612.AA24445@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0080; Mon, 12 Oct 92 17:12:18 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0066;
+ Mon, 12 Oct 92 17:12:12 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0063;
+ Mon, 12 Oct 92 17:12:07 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 12 Oct 92 17:10:33 CET
+From: "J%org Knappen" <KNAPPEN@VKPMZD.KPH.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Some thoughts on makeindex
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 860
+
+
+Thoughts on MakeIndex
+
+I want to develop some ideas how multiple indices could be handled with
+makeindex. these ideas include pproposals to change the MakeIndex user's
+interface.
+
+Many books contain several indices, formatted with different styles and
+having different headers. For example, a book on linguistics may have three
+indices (a rather moderate number): Person, subject, and language index.
+
+So we want to say something like:
+\makeindex[per] %person index
+\makeindex[sub] %subject index
+\makeindex[lan] %language index
+
+We do not want to say makeindex -s person -o book.pes book.per, do we? The
+index style should be specified in the document by the author and not at
+run-time by another person who has to type it explicitly in. Something like
+
+\indexstyle[per]{person} % use person.ist as style for the person index
+\indexstyle[lan]{german,language} % Two styles...
+
+should do for the styles.
+
+The indexing proceeds the usual way using an optional argument:
+\index[lan]{burushaski}
+
+After all, the index entries are written down somewhere (I'm going to be
+more explicit further down), compiled by MakeIndex and we want to include
+them in the production run. Lasy as we are, we do not want to type things
+like |\include{book.pes}% The sorted person index| which makes us think
+about the ending of the output file, but rather
+
+\includeindex{per}% include the person index. Should be handled somehow
+                  % with \includeonly (e.g. if includeonly is set, no
+                  % indices are included)
+
+or
+
+\inputindex{per}% This works rather like inputting an index
+
+For the last step it is necessary, that the compiled index file must have
+an suffix which is algorithmically deducable. Here is a proposal which
+proceeds rather conservatively:
+
+If an index is created, the first three letters of the optional argument
+form the suffix of the file. The third letter must not be an `s' or a `g'.
+The sorted index will get the suffix .%%s, the loG-file the suffix .%%g
+(here %% stands for the first two letters).
+
+Here is another, more progressive proposal:
+All index entries are written on one file (either the .aux or the .idx file)
+and marked with tags, saying to which index they belong. Running MakeIndex
+once will produce all index files (here it is good to have them in seperate
+files, because some text might occur in between the indices). The suffix
+could be the first three letters of the optional argument.
+
+At last some miscellaneus things:
+
+I'd like a command to introduce some notes into the index like
+\indexnote[lan]{kisuaheli \see suaheli}
+\indexnote[lan]{deutsch \seealso bayrisch, fr"ankisch, schw"abisch}
+which should do the obvious task. I don't want to have to post-edit the
+ready-made index files.
+
+A more difficult task: introduce some short references. Say, in the person
+index the life dates should be given behind the names. But lasy as I am I
+do not want to type them each time I index the person. One time I supply
+the full information and label it
+\index[per]{B. R"uhmt (1850-1949)\label{BRuehmt}}
+the other times I'll refer to the label
+\index[per]{\ref{BRuehmt}}% Maybe I want even a shorthand for this :-)
+
+Hope you find this interesting and stimulating,
+
+Yours J"org Knappen.
+

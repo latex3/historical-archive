@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["953" "Tue" "14" "September" "1999" "16:23:57" "+0200" "Frank Mittelbach" "frank.mittelbach@SMC.EDS.DE" nil "35" "Re: xparse" "^Date:" nil nil "9" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id QAA05434
+	for <schoepf@UNI-MAINZ.DE>; Tue, 14 Sep 1999 16:24:06 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.04FA320A@mail.listserv.gmd.de>; Tue, 14 Sep 1999 16:24:02 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444825 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Sep 1999 16:24:00 +0200
+Received: from gate.eds.de (gate.eds.de [205.191.194.5]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id QAA19992 for
+          <LATEX-L@urz.uni-heidelberg.de>; Tue, 14 Sep 1999 16:23:58 +0200 (MET
+          DST)
+Received: from n15ux24.nets.de.eds.com by gate.eds.de with SMTP id QAA29869
+          (InterLock SMTP Gateway 4.2 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>);
+          Tue, 14 Sep 1999 16:24:26 +0200
+Received: by n15ux24.nets.de.eds.com (1.37.109.16/16.2) id AA086819037; Tue, 14
+          Sep 1999 16:23:57 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199909071904.VAA00530@istrati.zdv.uni-mainz.de>
+            <199909101541.QAA22188@mimosa.csv.warwick.ac.uk>
+            <199909120954.LAA00439@istrati.zdv.uni-mainz.de>
+            <199909122003.UAA09420@rigel.univie.ac.at>
+X-Mailer: VM 6.62 under Emacs 19.34.1
+Message-ID:  <14302.23165.67343.509067@n15ux24.nets.de.eds.com>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: Frank Mittelbach <frank.mittelbach@smc.eds.de>
+Comments:     Originally-From: Frank Mittelbach <frank.mittelbach@smc.eds.de>
+In-Reply-To:  <199909122003.UAA09420@rigel.univie.ac.at>
+Date:         Tue, 14 Sep 1999 16:23:57 +0200
+From: Frank Mittelbach <frank.mittelbach@SMC.EDS.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xparse
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3326
+
+Werner
+
+ >     >   Using characters other than * to indicate variant forms. I can
+ >     >   imagine a command with two independent variants, accesed by
+ >     >   \foo, \foo*, \foo+, and \foo*+
+ >
+ >    this could be provided easily enough, eg, S{<symbol-to-scan} and
+ >    might indeed be generally useful, any comments?
+ >
+ > A very nice idea!  I like it.  But the \foo*+ form is too much -- a
+ > single character should be sufficient.
+
+you misunderstood, the suggestion was to allow scanning for some
+arbitrary symbol (well sort of arbitrary) e.g.
+
+\DeclareDocumentCommand \foo { S{*} S{+} }
+   { ... }
+
+
+the above would  parse
+
+\foo  (returning \BooleanFalse\BooleanFalse)
+\foo* (returning \BooleanTrue\BooleanFalse)
+\foo+ (returning \BooleanFalse\BooleanTrue)
+
+but of course also
+
+\foo*+ (returning \BooleanTrue\BooleanTrue)
+
+
+whether this is helpful / sensible to have this extension is another
+matter but this would be the functionality
+
+frank
+

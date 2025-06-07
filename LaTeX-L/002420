@@ -1,0 +1,110 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3252" "Thu" "9" "October" "1997" "10:28:14" "GMT" "Phillip Helbig" "helbig@MULTIVAC.JB.MAN.AC.UK" nil "78" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id LAA08137;
+	Thu, 9 Oct 1997 11:32:22 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.770ACBBA@listserv.gmd.de>; Thu, 9 Oct 1997 11:32:19 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 211178 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 9 Oct 1997 11:32:14 +0200
+Received: from multivac (multivac.jb.man.ac.uk [130.88.24.128]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id LAA25869 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Thu, 9 Oct 1997 11:31:58 +0200
+          (MET DST)
+X-VMS-To: SMTP%"LATEX-L@relay.urz.uni-heidelberg.de"
+X-VMS-Cc: HELBIG
+Message-ID:  <97100910281439@multivac.jb.man.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 9 Oct 1997 10:28:14 GMT
+From: Phillip Helbig <helbig@MULTIVAC.JB.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2420
+
+Here's a FIRST SUGGESTION for a proposed journal.cls.  Each journal
+would have its own .cls with a different name but REQUIRING THE SAME
+COMMANDS AND ARGUMENTS.  Contrary to what I mentioned before, there
+should be NO optional arguments (except to the \documentclass command
+itself), so that the author is forced to include everything.  Each .cls
+is free to ignore any arguments, but should complain if an argument is
+not present (an empty {} is enough if it is not really needed; it should
+not be empty (and the .cls should complain) if it is really needed).
+
+The idea is to include all information necessary for the markup, but
+leave the appearance in the hands of the individual .cls.  The
+\maketitle command would format the information in a way appropriate to
+the journal.  Unwanted commands (which might be used by those attempting
+visual formatting) could be temporarily defined to give error messages.
+
+I intentionally wrote this before looking at any other suggestions, so
+as to be completely uninfluenced and (perhaps) offer a fresh
+perspective.
+
+=======================================================
+
+%THERE SHOULD BE SOME STANDARD OPTIONS
+\documentclass[referee]{journal}
+%DO WE NEED MORE ARGUMENTS?
+\title{Title}{short form}
+\note{any notes immediately after title will be marked as notes to the title}
+\note{there may be more than one}
+%ALL BUT THE FIRST ARGUMENT ARE REFERENCES TO LABELS
+%DO WE NEED MORE?
+\author{short form}{affiliation-ref}{address-ref}{email-ref}
+\note{any notes immediately after this author will be marked as notes
+to this author}
+\note{there may be more than one note for each author}
+%THIS IS THE SECOND AUTHOR
+\author{short form}{affiliation-ref}{address-ref}{email-ref}
+\note{any notes immediately after this author will be marked as notes
+to this author}
+\note{there may be more than one note for each author}
+%DO WE NEED MORE ARGUMENTS?
+\date{received in original form}{received}{accepted}
+%THE TWO ARGUMENTS FOR EACH \item IN THE ENVIRONMENTS BELOW WORK SIMILAR
+%TO THE KEY AND THE OPTIONAL ARGUMENT OF \bibitem.  WHAT IS DONE WITH
+%THIS INFORMATION (INCLUDING THE ORDER AND POSITIONING OF AFFILIATIONS,
+$EMAIL ADDRESSES ETC) IS UP TO THE INDIVIDUAL .cls
+\begin{affiliations}
+\item{affiliation-label}{name of affiliation}
+\item{affiliation2-label}{name of affiliation2}
+%...
+\end{affiliations}
+\begin{addresses}
+\item{address-label}{address}
+\item{address2-label}{address2}
+%...
+\end{addresses}
+\begin{emails}
+\item{email-label}{email}
+\item{email2-label}{email2}
+%...
+\end{addresses}
+
+\begin{document}
+\maketitle
+
+%AS OF HERE, STANDARD LaTeX WITH PERHAPS PERSONAL MACROS ARE USED.  NO
+%EXTRA COMMANDS, JUST CHANGES IN THE WAY THE USUAL ONES WORK (MARGINS,
+%APPEARANCE OF LISTS AND SO ON).
+
+%ONE EXCEPTION WOULD BE THE (REQUIRED) USE OF MACROS FOR THINGS WHICH
+%ARE TYPESET/PUNCTUATED/SPELLED DIFFERENTLY, SUCH AS \etc, \etal,
+%\colour, AND SO ON.
+
+%WE DO NEED A REPLACEMENT FOR \caption WHICH LEAVES WHETHER OR NOT IT
+%APPEARS BEFORE OR AFTER THE FLOAT UP TO THE .cls AND NOT UP TO WHERE
+%IT IS PLACED WITHIN THE ENVIRONMENT.
+
+%UNTIL THE OTHER STUFF IS SORTED OUT, I'M ASSUMING THAT DALY'S natbib
+%AND SO ON CAN HANDLE REFERENCES, CITATIONS ETC. OK
+=======================================================
+

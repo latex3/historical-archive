@@ -1,0 +1,88 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 19 Sep 2008 09:17:02 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8J7GunI024264
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 19 Sep 2008 09:16:57 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8J7Beck001372
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 19 Sep 2008 09:11:40 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8IM16sN020626;
+	Fri, 19 Sep 2008 09:11:36 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 37324 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 19 Sep
+          2008 09:11:36 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8J7BZMb024765 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 19 Sep 2008 09:11:35 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8J7BMDX008602
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 19 Sep 2008 09:11:25
+          +0200
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1Kga9B-00026M-RH for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 19 Sep 2008 08:11:21 +0100
+Received: from [139.222.200.93] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1Kga9B-0002ev-Pt for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 19 Sep
+          2008 08:11:21 +0100
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <LISTSERV%200809181802060700.039F@LISTSERV.UNI-HEIDELBERG.DE>
+            <27990a880809181847p7f2fa697x5ce693bb9b53e71a@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48D3509A.1050606@morningstar2.co.uk>
+Date:         Fri, 19 Sep 2008 08:11:22 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \scantokens, \everyeof, \endlinechar
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <27990a880809181847p7f2fa697x5ce693bb9b53e71a@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 19 Sep 2008 07:17:02.0301 (UTC) FILETIME=[B666D8D0:01C91A27]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5367
+
+Will Robertson wrote:
+> On Fri, Sep 19, 2008 at 1:32 AM, Joseph Wright
+> <joseph.wright@morningstar2.co.uk> wrote:
+>> I should point out that this was, implicitly, a two-part questions.  Part
+>> one was about the primitives, part two is how to execute:
+>>
+>> \tlp_gset:Nx \g_siunitx_tmpa_tlp {\etex_scantokens:D {#1}}
+>>
+>> while _ is active (and I guess ideally : is "other").  In my current setup,
+>> I only have to worry about @, which I just accept will be a letter.  But I
+>> have to have _  active.
+> 
+> Ah :) Bit of a pickle.
+> 
+> I guess I'd do something like
+> 
+> \def:Npn \siunitxtmp {
+>   \tlp_gset:Nx \g_siunitx_tmpa_tlp {\etex_scantokens:D {#1}}}
+> \char_make_active:N \_
+> \siunitxtmp
+> 
+> (unless my brain hasn't woken up yet...I think that will work)
+> 
+Seems to agree with what I'd thought.  I just wondered if I was missing
+some kind of trick to avoid needing a user-space named macro.
+-- 
+Joseph Wright
+

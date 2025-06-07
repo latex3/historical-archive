@@ -1,0 +1,257 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["8138" "Fri" "11" "February" "1994" "12:13:26" "CST" "Alex Stark" "jas1@eng.cam.ac.uk" "<199402111319.AA24118@mail.cs.tu-berlin.de>" "226" "Package interface suggestions" "^Date:" nil nil "2" "1994021118:13:26" "Package interface suggestions" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA21681; Fri, 11 Feb 94 14:20:52 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA07753; Fri, 11 Feb 94 14:19:48 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA24118
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 11 Feb 1994 14:19:43 +0100
+Message-Id: <199402111319.AA24118@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 2892; Fri, 11 Feb 94 14:19:23 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 2505; Fri,
+ 11 Feb 1994 14:19:20 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3589; Fri,
+ 11 Feb 1994 13:14:46 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 11 Feb 1994 12:13:26 CST
+From: Alex Stark <jas1@eng.cam.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Package interface suggestions
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1549
+
+I hope that a file will be included here.
+%%%%%%%%%%%%%%%%%%%%%%%
+(Formal signature)
+----------------------------------------------------------------------
+J. Alex Stark          Signal Processing and Communications Laboratory
+                                             Department of Engineering
+email: jas1@uk.ac.cam.eng                      University of Cambridge
+Tel:   [+44]223 3 32767                             Trumpington Street
+Fax:   [+44]223 3 32662                         Cambridge, CB2 1PZ, UK
+I don't suppose that anyone will be interested in the following. It is
+strictly for Latex 3. Some of the suggestions may seem radical, but
+please read it with an open mind. Most of it will be rubbish, but even
+if 1% is of use I will consider that the effort was worth it.
+
+Ignore mistakes of syntax and terminology.
+
+THIS IS VERY ROUGH. CONSTRUCTIVE FEEDBACK INVITED.
+
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Suggestions for Style Interfacing
+    ---------------------------------
+
+I have had various discussions about the possibility of dividing the
+definition and implementation parts of style designs. Added to this,
+within the heated language of the Latex-L list I have found some
+useful ideas.
+
+One of the fundamental objectives of Latex 3 is to make style design
+easier, especially by removing the need to program in TeX. Another is
+to improve portability.
+
+       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   PACKAGE CUSTOMIZATION
+
+Basic data specification:
+Consider the specification of page dimensions, including margins. It
+has become clear that methods of doing this include:
+
+1) By specifying each dimension separately in your document. This is
+not ideal, but we musn't prevent it or otherwise we will be forcing
+users to live with every restrictive cockup we make.
+2) By specifying a page-dimension style file such as A4paper.
+3) By using a standard class option.
+
+
+The Greatest Common Field Set:
+Different packages require different fields to be set. Consider the
+title making facilities. It is very irritating to have to rewrite a
+document when submitting it to a different journal. So it becomes
+desirable to define a common set of fields such as author, address,
+email and funding organisation. Each journal package would take or
+leave each field.
+
+Meta Style-packages:
+The following example may seem crass, but I think that it illustrates
+the need to provide a clear mechanism for people to customize a
+package using a style file and call it a new package. Suppose that in
+my research group I wish to create a letter class. I choose a standard
+letter format. I design a letter head. I specify the address and
+similar fields. This makes a new package groupletter. Each person
+defines within his/her document the email and signature fields. I'm
+lazy and fussy, so I write two style files, specifying these fields
+with different amounts of formality.
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       A BASIS FOR BUILDING DESIGNS FROM DESIGNS
+
+Many years of often bitter experience in the development of computer
+languages has taught people to define languages such that
+1) The data structure implementations used by modules are hidden from
+those that make use of them.
+2) The implementation code is hidden from the module users.
+
+This requires stability of definition. It also assumes that preventing
+access to internal data is possible. These requirements do not really
+apply to Latex. However, the more we can do to isolate the
+implementation, the better. I once had to change the style of an
+enumeration environment to \roman. So I changed \theenumi. It didn't
+work. The style writer had implemented the hooks incorrectly. This
+situation may have been avoided if there had been a clearer definition
+interface.
+
+To build on a package we need access to:
+1) Its style data
+2) Code hooks to change its behaviour.
+
+We need some kind of inheritance and other mechanisms for layering a
+package on another.
+
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    A STANDARD LIBRARY?
+
+Languages like `C' come with a standard library. Users are provided
+with definition files to include in their programs. The code for these
+libraries is precompiled: they can't access it.
+
+Is Latex3 different? Users need to interface to the standard commands
+and styles. It isn't that silly to suggest that it should be done in
+a similar fashion to bringing in contributed packages. The code is
+compiled into a format. They can't access the code---they can read the
+files, but it's in a foreign language (TeX).
+
+So perhaps a standard set of header definition files should be
+provided. These might include:
+
+1) List-making
+    enumerate, description, itemize
+2) Graphics
+    basic graphics
+3) Floats
+    figures, tables
+4) Justification
+    flushing left and right, centreing. tabbing
+5) Arrays
+    tabular, array
+6) Equation sets
+ eqnarray, equation, AMS: gather, split etc.
+7) Postscript import
+ basic scaling and rotation. Higher-level commands.
+
+       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   DEFINITION INFORMATION
+
+The following is a {\em sketch} of some possibilities, by example.
+
+      ------------- PAPER DIMENSIONS -------------
+
+Our standard article package definition would contain the lines:
+
+\requiresfields{paperdimensions}{paperwidth, paperheight, topmargin
+          etc.}
+
+\providesoptions{paperdimensions}{ % first option is default
+       A4paper, A5paper, foolscap,
+       USletter}
+
+We might then invoke the article package with
+
+\documentclass{article}
+
+or
+\documentclass[paperdimensions=USletter]{article}
+
+or
+\documentclass{article}
+\setfield{paperdimensions}{paperwidth}{8in}
+\setfield{paperdimensions}{height}{11in}
+etc.
+
+or
+\documentclass{article}
+\setstyle{A5paper}
+
+      --------------- GROUP LETTER ---------------
+
+\definepackage{groupletter}
+
+\uses{standard library, letter}
+          % So this package inherits the standard
+   libraries and letter package
+
+\requiresfields{sender}{email, signature, fromname}
+
+\providesfields{address, faxnum, telnum, paperdimensions}
+
+\providesoptions{sender}{unnamed}
+
+     -------------- TOM'S LETTER -----------------
+\definepackage{Tomsletter}
+
+\uses{groupletter}
+
+\requiresfields{formality}{signature, fromname}
+
+\providesfields{email}
+
+\providesoptions{formality}{ personal, business }
+
+   ------------------ LETTER USAGE ------------------
+
+\documentclass[formality=personal]{Tomsletter}
+
+or
+\documentclass[signature={Tom}, fromname={T.Jones}]{Tomsletter}
+
+or
+\documentclass{groupletter} % noname option
+
+The letter package would provide a code hook such as makeheader. The
+groupletter package would print the letter head each time this was
+called.
+
+\documentclass[signature={Tom}]{Tomsletter}
+would generate the error
+     Missing `formality' field `fromname' in package `Tomsletter'
+because the default option would not be activated.
+
+The standard enumerate field might come in one default flavour with a
+few variations. To provide further options one would produce code to
+extend these. In the same fashion as changing the paper dimensions,
+one would provide records for numbering: options roman, ROMAN etc; for
+changing the default layout dimensions; for changing the general style
+such as splitting into new lines.
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+         LOW AND HIGH LEVEL CODE
+
+An important function of packages is to make it easy for TeX experts
+to provide the basic functions so that TeX illiterate persons can
+write packages. Consider the encapsulated Postscript inclusion task.
+If one looks at Sebastian's epsfig package, one gets an idea of the
+potential. He has taken a number of basic macros and provided a
+collection of interfaces.
+
+The basic macros for EPS stuff read the bounding-box info. They can
+rotate objects, specify scaling along one or both axes before or after
+rotation, as well as allowing for absolute dimension specification.
+
+On top of this are macros that provide high-level commands such as
+\epsfile{ }
+or
+\psfig{ }
+each has a different way of working, but requires the basic functions.
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,92 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 25 Feb 2009 21:26:45 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1PKT0sc026449
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 25 Feb 2009 21:29:00 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n1PKKL3R006020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 25 Feb 2009 21:20:21 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1PI8OF9015915;
+	Wed, 25 Feb 2009 21:20:19 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 200497 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 21:20:19 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1PKKJ62020295 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:20:19 +0100
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n1PKK6KF031850 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:20:09 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1LcQEg-0006o1-hI for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 20:20:06 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <49A453A1.9040000@morningstar2.co.uk>
+            <18853.41885.687824.539619@morse.mittelbach-online.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49A5A7FA.5050505@morningstar2.co.uk>
+Date:         Wed, 25 Feb 2009 20:20:10 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Missing expl3 primitives
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18853.41885.687824.539619@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Feb 2009 20:26:45.0274 (UTC) FILETIME=[6088FFA0:01C99787]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5685
+
+Frank Mittelbach wrote:
+> Joseph Wright writes:
+> 
+>  > 2) How should the missing three (plus any others) be named.  The current
+>  > idea is, I think, something like:
+>  > 
+>  > \endlinechar	\l_char_endline_int
+>  > \evereof	\l_ior_eof_toks
+>  > \scantokens	\tlist_rescan:n
+>  > 
+>  > Is this logical: are there any other suggestions?
+> 
+> so for now (see other post) I would only assign \endlinechar and \scantokens
+> and the names there look fine to me
+
+The reason I'm interested in \everyeof as well is for using \scantokens
+in a context such as:
+
+\def\tempa#1{%
+  \begingroup
+    % Some catcode changes
+    \everyeof{\noexpand}%
+    \endlinechar-1\relax
+    \edef\tempb{\scantokens{#1}}%
+  \expandafter\endgroup
+  \expandafter\def\expandafter\tempc\expandafter{\tempb}%
+}
+
+which fails without the \everyeof setting. That I know of there is no
+way to "bundle up" the various components, so without access to
+\everyeof, \scantokens is not much use (at least to me).
+--
+Joseph Wright
+

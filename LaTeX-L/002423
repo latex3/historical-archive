@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2778" "Thu" "9" "October" "1997" "12:45:40" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "62" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id OAA23126;
+	Thu, 9 Oct 1997 14:37:20 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.4EF9C99F@listserv.gmd.de>; Thu, 9 Oct 1997 14:37:18 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 211309 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 9 Oct 1997 14:37:12 +0200
+Received: from punt-1.mail.demon.net (punt-1b.mail.demon.net [194.217.242.135])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id OAA08820
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Thu, 9 Oct 1997 14:37:09
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-1.mail.demon.net  id aa1100354; 9 Oct 97 13:28 BST
+Received: by dcarlisle.demon.co.uk id m0xJH2C-000OWTC (Debian Smail-3.2
+          1996-Jul-4 #2); Thu, 9 Oct 1997 12:45:40 +0100 (BST)
+Message-ID:  <m0xJH2C-000OWTC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <97100910281439@multivac.jb.man.ac.uk> (message from Phillip
+              Helbig on Thu, 9 Oct 1997 10:28:14 GMT)
+Date:         Thu, 9 Oct 1997 12:45:40 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2423
+
+Philip writes (as usual I'm only commenting on the bits I don't like,
+no one gets any praise around here:-)
+
+> \note
+You will need several categories of note. Either by allowing multiple
+commands to be declared (as I did in fmatter) or by some extra
+argument (which is syntactic dressing for the same thing).
+
+> %THE TWO ARGUMENTS FOR EACH \item IN THE ENVIRONMENTS BELOW WORK SIMILAR
+> %TO THE KEY AND THE OPTIONAL ARGUMENT OF \bibitem.
+
+in which case the command shouldn't be called \item (which does not
+have any mandatory arguments). The argument structure of latex
+commands should not depend on context (which is why for instance
+\\ accepts a * form in tabular, even though it doesn't do anything
+with it).
+
+\author{long form}{short form}{affiliation-ref}{address-ref}{email-ref}
+I don't think that long lists of mandatory arguments with (typically)
+short ref strings is very usable in practice, people will get them
+out of order, or miss one out. Also it is very inflexible if the
+following year you really decide you need one other piece of
+informtion then you can not add a new argument to \author or you break
+all the existing documents. So it is better I think to have more
+commands, or optional arguments rather than mandatory (possibly, or
+possibly not) with a key=value syntax
+
+> Should one break the author's name up into initials and surnames, so
+Changing order gets complicated, but some classes may want to put
+surname only in running head, or to put surnames in small caps.
+so some kind of surname markup is probably useful.
+
+Speaking of running heads, you are probably going to need a command
+to explicitly set the running head in certain circumstances.
+Auto-generating it from the author list is useful and portable when it
+works, but you will always find that paper by 10 authors and a robot
+where auto generation, even with automatic adding of `et al' doesn't
+do the right thing.
+
+> I hadn't been thinking of the abstract as part of the front matter
+> (probably because it normally comes after \maketitle) but perhaps I
+> should be.
+
+It needs to be part of the frontmatter as often it is set as part of
+the title block rather than as part of the main running text.
+The standard classes don't do it that way, but many existing classes
+do including the AMS classes and many existing journal classes.
+
+Sebastian said
+
+> why not adopt the keyval syntax,
+
+I didn't do it in fmatter because I was trying to keep things looking
+more like `normal latex' so I used more comands rather than extensive
+use of optional arguments. With a special environment so that
+undefined commands were skipped (so any class file automatically can
+ignore anything it does not want to deal with).
+
+However... Michael do you want to post your KV suggestion to the wider
+list??
+
+David
+

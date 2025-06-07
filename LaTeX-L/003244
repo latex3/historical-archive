@@ -1,0 +1,86 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2075" "Thu" "28" "January" "1999" "11:17:11" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "48" "preamble declarations wanted" "^Date:" nil nil "1" nil nil nil nil nil]
+	nil)
+Received: from kralle.zdv.Uni-Mainz.DE (root@kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA20735;
+	Thu, 28 Jan 1999 17:19:17 +0100 (MET)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA00093;
+	Thu, 28 Jan 1999 17:19:15 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.8F249634@listserv.gmd.de>; Thu, 28 Jan 1999 17:17:34 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 420241 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 28 Jan 1999 17:17:26 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA04632 for
+          <LATEX-L@urz.uni-heidelberg.de>; Thu, 28 Jan 1999 17:17:21 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          LAA15411 for <LATEX-L@urz.uni-heidelberg.de>; Thu, 28 Jan 1999
+          11:17:13 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          LAA17312 for LATEX-L@urz.uni-heidelberg.de; Thu, 28 Jan 1999 11:17:11
+          -0500 (EST)
+Message-ID:  <199901281617.LAA17312@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 28 Jan 1999 11:17:11 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      preamble declarations wanted
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3244
+
+Dear Friends --
+
+Several ideas for LaTeX3 are listed below.  Inasmuch as I am not
+familiar with TeX, the Program, I do not know what is realistic.
+
+1.  "\noblankpars": In using a program to translate another markup to
+LaTeX, if one wants to have a reasonable level of human readability in
+the output, it would be desirable to be able to turn off the blank
+line as a new-paragraph command and instead have a core latex command
+"\strictpar" (not in any current package?) that would leave blank
+spaces and newlines nearly completely interchangeable, as is the case,
+for example, with many SGML declarations.  This feature would be
+enabled with a preamble declaration such as "\noblankpars".
+Otherwise, auto-generated lines (under difficult circumstances) could
+be thousands of characters in length.  Inasmuch as I believe that the
+blank line as a new-paragraph command under LaTeX is a pass-through to
+"TeX", I do not know whether this could be done.
+
+2.  "\commandend{;}":  LaTeX practice such as
+
+                       "\LaTeX{} is great"
+
+does not always leave quite the right space after the first word.
+I would like to be able to use one of several characters such as
+';' as a command name terminator in a document having in the
+preamble the declaration "\commandend{;}".
+
+3.  "\strictargoptsyntax":  In auto-generating lists, a programmer
+either needs to check that the first character of item content is not
+'[' or else routinely generate "\item[{}]", filling in the braces when
+appropriate.  There are other similar examples that lead me to suggest
+a preamble declaration "\strictargoptsyntax" which would have the
+syntatic effect thereafter that any command with a sequence of
+arguments and/or options of postive length must have no white space at
+all between the command name and the first arg/opt or between
+successive arg/opt's.  Of course, it would still be ok to use
+something like:
+
+\newcommand[2]{
+     \proj
+   }{
+     \mbox{\textbf{P}^{#1}} ( #2 )
+   }
+
+where the user is trusted to use "\proj" only in math-mode.
+
+                                   -- Bill
+

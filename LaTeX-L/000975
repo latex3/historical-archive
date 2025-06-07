@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3793" "Wed" "10" "February" "93" "17:38:14" "+0100" "tarjeij@EXTERN.UIO.NO" "tarjeij@EXTERN.UIO.NO" nil "74" "makeindex" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA27973; Wed, 10 Feb 93 18:01:22 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA07555; Wed, 10 Feb 93 18:01:12 +0100
+Message-Id: <9302101701.AA07555@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3521; Wed, 10 Feb 93 18:01:58 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7515;
+ Wed, 10 Feb 93 18:01:55 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7513;
+ Wed, 10 Feb 93 18:01:52 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 10 Feb 93 17:38:14 +0100
+From: tarjeij@EXTERN.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      makeindex
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 975
+
+
+
+> From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+>
+> It may be true that, when we would try to re-implement the whole TeX
+> system with all its utility programs (as NTS may one day might try to
+> do, but please don't start an NTS discussion on this list) then one
+> definitely should think about the base language first, eg WEB, CWEB,
+> C, C++, smalltalk, .....who knows?
+
+If I rember right web-to-C is something that is hardwired to TeX. It is a kit
+with one mission only. Besides I think that someone in the Unix community has
+reimplemtented TeX in C (CTeX or TeXC?). Last time I heard they had passed the
+trip tests. I don't know if they have a version beyond 3.0. If this C
+implementation is up to date and under active maintenance we should use it. That
+will allow DEK to concentrate fully on "the art of computer programming". It
+will also make it possible for others to work on the TeX kernel.
+
+
+> But then who cares now since we are not trying to do this. And given,
+> that on *any* plattform on which TeX runs, there must be a possibility
+> to handle WEB, it helps a lot to make use of this fact. And enough
+> people have outlined the advantages so that I don't need to repeat
+> this. If you use different languages than you have additional
+> maintenance or money problems.
+
+As a person who have tried to figure out how to generate a big TeX from the
+source I know a little about the maintainability of TeX. It is Pascal that
+creates the maintenance problem. The C library is so ludicrously small that
+portability for something like makeindex, dvips and TeX are relatively easy to
+achieve (I'm not saying that C is the best language, because it isn't).
+
+If there is one thing that is certain in this world for the foreseeable future
+it is that there is a good free C compiler available for your workstation* and
+or PC (from 386 PC and upwards). Pascal is if at all availble generally
+something you have to _pay_ for. A conforming Posix environment has to have a
+C compiler. Even Posix for VMS has one.
+
+*) Intergraph computers currently excepted.
+
+I doubt very much that it would be a very big job converting tex.web and friends
+to cweb or fweb web (or any other actively maintained web). Anyway, it is a job
+that would be done once. If Web is dead, why keep adding facilities that make
+use of it? Will a Web'ed program fail to unpack with any of the other webs?
+
+By doing these things one small step at a time we control change. We don't end
+up with a big sweep and the problems that might bring. We end up with a system
+in continous change, where problems can be dealt with as they arise.
+
+If we insist on forcing everything into web we could end up with a situation
+where it would not be possible to implement any NTS, because of the amount of
+source code bound very tightly to the old system.
+
+As a system manager I want the easiest system to administrate. I want a system
+that I can _mend_ when something goes wrong. E.g. when users run out of memory
+in TeX. I want to be able to fix these things in minutes, not in days and weeks
+and I want to know as little as possible about TeX and Metafont (or Web for that
+matter). As a system manager the best TeX I have is emTeX (requires least work).
+
+
+[Trivia: According to an article in a recent issue of Computer Language magazine
+Donald Knuth currently uses cweb.]
+
+Finally: I don't advocate a rewrite of TeX or Metafont in C, I just argue
+against moving programs that already exists in C to Pascal. And I recommend
+that new programs are implemented in a modern web or in plain C.
+
+
+greetings,
+
+// Tarjei T. Jensen - if it ain't broken, fix it anyway!
+//    tarjeij@ulrik.uio.no       || +47 4 563411
+//   Support you local rescue centre: GET LOST!
+// Working, but not speaking for the Norwegian Hydrographic Service.
+

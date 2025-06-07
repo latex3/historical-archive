@@ -1,0 +1,1269 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Sat, 18 Jan 2003 19:36:53 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0IIam6C026957 for <rainer.schoepf@PROTEOSYS.COM>; Sat, 18 Jan 2003 19:36:51 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0IIMZAL004116; Sat, 18 Jan 2003 19:22:35 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2BF20.920D5080"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0IERMmH024917; Sat, 18 Jan 2003 19:14:36 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6843 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 18 Jan 2003 19:14:36 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0IIEZkr025654 for          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 18 Jan 2003 19:14:35 +0100
+Received:  from moutng.kundenserver.de (moutng.kundenserver.de          [212.227.126.185]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with          ESMTP id h0IILYZr009618 for <LATEX-L@listserv.uni-heidelberg.de>;          Sat, 18 Jan 2003 19:21:35 +0100 (MET)
+Received:  from [212.227.126.155] (helo=mrelayng.kundenserver.de) by          moutng.kundenserver.de with esmtp (Exim 3.35 #1) id 18Zxb0-0004MW-00;          Sat, 18 Jan 2003 19:21:30 +0100
+Received:  from [80.129.7.240] (helo=istrati.mittelbach-online.de) by          mrelayng.kundenserver.de with asmtp (Exim 3.35 #1) id          18Zxau-0004EP-00; Sat, 18 Jan 2003 19:21:29 +0100
+Received:  (from frank@localhost) by istrati.mittelbach-online.de          (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) id h0IIJ2p00464; Sat, 18 Jan          2003 19:19:02 +0100
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: VM 6.96 under Emacs 20.7.1
+X-OriginalArrivalTime: 18 Jan 2003 18:36:53.0756 (UTC) FILETIME=[9280ABC0:01C2BF20]
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id h0IIEakr025655
+X-Authentication-Warning: istrati.mittelbach-online.de: frank set sender to                         frank@mittelbach-online.de using -f
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 0.6 () SPAM_PHRASE_00_01,X_AUTH_WARNING
+Content-class: urn:content-classes:message
+Subject:      LICR objects in math
+Date: Sat, 18 Jan 2003 19:19:02 +0100
+Message-ID: A<15913.39574.802333.589429@istrati.mittelbach-online.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      LICR objects in math
+Thread-Index: AcK/IJKi0vclQV6YT2yy/LkuE5NRrQ==
+From: "Frank Mittelbach" <frank.mittelbach@LATEX-PROJECT.ORG>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4436
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2BF20.920D5080
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hallo everybody
+
+LICR =3D LaTeX Internal Character Representation
+
+LICR objects are also known as "font encoding specific commands", ie =
+stuff
+that is declared by the font encoding files, eg
+
+ \"  \ss \texteuro ...
+
+since 1996 or so when inputenc was first introduced it was an open =
+question
+whether input chars mapped by inputenc should be "text", "math", =
+"text+math"
+
+in fact some commands like \copyright or \pounds have a 2.09 definition =
+that
+allows them to be used both in text and math, eg
+
+\DeclareRobustCommand{\pounds}{%
+   \ifmmode\mathsterling\else\textsterling\fi}
+
+understandably some people wanted that for any LICR to work. however =
+there are
+serious limitations within TeX that do not really make this feasable.
+
+nevertheless below is a .dtx file that tries an implementation as well =
+as
+explains the problems in this area.
+
+i would be very much interested in comments concerning the approach the
+feasibility or anything else you find useful to discuss in this respect, =
+eg
+
+ should such an implementation be incorporated (somehow not this one),
+    - as a package,
+    - as a standard,
+    - not at all ...
+
+frank
+
+
+ps since the project web area is still under reconstruction i post the =
+package below
+
+------------ inpmath.ins
+\input docstrip
+
+\preamble
+
+This is a generated file.
+
+Copyright 2003
+Frank Mittelbach
+
+It may be distributed and/or modified under the
+conditions of the LaTeX Project Public License, either version 1.2
+of this license or (at your option) any later version.
+The latest version of this license is in
+   http://www.latex-project.org/lppl.txt
+and version 1.2 or later is part of all distributions of LaTeX
+version 1999/12/01 or later.
+
+\endpreamble
+
+\keepsilent
+
+\generate{\file{inpmath.sty}{\from{inpmath.dtx}{package}}
+          \file{inpmath-test.tex}{\from{inpmath.dtx}{test}}
+          }
+
+\endbatchfile
+------------ inpmath.dtx
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[T1]{fontenc}
+\usepackage{inpmath}
+\GetFileInfo{inpmath.sty}
+\title{Providing math support for  \texttt{inputenc}}
+\date{\fileversion\space\filedate{} printed \today}
+ \author{Frank Mittelbach}
+\begin{document}
+ \maketitle
+ \tableofcontents
+ \DocInput{inpmath.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+%
+% \section{Introduction}
+%
+% Basically starting with the introduction of \texttt{inputenc} there
+%    was the understandable wish to use any keyboard character in text
+%    as well as in math.
+%
+% Unfortunately there is a limitation in \TeX{} which make this
+%    anything but bullet-proof. Basically to find out if you are in
+%    math mode one can use |\ifmode...\fi| and structure the encoding
+%    specific commands so that they check whether or not being used in
+%    math. However, this fails the moment such an encoding specific
+%    command is used at the start of a math alignment. Why? Because in
+%    such a place \TeX{} is scanning ahead to look for |\omit| or
+%    |\noalign| and during this process is not in math mode
+%    yet. However it will expand tokens until it is sure not to find
+%    an |\omit| or |\noalign| thus when seeing the |\ifmmode| it will
+%    happily select the wrong branch. Afterwards it will surround
+%    everything with |$..$| and the result will be an error message or
+%    worse.
+%
+%    The \TeX{}book even mentions this danger and suggests to use
+%    |\relax\ifmmode| instead. WRONG! because the |\relax| will kill
+%    any kerning or ligature that might exist between a previous
+%    character and the character to typeset. Thus without an extension
+%    to \TeX{} the program one can choose between three (bad)
+%    solutions:
+%    \begin{itemize}
+%    \item Disallow the use in math (basically what the current
+%    solution does)
+%    \item Use |\relax\ifmmode| and loose the kerning in
+%    \begin{quote}
+%       \sffamily T\"ur (kerned) \\
+%       T\relax\"ur (unkerned) \\
+%       V\"A (kerned) \\
+%       V\relax\"A  (unkerned) \\
+%    \end{quote}
+%    and similar places (can you spot\footnote{Well you can't with
+%    ``T\"ur'' as in the current font it doesn't have any kerning:-)}
+%    the difference?).
+%    \item
+%    Keep the definition expandable and fail if at the start of
+%    \texttt{eqnarry} and the like.
+%    \end{itemize}
+%
+%    The code below sets out to implement the third variant. If
+%    somebody has any bright ideas how to detect (in an expandable
+%    way) that one is at the start of an array row---shout!
+%
+%
+%
+% \subsection{The \LaTeXe{} model for encoding specific  text commands}
+% \label{sec:currimp}
+%
+%    An encoding specific command |\foo| expands to three control =
+sequences:
+%    \begin{quote}
+%       \ttfamily
+%       \fbox{\bslash\emph{<enc>}-cmd} \fbox{\string\foo}
+%       \fbox{\bslash\emph{<enc>}\string\foo}
+%    \end{quote}
+%    e.g.,
+%\begin{quote}
+%    |\"|  expands to  |\T1-cmd \"\T1\"|
+%\end{quote}
+%   Instead of |T1| a different encoding might appear, e.g., |OT1|,
+%    |TS1|, etc. Which encoding is used depends on the order of
+%    loading the definitions. It is not important except for speed.
+%
+%    The command \fbox{\ttfamily\bslash\emph{<enc>}-cmd} is either
+%    equal to |\@current@cmd| (if the current encoding is |<enc>|) or
+%    to |\@changed@cmd| if not.
+%
+%    |\@current@cmd| checks if typesetting should be done and if so
+%    executes the third token, otherwise reinserts the second token
+%    unexpanded and throws away the third.
+%
+%    |\@changed@cmd| also checks for typesetting action, but if
+%    typesetting is called for it tries to find the right definition
+%    for |\foo| in the current encoding (which should be saved in the
+%    token \fbox{\ttfamily\bslash\emph{<curr-enc>}-cmd}). If that
+%    doesn't exist it looks for a default definition stored in the
+%    command \fbox{\ttfamily\bslash?-cmd}. If that also doesn't exist
+%    it will generate a |\TextSymbolUnavailable| error.
+%
+%
+%    The above roughly describes the mechanisms behind the font
+%    encoding specific commands (ignoring a number of finer points
+%    like the need to keep most of the stuff fully expandable etc.).
+%
+% \subsection{Extending the model for math}
+%
+%    Now to support math typesetting we introduce the following ideas:
+%    \begin{itemize}
+%    \item The glyph to typeset in math is independent of the current
+%    text encoding, i.e., there exists at most one definition for the
+%    LICR object |\foo| for use in math (in other words a sort of
+%    ``math'' encoding).
+%    \item
+%      That definition is stored in the token \fbox{\ttfamily\bslash
+%    Math\string\foo}.
+%    \item
+%      There is no direct support for composite objects in the LICR,
+%      e.g., |\"| could be mapped to |\ddot| in math but for the LICR
+%      object |\"a| no declaration possibilities exist.\footnote{Of
+%    course, instead of \texttt{\bslash ddot} one could have a command
+%    with an argument that picks up the ``a'' and thereby moves the
+%    mapping to a sort of second level.} This is in line  with the
+%    standard usages in math, but is mainly dictated by the choosen
+%    implementation.
+%    \item
+%      We assign math meanings for objects of the LICR via
+%    \begin{quote}
+%     |\DeclareMathMeaning{\"}{\ddot}|
+%    \end{quote}
+%    where he name is more than open for suggestions :-)
+%    \end{itemize}
+%
+%
+%
+%
+% \section{The code}
+%
+%    \begin{macrocode}
+%<*package>
+\ProvidesPackage{inpmath}[2003/01/18 v0.0a test for math LICR objects]
+%    \end{macrocode}
+%
+% \begin{macro}{\@current@cmd}
+%    Redefinition of |\@current@cmd| means we have to check if we are
+%    in math mode in case typesetting is called
+%    for. |\@current@cmd@math| gets the encoding specific command as
+%    an argument and we do a bit of |\expandafter| to get the
+%    conditionals out of the way in case we need to pick up arguments.
+%    \begin{macrocode}
+\def\@current@cmd#1{%
+   \ifx\protect\@typeset@protect
+      \expandafter
+       \@current@cmd@math
+      \expandafter #1%
+   \else
+      \noexpand#1\expandafter\@gobble
+   \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@current@cmd@math}
+%    If in math mode we look if \fbox{\ttfamily\bslash
+%    Math\string\foo} is defined, if not we raise an error.
+%    Otherwise\ldots
+%    \begin{macrocode}
+\def\@current@cmd@math#1{%
+  \ifmmode
+    \expandafter
+    \ifx\csname Math\string#1\endcsname\relax
+% no math defined
+       \@inmatherr #1%
+    \else
+%    \end{macrocode}
+%    \ldots we execute this definition, but first we need to get the
+%    two dangling |\fi|'s and the third token
+%    \fbox{\bslash\emph{<enc>}\string\foo} from the original encoding
+%    specific command expansion out if the way, this is done by
+%    |\@current@cmd@math@clear@input|.
+%    \begin{macrocode}
+      \csname Math\string#1\expandafter\endcsname
+      \@current@cmd@math@clear@input
+    \fi
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@current@cmd@math@clear@input}
+%    This can probably be implemented better\ldots
+%    \begin{macrocode}
+\def\@current@cmd@math@clear@input#1#2#3{\fi\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@changed@cmd}
+%    The original |\@changed@cmd| is quite complex as it has to do all
+%    the work explained in section~\ref{sec:currimp}. We split it into
+%    two now:
+%    \begin{macrocode}
+\def\@changed@cmd#1#2{%
+   \ifx\protect\@typeset@protect
+% do typesetting
+%    \end{macrocode}
+%    This is inefficient as we test for math mode twice, so a real
+%    implementation should do better.
+%    \begin{macrocode}
+     \ifmmode
+       \expandafter
+       \@current@cmd@math
+     \else
+%    \end{macrocode}
+%    If not in math we call |\x@changed@cmd| the main code of the
+%    original |\@changed@cmd|.
+%    \begin{macrocode}
+       \expandafter
+        \x@changed@cmd
+     \fi
+      #1#2%
+   \else
+      \noexpand#1%
+   \fi}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\x@changed@cmd}
+%    Nice piece isn't it? Explanation in the \LaTeX sources.
+%    \begin{macrocode}
+\def\x@changed@cmd#1#2{%
+      \expandafter\ifx\csname\cf@encoding\string#1\endcsname\relax
+         \expandafter\ifx\csname ?\string#1\endcsname\relax
+            \expandafter\def\csname ?\string#1\endcsname{%
+               \TextSymbolUnavailable#1%
+            }%
+         \fi
+         \global\expandafter\let
+               \csname\cf@encoding \string#1\expandafter\endcsname
+               \csname ?\string#1\endcsname
+      \fi
+      \csname\cf@encoding\string#1%
+         \expandafter\endcsname
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\DeclareMathMeaning}
+%    And here a trivial declaration command for testing, name and real
+%    operation (which checks etc) should be changed
+%    \begin{macrocode}
+\def\DeclareMathMeaning#1#2{\global\@namedef{Math\string#1}{#2}}
+%</package>
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%    \begin{macrocode}
+%<*test>
+\documentclass{article}
+
+\usepackage{inpmath}
+
+\usepackage[TS1,T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{trace}
+
+
+\DeclareMathMeaning{\"}{\ddot}
+\DeclareMathMeaning{\textsurd}{\surd}
+
+\begin{document}
+
+\typeout{\textsurd}
+
+%\traceon
+
+=E4 \textsurd
+
+$=E4 \textsurd$
+\stop
+%</test>
+%    \end{macrocode}
+%
+% \Finale
+%
+\endinput
+
+------_=_NextPart_001_01C2BF20.920D5080
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     LICR objects in math</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hallo everybody</FONT>
+</P>
+
+<P><FONT SIZE=3D2>LICR =3D LaTeX Internal Character =
+Representation</FONT>
+</P>
+
+<P><FONT SIZE=3D2>LICR objects are also known as &quot;font encoding =
+specific commands&quot;, ie stuff</FONT>
+
+<BR><FONT SIZE=3D2>that is declared by the font encoding files, =
+eg</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;\&quot;&nbsp; \ss \texteuro ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>since 1996 or so when inputenc was first introduced it =
+was an open question</FONT>
+
+<BR><FONT SIZE=3D2>whether input chars mapped by inputenc should be =
+&quot;text&quot;, &quot;math&quot;, &quot;text+math&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in fact some commands like \copyright or \pounds have =
+a 2.09 definition that</FONT>
+
+<BR><FONT SIZE=3D2>allows them to be used both in text and math, =
+eg</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\DeclareRobustCommand{\pounds}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\ifmmode\mathsterling\else\textsterling\fi}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>understandably some people wanted that for any LICR to =
+work. however there are</FONT>
+
+<BR><FONT SIZE=3D2>serious limitations within TeX that do not really =
+make this feasable.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>nevertheless below is a .dtx file that tries an =
+implementation as well as</FONT>
+
+<BR><FONT SIZE=3D2>explains the problems in this area.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i would be very much interested in comments concerning =
+the approach the</FONT>
+
+<BR><FONT SIZE=3D2>feasibility or anything else you find useful to =
+discuss in this respect, eg</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;should such an implementation be incorporated =
+(somehow not this one),</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; - as a package,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; - as a standard,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; - not at all ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>frank</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>ps since the project web area is still under =
+reconstruction i post the package below</FONT>
+</P>
+
+<P><FONT SIZE=3D2>------------ inpmath.ins</FONT>
+
+<BR><FONT SIZE=3D2>\input docstrip</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\preamble</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This is a generated file.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Copyright 2003</FONT>
+
+<BR><FONT SIZE=3D2>Frank Mittelbach</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It may be distributed and/or modified under the</FONT>
+
+<BR><FONT SIZE=3D2>conditions of the LaTeX Project Public License, =
+either version 1.2</FONT>
+
+<BR><FONT SIZE=3D2>of this license or (at your option) any later =
+version.</FONT>
+
+<BR><FONT SIZE=3D2>The latest version of this license is in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; <A =
+HREF=3D"http://www.latex-project.org/lppl.txt">http://www.latex-project.o=
+rg/lppl.txt</A></FONT>
+
+<BR><FONT SIZE=3D2>and version 1.2 or later is part of all distributions =
+of LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>version 1999/12/01 or later.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\endpreamble</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\keepsilent</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\generate{\file{inpmath.sty}{\from{inpmath.dtx}{package}}</FONT>=
+
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\file{inpmath-test.tex}{\from{inpmath.dtx}{test}}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\endbatchfile</FONT>
+
+<BR><FONT SIZE=3D2>------------ inpmath.dtx</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \iffalse</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*driver&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\documentclass{ltxdoc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[T1]{fontenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{inpmath}</FONT>
+
+<BR><FONT SIZE=3D2>\GetFileInfo{inpmath.sty}</FONT>
+
+<BR><FONT SIZE=3D2>\title{Providing math support for&nbsp; =
+\texttt{inputenc}}</FONT>
+
+<BR><FONT SIZE=3D2>\date{\fileversion\space\filedate{} printed =
+\today}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\author{Frank Mittelbach}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\maketitle</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\tableofcontents</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\DocInput{inpmath.dtx}</FONT>
+
+<BR><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/driver&gt;</FONT>
+
+<BR><FONT SIZE=3D2>% \fi</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \section{Introduction}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Basically starting with the introduction of =
+\texttt{inputenc} there</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; was the understandable wish to =
+use any keyboard character in text</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; as well as in math.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% Unfortunately there is a limitation in \TeX{} which =
+make this</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; anything but bullet-proof. =
+Basically to find out if you are in</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; math mode one can use =
+|\ifmode...\fi| and structure the encoding</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; specific commands so that they =
+check whether or not being used in</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; math. However, this fails the =
+moment such an encoding specific</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; command is used at the start of a =
+math alignment. Why? Because in</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; such a place \TeX{} is scanning =
+ahead to look for |\omit| or</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |\noalign| and during this =
+process is not in math mode</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; yet. However it will expand =
+tokens until it is sure not to find</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; an |\omit| or |\noalign| thus =
+when seeing the |\ifmmode| it will</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; happily select the wrong branch. =
+Afterwards it will surround</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; everything with |$..$| and the =
+result will be an error message or</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; worse.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; The \TeX{}book even mentions this =
+danger and suggests to use</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |\relax\ifmmode| instead. WRONG! =
+because the |\relax| will kill</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; any kerning or ligature that =
+might exist between a previous</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; character and the character to =
+typeset. Thus without an extension</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; to \TeX{} the program one can =
+choose between three (bad)</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; solutions:</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item Disallow the use in math =
+(basically what the current</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; solution does)</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item Use |\relax\ifmmode| and =
+loose the kerning in</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \sffamily =
+T\&quot;ur (kerned) \\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\relax\&quot;ur (unkerned) \\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V\&quot;A =
+(kerned) \\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+V\relax\&quot;A&nbsp; (unkerned) \\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; and similar places (can you =
+spot\footnote{Well you can't with</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; ``T\&quot;ur'' as in the current =
+font it doesn't have any kerning:-)}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; the difference?).</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Keep the definition expandable =
+and fail if at the start of</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \texttt{eqnarry} and the =
+like.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; The code below sets out to =
+implement the third variant. If</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; somebody has any bright ideas how =
+to detect (in an expandable</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; way) that one is at the start of =
+an array row---shout!</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \subsection{The \LaTeXe{} model for encoding =
+specific&nbsp; text commands}</FONT>
+
+<BR><FONT SIZE=3D2>% \label{sec:currimp}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; An encoding specific command =
+|\foo| expands to three control sequences:</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ttfamily</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fbox{\bslash\emph{&lt;enc&gt;}-cmd} \fbox{\string\foo}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fbox{\bslash\emph{&lt;enc&gt;}\string\foo}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>%\begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |\&quot;|&nbsp; expands to&nbsp; =
+|\T1-cmd \&quot;\T1\&quot;|</FONT>
+
+<BR><FONT SIZE=3D2>%\end{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; Instead of |T1| a different encoding =
+might appear, e.g., |OT1|,</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |TS1|, etc. Which encoding is =
+used depends on the order of</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; loading the definitions. It is =
+not important except for speed.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; The command =
+\fbox{\ttfamily\bslash\emph{&lt;enc&gt;}-cmd} is either</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; equal to |\@current@cmd| (if the =
+current encoding is |&lt;enc&gt;|) or</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; to |\@changed@cmd| if not.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |\@current@cmd| checks if =
+typesetting should be done and if so</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; executes the third token, =
+otherwise reinserts the second token</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; unexpanded and throws away the =
+third.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; |\@changed@cmd| also checks for =
+typesetting action, but if</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; typesetting is called for it =
+tries to find the right definition</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; for |\foo| in the current =
+encoding (which should be saved in the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; token =
+\fbox{\ttfamily\bslash\emph{&lt;curr-enc&gt;}-cmd}). If that</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; doesn't exist it looks for a =
+default definition stored in the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; command =
+\fbox{\ttfamily\bslash?-cmd}. If that also doesn't exist</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; it will generate a =
+|\TextSymbolUnavailable| error.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; The above roughly describes the =
+mechanisms behind the font</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; encoding specific commands =
+(ignoring a number of finer points</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; like the need to keep most of the =
+stuff fully expandable etc.).</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \subsection{Extending the model for math}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Now to support math typesetting =
+we introduce the following ideas:</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item The glyph to typeset in =
+math is independent of the current</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; text encoding, i.e., there exists =
+at most one definition for the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; LICR object |\foo| for use in =
+math (in other words a sort of</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; ``math'' encoding).</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; That definition is =
+stored in the token \fbox{\ttfamily\bslash</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Math\string\foo}.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There is no direct =
+support for composite objects in the LICR,</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e.g., |\&quot;| could =
+be mapped to |\ddot| in math but for the LICR</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; object |\&quot;a| no =
+declaration possibilities exist.\footnote{Of</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; course, instead of =
+\texttt{\bslash ddot} one could have a command</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; with an argument that picks up =
+the ``a'' and thereby moves the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; mapping to a sort of second =
+level.} This is in line&nbsp; with the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; standard usages in math, but is =
+mainly dictated by the choosen</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; implementation.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We assign math =
+meanings for objects of the LICR via</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; =
+|\DeclareMathMeaning{\&quot;}{\ddot}|</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; where he name is more than open =
+for suggestions :-)</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \section{The code}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*package&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\ProvidesPackage{inpmath}[2003/01/18 v0.0a test for =
+math LICR objects]</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{macro}{\@current@cmd}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Redefinition of |\@current@cmd| =
+means we have to check if we are</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; in math mode in case typesetting =
+is called</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; for. |\@current@cmd@math| gets =
+the encoding specific command as</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; an argument and we do a bit of =
+|\expandafter| to get the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; conditionals out of the way in =
+case we need to pick up arguments.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\def\@current@cmd#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \ifx\protect\@typeset@protect</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \expandafter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@current@cmd@math</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \expandafter =
+#1%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\noexpand#1\expandafter\@gobble</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{macro}{\@current@cmd@math}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; If in math mode we look if =
+\fbox{\ttfamily\bslash</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Math\string\foo} is defined, if =
+not we raise an error.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Otherwise\ldots</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\def\@current@cmd@math#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \ifmmode</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \expandafter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifx\csname =
+Math\string#1\endcsname\relax</FONT>
+
+<BR><FONT SIZE=3D2>% no math defined</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \@inmatherr =
+#1%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \ldots we execute this =
+definition, but first we need to get the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; two dangling |\fi|'s and the =
+third token</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; =
+\fbox{\bslash\emph{&lt;enc&gt;}\string\foo} from the original =
+encoding</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; specific command expansion out if =
+the way, this is done by</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; =
+|\@current@cmd@math@clear@input|.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \csname =
+Math\string#1\expandafter\endcsname</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@current@cmd@math@clear@input</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% =
+\begin{macro}{\@current@cmd@math@clear@input}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; This can probably be implemented =
+better\ldots</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\@current@cmd@math@clear@input#1#2#3{\fi\fi}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{macro}{\@changed@cmd}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; The original |\@changed@cmd| is =
+quite complex as it has to do all</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; the work explained in =
+section~\ref{sec:currimp}. We split it into</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; two now:</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\def\@changed@cmd#1#2{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \ifx\protect\@typeset@protect</FONT>
+
+<BR><FONT SIZE=3D2>% do typesetting</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; This is inefficient as we test =
+for math mode twice, so a real</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; implementation should do =
+better.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \ifmmode</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\expandafter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@current@cmd@math</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; If not in math we call =
+|\x@changed@cmd| the main code of the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; original |\@changed@cmd|.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\expandafter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\x@changed@cmd</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #1#2%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \noexpand#1%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{macro}{\x@changed@cmd}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Nice piece isn't it? Explanation =
+in the \LaTeX sources.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\def\x@changed@cmd#1#2{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\expandafter\ifx\csname\cf@encoding\string#1\endcsname\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\expandafter\ifx\csname ?\string#1\endcsname\relax</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \expandafter\def\csname ?\string#1\endcsname{%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; \TextSymbolUnavailable#1%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; }%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\global\expandafter\let</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; \csname\cf@encoding =
+\string#1\expandafter\endcsname</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; \csname ?\string#1\endcsname</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\csname\cf@encoding\string#1%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\expandafter\endcsname</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{macro}{\DeclareMathMeaning}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; And here a trivial declaration =
+command for testing, name and real</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; operation (which checks etc) =
+should be changed</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\DeclareMathMeaning#1#2{\global\@namedef{Math\string#1}{#2}}=
+</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/package&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% \end{macro}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*test&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\documentclass{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage{inpmath}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage[TS1,T1]{fontenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[latin1]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{trace}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\DeclareMathMeaning{\&quot;}{\ddot}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareMathMeaning{\textsurd}{\surd}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\typeout{\textsurd}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%\traceon</FONT>
+</P>
+
+<P><FONT SIZE=3D2>=E4 \textsurd</FONT>
+</P>
+
+<P><FONT SIZE=3D2>$=E4 \textsurd$</FONT>
+
+<BR><FONT SIZE=3D2>\stop</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/test&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \Finale</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\endinput</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2BF20.920D5080--
+

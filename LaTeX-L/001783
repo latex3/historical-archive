@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3338" "Sun" "29" "December" "1996" "13:10:45" "+0100" "Hans Aberg" "haberg@matematik.su.se" nil "71" "Re: Multiple pass LaTeX3" "^Date:" nil nil "12" nil "Multiple pass LaTeX3" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.4/8.8.4) with ESMTP
+	  id NAA01600; Sun, 29 Dec 1996 13:10:33 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.226DF3EE@listserv.gmd.de>; Sun, 29 Dec 1996 13:10:32 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 42359 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 29 Dec 1996 13:10:27 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id NAA14531 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 29 Dec 1996 13:10:26
+          +0100 (MET)
+Received: from [130.237.37.108] (sl82.modempool.kth.se [130.237.37.108]) by
+          mail.nada.kth.se (8.6.10/8.6.10) with SMTP id NAA24499 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 29 Dec 1996 13:10:01 +0100
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130500aeebfbc762de@[130.237.37.119]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 29 Dec 1996 13:10:45 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multiple pass LaTeX3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1783
+
+>Hans Aberg writes:
+> >   Even though TeX is a single pass compiler, multiple passes can be made by
+> > reading a file several times.
+> >
+> >   So I suggest one might consider adding this as a feature of LaTeX3:
+> >
+> >   For example, if one wants to automate the LaTeX standard two-pass
+> > compile, the environment "document" data would be put in a special file,
+> > which is read twice; if this feature is chosen, the first pass could then
+> > be done without actual typesetting, making it faster.
+>
+>i fear that i don't understand what you mean. what "data" can be put
+>into a special file? most of the reason why you need the typesetting
+>several times (and it might be even more than two) is to gather
+>information from the visual context of the document, eg \pageref can
+>only report the correct number if everything up to that point is
+>already correctly typeset.
+>
+>can you explain a little bit what you have in mind?
+
+  I had this idea a few years ago, and report it now, in case it may bear
+importance for the LaTeX3 project:
+
+  If you want some code segment to be executed more than once in TeX, you
+have to build that repetition into some command, or repeat the command in
+question several times, but TeX does not allow you to rewind the file
+actually being compiled (even though you can put some forward reading into
+a command, and then do non-deterministic parsing of that read portion).
+  However, if the code you want to be repeated for some reason is being put
+into a separate file, then this code can be input several times, and thus
+also be executed several times. This code is thus in a file, different from
+the one compiled by TeX.
+
+  Then, there there is the question in which cases this might be useful. In
+the case of attempting to automate the standard LaTeX two pass compile goes
+something like this:
+
+  In order to handle forward references, LaTeX creates, in the first pass,
+helping files with the information of which pages the different labels
+occur. Then, in the second pass, the information in the helping files is
+written into the typeset output, where this is called for.
+
+  For LaTeX3, one might attempt reorganize the input files as follows:
+
+  You have a special command file, which controls what is to be included in
+the document; perhaps similar to a UNIX makefile.
+  This is the file you excute when typesetting, but the file you now
+normally LaTeX-compile is another file, included from this new command
+file.
+  The command file can then execute sequences like
+    % Turn off typesetting output
+    \input foo.tex                    % Compute LaTeX helpfiles
+    % Turn on typesetting output; reset typesetting parameters
+    \input foo.tex                    % Read LaTeX helpfiles
+Somehow, this has to be integrated with LaTeX, in order to make it
+practical. For example, one might make a special "\include foo.tex"
+command, which excutes the correct command sequence.
+
+  There are some worries, if one attempts to do this in practise: For
+example, I do recall that TeX has a feature that enables you turning off
+the typesetting output, but I am not sure to what extent one is able to
+reset all other typesetting parameters in a second compile.
+
+  But the file organization described above could be of independent interest.
+
+>and merry Xmas to everybody
+
+  And A Happy New Year!
+
+
+  Hans Aberg
+

@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 16 Aug 2009 22:33:59 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7GKXwFf004918
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 16 Aug 2009 22:33:59 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7GKRYqp020159
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 16 Aug 2009 22:27:35 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7GC0FeJ018079;
+	Sun, 16 Aug 2009 22:27:24 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 289662 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 16 Aug
+          2009 22:27:23 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7GKRNsU032053 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 16 Aug 2009 22:27:23 +0200
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n7GKRFOf020057 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 16 Aug 2009 22:27:18 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1McmJu-0006YU-ha for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 16 Aug
+          2009 20:27:14 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>
+            <4A86949D.3090500@morningstar2.co.uk>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A886BA8.2000209@morningstar2.co.uk>
+Date:         Sun, 16 Aug 2009 21:27:20 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A86949D.3090500@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 16 Aug 2009 20:33:59.0486 (UTC) FILETIME=[E2657DE0:01CA1EB0]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5928
+
+Joseph Wright wrote:
+> Hello everyone,
+> 
+> If you consult the LaTeX3 SVN, you'll see that I've now committed a lot
+> of what has been discussed here to the real xparse module, removing
+> xparse-alt and doing a little tidying of other xpackages to fit the
+> updated model. At present, the update will break the "xcontent" package,
+> which I'll try to sort out later today if I get time.
+> 
+> At present, the implementation covers all of the argument types
+> discussed (including Will's optional-braced-argument, which I've called
+> g = "grouped"), with "+" representing a long argument. I've gone with
+> the idea of ">{\some_function:n}" for processing arguments, for example
+> 
+> \DeclareDocumentCommand \foo { >{\xparse_arg_split_on_comma:n}D(){0,0} }
+>   { code }
+> 
+> is currently correct for finding an optional pair of co-ordinates and
+> splitting at the comma.
+> 
+> I've not yet implemented \DeclareExpandableDocumentCommand. I'll
+> probably try to do that over the weekend, with the very restricted set
+> of valid arguments I suggested in my e-mail from yesterday.
+
+Further to this, an implementation for \DeclareExpandableDocumentCommand
+is now included in xparse in the SVN. In the end, it turned out that
+with a "daisy-chain" implementation multiple optional arguments are
+still okay in fully expandable commands. I've done my best to describe
+the limitations of this approach in the documentation: basically, it is
+never going to be as good as one that can perform assignments!
+
+If most people are broadly happy with the resulting interface of xparse,
+I'll look at sending it (plus an update to expl3: \exp_args:NnV was
+missing) to CTAN in a few days time.
+-- 
+Joseph Wright
+

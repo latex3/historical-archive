@@ -1,0 +1,115 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Jun 2009 21:41:27 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n5AJfQX2019687
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Jun 2009 21:41:26 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n5AJcOs8001037
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Jun 2009 21:38:24 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n5AHRL1t006334;
+	Wed, 10 Jun 2009 21:38:19 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 320309 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Jun
+          2009 21:38:18 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n5AJcI9D031151 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Jun 2009 21:38:18 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n5AJc4q3029184 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Jun 2009 21:38:08 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id 1METca-00012M-bA
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Jun 2009 19:38:04
+          +0000
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+MIME-Version: 1.0
+References: <4A2F5FE3.3030205@morningstar2.co.uk> <qunzxqiuyjyg.dlg@nililand.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A300B9E.4000608@morningstar2.co.uk>
+Date:         Wed, 10 Jun 2009 20:38:06 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Key-value input
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <qunzxqiuyjyg.dlg@nililand.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Jun 2009 19:41:27.0198 (UTC) FILETIME=[71CF43E0:01C9EA03]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5790
+
+Hello Ulrike,
+
+>> I wonder if the pgfkeys idea of using one macro to create and set keys
+>> is confusing. 
+
+[snip]
+
+>> do other people think that strict separation:
+
+[snip]
+
+>> is clearer?
+> 
+> Yes. 
+
+Okay, that fits with what I've been thinking.  I'll look at this again
+and implement what I've suggested in my mail.
+
+>> The other question is how to make keys in this way. keys3 uses the idea
+>> of properties:
+>>
+>>   key name/.property = value
+>>
+>> for example
+>>
+>>   \module\my~key/.tl_set:N  = \l_module_my_tl,
+>>   \module\my~key/.default:n = {default}
+>>
+>> to create a key which will store its input in a tl. On the other hand,
+>> template uses and "extended key-value" approach:
+>>
+>> key name =<type> [default] <function>
+>>
+>> for example:
+>>
+>>   my key =n [default] \l_module_my_tl
+
+[snip]
+
+> I would prefer the two step method -- because it probably means that
+> you can change the default independently from the function. 
+
+That again fits broadly with my thinking.
+
+> (I haven't never really tried to use pgfkeys because the last time I
+> looked at it it wasn't babel safe and all the spaces in the key
+> names in the documentation make me nervous.) 
+
+The babel problem remains with pgfkeys. Not a problem for LaTeX3 as
+everything will be built on l3keyval, which is active-character safe (or
+more accurately, has two routines, one of which is babel-safe and is
+therefore for user input).  The spaces really should not be an issue: it
+is all building things from csname. With LaTeX2e package options with
+spaces *are* a problem, but that is not an issue for run-time keys and
+should not be for LaTeX3 package options!
+-- 
+Joseph Wright
+

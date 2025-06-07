@@ -1,0 +1,233 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Thu, 25 Mar 2004 14:19:38 +0100
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i2PDJYlo004981 for <rainer.schoepf@PROTEOSYS.COM>; Thu, 25 Mar 2004 14:19:35 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i2PDDMiv012946; Thu, 25 Mar 2004 14:13:22 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4126B.D2C2D100"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i2P700cw014195; Thu, 25 Mar 2004 14:12:17 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 62741 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 25 Mar 2004 14:12:16 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i2PD2FN6020188 for          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 25 Mar 2004 14:02:15 +0100
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i2PD2miv009475 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 25 Mar          2004 14:02:48 +0100 (MET)
+Received:  from fencepost.gnu.org ([127.0.0.1] helo=lola.goethe.zz) by          fencepost.gnu.org with esmtp (Exim 4.24) id 1B6UQs-0000AK-8G for          LATEX-L@listserv.uni-heidelberg.de; Thu, 25 Mar 2004 07:58:02 -0500
+In-Reply-To:  <E1B6T9g-0001HE-00@mrelayng.kundenserver.de>
+Lines: 55
+References: <E1B6T9g-0001HE-00@mrelayng.kundenserver.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 25 Mar 2004 13:19:38.0324 (UTC) FILETIME=[D2F44140:01C4126B]
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3.50
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: TeX units
+Date: Thu, 25 Mar 2004 14:02:44 +0100
+Message-ID: A<x5fzbx84gb.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: TeX units
+Thread-Index: AcQSa9MRaFWYI/s+TBCVe7lH/7ZonA==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4774
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C4126B.D2C2D100
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Ulrich Dirr <ud@ART-SATZ.DE> writes:
+
+> I've looked into TeX.web where I found the following definitions:
+> in :=3D set_conversion(7227)(100)
+> pc :=3D set_conversion(12)(1)
+> cm :=3D set_conversion(7227)(254)
+> mm :=3D set_conversion(7227)(2540)
+> bp :=3D set_conversion(7227)(7200)
+> dd :=3D set_conversion(1238)(1157)
+> cc :=3D set_conversion(14856)(1157)
+>
+> On occasion I need to trace TeX's page building via \tracingpages=3D2.
+> Assume you have a \textheight of 39 \baselineskip + \topskip, and one
+> \baselineskip is 13bp. Then \textheight is 507bp+10pt.
+
+No, it isn't.  Disregarding the topskip (which has an exact
+representation):
+
+\dimen0=3D13bp
+\dimen0=3D39\dimen0
+\showthe\dimen0
+
+\dimen0=3D507bp
+\showthe\dimen0
+This is TeXk, Version 3.141592 (Web2C 7.5.2)
+ %&-line parsing enabled.
+ (/usr/local/TeX/texmf/web2c/cp8bit.tcx)
+**
+*
+*> 508.90073pt.
+<*> \showthe\dimen0
+
+?
+*
+*> 508.90125pt.
+<*> \showthe\dimen0
+
+?
+! Emergency stop.
+<*> \showthe\dimen0
+
+No pages of output.
+Transcript written on texput.log.
+
+> Maybe someone could explain this behavior to me?
+
+507bp is calculated as 507*7227/7200, which is different from
+39*(13*7227/7200), since we are talking about arithmetic without
+associative law.  This is common in floating point arithmetic, and it
+is of course also relevant in TeX's fixed point arithmetic.  Since
+units are implemented as scaling ratios rather than fixed values, you
+get the results you experience.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C4126B.D2C2D100
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: TeX units</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Ulrich Dirr &lt;ud@ART-SATZ.DE&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I've looked into TeX.web where I found the =
+following definitions:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; in :=3D set_conversion(7227)(100)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; pc :=3D set_conversion(12)(1)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; cm :=3D set_conversion(7227)(254)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; mm :=3D set_conversion(7227)(2540)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; bp :=3D set_conversion(7227)(7200)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; dd :=3D set_conversion(1238)(1157)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; cc :=3D set_conversion(14856)(1157)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; On occasion I need to trace TeX's page building =
+via \tracingpages=3D2.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Assume you have a \textheight of 39 =
+\baselineskip + \topskip, and one</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \baselineskip is 13bp. Then \textheight is =
+507bp+10pt.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>No, it isn't.&nbsp; Disregarding the topskip (which =
+has an exact</FONT>
+
+<BR><FONT SIZE=3D2>representation):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dimen0=3D13bp</FONT>
+
+<BR><FONT SIZE=3D2>\dimen0=3D39\dimen0</FONT>
+
+<BR><FONT SIZE=3D2>\showthe\dimen0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dimen0=3D507bp</FONT>
+
+<BR><FONT SIZE=3D2>\showthe\dimen0</FONT>
+
+<BR><FONT SIZE=3D2>This is TeXk, Version 3.141592 (Web2C 7.5.2)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;%&amp;-line parsing enabled.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;(/usr/local/TeX/texmf/web2c/cp8bit.tcx)</FONT>
+
+<BR><FONT SIZE=3D2>**</FONT>
+
+<BR><FONT SIZE=3D2>*</FONT>
+
+<BR><FONT SIZE=3D2>*&gt; 508.90073pt.</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*&gt; \showthe\dimen0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>?</FONT>
+
+<BR><FONT SIZE=3D2>*</FONT>
+
+<BR><FONT SIZE=3D2>*&gt; 508.90125pt.</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*&gt; \showthe\dimen0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>?</FONT>
+
+<BR><FONT SIZE=3D2>! Emergency stop.</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*&gt; \showthe\dimen0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>No pages of output.</FONT>
+
+<BR><FONT SIZE=3D2>Transcript written on texput.log.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Maybe someone could explain this behavior to =
+me?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>507bp is calculated as 507*7227/7200, which is =
+different from</FONT>
+
+<BR><FONT SIZE=3D2>39*(13*7227/7200), since we are talking about =
+arithmetic without</FONT>
+
+<BR><FONT SIZE=3D2>associative law.&nbsp; This is common in floating =
+point arithmetic, and it</FONT>
+
+<BR><FONT SIZE=3D2>is of course also relevant in TeX's fixed point =
+arithmetic.&nbsp; Since</FONT>
+
+<BR><FONT SIZE=3D2>units are implemented as scaling ratios rather than =
+fixed values, you</FONT>
+
+<BR><FONT SIZE=3D2>get the results you experience.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C4126B.D2C2D100--
+

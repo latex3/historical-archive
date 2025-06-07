@@ -1,0 +1,87 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 4 Dec 2009 05:45:53 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nB44jus8013890
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 4 Dec 2009 05:45:56 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nB44hJSB023758
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 4 Dec 2009 05:43:19 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nB3N5VIx003898;
+	Fri, 4 Dec 2009 05:43:09 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 355312 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 4 Dec
+          2009 05:43:09 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nB44h9rJ030681 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 4 Dec 2009 05:43:09 +0100
+Received: from mail-yw0-f172.google.com (mail-yw0-f172.google.com
+          [209.85.211.172]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id nB44h4ZO023661 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 4 Dec 2009 05:43:08 +0100
+Received: by ywh2 with SMTP id 2so2101875ywh.27 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 03 Dec 2009 20:43:04 -0800
+          (PST)
+Received: by 10.150.17.37 with SMTP id 37mr4477758ybq.285.1259901783753; Thu,
+          03 Dec 2009 20:43:03 -0800 (PST)
+Received: from ?129.127.15.244? ([129.127.15.244]) by mx.google.com with ESMTPS
+          id 23sm1082333ywh.33.2009.12.03.20.42.59 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Thu, 03 Dec 2009 20:43:01 -0800 (PST)
+Content-Type: text/plain; charset=us-ascii; format=flowed; delsp=yes
+Mime-Version: 1.0 (Apple Message framework v1075.2)
+Content-Transfer-Encoding: 7bit
+References: <4B17B855.90608@free.fr>
+X-Mailer: Apple Mail (2.1075.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <9871D6E1-07F1-46B4-96DF-6F10726350BC@gmail.com>
+Date:         Fri, 4 Dec 2009 15:12:56 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Rescanning an argument with a special catcode for the colon
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4B17B855.90608@free.fr>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Dec 2009 04:45:54.0020 (UTC) FILETIME=[A974BA40:01CA749C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6196
+
+Hi Julien,
+
+Many thanks for the feedback! It is great to hear of your experience  
+with the packages. And good, especially, to hear that other people  
+besides us are looking at it and using it :)
+
+> I'm sure there is a way to define this in a beautiful expl3 manner,  
+> but I didn't find any satisfying definition. Of course I can  
+> basically use expl3 names and functions like \char_make_active:N,  
+> and using \cs_set_eq:NN to cheat and alias the functions I need to  
+> names without a colon, but that's hardly good looking.
+
+In this case I think that Joseph's suggestion for search/replace is  
+best; you are right that it's slightly slower than using active chars  
+but the difference is quite small in practise.
+
+I'll keep your suggestions in mind about a better interface for  
+rescan, but can't promise anything at this stage. It's perhaps  
+overkill to invent a new syntax to deal with : and _ for a possible  
+minority of situations (and in your case I suspect using \lowercase  
+and \lccode might also be able to solve your problem). But further  
+suggestions if you come up with anything are very welcome! (Example  
+code in particular is my favourite :))
+
+-- Will
+

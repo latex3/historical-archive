@@ -1,0 +1,148 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 25 Nov 2007 21:59:39 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id lAPKxYCi032111
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 25 Nov 2007 21:59:34 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id lAPKocbj020946
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 25 Nov 2007 21:50:38 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lAPHOq3p005777;
+	Sun, 25 Nov 2007 21:51:52 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 195188 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 25 Nov
+          2007 21:51:51 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lAPKpp0A010869 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 25 Nov 2007 21:51:51 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.179]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id lAPKoBZh020743 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 25 Nov 2007 21:50:15 +0100
+Received: from morse.mittelbach-online.de (p54A98323.dip0.t-ipconnect.de
+          [84.169.131.35]) by mrelayeu.kundenserver.de (node=mrelayeu7) with
+          ESMTP (Nemesis) id 0ML2xA-1IwOSA2OXh-0006TY; Sun, 25 Nov 2007
+          21:51:46 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id AD129615D4; Sun, 25 Nov 2007 21:51:45 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1/OFPskRpMQo0qnDUW6m+ZpIQQmByH8/hz9qwe
+              tZCvvo3KdtfjTPf3Z+lfSrrM7sN3mAzECF0gzJ1nn8tSbn87ed
+              igLvKuKhu2JPxavXuILGBaQmaP+OCSl
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18249.57441.391405.468407@morse.mittelbach-online.de>
+Date:         Sun, 25 Nov 2007 21:51:45 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Extending the output routine to middle floats
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Nov 2007 20:59:40.0120 (UTC) FILETIME=[18711580:01C82FA6]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5075
+
+The current implementation of xor does not support float placement that
+interrupts the text column (except for inline floats which effectively aren't
+floats since they do not float out of their position as long as they split the
+text column--- thus the column is still a single block).
+
+I always thought that this is too limiting, but so far couldn't think of a
+good way to respresent design specs that allow for more freedom with floats
+that interrupt the column structure in the middle. One problem is to define
+how the algorithm should split the column(s) vertically, e.g., if AAAA is the
+float place somewhere in column 1:
+
+t1t1t1  t3t3t3
+t1t1t1  t3t3t3
+        t3t3t3 
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+        t3t3t3
+t2t2t2  t3t3t3
+t2t2t2  t3t3t3
+t2t2t2  t3t3t3
+t2t2t2  t3t3t3
+
+What is/should be the vertical size for the t1t1t1 block and what for t2t2t2
+in this case? And what would be the values in a case with additional floats,
+e.g.,
+
+BBBBBBBBBBBBBB
+BBBBBBBBBBBBBB
+
+t1t1t1  t3t3t3
+        t3t3t3 
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+AAAAAA  t3t3t3
+        t3t3t3
+t2t2t2  t3t3t3
+t2t2t2  
+t2t2t2  CCCCCC
+t2t2t2  CCCCCC
+
+To state the problem differently, what should be the amount of freedom
+available to the designer (through the algorithm), and what would be a good
+way to express it?
+
+Perhaps one can restate this into two different questions:
+
+    * What are possible/imaginable specifications that a designer may come up
+      with for such floats in the middle of pages?
+
+    * Which of them could be expressed algorithmically in a way that they can
+      be implemented?
+
+Tackling the first question first, here are a bunch of specs that I can think
+of (without judging for the moment how well they would represent anything real
+life and how well they might work out in practice).
+
+    * The ratio of t1 to t2 is fixed by the design and a float AAA can be
+      placed into the middle position if neither t1 nor t2 become too
+      small. (Downside of this kind of layout might be that the positioning of
+      the floats drastically varies from page to page.)
+
+    * The end position of t1 is fixed (vertically) so that a middle float
+      always starts on the same point on a page. Further restriction then that
+      t2 is not getting smaller as a certain value.
+
+    * The starting starting position of t2 is fixed so that the bottom of the
+      middle floats always appear on the same vertical position on the page,
+      again with some further restrictions to the size of t1 this time.
+
+    * An obvious extension to the above could be that there are a list of
+      vertical starting points to choose from and some mechanism/logic to
+      select one of them
+
+    * ...other ideas...
+
+Questions:
+
+    * What kind of other specs can you think of?
+    * What is wrong with the above? What is right with them?
+    * Which of the specs might be worth implementing (or not) for which reason?
+    * Other comments, ideas?
+
+thanks
+Frank
+

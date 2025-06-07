@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 5 Sep 2009 10:09:11 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n8589Bbs028357
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 5 Sep 2009 10:09:12 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n8583EtO017064
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 5 Sep 2009 10:03:14 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n84M16IC006140;
+	Sat, 5 Sep 2009 10:03:08 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 299210 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 5 Sep
+          2009 10:03:07 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n85837tR016019 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 5 Sep 2009 10:03:07 +0200
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n8582qQS015982 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 5 Sep 2009 10:02:56 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1MjqEW-0000pE-mS for latex-l@listserv.uni-heidelberg.de; Sat, 05 Sep
+          2009 08:02:52 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4AA21B30.8030509@morningstar2.co.uk>
+Date:         Sat, 5 Sep 2009 09:02:56 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: l3keys revision
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Sep 2009 08:09:11.0828 (UTC) FILETIME=[26BD0540:01CA2E00]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6092
+
+Hello all,
+
+The ongoing template discussion has prompted me to think again about
+some aspects of l3keys. It's pretty clear to me that the aims in l3keys
+are rather different from those in template. l3keys is really about
+creating keys for the programmer, so it can take a very different
+approach to template.
+
+Several things have come up in the discussion, and I'd like to see how
+other people feel about the following before doing anything:
+
+- I added .initial:n and .initial:V mainly with template in mind. In
+l3keys, initial values can be set using \keys_set:nn, and overall I feel
+this is probably clearer (separate key definition from key setting). I'd
+therefore like to drop .initial:n/V
+
+- There is .function:N which again was more about template than l3keys.
+I'm not sure the property is actually very clear (it does \cs_set:Nn
+<function> { <key-value }), so again I'd like to remove it.
+
+- There are currently a .code:n and a .code:Nn property, where the
+former only takes one argument and the later takes N. To be honest, I
+think it might be better to only have .code:n so that if further
+splitting of a value is needed it is done elsewhere, and not by l3keys.
+
+- Related to the .code:Nn point, .generate_choices:nn also splits the
+value part of a key-value argument in two. I'm no longer sure this is a
+good thing, so perhaps
+  .choice_code:n       = <code>,
+  .generate_choices:n  = <choices>
+would be better.
+
+- Not everyone likes the .set:N idea of detecting the variable type and
+scope from the variable name, rather than having .tl_set:N, .int_gset:N,
+etc. As we are talking about a programmer function, it's not
+unreasonable to read the variable information from the name. It's easy
+to go back to the previous method if that is the consensus.
+
+I'd like to get this sorted out soon (i.e. in the next week) as I am
+using l3keys for siunitx v2 and as Manuel has indicated he is also
+looking at using l3keys for real work.
+-- 
+Joseph Wright
+

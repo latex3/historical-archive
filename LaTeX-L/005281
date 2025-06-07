@@ -1,0 +1,101 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Sep 2008 21:55:25 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8AJtJSu021083
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Sep 2008 21:55:20 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8AJnwuH003185
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Sep 2008 21:49:58 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AI4G5w030740;
+	Wed, 10 Sep 2008 21:49:56 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 33226 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 21:49:56 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8AJnuBJ005189 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 21:49:56 +0200
+Received: from anchor-post-37.mail.demon.net (anchor-post-37.mail.demon.net
+          [194.217.242.87]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m8AJnfWv005133 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 21:49:45 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-37.mail.demon.net with esmtp (Exim 4.69) id
+          1KdVh6-0001fp-PH for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 19:49:40 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48C817F4.4080208@morningstar2.co.uk>
+            <18632.7373.71980.984368@morse.mittelbach-online.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48C824D1.2060706@morningstar2.co.uk>
+Date:         Wed, 10 Sep 2008 20:49:37 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Keys in expl3: some thoughts (might be l3keys)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18632.7373.71980.984368@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Sep 2008 19:55:25.0253 (UTC) FILETIME=[2A8E8F50:01C9137F]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5281
+
+Frank Mittelbach wrote:
+
+> not able to digest that right now, but one question up front ...
+
+No problem - there is no rush.  I will probably stick with my current
+approach first in any case (as I have a model to follow) then revise it
+later.  So what I'm aiming at will essentially implement what is in the
+pgf/tikz manual under "Utilities -> Key management" but with everything
+built using expl3 (I'm currently working on \pgfkeys ~ \keys_manage:n,
+etc.).
+
+> have you had a look at the template approach?
+
+Morten pointed out that template needs to do a lot of clever stuff.  I
+think much of that is overkill for most people looking at using keyval
+input (I could be wrong, of course).  I'm mainly thinking about stuff
+like keyval package options (from my own packages, siunitx comes to mind
+for lots of simple options, or something like biblatex) or stuff like
+PStricks or pgf/tikz.  Both of the later use a lot of keys, and the
+model of pgfkeys should at least cover pgf/tikz-type requirements (it is
+the key engine used!).
+
+I'm still trying to understand template, by the way.
+
+> whatever we do for property mappings the template system should use the same
+> interface (which might well mean changing what is there)
+
+Very true.  I'm just exploring things: this came up as when I looked at
+the current l3keyval (for my xnotes2bib implementation) I couldn't find
+anything for reproducing what I do in notes2bib with xkeyval.  The more
+I've worked with keyval packages, the less I like how xkeyval works (I
+challenge anyone to remember the full syntax for the macros).  I think
+the "/path/key/.property" model is pretty clear and also flexible. Hence
+looking at pgfkeys for a staring point.
+
+(As an aside, I would shift my current packages to pgfkeys, but as it is
+ only available as part of the entire pgf bundle its a bit of a big ask
+as a dependency, hence stick with xkeyval for the moment. So I'm hoping
+that LaTeX3 will provide this type of thing "out of the box", making my
+life easier.)
+-- 
+Joseph Wright
+

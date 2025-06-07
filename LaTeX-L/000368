@@ -1,0 +1,465 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.45C3478C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:59 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.45C3478C"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: beyond fragility
+Date: Fri, 30 Aug 1991 01:00:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE590@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <eijkhout@CSRD.UIUC.edu>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 368
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.45C3478C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Yo!
+
+In the last couple of weeks I've been working hard
+on finishing my book 'TeX by Topic, a TeXnician's Reference'.
+Since publication is drawing quite near, this was mainly
+implementing the style (for which Addison-Wesley generously
+offered some money so that I could hire a designer. Needless
+to say that the designer is again much better than anything
+that I could come up with myself. Or than the Addison-Wesley
+house style, for that matter!), and since I use my own
+macro package, this meant extensive alterations to even
+the most basic macros. I think it is converging to something
+that will be able to implement rather widely different
+designs.
+
+Anyhow, one of the things that I had to tackle was the eternal
+problem of how to handle heading texts. Fragile commands and such.
+I'm sure you all know all about it. I would like to show you what I did.
+
+First a word about my `Lollipop' format. This format (my article
+in the Cork proceedings explains it better than I'm going to do
+here) is a sort of programming language implemented in TeX.
+There, I cannot show you many complete macros: most of them are
+defined dynamically.
+For instance, here is how the macro \point (roughly: \section)
+in my book is defined:
+\DefineHeading:point whitebefore:{24pt minus 6pt}
+    whiteafter:{12pt minus 4pt}
+    counter:1
+    block:start Pointsize:12 SansSerif Style:bold
+        block:start subjectCounter . pointCounter stickout:left=3Dmargin
+        TITLE block:stop
+    label:start command:subjectCounter literal:.
+        command:pointCounter label:stop
+    external:contents title external:stop
+    Stop
+\GoverningCounter:point=3Dsubject
+
+The line 'external' tells the format that the 'title' is to be written
+to the file 'contents' which has been defined by the user as
+\DefineExternalFile:contents=3Dtoc
+Somewhere else the user can specify how exactly the table of
+contents is to be formatted.
+
+To business!
+The heading macros (or almost any macro, for that matter)
+can generate a call:
+  \@extern{extension}{object}{counter}title\e@extern
+
+The \@extern call writes to the aux file:
+  \write@to@external{extension}{object}{counter}{page}{tekst}\ew@extern
+as follows:
+\noeol
+\newtoks\ext@text@toks
+\def\x@extern#1#2#3#4\e@extern
+   {\begingroup\normalesc
+     \Tmessage{Write to aux `#2' for `\csname#1@name\endcsname'}
+     \ext@text@toks{#4}
+     \edef\cs@e{\write\aux@file
+                    {\string\write@to@external
+                      {#1}{#2}{#3}
+                      {\counter@@repr{Page}
+                          {\csarg\number{\counter@name{Page}}}}
+                      =
+\nxp\string@um@up\the\ext@text@toks\nxp\@bean\@space
+               }}\cs@e
+     \write\aux@file{\string\ew@extern}
+    \endgroup}
+\normaleol
+\NewDummy{@roy}\NewDummy{@bean}
+\def\string@um@up#1 {\string@these@up#1\@roy\string@um@up}
+\def\string@these@up#1{\ifx#1\@bean\expandafter\take@two
+    \else\ifx#1\@roy\@space
+         \else\string#1\ifcat\nxp#1\relax\@space\fi
+              \xp\xp\xp\string@these@up\fi\fi}
+
+Thatis: the title is put in a token list to prevent it
+>from expansion, and it's padded with \string@um@up...\@bean\@space
+Trick: this will \string the whole title when the write
+takes place, so that again there is no expansion.
+Trick$^2$: you don't want to lose spaces so the title
+is first split in words, then in tokens.
+
+Now the .aux file that a call to \write@to@external;
+when the aux file is loaded at the end of the job (I'm
+doing this the same way that LaTeX works), it gets executed:
+\def\write@to@external#1#2#3#4#5\ew@extern
+       {\csname if@#1open\endcsname
+            \Tmessage{Write `#2' to `\csname##1@name\endcsname'}
+            \ext@text@toks{#5}
+            \immediate\write\csname#1@file\endcsname
+                 {\csnaam{#2}{#3}{#4}\the\ext@text@toks\string\par}
+        \else
+            \Tmessage{Skipped `#2' for `\csname#1@name\endcsname'}
+        \fi}
+Again, this first puts the title in a token list, and then
+writes it out.
+
+Summarizing:
+- no attempt to allow category code changes in the title
+- disallow all expansion in the title by applying \string to it.
+
+Victor Eijkhout
+ Center for Supercomputing Research and Development
+ University of Illinois at Urbana-Champaign
+ 305 Talbot Laboratory                 phone: +1 217 244-0047 (office)
+ 104 South Wright Street                      +1 217 356-0876 (home)
+ Urbana, Illinois 61801-2932, USA        fax: +1 217 244-1351
+
+home: 2503 W. Springfield Av, Apt. K-4, Champaign 61821, USA
+
+
+
+------_=_NextPart_001_01C19443.45C3478C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>beyond fragility</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Yo!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the last couple of weeks I've been working =
+hard</FONT>
+
+<BR><FONT SIZE=3D2>on finishing my book 'TeX by Topic, a TeXnician's =
+Reference'.</FONT>
+
+<BR><FONT SIZE=3D2>Since publication is drawing quite near, this was =
+mainly</FONT>
+
+<BR><FONT SIZE=3D2>implementing the style (for which Addison-Wesley =
+generously</FONT>
+
+<BR><FONT SIZE=3D2>offered some money so that I could hire a designer. =
+Needless</FONT>
+
+<BR><FONT SIZE=3D2>to say that the designer is again much better than =
+anything</FONT>
+
+<BR><FONT SIZE=3D2>that I could come up with myself. Or than the =
+Addison-Wesley</FONT>
+
+<BR><FONT SIZE=3D2>house style, for that matter!), and since I use my =
+own</FONT>
+
+<BR><FONT SIZE=3D2>macro package, this meant extensive alterations to =
+even</FONT>
+
+<BR><FONT SIZE=3D2>the most basic macros. I think it is converging to =
+something</FONT>
+
+<BR><FONT SIZE=3D2>that will be able to implement rather widely =
+different</FONT>
+
+<BR><FONT SIZE=3D2>designs.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Anyhow, one of the things that I had to tackle was the =
+eternal</FONT>
+
+<BR><FONT SIZE=3D2>problem of how to handle heading texts. Fragile =
+commands and such.</FONT>
+
+<BR><FONT SIZE=3D2>I'm sure you all know all about it. I would like to =
+show you what I did.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>First a word about my `Lollipop' format. This format =
+(my article</FONT>
+
+<BR><FONT SIZE=3D2>in the Cork proceedings explains it better than I'm =
+going to do</FONT>
+
+<BR><FONT SIZE=3D2>here) is a sort of programming language implemented =
+in TeX.</FONT>
+
+<BR><FONT SIZE=3D2>There, I cannot show you many complete macros: most =
+of them are</FONT>
+
+<BR><FONT SIZE=3D2>defined dynamically.</FONT>
+
+<BR><FONT SIZE=3D2>For instance, here is how the macro \point (roughly: =
+\section)</FONT>
+
+<BR><FONT SIZE=3D2>in my book is defined:</FONT>
+
+<BR><FONT SIZE=3D2>\DefineHeading:point whitebefore:{24pt minus =
+6pt}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; whiteafter:{12pt minus 4pt}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; counter:1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; block:start Pointsize:12 SansSerif =
+Style:bold</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+block:start subjectCounter . pointCounter stickout:left=3Dmargin</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TITLE =
+block:stop</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; label:start command:subjectCounter =
+literal:.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+command:pointCounter label:stop</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; external:contents title =
+external:stop</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Stop</FONT>
+
+<BR><FONT SIZE=3D2>\GoverningCounter:point=3Dsubject</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The line 'external' tells the format that the 'title' =
+is to be written</FONT>
+
+<BR><FONT SIZE=3D2>to the file 'contents' which has been defined by the =
+user as</FONT>
+
+<BR><FONT SIZE=3D2>\DefineExternalFile:contents=3Dtoc</FONT>
+
+<BR><FONT SIZE=3D2>Somewhere else the user can specify how exactly the =
+table of</FONT>
+
+<BR><FONT SIZE=3D2>contents is to be formatted.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To business!</FONT>
+
+<BR><FONT SIZE=3D2>The heading macros (or almost any macro, for that =
+matter)</FONT>
+
+<BR><FONT SIZE=3D2>can generate a call:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\@extern{extension}{object}{counter}title\e@extern</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \@extern call writes to the aux file:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\write@to@external{extension}{object}{counter}{page}{tekst}\ew@extern</FO=
+NT>
+
+<BR><FONT SIZE=3D2>as follows:</FONT>
+
+<BR><FONT SIZE=3D2>\noeol</FONT>
+
+<BR><FONT SIZE=3D2>\newtoks\ext@text@toks</FONT>
+
+<BR><FONT SIZE=3D2>\def\x@extern#1#2#3#4\e@extern</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\begingroup\normalesc</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \Tmessage{Write to aux `#2' =
+for `\csname#1@name\endcsname'}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \ext@text@toks{#4}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\edef\cs@e{\write\aux@file</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\string\write@to@external</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{#1}{#2}{#3}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\counter@@repr{Page}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; {\csarg\number{\counter@name{Page}}}}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\nxp\string@um@up\the\ext@text@toks\nxp\@bean\@space</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; }}\cs@e</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\write\aux@file{\string\ew@extern}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \endgroup}</FONT>
+
+<BR><FONT SIZE=3D2>\normaleol</FONT>
+
+<BR><FONT SIZE=3D2>\NewDummy{@roy}\NewDummy{@bean}</FONT>
+
+<BR><FONT SIZE=3D2>\def\string@um@up#1 =
+{\string@these@up#1\@roy\string@um@up}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\string@these@up#1{\ifx#1\@bean\expandafter\take@two</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else\ifx#1\@roy\@space</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\else\string#1\ifcat\nxp#1\relax\@space\fi</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; \xp\xp\xp\string@these@up\fi\fi}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thatis: the title is put in a token list to prevent =
+it</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from expansion, and it's padded with =
+\string@um@up...\@bean\@space</FONT>
+
+<BR><FONT SIZE=3D2>Trick: this will \string the whole title when the =
+write</FONT>
+
+<BR><FONT SIZE=3D2>takes place, so that again there is no =
+expansion.</FONT>
+
+<BR><FONT SIZE=3D2>Trick$^2$: you don't want to lose spaces so the =
+title</FONT>
+
+<BR><FONT SIZE=3D2>is first split in words, then in tokens.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now the .aux file that a call to =
+\write@to@external;</FONT>
+
+<BR><FONT SIZE=3D2>when the aux file is loaded at the end of the job =
+(I'm</FONT>
+
+<BR><FONT SIZE=3D2>doing this the same way that LaTeX works), it gets =
+executed:</FONT>
+
+<BR><FONT SIZE=3D2>\def\write@to@external#1#2#3#4#5\ew@extern</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\csname =
+if@#1open\endcsname</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \Tmessage{Write `#2' to `\csname##1@name\endcsname'}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \ext@text@toks{#5}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \immediate\write\csname#1@file\endcsname</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\csnaam{#2}{#3}{#4}\the\ext@text@toks\string\par}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\else</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \Tmessage{Skipped `#2' for `\csname#1@name\endcsname'}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\fi}</FONT>
+
+<BR><FONT SIZE=3D2>Again, this first puts the title in a token list, and =
+then</FONT>
+
+<BR><FONT SIZE=3D2>writes it out.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Summarizing:</FONT>
+
+<BR><FONT SIZE=3D2>- no attempt to allow category code changes in the =
+title</FONT>
+
+<BR><FONT SIZE=3D2>- disallow all expansion in the title by applying =
+\string to it.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Victor Eijkhout</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Center for Supercomputing Research and =
+Development</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;University of Illinois at =
+Urbana-Champaign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;305 Talbot =
+Laboratory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phone: +1 217 244-0047 (office)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;104 South Wright =
+Street&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +1 217 =
+356-0876 (home)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Urbana, Illinois 61801-2932, =
+USA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fax: +1 217 =
+244-1351</FONT>
+</P>
+
+<P><FONT SIZE=3D2>home: 2503 W. Springfield Av, Apt. K-4, Champaign =
+61821, USA</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.45C3478C--
+

@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1199" "Fri" "31" "December" "1993" "03:11:54" "+0100" "Rolf Lindgren" "rolf.lindgren@usit.uio.no" nil "35" "Re: No more magnified fonts!" "^Date:" nil nil "12" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA23146; Fri, 31 Dec 93 03:14:05 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA05187; Fri, 31 Dec 93 03:13:56 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA26244
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 31 Dec 1993 03:13:52 +0100
+Message-Id: <199312310213.AA26244@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 5665; Fri, 31 Dec 93 03:14:14 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 5664; Fri,
+ 31 Dec 1993 03:14:14 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 6185; Fri,
+ 31 Dec 1993 03:13:24 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <"alfie.uib..377:30.11.93.22.14.25"@uib.no>
+Date:         Fri, 31 Dec 1993 03:11:54 +0100
+From: Rolf Lindgren <rolf.lindgren@usit.uio.no>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: No more magnified fonts!
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1244
+
+Sebastian Rahtz writes:
+ > does everyone know there are free PostScript Type1 renderings of the
+ > CM fonts, by the way? (to go the other direction). By Basil Malyshev
+ > (in CTAN:fonts/cm/ps-type1). Expert opinion has it that they are not
+ > as well done as the commercial offerings, but are still good.
+ >
+ > sebastian
+
+I`ve tried to hack them to work with Rokicki's dvips. They won't, because
+the afm format doesn't conform to afm2tfm's expectations:
+
+1. The N statements come before the WX statements, whcih afm2tfm finds
+   totally unagreeable
+
+2. Also, afm2tfm chokes on the `;''s, as they have no leading spaces.
+
+I've written a truly disgusting peace of emacs lisp (appended) that fixes
+this.  Still, some of the afms cause afm2tfm abort, moaning `segmentation
+fault' before she exits.
+
+invoke with `emacs -batch -q *.afm -l fixafm.el'
+
+(require 'cl)
+(while (> (length (buffer-list)) 2)
+  (progn
+    (switch-to-buffer (other-buffer))
+    (message (buffer-name))
+    (replace-regexp
+     "N \\([a-zA-Z0-9]+\\); WX \\([0-9]+\\);"
+     "WX \\2 ; N \\1 ;")
+    (goto-char (point-min))
+    (replace-regexp "[^  ];" " ;")
+    (save-some-buffers t)
+    (kill-buffer (buffer-name))))
+(kill-emacs 0)
+

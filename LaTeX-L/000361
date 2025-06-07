@@ -1,0 +1,1024 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.44F4F904@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:58 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.44F4F904"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: Support for accurate page-selection from dvi files
+Date: Thu, 27 Jun 1991 08:47:26 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE587@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "LaTeX-L Mailing list" <LATEX-L@VM.URZ.uni-heidelberg.dbp.de>
+Sender: </PN=David#l#u#r#Rhead/OU=VME/O=NOTT/PRMD=AC/C=NN/@x400-gate>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@VM.URZ.uni-heidelberg.dbp.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 361
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.44F4F904
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+\documentstyle[11pt]{article}
+
+\begin{document}
+
+\title{Support for accurate page-selection from {\tt dvi} files}
+\author{David Rhead}
+\date{June 1991}
+\maketitle
+
+\section{Introduction}
+
+Although \TeX\ provides 10 \verb+\count+ registers \cite[p.\ =
+119]{knuth-90}
+for page-identification, neither the \lq\lq plain'' macros nor the =
+\LaTeX\
+2.09 standard styles use anything but \verb+\count0+.
+From the point-of-view of a \LaTeX\ user, this can create situations in
+which page-selection is difficult at the previewing/printing stage.
+For example:
+\begin{itemize}
+\item in the \LaTeX\ 2.09 report and book styles, both (roman-numbered) =
+page
+     iv in the \lq\lq front matter'', and (arabic-numbered) page 4 in
+     chapter 1 have a \verb+\count0+ value of 4 in the {\tt dvi} file, =
+so
+     it is difficult to instruct a {\tt dvi}-file processing command to
+     print page 4 rather than page iv.
+\item if a style-file for a document that numbers pages \lq\lq within
+     chapters'' follows the precedent of the standard styles and just =
+uses
+     \verb+\count0+, page-selection will be difficult because
+     there will often be several pages with the
+     same \verb+\count0+ value.  If a {\tt dvi} file represents
+     10 chapters, it will be difficult to select the first page of
+     chapter 9, because {\tt dvi}-processing software is not usually
+     designed for tasks such as \lq\lq find the 9th
+     time that \verb+\count0+ has the value {\tt 1}''.
+\end{itemize}
+
+\section{Objectives}
+
+Although I assume that it is  open to anyone writing style-files to
+do whatever they like with the 10 \verb+\count+ registers, I think that =
+it
+would be worth trying to set a good precedent in the \LaTeX\ 3.0 \lq\lq
+standard styles''.  I therefore suggest that there should be a scheme
+for using the \verb+\count+ registers in such a way that pages can =
+always
+be specified unambiguously in those {\tt report}-like and {\tt =
+book}-like
+documents that have:
+\begin{itemize}
+\item roman-numbered \lq\lq front matter'' followed by arabic-numbered
+      body text, and/or
+\item pages numbered \lq\lq within chapters''.
+\end{itemize}
+
+In practice, I have the impression that documents which have pages =
+numbered
+\lq\lq within chapters'' are in a minority.  It may therefore be worth
+having a scheme that can be used selectively, i.e, such that, if a =
+style-file
+writer knows that it will be important to distinguish between certain
+units of a document but not between others, the \verb+\count+s for the =
+former
+can have the non-zero values given by the scheme, while those for the
+latter can be zero.  This would make for consistency (i.e., if a
+\verb+\count+ is non-zero, then it would be used in the same way in one
+standard style-file as in another) without unnecessary clutter (e.g., if
+all \verb+\count+ registers but \verb+\count0+ can be set zero without
+ambiguity, the user would get monitoring of the form {\tt [1] [2] [3] =
+[4]
+..\ } rather than {\tt [1.1.1] [2.1.1] [3.1.1] [4.1.1] ...\ }).
+
+\section{A scheme}
+\label{a-scheme}
+
+The following scheme would probably achieve the objectives suggested =
+above.
+
+\begin{center}
+\begin{footnotesize}
+\begin{tabular}{lllll}
+\hline\hline
+Major division & Minor =
+divisions&\verb+\count0+&\verb+\count1+&\verb+\count2+\\
+\hline\hline
+Front matter   &  ---           & page-number  & {\tt -1}    &  {\tt 0}  =
+\\
+\hline
+Main text      &   chapters     & page-number  & chapter-number  & {\tt =
+0} \\
+               &                &              & {\tt 1, 2, ... }&       =
+  \\
+\hline
+Back matter:            & appendices    &page-number&appendix number& =
+{\tt 1}\\
+appendices              &               &           & {\tt 1, 2, ... }& =
+\\
+\hline
+Back matter:             & glossary,     &page-number&other-unit &  {\tt =
+2}\\
+other units              & bibliography, &           &number             =
+  \\
+                         & index, etc.   &           & {\tt 1, 2, ... }  =
+  \\
+\hline\hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+
+\subsection*{Examples}
+
+
+\begin{enumerate}
+\item A pamphlet that is numbered in arabic throughout would
+      only use \verb+\count0+.
+\item A traditional book could have \verb+\count1+ set to
+      {\tt -1} in the front matter and set to {\tt 0} thereafter.
+\item A manual that is to be numbered in the style of DEC's VAX/VMS =
+manuals
+     would use the full scheme, i.e.
+     \begin{itemize}
+     \item \verb+\count2+ set to {\tt 1} within the appendices and
+           set to {\tt 2} after the appendices
+     \item \verb+\count1+ set to {\tt -1} in the front matter, set to
+           \lq\lq chapter number'' within the body text, set to
+           \lq\lq appendix number'' or \lq\lq other-unit number''
+           in the \lq\lq back matter''.
+     \item \verb+\count0+ reset at the start of each chapter and
+           each unit of \lq\lq back matter''.
+     \end{itemize}
+\item It would be open to someone producing a style-file for a
+      \lq\lq traditional book'' to increment \verb+\count1+ and
+      \verb+\count2+ in the way suggested for \lq\lq a manual'' above,
+      even though \verb+\count0+ would {\em not} be reset at the
+      start of each chapter. Although (after the \lq\lq front matter'') =
+neither
+      \verb+\count1+ nor \verb+\count2+ would affect the printed
+      page-numbers, their settings would, for example,  enable someone
+      \begin{itemize}
+      \item using DVItoVDU \cite{trevorrow-86} to give a
+            command that means \lq\lq go to the start of chapter 2''
+      \item using {\tt dviselect} \cite{torek} to specify
+           \lq\lq pick out all the pages in chapter 2''.
+      \end{itemize}
+\end{enumerate}
+
+Thus there would be consistency across most common classes of document
+regarding the use of non-zero settings for the \verb+\count+ registers, =
+but
+the number of registers used in a particular style-file could, if =
+desired,
+be limited to those needed to avoid ambiguous page-specifications at the
+{\tt dvi}-file processing stage.
+
+\subsection*{Notes}
+
+
+\noindent
+\begin{enumerate}
+\item Although the \verb+\count+ registers give 10 possible \lq\lq
+     dimensions'' of page-identification, Knuth defines yet another =
+\lq\lq
+     dimension'' with the \lq\lq roman-numbered pages have a negative
+     \verb+\count0+'' convention in the \lq\lq plain'' macros.  I guess
+     that the \lq\lq plain'' macros are intended for typesetting a =
+certain
+     class of document (draft papers?), and that the convention is =
+adequate
+     for this class.  However, \LaTeX\ is intended to be used for a wide =
+variety
+     of classes of documents, so I think it is better to \lq\lq start =
+from
+     first principles'' and find a scheme that can cope well with the
+     classes of documents for which \LaTeX\ is likely to be used.  The
+     scheme suggested in the above table does not aim for compatibility =
+with
+     \lq\lq plain'' since:
+      \begin{itemize}
+      \item in terms of \lq\lq logical structure'' there doesn't seem
+            any reason to treat \verb+\count0+ differently in the
+            \lq\lq front matter'' rather than (for example) in \lq\lq =
+chapter
+            2'' or in the \lq\lq back matter''.
+      \item if the end-user learns that \lq\lq \verb+\count1+ and
+            \verb+\count2+ specify the division you are in'',
+            this will be the only concept they need.  They can select
+            the 4th page in the \lq\lq front matter'' and page 4 of
+            chapter 5 in a consistent way, e.g., if {\tt dvitops}
+            \cite{clark} is used,
+            \begin{verbatim}
+               dvitops -f 4.-1 root
+            \end{verbatim}
+            and
+            \begin{verbatim}
+               dvitops -f 4.5 root
+            \end{verbatim}
+            respectively.  If \LaTeX\ 3.0 had the additional concept
+            that \lq\lq roman-numbered pages have \verb+\count0+ =
+negative'',
+            this would be an unnecessary, redundant, concept
+            for the end-user to learn.
+      \end{itemize}
+\item In terms of \lq\lq logical structure'', there is a case for =
+treating
+     the \lq\lq front matter'' in precisely the same way as the \lq\lq =
+back
+     matter''.  This would imply the modifications shown below:
+\begin{center}
+\label{modification}
+\begin{footnotesize}
+\begin{tabular}{lllll}
+\hline\hline
+Major division & Minor =
+divisions&\verb+\count0+&\verb+\count1+&\verb+\count2+\\
+\hline\hline
+Front matter   & table-of-contents,& page-number&{\tt 1}    &  {\tt -1} =
+\\
+               & list-of-figures,  &            &{\tt 2}     \\
+               & acknowledgements, &            &{\tt 3}     \\
+               & preface, etc.     &            &{\tt 4, ...}\\
+\hline
+\dots \\
+\hline\hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+     My impression is that, in practice, the scheme shown on page
+     \pageref{a-scheme} would be adequate since there is generally
+     less \lq\lq front matter'' than \lq\lq back matter''.
+     End-users would probably prefer to issue a command such as
+            \begin{verbatim}
+      dvitops -f 4.-1 root
+            \end{verbatim}
+     (as implied by the scheme shown on page \pageref{a-scheme})
+     to select the 4th page of their \lq\lq front matter'' rather than
+            \begin{verbatim}
+      dvitops -f 4.*.-1 root
+            \end{verbatim}
+     (as implied by the modified scheme shown on page =
+\pageref{modification}).
+\item If desired, the scheme shown on page \pageref{a-scheme} could be =
+modified
+      to remove the need for \verb+\count2+ to be non-zero after the =
+appendices.
+      For example:
+\begin{center}\begin{footnotesize}\begin{tabular}{lllll}
+\hline\hline
+Major division & Minor =
+divisions&\verb+\count0+&\verb+\count1+&\verb+\count2+\\
+\hline\hline
+\dots  \\
+\hline
+Back matter:   & glossary          & page-number&{\tt -2}   &  {\tt 0}  =
+\\
+other units    & bibliography      &            &            \\
+               & index, etc.       &            &            \\
+\hline\hline
+\end{tabular}\end{footnotesize}\end{center}
+      I don't think that this modified scheme would eliminate ambiguity =
+when
+      people are selecting pages from documents that are numbered like =
+DEC's
+      VAX/VMS manuals (in which each \lq\lq other unit'' of \lq\lq back
+      matter'' has page-numbers starting from 1), but it might be argued =
+that
+      such manuals are fairly rare.
+\end{enumerate}
+
+\begin{thebibliography}{0}
+\bibitem{knuth-90}  D. E. Knuth.  {\it The \TeX book.\/}
+     17th printing. Addison-Wesley, 1990.
+\bibitem{trevorrow-86} Andrew Trevorrow.  {\it DVItoVDU User Guide.\/}
+     C version 1.0 for Unix.
+     University of Adelaide Computing Service, 1986.
+\bibitem{torek} Chris Torek.  {\it {\tt dviselect} command =
+specification.\/}
+     University of Maryland.
+\bibitem{clark} James Clark.  {\it {\tt dvitops} command =
+specification.\/}
+\end{thebibliography}
+
+\end{document}
+
+
+
+------_=_NextPart_001_01C19443.44F4F904
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Support for accurate page-selection from dvi files</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>\documentstyle[11pt]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{Support for accurate page-selection from {\tt =
+dvi} files}</FONT>
+
+<BR><FONT SIZE=3D2>\author{David Rhead}</FONT>
+
+<BR><FONT SIZE=3D2>\date{June 1991}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Introduction}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although \TeX\ provides 10 \verb+\count+ registers =
+\cite[p.\ 119]{knuth-90}</FONT>
+
+<BR><FONT SIZE=3D2>for page-identification, neither the \lq\lq plain'' =
+macros nor the \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>2.09 standard styles use anything but =
+\verb+\count0+.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;From the point-of-view of a \LaTeX\ user, this =
+can create situations in</FONT>
+
+<BR><FONT SIZE=3D2>which page-selection is difficult at the =
+previewing/printing stage.</FONT>
+
+<BR><FONT SIZE=3D2>For example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item in the \LaTeX\ 2.09 report and book styles, =
+both (roman-numbered) page</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; iv in the \lq\lq front =
+matter'', and (arabic-numbered) page 4 in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; chapter 1 have a =
+\verb+\count0+ value of 4 in the {\tt dvi} file, so</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; it is difficult to instruct =
+a {\tt dvi}-file processing command to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; print page 4 rather than =
+page iv.</FONT>
+
+<BR><FONT SIZE=3D2>\item if a style-file for a document that numbers =
+pages \lq\lq within</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; chapters'' follows the =
+precedent of the standard styles and just uses</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\count0+, =
+page-selection will be difficult because</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; there will often be several =
+pages with the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; same \verb+\count0+ =
+value.&nbsp; If a {\tt dvi} file represents</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; 10 chapters, it will be =
+difficult to select the first page of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; chapter 9, because {\tt =
+dvi}-processing software is not usually</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; designed for tasks such as =
+\lq\lq find the 9th</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; time that \verb+\count0+ has =
+the value {\tt 1}''.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Objectives}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although I assume that it is&nbsp; open to anyone =
+writing style-files to</FONT>
+
+<BR><FONT SIZE=3D2>do whatever they like with the 10 \verb+\count+ =
+registers, I think that it</FONT>
+
+<BR><FONT SIZE=3D2>would be worth trying to set a good precedent in the =
+\LaTeX\ 3.0 \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>standard styles''.&nbsp; I therefore suggest that =
+there should be a scheme</FONT>
+
+<BR><FONT SIZE=3D2>for using the \verb+\count+ registers in such a way =
+that pages can always</FONT>
+
+<BR><FONT SIZE=3D2>be specified unambiguously in those {\tt report}-like =
+and {\tt book}-like</FONT>
+
+<BR><FONT SIZE=3D2>documents that have:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item roman-numbered \lq\lq front matter'' followed =
+by arabic-numbered</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; body text, =
+and/or</FONT>
+
+<BR><FONT SIZE=3D2>\item pages numbered \lq\lq within chapters''.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In practice, I have the impression that documents =
+which have pages numbered</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq within chapters'' are in a minority.&nbsp; It =
+may therefore be worth</FONT>
+
+<BR><FONT SIZE=3D2>having a scheme that can be used selectively, i.e, =
+such that, if a style-file</FONT>
+
+<BR><FONT SIZE=3D2>writer knows that it will be important to distinguish =
+between certain</FONT>
+
+<BR><FONT SIZE=3D2>units of a document but not between others, the =
+\verb+\count+s for the former</FONT>
+
+<BR><FONT SIZE=3D2>can have the non-zero values given by the scheme, =
+while those for the</FONT>
+
+<BR><FONT SIZE=3D2>latter can be zero.&nbsp; This would make for =
+consistency (i.e., if a</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\count+ is non-zero, then it would be used in =
+the same way in one</FONT>
+
+<BR><FONT SIZE=3D2>standard style-file as in another) without =
+unnecessary clutter (e.g., if</FONT>
+
+<BR><FONT SIZE=3D2>all \verb+\count+ registers but \verb+\count0+ can be =
+set zero without</FONT>
+
+<BR><FONT SIZE=3D2>ambiguity, the user would get monitoring of the form =
+{\tt [1] [2] [3] [4]</FONT>
+
+<BR><FONT SIZE=3D2>..\ } rather than {\tt [1.1.1] [2.1.1] [3.1.1] =
+[4.1.1] ...\ }).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{A scheme}</FONT>
+
+<BR><FONT SIZE=3D2>\label{a-scheme}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The following scheme would probably achieve the =
+objectives suggested above.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tabular}{lllll}</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Major division &amp; Minor =
+divisions&amp;\verb+\count0+&amp;\verb+\count1+&amp;\verb+\count2+\\</FON=
+T>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Front matter&nbsp;&nbsp; &amp;&nbsp; =
+---&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+page-number&nbsp; &amp; {\tt -1}&nbsp;&nbsp;&nbsp; &amp;&nbsp; {\tt =
+0}&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Main text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp; chapters&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+page-number&nbsp; &amp; chapter-number&nbsp; &amp; {\tt 0} \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; &amp; {\tt 1, 2, ... =
+}&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Back =
+matter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ &amp; appendices&nbsp;&nbsp;&nbsp; &amp;page-number&amp;appendix =
+number&amp; {\tt 1}\\</FONT>
+
+<BR><FONT =
+SIZE=3D2>appendices&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+{\tt 1, 2, ... }&amp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Back =
+matter:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp; &amp; glossary,&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;page-number&amp;other-unit &amp;&nbsp; {\tt 2}\\</FONT>
+
+<BR><FONT SIZE=3D2>other =
+units&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; &amp; bibliography, =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; &amp; index, etc.&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+{\tt 1, 2, ... }&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+
+<BR><FONT SIZE=3D2>\end{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\end{center}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection*{Examples}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item A pamphlet that is numbered in arabic =
+throughout would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; only use =
+\verb+\count0+.</FONT>
+
+<BR><FONT SIZE=3D2>\item A traditional book could have \verb+\count1+ =
+set to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt -1} in the front =
+matter and set to {\tt 0} thereafter.</FONT>
+
+<BR><FONT SIZE=3D2>\item A manual that is to be numbered in the style of =
+DEC's VAX/VMS manuals</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; would use the full scheme, =
+i.e.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \item \verb+\count2+ set to =
+{\tt 1} within the appendices and</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+set to {\tt 2} after the appendices</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \item \verb+\count1+ set to =
+{\tt -1} in the front matter, set to</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\lq\lq chapter number'' within the body text, set to</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\lq\lq appendix number'' or \lq\lq other-unit number''</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in =
+the \lq\lq back matter''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \item \verb+\count0+ reset =
+at the start of each chapter and</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+each unit of \lq\lq back matter''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item It would be open to someone producing a =
+style-file for a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq traditional =
+book'' to increment \verb+\count1+ and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\count2+ in the =
+way suggested for \lq\lq a manual'' above,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; even though =
+\verb+\count0+ would {\em not} be reset at the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; start of each chapter. =
+Although (after the \lq\lq front matter'') neither</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+\count1+ nor =
+\verb+\count2+ would affect the printed</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page-numbers, their =
+settings would, for example,&nbsp; enable someone</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item using DVItoVDU =
+\cite{trevorrow-86} to give a</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; command that means \lq\lq go to the start of chapter 2''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item using {\tt =
+dviselect} \cite{torek} to specify</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\lq\lq pick out all the pages in chapter 2''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus there would be consistency across most common =
+classes of document</FONT>
+
+<BR><FONT SIZE=3D2>regarding the use of non-zero settings for the =
+\verb+\count+ registers, but</FONT>
+
+<BR><FONT SIZE=3D2>the number of registers used in a particular =
+style-file could, if desired,</FONT>
+
+<BR><FONT SIZE=3D2>be limited to those needed to avoid ambiguous =
+page-specifications at the</FONT>
+
+<BR><FONT SIZE=3D2>{\tt dvi}-file processing stage.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection*{Notes}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item Although the \verb+\count+ registers give 10 =
+possible \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; dimensions'' of =
+page-identification, Knuth defines yet another \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; dimension'' with the \lq\lq =
+roman-numbered pages have a negative</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+\count0+'' convention =
+in the \lq\lq plain'' macros.&nbsp; I guess</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; that the \lq\lq plain'' =
+macros are intended for typesetting a certain</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; class of document (draft =
+papers?), and that the convention is adequate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; for this class.&nbsp; =
+However, \LaTeX\ is intended to be used for a wide variety</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of classes of documents, so =
+I think it is better to \lq\lq start from</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; first principles'' and find =
+a scheme that can cope well with the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; classes of documents for =
+which \LaTeX\ is likely to be used.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; scheme suggested in the =
+above table does not aim for compatibility with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq plain'' since:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item in terms of =
+\lq\lq logical structure'' there doesn't seem</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; any reason to treat \verb+\count0+ differently in the</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \lq\lq front matter'' rather than (for example) in \lq\lq =
+chapter</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; 2'' or in the \lq\lq back matter''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item if the end-user =
+learns that \lq\lq \verb+\count1+ and</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \verb+\count2+ specify the division you are in'',</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; this will be the only concept they need.&nbsp; They can select</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; the 4th page in the \lq\lq front matter'' and page 4 of</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; chapter 5 in a consistent way, e.g., if {\tt dvitops}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \cite{clark} is used,</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \begin{verbatim}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; dvitops -f 4.-1 root</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \end{verbatim}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; and</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \begin{verbatim}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; dvitops -f 4.5 root</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \end{verbatim}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; respectively.&nbsp; If \LaTeX\ 3.0 had the additional concept</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; that \lq\lq roman-numbered pages have \verb+\count0+ =
+negative'',</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; this would be an unnecessary, redundant, concept</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; for the end-user to learn.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item In terms of \lq\lq logical structure'', there =
+is a case for treating</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the \lq\lq front matter'' in =
+precisely the same way as the \lq\lq back</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; matter''.&nbsp; This would =
+imply the modifications shown below:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>\label{modification}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tabular}{lllll}</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Major division &amp; Minor =
+divisions&amp;\verb+\count0+&amp;\verb+\count1+&amp;\verb+\count2+\\</FON=
+T>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Front matter&nbsp;&nbsp; &amp; =
+table-of-contents,&amp; page-number&amp;{\tt 1}&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp; {\tt -1} \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; &amp; list-of-figures,&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;{\tt 2}&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; &amp; acknowledgements, =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;{\tt 3}&nbsp;&nbsp;&nbsp;&nbsp; \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; &amp; preface, etc.&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;{\tt 4, ...}\\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>\dots \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+
+<BR><FONT SIZE=3D2>\end{footnotesize}</FONT>
+
+<BR><FONT SIZE=3D2>\end{center}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; My impression is that, in =
+practice, the scheme shown on page</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \pageref{a-scheme} would be =
+adequate since there is generally</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; less \lq\lq front matter'' =
+than \lq\lq back matter''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; End-users would probably =
+prefer to issue a command such as</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dvitops -f 4.-1 =
+root</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; (as implied by the scheme =
+shown on page \pageref{a-scheme})</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; to select the 4th page of =
+their \lq\lq front matter'' rather than</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dvitops -f 4.*.-1 =
+root</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; (as implied by the modified =
+scheme shown on page \pageref{modification}).</FONT>
+
+<BR><FONT SIZE=3D2>\item If desired, the scheme shown on page =
+\pageref{a-scheme} could be modified</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to remove the need for =
+\verb+\count2+ to be non-zero after the appendices.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For example:</FONT>
+
+<BR><FONT =
+SIZE=3D2>\begin{center}\begin{footnotesize}\begin{tabular}{lllll}</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>Major division &amp; Minor =
+divisions&amp;\verb+\count0+&amp;\verb+\count1+&amp;\verb+\count2+\\</FON=
+T>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>\dots&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>\hline</FONT>
+
+<BR><FONT SIZE=3D2>Back matter:&nbsp;&nbsp; &amp; =
+glossary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp; =
+page-number&amp;{\tt -2}&nbsp;&nbsp; &amp;&nbsp; {\tt 0}&nbsp; \\</FONT>
+
+<BR><FONT SIZE=3D2>other units&nbsp;&nbsp;&nbsp; &amp; =
+bibliography&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; &amp; index, =
+etc.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\\</FONT>
+
+<BR><FONT SIZE=3D2>\hline\hline</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}\end{footnotesize}\end{center}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I don't think that =
+this modified scheme would eliminate ambiguity when</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; people are selecting =
+pages from documents that are numbered like DEC's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VAX/VMS manuals (in =
+which each \lq\lq other unit'' of \lq\lq back</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; matter'' has =
+page-numbers starting from 1), but it might be argued that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; such manuals are =
+fairly rare.</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{thebibliography}{0}</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{knuth-90}&nbsp; D. E. Knuth.&nbsp; {\it The =
+\TeX book.\/}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; 17th printing. =
+Addison-Wesley, 1990.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{trevorrow-86} Andrew Trevorrow.&nbsp; {\it =
+DVItoVDU User Guide.\/}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; C version 1.0 for =
+Unix.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; University of Adelaide =
+Computing Service, 1986.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{torek} Chris Torek.&nbsp; {\it {\tt =
+dviselect} command specification.\/}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; University of =
+Maryland.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{clark} James Clark.&nbsp; {\it {\tt dvitops} =
+command specification.\/}</FONT>
+
+<BR><FONT SIZE=3D2>\end{thebibliography}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.44F4F904--
+

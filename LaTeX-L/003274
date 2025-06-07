@@ -1,0 +1,127 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2488" "Wed" "14" "April" "1999" "15:20:04" "+0200" "Karsten Tinnefeld" "tinnefeld@NOETHER.CS.UNI-DORTMUND.DE" nil "87" "Documentation Scripts in LaTeX base distribution" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id PAA28906;
+	Wed, 14 Apr 1999 15:20:42 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.CF31CD17@listserv.gmd.de>; Wed, 14 Apr 1999 15:20:36 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 430124 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 14 Apr 1999 15:20:37 +0200
+Received: from waldorf.cs.uni-dortmund.de (waldorf.cs.uni-dortmund.de
+          [129.217.4.42]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id PAA17877 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 14 Apr
+          1999 15:20:35 +0200 (MET DST)
+Received: from goedel.cs.uni-dortmund.de (goedel.cs.uni-dortmund.de
+          [129.217.28.168]) by waldorf.cs.uni-dortmund.de  with SMTP id
+          PAA16386 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 14 Apr 1999
+          15:20:05 +0200 (MES)
+Received: from ls2.cs.uni-dortmund.de (localhost [127.0.0.1]) by
+          goedel.cs.uni-dortmund.de id PAA02862; Wed, 14 Apr 1999 15:20:05 +0200
+X-Mailer: Mozilla 4.05 [en] (X11; I; SunOS 5.6 sun4u)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <37149604.B65C95DB@ls2.cs.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Organization: Universität Dortmund, LS Informatik 2
+Date:         Wed, 14 Apr 1999 15:20:04 +0200
+From: Karsten Tinnefeld <tinnefeld@NOETHER.CS.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Documentation Scripts in LaTeX base distribution
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3274
+
+Some time ago, it took me long to discover the two scripts to create the
+LaTeX core documentation, appended to source2e.tex. In the meantime, I
+have extended the one script to generate "other" documentation in
+general for my own needs and would like to recommend that in the future
+both scripts are unpacked to single files to be found more easily by the
+beginner and that probably some of my additions find their way into the
+distribution.
+
+I have pasted the script text into genSource2e.sh and genOtherDocs.sh
+resp. and applied the following patches to the latter in order to
+1) improve robustness in other unpacked sources: do not complain of
+\*.fdd or source2e.tex not existing, run in batchmode (interactive mode
+is depressing when stopping for run time errors written to /dev/null)
+2) allow for one central place to turn (off) output in order to track
+progress, and
+3) add the extra possibility to add \AtBeginDocument\ stuff (e.g.,
+\OnlyDescription) on the command line using the
+        genOtherDocs.sh + \\OnlyDescription a4paper,twopage
+syntax.
+
+patch genOtherDocs.sh << "EOF"
+13a14,27
+> OUTPUT=
+> #OUTPUT=>/dev/null
+> MOREABD=0
+> if [ $# -gt 1 ]
+> then
+>     if [ $1 = + ]
+>     then
+>       MOREABD=$2
+>       echo $2
+>       shift
+>       shift
+>     fi
+> fi
+>
+15d28
+< echo "\batchmode"                                       >> ltxdoc.cfg
+23c36,39
+<
+---
+> if [ $MOREABD -eq 1 ]
+> then
+>     echo "\\AtBeginDocument{\\$MOREABD}"                >> ltxdoc.cfg
+> fi
+29d44
+< echo "\batchmode"                                       >>
+ltxguide.cfg
+33,34c48,50
+<
+< for i in *dtx *fdd *guide.tex ltnews*.tex
+---
+> FILES=`ls *dtx *fdd *guide.tex ltnews*.tex 2>/dev/null`
+> echo $FILES
+> for i in $FILES
+38c54
+< if (grep "Include{$B}" source2e.tex >/dev/null ; )
+---
+> if (test -f source2e.tex && grep "Include{$B}" source2e.tex >/dev/null ; )
+43c59
+<   if (latex $i > /dev/null)
+---
+>   if (latex $i $OUTPUT)
+46c62
+<     latex $i > /dev/null
+---
+>     latex $i $OUTPUT
+48c64
+<     makeindex -s gind.ist $B.idx > /dev/null 2> /dev/null
+---
+>     makeindex -s gind.ist $B.idx $OUTPUT 2> /dev/null
+50c66
+<     makeindex -s gglo.ist -o $B.gls $B.glo > /dev/null 2> /dev/null
+---
+>     makeindex -s gglo.ist -o $B.gls $B.glo $OUTPUT 2> /dev/null
+52c68
+<     latex $i > /dev/null
+---
+>     latex $i $OUTPUT
+EOF
+
+Comments?
+--
+Karsten Tinnefeld
+                                Silence is the perfectest herald of joy:
+                       I were but little happy, if I could say how much.
+

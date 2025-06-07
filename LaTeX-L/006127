@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 6 Nov 2009 23:45:59 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nA6MjwwL026891
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 6 Nov 2009 23:45:59 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nA6MgDVd011699
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 6 Nov 2009 23:42:14 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nA6HIXTa025244;
+	Fri, 6 Nov 2009 23:42:05 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 361488 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 6 Nov
+          2009 23:42:05 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nA6Mg4G3000718 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 6 Nov 2009 23:42:04 +0100
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nA6Mfqkv011323
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 6 Nov 2009 23:41:56
+          +0100
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id 43D20186661 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri,  6 Nov 2009 23:41:06 +0100
+          (CET)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id nA6Mg4G3000719
+Message-ID:  <4AF4A697.2090209@residenset.net>
+Date:         Fri, 6 Nov 2009 23:43:35 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Please don't \RequirePackage{lmodern}
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Nov 2009 22:45:59.0105 (UTC) FILETIME=[E8BAF310:01CA5F32]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6127
+
+When development of xparse (and whatsnot) picked up speed earlier this 
+year, one thing that bugged me was that I couldn't use my usual tools 
+for viewing the typeset source anymore -- if I tried, there would be 
+scores of "missing font" errors. It did work to pdflatex things and 
+view the PDF, but for screen reading of things I've typeset myself I'm 
+really more comfortable with DVI.
+
+Yeah, I'm a dinosaur. But I think most people on this list are that in 
+one way or another. ;-)
+
+The catch, as it turned out, was that l3doc.cls says 
+\RequirePackage{lmodern} (well, in recent revisions it's 
+\RequirePackage{lmodern,textcomp}), and I can certainly understand why: 
+bitmap fonts aren't nice in PDF. But PDF shouldn't be the only 
+possibility. (Oh, I can probably teach my old DVI viewer about the 
+Latin Modern fonts -- and if the font names have stabilized it might 
+even be a one time effort -- but I'm not sure I care enough for them to 
+bother doing that.)
+
+ From a purist point of view, I suppose what bugs me is that the choice 
+of lmodern is hardwired into l3doc.cls -- this kind of thing rather 
+belongs in some l3doc.cfg, so that people with different preferences 
+can do it differently; maybe even differently for latex and pdflatex. 
+Moreover, there doesn't seem to have been a specific decision to use 
+lmodern, as this isn't mentioned in the repository logs. (I've traced 
+\RequirePackage{lmodern} back to the initial revision 850 of l3doc.dtx, 
+so apparently it was put in while l3doc.cls was the source, but I 
+haven't been able to narrow it down any further because SVN seems to 
+have problems coping with files not being in the current working copy. 
+Still, no log message for a revision touching l3doc.cls mentions 
+lmodern.) Hence it has a distinct smell of someone's personal setting 
+escaping onto the trunk.
+
+I'd like to have it removed, or at least moved to a .cfg file.
+
+
+Lars Hellström
+

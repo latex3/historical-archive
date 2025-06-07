@@ -1,0 +1,106 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3383" "Thu" "10" "April" "1997" "12:07:02" "+0200" "Matthias Clasen" "mclasen@SUN2.MATHEMATIK.UNI-FREIBURG.DE" nil "69" "Re: math fonts" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id MAA05489; Thu, 10 Apr 1997 12:07:17 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.3164A71F@listserv.gmd.de>; Thu, 10 Apr 1997 12:07:15 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123018 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 12:07:10 +0200
+Received: from sun2.mathematik.uni-freiburg.de (sun2.mathematik.uni-freiburg.de
+          [132.230.30.2]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id MAA12158 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10
+          Apr 1997 12:07:09 +0200 (MET DST)
+Received: from localhost (mclasen@localhost) by sun2.mathematik.uni-freiburg.de
+          (8.7.5/8.6.9) with SMTP id MAA27672 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10 Apr 1997 12:07:05
+          +0200 (MET DST)
+X-Sender: mclasen@sun2
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.SOL.3.93.970410115619.27446C-100000@sun2>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 10 Apr 1997 12:07:02 +0200
+From: Matthias Clasen <mclasen@SUN2.MATHEMATIK.UNI-FREIBURG.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: math fonts
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1905
+
+I have put an updated version of my experimental math font implementation
+at the address posted earlier in this thread. The fonts are more complete
+now and the encodings have been reorganized a bit. The most important
+deviation from Jusin Zieglers proposals is that I have split the encoding
+containing TeX-specific characters in two parts, MX1 and MX2. I have
+written a note on why I think this is a good idea; see below.
+
+
+Comments are welcome and, in fact, needed.
+
+Matthias
+
+
+                            Splitting MX ?
+
+
+While in general the proposals given in the `Technical Report on math font
+encoding' (J. Ziegler) are very sound, there is one place where a
+deviation might have big advantages.
+
+After having seen the yhmath package by Yannis Haralambous, I think that
+the role of the MX encoding is a bit different from the other proposed
+math encoding. In MX many characters are not accessed directly, but just
+through charlists or extensible recipes.  This gives the font designer
+quite a bit flexibility in deciding e.g. how many big variants of a delimiter
+or an accents to put in the font. This does not affect the macro
+programmer in any way, as long as the entry points to the charlists are in
+the same slots and at least as many sizes as in cmex are given (for
+compatibility).
+But this flexibility can only be exploited if there is enough room in the
+encoding. The MX proposed in the cited paper leaves very little room
+(every delimiter has room for four sizes, the accents have room for eight
+sizes), since it includes many new delimiters and operators in an attempt
+to collect all TeX-specific glyphs in one font. This goal is not achieved
+anyway, since some wide accents have to live in other symbol fonts. The
+new delimiters and operators in MX do not have to live in the first 4 (or
+6) families, since they are neither in plain LaTeX nor in AMSLaTeX. So one
+might argue that anybody who wants to use these glyphs has to use another
+(fifth/seventh) family anyway, so why not put them in an additional MX2
+encoding containing more TeX-specific glyphs ?
+If the new big delimiters are no longer in the first 6 families, there is
+not much point in keeping their basic size counterparts in MC. These
+should also go to MX2, freeing some valuable slots in that encoding.
+
+I think the splitting of MX in MX1 and MX2 has many advantages:
+
+ - giving all users of plain LaTeX or AMSLaTeX improved quality of
+   big delimiters and wide accents (since there is enough room to provide
+   more sizes, a la yhmath).
+
+ - giving users who need the new delimiters or wide accents improved
+   quality compared to the MX-proposal (since there is enough room in
+   MX2), while not forcing them to load more than one additional family,
+   which they would have to do anyway with current LaTeX or AMSLaTeX,
+   so that there won't be compatibility problems.
+
+ - freeing some valuable slots in MC. These could e.g. be used to
+   turn the group and moustache delimiters into `first-class delimiters'
+   by giving them basic size counterparts.
+
+ - moving *all* charlist-accessed glyphs (even the wide accents) out of
+   MC, MSP, MS1 and MS2 .
+
+ - there is now enough room in MX2 to add some more wide accents, like
+   wide triangles or parens (found in yhmath).
+
+
+I have updated my implementation skeleton to reflect these thoughts.
+Are there any serious disadvantages, I have overlooked ?
+

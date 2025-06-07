@@ -1,0 +1,444 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["16246" "Fri" "20" "June" "1997" "16:41:54" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "406" "A Language Model for LaTeX (1/2)" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id RAA02199 for <schoepf@UNI-MAINZ.DE>; Fri, 20 Jun 1997 17:24:27 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.3C2F3950@listserv.gmd.de>; Fri, 20 Jun 1997 17:24:13 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 156828 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 17:23:56 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id RAA13442
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 20 Jun 1997 17:23:39
+          +0200 (MET DST)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id RAA01869 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 17:21:36 +0200
+          (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          QAA02767; Fri, 20 Jun 1997 16:41:54 +0200
+Message-ID:  <199706201441.QAA02767@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 20 Jun 1997 16:41:54 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      A Language Model for LaTeX (1/2)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2138
+
+\iffalse
+
+this is coming back to the discussions we had on this list early in
+the year. what you see below is a paper which i gave in March in Japan
+on a language model for LaTeX.
+
+comments and thoughts welcome
+
+frank
+
+ps the pager is more than 500 lines so it is split as this list
+doesn't allow such long mails
+
+\fi
+
+%
+% Copyright 1997 Frank Mittelbach, Chris Rowley
+%
+
+\documentclass[a4paper]{article}
+
+\typeout{********************************************}
+\typeout{** two pagebreaks hardcoded which might need removal}
+\typeout{********************************************}
+\flushbottom
+
+\usepackage{shortvrb}  \MakeShortVerb{\|}
+\usepackage{epic}
+
+
+\begin{document}
+
+\title{Language Information in
+       Structured Documents:\\
+       A Model for Mark-up and Rendering\thanks
+         {This paper was originally given at the
+          Multilingual Information Processing symposium, March 1997,
+          Tsukuba, Japan.}
+}
+
+\author{Frank Mittelbach \\ \texttt{fmitte01@de.eds.com}
+   \and Chris Rowley \\ \texttt{C.A.Rowley@open.ac.uk}}
+
+\date{}
+
+\maketitle
+
+%\tableofcontents
+
+\section{Introduction}
+
+This paper discusses the structure and processing of multi-lingual
+documents, both at a general level and in relation to a proposed
+extension to the (no longer so new) standard \LaTeX.  Both in general
+and in the particular case of this proposal, our work would be
+impossible without the enormous support, both practical and moral, we
+get from our fellow members of the \LaTeX3 project
+team\footnote{Current \LaTeX3 project team members are Johannes Braams
+(NL), David Carlisle (UK), Michael Downes (USA), Alan Jeffrey (UK) and
+Rainer Sch\"opf (DE).} (who maintain and enhance \LaTeX) and from
+people all over the world who contribute to the development of
+\LaTeX{} with their suggestions and comments.
+
+The paper starts by examining the language structure of documents and
+from this a language tag model for \LaTeX{} is developed.  It then
+discusses the relationship between language and document formatting
+and the types of actions needed at a change of language.  This will
+lead to a model that supports the specification of these actions and
+of their association with the tag structure in the abstract document.
+
+The model is then extended to provide the necessary support for
+regions that have their own visual context or that receive content
+from other parts of the document, thus breaking the basic tree
+structure of an abstract document---this is in
+section~\ref{sec:moving}.
+
+Finally a high level summary of the required interfaces is given. A
+full formal specification, to be used for a prototype implementation
+in \LaTeX{}, is currently under development---a first public test
+implementation is expected to exist for the 1997/12/01 release of
+\LaTeX.
+
+
+If you are interested in the issues raised in this paper or in other
+aspects of our work to enhance \LaTeX, please join the project's electronic
+discussion list. To do this, please send a message to:
+\begin{quote}
+  \texttt{listserv@relay.urz.uni-heidelberg.de}
+\end{quote}
+Containing this line:
+\begin{quote}
+  \texttt{subscribe LATEX-L  \textit{your name}}
+\end{quote}
+
+
+\newpage
+
+
+\section{Language Structure of Documents}
+
+Structured documents can be understood as being explicitly or implicitly
+labeled with ``language tags'' denoting that a portion of the
+document contains data written in a certain ``language''.
+
+These tags have the following properties:
+\begin{itemize}
+\item They impose on the document a hierarchical tree structure that
+  may not be compatible with that document's other logical structure,
+  e.g., there might be a language change in the middle of a logical
+  element such as a list item.\footnote{However, for practical
+    purposes it is normally possible and acceptable to artificially
+    force the structure imposed by the language tags into the logical
+    hierarchy imposed by other tags.}
+\item
+  At any one point in the document the ``current language'' can be
+  determined.
+\end{itemize}
+
+The term ``language'' in this context is somewhat vague and might
+need further qualification; but for the purpose of the following
+discussion it is sufficient to define it as a `label' whose value
+affects certain aspects of formatting.
+
+
+\subsection{Hierarchy of language tags}
+
+The structure created by attaching such language tags to the text can
+be considered to be of varying complexity. The simplest case would be
+to regard this as a flat structure: for each point in the document
+only a ``current'' language is defined, disregarding the fact that
+certain language segments can be considered to be embedded within
+others. This model of language within documents is, for example,
+employed within the current Babel system where, by default, all
+language changes are in this sense global.
+
+In a more complex model each area has a ``current'' language but may
+be embedded within a nest of larger areas, each in its own language.
+In such a model, a change of language has a different quality, and
+therefore may invoke different formatting changes, depending on the
+level in the hierarchy at which it occurs.
+
+Our investigations lead us to conclude that, to properly render a
+document, one needs a combination of both models:
+\begin{itemize}
+\item the concept of a base language for very large portions of a text
+  (for most documents this will in fact be only one such language for
+  the full text): this has a flat structure, there is only one base
+  language at any point in the text;
+\item the concept of imbedded language segments: these are nestable (to
+  any number of levels) and are used for relatively small-scale
+  insertions within a base language, such as quotations or names.
+\end{itemize}
+
+
+\pagebreak
+
+\subsection{Language tag (visual) structure}
+\label{sec:visual}
+
+In addition to the nesting structure of language tags, there is a more
+visual component that influences rendering of a document: the
+paragraph structure.  To properly model this typographical treatment
+it is necessary to classify the language tags according to whether a
+language segment contains only complete paragraphs or is part of the
+running text of a single paragraph.  A begin/end pair of tags is
+called a ``block-level'' tag if its body consists of complete
+paragraphs and a ``paragraph-level'' tag otherwise.  As later examples
+will show, the typographical treatment for these two types is often
+different.
+
+\begin{figure}
+\centering
+\setlength\unitlength{10pt}
+\frame{%
+%\begin{picture}(32,12)(-2,-1)                   % use commented out
+                                                 % lines if showing document-level
+\begin{picture}(32,10)(-2,-1)
+
+\newcommand\fragment{\begin{picture}(0,0)%
+  \drawline(0,0)(0,-3)%
+  \dottedline[$\bullet$]{1}(0,0)(0,-2)%
+  \dottedline{.2}(-0.2,-2.5)(-0.2,-2.8)%
+  \end{picture}%
+}
+\newcommand\fragmentlevels{\makebox(0,0)[rt]{\footnotesize\shortstack[l]{frag-\\ment\strut\\levels}}}
+
+%\drawline(10,10)(10,0)
+%\dottedline[$\bullet$]{2}(10,10)(10,0)
+\drawline(10,8)(10,0)
+\dottedline[$\bullet$]{2}(10,8)(10,0)
+%\multiputlist(8,10)(0,-2)[r]{document level,base language level,first
+\multiputlist(8,8)(0,-2)[r]{base language level,first
+  nesting level,second nesting level,\ldots,n\textsuperscript{th}
+  nesting level}
+
+%\dottedline[$\bullet$]{2}(15,10)(15,10)      % just for a single
+                                              % bullet  lazy as i am :-)
+%\drawline(15,10)(15,8)(18,2)
+\drawline(15,8)(18,2)
+\multiput(15,8)(1,-2){3}{\fragment}
+
+% \put(17,10){\makebox(0,0)[l]{document level}}
+\multiputlist(17,8)(1,-2)[l]{base language level, paragraph level,nested paragraph
+                             level,\ldots}
+
+\put(14.5,7.2){\fragmentlevels}
+\put(15.5,3.3){\fragmentlevels}
+
+
+\end{picture}%
+}
+\caption{The two hierarchies}\label{fig:twohs}
+\end{figure}
+
+
+
+
+\section{A Tag Model for \LaTeX{}}
+
+To support the above model, including both nesting of language tags
+and the differentiation between block- and paragraph-level tags, the
+following tag structure for a system like \LaTeX{} is proposed:
+\begin{itemize}
+\item
+  A document language tag (implicit). This tag can be used to attach
+  language-related typographical actions that should not change even
+  if the document contains more than one base language.
+
+\item
+  Base-language tags: used only at top-level, no nesting. These tags
+  denote the major language(s) within a document. In the case of
+  essentially mono-lingual documents the base language would be the
+  same as the document language.
+
+\item
+  Language-block tags: contain complete paragraphs, nestable. These
+  denote larger imbeddings either directly within the base language or
+  further down in the nesting hierarchy.
+
+\item
+  Language-fragment tags: only within paragraphs, nestable. These
+  denote smaller imbeddings but are otherwise identical to language
+  block tags.
+\end{itemize}
+
+Note that since, at least in the logical structure of a document,
+paragraphs can occur within paragraphs, block tags can be nested
+within fragment tags.
+
+\subsection{Document interfaces}
+\label{sec:newuser}
+
+As \LaTeXe{} does not have built in support for named attributes, its
+support for language changes is best implemented by introducing
+additional language tags (commands and environments). A concrete
+syntax for these tags could include the following:
+\begin{itemize}
+\item
+  A preamble declaration for the document language (this is also the
+  base language in mono-lingual documents) with the language-label as
+  argument.
+
+\item
+  A base-language change command with the language-label as
+  argument.  This command is declarative to highlight the flat
+  structure of base languages.
+
+\item A language-environment with the language-label as argument and
+  text as body.  Such an environment starts a new paragraph so as to enforce
+  the block-level nature of the tag.
+
+\item
+  A language-command with the language-label and text both as
+  arguments. In contrast to the environment, this command applies
+  language-related actions to its second argument, which cannot
+  directly contain full paragraphs.
+\end{itemize}
+
+For \LaTeX3 we shall probably normalize this interface by supporting a
+language attribute on appropriate tags. This would allow, for example,
+a trivial translation of the language features currently being
+proposed for HTML into \LaTeX{} for rendering purposes.  However, even
+in that case generic tags for changing language are necessary as
+typical documents contain language changes that do not coincide
+with the tag boundaries of other logical tags.\footnote{It is proposed
+that HTML\,3.2 supports a \texttt{<span>} tag for this purpose.}
+
+
+\section{Language-dependent Processing}
+
+Setting up the tags tells us only how to encode a multi-lingual
+document.  We now need to specify how these tags affect the processing
+of the document; how do we attach actions to them?  Before answering
+this question we shall first discuss a number of representative
+examples of the effects of language on this processing, classified
+according to the categories input, transformation and formatting.
+
+The actions shown below are all commonly related to a change of
+language within a document.  Nevertheless, it is not the case that
+each of them should necessarily be implemented by attaching them
+firmly to language changes.  For some it might be more appropriate to
+freeze them for the whole document or to attach them to areas within the
+document that do not coincide with language boundaries.
+
+
+\subsection{Input}
+
+\paragraph{Input encodings}
+Entering text in a certain language often requires special
+input methods (this is especially true for languages with complex
+scripts) but even in cases where direct keyboard entry is possible it
+might be necessary to add information about the keyboard codepage that
+is to be used, so as to interpret the source characters correctly. At
+present \LaTeX{} supports variable interpretation of the upper
+half of the 8-bit plane, thus allowing source text to be 8-bit encoded
+in one of the many keyboard encodings used world wide.
+
+\paragraph{short-refs}
+With the development of language packages and the subsequent
+development of the Babel system, it became common practice to extend
+the mark-up language of \LaTeX{} using so called ``short-refs'' as a
+compact method for inputting certain commands. Short-refs are
+character sequences that do not start with \TeX's escape character,
+i.e.~usually `|\|', but nevertheless act like commands. That is, they
+do not represent the equivalent glyph sequence but have either
+additional effects (e.g.,~the punctuation marks in French typography,
+which produce additional space) or even denote completely different
+actions (e.g.,~|""| for a break point without a hyphen).
+
+In addition to the above short-refs, some \TeX{} fonts implement
+short-refs by using (or misusing) the ligature mechanism to implement
+arbitrary input syntax, e.g., |``| generating `` or |---| generating
+an em-dash.
+
+Short-refs can be used for different purposes:
+\begin{itemize}
+\item
+  providing a compact input notation for commonly used textual
+  commands such as characters with diacritical marks;
+\item
+  providing a compact and readable input notation for special
+  applications, e.g., |==>| for |\Longrightarrow|;
+\item
+  providing typographical features not otherwise supported
+  (e.g.,~extra space in front of punctuation characters).
+\end{itemize}
+The first two items are related to input syntax and not directly
+linked to the language of the current text although historically they
+have been provided by language packages, e.g., |"a| as a short-ref for
+|\"{a}| was implemented by |german.sty| and within Babel its meaning
+gets deactivated within regions marked up as belonging to other
+languages.
+
+The third item is directly related to language since short-refs of
+this type are used to implement a typographic style that is
+characteristic of a language in such a way that the user is not
+forced to use explicit mark-up in the document.
+
+
+\subsection{Transformations}
+
+Here, `transformations' include only manipulations of the source text
+that are independent of formatting information (i.e.~those that act
+entirely on the logical document).  Usually such transformations
+enrich the document content in one way or the other by using knowledge
+stored outside the document source.
+
+\paragraph{Generated text}
+
+This is text that is not directly encoded in the source document but
+is produced from tags therein.  Generated text can be classified into
+to categories: content-related and structure-related.  Here
+content-related text is that generated by tags that can appear
+anywhere in the source text (a typical \LaTeX{} example would be the
+|\today| command) while structure-related text refers to text that is
+associated with a high level logical structure (e.g., the heading
+produced for a bibliography or the fixed text used in a figure
+caption).
+
+While it is imaginable to keep structure-related text in one language
+even though the surrounding language changes, content-related text
+most likely will have to change at every language tag.
+
+\paragraph{Hyphenation}
+
+The finding and marking of possible hyphenation points is, perhaps,
+the most obvious language-related transformation.  Indeed, it is often
+considered to be the defining characteristic of a `language'.
+
+When using \TeX{} this relationship is unfortunately obscured by some
+technical details of the implementation of hyphenation.  One of these
+is that \TeX's hyphenation does not depend only on the `language' but
+also on the current font encoding (which can differ within a single
+language).  Another is \TeX's restriction that one can properly
+hyphenate a whole multi-lingual paragraph only if the font encodings
+used therein share a single lower-case table (and this is likely not
+to be the case if more than one script is present).
+
+\paragraph{Upper- and lower-case transformations}
+
+The mapping between upper- and lower-case characters (for those
+writing systems that make such a distinction) is language-dependent
+(and not just script-dependent): for example, in Turkish \i{}$\to$I
+and i$\to$\.I in contrast to the usual mapping i$\to$I used in most
+other languages. There can also be a one-to-many mapping as for the
+German \ss{} that maps to SS.
+

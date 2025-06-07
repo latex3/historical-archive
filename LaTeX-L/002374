@@ -1,0 +1,102 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2894" "Tue" "7" "October" "1997" "11:39:12" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "62" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id LAA12233;
+	Tue, 7 Oct 1997 11:58:30 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.A7FECD70@listserv.gmd.de>; Tue, 7 Oct 1997 11:50:22 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209610 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997 11:50:15 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id LAA01099 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Oct 1997 11:50:12 +0200
+          (MET DST)
+Received: from [130.237.37.152] (sl126.modempool.kth.se [130.237.37.152]) by
+          mail.nada.kth.se (8.8.7/8.8.4) with ESMTP id LAA25075 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Oct 1997 11:50:06 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: Your message of "Tue, 07 Oct 1997 00:42:52 +0200." 
+            <v0311071eb05f196d0225@[130.237.37.113]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b05fab26a8df@[130.237.37.113]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199710070727.DAA13811@aleph.swift.xxx>
+Date:         Tue, 7 Oct 1997 11:39:12 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2374
+
+Matthew Swift <swift@ALUM.MIT.EDU> writes:
+>> Are there any reasons for LaTeX having multiple AUX
+>> files?
+>
+>They are only necessary in an \includeonly scenario.  Some system
+>state (counters only at this point) from the UNincluded files is
+>stored in the aux files.  Otherwise they would be overwritten.
+
+  Could one not, instead of using \includeonly, have a feature that turns
+off the typeset output, which is supposed to be much faster (but I do not
+know if it really is). Then one could use a single aux file, and the files
+one does not want to print, one turns off the typeset output, instead of
+using \includeonly.
+
+  Otherwise, I am not sure it is necessary having all references getting
+right when working with many files, and doing a subfile compilation. In the
+scenario I am playing around with one has a main file, indicated by a
+command \project{main}, which tells subfile compilations which files to
+look in to get such information of bibliography references, preamble and
+format info. The files that contain body text then will look like
+    \project{main}
+    % ... Text body
+and can be compiled without any altering. -- The \project command keeps
+track of it. The idea is that after a new file has been added to the
+project, main.tex is compiled first once in order to create the file
+main.aux, after which the subfile compilations can use the \project{main}
+command to look into this aux file.
+
+  One can also have several "submain" files. For example, if only file2.tex
+and file5.tex should be compiled out of a larger set, one would prepare a
+file
+    \project{main}
+    \input file2.tex
+    \input file5.tex
+So it is possible to work with several subfile constellations.
+
+  (This idea cannot be done without altering the LaTeX format source file.)
+
+-- I should also note that if one uses only one aux file, then the file
+where the labels are should perhaps be written to the aux file, that is
+instead of writing
+    \newlabel{eq-Qprop}{{1.2}{3}}
+one should write
+    \newlabel{eq-Qprop}{{1.2}{3}{intro.tex}}
+if the label is in the file "intro.tex".
+
+-- Speaking about the contents of the aux files, I think one should be able
+to write style info to these labels: This shows up, for example, if you
+want to distinguish between equation numbering "(1.2)" and section
+numbering "1.2" (without parenthesizes): The labels should then be
+    \newlabel{eq-Qprop}{{(1.2)}{3}}
+    \newlabel{seq-intro-prop}{{1.2}{3}}
+so that \ref can directly produce the correct output. Perhaps the type of
+the label should be written instead, like
+    \newlabel{eq-Qprop}{{equation}{1.2}{3}}
+    \newlabel{seq-intro-prop}{{section}{1.2}{3}}
+    \newlabel{thm-prop}{{theorem}{1.2}{3}}
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+

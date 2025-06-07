@@ -1,0 +1,171 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil t]
+	["5629" "Sat" " 7" "May" "1994" "19:52:32" "EDT" "David Wald" "wald@THEORY.LCS.MIT.EDU" nil "140" "PROPOSAL: Font variations for NFSS" "^Date:" nil nil "5" nil nil nil nil]
+	nil)
+Return-Path: <@tubvm.cs.tu-berlin.de:owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA22779; Mon, 9 May 94 10:20:12 +0200
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA02483; Mon, 9 May 94 10:20:02 +0200
+Received: from tubvm.cs.tu-berlin.de (tubvm.cs.tu-berlin.de [130.149.18.12]) by mail.cs.tu-berlin.de (8.6.7/8.6.6) with SMTP id KAA00686 for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>; Mon, 9 May 1994 10:20:00 +0200
+Message-Id: <199405090820.KAA00686@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 8170; Mon, 09 May 94 10:21:08 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 8168; Mon,
+ 9 May 1994 10:21:08 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3171; Sun,
+ 8 May 1994 14:35:25 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Date:         Sat, 7 May 1994 19:52:32 EDT
+From: David Wald <wald@THEORY.LCS.MIT.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Subject:      PROPOSAL: Font variations for NFSS
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1616
+
+Summary: I'm proposing a general mechanism for handling systems of
+font families in which each family can be considered a variant of the
+others, distinguished by one or more selected features.  A prototype
+implementation is included.
+
+----------------------------------------------------------------------
+I'll admit, I shudder slightly ever time I hear of a new
+generalization of NFSS; it's just a personal neurosis.  Despite this,
+I'm about to propose another generalization.
+
+I'm currently involved in a project using fonts which have several
+variations, by which I mean things like the use (or not) of the
+old-style long "s", the presence (or absence) of certain extra
+ligatures, etc.  These variations are orthogonal to questions of what
+NFSS calls "shape" or "series"; e.g., I want to be able to select
+italic or upright without knowing what variation is currently in use.
+
+Thus, I'm using a family for each variant.  Unfortunately, some
+variations are independent of others, and, again, I'd like to be able
+to select one variation without affecting another that is independent
+of it.
+
+My current scheme for dealing with this is as follows: define, for
+each variation and each font family in which it has an effect, the
+family which results from applying the variation.  Thus, if "foo" is
+my unadorned family, with "fancy" and "oldstyle" two variations, I
+might have:
+
+  \DeclareFontVariant{oldstyle}{foo}{foo-oldstyle}
+  \DeclareFontVariant{oldstyle}{foo-fancy}{foo-oldstyle-fancy}
+  \DeclareFontVariant{fancy}{foo}{foo-fancy}
+  \DeclareFontVariant{fancy}{foo-oldstyle}{foo-oldstyle-fancy}
+
+where foo-oldstyle, foo-fancy, and foo-oldstyle-fancy are the families
+with these combinations of features.  This states that, for example,
+the "oldstyle" variant changes family "foo" to "foo-oldstyle".  (The
+change can be applied with, perhaps,
+
+  \fontvariant{oldstyle}\selectfont
+
+or some such syntax.)
+
+Obviously, listing all possible pairings for a set of families would
+be somewhere between tedious and absurd.  To mitigate the problem,
+families can be assigned to classes, and a default behavior can be
+given for a variation in a class.  Thus, given the relation between
+the basic Computer Modern families, we have
+
+  \DeclareFontClass{cm}{cmr,cmss,cmtt}
+  \DefaultFontVariant{rm}{cm}{cmr}
+  \DefaultFontVariant{sf}{cm}{cmss}
+  \DefaultFontVariant{tt}{cm}{cmtt}
+
+i.e., cmr, cmss and cmtt are all in class "cm", and the default
+meaning of variant "rm" for a family in this class is to change to
+"cmr" (and similarly for "sf" and "tt").  This default can be
+overridden in any particular case with \DeclareFontVariant.
+
+Note that this system generalizes the use \rmdefault, etc. to other
+and more complicated systems of variations.
+
+Any thoughts?  I need some mechanism like this for my particular
+project, but it seems to me that the system might be more generally
+useful, if there were a standard way to use it.  I've appended a sort
+of proof-of-concept package file implementing the above commands, if
+anyone wants to play around with it.  (I'd like to get some reactions
+before I go ahead and properly 2e-ify the package.)
+
+-David
+======================================================================
+% fontvariant.sty
+%    by David Wald, May 6, 1994
+%
+% A prototype implementation of a system for selecting variant font
+% families.
+%
+% Commands are:
+%
+%  \DeclareFontClass{fontclass}{fontfamilies}
+%     where fontclass is any name, and fontfamilies a
+%     comma-separated list of font family names.
+%
+%  \ExtendFontClass{fontclass}{fontfamilies}
+%     similar, but adds fontfamilies to a preexisting fontclass
+%
+%  \DefaultFontVariant{variant}{fontclass}{newfamily}
+%     where newfamily is the family resulting from applying variant to
+%     any family in fontclass, unless this default is overridden by a
+%     \DeclareFontVariant statement.
+%
+%  \DeclareFontVariant{variant}{oldfamily}{newfamily}
+%     where newfamily is the family resulting from applying variant to
+%     oldfamily.
+%
+%  \fontvariant{variant}
+%     chooses the font family which results from applying variant to
+%     the current font family.  Takes effect after the next
+%     \selectfont.
+
+\def\fileversion{0.1}
+\def\filedate{1994/5/6}
+
+\ProvidesPackage{fontvariant}[\filedate\space\fileversion]
+
+\def\DeclareFontClass#1#2{%
+   \@ifundefined{@FC@@#1@}%
+      {\@namedef{@FC@@#1@}{#2}%
+       \def\@tempa{#1}\@for\@tempb:=#2\do\@addtofontclass}
+      {\font@warning{Font class #1 already defined; ignored.}}}
+
+\def\ExtendFontClass#1#2{%
+   \@ifundefined{@FC@@#1@}%
+      {\font@warning{Font class #1 not defined; ignored.}}
+      {\@namedef{@FC@@#1@}{#2}%
+       \def\@tempa{#1}\@for\@tempb:=#2\do\@addtofontclass}}
+
+\def\@addtofontclass{
+   \@ifundefined{@FC@\@tempb @}%
+      {\expandafter\edef\csname @FC@\@tempb @\endcsname{\@tempa}}
+      {\font@warning{Font family \@tempb{} already assigned to class
+                      \@nameuse{@FC@\@tempb @}; ignored.}}}
+
+\def\DefaultFontVariant#1#2#3{%
+     \@ifundefined{@FC@@#2@}%
+        {\font@warning{Font class #2 not defined; ignored.}}%
+        {\@namedef{@FC@#1@#2@}{#3}}}
+
+\def\DeclareFontVariant#1#2#3{\@namedef{@FV@#1@#2@}{#3}}
+
+\def\fontvariant#1{%
+     \@ifundefined{@FV@#1@\f@family @}%
+          {\@ifundefined{@FC@\f@family @}%
+                {\def\@tempa{undefined}}%
+                {\edef\@tempa{\@nameuse{@FC@\f@family @}}}%
+           \@ifundefined{@FC@#1@\@tempa @}%
+                {\font@warning{There's no #1 variant for \f@family; ignored.}}%
+                {\fontfamily{\@nameuse{@FC@#1@\@tempa @}}}}%
+          {\fontfamily{\@nameuse{@FV@#1@\f@family @}}}}
+
+\endinput
+

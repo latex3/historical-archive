@@ -1,0 +1,159 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6063" "Mon" "14" "June" "93" "17:13:45" "+0200" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "132" "Re: questions on CD task" "^Date:" nil nil "6"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA04981; Mon, 14 Jun 93 17:26:09 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA24784; Mon, 14 Jun 93 17:25:59 +0200
+Message-Id: <9306141525.AA24784@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5523; Mon, 14 Jun 93 17:23:53 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4692;
+ Mon, 14 Jun 93 17:23:46 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4690;
+ Mon, 14 Jun 93 17:23:43 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 14 Jun 93 17:13:45 +0200
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: questions on CD task
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1046
+
+
+
+Kris posed some questions concerning the relationship between the
+"Syntax for Commutative Diagrams volunteer task" and the LaTeX3
+project.
+
+Before I try to answer his questions I would like to repeat some
+general comments on the current volunteer tasks.
+
+The volunteer tasks (excepts for a very few) are not meant to provide
+implementations for some particular topic but are tasks to discuss and
+suggest possible user syntax.
+For example the CD task finishes with the sentence:
+
+          For \LaTeX3 we would like to see an analysis of the logical
+          structure of commutative diagrams and recommendations on
+          user syntax.
+
+The LaTeX3 project is interested in syntax suggestions is to determine
+what facilities the LaTeX3 kernel needs to provide to allow the
+implementation of such a syntax. Once this step is passed and suitable
+interfaces are provided and described there may be a follow up task
+asking for some implementation or alternatively the implementation
+might be undertaken by the project people.
+
+Charles F. Wells remarked on this:
+
+   ***************************************************************
+   * A system for producing printed mathematical texts that does *
+   * not provide for sophisticated drawing as well as            *
+   * sophisticated setting of text is _only_half_a_system_       *
+   * because mathematics is the marriage of geometry and logic.  *
+   ***************************************************************
+
+   Such a drawing module, of course, is not really part of the
+   LaTeX-s project.
+
+It is probably the case that such high-level drawing packages are not
+part of the LaTeX3 project directly but we should provide a good
+standard basis of drawing primitives that would allow to build such
+packages easily (whatever this means) and in a portable way. In
+addition, having such syntax proposals available we could then suggest
+a final syntax for implementation using the "standard low-level"
+package build in LaTeX3.
+
+
+Returning to Kris' questions (which I fear I can't answer sufficiently
+at the moment):
+
+> First of all, any CD implementation is bound to be rather
+> large---current implementations range from 50 to 300k---and should
+> thus be in a seperate module.  Thus:
+>
+> 	Question 1: What restrictions should externally programmed
+>         \TeX\ modules obey in order to interface with and be useful
+>         from within \LaTeX3?
+
+This is difficult to say at the moment since there is a lot of work
+under way to provide a number of low-level data structures and their
+mutators. This will be called the LaTeX3-programming language. It
+would be of course important to make use of these low-level features
+of LaTeX3 to keep the code small and (even more important) to avoid
+crashing other packages. Because certain TeX constructs are likely to
+break other styles there will only be well-defined interfaces
+available. To give some example (which doesn't apply to the CD task,
+but much more to the multi-lingual one) direct \catcode changes will
+be prohibited. Instead there will be a general interface through which
+modules can communicate their special character requirements which
+will avoid situations like we have currently, eg A.sty doesn't work
+with B.sty or only if not also C.sty is loaded, or only if you use
+B.sty first, or ...
+
+This probably means that LaTeX3 will not be able to support "general
+purpose packages" which claim to run with all possible high-level
+macro packages together. This might be seen as a disadvantage but if
+you look through the currently available packages you will notice that
+this is already a white lie, most such packages break for one or the
+other reason if you try to combine them with, say LaTeX plus a few
+styles.
+
+To give some further example, trying to use AMS-LaTeX together with
+pictex crashes as soon as you try to define another two or three
+dimens registers. Since this is a sort of a hard limit in TeX (and
+doesn't even change when you use a big TeX) the LaTeX3 programmers
+language knows about special data structures called fake counters
+(slightly slower sort of count registers (about 200 probably in
+addition to the real ones) and so call "global dims" again slightly
+slower in their mutators but removing the 255 limitation.  Thus a
+package making use of such extra registers can coexist nicely with
+other packages in LaTeX3 but of course it will not run very well with
+plain TeX or ... since those packages will not provide these data
+structures.
+
+In summary there will be a LaTeX3 programmer's manual which defines
+and describes data structures and mutators to use by application
+modules so that they can coexist with problems.  But this language
+isn't fixed at the current stage and thus there is no point in trying
+to implement application modules right now.
+
+> Second, CD implementations might make use of a general picture
+> environment of \LaTeX3, so:
+>
+> 	Question 2: Is an enhanced picture environment planned for
+>         \LaTeX3?
+
+yes, it is. Probably only as a low-level interface as far as the
+kernel is concerned but richer then the current picture environment.
+
+
+> If such a module is planned but is itself an optional module, then
+>
+> 	Question 3: Will there be guidelines for interfacing and
+>         ``requiring'' one optional module from within another, i.e.,
+>         is there a standard way for testing whether an option is
+>         loaded?
+
+even if this module is not optional we need and will provide
+possibilities that allow interfacing other modules, detection of which
+modules are loaded etc. But this goes back to the status of the ltx3
+programmers language and so my answer currently can't be: "use command
+\xyz".
+
+
+> I am really looking forward to reactions to these questions;
+
+I do hope that the above answers have helped a bit to clarify the
+situation.  Similar remarks apply to most other volunteer tasks and I
+do hope that some more people like to help in some of those tasks, the
+question of providing the right syntax and functionality seems to me
+one of the most important steps.
+
+Frank Mittelbach
+

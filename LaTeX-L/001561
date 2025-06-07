@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1791" "Wed" "16" "February" "1994" "08:57:17" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" nil "46" "Re: Query about \\textheight computation" "^Date:" nil nil "2" nil nil nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA01078; Wed, 16 Feb 94 14:38:28 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA23671; Wed, 16 Feb 94 14:37:25 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA27426
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 16 Feb 1994 14:37:22 +0100
+Message-Id: <199402161337.AA27426@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 1640; Wed, 16 Feb 94 14:37:06 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 1639; Wed,
+ 16 Feb 1994 14:37:06 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5424; Wed,
+ 16 Feb 1994 10:24:49 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 16 Feb 1994 08:57:17 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Query about \textheight computation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1561
+
+From:          Martyn Johnson <Martyn.Johnson@computer-lab.cambridge.ac.uk>
+
+%>
+%>One of our LaTeX2e users remarked today:
+%>
+%>--------------------------------------------------------------------
+%>The code that computes \textheight bothers me slightly - why use
+%>1.5in for headers and footers, when the actual values are
+%>available ?
+%>
+%>...
+%>  \setlength\@tempdima{\paperheight}
+%>  \addtolength\@tempdima{-2in}
+%>  \addtolength\@tempdima{-1.5in}
+%>  \divide\@tempdima\baselineskip
+%>  \@tempcnta=\@tempdima
+%>  \setlength\textheight{\@tempcnta\baselineskip}
+%>\fi
+%>\advance\textheight by \topskip
+%>
+%>I know that the slack is taken up by \topmargin, as calculated
+%>below, but for 12pt text on a4 paper this comes to about 40pt
+%>(20pt above and below the text) which is more than the rounding
+%>needed to get a whole number of \baselineskip's.
+%>
+%>  \setlength\topmargin{\paperheight}
+%>  \addtolength\topmargin{-2in}
+%>  \addtolength\topmargin{-\headheight}
+%>  \addtolength\topmargin{-\headsep}
+%>  \addtolength\topmargin{-\textheight}
+%>  \addtolength\topmargin{-\footskip}     % this might be wrong!
+%>  \addtolength\topmargin{-.5\topmargin}
+%>--------------------------------------------------------------------
+%>
+%>The local maintainers can't see why it's done like that either,
+%>and the commented version doesn't explain it.  Can anybody shed
+%>any light on this?
+%>
+
+The solution is easy! You just set up your own document classes, say
+myarticle, myreport and mybook, and correct it!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

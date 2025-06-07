@@ -1,0 +1,569 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4B2A4C84@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:08 +0100
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4B2A4C84"
+x-vm-v5-data: ([nil nil nil nil t nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-to:         LATEX-L%DHDURZ1.BITNET@uga.cc.uga.edu
+Content-class: urn:content-classes:message
+Subject:      Re:       LaTeX 2.09 <Oct 91> beta-test
+Date: Tue, 29 Oct 1991 00:01:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5C7@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Don Hosek" <DHOSEK%HMCVAX.CLAREMONT.EDU@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 425
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4B2A4C84
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+->>> Now as regards modifying TeX to handle various different
+->>> encodings, let me just say NO, DON'T DO IT! The sort of change
+->>> which occurs in emTeX makes it non-TeX.
+
+-I don't think I agree with this remark.  If implemented as by
+-Eberhard Mattes, through a command-line extension to TeX, then
+-I see no conflict whatsoever.  The xchr/xord pair are specifically
+-intended to allow mappings to/from the characters that a user has
+-available; I quote from C&T B/23:
+
+-	``People with extended character sets can assign codes
+-	  arbitrarily, giving an xchr equivalent to whatever
+-	  characters the users of TeX are allowed to have in
+-	  their input files''.
+
+
+>from \emtex\doc\english\texware.doc:
+
+|The /c option
+|-------------
+
+|Currently, only one tcp file is available: 850_tex.tcp. This file =
+converts
+|some characters of code page 850 into TeX commands:
+                                       %%%%%%%%%%%%
+
+|^^80 -> \c{C}               ^^81 -> \"u                 ^^82 -> \'e
+|^^83 -> \^a                 ^^84 -> \"a                 ^^85 -> \`a
+
+[many lines of expansion deleted, underpercenting mine]
+
+This sort of conversion is not possible by changing the
+xchar/xord array which assumes a 1-1 mapping of external code
+byte to internal code byte. Ergo, use of emTeX's code page
+facilities represents a non-TeX extension.
+
+->>> Modifying xchar/xord so that say, the PC
+->>> e-acute maps internally to the Cork e-acute causes the difficulty
+->>> that TeX files created under this assumption are non-portable.
+
+-Non-portable ?  I think that depends how you define `portable'.
+-If I use my PS/2 in codepage-850 mode, and send a file on a disc
+-to another PS/2 or PC also using codepage 850, then the user on
+-that machine can process my file in a manner identical to that in
+-which I can process it.  If he or she prefers to use codepage 437,
+-and sends me a codepage-437 file, I can quickly re-configure my
+-PS/2 to use codepage 437 and process his or her file.  I cannot
+-send either to an EBCDIC site and have any hope whatsoever that
+-they can process the file, but then I wouldn't expect to be able to;
+-after all, I can't even send them an ASCII file and hope that they can
+-read it ...
+
+Yes, but you're still stuck in the PC combatible word with your
+TeX file. And you're assuming that your TeX can change its
+mapping to the Cork-based internal codes from whatever codepage
+you have externally. So chances are that your colleague's emTeX
+file won't run with your copy of PCTeX or $\mu$-TeX or TurboTeX
+or AzTeX. Let alone when you try to send the file to an ASCII
+system like, say, a Mac or VAX or Unix box... If you're going to
+use the excuse that you can't reliably send an 8-bit ASCII file
+to an EBCDIC system to justify incorporating unnecessary
+incompatibilities between TeX implementations, I kind of wonder
+what the point of worrying about any sort of TeX consistency is.
+
+->>> The purpose of xchar/xord was not for this sort of remapping, but
+->>> rather to handle the differences between ASCII and EBCDIC.
+
+-What nonsense; what DEK actually says (C&T A, p.43) is ``TeX always =
+uses
+-the internal character code of Appendix C for the standard ASCII =
+characters,
+-regardless of what external coding scheme actually appears in the files =
+being
+-read.  Thus b is 98 inside of TeX even when your computer normally =
+deals with
+-EBCDIC or some other non-ASCII system.''
+-       =
+=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=
+=08=08=08=08=08
+
+Not that significantly different of a statement from mine. Note
+also the phrase "standard ASCII characters" in DEK's statement;
+this is my point. I don't recall whether it was said explicitly
+or not, or for that matter, whether it is necessary for it to be
+said explicitly, but such a transformation should also correspond
+to a standard transformation when moving files between the
+different sets of character codes. This is why, for example, \ is
+E0 and not 4A on the various EBCDIC TeXs even though many IBM
+systems running the Yale ASCII software give 4A when one presses
+the \ key.
+
+->>> The
+->>> best pure TeX way to handle code pages is to make chars over 127
+->>> active, but as was mentioned this disallows their use in cs
+->>> names.
+
+-Best ?  I think that depends on how you define `best'.  If I were a =
+native
+-speaker of any language which required diacritical marks, then I would =
+regard
+-such a solution as `worst', not `best'.  If there exists a character =
+`foo' in
+-my native language, and if that character can be input to TeX in a =
+meaningful
+-way, then I want that character treated within TeX as having the same =
+semantics
+-as the character has in my native language, unless I choose to define =
+it
+-otherwise.  Thus I want letters (regardless of the presence or absence =
+of
+-diacritical mark(s)) treated as letters (i.e. catcode 11), and =
+punctuation,
+-digits, etc, as `others' (catcode 12); if I have two or three types of =
+space, I
+-want them all treated as `space' (catcode 10).  Why should the =
+characters which
+-occur in my language but not yours be singled out as needing to be =
+`active'
+-(catcode 13), with all the restrictions that that implies ?
+
+How do I define Best? Well here are the criteria:
+- No modifications to the TeX program should be necessary (well
+  actually, there are two key changes that should be made: the
+  basic changes so the program compiles and the modification of
+  the xchar initialization on ASCII systems so that 0-31 and
+  127-255 are mapped to the identical internal chars. I avoid the
+  issue of EBCDIC because it seems to difficult to work with. I
+  avoid anything outside of ASCII/EBCDIC since I really don't
+  think it gets used at all, at least not in the TeX world. Note
+  that I consider anything with characters 32-127 matching the
+  table in the TeXbook to be ASCII);
+- The solution should be such that if all files for a document
+  are shipped to another ASCII system (assuming no corruption in
+  transmission, a not unreasonable condition) it will produce
+  identical output;
+- Multiple code pages must be supportable in a single document.
+
+Now, having the high characters active is not without its
+drawbacks, but I don't think that the Unspecified Horrors
+mentioned above are quite as bad as "all the drawbacks that that
+implies" implies. The only drawback that I can think of is the
+exclusion of active characters from multicharacter csnames (which
+I will admit is serious, but imho, well compensated by the
+benefits of portability and flexibility given by the scheme I've
+outlined above). Beyond that, are there drawbacks that I'm
+overlooking? I haven't noticed any in the ten months experience
+I've had printing six-language documents for one of my clients.
+Perhaps, we could have some specific arguments against my
+approach (since I'm using it in a production environment, I
+consider it fairly important to know whether I may be
+encountering difficulties in the future).
+
+-dh
+
+
+------_=_NextPart_001_01C19443.4B2A4C84
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re:       LaTeX 2.09 &lt;Oct 91&gt; beta-test</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>-&gt;&gt;&gt; Now as regards modifying TeX to handle =
+various different</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; encodings, let me just say NO, DON'T DO =
+IT! The sort of change</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; which occurs in emTeX makes it =
+non-TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-I don't think I agree with this remark.&nbsp; If =
+implemented as by</FONT>
+
+<BR><FONT SIZE=3D2>-Eberhard Mattes, through a command-line extension to =
+TeX, then</FONT>
+
+<BR><FONT SIZE=3D2>-I see no conflict whatsoever.&nbsp; The xchr/xord =
+pair are specifically</FONT>
+
+<BR><FONT SIZE=3D2>-intended to allow mappings to/from the characters =
+that a user has</FONT>
+
+<BR><FONT SIZE=3D2>-available; I quote from C&amp;T B/23:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``People with =
+extended character sets can assign codes</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; =
+arbitrarily, giving an xchr equivalent to whatever</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; =
+characters the users of TeX are allowed to have in</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; their =
+input files''.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;from \emtex\doc\english\texware.doc:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|The /c option</FONT>
+
+<BR><FONT SIZE=3D2>|-------------</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|Currently, only one tcp file is available: =
+850_tex.tcp. This file converts</FONT>
+
+<BR><FONT SIZE=3D2>|some characters of code page 850 into TeX =
+commands:</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp; %%%%%%%%%%%%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>|^^80 -&gt; =
+\c{C}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; ^^81 -&gt; =
+\&quot;u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^^82 -&gt; \'e</FONT>
+
+<BR><FONT SIZE=3D2>|^^83 -&gt; =
+\^a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; ^^84 -&gt; =
+\&quot;a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^^85 -&gt; \`a</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[many lines of expansion deleted, underpercenting =
+mine]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This sort of conversion is not possible by changing =
+the</FONT>
+
+<BR><FONT SIZE=3D2>xchar/xord array which assumes a 1-1 mapping of =
+external code</FONT>
+
+<BR><FONT SIZE=3D2>byte to internal code byte. Ergo, use of emTeX's code =
+page</FONT>
+
+<BR><FONT SIZE=3D2>facilities represents a non-TeX extension.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&gt;&gt;&gt; Modifying xchar/xord so that say, the =
+PC</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; e-acute maps internally to the Cork =
+e-acute causes the difficulty</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; that TeX files created under this =
+assumption are non-portable.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Non-portable ?&nbsp; I think that depends how you =
+define `portable'.</FONT>
+
+<BR><FONT SIZE=3D2>-If I use my PS/2 in codepage-850 mode, and send a =
+file on a disc</FONT>
+
+<BR><FONT SIZE=3D2>-to another PS/2 or PC also using codepage 850, then =
+the user on</FONT>
+
+<BR><FONT SIZE=3D2>-that machine can process my file in a manner =
+identical to that in</FONT>
+
+<BR><FONT SIZE=3D2>-which I can process it.&nbsp; If he or she prefers =
+to use codepage 437,</FONT>
+
+<BR><FONT SIZE=3D2>-and sends me a codepage-437 file, I can quickly =
+re-configure my</FONT>
+
+<BR><FONT SIZE=3D2>-PS/2 to use codepage 437 and process his or her =
+file.&nbsp; I cannot</FONT>
+
+<BR><FONT SIZE=3D2>-send either to an EBCDIC site and have any hope =
+whatsoever that</FONT>
+
+<BR><FONT SIZE=3D2>-they can process the file, but then I wouldn't =
+expect to be able to;</FONT>
+
+<BR><FONT SIZE=3D2>-after all, I can't even send them an ASCII file and =
+hope that they can</FONT>
+
+<BR><FONT SIZE=3D2>-read it ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, but you're still stuck in the PC combatible word =
+with your</FONT>
+
+<BR><FONT SIZE=3D2>TeX file. And you're assuming that your TeX can =
+change its</FONT>
+
+<BR><FONT SIZE=3D2>mapping to the Cork-based internal codes from =
+whatever codepage</FONT>
+
+<BR><FONT SIZE=3D2>you have externally. So chances are that your =
+colleague's emTeX</FONT>
+
+<BR><FONT SIZE=3D2>file won't run with your copy of PCTeX or $\mu$-TeX =
+or TurboTeX</FONT>
+
+<BR><FONT SIZE=3D2>or AzTeX. Let alone when you try to send the file to =
+an ASCII</FONT>
+
+<BR><FONT SIZE=3D2>system like, say, a Mac or VAX or Unix box... If =
+you're going to</FONT>
+
+<BR><FONT SIZE=3D2>use the excuse that you can't reliably send an 8-bit =
+ASCII file</FONT>
+
+<BR><FONT SIZE=3D2>to an EBCDIC system to justify incorporating =
+unnecessary</FONT>
+
+<BR><FONT SIZE=3D2>incompatibilities between TeX implementations, I kind =
+of wonder</FONT>
+
+<BR><FONT SIZE=3D2>what the point of worrying about any sort of TeX =
+consistency is.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&gt;&gt;&gt; The purpose of xchar/xord was not for =
+this sort of remapping, but</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; rather to handle the differences =
+between ASCII and EBCDIC.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-What nonsense; what DEK actually says (C&amp;T A, =
+p.43) is ``TeX always uses</FONT>
+
+<BR><FONT SIZE=3D2>-the internal character code of Appendix C for the =
+standard ASCII characters,</FONT>
+
+<BR><FONT SIZE=3D2>-regardless of what external coding scheme actually =
+appears in the files being</FONT>
+
+<BR><FONT SIZE=3D2>-read.&nbsp; Thus b is 98 inside of TeX even when =
+your computer normally deals with</FONT>
+
+<BR><FONT SIZE=3D2>-EBCDIC or some other non-ASCII system.''</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=08=
+=08=08=08=08=08</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Not that significantly different of a statement from =
+mine. Note</FONT>
+
+<BR><FONT SIZE=3D2>also the phrase &quot;standard ASCII characters&quot; =
+in DEK's statement;</FONT>
+
+<BR><FONT SIZE=3D2>this is my point. I don't recall whether it was said =
+explicitly</FONT>
+
+<BR><FONT SIZE=3D2>or not, or for that matter, whether it is necessary =
+for it to be</FONT>
+
+<BR><FONT SIZE=3D2>said explicitly, but such a transformation should =
+also correspond</FONT>
+
+<BR><FONT SIZE=3D2>to a standard transformation when moving files =
+between the</FONT>
+
+<BR><FONT SIZE=3D2>different sets of character codes. This is why, for =
+example, \ is</FONT>
+
+<BR><FONT SIZE=3D2>E0 and not 4A on the various EBCDIC TeXs even though =
+many IBM</FONT>
+
+<BR><FONT SIZE=3D2>systems running the Yale ASCII software give 4A when =
+one presses</FONT>
+
+<BR><FONT SIZE=3D2>the \ key.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&gt;&gt;&gt; The</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; best pure TeX way to handle code pages =
+is to make chars over 127</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; active, but as was mentioned this =
+disallows their use in cs</FONT>
+
+<BR><FONT SIZE=3D2>-&gt;&gt;&gt; names.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Best ?&nbsp; I think that depends on how you define =
+`best'.&nbsp; If I were a native</FONT>
+
+<BR><FONT SIZE=3D2>-speaker of any language which required diacritical =
+marks, then I would regard</FONT>
+
+<BR><FONT SIZE=3D2>-such a solution as `worst', not `best'.&nbsp; If =
+there exists a character `foo' in</FONT>
+
+<BR><FONT SIZE=3D2>-my native language, and if that character can be =
+input to TeX in a meaningful</FONT>
+
+<BR><FONT SIZE=3D2>-way, then I want that character treated within TeX =
+as having the same semantics</FONT>
+
+<BR><FONT SIZE=3D2>-as the character has in my native language, unless I =
+choose to define it</FONT>
+
+<BR><FONT SIZE=3D2>-otherwise.&nbsp; Thus I want letters (regardless of =
+the presence or absence of</FONT>
+
+<BR><FONT SIZE=3D2>-diacritical mark(s)) treated as letters (i.e. =
+catcode 11), and punctuation,</FONT>
+
+<BR><FONT SIZE=3D2>-digits, etc, as `others' (catcode 12); if I have two =
+or three types of space, I</FONT>
+
+<BR><FONT SIZE=3D2>-want them all treated as `space' (catcode 10).&nbsp; =
+Why should the characters which</FONT>
+
+<BR><FONT SIZE=3D2>-occur in my language but not yours be singled out as =
+needing to be `active'</FONT>
+
+<BR><FONT SIZE=3D2>-(catcode 13), with all the restrictions that that =
+implies ?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>How do I define Best? Well here are the =
+criteria:</FONT>
+
+<BR><FONT SIZE=3D2>- No modifications to the TeX program should be =
+necessary (well</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; actually, there are two key changes that =
+should be made: the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; basic changes so the program compiles and the =
+modification of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the xchar initialization on ASCII systems so =
+that 0-31 and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; 127-255 are mapped to the identical internal =
+chars. I avoid the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; issue of EBCDIC because it seems to difficult =
+to work with. I</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; avoid anything outside of ASCII/EBCDIC since I =
+really don't</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; think it gets used at all, at least not in the =
+TeX world. Note</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; that I consider anything with characters =
+32-127 matching the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; table in the TeXbook to be ASCII);</FONT>
+
+<BR><FONT SIZE=3D2>- The solution should be such that if all files for a =
+document</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; are shipped to another ASCII system (assuming =
+no corruption in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; transmission, a not unreasonable condition) it =
+will produce</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; identical output;</FONT>
+
+<BR><FONT SIZE=3D2>- Multiple code pages must be supportable in a single =
+document.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now, having the high characters active is not without =
+its</FONT>
+
+<BR><FONT SIZE=3D2>drawbacks, but I don't think that the Unspecified =
+Horrors</FONT>
+
+<BR><FONT SIZE=3D2>mentioned above are quite as bad as &quot;all the =
+drawbacks that that</FONT>
+
+<BR><FONT SIZE=3D2>implies&quot; implies. The only drawback that I can =
+think of is the</FONT>
+
+<BR><FONT SIZE=3D2>exclusion of active characters from multicharacter =
+csnames (which</FONT>
+
+<BR><FONT SIZE=3D2>I will admit is serious, but imho, well compensated =
+by the</FONT>
+
+<BR><FONT SIZE=3D2>benefits of portability and flexibility given by the =
+scheme I've</FONT>
+
+<BR><FONT SIZE=3D2>outlined above). Beyond that, are there drawbacks =
+that I'm</FONT>
+
+<BR><FONT SIZE=3D2>overlooking? I haven't noticed any in the ten months =
+experience</FONT>
+
+<BR><FONT SIZE=3D2>I've had printing six-language documents for one of =
+my clients.</FONT>
+
+<BR><FONT SIZE=3D2>Perhaps, we could have some specific arguments =
+against my</FONT>
+
+<BR><FONT SIZE=3D2>approach (since I'm using it in a production =
+environment, I</FONT>
+
+<BR><FONT SIZE=3D2>consider it fairly important to know whether I may =
+be</FONT>
+
+<BR><FONT SIZE=3D2>encountering difficulties in the future).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-dh</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4B2A4C84--
+

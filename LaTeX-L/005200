@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 May 2008 13:53:08 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m4FBr5ex010439
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 15 May 2008 13:53:05 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m4FBlvDp022428
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 15 May 2008 13:47:57 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m4EM1JNk025894;
+	Thu, 15 May 2008 13:47:52 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 3424 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 15 May
+          2008 13:47:52 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m4FBlq4S017613 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 15 May 2008 13:47:52 +0200
+Received: from mail.quinscape.de (mail.quinscape.de [212.29.44.217]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m4FBlWKT021751
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 15 May 2008 13:47:37
+          +0200
+Received: (qmail-ldap/ctrl 25746 invoked from network); 15 May 2008 11:47:30
+          -0000
+Received: from unknown (HELO lola.quinscape.zz) ([10.0.3.43]) (envelope-sender
+          <dak@gnu.org>) by quinx.quinscape.de (qmail-ldap-1.03) with SMTP for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; 15 May 2008 11:47:30 -0000
+Received: by lola.quinscape.zz (Postfix, from userid 1001) id ED134E1ED3; Thu,
+          15 May 2008 13:47:30 +0200 (CEST)
+References: <85BC623C-4952-4585-BC7E-4B3F75CA5A10@gmail.com>
+            <200805151116.m4FBGwcX030377@edinburgh.nag.co.uk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.0.60 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-AntiVirus: checked by AntiVir MailGate (version: 2.1.3-2; AVE: 7.8.0.17; VDF:
+             7.0.4.42; host: quinx)
+Message-ID:  <86mymr23hp.fsf@lola.quinscape.zz>
+Date:         Thu, 15 May 2008 13:47:30 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Re: Replacing inputenc for XeTeX/LuaTeX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <200805151116.m4FBGwcX030377@edinburgh.nag.co.uk> (David
+              Carlisle's message of "Thu, 15 May 2008 12:16:58 +0100")
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 May 2008 11:53:08.0852 (UTC) FILETIME=[3E5FAB40:01C8B682]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5200
+
+David Carlisle <davidc@NAG.CO.UK> writes:
+
+>> Any comments?
+>
+> Personally I think something like that sounds like a good idea, it
+> should probably make a warning (at least to the log, probably console as
+> well) presumably most of the time it would "just work" but if the
+> "active character" implementation of the encoding is mapping that slot
+> to an arbitrarily complicated TeX construct, then presumably just
+> letting the character go through xetex as a native unicode character
+> may do something different, and it may be better to flag that
+> possibility in the log file.
+
+My opinion is that the easiest way to do this would be to place
+appropriate *.enc files or a whole inputenc.sty into the local search
+path of XeTeX resp. LuaTeX.
+
+It may be a LPPL conflict to do so since IIRC the file name is protected
+rather than the whole path.
+
+It is somewhat embarrassingly clear that the LaTeX team itself will not
+be able to come up with something like that in a time frame fit for
+TeXlive2008.
+
+I would propose that we ask on the XeTeX and LuaTeX lists for help.  If
+we are doing the actual folding and file layout design (one could also
+use different extensions rather than different search paths), there
+won't be any LPPL problems I think.
+
+-- 
+David Kastrup
+

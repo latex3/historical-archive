@@ -1,0 +1,198 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 8 Mar 2000 14:33:45 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA22737 for <schoepf@mail.uni-mainz.de>; Wed, 8 Mar 2000 14:33:45 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF8902.ED124280"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA23703 for <schoepf@UNI-MAINZ.DE>; Wed, 8 Mar 2000 14:33:43 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.95D46890@mail.listserv.gmd.de>; Wed, 8 Mar 2000 14:32:25 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 452247 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Mar 2000 14:24:28 +0100
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id OAA27545 for <latex-l@relay.urz.uni-heidelberg.de>; Wed, 8          Mar 2000 14:24:27 +0100 (MET)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id OAA71886 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 8 Mar          2000 14:27:08 +0100
+Received:  from nag.co.uk ([62.232.54.10]) by relay.uni-heidelberg.de          (8.9.3+Sun/8.9.3) with ESMTP id OAA20532 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 8 Mar 2000 14:24:25 +0100 (MET)
+Received:  (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id          NAA23620; Wed, 8 Mar 2000 13:23:00 GMT
+In-Reply-To:  <CMM.0.91.0.952520473.beebe@suncore.math.utah.edu>
+References:  <CMM.0.91.0.952520473.beebe@suncore.math.utah.edu>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["1741" "Wed" "8" "March" "2000" "13:23:00" "GMT" "David Carlisle" "davidc@NAG.CO.UK" nil "41" "Re: float position rules" "^Date:" nil nil "3" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Re: float position rules
+Date: Wed, 8 Mar 2000 14:23:00 +0100
+Message-ID:  <200003081323.NAA23620@nag.co.uk>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "David Carlisle" <davidc@NAG.CO.UK>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3566
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF8902.ED124280
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> What users expect is something like an exponentially weighted
+> placement algorithm:
+
+There is a possibility in the new algorithm to have something
+like this, as there is a possibility (documented but not currently
+implemented) to store the page on which the float callout was typeset
+as part of the float data structure (once that page is known)
+Then there would be a possibility of using the difference between that
+page and the current page as part of the float placement algorithm.
+
+Fixed rules like the one you cited, are fairly easy. That said deferred
+floats must always appear on the next page (which basically means you
+have to ignore all the float parameters and constraints and just get get
+the float out, like a current \clearpage but allowing use of top area as
+well)
+
+But it isn't clear how one could `gradually' alter the float placement
+parameters to encourage floats to appear `near' their callout but in
+`reasonable' positions. That is not to say it can't be done, but
+suggestions welcome. ie given something like the current
+\textpagefraction, \topnumber etc, how would you modify the algorithm
+given additional information the number of pages the current float has
+been deferred. Or more generally what parameters woulD you use _instead_
+of \textpagefraction, \topnumber ...
+
+
+>  usually 10% to 60% of \textheight.
+
+ie too large to go in top, too small to make a float page on their own,
+ideal material for taking to the end of the document, given the default
+latex parameter settings!
+
+David
+
+PS
+
+> t doesn't satisfy this requirement, because it could (sensibly) place
+> the float on the current page, before the reference to it.
+
+It would if you add flafter package (but that isn't too relevant to the
+new algorithm)
+
+------_=_NextPart_001_01BF8902.ED124280
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: float position rules</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; What users expect is something like an =
+exponentially weighted</FONT>
+
+<BR><FONT SIZE=3D2>&gt; placement algorithm:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There is a possibility in the new algorithm to have =
+something</FONT>
+
+<BR><FONT SIZE=3D2>like this, as there is a possibility (documented but =
+not currently</FONT>
+
+<BR><FONT SIZE=3D2>implemented) to store the page on which the float =
+callout was typeset</FONT>
+
+<BR><FONT SIZE=3D2>as part of the float data structure (once that page =
+is known)</FONT>
+
+<BR><FONT SIZE=3D2>Then there would be a possibility of using the =
+difference between that</FONT>
+
+<BR><FONT SIZE=3D2>page and the current page as part of the float =
+placement algorithm.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Fixed rules like the one you cited, are fairly easy. =
+That said deferred</FONT>
+
+<BR><FONT SIZE=3D2>floats must always appear on the next page (which =
+basically means you</FONT>
+
+<BR><FONT SIZE=3D2>have to ignore all the float parameters and =
+constraints and just get get</FONT>
+
+<BR><FONT SIZE=3D2>the float out, like a current \clearpage but allowing =
+use of top area as</FONT>
+
+<BR><FONT SIZE=3D2>well)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But it isn't clear how one could `gradually' alter the =
+float placement</FONT>
+
+<BR><FONT SIZE=3D2>parameters to encourage floats to appear `near' their =
+callout but in</FONT>
+
+<BR><FONT SIZE=3D2>`reasonable' positions. That is not to say it can't =
+be done, but</FONT>
+
+<BR><FONT SIZE=3D2>suggestions welcome. ie given something like the =
+current</FONT>
+
+<BR><FONT SIZE=3D2>\textpagefraction, \topnumber etc, how would you =
+modify the algorithm</FONT>
+
+<BR><FONT SIZE=3D2>given additional information the number of pages the =
+current float has</FONT>
+
+<BR><FONT SIZE=3D2>been deferred. Or more generally what parameters =
+woulD you use _instead_</FONT>
+
+<BR><FONT SIZE=3D2>of \textpagefraction, \topnumber ...</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; usually 10% to 60% of \textheight.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>ie too large to go in top, too small to make a float =
+page on their own,</FONT>
+
+<BR><FONT SIZE=3D2>ideal material for taking to the end of the document, =
+given the default</FONT>
+
+<BR><FONT SIZE=3D2>latex parameter settings!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>David</FONT>
+</P>
+
+<P><FONT SIZE=3D2>PS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; t doesn't satisfy this requirement, because it =
+could (sensibly) place</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the float on the current page, before the =
+reference to it.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would if you add flafter package (but that isn't =
+too relevant to the</FONT>
+
+<BR><FONT SIZE=3D2>new algorithm)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF8902.ED124280--
+

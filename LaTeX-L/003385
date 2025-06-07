@@ -1,0 +1,123 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3455" "Wed" "3" "November" "1999" "17:16:18" "+0100" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "80" "Re: section heading templates" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA22470
+	for <schoepf@UNI-MAINZ.DE>; Wed, 3 Nov 1999 17:15:48 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.A1ABAC6F@mail.listserv.gmd.de>; Wed, 3 Nov 1999 17:16:29 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445458 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 3 Nov 1999 17:16:23 +0100
+Received: from abel.math.umu.se (abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA06629 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Nov 1999 17:16:20 +0100 (MET)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          abel.math.umu.se (8.9.2/8.9.2) with ESMTP id RAA25439 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Nov 1999 17:13:37 +0100 (CET)
+X-Sender: lars@abel.math.umu.se
+References: <381A1F7A.20B59B6C@ujf-grenoble.fr>
+            <199910011527.LAA04020@hilbert.math.albany.edu>
+            <199910281728.SAA15046@mimosa.csv.warwick.ac.uk>
+            <14361.49815.612920.201449@n15ux24.nets.de.eds.com>
+            <381A1F7A.20B59B6C@ujf-grenoble.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id RAA06632
+Message-ID:  <l03130300b445e17c179f@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199911022039.VAA00443@istrati.zdv.uni-mainz.de>
+Date:         Wed, 3 Nov 1999 17:16:18 +0100
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3385
+
+On the matter of relativizing the section headings, I think doing that
+would be creating a much greater mess than it could ever be worth. People
+often compiling large documents from several small might possibly benefit
+from it, but they would be better served by a package with this as the
+feature than by additional functionality in the kernel or the standard
+classes. I suspect the normal user would get less trouble from explicitly
+changing the section heading commands using search and replace than from a
+document where the section headings don't produce what their names
+indicate.
+
+Section heading environments like the "head" FMi described would be sound,
+but it is questionable whether they are useful enough to be a new standard
+feature. I would say no.
+
+FMi wrote:
+>i would call two latex classes (the term class is actually bad in 2e) "source
+>compatible" if they can successfully process the same documents, ie provide
+>the same user commands and functionality. in other words a document that can
+>be processed by article.cls would be processable (with sensible results) by
+>any other class that is source compatible to article.cls --- one could say the
+>two LaTeX2e classes belong to the same class, urg (this is when i meant the
+>term was badly chosen).
+
+How about saying that the two classes belong to the same family?
+
+>now i wonder if i would claim that article.cls and myarticle.cls differing
+>only in the setting of the secnumdepth counter should be considered
+>incompatible in the above sense.
+>
+>there are arguments for it and arguments against it:
+>
+> - since the availibility of numbering or generally the availability of
+>   refering to  a heading via \ref differs one can argue the classes are not
+>   source compatible
+
+A solution here could be that if \label is applied to an unnumbered heading
+then (optionally) a warning could be issued and the reference text would
+become the heading text itself (plus some formatting), e.g. after
+
+   \subparagraph{Gnus} \label{Spar:Gnus} % I don't think these get numbers
+
+the code
+
+   ... see also Subparagraph~\ref{Spar:Gnus].
+
+would typeset as
+
+   ... see also Subparagraph `Gnus'.
+
+or even
+
+   ... see also Subparagraph `Gnus' of Paragraph 1.2.3.4.
+
+It's certainly not ideal (and it would benefit a lot from some kind of
+relativity in the referencing), but it does make sense.
+
+As for how to implement it, I would make it so that the heading template
+puts together the reference string and sets a flag to mark that something
+unnumbered is being referenced. Then the \label (if there is one) prints
+the warning (if the class or whatever thinks it is needed).
+
+> - on the other hand this is making the granularity very small and it might
+>   mean that coming up with sufficient additional issues of that type nearly
+>   no class can be considered compatible to another one.
+
+Indeed.
+
+BTW, it would be nice if there could be clearer documentation regarding
+which features are available assuming that the document class belongs to
+the same family as (one of) the standard LaTeX classes, and which features
+should exist for all LaTeX classes. This has often assoyed me when I have
+been writing classes. The ("How to write a LaTeX document") manuals I've
+read make no distinctions here, so users generally expect very much.
+
+Lars Hellström
+
+PS: On the matter of silence, perhaps this will help cheer Frank up: I
+think I can agree to everything you have written recently on section
+headings.
+

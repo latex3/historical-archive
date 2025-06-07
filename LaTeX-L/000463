@@ -1,0 +1,246 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4EC9EA4C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:14 +0100
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4EC9EA4C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      bug in latest latex
+Date: Thu, 14 Nov 1991 12:25:15 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5EC@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Dominik Wujastyk" <ucgadkw%UCL.AC.UK@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 463
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4EC9EA4C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+Dear Frank and Rainer,
+
+\section{Bug report}
+
+I fetched latexnew.zoo by ftp yesterday (version of 7 November 1991).
+There is a bug in all the definitions of \thebibliography in the
+*.sty files (book.sty, article.sty, etc.).  The problem is with the
+\@cite command, which is given only one argument, when it is defined
+(in latex.tex) to take two.  I think I have this right.
+
+To illustrate, try this:
+
+-------------------------------------------------------------------
+\documentstyle{article}
+\begin{document}
+\begin{thebibliography}{00}
+
+% \bibitem[X]{Z}   AAA       % < this works fine
+\bibitem{Z}   AAA            % < this illustrates the bug
+
+\end{thebibliography}
+\end{document}
+-------------------------------------------------------------------
+
+
+\section{doc.sty suggestions}
+
+\subsection{\@ne etc}
+
+In plain.tex, Knuth uses macros like \z@, \@ne, \m@ne, \count@, etc., to =
+help
+TeX's scanner work more quickly, and to save memory (TeXbook, pp. 345, =
+348).
+
+But the printed version of plain.tex, Appendix B, prints 0, 1, -1,
+count255, and so on, in most cases, since this makes the code much =
+clearer.
+
+As you know, I am working on EDMAC.DOC, which is a set of macros
+formatted for use with (new)doc.sty.  I would like to use the macros
+\z@ etc., to help TeX be efficient, but I don't think it is worth
+the trade-off in making the macros more illegible.  Even I have trouble
+with reading stuff that is full of \count@, \m@ne, \@MM and
+\@cclvi, etc.
+
+It would be very nice indeed if doc.sty could read \z@ in a macro, but
+print it as 0, and so on for the other abbreviations.  This would have =
+to
+apply only in the macrocode environment.
+
+Is it possible?
+
+\subsection{Problem indexing <cr>}
+
+I find that if I have a macro that uses =08=08M (<caret><caret>M), it
+comes out in the index as just "=08=08", without the "M".
+
+Is this fixable?
+
+
+
+\bye
+
+Dominik
+
+
+
+------_=_NextPart_001_01C19443.4EC9EA4C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     bug in latest latex</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>Dear Frank and Rainer,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Bug report}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I fetched latexnew.zoo by ftp yesterday (version of 7 =
+November 1991).</FONT>
+
+<BR><FONT SIZE=3D2>There is a bug in all the definitions of =
+\thebibliography in the</FONT>
+
+<BR><FONT SIZE=3D2>*.sty files (book.sty, article.sty, etc.).&nbsp; The =
+problem is with the</FONT>
+
+<BR><FONT SIZE=3D2>\@cite command, which is given only one argument, =
+when it is defined</FONT>
+
+<BR><FONT SIZE=3D2>(in latex.tex) to take two.&nbsp; I think I have this =
+right.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To illustrate, try this:</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>----------------------------------------------------------------=
+---</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle{article}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{thebibliography}{00}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% \bibitem[X]{Z}&nbsp;&nbsp; =
+AAA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % &lt; this works fine</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{Z}&nbsp;&nbsp; =
+AAA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % =
+&lt; this illustrates the bug</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{thebibliography}</FONT>
+
+<BR><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT =
+SIZE=3D2>----------------------------------------------------------------=
+---</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\section{doc.sty suggestions}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{\@ne etc}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In plain.tex, Knuth uses macros like \z@, \@ne, \m@ne, =
+\count@, etc., to help</FONT>
+
+<BR><FONT SIZE=3D2>TeX's scanner work more quickly, and to save memory =
+(TeXbook, pp. 345, 348).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But the printed version of plain.tex, Appendix B, =
+prints 0, 1, -1,</FONT>
+
+<BR><FONT SIZE=3D2>count255, and so on, in most cases, since this makes =
+the code much clearer.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As you know, I am working on EDMAC.DOC, which is a set =
+of macros</FONT>
+
+<BR><FONT SIZE=3D2>formatted for use with (new)doc.sty.&nbsp; I would =
+like to use the macros</FONT>
+
+<BR><FONT SIZE=3D2>\z@ etc., to help TeX be efficient, but I don't think =
+it is worth</FONT>
+
+<BR><FONT SIZE=3D2>the trade-off in making the macros more =
+illegible.&nbsp; Even I have trouble</FONT>
+
+<BR><FONT SIZE=3D2>with reading stuff that is full of \count@, \m@ne, =
+\@MM and</FONT>
+
+<BR><FONT SIZE=3D2>\@cclvi, etc.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would be very nice indeed if doc.sty could read \z@ =
+in a macro, but</FONT>
+
+<BR><FONT SIZE=3D2>print it as 0, and so on for the other =
+abbreviations.&nbsp; This would have to</FONT>
+
+<BR><FONT SIZE=3D2>apply only in the macrocode environment.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Is it possible?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Problem indexing &lt;cr&gt;}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I find that if I have a macro that uses =08=08M =
+(&lt;caret&gt;&lt;caret&gt;M), it</FONT>
+
+<BR><FONT SIZE=3D2>comes out in the index as just &quot;=08=08&quot;, =
+without the &quot;M&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Is this fixable?</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\bye</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Dominik</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4EC9EA4C--
+

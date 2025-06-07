@@ -1,0 +1,102 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2612" "Fri" " 7" "April" "1995" "11:55:03" "-0600" "Alex Stark" "jas1@ENG.CAM.AC.UK" nil "70" "Re: Latex modularity" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzx.zdv.Uni-Mainz.DE [134.93.178.24]) by trudi.zdv.Uni-Mainz.DE (8.6.11/8.6.11) with ESMTP id NAA08400 for <schoepf@goofy.zdv.uni-mainz.de>; Fri, 7 Apr 1995 13:00:16 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP23YCFD7K9TDEUS@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 12:59:47 +0100
+Received: from degate.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP23Y5MR9S9TDEK7@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 12:59:38 +0100
+Received: from vm.gmd.de by degate.gmd.de (SF for OpenVMS v1.0-alpha)
+ with SMTP id E845A641 ; Fri, 7 Apr 1995 12:59:39 +0100
+Received: from VM.GMD.DE by vm.gmd.de (IBM VM SMTP V2R2)
+ with BSMTP id 5577; Fri, 07 Apr 95 12:54:23 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2a/1.8a) with BSMTP id 1693; Fri,
+ 7 Apr 1995 12:54:22 +0200
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Message-id: <01HP23Y5U9C29TDEK7@MZDMZA.ZDV.UNI-MAINZ.DE>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Fri, 07 Apr 1995 11:55:03 -0600 (CST)
+From: Alex Stark <jas1@ENG.CAM.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Subject: Re: Latex modularity
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1636
+
+Some thoughts on modularity.  Wearing asbestos underwear as I don't know
+what I am talking about.
+
+I think that the package loading system in 2e is very useful, and it seems
+to me that the concept of a small kernel plus lots of modules is a good one.
+However, in my current usage of Latex (mainly writing a PhD), loading
+packages is a major overhead.  This is partly because I use amslatex.
+Also, even for modest documents my .ps files are larger than the format
+files (.fmt).  Further modularity will surely only make this situation
+worse.
+
+Therefore, might it not be a good idea to provide a system of dumping a
+document format file (not necessarily an ordinary format file) at an
+appropriate place?  Consider the following document:
+
+%%%%%%%%%%%%%%
+\documentclass[....
+
+\usepackage[...
+
+\input{my_standard_defs}
+
+%%%%%%% DUMP HERE %%%%%%%%%%
+
+\input{extra_doc_defs}
+
+\begin{document}
+
+....
+
+
+\end{document}
+%%%%%%%%%%%%%%
+
+If a document format file were dumped where indicated, the document could be
+recomposed much faster.
+
+Pros:
+1) Latex could be as modular as required without too much extra overhead.
+2) When running latex, the actual composition process would begin almost
+instantaneously.
+
+Cons:
+1) How would the format file be produced?  From scratch using iniTeX?
+2) The close association of a document with its packages might be lost.
+  This could be a problem for portability.  Perhaps a validation system would
+  cope with this.  The loading of packages into the document format could be
+  recorded so that the availability of the packages could be checked when the
+  format is used.
+3) It could result in the anarchy that 2e has done so much to eliminate.
+  Perhaps a strict validation scheme as in (2) would reduce this problem.
+  Surely any extensive system of modularity would introduce this danger.
+4) TeX is not a normal computer language in the sense of checking variables.
+  Aren't there dangers of increased conflicts between modules by redefining
+  macros?
+5) The document format creation needs a cross between iniTeX and ordinary
+  TeX.  One wouldn't want to have tex fussing about hyphenation patterns
+  whenever you rebuild the document format.  Is this possible?
+
+
+
+
+Alex Stark
+
+---------------------------------------------------------------------------
+J. Alex Stark                 Signal Processing & Communications Laboratory
+email: jas1@eng.cam.ac.uk            Dept of Engineering, Univ of Cambridge
+Tel:   [+44]1223 3 32767                 Trumpington St, Cambridge, CB2 1PZ
+Fax:   [+44]1223 3 32662
+---------------------------------------------------------------------------
+

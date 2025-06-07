@@ -1,0 +1,150 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4597" "Wed" "28" "August" "1996" "21:06:07" "+0200" "Manfred Maennle" "maennle@ira.uka.de" nil "113" "A More Flexible Section Structure" "^Date:" nil nil "8" nil nil nil nil]
+	nil)
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by hugo.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id VAA04919 for <schoepf@xzd819.zdv.Uni-Mainz.DE>; Wed, 28 Aug 1996 21:07:05 +0200 (MET DST)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by mail.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id VAA04405; Wed, 28 Aug 1996 21:07:06 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.541447F5@listserv.gmd.de>; Wed, 28 Aug 1996 21:07:04 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 163292 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 28 Aug 1996 21:06:35 +0200
+Received: from iraun1.ira.uka.de (iraun1.ira.uka.de [129.13.10.90]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id VAA24226 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 28 Aug 1996 21:06:34
+          +0200 (MET DST)
+Received: from i80fs1.ira.uka.de by iraun1.ira.uka.de with SMTP (PP); Wed, 28
+          Aug 1996 21:06:23 +0200
+Received: from ira.uka.de by i80fs1.ira.uka.de id <08143-0@i80fs1.ira.uka.de>;
+          Wed, 28 Aug 1996 21:06:16 +0200
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <"i80fs1.ira.145:28.08.96.19.06.17"@ira.uka.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 28 Aug 1996 21:06:07 +0200
+From: Manfred Maennle <maennle@IRA.UKA.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      A More Flexible Section Structure
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1764
+
+I am now two weeks subscribed to the LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE
+mailing list but didn't receive any mail yet. (I hope this list is not dead.)
+Nevertheless I want to bring my reflections about "a more flexible section
+structure" up to discussion. Since I am only two weeks subscribed I don't
+know whether this topic was already discussed. If so, I apologize for
+wasting bandwith and disk space. But now, here are my thoughts:
+
+
+
+
+A MORE FLEXIBLE SECTION STRUCTURE
+
+
+Abstract: I propose the introduction of a more flexible section structure.
+In addition to the "horizontal mobility" I propose a "vertical mobility" of
+sections.
+
+
+1 State of the Art
+
+Until now, LaTeX supports the hierarchical section structure (which is inherent
+in every docment) by sectioning commands like \chapter, \section, etc.
+
+                 document (title)
+                       |
+1                     part
+                    /     \
+2              chapter      chapter
+            /     |    \       |   \
+3      section  sect   sect   sect  sect
+                      /   \
+4                subsect  subsect
+
+By the mechanism of automatic labelling one has a vertical mobility of the
+sections. This has the advantage that (with the help of my editor's cut & paste
+function) one can for example swap two sections or add another one without
+having to relabel everything. This mobility is WITHIN a hierarchy level: I can
+swap two \chapters but not a \chapter and for example a \subsection.
+
+
+2 The Problem
+
+In large documents I sometimes have the need for a vertical shift of a section
+and its subsections. So I would also like a mobility BETWEEN the different
+hierarchy levels. This is for example when I start writing a document with
+a first layout of the section hierarchy. Now if a section, say section 1.3,
+becomes more important or too large and I want to spend a whole chapter for
+it, I have to change \section to \chapter and, that's the problem, change ALL
+\subsections, \subsubsections, etc., to the command of the higher hierarchy
+level. This need will certainly not appear at small documents (and if, it would
+be no problem to change a few \subsections) but it does appear at large
+documents (at least, I have sometimes that need :-)
+
+
+3 A Solution
+
+The solution is not having an ABSOLUTE hierarchy level (e.g. \chapter is always
+level 2) but having a RELATIVE hierarchy level. I will use the term "passage"
+for this universal sectional unit. A document could then be structured like:
+
+---------------------------------------------------------------------------
+\title{Document's title\label{doc}}
+\passage{doc}{Introduction\label{intro}}   % chapter 1
+[...]
+\passage{doc}{The problem\label{problem}}  % chapter 2
+\passage{problem}{A subproblem\label{sp1}} % section 2.1
+[...]
+\passage{sp1}{A subsubproblem}             % subsection 2.1.1
+[...]
+\passage{problem}{Another subproblem}      % section 2.2
+[...]
+\passage{doc}{A solution}                  % chapter 3
+[...]
+---------------------------------------------------------------------------
+
+Every passage header points (with its first argument) to the related header of
+the upper level. For both, horizontal or vertical displacement, you only have
+to change one pointer. (All "subpassages" move together with the passage they
+point to.)
+
+There is no additional TeX run necessary, since all passages that are pointed
+to must preceed its "subpassages". (Therefore, already at the first run the
+level of every passage is obvious.)
+
+
+4 Discussion
+
+The proposed section hierarchy has the advantages
+ + more flexible document structuring: vertival moving of passages
+ + unlimited hierarchy depth
+
+and the disadvantage
+ - when regarding the source LaTeX file, you cannot "see" the passage's level
+   (i.e., you cannot see from the structure command whether it's a chapter,
+   section, or only a subsection)
+ - must be implemented :-)
+
+I see no reason why not to test the proposed section hierarchy by providing
+the sectioning command in an additional package (except that I can't implement
+this because of my lack of TeX knowledge). If successful, one can think of
+having both, the known sectioning commands and the new one in parallel.
+
+
+
+
+
+Have fun,
+    Manfred
+____________________________________________________________________________
+Manfred Maennle http://goethe.ira.uka.de/people/ | You can do what you want,
+Institut fuer Rechnerentwurf  und Fehlertoleranz | but you cannot  want what
+Universitaet  Karlsruhe  (TH),  D-76128  Germany | you want.  (Schopenhauer)
+Phone:  +49 721 608 3910,   Fax:  +49 721 370455 | --- pgp key available ---
+

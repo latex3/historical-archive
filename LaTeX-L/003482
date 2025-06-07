@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1208" "Wed" "29" "December" "1999" "17:43:56" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "34" "Re: A couple of TOC templates (1)" "^Date:" nil nil "12" nil "A couple of TOC templates (1)" nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 29 Dec 1999 17:45:56 +0100 (MET)
+Received: from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56])
+	by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id RAA20890
+	for <schoepf@mail.uni-mainz.de>; Wed, 29 Dec 1999 17:45:56 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA26527
+	for <schoepf@UNI-MAINZ.DE>; Wed, 29 Dec 1999 17:45:45 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.F9C83852@mail.listserv.gmd.de>; Wed, 29 Dec 1999 17:45:36 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446975 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 29 Dec 1999 17:44:09 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id RAA27656 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec
+          1999 17:44:07 +0100 (MET)
+Received: from ssmtp02.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id RAA00909 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec 1999 17:44:55 +0100 (MET)
+Received: from [195.5.71.59] ([195.5.71.59]) by ssmtp02.arrakis.isp (Netscape
+          Messaging Server 4.1 Nov 19 1999 19:47:43) with SMTP id FNIH5A05.AJ8
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 29 Dec 1999 17:43:58 +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199912291644.RAA00909@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 29 Dec 1999 17:43:56 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: A couple of TOC templates (1)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3482
+
+>attributes may be assigned globally in template. one of the last
+>additions to the inferface before we made it publically available for
+>testing was the + sytnax:
+>
+> foo =+l \foovar
+>
+>sets the variable \foobar (which should be a register in the above
+>case) globally
+
+[It is surprising how one is unable to find something, except when
+one has got already the answer. :-) ]
+
+Well, forget my previous message, and change istead the attribute
+declaratios:
+
+\DeclareTemplate{contentsobject}{JB1}{7}{
+  pre-action       =+f0 []         \COpre@action,
+  post-action      =+f0 []         \COpost@action,
+  decls            =+f0 []         \COobject@decl,
+  left-margin      =+l  [15pt]     \@tempdimd,
+  right-margin     =+l  [\@pnumwidth]  \@tempdime,
+  right-adjust     =+l  [\ttl@corr]    \@tempdimb,
+  label-format     =+f0 [\thecontentslabel]  \COnumber@format,
+  label-width      =+l  [15pt]     \@tempdima,
+  title-format     =+f1 [#1]       \COtitle@format,
+  title-format-nolabel =+f1 [\COtitle@format{#1}]  \COtitle@format@nolbl,
+  page-format      =+f1 [#1]       \COpnum@format,
+  leaders-text     =+f0 [.]        \COleaders@action,
+  leaders-width    =+l  [1pc]      \@tempdimc
+ }
+etc.
+
+\bye
+Javier
+

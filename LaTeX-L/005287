@@ -1,0 +1,118 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 11 Sep 2008 08:06:56 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8B66ona029627
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 11 Sep 2008 08:06:51 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8B62EMx013273
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 11 Sep 2008 08:02:14 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AM1F9o017495;
+	Thu, 11 Sep 2008 08:02:13 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 29242 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 11 Sep
+          2008 08:02:12 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8B62CA4017541 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 11 Sep 2008 08:02:12 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.247])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m8B625ll013002 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 11 Sep
+          2008 08:02:11 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so204582rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 10 Sep 2008 23:02:05 -0700
+          (PDT)
+Received: by 10.141.79.12 with SMTP id g12mr1448315rvl.126.1221112925368; Wed,
+          10 Sep 2008 23:02:05 -0700 (PDT)
+Received: from ?10.0.1.102? ( [219.90.231.17]) by mx.google.com with ESMTPS id
+          c20sm13755870rvf.3.2008.09.10.23.02.02 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Wed, 10 Sep 2008 23:02:04 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v928.1)
+References: <48C8AB2F.8020307@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.928.1)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <33E3EF4B-0AB6-454C-96BD-D969D43BB612@gmail.com>
+Date:         Thu, 11 Sep 2008 15:31:59 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Module names
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48C8AB2F.8020307@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 11 Sep 2008 06:06:56.0756 (UTC) FILETIME=[98659B40:01C913D4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5287
+
+On 11/09/2008, at 2:52 PM, Joseph Wright wrote:
+>
+> To get something like a formalised system for modules in general, a
+> simple list of modules would probably suffice.
+
+Before I (or others) reply to those good suggestions, I'll re-post a  
+suggestion made by Philip Lehman a while back (appended).
+
+I quite like this idea. If it's made formal in the \DeclareExplPackage  
+command, then it would be quite possible for CTAN to keep track of the  
+prefixes chosen.
+
+Will
+
+
+Begin forwarded message:
+
+> Here's a suggestion for a poor man's "namespace" protection with
+> Latex. I figured I'd post it here before filing it as a feature
+> suggestion.
+>
+> When writing a class or a package, it's not feasible to use
+> \newcommand all over the place. What most authors do is pick a prefix
+> and hope for the best. So the foobar package might use internal
+> macros like \fb@foo and \fb@bar while the barfoo package would use
+> \bf@foo etc. If there is a conflict, things will likely go wrong in
+> ways which are not transparent to the end-user.
+>
+> How about having something like the following in the kernel:
+>
+> \def\ReserveNamespace#1#2{%
+>  \@ifundefined{ltx@resrvd@#1}
+>    {\@namedef{ltx@resrvd@#1}{#2}}
+>    {\@latex@error
+>      {Namespace `#1' already reserved by `\@nameuse{ltx@resrvd@#1}'}
+>      {The namespace `#1', claimed by `#2', has already
+>       been reserved by `\@nameuse{ltx@resrvd@#1}'.}}}
+> \ReserveNamespace{ltx}{LaTeX}
+>
+> This will permit class/package authors do do the following:
+>
+> \ReserveNamespace{FB}{foobar}
+> \def\FB@foo{...}
+> \newif\ifFB@bar
+> \newcount\FB@cnt
+>
+> ...giving them namespace protection comparable to \newcommand, but in
+> a much more efficient and general way. It may also be worthwhile to
+> integrate that into \ProvidesClass and \ProvidesPackage:
+>
+> \ProvidesPackage[FB]{foobar}[2006/03/05 v1.0 The foobar package]
+> \def\FB@foo{...}
+> \newif\ifFB@bar
+> \newcount\FB@cnt
+>
+> That's probably only relevant for Latex 3...
+

@@ -1,0 +1,93 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2726" "Tue" "9" "September" "1997" "19:12:47" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "56" "Re: HyperLaTeX" "^Date:" nil nil "9" nil "HyperLaTeX" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id TAA19438;
+	Tue, 9 Sep 1997 19:12:23 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.8E4239C7@listserv.gmd.de>; Tue, 9 Sep 1997 19:10:53 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 196264 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 9 Sep 1997 19:11:34 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id TAA08314 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 9 Sep 1997 19:11:30 +0200
+          (MET DST)
+Received: from [130.237.37.75] (sl55.modempool.kth.se [130.237.37.75]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id TAA01647 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 9 Sep 1997 19:12:03 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130501b03b00df675a@[130.237.37.147]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 9 Sep 1997 19:12:47 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: HyperLaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2298
+
+At 12:38 97/09/09, Sebastian Rahtz wrote:
+>I have devoted considerable effort over the last 3 years to a LaTeX
+>package which generates hypertex-style hyperlinks from normal LaTeX
+>markup (the hyperref package).
+
+  I had a brief look at your package. Here are my impressions:
+
+> 1. how to get the real hyperlinks into the output; i don't think this
+>    is LaTeX's job, and it is moderately well understood.
+
+  I understand that the \special{foo} command just puts the text "foo" into
+the output. Perhaps the LaTeX project should define (if not already done) a
+standard to identify which protocol the text belongs to, but no more. For
+example \special{html:foo} would identify "foo" as being html, whereas
+\special{url:foo} would identify "foo" as a URL.
+
+> 2. whether to extend the standard LaTeX command set to include URL
+>    references and point-to-point links (\label isn't really a proper
+>    point), to avoid packages defining their own markup
+
+  I think HyperTeX defines hyperlinks in terms of HTML, as
+\special{html:foo}. My hunch is that this is a bad idea, as HTML is in
+itself a markup language (how to combine the different graphical outputs?).
+The problem is that HTML consists of two parts, the hyperlink stuff and the
+graphical markup stuff, and it is not possible to get only the hyperlink
+stuff.
+
+  One could have two different versions of HyperLaTeX, depending if your
+dvi reader can handle hyperlinks or not.
+
+  It seems me that \label and \bibitem could be used to generate URL names
+(locations within a file), and \ref, \eqref, and \cite could be used to
+generate hyperlinks within a file. For external ref's (to other doc's), one
+could perhaps use LaTeX optional commands
+    \label[ExternalURL]{URLname}
+and so on (see <http://www.w3.org/hypertext/WWW/Addressing/> about URL's).
+In addition, one could add a few commands, such as indicating a base URL if
+wanted, perhaps a special hyperlink button environment, some of the new
+hyperlink stuff in HTML 4 (see <http://www.w3.org/TR/WD-html40-970708/>),
+and so on.
+
+  The idea is that a lot of people already writes manuscripts using \label,
+etc, and one should be able use that contextual information to
+automatically generate helpful hyperlinks.
+
+> 3. whether core LaTeX does need extra hooks for people who writing
+>    hypertext macros.
+
+  This one is related to problems of extending TeX: One would really want
+to be able to define syntactic environments (enhancing TeX's extensible
+grammar to be even more extensible). Not really within the LaTeX3 project,
+then, but LaTeX3 experiences might be an input.
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+

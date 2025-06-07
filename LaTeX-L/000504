@@ -1,0 +1,321 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.929113FC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:08 +0100
+In-Reply-To:  CA_ROWLEY%VAX.ACS.OPEN.AC.UK@vm.gmd.de's message of Sun,              5 Jan 92 21:58:59 GMT <9201060943.AA03003@ufer.ZIB-Berlin.DE>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.929113FC"
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+x-to:         LATEX-L%DHDURZ1.BITNET@vm.gmd.de
+Content-class: urn:content-classes:message
+Subject:      scaling of math fonts
+Date: Tue, 7 Jan 1992 20:10:08 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE8E8@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Rainer Schoepf" <schoepf%SC.ZIB-BERLIN.DE@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 504
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.929113FC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Since I'm "not responsible" I'll throw in what I have...
+
+
+   Here are the types of input required to set-up the tables:
+   something of this form would replace the present collection of
+   \define@mathsizes commands.
+
+   1. Constants:
+
+   \mathsizes@table{%
+   <*5-5.5>{5}{5}{5}%
+   <*5.5-6.5>{6}{5}{5}%
+   <*6.5-7.5>{7}{6}{5}%
+   <*7.5-8.5>{8}{6}{5}%
+   <*8.5-9.5>{9}{7}{5}%
+   <*9.5-10.5>{10}{8}{6}%
+   <*10.5-11.5>{11}{9}{7}%
+   <*11.5-12.5>{12}{10}{8}%
+   )
+
+   [Semantics (eg):
+
+   <*7.5-8.5>{8}{6}{5}%   means that for text-size in the range
+     7.5pt to 8.5pt,
+
+     math-size is 8pt
+     scriptsize is 6pt
+     scriptscriptsize is 5pt ]
+
+OK, but what happens at exactly 5.5? I assume that the first of the
+entries is selected. OK so far, but what if you want to specify
+{5}{5}{5} for everything strictly smaller than 5.5, and {6}{5}{5} for
+>=3D5.5 ? Just asking, it's not clear to me whether this is really a
+problem...probably not.
+
+   2. This one also contains more general linear functions
+   (defined by their end-point values):
+
+Same comment here.
+
+   -----------
+
+   The first time a text-size is called in a document, the result of
+   consulting tables such as the above is stored in the same way as all
+   math-sizes are stored at present; so that the next time that same =
+size
+   is called, the math-sizes are immediately available---no need to
+   analyse the set-up table again.
+
+   ...
+
+   Note that this means that the math-sizes table in use should not be
+   changed within a document.
+
+Yes, but I pointed out before that the relation between \fontsize, and
+the corresponding three mathsizes may change when fonts are changed.
+Example: imagine switching from cm-type fonts to ccr or grotesque-type
+or whatever. It may then be that the math sizes have to be calculated
+anew, in other words, what has been stored before has to be deleted.
+
+I think it is crucial to allow such a change. I *don't* think it has
+to be as efficient as the rest of the font change mechanism.
+
+Finally, something that was only briefly mentioned in our pensees du
+jardin: some dimen parameters should change with the size, e.g. the
+height of \bigggggggggggggg delimiters, or \jot. The idea was to
+record this in the mathsizes table, e.g.
+
+\mathsizes@table{%
+<*5-5.5>{5}{5}{5}{\jot:*1.5-1.8}%
+<*5.5-6.5>{*I}{5}{5}{\jot:*1.8-2}%
+<*6.5-7.5>{*I}{*5-5.5}{5}{\jot:2-2.3}%
+.. da capo at nausea
+}
+
+
+Open questions:
+
+1. Is this a good idea?
+2. If so, which syntax is apropriate?
+
+
+Food for thought, folks!
+
+Rainer
+
+
+
+
+
+
+
+------_=_NextPart_001_01C19443.929113FC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     scaling of math fonts</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Since I'm &quot;not responsible&quot; I'll throw in =
+what I have...</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; Here are the types of input required to =
+set-up the tables:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; something of this form would replace the =
+present collection of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \define@mathsizes commands.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; 1. Constants:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; \mathsizes@table{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*5-5.5&gt;{5}{5}{5}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*5.5-6.5&gt;{6}{5}{5}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*6.5-7.5&gt;{7}{6}{5}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*7.5-8.5&gt;{8}{6}{5}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*8.5-9.5&gt;{9}{7}{5}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*9.5-10.5&gt;{10}{8}{6}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*10.5-11.5&gt;{11}{9}{7}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*11.5-12.5&gt;{12}{10}{8}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; )</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; [Semantics (eg):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; &lt;*7.5-8.5&gt;{8}{6}{5}%&nbsp;&nbsp; =
+means that for text-size in the range</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; 7.5pt to 8.5pt,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; math-size is 8pt</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; scriptsize is 6pt</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; scriptscriptsize is 5pt =
+]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>OK, but what happens at exactly 5.5? I assume that the =
+first of the</FONT>
+
+<BR><FONT SIZE=3D2>entries is selected. OK so far, but what if you want =
+to specify</FONT>
+
+<BR><FONT SIZE=3D2>{5}{5}{5} for everything strictly smaller than 5.5, =
+and {6}{5}{5} for</FONT>
+
+<BR><FONT SIZE=3D2>&gt;=3D5.5 ? Just asking, it's not clear to me =
+whether this is really a</FONT>
+
+<BR><FONT SIZE=3D2>problem...probably not.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; 2. This one also contains more general =
+linear functions</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (defined by their end-point =
+values):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Same comment here.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; -----------</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; The first time a text-size is called in a =
+document, the result of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; consulting tables such as the above is =
+stored in the same way as all</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; math-sizes are stored at present; so =
+that the next time that same size</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; is called, the math-sizes are =
+immediately available---no need to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; analyse the set-up table again.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; Note that this means that the math-sizes =
+table in use should not be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; changed within a document.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, but I pointed out before that the relation =
+between \fontsize, and</FONT>
+
+<BR><FONT SIZE=3D2>the corresponding three mathsizes may change when =
+fonts are changed.</FONT>
+
+<BR><FONT SIZE=3D2>Example: imagine switching from cm-type fonts to ccr =
+or grotesque-type</FONT>
+
+<BR><FONT SIZE=3D2>or whatever. It may then be that the math sizes have =
+to be calculated</FONT>
+
+<BR><FONT SIZE=3D2>anew, in other words, what has been stored before has =
+to be deleted.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think it is crucial to allow such a change. I =
+*don't* think it has</FONT>
+
+<BR><FONT SIZE=3D2>to be as efficient as the rest of the font change =
+mechanism.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Finally, something that was only briefly mentioned in =
+our pensees du</FONT>
+
+<BR><FONT SIZE=3D2>jardin: some dimen parameters should change with the =
+size, e.g. the</FONT>
+
+<BR><FONT SIZE=3D2>height of \bigggggggggggggg delimiters, or \jot. The =
+idea was to</FONT>
+
+<BR><FONT SIZE=3D2>record this in the mathsizes table, e.g.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\mathsizes@table{%</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*5-5.5&gt;{5}{5}{5}{\jot:*1.5-1.8}%</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*5.5-6.5&gt;{*I}{5}{5}{\jot:*1.8-2}%</FONT>
+
+<BR><FONT SIZE=3D2>&lt;*6.5-7.5&gt;{*I}{*5-5.5}{5}{\jot:2-2.3}%</FONT>
+
+<BR><FONT SIZE=3D2>.. da capo at nausea</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Open questions:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1. Is this a good idea?</FONT>
+
+<BR><FONT SIZE=3D2>2. If so, which syntax is apropriate?</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Food for thought, folks!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Rainer</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.929113FC--
+

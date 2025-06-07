@@ -1,0 +1,212 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5436" "Thu" "26" "November" "1998" "13:14:18" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "177" "Re: portable LaTeX" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA22507;
+	Thu, 26 Nov 1998 19:15:03 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.8797A9D7@listserv.gmd.de>; Thu, 26 Nov 1998 19:15:01 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 412598 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 26 Nov 1998 19:14:40 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA20760 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 26 Nov 1998 19:14:32 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          NAA24640 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 26 Nov 1998
+          13:14:19 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          NAA16984 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Thu, 26 Nov 1998 13:14:18
+          -0500 (EST)
+Message-ID:  <199811261814.NAA16984@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 26 Nov 1998 13:14:18 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: portable LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2940
+
+Sebastian writes:
+
+: my apologies. you ARE right about this. though I could and would argue
+: that people who spend 3 days tarting up the look of their grant
+: proposal don't deserve the grant :-}
+
+\ironic{Ummm... is Sebastian displeased with the current fad of PDF
+as an exchange format for grants?  \quotestr{;-\} }
+
+: . . .
+:
+:  > If someone now says why not SGML then: The advantage of LaTeX from the
+:  > author's point of view is that it is a single platform for authoring,
+:  > typesetting and document exchange (where, I believe, the problems can
+: ah, but see  above. is it *so* much harder to type
+
+Now we come to what is, but for trivial transliteration, a matter of
+personal preference:
+
+:  <documentclass name="article/>
+:  <usepackage name="amsmath"/>
+
+amsmath for this?  ;-{
+
+:  <document>
+:  <section>Introduction</section>
+:   <math>a+<sqrt>3</sqrt></math> <!-- or <tex>a+\sqrt{3}</tex> -->
+:  This is <emph>fun</emph>
+:  </document>
+
+This could as well be:
+
+\documenttype{article}
+\title{} % Isn't title formally required by "article" in sebastian.dtd?
+\begin{document}
+\section{Introduction}
+
+$a + \sqrt{3}$ % or ...
+This is \emph{fun}
+\end{document}
+
+If I run this markup through my elisp, I get the following sgml:
+
+<!DOCTYPE article SYSTEM "gellmu.dtd"><article><preamble>
+<title></title> <cs0/
+</preamble><body>
+<section>Introduction</section>
+<parb>
+<tmath>a + <sqrt>3</sqrt></tmath> <cs0/
+This is <emph>fun</emph>
+</body>
+</article>
+
+If I run this sgml through my sgml processor for the target "Lamport
+LaTeX", I get the following, most of which is boiler plate based on
+personal preferences, some of which is unused in this instance:
+
+% LaTeX
+\documentclass{article}
+\setlength{\parindent}{6bp}
+\setlength{\topmargin}{0bp}
+\setlength{\headheight}{0bp}
+\setlength{\headsep}{0bp}
+\setlength{\oddsidemargin}{0bp}
+\setlength{\evensidemargin}{0bp}
+\setlength{\textwidth}{468bp}
+\setlength{\textheight}{624bp}
+\setlength{\parskip}{6bp}
+\thispagestyle{empty}
+\title{}
+ %cs0
+\newcommand{\hsf}{\hspace*{\fill}}
+\newcommand{\tdbc}[1]{\hsf{\bf #1}\hsf}
+\newenvironment{menulist}{
+\begin{list}{}{
+\setlength{\topsep}{0bp}
+\setlength{\labelwidth}{0bp}
+\setlength{\leftmargin}{2\parindent}
+\setlength{\itemindent}{0bp}
+\setlength{\itemsep}{0bp}
+\setlength{\parsep}{0bp}}
+}{\end{list}}
+\newenvironment{citations}{
+\begin{list}{}{
+\setlength{\topsep}{0bp}
+\setlength{\labelwidth}{0bp}
+\setlength{\leftmargin}{24bp}
+\setlength{\labelsep}{0bp}
+\setlength{\itemindent}{-24bp}
+\setlength{\itemsep}{3bp}
+\setlength{\parsep}{0bp}}
+}{\end{list}}
+\begin{document}
+\begin{center}\LARGE\bf
+
+\end{center}
+
+\medskip
+\section{Introduction}
+\par{\(a + \sqrt{3}\)  %cs0
+This is \emph{fun}
+}
+
+
+\bigskip
+
+[Processed from GELLMU to \LaTeX{} on Thu Nov 26 12:16:37 EST 1998]
+\end{document}
+
+(The empty "center" is for an article title.)
+
+If I run the sgml through my sgml processor for the target "HTML",
+I get, again with personal boiler plate:
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<link rev=made href="mailto:hammond@math.albany.edu">
+<title>A GELLMU Demonstration</title>
+</head>
+<body bgcolor="#ffffff" text="#000000"
+link="#0000ee" vlink="#0000bb" alink="#ff0000">
+<h1 align=center></h1>
+
+<h3 align=center>1.  Introduction</h3>
+
+<p>
+a + SQRT{3}
+This is <em>fun</em></p>
+<hr>
+<a href="http://math.albany.edu:8000/math/pers/hammond/">AUTHOR</a>
+&nbsp;|&nbsp;
+<a href="mailto:hammond@math.albany.edu">COMMENT</a>
+<br>&nbsp;<br>
+[Processed from <a href="http://math.albany.edu:8000/math/pers/hammond/igl.html">GELLMU</a> to HTML: Thu Nov 26 12:16:35 EST 1998]
+</body>
+</html>
+
+(Under "gellmu.dtd" there is a "surtitle" that is translated here for
+HTML as the HTML "title" with a default value in my sgml processor that
+is shown above; a GELLMU "title" is translated by this processor for
+HTML as the first "H1" header.)
+
+(Yes, there is a control of front matter unless you don't want it.)
+
+The main idea is that this type of markup is amenable to robust
+processing toward *any* target once an sgml processor for that target
+is created.  Creating such a processor can be as easy as writing a
+Perl function for each tag; that might even be easier than writing a
+"style".
+
+Note that this approach is different from that of James Clark's "jade"
+which "centralizes" style for all "backends" using a DSSSL stylesheet
+for each document type.  In the example above there is only a single
+document type "article" at hand.
+
+(The issue between my approach and that of "jade" *may* be how fussy
+an author or publisher wishes to be.  (What may be good enough for
+"government work" *may* not be good enough for "elitist work".)  Note
+that one of the possible outputs for jade is another sgml.  It might
+make sense in my view to go part of the way with jade and then from
+there split off for different targets.  Many options exist.)
+
+It would be easy to write a processor to convert the sgml to xml.
+(Some may be already out there, but I have no present need for that.)
+
+(Would someone like to write a processor for (a) plain TeX?
+(b) Texinfo?  (c) text/x-yahoo-catalog?)
+
+For a processor to render sanely to MathML without much guessing (some
+guessing may be more reasonable than other guessing) some clues about
+notational meaning will need to be entered.  Has anybody read my
+drafty draft on "mathexpr" (cf. "regexp") at the url
+http://www.albany.edu/~hammond/gellmu/notation  ? ? ?
+
+                                   -- Bill
+

@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 2 Sep 2007 00:09:50 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l81M9jZa010005
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 2 Sep 2007 00:09:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l81M48oW030003
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 2 Sep 2007 00:04:08 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l81M14dt030821;
+	Sun, 2 Sep 2007 00:03:45 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 113786 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 2 Sep
+          2007 00:03:44 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l81M3ihJ031176 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 2 Sep 2007 00:03:44 +0200
+Received: from nf-out-0910.google.com (nf-out-0910.google.com [64.233.182.191])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          l81M3eBC029657 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 2 Sep
+          2007 00:03:44 +0200
+Received: by nf-out-0910.google.com with SMTP id b21so957094nfd for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 01 Sep 2007 15:03:40 -0700
+          (PDT)
+Received: by 10.78.145.5 with SMTP id s5mr2372687hud.1188684220207; Sat, 01 Sep
+          2007 15:03:40 -0700 (PDT)
+Received: from mortens-ibook.local ( [89.150.77.223]) by mx.google.com with
+          ESMTPS id 39sm823390ugb.2007.09.01.15.03.26 (version=SSLv3
+          cipher=OTHER); Sat, 01 Sep 2007 15:03:39 -0700 (PDT)
+Content-Type: text/plain; format=flowed; delsp=yes; charset=iso-8859-1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+User-Agent: Opera Mail/9.23 (MacPPC)
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <op.txzwvih5jli536@mortens-ibook.local>
+Date:         Sun, 2 Sep 2007 00:03:08 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?iso-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: expl3 updates
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 Sep 2007 22:09:51.0115 (UTC) FILETIME=[D1472DB0:01C7ECE4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5034
+
+Hi all,
+
+Some changes have happened to the expl3 code and the dtx files from which  
+it is generated affecting usage of the files.
+
+\GetIdInfo now extracts all data fields from a cvs or svn Id and stores  
+them in separate control sequences. It does no longer pretend to be too  
+clever by also doing \ProvidesPackage as not all generated files are  
+actually packages. Instead there is \ProvidesExplPackage and  
+\ProvidesExplClass. A class or package should identify itself as
+
+\RequirePackage{l3names}% defines \ProvidesExplPackage
+\ProvidesExplPackage{<name>}{<date>}{<version>}{<description>}
+
+Or alternatively as
+
+\RequirePackage{l3names}%
+\GetIdInfo$Id: myfile.dtx 101 2007-06-08 15:27:03Z myname $
+        {My super duper package}
+\ProvidesExplPackage
+   {\filename}{\filedate}{\fileversion}{\filedescription}
+
+ From this point on in the file the expl syntax is on for the duration of  
+the class/package but it is switched off and on again as appropriate when  
+loading other classes or packages.
+
+These changes ought to make it a lot easier to use the packages within  
+regular LaTeX. So far the packages in xbase, galley and xinitials have  
+been updated along with the expl3 files. Note that all files require  
+l3names.sty to compile the documentation. See also documentation in  
+l3names.
+
+Have fun,
+-- 
+Morten
+

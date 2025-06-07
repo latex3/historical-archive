@@ -1,0 +1,59 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1666" "Fri" "5" "November" "93" "15:24:03" "+0000" "Paul Taylor" "pt@DOC.IMPERIAL.AC.UK" nil "32" "\\tenrm etc commands in pictex and xfig" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA00508; Fri, 5 Nov 93 16:26:55 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA00730; Fri, 5 Nov 93 16:26:52 +0100
+Message-Id: <9311051526.AA00730@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 6791; Fri, 05 Nov 93 16:25:36 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1683;
+ Fri, 05 Nov 93 16:25:34 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1681;
+ Fri, 05 Nov 93 16:25:31 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 5 Nov 93 15:24:03 +0000
+From: Paul Taylor <pt@DOC.IMPERIAL.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      \tenrm etc commands in pictex and xfig
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1096
+
+
+Uwe Muench points out that pictex and xfig generate commands like \tenrm.
+
+In fact pictex has about one such command (I'm speaking from memory here)
+for defining its "dot" (of which it uses some thousands to draw your pictures).
+This could easily be changed if we put pressure on the author.
+
+xfig doesn't generate these commands - the translation program fig2dev
+(of which older versions are called fig2latex etc) does, and it creates
+them textually from "ten" and "rm", where these are looked up in a table
+indexed by the size and font you select in the fig version of the picture.
+Again by modifying the program fig2dev these can be eliminated.  In my view
+(and in our local installation) it should use \normalsize\rm etc instead
+of the absolute point size.
+
+As far as LaTeX2e is concerned, I suggest that these commands be provided
+in a single style option (sizefont.sty say) rather than included in the
+main code.  So long as there is a LOUD message on the installation notes
+(maybe in the LaTeX banner) telling users
+	"if you get \tenrm (etc) undefined, use sizefont.sty"
+it's reasonable to exclude this from the reverse compatibility.
+
+(Unfortunately one of the features, besides a lack of campatibility,
+of Frank & Rainer's otherwise excellent code which I have noticed from
+several examples is that unless you read the instructions VERY carefully,
+it does nothing, silently. This was my first experience of NFSS, and again
+when I used DOC: unless you say \CodelineIndex, \InputIndex does nothing.)
+
+Paul Taylor
+
+PS I have other points to make about the general LaTeX2e/NFSS issues,
+but shall wait until I've read the rest of discussion before making them.
+

@@ -1,0 +1,86 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1364" "Sat" "21" "June" "1997" "21:03:14" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "45" "another problem with Russian typesetting" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id TAA16252; Sat, 21 Jun 1997 19:03:45 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.44E3044C@listserv.gmd.de>; Sat, 21 Jun 1997 19:03:29 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 157540 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 21 Jun 1997 19:03:24 +0200
+Received: from cc.vsu.ru ([194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id TAA03183 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 21 Jun 1997 19:03:16
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id VAA20259 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 21 Jun 1997
+          21:02:09 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id VAA03409 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Sat, 21 Jun 1997 21:03:15 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <m0wfOqD-000OVxC@dcarlisle.demon.co.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33AC0952.2B54A32E@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 21 Jun 1997 21:03:14 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      another problem with Russian typesetting
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2159
+
+Hello,
+
+David Carlisle wrote:
+
+> > \LCY-cmd contains an explicit warning \@inmathwarn.
+>
+> Inputenc currently enforces all characters to be declared as text or
+> math, but not both. (Allowing use of both in general is very expensive
+> as normally in text mode it uses \chardef, but \chardef'ed tokens
+> don't work in math mode, so it would require twice as many csnames, so
+> that some math-mode version could be declared as well (cf
+> \textsterling and \mathsterling, and \pounds which uses one or the other)
+> However it may be possible to do something in this case.
+
+Consider the following LaTeX file:
+
+\documentclass{article}
+
+\usepackage[english,russian]{babel}
+\usepackage[koi8-r]{inputenc}
+
+\begin{document}
+
+\chardef\newCYRA=128
+\chardef\newCYRB=129
+\chardef\newCYRV=130
+
+$\cyrmathit{\newCYRA\newCYRB\newCYRV}$  % this works well
+
+$\cyrmathit{\CYRA\CYRB\CYRV}$           % this produces warnings
+                                        % and does not work
+
+\end{document}
+
+If we simply define russian characters via \chardef, then we are able to
+use them in math mode.
+But when we declare them via \DeclareTextSymbol, we are not able to
+use them in math mode. :-(
+
+Probably, either the definition of \DeclareTextSymbol should be changed,
+or the new \Declare* command should be added to avoid this `bug'.
+
+--
+With best regards,
+                   Vladimir.
+

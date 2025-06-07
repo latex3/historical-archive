@@ -1,0 +1,62 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1278" "Fri" "20" "November" "92" "17:40:09" "+0100" "kris@DIKU.DK" "kris@DIKU.DK" nil "34" "Indexing" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA19242; Fri, 20 Nov 92 17:41:25 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA24035; Fri, 20 Nov 92 17:41:21 +0100
+Message-Id: <9211201641.AA24035@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1820; Fri, 20 Nov 92 17:40:59 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0627;
+ Fri, 20 Nov 92 17:40:54 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0624;
+ Fri, 20 Nov 92 17:40:50 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <9211201241.AA04415@odin.diku.dk>
+Date:         Fri, 20 Nov 92 17:40:09 +0100
+From: kris@DIKU.DK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Indexing
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 868
+
+
+> How would a LaTeX3 user tell the indexing program how to sort? E.g. if
+> I were an English speaker I might want to sort \aa{} as a, but as a
+> Norwegian I would want it in its proper place after \ae{} and \o{}.
+> ...
+
+Sorting is quite easy if you use BibTeX---and in fact BibTeX makes
+other indexing programs superfluous!  The idea is simple: let the
+document generate an INDEX.BIB file (*not* INDEX.AUX) containing lines
+like
+
+    @indexentry{name, word = "Word", page = p}
+
+and process that with BibTeX using a default INDEX.AUX with just
+
+    \bibstyle{INDEX}
+    \bibdata{INDEX}
+    \citation{*}
+
+in it using some simple style INDEX.BST that just sorts by Word-p and generates
+an output INDEX.BBL with lines on the form
+
+    \indexentry{Word}{n}
+
+which may then in turn be used to generate an index by letting TeX
+group the entries of the same!  Then you just have to configure BibTeX
+to sort in exotic ways...which you'll need anyway for your
+bibliography to be sorted right.
+
+Regards,
+______________________________________________________________________
+Kristoffer H{\o}gsbro ROSE                      Internet: kris@diku.dk
+DIKU (Semantics group), University of Copenhagen   Voice: +45 35321420
+Universitetsparken 1, DK-2100 Copenhagen {\O}        Fax: +45 35321401
+

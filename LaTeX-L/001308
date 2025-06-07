@@ -1,0 +1,100 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3545" "Wed" "26" "January" "1994" "15:20:11" "GMT" "David Rhead" "David_Rhead@VME.CCC.NOTTINGHAM.AC.UK" "<199401261530.AA07869@mail.cs.tu-berlin.de>" "69" "Mapping a structure onto a design" "^Date:" nil nil "1" "1994012615:20:11" "Mapping a structure onto a design" (number " " mark "     David Rhead       Jan 26   69/3545  " thread-indent "\"Mapping a structure onto a design\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09828; Wed, 26 Jan 94 16:30:44 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA27381; Wed, 26 Jan 94 16:30:10 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA07869
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 26 Jan 1994 16:30:08 +0100
+Message-Id: <199401261530.AA07869@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3011; Wed, 26 Jan 94 16:28:18 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3010; Wed,
+ 26 Jan 1994 16:28:18 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9873; Wed,
+ 26 Jan 1994 16:27:50 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 26 Jan 1994 15:20:11 GMT
+From: David Rhead <David_Rhead@VME.CCC.NOTTINGHAM.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Mapping a structure onto a design
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1308
+
+I assume that with Sebastian's
+     i think my colleagues in the US should suffer too by saying
+     \documentclass[lettersize]{...} in every job.
+we've now moved on to questions about LaTeX3 (since LaTeX2e was a
+consilidation exercise, and I don't expect that Frank and Co. will
+want to mess around with "the standard styles" prior to LaTeX3).
+
+My understanding was that, for LaTeX3, we could go back to the drawing
+board for such things (although there might be an obligation to provide a
+backwards compatibility module, so that 2.09 \documentstyle and 2e
+\documentclass still work).
+
+If we are going back to the drawing board, I think that it would be nice to
+get rid of as much as possible of the current confusion between structure
+and design in the current \document...  things.  (What's "report"?  Is it a
+structure?  Is it a design?  What is different between "book" and "report"?
+[Structure: only absence of "abstract", I think.  Design: quite a bit.] )
+E.g., could we have
+     \mapping{structure}{design}
+In the article case, we'd have to decide what structure an article has
+(DTD, if you like).  In general, this would be mapped to an "article
+design" for a particular publisher.  E.g., (ignoring MS-DOS filename
+limits) could we have
+     \mapping{article}{espart}
+and
+     \mapping{article}{amspreprint}
+for "map the article structure onto the Elsevier Science Publishers article
+design" or "map the article structure onto the AMS preprint design",
+perhaps?
+
+How would "analogues of the 2.09/2e standard styles" fit into this?
+Could one have things like
+     \mapping{article}{default-article}
+     \mapping{article}{US-default-article}
+     \mapping{article}{A4-default-article}
+for example?  Here default-article could
+either be a design that will fit onto both US and A4 laserprinter paper.
+       "Too short for A4, too narrow for US, but never mind, it's only
+       intended for pre-prints."
+or     could be installation-dependent.  It could be set at installation
+       to either US-default-article or A4-default-article.
+Either way
+     \mapping{article}{default-article}
+would
+*  be OK for stuff that is to be e-mailed.  It could cross the Atlantic,
+   and still give something that will fit on a laserprinter at the other
+   end.  (Neither Barbara nor Sebastian would have to change a
+     \mapping{article}{default-article}
+   file that the other one sent to them.)
+*  keep people's expectations of "the design" down.  It's only "the default".
+   It's not the only thing that LaTeX3 can do.  LaTeX3 needn't be "badly
+   regarded" just because people don't like "the default design".
+*  anyone who receives such stuff and doesn't like the default design can
+   change it to
+     \mapping{article}{my-favourite-article}
+   before LaTeX3-ing it (since they will be clear that the structure is
+   article).
+
+Perhaps some non-default designs could come in "the LaTeX3 kit" too -- not
+to provide "everything for everyone", but as a set of typical examples to
+illustrate the tricks that people may need to use to get what they want.
+But I'd have thought that it would be sufficient to put a comment in the
+code saying "this is designed for ...-size paper", or to get LaTeX3 to
+print crop-marks.  I don't see that such "example non-default designs" need
+attempt to support optional arguments such as A4, letter, 10pt, 11pt, 12pt,
+twocolumn.  It isn't reasonable to expect that all permutations of all such
+arguments are going to give "good designs".
+
+                                                                David Rhead
+

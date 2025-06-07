@@ -1,0 +1,121 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 8 Feb 2008 22:09:12 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m18L98iV003128
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 8 Feb 2008 22:09:11 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m18KsiWE026216
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 8 Feb 2008 21:54:45 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m18APLrT027907;
+	Fri, 8 Feb 2008 21:58:20 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 211248 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 8 Feb
+          2008 21:58:20 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m18KwK7a017994 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 8 Feb 2008 21:58:20 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.179]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m18KsOjD025769 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 8 Feb 2008 21:54:28 +0100
+Received: from morse.mittelbach-online.de (p4FD45E1E.dip.t-dialin.net
+          [79.212.94.30]) by mrelayeu.kundenserver.de (node=mrelayeu2) with
+          ESMTP (Nemesis) id 0MKwtQ-1JNaIY2U10-0002mX; Fri, 08 Feb 2008
+          21:58:14 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id BFC4923492; Fri,  8 Feb 2008 21:58:10 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <554562.68625.qm@web82005.mail.mud.yahoo.com>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1/iCG9ic/O12CdV8+SC3gZfMqHyyuYUPKJY4SE
+              zBjr+mjUncsEbU5xFCEZV8NqhmYtRitgQyCmP7AJsn/K3lqaTT
+              BhFRmhbvmtj6G6IJKZ5rlo0163TMwga
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18348.49762.276704.111827@morse.mittelbach-online.de>
+Date:         Fri, 8 Feb 2008 21:58:10 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Internal and external page setup control
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <554562.68625.qm@web82005.mail.mud.yahoo.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Feb 2008 21:09:12.0147 (UTC) FILETIME=[DA60BA30:01C86A96]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5159
+
+Hi Paul,
+
+ > Ha! I do this in newlfm.  What I do is specify page dimensions in a
+ > register.  During shipout, after shipping out the old page, I bring the new
+ > dimensions in and substitute for the old. 
+
+so far so good. clearly one has to store changes somewhere and then use them
+in the OR to change things for the next page. But I fear that your code
+exhibits precisely the problems that I was talking about. You see, for the
+application you mention (e.g., changing the first page on a letter or article)
+that will work out fine, but the problems come when you are in the middle of
+the document and you have many waiting floats to take up space.
+
+so how do you specify the values for your registers inside the document?
+
+assuming you have some command do do this, this command will be seen by LaTeX
+somewhere in the document and at this point your registers for the "next" page
+will change. but effectively the text surrounding this command may be typeset
+on a later page (potentially more than one page ahead). so in the end you will
+have the effect that some code that you placed on page 5 (in the final
+document) changes the page setting on page 3 or 4.
+
+if everything is tied to explicit page breaks then things are not too bad but
+if not then you are in trouble especially if you page make up is a little more
+complicated than just cutting columns, ie if it involves floats, and possibly
+changes to the vertical dimensions of the columns.
+
+just thing about a command that allows me to specify how floats can be layed
+out on a particular page (like on this page i don't want to have bottom floats
+or on this page I don't want any floats, to use some simple ones. so if such a
+command is placed directly into the input stream a user would expect to see it
+acting on the page where the surrounding text finally falls. and there is the
+catch: you can even envision kind of "impossible documents" ie those the never
+finish compiling: one iteration you get this command on page 4 say but you
+already use a float on that page when you encounter it. so you iterate and on
+the next run you use this specific layout with no floats on page 4 but doing
+so you put more (or less depending on the style) text onto this page therefore
+you command moves to another page. which is then wrong, so you iterate and by
+doing so you move the command again to ...
+
+in current LaTeX the algorithms are simple enough to prevent this from
+happening as something like \thispagestyle{foo} will not change the textual
+page content. The only way to get this behavior right now is by using roman
+numerals as page number and do reference to pages inside the text. if you
+carefully construct such a document you can get this behavior because the
+length of the number sequence in roman numerals is not steadily
+increasing. but this is so rare and difficult to do that nearly nobody ever
+saw that in real life. with more complicated placement algorithms for floats
+and vertical column sizes this danger becomes a reality if you allow to change
+the algorithm midway from within the document. 
+
+So I'm still wondering about how to best specify such changes. If only allowed
+from the outside things are easy but if from the inside it is tricky as you
+can't explain to somebody. "well, just place your command between the words
+shown on page 5 to change the look and feel on page 4"
+
+cheers
+frank
+

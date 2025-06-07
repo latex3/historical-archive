@@ -1,0 +1,184 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6263" "Sat" "14" "June" "1997" "22:32:05" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "142" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id UAA03204; Sat, 14 Jun 1997 20:54:31 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.9E456090@listserv.gmd.de>; Sat, 14 Jun 1997 20:54:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153213 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 14 Jun 1997 20:54:27 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id UAA00123 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 14 Jun 1997 20:54:07
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id WAA14112 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 14 Jun 1997
+          22:52:35 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id WAA00586 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Sat, 14 Jun 1997 22:32:06 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <33A081E1.2201C3C8@vvv.vsu.ru>
+            <199706132120.XAA00649@frank.zdv.uni-mainz.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A2E3A5.438639F5@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 14 Jun 1997 22:32:05 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2038
+
+Hello,
+
+Frank Mittelbach wrote:
+
+>  > This is my first post to this mailing list, so I'm sorry.
+>
+> why being sorry for that?
+
+May be, I'll say something which is off-topick, or so... :-)
+
+> you pick up on a disscusion that happened
+> not too long ago on this list and with a new topic
+
+Oh, it's very good.
+
+[...]
+
+> therefore, to support fonts with different encodings within the same
+> paragraph (you don't even need different languages since in tex
+> hyphenation is tied to the font encoding so you need different
+> patterns for different fonts even for the same language) we have to
+> enforce a single lccode table.
+>
+> that's an unfortunate fact of life.
+
+But... Consider, e.g. a russian language. It is not like most european
+languages, since all the russian letters have codes above 128
+(well, except the LWN encoding, which is of course not a `native' encoding).
+
+Because of this, it is possible, for example, to `combine' one
+of european languages (most offten English) and Russian language
+as a *one* `combined' language. I.e. it will be \language0,
+with hyphenation patterns loaded for English and Russian
+(it is possible, because the codes of english letters do not
+intersect with the codes of russian ones). If this is done,
+there is no need to switch the language, and hyphenation
+will be correct for both English and Russian text.
+Moreover, if one needs to use some third language in the same
+document, he can easily do this using Babel system.
+
+Next, when somebody uses Russian language in his TeX document,
+very offten the other language(s) used in the same document
+will have the codes of it's letters below 128. So,
+why not to allow Babel to change lccodes for Russian
+in this case?
+
+The change of lccodes and uccodes for Russian language is very useful
+because the most common russian encodings `conflict' with
+the `built-in' setting of lccodes and uccodes in LaTeX. :-(
+
+> now that doesn't help very much, i agree. so the questions we have to
+> ask is what can be done about it
+>
+>  a) just support a single lccode table
+>
+>  b) don't care about rubbish hyphenation when languages are mixed
+>     and allow for several hyphenation tables
+>
+>  c) allow to change lccode tables only between paragraphs and disable
+>     hyphenation within language fragments in a paragraph that do not have
+>     the have the right (meaning: current) lccode table
+
+O, this will be *very* useful...
+
+>  d) hope for a successor to TeX to fix it
+
+And this is an ideal...
+
+> right now we basically have situation a) which means LaTeX does not
+> support changing the lccode table. this does not mean that packages
+> can't do it but any such code is likely to break at some time in the
+> future and we, from the LaTeX3 project don't feel able to support
+> problems with a LaTeX system that does use a modified table. in
+> addition documents written for such a system will produce strange
+> results on others, ie we can't have portability there and definitely
+> not real multi-lingual.
+
+IMHO, if we have e.g. a russian-english document, then the results
+will be the same on all TeX systems (because English does not use
+characters with codes above 128). The strange results
+in this case will be if one will use some third language which
+also significantly uses the high half of ASCII table...
+
+> b) means putting lccode changes into the framework of Babel as it is
+> now. that is sometimes done right now and Babel supports setting any
+> resetting things when entering or leaving a language environment so if
+> you are happy with those poor results when mixing language that sort
+> of works
+
+BTW, I'm now trying to improve support of russian LCY encoding
+in babel. The variant with using \babel@savevariable
+inside of \addto\extrasrussian to save all lccode, uccode, sfcode
+and mathcode values for all 66 russian letters (33 upper case+ 33 lower case)
+works, but very slow. I have a significant delays on my P100
+when I use this variant. It is strange. because if I simply
+define these lccode, uccode, sfcode and mathcode values
+just after \usepackage{babel} (which is wrong because it
+defines these registers globally and without a proper restoration),
+this works very quickly.
+
+> c) is the situation where i think we can get to as long as we use TeX
+> as a basis and it is the scheme i intend to adopt for the new language
+> interface for LaTeX for which the conceptual work is mostly done and
+> trial implementation is done in parts.  this would give a clean
+> interface and only minor inconvenience, ie, if languages are mixed
+> within a paragraph then LaTeX will not not hyphenate part of it
+> (warning you about it) and you have to put in explicit hyphens there.
+> but it would not produce rubbish in this case, eg something you do
+> only notice after publication.
+
+Ok, I'll wait for this nice feature. Will it appear in LaTeX2e soon?
+
+>  > Here I see another problem. Consider some multilingual
+>  > phrase and let's assume that we need to do
+>  > \uppercase{} or \lowercase{} of this phrase. If the languages contained
+>  > in this phrase have a conflicting \lccode and \uccode
+>  > values, than the result of \uppercase{} will be incorrect.
+>  > However, some time ago I solved this problem by redefining
+>  > TeX's builtins \uppercase and \lowercase so that
+>  > these new macros split the multilingual phrase into
+>  > one-language pieces and do \uppercase of these pieces,
+>  > and then merge them again.
+>
+> again a deficiency of TeX that really isn't solvable generally, yes
+> you can do some hacks by trying to write your own interpreter within
+> TeX but it is so easy to make it fall over, just think about the user
+> putting something in a macro to save typing, so how do you find those
+> hidden language changes?
+
+I will simply \edef{} the argument of \uppercase before
+processing it, -- so all macros should be `expanded'.
+I'm sending these macros to this lish in a sepatate letter.
+
+> reliably this can right now only be solved by using uppercase fonts in
+> such places. Or, using Omega ...
+
+Unfortunately, I haven't yet tried to use Omega... I only read something
+about e-TeX, and it is nice that the work on improving TeX is going on...
+But I'd like it to go more quickly and co-ordinately... :-)
+
+With best regards,
+                   Vladimir.
+

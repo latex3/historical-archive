@@ -1,0 +1,351 @@
+X-VM-v5-Data: ([nil nil nil nil nil t nil nil nil]
+	["10547" "Fri" "10" "December" "93" "19:24:21" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" nil "320" "deferred loading of math fonts" "^Date:" nil nil "12" nil nil])
+Return-Path: <LATEX-L@vm.hd-net.uni-heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA22743; Mon, 13 Dec 93 10:01:23 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA05314; Mon, 13 Dec 93 10:01:08 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA17663
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 13 Dec 1993 10:00:56 +0100
+Message-Id: <199312130900.AA17663@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3321; Mon, 13 Dec 93 09:57:43 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3306; Mon,
+ 13 Dec 1993 09:57:43 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 3393; Sun,
+ 12 Dec 1993 02:44:15 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 10 Dec 93 19:24:21 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      deferred loading of math fonts
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1197
+
+
+
+Some time ago we had a discussion on the amount of fonts used by NFSS
+in different sizes. Below is a piece of code that could be described
+as being partly the result of this discussion. I can't claim that this
+is tested and i don't have the time to do it right now but perhaps
+some of you running NFSS2 might be interested in doing this.
+
+enjoy
+
+frank
+
+--------------- a driver file for 2.09:   mdisplay.drv
+
+\documentstyle[doc]{article}
+
+\CodelineIndex
+\MakeShortVerb{\|}
+
+\input{mdisplay.dtx}  % to test it on itself
+
+\begin{document}
+\DocInput{mdisplay.dtx}
+\end{document}
+
+--------------- the code: mdisplay.dtx
+
+% \CheckSum{131}
+%
+% \section{Introduction}
+%
+% As suggested by \meta{name?} the math font handling of NFSS2 could
+% be improved by avoiding a global change of all math fonts whenever
+% the current text size is changed. Instead, the math font setup could
+% be deferred until it is actually needed, i.e., until a formula is
+% encountered in the new size.
+%
+% This file implements his suggestion. The amount of code change is
+% not very high but there are a few subtle points.
+%
+% This code is by no means tested, I can only claim that it works
+% correctly for the example below; but I think the algorithm is
+% basically sound.
+%
+% I believe that for most type of applications NFSS will slightly gain
+% in speed, however it is trivial to show that this is not true for
+% all possible applications.
+%
+%
+% \section{Outline of algorithm}
+%
+% \TeX{} uses the the math fonts that are current when the end of a
+% formula is reached. If we don't want to keep font setups local to
+% every formula (which would result in an enormous overhead, we have
+% to be careful not to end up with the wrong setup in case formulas
+% are nested, e.g., we need to be able to handle
+% \begin{verbatim}
+% $ a=b+c \mbox{ \small for all $b$ and $c\in Z$}$
+%\end{verbatim}
+% Here the inner formulae |b| and |c\in Z| are typeset in |\small| but
+% we have to return to |\normalsize| before we reach the closing |$|
+% of the outer formula.
+%
+% This is handled in the following way:
+% \begin{enumerate}
+% \item At any point in the document the global variable
+%   |\gbl@currsize| contains the point size for which the math fonts
+%   currently are set up.
+%
+% \item \label{it:everymath} Whenever we start a formula we compare
+%   its value with the local variable |\f@size| that describes the
+%   current text font size.
+%
+% \item If both are the same we assume that we can use the current
+%   math font setup without adjustment.
+%
+% \item \label{it:everymathend} If they differ we call |\gbl@settings|
+%   which changes the math font setup and updates |\gbl@settings|.
+%   \begin{enumerate}
+% \item If we are recursivly inside another formula (|\if@inmath|) we
+%      ensure that |\gbl@settings| is executed again in the outer
+%      formula, so that the old setup is automatically restored.
+% \item Otherwise, we set the switch |@inmath| locally to |true| so
+%      that all nested formulae will be able to detect that they are
+%      nested in some outer formula.
+%   \end{enumerate}
+% \end{enumerate}
+%
+%
+% The above algorithm has the following features:
+% \begin{itemize}
+% \item For sizes which are not containing any formula no math setup
+%   is done. Compared to the original algorithm of NFSS this results
+%   in the following savings:
+%   \begin{itemize}
+%   \item No unnecessary loading of math fonts for sizes that are not
+%      used to typeset any math formulae (explict or implicit ones).
+%   \item No time overhead due to unnecessary changes of the math font
+%      setup on entrance and exit of the text font size.
+%   \end{itemize}
+%
+% \item Math font setup changes for top-level formulae will survive
+%   (there is% no restauration after the formula) thus any following
+%   formula in the same size will be directly typsetable. Compared to
+%   NFSS2 the new algorithm has the overhead of one test per formula
+%   to see if the current math setup is valid (in the original
+%   algorithm the setup was always valid, thus no test was necessary).
+%
+% \item In nested formulae the math font setup is restored in the
+%   outer formula by a series of |\aftergroup| commands and checks.
+%   Compared to the original algorithm this involves additional checks
+%   ($2 \times \langle\mbox{non-math levels}\rangle$ per inner
+%   formula).
+%
+% \end{itemize}
+%
+% \StopEventually{}
+%
+% \section{The Code}
+%
+%    \begin{macrocode}
+\makeatletter
+%    \end{macrocode}
+%
+% If \TeX{} would support a hook just before the end of a formula
+% (opposite of |\everymath| so to speak) the implementation of the
+% algorithm would be much simpler because in that case we would set up
+% the correct math fonts at this point without having to worry about
+% incorrect settings due to nesting. The same would be true if in
+% \LaTeX{} the use of |$| (as the primitive \TeX{} command) would be
+% impossible and instead only a higher-level interface would be
+% available. Note that this does not mean that a |$| couldn't be the
+% short-hand for starting and stopping that higher-level interface, it
+% only means that the direct \TeX{} function must be hidden.
+%
+% Anyway, since we don't have this and won't have it in \LaTeXe{} we
+% need to implement it in a somewhat slower way.
+%
+% We test for the current setup on entry of a formula, i.e., on the
+% hooks |\everymath| and |\everydisplay|. But since these hooks may
+% contain user data we provide ourselves with an internal version of
+% these hooks which stays frozen.
+%
+% \begin{macro}{\frozen@everymath}
+% \begin{macro}{\frozen@everydisplay}
+%    New internal names for |\everymath| and |\everydisplay|.
+%    \begin{macrocode}
+\let\frozen@everymath\everymath
+\let\frozen@everydisplay\everydisplay
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\everymath}
+% \begin{macro}{\everydisplay}
+%    Now we provide now user hooks that will be called in the frozen
+%    internals.
+%    \begin{macrocode}
+\newtoks\everymath
+\newtoks\everydisplay
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\frozen@everymath}
+%    Now we define the behaviour of the frozen hooks: first check the
+%    math setup then call the user hook.
+%    \begin{macrocode}
+\frozen@everymath = {\check@mathfonts
+                     \the\everymath}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\frozen@everydisplay}
+%    Ditto for the display hook.
+%    \begin{macrocode}
+\frozen@everydisplay = {\check@mathfonts
+                        \the\everydisplay}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\if@inmath}
+%    To detect nested formulae we need a switch.
+%    \begin{macrocode}
+\newif\if@inmath
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\check@mathfonts}
+%    In the |\check@mathfonts| macros we implement the steps
+%    \ref{it:everymath} to \ref{it:everymathend}.
+%    \begin{macrocode}
+\def\check@mathfonts{%
+  \ifx \glb@currsize \f@size
+  \else
+     \glb@settings
+  \fi
+%    \end{macrocode}
+%    If we are recursivly inside another formula we issue
+%    |\resglb@settings| to restore the setup on the other level.
+%    \begin{macrocode}
+  \if@inmath
+     \aftergroup\restglb@settings
+  \else
+     \@inmathtrue
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\restglb@settings}
+%    This macro will be executed the first time after the current
+%    formula. However, its real work must be done one or more levels
+%    later when we have reached the next math mode. Thus, we just
+%    check for math mode and as long as we are outside of it we simply
+%    issue another |\restglb@settings| to be executed after this
+%    group.
+%    \begin{macrocode}
+\def\restglb@settings{%
+  \ifmmode
+%    \end{macrocode}
+%    Once we have reached the next outer math mode we restore the math
+%    fonts.  Due to the fact that we might have more than one such
+%    execution on the same level (there is one such macro for every
+%    inner formula, for example, two from the two formulae inside the
+%    |\mbox| in the above example) we have a quick test if the setup
+%    is already correct.
+%    \begin{macrocode}
+    \ifx \glb@currsize \f@size
+    \else
+       \glb@settings
+    \fi
+  \else
+     \aftergroup\restglb@settings
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\p@selectfont}
+%    The |\p@selectfont| becomes simpler since it doesn't have to deal
+%    with math font size changes any longer. So now we only set the
+%    parts dealing with the current text font.
+%    \begin{macrocode}
+\def\p@selectfont{%
+    \xdef\font@name{%
+      \csname\curr@fontshape/\f@size\endcsname}%
+    \pickup@font
+    \font@name
+      \@tempskipa \f@baselineskip\relax
+      \baselineskip \baselinestretch\@tempskipa
+    \setbox\strutbox\hbox{\vrule\@height.7\baselineskip
+        \@depth.3\baselineskip \@width\z@}%
+    \normalbaselineskip\baselineskip
+    }
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \begin{macro}{\glb@settings}
+%    The |\glb@settings| macro is unchanged except that I have moved
+%    the hook |\every@size| into it
+%    \begin{macrocode}
+\def\glb@settings{%
+  \begingroup
+     \expandafter\ifx\csname S@\f@size\endcsname\relax
+       \calculate@math@sizes
+     \fi
+     \csname S@\f@size\endcsname
+      \ifmath@fonts
+        \escapechar\m@ne
+        \csname mv@\math@version \endcsname
+      \else
+        \math@fontstrue
+      \fi
+    \globaldefs\@ne
+    \math@fonts
+    \let \glb@currsize \f@size
+  \endgroup
+  \the\every@size
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\mathversion}
+% \begin{macro}{\setup@mathversion}
+%    Finally we better not forget a version change, something that
+%    also results in the need to change and reset the math font setup.
+%    Rather than keeping track of the math version that was current
+%    when the last setup occured and comparing this to
+%    |\math@version|; we simply set |\glb@currsize| to an impossible
+%    value and thus automatically forcing a new setup for the next
+%    formula. By using |\aftergroup| the same is enforced after the
+%    current group, i.e., at the point where the scope of the
+%    |\mathversion| ends.
+%    \begin{macrocode}
+\def\mathversion#1{\@nomath\mathversion
+          \expandafter\ifx\csname mv@#1\endcsname\relax
+          \@latexerr{Math version `#1' is not defined}\@eha\else
+          \edef\math@version{#1}%
+	  \setup@mathversion\aftergroup\setup@mathversion
+          \fi}
+\def\setup@mathversion{\gdef\glb@currsize{}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%    \begin{macrocode}
+  \makeatother
+%    \end{macrocode}
+%
+% \Finale
+%
+\endinput
+
+
+

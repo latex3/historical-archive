@@ -1,0 +1,170 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 18 Sep 2008 14:35:22 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8ICZGwo014666
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 18 Sep 2008 14:35:17 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8ICVbLm025253
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 18 Sep 2008 14:31:37 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8HM1hOj005980;
+	Thu, 18 Sep 2008 14:31:35 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 45490 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 18 Sep
+          2008 14:31:35 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8ICVZfl005952 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 18 Sep 2008 14:31:35 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8ICVJks006089
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 18 Sep 2008 14:31:22
+          +0200
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1KgIfH-00019M-V8 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 18 Sep 2008 13:31:19 +0100
+Received: from [139.222.200.93] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1KgIfH-0005EF-UZ for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 18 Sep
+          2008 13:31:19 +0100
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48D22952.9000204@morningstar2.co.uk>
+            <27990a880809180405v7d5b816fk93b12cd51c6f442e@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48D24A18.8000208@morningstar2.co.uk>
+Date:         Thu, 18 Sep 2008 13:31:20 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \char_set_catcode:nn
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <27990a880809180405v7d5b816fk93b12cd51c6f442e@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 18 Sep 2008 12:35:22.0344 (UTC) FILETIME=[04805E80:01C9198B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5353
+
+Hello,
+
+To save everyone a little time, how about the following for a
+comprehensive set (following the \char_if_<whatever> names where available):
+
+\def_new:Npn \char_make_escape:N #1 {
+  \char_set_catcode:nn {`#1} {\c_zero}
+}
+\def_new:Npn \char_make_begin_group:N #1 {
+  \char_set_catcode:nn {`#1} {\c_one}
+}
+\def_new:Npn \char_make_begin_end:N #1 {
+  \char_set_catcode:nn {`#1} {\c_two}
+}
+\def_new:Npn \char_make_math_shift:N #1 {
+  \char_set_catcode:nn {`#1} {\c_three}
+}
+\def_new:Npn \char_make_alignment:N #1 {
+  \char_set_catcode:nn {`#1} {\c_four}
+}
+\def_new:Npn \char_make_end_line:N #1 {
+  \char_set_catcode:nn {`#1} {\c_five}
+}
+\def_new:Npn \char_make_parameter:N #1 {
+  \char_set_catcode:nn {`#1} {\c_six}
+}
+\def_new:Npn \char_make_math_superscript:N #1 {
+  \char_set_catcode:nn {`#1} {\c_seven}
+}
+\def_new:Npn \char_make_math_subscript:N #1 {
+  \char_set_catcode:nn {`#1} {8}
+}
+\def_new:Npn \char_make_ignore:N #1 {
+  \char_set_catcode:nn {`#1} {\c_nine}
+}
+\def_new:Npn \char_make_space:N #1 {
+  \char_set_catcode:nn {`#1} {\c_ten}
+}
+\def_new:Npn \char_make_letter:N #1 {
+  \char_set_catcode:nn {`#1} {\c_eleven}
+}
+\def_new:Npn \char_make_other_char:N #1 {
+  \char_set_catcode:nn {`#1} {12}
+}
+\def_new:Npn \char_make_active_char:N #1 {
+  \char_set_catcode:nn {`#1} {13}
+}
+\def_new:Npn \char_make_comment:N #1 {
+  \char_set_catcode:nn {`#1} {14}
+}
+\def_new:Npn \char_make_invalid:N #1 {
+  \char_set_catcode:nn {`#1} {15}
+}
+\def_new:Npn \char_make_escape:n #1 {
+  \char_set_catcode:nn {#1} {\c_zero}
+}
+\def_new:Npn \char_make_begin_group:n #1 {
+  \char_set_catcode:nn {#1} {\c_one}
+}
+\def_new:Npn \char_make_begin_end:n #1 {
+  \char_set_catcode:nn {#1} {\c_two}
+}
+\def_new:Npn \char_make_math_shift:n #1 {
+  \char_set_catcode:nn {#1} {\c_three}
+}
+\def_new:Npn \char_make_alignment:n #1 {
+  \char_set_catcode:nn {#1} {\c_four}
+}
+\def_new:Npn \char_make_end_line:n #1 {
+  \char_set_catcode:nn {#1} {\c_five}
+}
+\def_new:Npn \char_make_parameter:n #1 {
+  \char_set_catcode:nn {#1} {\c_six}
+}
+\def_new:Npn \char_make_math_superscript:n #1 {
+  \char_set_catcode:nn {#1} {\c_seven}
+}
+\def_new:Npn \char_make_math_subscript:n #1 {
+  \char_set_catcode:nn {#1} {8}
+}
+\def_new:Npn \char_make_ignore:n #1 {
+  \char_set_catcode:nn {#1} {\c_nine}
+}
+\def_new:Npn \char_make_space:n #1 {
+  \char_set_catcode:nn {#1} {\c_ten}
+}
+\def_new:Npn \char_make_letter:n #1 {
+  \char_set_catcode:nn {#1} {\c_eleven}
+}
+\def_new:Npn \char_make_other_char:n #1 {
+  \char_set_catcode:nn {#1} {12}
+}
+\def_new:Npn \char_make_active_char:n #1 {
+  \char_set_catcode:nn {#1} {13}
+}
+\def_new:Npn \char_make_comment:n #1 {
+  \char_set_catcode:nn {#1} {14}
+}
+\def_new:Npn \char_make_invalid:n #1 {
+  \char_set_catcode:nn {#1} {15}
+}
+
+with \char_make_<whatever>:n taking a number and \char_make_<whatever>:N
+requiring a single (escaped) token, for example:
+
+\char_make_other:N \$
+\char_make_letter:n {`\$}
+-- 
+Joseph Wright
+

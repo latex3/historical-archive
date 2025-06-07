@@ -1,0 +1,293 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["10154" "Mon" "22" "June" "1998" "22:51:13" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "254" "Re: l3 function names" "^Date:" nil nil "6" nil "l3 function names" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA27500;
+	Mon, 22 Jun 1998 23:21:17 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.8820653A@listserv.gmd.de>; Mon, 22 Jun 1998 23:11:20 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 367951 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 22 Jun 1998 23:10:38 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA10330
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 22 Jun 1998 23:10:36
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA10572 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 22 Jun 1998
+          23:10:36 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA00853; Mon, 22 Jun 1998 22:51:13 +0200
+References: <199806211738.TAA04827@relay.urz.uni-heidelberg.de>
+Message-ID:  <199806222051.WAA00853@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806211738.TAA04827@relay.urz.uni-heidelberg.de>
+Date:         Mon, 22 Jun 1998 22:51:13 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: l3 function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2585
+
+Javier
+
+ > I've rewritten some of my own macros -- it's not difficult and...
+ > they work! That and the Frank's message convinced me that the argument
+ > specifiers could be sometimes a good thing.
+
+delighted to hear that (we come to the but's later :-) this was my
+hope that people really give it a try before discussing grander
+solutions --- after all any solution has to work in practice and that
+is in a small model office example easy, but usually not so easy in
+real life.
+
+i come to the ideas by Hans et al on more general schemes in a
+different message (they are not forgotten, but i'm currently have
+difficulties to find the time for this type of work and typing with a
+small child on my lap is ...)
+
+ > But...
+
+now for the but's :-)
+
+let me first say that i agree that the current state of that language
+is a mess but not as large a mess as it could be and was in the past.
+
+i'm going through your arguments now commenting on each in turn which
+will give a somewhat incorrect picture as i may tire down near the end
+but ...
+
+ > >From l3basics:
+ > "\let:NwN
+ >  \let:NN
+ >  \let:Nc
+ >  \let:cN
+ >  \let:cc"
+ >
+ > That looks pretty, but it's misleading because it suggests a symmetry
+ > which
+ > in fact does not exist. \let:NwN expands to itself while the remainder
+ > does
+ > not.
+
+\let:NwN is bad and should not be there as it is the primitive which
+should probably not used at all or if so for certain parts where speed
+or bootstraping is important clearly marked as the primitve. this is
+historical as many other things and should be carefully weeded out.
+
+ > Another example (from "l3expand"):
+ > "\exp_args:Nx
+ >  \exp_args:Nc"
+ > The first one cancels kerning, but the second one does not.
+
+true and a fact of life (within TeX but hopefully not within etex or
+some other successor). i guess the bottom line here is really that one
+would need to state that any command using and "x" arg is
+non-expandable and has side-effects like killing kerning.
+
+this is not different to coding the same manually in your macros. if
+your macros really need the functionality of "x" then you're sunk as
+far as kerning etc is concerned.
+
+so to me this is more a general problem of TeX not of this interface
+and only needs proper documenting.
+
+ > When there are some variants, which is the command with the
+ > actual definition? More important: How do I remember which
+ > variants are available? If I write \def_long:cpn and
+ > then I realize that this command should be global I will
+ > tempted to write \gdef_long:cpn.   It does not exist!   Personally,
+ > I don't feel like learning the available variants of the commands.
+ > I find preferable a set of basic commands and a set of modifying
+ > commands as explained below.
+
+well... :-) i agree that i don't like to learn what commands are
+available either. so the bottom line should be that all commands are
+available. your suggestion is that one has a set of basic commands +
+modifiers. in some sense this is what we provide as well. only that we
+think as far as modifications in argument handling they should be
+presented as a single command.
+
+our approach was (and is at the moment) to provide a "reasonable"
+selection (what that is is certainly not yet defined :-) and in
+addition have a standard mechanism to provide *any* other variant in a
+unique way so that such variants can be provided by any package that
+needs them without the danger that some other package overwrite this
+meaning.
+
+as for \gdef_long:cpn (which has a questionable name in the first
+place): if this does not exist this is simply a bug in the language as
+this is not a variant but a basic form.
+
+
+ > Renaming commands
+ > ~~~~~~~~~~~~~~~~~
+ > Suppose someone is determined to study the internal latex code with the
+ > new naming scheme. He take the TeXbook and... surprise! The latex code is
+ > absolutely unintelligible. I thing the primitive (and maybe plain)
+ > command names should be preserved with perhaps some minute changes; eg.
+ > \_box instead of \box (you may think of that as "no module").
+
+first of all the basic commands are unchanged availabale all starting
+\tex_... (with the idea that perhaps \etex_... or \pdftex_... thingies
+exist one day.
+
+second, i fear that this surprise is something a "someone" is in
+for. if we would have this language (sorry, some much better one but
+in a similar spirit) one day then it should come with something
+comparable to the TeXbook but for this language. even now for most
+people the latex source is not easy (if at all) to deciper if your
+only source of reference would be the TeX book (assuming you look at
+latex.ltx and not the 1000 pages of documentation that exist somehow
+within the latex distribution).
+
+ > However, I think it's not a good idea to change at all the meaning of
+ > those well established names. If \box has another meaning it could
+ > lead to confusion.
+
+only if you think that plain or initex TeX is what you should learn
+first. In my option this has lead to a lot of problems within the TeX
+world: precisely that Don never bothered to really distinguish between
+the basic language of TeX and his private format build on top of it.
+
+if the bootstrap of something like L3PL is short and painless you
+could start from learning the language itself and nothing else.  it
+does clearly keep the primitives that should be enough. in other words
+i think this is more something for old programmers like you and me
+being a *short-term* problem but that should'nt guide us.
+
+
+
+ > Argument specifiers
+ > ~~~~~~~~~~~~~~~~~~~~
+ > >From expl3:
+ > "N Single token (unlike n, the argument must not be sorrounded by
+ > braces.)"
+ >
+ > In fact N stands for:
+ > - a token without braces (\def:Npn)
+ > - a token with (or without) braces (\def_new:Npn)
+ > - a brace (!) (\tokensi\exp_after:NN{\command})
+
+i somewhere have a quote by Leslie Lamport on the quality of Don as an
+alorithm person compared to his quality as a language designer :-)
+
+so yes, quite right. any suggestions?
+
+let's interpret that a bit carefully:
+
+the language definition as stated above says "N" not allowed to have
+braces!
+
+this is part of the language spec only that the interpreter doesn't
+check for it. the real problem is that we sort of try to bann some the
+the really nasty parts of TeX but on the other hand can't really leave
+them out as on some levels we need them to make things work.
+
+again, any suggestions?
+
+ > \let:NN{\arg1}{\arg2} is particularly amusing because the first N is
+ > \arg1 and the second one is { with an unmatched brace.
+
+indeed. but then you could argue, garbage in garbage out, ie as this
+isn't correct input output might be anything. but i know if i argue
+this way then you give me
+
+\let:NN{\arg2
+
+which should then work but doesn't either. so????
+
+....drawing board ?
+
+ > I think three ideas are being mixed:
+ > - How arguments are read:
+ >   * A single token without braces
+ >   * A single token with or without braces
+ >   * A token list (with braces)
+ > - How argument are expanded:
+ >   * No expansion
+ >   * One level expansion
+ >   * Full expansion
+ > - Conversion from a string to a token
+ > (Actually, in my titlesec package I need expand a certain command
+ > exactly three times, no less, no more.)
+
+agreed. and probably more is mixed. partly this is historical (for
+example the letters used) partly this is to try solving what you have
+and what you have to compile into (unfortunately).
+
+how would you distangle this?
+
+ > If specifiers rules are not very, very, very clear it could be interpreted
+ > in a wide variety of ways by developpers, making the code even more
+ > unintelligible. I've devised some other specifier schemes but
+ > inconsistencies
+ > seems reluctant to disappear (except if a score of specifiers are used).
+
+not sure i understand that sentence. did you mean you found it hard to
+find something that works better without running into different
+problems?  (that's what we found)
+
+we would certainly welcome suggestions---this is a working draft and
+as we say by no means anything that is present as the best and final
+thoughts on the subject, though it is true that we have put a lot of
+thoughts into it and thrown away many (worse) attempts.
+
+ > Now imagine that there is no : notation and we use the l3expand set
+ > of tools. The code will no longer be cluttered with specifiers and in the
+ > few places where something unusual is necessary the code will remain
+ > readable.
+ > For instance (from "expl3"):
+ >   \exp_args_Oc \glet \g_reserved_a_tlp \l_current_font_shape_tlp
+ > and
+ >   \exp_args_cO \seq_test_in {sym#3} \l_group_seq
+
+well, my experience is that having the number of arguments clearly
+attached to a command makes things much more readable than not having
+it (ie \seq_test_in:nn compared to \seq_test_in) --- after getting
+used to it this was a very helpful feature in reading code by others.
+
+
+ > Undescore in names
+ > ~~~~~~~~~~~~~~~~~~~
+ > Changing the _ catcode prevents from using explicit subscript characters.
+ > I think there are better candidates: "other" character except =, <, >,
+ > . (sadly), , (ie, comma), - and +. (Namely /, !, ?, : (already used), ;,
+ > @, |...)
+
+we experimented a lot with various chars and the final conclusion was
+that \foo_bar:nnn or \foo-bar:nnn is about to be the most readable.
+
+i think we originally had the hyphen instead of the _ (can't remember
+why that got changed)
+
+we really tried a lot of variations but personally dind't find any of
+them as useful as what we finally settled on.
+
+my personal feeling always was that in some fonts (ie when printed)
+the _ was not the best choice but that it worked very good on the
+terminal.
+
+as for the _ not being available as an explicit subscript:
+
+we don't consider this significant as we think that this should be
+done this way anyway. the few places where you really need a subscript
+in a macro you can as well use some slightly more complicated way (in
+plain TeX this would be \sb)
+
+the - is less good in this regard as you need it in units within your
+code much more often (think that that was one of the reasons why we
+finally settled for the current letters).
+
+thanks for all the comments (hope to get more)
+good night
+
+frank
+

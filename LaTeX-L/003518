@@ -1,0 +1,563 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Fri, 28 Jan 2000 21:26:05 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA08536 for <schoepf@mail.uni-mainz.de>; Fri, 28 Jan 2000 21:26:05 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF69CD.E6BCAC80"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA01309 for <schoepf@UNI-MAINZ.DE>; Fri, 28 Jan 2000 21:26:01 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.B3F2DE9B@mail.listserv.gmd.de>; Fri, 28 Jan 2000 21:25:46 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 449131 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 28 Jan 2000 21:24:31 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id VAA19941 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 28 Jan          2000 21:20:36 +0100 (MET)
+Received:  from downtown.oche.de (downtown.oche.de [194.94.253.3]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with ESMTP id VAA27414 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 28 Jan 2000 21:20:31 +0100 (MET)
+Received:  from corona.oche.de (uucp@localhost) by downtown.oche.de          (8.9.3/8.9.3/Debian/GNU) with UUCP id VAA13603 for          URZ.UNI-HEIDELBERG.DE!LATEX-L; Fri, 28 Jan 2000 21:20:06 +0100
+Received:  by corona.oche.de (wUUCP 1.10) id <1kvv@corona.oche.de>; Fri, 28 Jan          00 20:55:43 CET
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: AmiGate 1.6 (13.11.95)
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["6059" "Fri" "28" "January" "2000" "18:08:40" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "135" "Re: template interfaces and what they mean" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Re: template interfaces and what they mean
+Date: Fri, 28 Jan 2000 19:08:40 +0100
+Message-ID:  <1a0b23bd@corona.oche.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Achim Blumensath" <blume@CORONA.OCHE.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3518
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF69CD.E6BCAC80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach wrote:
+> main point is i would like you to think about is, what are the
+> invariants of that interface, ie what can be assumed to be the same
+> from one template to the next (within a type) and what can differ.
+>
+>  1) how much freedom has a template to interpret its arguments (ie =
+data
+>     passed to it from the document)?
+>
+>  2) what is the scope a template instance apply itself? is it
+>     well-defined?
+>
+> let's tackle 1) first. Achim suggests that the pshape type should get
+> two arguments those meaning should depend on the template. in my =
+opinion
+> this is likely to result in chaos.
+>
+> the main idea behind the template types is that
+
+[...]
+
+> so to make this work templates of the same type need to interpret data
+> coming from the document (ie via arguments) in the same way. At best I
+> see that they might be allowed to ignore it.
+
+I propose the following rule:
+
+  Templates of the same type must be exchangeable.
+
+To be able to apply this rule each template type must have defined
+semantics including a description of which parts of its behaviour are
+"garanteed/essential" and which are left "undefined".
+
+> To return to the pshape template: so I don't think it should get
+> arguments that are interpreted differently by different templates.
+
+Well, I said the "exact" meaning would depent on the template not that
+the interpretation should be completely arbitrary. In terms of the
+rule I presented above one could say that the semantic of a pshape
+template is to set the shape of a paragraph. Obviously, different
+instances can produce different shapes. Thus, exchanging instances
+can result in a change of the shape. If two arguments are added
+standing, say, for the horizontal and vertical deviation of the
+shape from a rectangle, this doesn't matter. Exchanging instances
+still results in a change of the shape.
+
+> In fact for that particular template type I don't think it should
+> get arguments at all.
+>
+> I see this template as something (again) to be used only as part of
+> other templates to define very specialised shapes in certain layouts
+> --- but shapes which are independent of of document data but exist in
+> their own right.
+
+When I wrote my suggestion I was thinking of packages like wrapfig and
+picinpar. In those cases the type of the shape doesn't depend on the
+document data but the exact dimension do.
+
+> For example, I came recently across a very nicely formatted book whose
+> Capter openings have all be done by having the first paragraph with a
+> triangle like cutout that was part of the design for the chapter head.
+> That's the kind of area where I see applications for pshape.
+>
+> In contrast, if one wants to provide commands that allow the user to
+> directly manipulate the paragraph shape somehow (one example in a
+> restricted sense being Initials) then this should not be done via
+> the templates provided in xhj but by making use of the lower-level
+> interface that comes with galley2.dtx
+
+Agreed, so forget my suggestion.
+
+> =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> do you remember what the second abstract question was? No? Here is
+> another rephrase:
+>
+>   to what elements should templates apply that do set parameters of
+>   underlying algorithms (in some way or other)
+>
+> for example the "std" template of type justification sets the
+> justification for all upcoming paragraphs of the galley (potentially
+> at least) while the "single" template sets it only for the next. Achim
+> suggested that not the template but the user should decide on the =
+scope.
+>
+> Now I agree with him but who is the "user"? The user is the designer =
+of
+> the document class layout and if this "user" says that the first =
+paragraph
+> of a caption should have the first line centered and any following
+> paragraphs should be justified without indentation then he can do this
+> now by setting a
+>
+>  justification-setup =3Di
+>
+> key to the appropriate value. by making the (i agree) somewhat =
+different
+> feeling templates one and the same type I allowed for flexibility in
+> design. In an earlier implementation I had two types but that resulted
+> in either strange templates (making use of both) or in a lot of =
+repitition,
+> ie the need to have nearly identical templates differing only in one =
+key
+> since that key was of a different type.
+>
+> another way to look at it is to say that the "single" one is actually
+> also setting all paragraphs in the galley (it sets the first to X and
+> the rest to whatever was before X).
+>
+> yet another way is to get rid of "single" and implement what i called
+> "complex" differently since what in practise will be needed are the
+> instances from "std" and from "complex"
+
+IMHO this design is, well, not optimal. I agreed that having two
+different template type is ridiculus. But instead of having
+separate instances for "single" and "std" it would be better to
+have just one instance with an boolean argument specifying whether
+to apply the template for the next or for all paragraphs.
+
+Thus a class designer would have two parameters in his template
+
+  initial-par-justification =3Di \ipj
+  par-justification         =3Di \pj
+
+and would say in the template body
+
+  \UseInstance{\pj}{\True}
+  \UseInstance{\ipj}{\False}
+
+The reason I prefer this desing is that IMHO a justification template
+consists of information about the formatting of a single paragraph.
+To question to which paragraphs this formatting is applied is
+independent. Each format does make sense either way. Thus in your
+design one would have to define each instance twice. Once for
+the "single" and once for the "std" case.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ =
+|
+    //  Achim Blumensath       | \  _                        \O/ \___/\ =
+|
+   //   blume@corona.oche.de   |-< /_\                       =3Do=3D  \ =
+/\ \|
+ \X/    (p^2 - m^2)\psi =3D 0    |_/ \_                        /"\   =
+o----|
+____________________________________________________________________\___|=
+
+
+------_=_NextPart_001_01BF69CD.E6BCAC80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: template interfaces and what they mean</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; main point is i would like you to think about =
+is, what are the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; invariants of that interface, ie what can be =
+assumed to be the same</FONT>
+
+<BR><FONT SIZE=3D2>&gt; from one template to the next (within a type) =
+and what can differ.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; 1) how much freedom has a template to =
+interpret its arguments (ie data</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; passed to it from the =
+document)?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; 2) what is the scope a template instance =
+apply itself? is it</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; well-defined?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; let's tackle 1) first. Achim suggests that the =
+pshape type should get</FONT>
+
+<BR><FONT SIZE=3D2>&gt; two arguments those meaning should depend on the =
+template. in my opinion</FONT>
+
+<BR><FONT SIZE=3D2>&gt; this is likely to result in chaos.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the main idea behind the template types is =
+that</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[...]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; so to make this work templates of the same type =
+need to interpret data</FONT>
+
+<BR><FONT SIZE=3D2>&gt; coming from the document (ie via arguments) in =
+the same way. At best I</FONT>
+
+<BR><FONT SIZE=3D2>&gt; see that they might be allowed to ignore =
+it.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I propose the following rule:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; Templates of the same type must be =
+exchangeable.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To be able to apply this rule each template type must =
+have defined</FONT>
+
+<BR><FONT SIZE=3D2>semantics including a description of which parts of =
+its behaviour are</FONT>
+
+<BR><FONT SIZE=3D2>&quot;garanteed/essential&quot; and which are left =
+&quot;undefined&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; To return to the pshape template: so I don't =
+think it should get</FONT>
+
+<BR><FONT SIZE=3D2>&gt; arguments that are interpreted differently by =
+different templates.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Well, I said the &quot;exact&quot; meaning would =
+depent on the template not that</FONT>
+
+<BR><FONT SIZE=3D2>the interpretation should be completely arbitrary. In =
+terms of the</FONT>
+
+<BR><FONT SIZE=3D2>rule I presented above one could say that the =
+semantic of a pshape</FONT>
+
+<BR><FONT SIZE=3D2>template is to set the shape of a paragraph. =
+Obviously, different</FONT>
+
+<BR><FONT SIZE=3D2>instances can produce different shapes. Thus, =
+exchanging instances</FONT>
+
+<BR><FONT SIZE=3D2>can result in a change of the shape. If two arguments =
+are added</FONT>
+
+<BR><FONT SIZE=3D2>standing, say, for the horizontal and vertical =
+deviation of the</FONT>
+
+<BR><FONT SIZE=3D2>shape from a rectangle, this doesn't matter. =
+Exchanging instances</FONT>
+
+<BR><FONT SIZE=3D2>still results in a change of the shape.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; In fact for that particular template type I don't =
+think it should</FONT>
+
+<BR><FONT SIZE=3D2>&gt; get arguments at all.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I see this template as something (again) to be =
+used only as part of</FONT>
+
+<BR><FONT SIZE=3D2>&gt; other templates to define very specialised =
+shapes in certain layouts</FONT>
+
+<BR><FONT SIZE=3D2>&gt; --- but shapes which are independent of of =
+document data but exist in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; their own right.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>When I wrote my suggestion I was thinking of packages =
+like wrapfig and</FONT>
+
+<BR><FONT SIZE=3D2>picinpar. In those cases the type of the shape =
+doesn't depend on the</FONT>
+
+<BR><FONT SIZE=3D2>document data but the exact dimension do.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; For example, I came recently across a very nicely =
+formatted book whose</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Capter openings have all be done by having the =
+first paragraph with a</FONT>
+
+<BR><FONT SIZE=3D2>&gt; triangle like cutout that was part of the design =
+for the chapter head.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; That's the kind of area where I see applications =
+for pshape.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; In contrast, if one wants to provide commands =
+that allow the user to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; directly manipulate the paragraph shape somehow =
+(one example in a</FONT>
+
+<BR><FONT SIZE=3D2>&gt; restricted sense being Initials) then this =
+should not be done via</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the templates provided in xhj but by making use =
+of the lower-level</FONT>
+
+<BR><FONT SIZE=3D2>&gt; interface that comes with galley2.dtx</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Agreed, so forget my suggestion.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; do you remember what the second abstract =
+question was? No? Here is</FONT>
+
+<BR><FONT SIZE=3D2>&gt; another rephrase:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; to what elements should templates =
+apply that do set parameters of</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; underlying algorithms (in some way =
+or other)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; for example the &quot;std&quot; template of type =
+justification sets the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; justification for all upcoming paragraphs of the =
+galley (potentially</FONT>
+
+<BR><FONT SIZE=3D2>&gt; at least) while the &quot;single&quot; template =
+sets it only for the next. Achim</FONT>
+
+<BR><FONT SIZE=3D2>&gt; suggested that not the template but the user =
+should decide on the scope.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Now I agree with him but who is the =
+&quot;user&quot;? The user is the designer of</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the document class layout and if this =
+&quot;user&quot; says that the first paragraph</FONT>
+
+<BR><FONT SIZE=3D2>&gt; of a caption should have the first line centered =
+and any following</FONT>
+
+<BR><FONT SIZE=3D2>&gt; paragraphs should be justified without =
+indentation then he can do this</FONT>
+
+<BR><FONT SIZE=3D2>&gt; now by setting a</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; justification-setup =3Di</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; key to the appropriate value. by making the (i =
+agree) somewhat different</FONT>
+
+<BR><FONT SIZE=3D2>&gt; feeling templates one and the same type I =
+allowed for flexibility in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; design. In an earlier implementation I had two =
+types but that resulted</FONT>
+
+<BR><FONT SIZE=3D2>&gt; in either strange templates (making use of both) =
+or in a lot of repitition,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; ie the need to have nearly identical templates =
+differing only in one key</FONT>
+
+<BR><FONT SIZE=3D2>&gt; since that key was of a different type.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; another way to look at it is to say that the =
+&quot;single&quot; one is actually</FONT>
+
+<BR><FONT SIZE=3D2>&gt; also setting all paragraphs in the galley (it =
+sets the first to X and</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the rest to whatever was before X).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; yet another way is to get rid of =
+&quot;single&quot; and implement what i called</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &quot;complex&quot; differently since what in =
+practise will be needed are the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; instances from &quot;std&quot; and from =
+&quot;complex&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>IMHO this design is, well, not optimal. I agreed that =
+having two</FONT>
+
+<BR><FONT SIZE=3D2>different template type is ridiculus. But instead of =
+having</FONT>
+
+<BR><FONT SIZE=3D2>separate instances for &quot;single&quot; and =
+&quot;std&quot; it would be better to</FONT>
+
+<BR><FONT SIZE=3D2>have just one instance with an boolean argument =
+specifying whether</FONT>
+
+<BR><FONT SIZE=3D2>to apply the template for the next or for all =
+paragraphs.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus a class designer would have two parameters in his =
+template</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; initial-par-justification =3Di \ipj</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+par-justification&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3Di =
+\pj</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and would say in the template body</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \UseInstance{\pj}{\True}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \UseInstance{\ipj}{\False}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The reason I prefer this desing is that IMHO a =
+justification template</FONT>
+
+<BR><FONT SIZE=3D2>consists of information about the formatting of a =
+single paragraph.</FONT>
+
+<BR><FONT SIZE=3D2>To question to which paragraphs this formatting is =
+applied is</FONT>
+
+<BR><FONT SIZE=3D2>independent. Each format does make sense either way. =
+Thus in your</FONT>
+
+<BR><FONT SIZE=3D2>design one would have to define each instance twice. =
+Once for</FONT>
+
+<BR><FONT SIZE=3D2>the &quot;single&quot; and once for the =
+&quot;std&quot; case.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Achim</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; | \_____/ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; //&nbsp; Achim =
+Blumensath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | \&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \O/ =
+\___/\ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; //&nbsp;&nbsp; =
+blume@corona.oche.de&nbsp;&nbsp; |-&lt; =
+/_\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3Do=3D&nbsp; \ /\ \|</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\X/&nbsp;&nbsp;&nbsp; (p^2 - m^2)\psi =3D =
+0&nbsp;&nbsp;&nbsp; |_/ =
+\_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+/&quot;\&nbsp;&nbsp; o----|</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+____\___|</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF69CD.E6BCAC80--
+

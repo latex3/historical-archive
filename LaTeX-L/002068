@@ -1,0 +1,125 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3597" "Mon" "16" "June" "1997" "23:10:21" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "84" "Re: [Bug Report] Problem with INPUTENC package and TOC files." "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA03697 for <schoepf@UNI-MAINZ.DE>; Mon, 16 Jun 1997 23:48:54 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.4EFF4BFF@listserv.gmd.de>; Mon, 16 Jun 1997 23:48:52 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 154601 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 16 Jun 1997 23:48:45 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id XAA22460
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 16 Jun 1997 23:48:40
+          +0200 (MET DST)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id XAA19253 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 16 Jun 1997 23:35:02 +0200
+          (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          XAA01955; Mon, 16 Jun 1997 23:10:21 +0200
+References: <33A5899A.3A446921@vvv.vsu.ru>
+            <Pine.GSO.3.96.970616213539.6857A-100000@uxp1.hrz.uni-dortmund.de>
+Message-ID:  <199706162110.XAA01955@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <Pine.GSO.3.96.970616213539.6857A-100000@uxp1.hrz.uni-dortmund.de>
+Date:         Mon, 16 Jun 1997 23:10:21 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: [Bug Report] Problem with INPUTENC package and TOC files.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2068
+
+Werner Lemberg writes:
+ > But this is the wrong list for such bug reports. You should address it to
+ > latex-bugs@uni-mainz.de .
+
+well not really :-) or not in this form anyway. for latex-bugs we ask
+for a short but complete test file with full log. that would mean some
+constructing.
+
+anyway, i think this is more on the level of concepts and thus could
+well be within this list (even if it is boring for one or the other).
+
+as for the use of inputenc a few words on the concepts:
+
+latex has the concept of font-encoding specific commands, which are
+those that are defined via \DeclareText<something> usually in font
+encoding files, eg T1enc.def
+
+those commands + (more or less :-) the visible portion of ascii forms
+what i call "latex's internal representation of glyphs"
+
+it has the caracteristic that it is all represented by 7bit ascii, ie
+either something like a, b or command names or combination thereof and
+that all of it is invariant to writing out to files and reading in.
+
+so if \foo is an encoding specific command that appears in some \write
+to the aux file it will end up as \foo (more exactly it will end up
+with one additional space after it but that is not relevant for the
+input reading mechanism)
+
+
+so the model is something like
+
+        inputenc              T<something>
+hex ??  ---------> internal  ------>              some glyph slot number
+                    |    |   | T<somethingelse>
+                    V    A   ------------>        or some fake construction
+                    |    |
+                    ------
+                invarient to .aux etc processing
+
+
+this model abstracts from the input encoding by allowing the user to
+use any input encoding that translates into the internal
+representation and it abstracts from the output encoding, ie the font
+encoding which means that even if i have fonts which are differently
+encoded (but contain the appropriate glyphs) i can the document and if
+characters in my fonts are missing i do get proper warning.
+
+
+now what goes wrong in your first approach is that you have an
+inputenc file that doesn't use this model, ie it translates one hex
+into some other hex directly, ie \CYRA is most likely something along
+\char ... probably just ^^xy
+
+in other words you pass as internal an slot position in a particular
+font rather than an abstract object that only at the last stage
+(before shipping out to the dvi file basically) gets translated. thus
+when coming to process the toc file your font encoding slot is now
+interpreted as an input encoding slot and probably ^^8f is not defined
+in the inputencoding (it would not make it better only differnt :-)
+
+your second example does work because it mainly uses a passthrough
+concept making the font encoding the internal representation. but that
+works only if in all places you do have the same font encoding.
+therefore reading it back in the font encoding form does not do any
+harm, it would do if at that point you have a different font encoding
+
+
+the inputenc/fontenc model allows you to typeset the toc in a
+different font that does have a different font encoding
+
+
+that is conceptionally the case. things get a bit muddled as babel is
+older software and currently restricts some of that potential power
+(which is why we do need a new language interface).
+
+really good night
+frank
+
+ps Werner, for the reason giving above your advice given (to use \char
+... is not correct either) it is true that the particular examplethen
+will probably work but only just ---- the internal representation is
+not a slot position it should be a encoding specific command of some
+sort
+

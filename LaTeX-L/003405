@@ -1,0 +1,128 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4647" "Sun" "14" "November" "1999" "19:48:23" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "84" "On compatibility" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA29375
+	for <schoepf@UNI-MAINZ.DE>; Sun, 14 Nov 1999 20:42:19 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.33145106@mail.listserv.gmd.de>; Sun, 14 Nov 1999 20:42:15 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445401 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 14 Nov 1999 20:42:00 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id UAA09357 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov
+          1999 20:41:59 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id UAA21987 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999 20:42:15 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin399.zdv.Uni-Mainz.DE
+          [134.93.175.99]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          UAA16153 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999
+          20:42:13 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          TAA01170; Sun, 14 Nov 1999 19:48:23 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <14361.49815.612920.201449@n15ux24.nets.de.eds.com>
+            <199910311615.QAA28902@mimosa.csv.warwick.ac.uk>
+Message-ID:  <199911141848.TAA01170@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910311615.QAA28902@mimosa.csv.warwick.ac.uk>
+Date:         Sun, 14 Nov 1999 19:48:23 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      On compatibility
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3405
+
+James Kilfiger writes:
+
+ > What is your view of the aim in terms of compatiblity with 2e.  Should
+ > there be source compatiblity or formatting compatiblity.  I'd say the
+ > first is essential, if only in a compatiblty mode, the second may be
+ > desirable, but only in a compatitblty mode.
+
+i have very strong feelings on compatibility and several people have already
+learned about it when i rejected a sensible change in the 2e kernel for
+reasons of compatibility.
+
+ my main argument for 2e is that LaTeX 2e is an exchange medium as well as a
+ typesetting machinery. this means that even sensible change/enhancements have
+ to be judged as to whether introducing an incompatibility between two
+ maintenance releases of LaTeX2e is worth the price. many people argue that
+ this is no problem because feature X is not there in previous releases so
+ couldn't have been used, but the problem in fact lies in the other direction:
+ once a new feature is introduced and people and package writer use it they
+ produce documents and/or packages which only work with LaTeX <date> and since
+ a lot of people are unable to upgrade on regular basis this introduces a
+ situation comparable to the last days of LaTeX2.09 where half of the
+ installations couldn't process the documents of the other half (unless one
+ kept at least three or four different `LaTeXs' around and even then)
+
+ This is our basic strategy for not changing article.cls to produce a more
+ decent layout or for adding feature X to the kernel (see ltnews07.tex) even
+ if we agree that it would be sensible
+
+but this is all concerning 2e. James asked about 2e* and eventually ltx3.
+
+for what i'm currently doing i have somewhat different views. first of all,
+all the concepts and all the code that is currently being discussed and
+produced is explicitly written as a package solution to run on top of
+LaTeX2e. (this will change eventually but then we are going to call the beauty
+not 2e* but 3 or 2000:-)
+
+this means that a new class/package file that makes use of these concepts is
+
+  a) something new that should run on every LaTeX2e installation that has
+  installed the corresponding packages (and installing new packages is far
+  easier than installing a new kernel)
+
+  b) a document that uses a new class would not have any compatibility
+  issues, other than with different versions of the 2e* package.
+  the latter will certainly be a problem for a while which means hat it will
+  take a while until something like a 2e* package can be reliably be used in
+  production. But any document that uses the new classes or packages using the
+  new concepts will also be "new", ie written with that information in mind.
+
+but what about all the million documents aready written?
+
+answer: as long as we are within 2e* and do not provide replacements for
+things like article.cls then nothing is going to change their formatting since
+they wouldn't even notice that there is additional stuff is around (since they
+do not load it).
+
+both together will allow us to thoroughly test the new concepts on a wider
+scale without compromising the production environment that LaTeX2e provides.
+
+in case we actually provide replacements for classes like article.cls there
+should be no difference either in the sense that a replacement for article.cls
+should of course keep the document command interface (100%) and as far as
+possible (no guess for a percentage) the layout.
+
+but i consider replacements for article.cls, report.cls and the like (within
+2e*) more or less only as a test case for the templates (i.e., can we
+reproduce the (wonderful :-) original LaTeX layout) and at that state it
+should be done under different names to avoid any compatibility issues for the
+production environments at all.
+
+the moment we actually produce a kernel containing those concepts there is of
+course the need to produce replacements of the standard classes (as well as of
+a lot of packages that may benefit from the new concepts). As far as those
+replacements are concerned i agree that they should at least provide source
+compatibility and as far as possible also formatting compatibility. preferably
+this should be achieved automatically. but i wouldn't get totally unhappy if
+there is a need to automatically change 2e documents into ltx3 document via
+some translation process. after all, if you do not allow for this you either
+have to abandom any improvment (such as a better though perhaps not fully
+compatible float mechansim) or you have to provide a very very elaborate
+compatibility mode. what is more appropriate remains to be seen. right now i
+would not like to make predictions on what is better.
+
+frank
+

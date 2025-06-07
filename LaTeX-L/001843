@@ -1,0 +1,141 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4623" "Sat" "1" "March" "1997" "18:56:19" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "103" "Shortref mechanism" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id TAA08755 for <schoepf@UNI-MAINZ.DE>; Sat, 1 Mar 1997 19:10:30 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.B0AC2815@listserv.gmd.de>; Sat, 1 Mar 1997 19:10:29 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 107450 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 1 Mar 1997 19:10:24 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id TAA15620
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 1 Mar 1997 19:09:35
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id SAA03073 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 1 Mar 1997 18:59:57 +0100
+          (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          SAA02757; Sat, 1 Mar 1997 18:56:19 +0100
+Message-ID:  <199703011756.SAA02757@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 1 Mar 1997 18:56:19 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1843
+
+As a special subject related (or currently related at least) to the
+language discussion we have the syntax and semantics of shortrefs.
+
+a couple of thoughts are written down below and i would be interested
+in hearing your comments and your own thoughts on that subject
+
+frank
+
+
+
+\section{Short references}
+
+With the development of language packages and later on within the
+Babel system it became common practise to extend the markup language
+of \LaTeX{} using so called ``shortrefs'' as a compact method for
+inputting certain commands. Shortrefs are character sequences that do
+not start with \TeX's escape character, i.e., usually `|\|', but
+nevertheless act like commands. That is, they do not represent the
+equivalent glyph sequence but have either additional side effects
+(like the punctuation marks in french typography producing additional
+space) or even denote completely different actions (e.g., |""|
+for a break point without a hyphen).
+
+In addition to the above shortrefs some \TeX{} fonts implement shortrefs
+by using (or misusing) the ligature mechanism to implement input
+arbitrary input syntax, e.g., |``| generating `` or |---| generating
+an emdash.
+
+
+\subsection{Possible application areas}
+
+Short references can be used for different purposes:
+\begin{itemize}
+\item
+  providing a compact input notation for commonly used textual
+  commands such as characters with diacritical marks
+\item
+  providing a compact and readable input notation for special
+  applications, e.g., |==>| for |\Longrightarrow|
+\item
+  providing typographical features not otherwise supported (e.g.,
+  extra space in front of punctuation characters)
+\end{itemize}
+The first two items are related to input syntax and not directly
+linked to the language of the current text although historically they
+have been provided by language packages, e.g., |"a| as a shortref for
+|\"{a}| was implemented by |german.sty| and within Babel its meaning
+gets deactivated within regions marked up as belonging to other
+languages.
+
+The third item is language related, e.g., used to implement a certain
+typography style without forcing the user to mark up its document
+specially.
+
+
+\subsection{Implementation}
+
+Within the framework of \TeX{} shortrefs have to be implemented by
+making the first character in the sequence active (which means that
+this character alone already behaves like a command). To implement
+shortref sequences a clever mechanism has to be introduced that
+somehow looks ahead to determine which of the following characters (if
+any) still belong to the sequence and the after determining that
+launching the associated action.
+
+This approach can have undesired side effects with other \TeX{}
+typesetting actions. If the implemented mechanism for determining the
+shortref sequence is not fully expandable it will prevent \TeX{} from
+inserting ligature or kerning information between preceding characters
+and characters produced by the action finally launched, e.g., if
+|"a| is a shortref to produce the single glyph ``\"a'' then a
+word like |F"alle| will show no ligature between ``F'' and ``\"a''
+even if the font contains such a ligature.
+
+On the other hand the disadvantage of using a fully expandable
+shortref mechanism is that shortref sequences have to be assembled
+using arguments which means that spaces between shortref chars will
+not be significant and shortref characters at the end of a brace group
+might produce nasty \TeX{} errors.
+
+\subsection{Discussion}
+
+The above means that the shortref mechanism either has to be fully
+expandable or that one can't use it to produce glyphs that might play
+a part in ligature or kerning tables. Since Babel 3.6 this mechanism
+isn't any longer expandable which poses a serious problem for several
+language packages using this mechanism.
+
+It is questionable if any shortref mechanism should be directly linked
+to language tags even if the use of shortrefs might be traditionally
+linked to certain languages. In other words if a document is mainly in
+German shortrefs for producing German umlauts should probably be still
+available within quotations in other languages. Even if the usual
+meaning of a shortref sequence differs for two languages it seems
+advisable to at least make it customizable whether or not the switch
+from one language to the other affects the current set of shortref
+definitions.
+
+For shortrefs that implement typographical features the same applies
+since for a document written in, say, French, the designer might
+reasonably decide that these conventions are implemented throughout
+the document even for portions written in other languages (such as
+quotations).
+

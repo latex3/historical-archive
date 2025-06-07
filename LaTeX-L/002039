@@ -1,0 +1,214 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6048" "Sat" "14" "June" "1997" "22:36:18" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "174" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id UAA02070; Sat, 14 Jun 1997 20:54:03 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.8D56867E@listserv.gmd.de>; Sat, 14 Jun 1997 20:54:02 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153210 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 14 Jun 1997 20:53:58 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id UAA00112 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 14 Jun 1997 20:53:36
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id WAA14111 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 14 Jun 1997
+          22:52:33 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id WAA00603 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Sat, 14 Jun 1997 22:36:18 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A2E4A2.400D81C7@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 14 Jun 1997 22:36:18 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2039
+
+% Hello, here is an example of
+% macroses which redefine \uppercase to be `multilingually-clean' ;-)
+
+\documentclass{article}
+
+\makeatletter
+
+% First, let's define macros to change `language':
+
+\def\LangA{\begin@language
+\language0
+\uccode`a=`b
+\end@language}
+
+\def\LangB{\begin@language
+\language1
+\uccode`a=`c
+\end@language}
+
+\let\begin@language\relax \let\end@language\relax
+
+% Now we redefine the \uppercase primitive
+% (the case of \lowercase is analogous) ;-)
+
+\let\orig@uppercase\uppercase \let\end@uppercase\relax
+
+\def\uppercase#1{\protect\tmpe@uppercase{#1}}
+\def\tmpe@uppercase#1{\edef\tmpd@uppercase{#1}%
+  \expandafter\tmpa@uppercase\expandafter
+  \begin@language\expandafter\end@language
+  \tmpd@uppercase\begin@language\end@uppercase}
+\def\tmpa@uppercase\begin@language#1\end@language
+  #2\begin@language{#1\orig@uppercase{#2}%
+  \futurelet\tmpb@uppercase\tmpc@uppercase}
+\def\tmpc@uppercase{\ifx\tmpb@uppercase\end@uppercase
+  \def\next{}\else\def\next{\tmpa@uppercase\begin@language}\fi\next}
+
+\makeatother
+
+\let\MakeUppercase\uppercase
+
+\begin{document}
+
+Here is a preliminary variant of macroses that redefine
+\TeX's primitives \verb|\uppercase| and \verb|\lowercase|
+in order to correctly handle multilingual arguments.
+This means that, generally speaking, every language
+may have it's own \verb|\lccode| and \verb|\uppercode|
+settings (as well as \verb|\sfcode|, \verb|\mathcode|
+and \verb|\delcode|).
+And in my opinion the user should be allowed to set the values
+of these registers (in a language-swithing macroses, such as
+\verb|\selectlanguage| in \textsf{babel}).
+
+If one wants to change \verb|\uccode| and \verb|\lccode| values
+inside the argument of \verb|\uppercase|, the result would be
+negative---especially if there are several language-switching
+macroses. Moreover, any attempts to change the \verb|\uccode|
+and \verb|\lccode| values inside the argument of \verb|\uppercase|
+will have \textit{no effect at all} except redefining
+of these values after exit from \verb|\uppercase|.
+
+If one does not want to `touch' \TeX's primitives \verb|\uppercase|
+and \verb|\lowercase|, there is a possibility to change
+\LaTeX's macroses \verb|\MakeUppercase| and \verb|\MakeLowercase|
+(namely, substitute the \verb|\uppercase| that is used
+inside of \textit{these} macroses to the herein proposed macros).
+
+Here is an example of using new \verb|\uppercase| macros.
+Consider two languages, \verb|LangA| and \verb|LangB|,
+that have \textit{conflicting} set of \verb|\uccode| and \verb|\lccode|
+values. In the following (spurious) example we only suppose that,
+e.~g., the uppercase variant of the letter \verb|a| in the
+language \verb|LangA| is \verb|b|, and the uppercase variant
+of the \textit{same} letter \verb|a| in the language \verb|LangB|
+is \verb|c|.
+With the new redefined \verb|uppercase|, the following text
+
+\begin{verbatim}
+\def\SomeText{Something that was put in a macro to save typing... }
+
+\MakeUppercase{\LangA
+Sample text in language A...
+\SomeText
+\LangB
+And now sample text in language B...
+\SomeText
+\LangA
+And we are again back to language A}
+\end{verbatim}
+
+\noindent will give us
+
+\begin{quote}
+\def\SomeText{Something that was put in a macro to save typing... }
+
+\MakeUppercase{\LangA
+Sample text in language A...
+\SomeText
+\LangB
+And now sample text in language B...
+\SomeText
+\LangA
+And we are again back to language A}
+\end{quote}
+
+\noindent
+(note, that \verb|\MakeUppercase|, which is a \LaTeX's macros,
+actually uses \verb|\uppercase|; so the same result would have been
+obtained if we have used \verb|\uppercase| instead of
+\verb|\MakeUppercase|).
+As one can see, the \textit{same} letter \verb|a| transformed
+to the \textit{different} letters, \verb|b| and \verb|c|,
+according to the current language.
+
+So, there is no need to be ``attached'' to the ``hard fixed''
+values of \verb|\uccode| and \verb|\lccode| which are set in \LaTeX!
+Of course, to get correct results after processing a multilingual
+text, one needs to use only one language in one paragraph
+(or explicitly set hyphenation for other-language-words
+used in the same paragraph). But these redefined
+\verb|\uppercase| and \verb|\lowercase| will work correctlly
+even for multilingual arguments!
+Unfortunately, \TeX\ does not use \verb|\lowercase| when
+it breaks paragraphs into lines and searches for hyphenation
+(it does this implicitly, i.~e.\ without a call to \verb|\lowercase|),
+so it is impossible to meddle with this process \texttt{;-(}.
+
+As you can see, this approach works even if the argument of
+\verb|\uppercase| contains a ``hidden'' text (via macroses).
+But of course, it is not a universal approach.
+It fails when the language changing macroses are ``hidden''
+in a group (via \verb|{...}| or \verb|\begingroup...\endgroup|).
+But I think that in most cases user will be able to rewrite his text so
+that all language switching will be done outside of groups.
+
+These macros are useful also because \LaTeX\ uses \verb|\uppercase|
+when it makes colontitles. So, it is possible to use
+multilingual colontitles.
+
+And now, how does it work.
+The `corrected' macros changes the text like
+\begin{verbatim}
+   \uppercase{ [<text>] [<language change>] <text>
+       [ <language change> <text> ... ] }
+\end{verbatim}
+(anything in square brackets is optional) to the following
+\begin{verbatim}
+   [\uppercase{<text>}] [<language change>]
+      \uppercase{<text>} [ <language change> \uppercase{<text>} ... ],
+\end{verbatim}
+i.~e.\ it takes the language changing macroses out of the
+\verb|\uppercase|
+argument.
+A language changing macroses are assumed here to have the following
+form:
+\begin{verbatim}
+   \def<language>{\begin@language
+       <changing of \language, \uccode, \lccode,
+         \lefthypnenmin, \righthyphenmin, etc.>
+       \end@language}
+\end{verbatim}
+This, of course, could be corrected to be used in \textsf{babel} system.
+
+\vskip3\baselineskip
+\hbox to\hsize{\hfill\vbox{%
+\hbox{With best regards, Vladimir Volovich}
+\hbox{e-mail: vvv@vvv.vrn.ru}}}
+
+\end{document}
+
+--
+With best regards,
+                   Vladimir.
+

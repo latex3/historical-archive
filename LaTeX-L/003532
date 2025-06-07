@@ -1,0 +1,351 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 1 Feb 2000 21:17:23 +0100 (MET)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA05991 for <schoepf@mail.uni-mainz.de>; Tue, 1 Feb 2000 21:17:23 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF6CF1.5940CB80"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA19378 for <schoepf@UNI-MAINZ.DE>; Tue, 1 Feb 2000 21:17:20 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.25A0D6BD@mail.listserv.gmd.de>; Tue, 1 Feb 2000 21:17:02 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 449780 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 1 Feb 2000 21:15:44 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id VAA20331 for <LATEX-L@urz.uni-heidelberg.de>; Tue, 1 Feb          2000 21:15:43 +0100 (MET)
+Received:  from smtp1.hetnet.nl (smtp1.hetnet.nl [145.7.225.1]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with ESMTP id VAA29729 for          <LATEX-L@urz.uni-heidelberg.de>; Tue, 1 Feb 2000 21:15:44 +0100 (MET)
+Received:  from hetnet.nl ([194.151.104.155]) by smtp1.hetnet.nl  with Microsoft          SMTPSVC(5.5.1877.327.32); Tue, 1 Feb 2000 21:14:42 +0100
+Received:  from ergst ([195.121.222.206]) by hetnet.nl  with Microsoft          SMTPSVC(5.5.1877.327.32); Tue, 1 Feb 2000 21:06:32 +0100
+References: <001101bf6a7a$145173e0$0bda79c3@ergst>             <200001302100.WAA00837@istrati.zdv.uni-mainz.de>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["3211" "Tue" "1" "February" "2000" "21:06:45" "+0100" "Ruben Prins" "sunu@HETNET.NL" nil "82" "Re: Comments on templates and xinitials" "^Date:" nil nil "2" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Re: Comments on templates and xinitials
+Date: Tue, 1 Feb 2000 21:06:45 +0100
+Message-ID:  <004101bf6cef$ff642540$64d979c3@ergst>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Ruben Prins" <sunu@HETNET.NL>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3532
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF6CF1.5940CB80
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+>  > 1) You should use `totalheight', not `height' --- just try Palatino =
+J,
+or
+>  > just about any Q. (BTW, this mistake is also made by the dropping
+package).
+>
+> i beg to disagree. point is that for certain letters \height may not =
+be
+right
+> but in my opinion \totalheight would be worse. In most circumstances
+alinging
+> the baseline of the initial with a bseline of the text is a good =
+starting
+> point (even if the initial has decenders) --- and if it is not =
+adequate
+the
+> template offers ample possibilities to adjust the placement.
+
+Maybe a simple switch: if true, then use totalheight, otherwise, use =
+height
+and ignore depth (most of the time initials with descenders will overlap =
+the
+text, and only horizontal/vertical adjustment will solve this). If
+further/no adjustments are wanted, one could always manually adjust the
+initial template (IMO, your argument backfires ;-). This probably =
+handles
+more cases correctly. Just look at
+
+  \DeclareInstance{initial}{default}{std}{
+    initial-font    =3D \fontfamily{ppl}\fontsize{40}{40}\selectfont,
+    parshape-list   =3D {0pt,0pt},
+    text-sep =3D 2pt,
+    initial-format  =3D \fbox{#1} % extra illustration of my argument
+   }
+  ...
+  \selectlanguage{dutch}
+  \Initial{IJ}[muiden.]
+  Onzegbaar verdriet, koningin, vraagt u mij te vernieuwen,
+  hoe Troje's macht, dat beklagenswaardige rijk,
+  verwoest is door Grieken, de ellende die ik zelf
+  heb gezien en waarin ik een groot aandeel gehad heb.
+  Wie kan bij zulke verhalen, Myrmidoon of Doloop
+  of soldaat van de harde Ulixes, zijn tranen bedwingen?
+
+There's no justification for this result. Yuck! Adjustments of the =
+template
+should be used to beautify the result, not to correct a (preventable) =
+wrong
+result (that's my opinion).
+
+>  > 2) Accented characters can be used for initial if you just use
+>  > \meaning/\@onelevel@sanitize or a plain \string (compare the code =
+the
+>  > accents use to check for existing `template instances'  =
+[=3Dcomposites]).
+>
+> True, but then either \DeclareInstance would need to do the same or =
+the
+whole
+> thing would not work either. And I'm not that keen on allowing =
+anything in
+> template/instance names but would rather prefer a lean name space =
+there.
+>
+> It kind of feels wrong to me to open up that name space just to be =
+able to
+> support \"A as an instance name --- but convince me otherwise :-)
+>
+
+Well, maybe a special interface for the initials is at place here:
+
+  \DeclareInitial{\"A}[std]{...}
+
+Which will execute
+
+  \DeclareInstance{initial}{\string\"A}{std}{...}
+
+And \Initial will use \UseInstance{initial}{\string#1}. This hides the
+template mechanism somewhat, but most cases are served:
+
+  \Initial{\"U}[ber den sieben Bergen] ...
+  \Initial{\TH}[orn], but my knowledge of Icelandic isn't what it
+    used to be...
+  \Initial{\DJ} (Croatian)
+  \Initial{\'E}[colle], whatever
+
+And it doesn't require any change to the template mechanism (nor does it
+create a "Missing \endcsname inserted" message). Guess what? I'm =
+stubborn
+and don't take "no" for an answer ;-)
+
+Ruben Prins
+(who would currently like to have an accented initial himself).
+
+PS
+I'm ignoring inputenc, so \DeclareInitial{\'E} and \DeclareInitial{=C9} =
+won't
+be the same -- call it a feature ;-)
+
+------_=_NextPart_001_01BF6CF1.5940CB80
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3DWindows-1252">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: Comments on templates and xinitials</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; 1) You should use `totalheight', not =
+`height' --- just try Palatino J,</FONT>
+
+<BR><FONT SIZE=3D2>or</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; just about any Q. (BTW, this mistake =
+is also made by the dropping</FONT>
+
+<BR><FONT SIZE=3D2>package).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; i beg to disagree. point is that for certain =
+letters \height may not be</FONT>
+
+<BR><FONT SIZE=3D2>right</FONT>
+
+<BR><FONT SIZE=3D2>&gt; but in my opinion \totalheight would be worse. =
+In most circumstances</FONT>
+
+<BR><FONT SIZE=3D2>alinging</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the baseline of the initial with a bseline of =
+the text is a good starting</FONT>
+
+<BR><FONT SIZE=3D2>&gt; point (even if the initial has decenders) --- =
+and if it is not adequate</FONT>
+
+<BR><FONT SIZE=3D2>the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; template offers ample possibilities to adjust =
+the placement.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe a simple switch: if true, then use totalheight, =
+otherwise, use height</FONT>
+
+<BR><FONT SIZE=3D2>and ignore depth (most of the time initials with =
+descenders will overlap the</FONT>
+
+<BR><FONT SIZE=3D2>text, and only horizontal/vertical adjustment will =
+solve this). If</FONT>
+
+<BR><FONT SIZE=3D2>further/no adjustments are wanted, one could always =
+manually adjust the</FONT>
+
+<BR><FONT SIZE=3D2>initial template (IMO, your argument backfires ;-). =
+This probably handles</FONT>
+
+<BR><FONT SIZE=3D2>more cases correctly. Just look at</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \DeclareInstance{initial}{default}{std}{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; initial-font&nbsp;&nbsp;&nbsp; =3D =
+\fontfamily{ppl}\fontsize{40}{40}\selectfont,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; parshape-list&nbsp;&nbsp; =3D =
+{0pt,0pt},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; text-sep =3D 2pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; initial-format&nbsp; =3D \fbox{#1} =
+% extra illustration of my argument</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \selectlanguage{dutch}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \Initial{IJ}[muiden.]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; Onzegbaar verdriet, koningin, vraagt u mij te =
+vernieuwen,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; hoe Troje's macht, dat beklagenswaardige =
+rijk,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; verwoest is door Grieken, de ellende die ik =
+zelf</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; heb gezien en waarin ik een groot aandeel =
+gehad heb.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; Wie kan bij zulke verhalen, Myrmidoon of =
+Doloop</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; of soldaat van de harde Ulixes, zijn tranen =
+bedwingen?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There's no justification for this result. Yuck! =
+Adjustments of the template</FONT>
+
+<BR><FONT SIZE=3D2>should be used to beautify the result, not to correct =
+a (preventable) wrong</FONT>
+
+<BR><FONT SIZE=3D2>result (that's my opinion).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; 2) Accented characters can be used for =
+initial if you just use</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \meaning/\@onelevel@sanitize or a =
+plain \string (compare the code the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; accents use to check for existing =
+`template instances'&nbsp; [=3Dcomposites]).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; True, but then either \DeclareInstance would =
+need to do the same or the</FONT>
+
+<BR><FONT SIZE=3D2>whole</FONT>
+
+<BR><FONT SIZE=3D2>&gt; thing would not work either. And I'm not that =
+keen on allowing anything in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; template/instance names but would rather prefer =
+a lean name space there.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; It kind of feels wrong to me to open up that =
+name space just to be able to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; support \&quot;A as an instance name --- but =
+convince me otherwise :-)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Well, maybe a special interface for the initials is at =
+place here:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \DeclareInitial{\&quot;A}[std]{...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Which will execute</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; =
+\DeclareInstance{initial}{\string\&quot;A}{std}{...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And \Initial will use =
+\UseInstance{initial}{\string#1}. This hides the</FONT>
+
+<BR><FONT SIZE=3D2>template mechanism somewhat, but most cases are =
+served:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \Initial{\&quot;U}[ber den sieben Bergen] =
+...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \Initial{\TH}[orn], but my knowledge of =
+Icelandic isn't what it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; used to be...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \Initial{\DJ} (Croatian)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \Initial{\'E}[colle], whatever</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And it doesn't require any change to the template =
+mechanism (nor does it</FONT>
+
+<BR><FONT SIZE=3D2>create a &quot;Missing \endcsname inserted&quot; =
+message). Guess what? I'm stubborn</FONT>
+
+<BR><FONT SIZE=3D2>and don't take &quot;no&quot; for an answer =
+;-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ruben Prins</FONT>
+
+<BR><FONT SIZE=3D2>(who would currently like to have an accented initial =
+himself).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>PS</FONT>
+
+<BR><FONT SIZE=3D2>I'm ignoring inputenc, so \DeclareInitial{\'E} and =
+\DeclareInitial{=C9} won't</FONT>
+
+<BR><FONT SIZE=3D2>be the same -- call it a feature ;-)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF6CF1.5940CB80--
+

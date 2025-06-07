@@ -1,0 +1,268 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.42C29884@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:54 +0100
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.42C29884"
+x-vm-vheader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-bookmark: 1
+Content-class: urn:content-classes:message
+Subject:      LaTeX bug/feature/gotcha
+Date: Sat, 1 Jun 1991 23:00:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE573@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Don Hosek" <DHOSEK@HMCVAX.CLAREMONT.EDU>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 341
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.42C29884
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+X-News: hmcvax comp.text.tex:8112
+From: teexdwu@ioe.lon.ac.uk (DOMINIK WUJASTYK)
+Subject:LaTeX bug/feature/gotcha
+Date: 1 Jun 91 20:47:17 GMT
+Message-ID:<1991Jun1.204717.26046@ioe.lon.ac.uk>
+
+The situation was this:  I had an "enumerate" environment in one place,
+
+\begin{enumerate}
+\item ...
+\item ...
+\item ...
+\end{enumerate}
+
+and then elsewhere, but nearby,  I had a float, a "table" environment,
+which had another "enumerate" environment in it:
+
+\begin{table}{p}
+
+\begin{enumerate}
+\item ...
+\item ...
+\item ...
+\end{enumerate}
+
+\end{table}
+
+Being only one level deep, the enumerated items in my table were
+numbered 1, 2, 3 ..., and this was important since the numbers were a
+key to figures in some artwork that appeared in the chapter.
+
+I wanted the float to appear as a whole page float at a particular point
+in the text, so I was jiggling the position of the whole table in the
+file, as one often has to in these situations.
+
+Quite by accident, I placed the table in the middle of the other
+"enumerate" environment, like this,
+
+\begin{enumerate}
+\item ...
+\item ...
+
+\begin{table}
+\begin{enumerate}
+\item ...
+\item ...
+\item ...
+\end{enumerate}
+\end{table}
+
+\item ...
+\end{enumerate}
+
+The table appeard at the right place in the printed page, so I was =
+happy,
+until the copy editor pointed out that the list of items in the float =
+was
+now numbered a, b, c, d, ...!
+
+Of course what had happenend is obvious, once you see it.  LaTeX saw
+one enumerate inside another, so it changed counters, as it normally
+does.
+
+But in this case, my intuition would be that the float should not
+count as being truly embedded in the text at this point.  I judge it
+to be a separate entity, and I don't expect it to be affected by its
+surrounding environment in this way.
+
+What do you think?  Bug for fixing in LaTeX 2.10/3?  Or is this what
+you think is proper behaviour?
+
+Dominik
+
+
+------_=_NextPart_001_01C19443.42C29884
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     LaTeX bug/feature/gotcha</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>X-News: hmcvax comp.text.tex:8112</FONT>
+
+<BR><FONT SIZE=3D2>From: teexdwu@ioe.lon.ac.uk (DOMINIK WUJASTYK)</FONT>
+
+<BR><FONT SIZE=3D2>Subject:LaTeX bug/feature/gotcha</FONT>
+
+<BR><FONT SIZE=3D2>Date: 1 Jun 91 20:47:17 GMT</FONT>
+
+<BR><FONT =
+SIZE=3D2>Message-ID:&lt;1991Jun1.204717.26046@ioe.lon.ac.uk&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The situation was this:&nbsp; I had an =
+&quot;enumerate&quot; environment in one place,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and then elsewhere, but nearby,&nbsp; I had a float, a =
+&quot;table&quot; environment,</FONT>
+
+<BR><FONT SIZE=3D2>which had another &quot;enumerate&quot; environment =
+in it:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{table}{p}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{table}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Being only one level deep, the enumerated items in my =
+table were</FONT>
+
+<BR><FONT SIZE=3D2>numbered 1, 2, 3 ..., and this was important since =
+the numbers were a</FONT>
+
+<BR><FONT SIZE=3D2>key to figures in some artwork that appeared in the =
+chapter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I wanted the float to appear as a whole page float at =
+a particular point</FONT>
+
+<BR><FONT SIZE=3D2>in the text, so I was jiggling the position of the =
+whole table in the</FONT>
+
+<BR><FONT SIZE=3D2>file, as one often has to in these situations.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Quite by accident, I placed the table in the middle of =
+the other</FONT>
+
+<BR><FONT SIZE=3D2>&quot;enumerate&quot; environment, like this,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{table}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\end{table}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\item ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The table appeard at the right place in the printed =
+page, so I was happy,</FONT>
+
+<BR><FONT SIZE=3D2>until the copy editor pointed out that the list of =
+items in the float was</FONT>
+
+<BR><FONT SIZE=3D2>now numbered a, b, c, d, ...!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Of course what had happenend is obvious, once you see =
+it.&nbsp; LaTeX saw</FONT>
+
+<BR><FONT SIZE=3D2>one enumerate inside another, so it changed counters, =
+as it normally</FONT>
+
+<BR><FONT SIZE=3D2>does.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But in this case, my intuition would be that the float =
+should not</FONT>
+
+<BR><FONT SIZE=3D2>count as being truly embedded in the text at this =
+point.&nbsp; I judge it</FONT>
+
+<BR><FONT SIZE=3D2>to be a separate entity, and I don't expect it to be =
+affected by its</FONT>
+
+<BR><FONT SIZE=3D2>surrounding environment in this way.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>What do you think?&nbsp; Bug for fixing in LaTeX =
+2.10/3?&nbsp; Or is this what</FONT>
+
+<BR><FONT SIZE=3D2>you think is proper behaviour?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Dominik</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.42C29884--
+

@@ -1,0 +1,140 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4381" "Sun" "2" "March" "1997" "18:57:28" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "102" "what is a ``language''?" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id TAA01170 for <schoepf@UNI-MAINZ.DE>; Sun, 2 Mar 1997 19:41:12 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.252A3B70@listserv.gmd.de>; Sun, 2 Mar 1997 19:41:11 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 107822 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 2 Mar 1997 19:41:08 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id TAA17492
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 2 Mar 1997 19:39:13
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id TAA26962 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 2 Mar 1997 19:37:57 +0100
+          (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          SAA04001; Sun, 2 Mar 1997 18:57:28 +0100
+Message-ID:  <199703021757.SAA04001@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 2 Mar 1997 18:57:28 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      what is a ``language''?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1848
+
+i guess that the section heading below is anything else than correct
+:-) but i do want to share some thoughts and comments i wrote during
+the day on that topic and the hope that you can help with further
+thoughts/agreement/disagreement etc
+
+frank
+
+--------------------------
+
+
+\section{Clarifying the term ``language'' within \LaTeX{}}
+
+ Within structured documents each portion of the document is
+explicitly or implicitly labeled with a ``language tag'' denoting that
+this portion of the document contains data written in a certain
+``language''.
+
+They have the following properties:
+\begin{itemize}
+\item
+  They impose a tree structure on the document.
+\item
+  At any one point in the document the ``current language'' can be
+  determined.
+\end{itemize}
+
+
+\TeX{} provides a very special type of region which can be
+regarded as a language in its own right: mathematical formulas.
+Although it doesn't follow exactly the same markup convention and
+doesn't employ the same implementation concepts (as it has built in
+support for various features) it nevertheless is on an abstract level
+comparable in most respects.
+
+Traditionally these language tags can have two independent semantics:
+\begin{itemize}
+\item
+  Denoting the input conventions used within this region.
+
+\item
+  Denoting the rendering conventions used when formatting this region.
+\end{itemize}
+
+\subsection{Input conventions}
+
+There are a number of implicit input conventions employed within a
+\TeX{} based system, for example, each input character is attached a
+so called category code that determines certain semantics of that
+character. A category code of type ``letter'' or type ``other'' means
+that in most situations\footnote{As \TeX{} is a macro language it is
+of course possible that due to expansion of macros the interpretation
+of the input is temporarily or even permanently modified.} the
+character is rendered as a glyph in the slot position corresponding to
+the \textsc{ascii} code value of the character in the current font. In
+most cases this means that if, say, the character `a' is entered it
+will eventually result in the glyph `a' in the current font. However,
+one has to be aware that this crucially depends on the font encoding
+in use.
+
+From this observation it follows that for characters of this category
+type either all font encodings have to produce the same logical glyph
+or the correspondence between input and output representation have to
+be explicitly marked up to allow the formatting process to select
+fonts with the correct font encoding.
+
+Another area of input conventions commonly used for language support
+are the shortrefs, see~\ref{sec:shortrefs}.
+
+\subsection{Rendering conventions}
+
+There are many rendering conventions that depend or can depend on the
+language of a textual region. Examples are the hyphenation algorithm
+employed, the production of fixed strings, typographical conventions,
+etc.
+
+These conventions range from those that most likely need changing when
+switching from one language to another to those that can be considered
+being a matter of style but that do not produce incorrect results. For
+most, if not for all rendering conventions this is a somewhat flexible
+classification that does depend on various factors and might be
+different for different applications.
+
+
+\subsection{Discussion}
+
+For both types of input conventions it seems that that they are not
+necessarily tightly bound to the language of a region. For example, it
+is perfectly possible (although currently not fully supported by
+\LaTeX{}) to input text in a given language using more than one font
+encoding and consequently needing different input conventions within
+the area denoted by a language tag.  Similarly the shortrefs have an
+application range that is not directly linked to language boundaries,
+see section~\ref{sec:shortref-discussion} for further discussion.
+
+Not all decisions the formatter has to make when encountering a
+language tag (i.e., a change in languages) can be considered as being
+globally bound to such a border, in fact most of them depend on the
+current nesting structure, e.g., embedded language fragments might be
+handled differently then a document with this language as the main
+language. This is not to say that that there can't be a global bound
+but that one needs specification flexibility in deciding which
+conventions are applied/changed at what level.
+

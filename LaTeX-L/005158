@@ -1,0 +1,254 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 8 Feb 2008 18:58:44 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m18HwdY6032095
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 8 Feb 2008 18:58:39 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m18HsGpv030791
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 8 Feb 2008 18:54:16 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m18APLmj027907;
+	Fri, 8 Feb 2008 18:53:56 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 210834 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 8 Feb
+          2008 18:53:56 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m18HhtIE014672 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 8 Feb 2008 18:43:55 +0100
+Received: from web82005.mail.mud.yahoo.com (web82005.mail.mud.yahoo.com
+          [66.163.178.249]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          SMTP id m18HdkVb022597 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri,
+          8 Feb 2008 18:39:47 +0100
+Received: (qmail 68683 invoked by uid 60001); 8 Feb 2008 17:43:36 -0000
+X-YMail-OSG: KxNE0mYVM1lyq0Fe9Bqn_pc.aNuWvoVLz.zedsBVp1d3QHwI
+Received: from [128.252.117.249] by web82005.mail.mud.yahoo.com via HTTP; Fri,
+          08 Feb 2008 09:43:36 PST
+X-Mailer: YahooMailRC/818.31 YahooMailWebService/0.7.160
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1156881166-1202492616=:68625"
+Message-ID:  <554562.68625.qm@web82005.mail.mud.yahoo.com>
+Date:         Fri, 8 Feb 2008 09:43:36 -0800
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Paul Thompson <patjah@SBCGLOBAL.NET>
+Subject: Re: Internal and external page setup control
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.224 () BAYES_00,HTML_30_40,HTML_MESSAGE
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Feb 2008 17:58:45.0382 (UTC) FILETIME=[3F7EC260:01C86A7C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5158
+
+--0-1156881166-1202492616=:68625
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Ha! I do this in newlfm.  What I do is specify page dimensions in a registe=
+r.  During shipout, after shipping out the old page, I bring the new dimens=
+ions in and substitute for the old.=0A=0AI need to do this because, in newl=
+fm, I set up letters.  Page One of the letter can have a top margin of 5 cm=
+ to accommodate a figure or special feature pertaining to a letterhead lett=
+er.  On Page Two, however, I don't want that large margin.  I want a smalle=
+r margin, specified in a different manner.=0A =0AHere is my hacked output p=
+age, which is used within newlfm (L 4781-4862 of newlfm.ltx V 8.4)=0A=0A\de=
+f\@outputpage{%=0A  \def\ifta{0}%=0A  \txa{npind:\npind}%=0A  \showdim{New =
+page - before shipout}%=0A  \begingroup%           % the \endgroup is put i=
+n by \aftergroup=0A    \let \protect \noexpand=0A    \@resetactivechars=0A =
+   \global\let\@@if@newlist\if@newlist=0A    \global\@newlistfalse=0A    \@=
+parboxrestore=0A\txa{topmargin:\the\topmargin}=0A\txa{Before shipout...}=0A=
+  \showdim{New page - immediately before shipout}=0A    \shipout \vbox{%=0A=
+      \set@typeset@protect=0A      \aftergroup \endgroup=0A      \aftergrou=
+p \set@typeset@protect% correct? or just restore by ending the group=0A    =
+  \if@specialpage=0A        \global\@specialpagefalse\@nameuse{ps@\@special=
+style}%=0A      \fi=0A      \if@twoside=0A        \ifodd\count\z@ \let\@the=
+head\@oddhead \let\@thefoot\@oddfoot=0A          \let\@themargin\oddsidemar=
+gin=0A        \else \let\@thehead\@evenhead=0A          \let\@thefoot\@even=
+foot \let\@themargin\evensidemargin=0A        \fi=0A      \fi=0A      \rese=
+t@font=0A      \normalsize=0A\txa{Before normalsfcodes}=0A      \normalsfco=
+des=0A      \let\label\@gobble=0A      \let\index\@gobble=0A      \let\glos=
+sary\@gobble=0A      \baselineskip\z@skip \lineskip\z@skip \lineskiplimit\z=
+@=0A      \@begindvi=0A      \vskip \topmargin=0A    \moveright\@themargin =
+\vbox {%=0A      \setbox\@tempboxa \vbox to\headheight{%=0A        \vfil=0A=
+        \color@hbox=0A          \normalcolor=0A          \hb@xt@\textwidth{=
+\@thehead}%=0A        \color@endbox=0A        }%                        %% =
+22 Feb 87=0A      \dp\@tempboxa \z@=0A      \box\@tempboxa=0A      \vskip \=
+headsep=0A      \box\@outputbox=0A      \baselineskip \footskip=0A      \co=
+lor@hbox=0A        \normalcolor=0A        \hb@xt@\textwidth{\@thefoot}%=0A =
+     \color@endbox=0A      }%=0A    }%=0A\txa{After shipout}=0A\global\let\=
+if@newlist\@@if@newlist=0A\showdim{New page - before reset}=0A\if@dim@reset=
+ =0A\if@repth \global\textheight \@rep@th \global\@repthfalse \fi=0A\fi=0A\=
+global \@colht \textheight=0A\stepcounter{page}%=0A\let\firstmark\botmark=
+=0A\if@dim@reset =0A\if@repth \global\textheight \@rep@th     \global\@rept=
+hfalse \fi=0A\if@reptw \global\textwidth \@rep@tw      \global\@reptwfalse =
+\fi=0A\if@repom \global\oddsidemargin \@rep@om  \global\@repomfalse \fi=0A\=
+if@repem \global\evensidemargin \@rep@em \global\@repemfalse \fi=0A\if@repc=
+s \global\columnsep \@rep@cs      \global\@repcsfalse \fi=0A\if@reptm \glob=
+al\topmargin \@rep@tm      \global\@reptmfalse   =0A\txa{Fixing tm} \fi=0A\=
+if@rephh \global\headheight \@rep@hh     \global\@rephhfalse \fi=0A\if@reph=
+s \global\headsep \@rep@hs        \global\@rephsfalse \fi=0A\if@repfs \glob=
+al\footskip \@rep@fs       \global\@repfsfalse \fi=0A\fi=0A\showdim{New pag=
+e - after reset}=0A\def\ifta{0}%=0A\renewcommand{\headrulewidth}{\the\@Hrw}=
+=0A\renewcommand{\footrulewidth}{\the\@Frw}=0A}=0A=0AIn this code \txa is a=
+ conditional listing tool, showdim shows dimensions=0A=0A\if@dim@reset - ne=
+wif to reset dimensions=0A\if@repth - if replace textheight - new value is =
+\@rep@th - reset if  to false=0A=0ASome kind of protected mechanism is used=
+ to place values into \@rep@th=0A=0A=0APaul Thompson =0ADiv Biostatistics, =
+Washington University, St. Louis=0A=0A----- Original Message ----=0AFrom: L=
+ars Hellstr=F6m <Lars.Hellstrom@RESIDENSET.NET>=0ATo: LATEX-L@LISTSERV.UNI-=
+HEIDELBERG.DE=0ASent: Thursday, February 7, 2008 8:23:10 AM=0ASubject: Re: =
+Internal and external page setup control=0A=0A=0A13 jan 2008 kl. 19.41 skre=
+v Frank Mittelbach:=0A> I'm having a bit of trouble to find a good way to s=
+pecify internal or=0A =0A> external=0A> page setup control. In LaTeX2e this=
+ concept only exists in some =0A> rudimentary=0A> form, i.e., it is possibl=
+e to influence that page style as far as =0A> running=0A> headings are conc=
+erned by placing a \pagestyle or \thispagestyle =0A> command in=0A> the sou=
+rce but that's about all that is available.=0A[snip]=0A> What I'm looking f=
+or for the new output routine is to be able to =0A> change, for=0A> example=
+, the area specifications for the current or the following =0A> pages. The=
+=0A> tricky part is: how should this be specified and when should it act?=
+=0A>=0A> If it works like \thispagestyle, i.e., is intended to act on the =
+=0A> "current"=0A> page then this might result in the following problem:=0A=
+>=0A>     * Some such directive would be picked up when gathering material =
+=0A> and would=0A>       change, say, which float areas are allowed on the =
+current page.=0A =0A> But then=0A>       adding floats to these areas the p=
+oint with the directive might=0A =0A> get=0A>       pushed out of the curre=
+nt page (since each float takes away =0A> space from=0A>       the galley).=
+ As a result all the placements done may no longer=0A be=0A>       valid.=
+=0A=0AMaybe a stupid question (however any reply might be better than no =
+=0Areply), but would it help to use \marks for communicating this kind of =
+=0Asettings to the output routine?=0A=0AParts of what you've written seems =
+to indicate there is the kind of =0Asensitivity to position in vertical mat=
+erial that marks would provide, =0Abut OTOH grepping in xpackages/xor/ does=
+n't turn up anything to =0Aindicate that marks are being used for anything =
+but running head =0Acontents and the like.=0A=0ALars Hellstr=F6m=0A=0A=0A=
+=0A
+--0-1156881166-1202492616=:68625
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><style type=3D"text/css"><!-- DIV {margin:0px;} --></style></he=
+ad><body><div style=3D"font-family:times new roman,new york,times,serif;fon=
+t-size:12pt">Ha! I do this in newlfm.&nbsp; What I do is specify page dimen=
+sions in a register.&nbsp; During shipout, after shipping out the old page,=
+ I bring the new dimensions in and substitute for the old.<br><br>I need to=
+ do this because, in newlfm, I set up letters.&nbsp; Page One of the letter=
+ can have a top margin of 5 cm to accommodate a figure or special feature p=
+ertaining to a letterhead letter.&nbsp; On Page Two, however, I don't want =
+that large margin.&nbsp; I want a smaller margin, specified in a different =
+manner.<br><div>&nbsp;<br>Here is my hacked output page, which is used with=
+in newlfm (L 4781-4862 of newlfm.ltx V 8.4)<br><br>\def\@outputpage{%<br>&n=
+bsp; \def\ifta{0}%<br>&nbsp; \txa{npind:\npind}%<br>&nbsp; \showdim{New pag=
+e - before shipout}%<br>&nbsp;
+ \begingroup%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %=
+ the \endgroup is put in by \aftergroup<br>&nbsp;&nbsp;&nbsp; \let \protect=
+ \noexpand<br>&nbsp;&nbsp;&nbsp; \@resetactivechars<br>&nbsp;&nbsp;&nbsp; \=
+global\let\@@if@newlist\if@newlist<br>&nbsp;&nbsp;&nbsp; \global\@newlistfa=
+lse<br>&nbsp;&nbsp;&nbsp; \@parboxrestore<br>\txa{topmargin:\the\topmargin}=
+<br>\txa{Before shipout...}<br>&nbsp; \showdim{New page - immediately befor=
+e shipout}<br>&nbsp;&nbsp;&nbsp; \shipout \vbox{%<br>&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; \set@typeset@protect<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \aftergroup=
+ \endgroup<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \aftergroup \set@typeset@prote=
+ct% correct? or just restore by ending the group<br>&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; \if@specialpage<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \glob=
+al\@specialpagefalse\@nameuse{ps@\@specialstyle}%<br>&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; \fi<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ \if@twoside<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \ifodd\count\z@ =
+\let\@thehead\@oddhead \let\@thefoot\@oddfoot<br>&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; \let\@themargin\oddsidemargin<br>&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else \let\@thehead\@evenhead<br>&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \let\@thefoot\@evenfoot \let\@th=
+emargin\evensidemargin<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi<br=
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \rese=
+t@font<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \normalsize<br>\txa{Before normals=
+fcodes}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \normalsfcodes<br>&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; \let\label\@gobble<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \let\i=
+ndex\@gobble<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \let\glossary\@gobble<br>&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp; \baselineskip\z@skip \lineskip\z@skip \lineskip=
+limit\z@<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ \@begindvi<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \vskip \topmargin<br>&nbsp;&n=
+bsp;&nbsp; \moveright\@themargin \vbox {%<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ \setbox\@tempboxa \vbox to\headheight{%<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; \vfil<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \color@hbox=
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \normalcolor<br>=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \hb@xt@\textwidth{\@=
+thehead}%<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \color@endbox<br>&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %% 22 Feb 87<br>&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; \dp\@tempboxa \z@<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \box\@tempboxa<br>&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \vskip \headsep<br>&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp; \box\@outputbox<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \baselineskip
+ \footskip<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \color@hbox<br>&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp; \normalcolor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; \hb@xt@\textwidth{\@thefoot}%<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+ \color@endbox<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }%<br>&nbsp;&nbsp;&nbsp; }=
+%<br>\txa{After shipout}<br>\global\let\if@newlist\@@if@newlist<br>\showdim=
+{New page - before reset}<br>\if@dim@reset <br>\if@repth \global\textheight=
+ \@rep@th \global\@repthfalse \fi<br>\fi<br>\global \@colht \textheight<br>=
+\stepcounter{page}%<br>\let\firstmark\botmark<br>\if@dim@reset <br>\if@rept=
+h \global\textheight \@rep@th&nbsp;&nbsp;&nbsp;&nbsp; \global\@repthfalse \=
+fi<br>\if@reptw \global\textwidth \@rep@tw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \g=
+lobal\@reptwfalse \fi<br>\if@repom \global\oddsidemargin \@rep@om&nbsp; \gl=
+obal\@repomfalse \fi<br>\if@repem \global\evensidemargin \@rep@em \global\@=
+repemfalse \fi<br>\if@repcs \global\columnsep
+ \@rep@cs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \global\@repcsfalse \fi<br>\if@rept=
+m \global\topmargin \@rep@tm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \global\@reptmfa=
+lse&nbsp;&nbsp; <br>\txa{Fixing tm} \fi<br>\if@rephh \global\headheight \@r=
+ep@hh&nbsp;&nbsp;&nbsp;&nbsp; \global\@rephhfalse \fi<br>\if@rephs \global\=
+headsep \@rep@hs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \global\@rephsfa=
+lse \fi<br>\if@repfs \global\footskip \@rep@fs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; \global\@repfsfalse \fi<br>\fi<br>\showdim{New page - after reset}<=
+br>\def\ifta{0}%<br>\renewcommand{\headrulewidth}{\the\@Hrw}<br>\renewcomma=
+nd{\footrulewidth}{\the\@Frw}<br>}<br><br>In this code \txa is a conditiona=
+l listing tool, showdim shows dimensions<br><br>\if@dim@reset - newif to re=
+set dimensions<br>\if@repth - if replace textheight - new value is \@rep@th=
+ - reset if&nbsp; to false<br><br>Some kind of protected mechanism is used =
+to place values into \@rep@th<br><br></div>Paul Thompson <br><div
+ style=3D"font-family: times new roman,new york,times,serif; font-size: 12p=
+t;">Div Biostatistics, Washington University, St. Louis<br><br><div style=
+=3D"font-family: times new roman,new york,times,serif; font-size: 12pt;">--=
+--- Original Message ----<br>From: Lars Hellstr=F6m &lt;Lars.Hellstrom@RESI=
+DENSET.NET&gt;<br>To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE<br>Sent: Thursday,=
+ February 7, 2008 8:23:10 AM<br>Subject: Re: Internal and external page set=
+up control<br><br>=0A13 jan 2008 kl. 19.41 skrev Frank Mittelbach:<br>&gt; =
+I'm having a bit of trouble to find a good way to specify internal or=0A <b=
+r>&gt; external<br>&gt; page setup control. In LaTeX2e this concept only ex=
+ists in some <br>&gt; rudimentary<br>&gt; form, i.e., it is possible to inf=
+luence that page style as far as <br>&gt; running<br>&gt; headings are conc=
+erned by placing a \pagestyle or \thispagestyle <br>&gt; command in<br>&gt;=
+ the source but that's about all that is available.<br>[snip]<br>&gt; What =
+I'm looking for for the new output routine is to be able to <br>&gt; change=
+, for<br>&gt; example, the area specifications for the current or the follo=
+wing <br>&gt; pages. The<br>&gt; tricky part is: how should this be specifi=
+ed and when should it act?<br>&gt;<br>&gt; If it works like \thispagestyle,=
+ i.e., is intended to act on the <br>&gt; "current"<br>&gt; page then this =
+might result in the following problem:<br>&gt;<br>&gt;&nbsp; &nbsp;  * Some=
+ such directive would be picked up when gathering material <br>&gt; and wou=
+ld<br>&gt;&nbsp; &nbsp; &nbsp;  change, say, which float areas
+ are allowed on the current page.=0A <br>&gt; But then<br>&gt;&nbsp; &nbsp;=
+ &nbsp;  adding floats to these areas the point with the directive might=0A=
+ <br>&gt; get<br>&gt;&nbsp; &nbsp; &nbsp;  pushed out of the current page (=
+since each float takes away <br>&gt; space from<br>&gt;&nbsp; &nbsp; &nbsp;=
+  the galley). As a result all the placements done may no longer=0A be<br>&=
+gt;&nbsp; &nbsp; &nbsp;  valid.<br><br>Maybe a stupid question (however any=
+ reply might be better than no <br>reply), but would it help to use \marks =
+for communicating this kind of <br>settings to the output routine?<br><br>P=
+arts of what you've written seems to indicate there is the kind of <br>sens=
+itivity to position in vertical material that marks would provide, <br>but =
+OTOH grepping in xpackages/xor/ doesn't turn up anything to <br>indicate th=
+at marks are being used for anything but running head <br>contents and the =
+like.<br><br>Lars Hellstr=F6m<br></div><br></div></div></body></html>
+--0-1156881166-1202492616=:68625--
+

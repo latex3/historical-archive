@@ -1,0 +1,1178 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D545E96C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:50 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D545E96C"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Facilities for chemists.  Run this through AMSTeX.
+Date: Wed, 24 Oct 1990 15:08:31 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE205@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@VME.CCC.NOTTINGHAM.AC.UK>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 246
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D545E96C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+%  Warning:  This is an input file for AMSTeX, rather than for LaTeX.
+%            This is just so that I can use the commands for arrows
+%            mentioned on pages 140-141 of "The Joy of TeX".
+%            It may not be "good AmSTeX", since it's the first time
+%            I've used AmSTeX seriously!
+\documentstyle{amsppt}
+
+\define\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\smc a}\kern-.15em
+      T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\define\itlatex{L\kern-.30em\raise.3ex\hbox{\it A}\kern-.15em
+       T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}  % for use in =
+"references"
+\define\bs{\char'134}
+
+\document
+
+\topmatter
+\title Could  \LaTeX\ do more for chemists? \endtitle
+\author David Rhead \endauthor
+\affil Nottingham University \endaffil
+\endtopmatter
+
+\nologo
+\NoBlackBoxes
+
+\heading Introduction \endheading
+
+From time to time I have seen queries in {\tt TeXhax} and
+elsewhere from people   who wish to use \LaTeX\ for           documents
+that involve chemical formulae, etc.  Since there are now plans for
+\LaTeX\ 3.0 \cite{1},
+I thought this might be a good time to consider
+what facilities one could reasonably ask the people implementing the new
+\LaTeX\     to provide for chemists.
+
+I'm not a chemist myself, but have been involved in helping chemists
+use \LaTeX\ 2.09 \cite{2} for producing theses, etc.
+
+\heading Typesetting and artwork \endheading
+
+It may help               to consider    the             division of =
+labour
+within a traditional publishing house.  A ``copy-editor''
+\cite{3, p.\ 236} might divide the
+work on chemical formulae up between ``the printer'' and ``the =
+draughtsman''.
+Thus, some formulae can be typeset, but others are treated as =
+``artwork''
+and are drawn.
+
+Although there have been valiant attempts \cite{4-5} to define \TeX\ =
+macros for
+drawing chemical structure diagrams,
+I think      it is inevitable that, whatever \TeX\ macros
+are defined, there will be chemists who come along with requirements =
+that
+are beyond the abilities of the macro packages.  Therefore, it seems =
+sensible
+to retain the traditional division between typesetting and artwork:  to
+typeset those formulae that can be typeset easily and to get the other
+formulae drawn in some way.
+
+In \TeX\   terms, artwork can be treated as ``graphics'' to be
+``pasted'' into a typeset document via {\tt \bs special}.
+For example,
+{\smc chemdraw}
+\cite{6} can produce ``encapsulated {\smc PostScript}'',
+so a \LaTeX-ed document with {\smc chemdraw} diagrams can be printed on
+a {\smc PostScript} printer.
+
+\heading Desirable facilities for chemists in the new \LaTeX \endheading
+
+\LaTeX\ is never going to be a system for producing ``artwork'',
+so it seems to me that it would be unwise to attempt to provide =
+comprehensive
+facilities for ``chemical artwork'' in \LaTeX.
+However, it does seem worth providing a limited number of
+facilities to make it easier            to produce the          chemical
+formulae that should be treated as ``typesetting''.
+
+\subheading{Environments}
+
+Chemists' problems start when they use \LaTeX's ``mathematics''
+environments for ``chemistry''. Chemistry is not mathematics, and
+the conventions for typesetting chemistry are different from those for
+typesetting mathematics.  In terms of the \LaTeX\ philosophy \cite{2, =
+p.\ 6},
+``mathematics'' and ``chemistry'' represent ``logically distinct =
+structural
+elements''.
+
+It would seem natural to:
+\roster
+\item define environments for chemists that are
+      analogous to the environments that are available for =
+mathematicians
+\item within these ``chemistry'' environments,  aim to keep to
+      whatever typesetting conventions are usual in chemistry.
+\endroster
+How about defining {\tt chem}, {\tt displaychem} and {\tt chemequation}
+ environments,
+by analogy with {\tt math}, {\tt displaymath} and {\tt equation}?
+
+If such environments were defined, the style-file writer would then
+have control over ``mathematics'' and ``chemistry'' separately.
+In particular:
+\roster
+\item The default would be {\tt \bs rm} for chemistry (although
+      a designer could change the default in a {\tt .sty} file).
+      Individual
+      authors would no longer have to        search through
+      ``double bend'' sections of the \TeX book themselves
+      \cite{7, pp. 163 \& 179}.
+\item A designer could implement a house-style  in which
+      mathematical and chemical equations are numbered in separate
+      sequences \cite{3, p.\ 224} or a house-style in which there is =
+only one
+      sequence of numbers \cite{8, p.\ 132}.
+\item It might be possible to arrange that subscripts will normally be
+      at the same level \cite{7, p.\ 179} inside the environments
+      for chemistry.
+\endroster
+
+\subheading{Commands}
+
+At first sight, the \LaTeX\ manual \cite{2, ch.\ 3} gives
+the impression that \LaTeX\ 2.09 provides the
+``building blocks''        to give all the arrows, harpoons and =
+annotation that
+a chemist could want.  However, it is often difficult to get these
+building blocks arranged in the ways required.
+For example:
+\roster
+\item How does one obtain CH${_3}$(C=3DO)OCl \cite{3, p.\ 235} in ``math =
+mode''?
+      We can't
+      use ``=3D''
+      to mean ``double bond'', since \TeX\ puts space
+      around it.
+\item To represent a reversible reaction with rate constants above/below
+      a pair of harpoons, I ended up with
+      {\tt  \newline
+      \bs[  \newline
+      \bs renewcommand\{\bs arraystretch\}\{0.5\}  \newline
+      A     \bs begin\{array\}\{c\}  \newline
+            \bs scriptstyle k\_1      \bs\bs  [1mm]  \newline
+            \bs rightleftharpoons     \bs\bs  \newline
+            \bs scriptstyle k\_2  \newline
+            \bs end\{array\}                 B  \newline
+      \bs]  \newline
+      }
+      before it looked right.  Surely individual \LaTeX\ users shouldn't =
+have
+      to re-do the ``tuning''      needed to get these things         =
+right?
+\item As in the above example,
+      arrows and harpoons are often labelled  to show reaction =
+conditions.
+      It is not clear how to get            arrows/harpoons that expand =
+to the
+      width of the labels.
+\endroster
+Many of these difficulties are      another consequence of trying to =
+use,
+for chemistry,
+the structural elements that were designed for mathematics.
+
+So what commands might usefully be made available inside some future
+``chemistry'' environments?
+\roster
+\item
+It seems desirable \cite{3, p.\ 237} to have documented facilities for
+single and double bonds.  Triple bonds might also be needed \cite{9}.
+A documented facility for representing single
+bonds by raised dots would also be useful \cite{10, p.\ 59}.
+Might commands such as {\tt \bs bond},    {\tt \bs doublebond} and
+{\tt \bs triplebond}
+be appropriate?
+\item
+It seems desirable to have specific commands for typesetting =
+arrows/harpoons
+with labels above/below (to indicate conditions or rate
+constants).  \cite{11, p.\ 371} gives an indication of the combinations
+of arrows/harpoons that might have traditionally been typeset.
+Thus, as well as providing simple arrows for one-way reactions, it might
+be worth aiming to provide commands for: equilibrium reactions =
+(beginning
+at left and right); reversible reactions (beginning at left and right);
+reactions beginning at left/right and completed to left/right.
+Might it be worth defining some commands such as
+{\tt \bs oneway},
+{\tt \bs equilibriumR},
+{\tt \bs equilibriumL},
+{\tt \bs reversibleR},
+{\tt \bs reversibleL},
+{\tt \bs rightright},
+{\tt \bs rightleft},
+{\tt \bs leftright},
+{\tt \bs leftleft}, that each accept two parameters:  one to give a =
+label
+above the symbol, the other to give a label below the symbol?
+For example,
+{\tt  \newline
+\bs begin\{chem\}  \newline
+\quad 2H\_2 + O\_2 \bs oneway\{catalyst\}\{300 K; 4 bar\}    2 H\_2O  =
+\newline
+\bs end\{chem\}  \newline
+}
+might be a natural way to specify
+$$
+%  This is the line that contains the command that made me use AMSTeX.
+%  I couldn't find anything else ready-made in plain TeX or LaTeX.
+\text{2H}_2 + \text{O}_2
+      @> \text{catalyst} > \text{300 K; 4 bar} >
+            \text{2H}_2\text{O}
+$$
+\endroster
+
+\heading Work involved \endheading
+
+I'd guess that my suggestions about environments could be implemented
+by slight modications of the code that implements the corresponding
+environments for mathematics.
+
+Some new work would be required for commands such as {\tt \bs oneway},
+\dots\ , {\tt \bs leftleft}.  The only similar facility that I've found
+in an existing macro package is that for arrows in \AmSTeX\ \cite{12, =
+p.\ 140},
+but (from a chemist's point-of-view) this doesn't provide sufficient
+choice of symbols.
+
+It might be worth seeking advice about objectives
+>from people who typeset chemistry professionally.
+%  Perhaps the UK's Royal Society of Chemistry would be prepared to =
+advise
+%  about details.  I've been in e-mail correspondence with their =
+Publications
+%  Manager about authors submitting mansuscripts electronically to them,
+%  although they seem to be going the wordprocessor + chemdraw + SGML =
+route.
+
+\heading Documentation \endheading
+
+If the facilities that I've outlined above were provided, I would
+be inclined to give them less prominence in the documentation than
+the analogous facilities for mathematicians.            This would help
+give the impression that, whereas mathematicians can expect \LaTeX\
+to do everything they want, chemists can only expect \LaTeX\ to do a =
+certain
+proportion of what they want.
+For example, in the successor to \cite{2}, the description of facilities =
+for
+chemists might be relegated to an appendix, which            could start =
+with a
+paragraph explaining that the facilities are intended to support =
+``typesetting''
+but not ``artwork''.
+
+\Refs
+%
+\ref \no 1
+%  Sorry about the lack of umlaut.  \: gives an error here.
+\by Frank Mittelbach and Rainer Schopf
+\paper With \itlatex\ into the Nineties
+\jour TUGboat \vol 10 \yr 1989
+\pages 681--690
+\endref
+%
+\ref \no 2
+\by Leslie Lamport
+\book \LaTeX: A Document Preparation System
+\publ Addison-Wesley
+\yr 1986
+\endref
+%
+\ref \no 3
+\by Judith Butcher
+\book Copy-editing
+\publ Cambridge University Press
+%  \publaddr Cambridge
+\yr 1981
+\endref
+%
+\ref \no 4
+\by Roswitha T. Haas and Kevin C. O'Kane
+\paper Typesetting chemical structure formulae with the text formatter
+      \TeX/\itlatex
+\yr 1987 \vol 11
+\jour Computers and Chemistry
+\pages 251-271
+\endref
+%
+\ref \no 5
+%  How does one do "inproceedings" in AmSTeX?
+\by Michael Ramek
+\book Chemical structure formulae and $x/y$ diagrams with \TeX''.  {\rm =
+In:}
+      {\rm Malcolm Clark (editor).}
+      ``\TeX: applications, uses, methods
+\publ Ellis Horwood
+%  \publaddr London
+\yr 1990
+\endref
+%
+\ref \no 6
+\book CHEMDRAW (A program for the Macintosh)
+\publ Cambridge Scientific Computing
+\publaddr Cambridge, Massachusetts
+\endref
+%
+\ref \no 7
+\by Donald E. Knuth
+\book The \TeX book
+\publ Addison-Wesley
+\yr 1986
+\endref
+%
+\ref \no 8
+\by Janet S. Dodd
+\book The ACS Style Guide
+\publ American Chemical Society
+%  \publaddr Washington, DC
+\yr 1986
+\endref
+%
+\ref \no 9
+\book Handbook for Chemical Society Authors
+\publ The Chemical Society
+\yr 1961
+\endref
+%
+\ref \no 10
+\book Hart's Rules
+\publ Oxford University Press
+\yr 1983
+\endref
+%
+\ref \no 11
+\book Chicago Manual of Style
+\publ Chicago University Press
+%  \publaddr Chicago
+\yr 1982
+\endref
+%
+\ref \no 12
+\book The Joy of \TeX
+\by Michael Spivak
+\publ American Mathematical Society
+\yr 1986
+\endref
+%
+\enddocument
+
+
+------_=_NextPart_001_01C19442.D545E96C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Facilities for chemists.  Run this through AMSTeX.</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>%&nbsp; Warning:&nbsp; This is an input file for =
+AMSTeX, rather than for LaTeX.</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; This is just so that I can use the commands for arrows</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; mentioned on pages 140-141 of &quot;The Joy of TeX&quot;.</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; It may not be &quot;good AmSTeX&quot;, since it's the first =
+time</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; I've used AmSTeX seriously!</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle{amsppt}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\define\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\smc =
+a}\kern-.15em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}</FONT>
+
+<BR><FONT SIZE=3D2>\define\itlatex{L\kern-.30em\raise.3ex\hbox{\it =
+A}\kern-.15em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}&nbsp; % for use in =
+&quot;references&quot;</FONT>
+
+<BR><FONT SIZE=3D2>\define\bs{\char'134}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\document</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\topmatter</FONT>
+
+<BR><FONT SIZE=3D2>\title Could&nbsp; \LaTeX\ do more for chemists? =
+\endtitle</FONT>
+
+<BR><FONT SIZE=3D2>\author David Rhead \endauthor</FONT>
+
+<BR><FONT SIZE=3D2>\affil Nottingham University \endaffil</FONT>
+
+<BR><FONT SIZE=3D2>\endtopmatter</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\nologo</FONT>
+
+<BR><FONT SIZE=3D2>\NoBlackBoxes</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\heading Introduction \endheading</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;From time to time I have seen queries in {\tt =
+TeXhax} and</FONT>
+
+<BR><FONT SIZE=3D2>elsewhere from people&nbsp;&nbsp; who wish to use =
+\LaTeX\ for&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+documents</FONT>
+
+<BR><FONT SIZE=3D2>that involve chemical formulae, etc.&nbsp; Since =
+there are now plans for</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ 3.0 \cite{1},</FONT>
+
+<BR><FONT SIZE=3D2>I thought this might be a good time to =
+consider</FONT>
+
+<BR><FONT SIZE=3D2>what facilities one could reasonably ask the people =
+implementing the new</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\&nbsp;&nbsp;&nbsp;&nbsp; to provide for =
+chemists.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'm not a chemist myself, but have been involved in =
+helping chemists</FONT>
+
+<BR><FONT SIZE=3D2>use \LaTeX\ 2.09 \cite{2} for producing theses, =
+etc.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\heading Typesetting and artwork \endheading</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It may =
+help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; to consider&nbsp;&nbsp;&nbsp; =
+the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; division of labour</FONT>
+
+<BR><FONT SIZE=3D2>within a traditional publishing house.&nbsp; A =
+``copy-editor''</FONT>
+
+<BR><FONT SIZE=3D2>\cite{3, p.\ 236} might divide the</FONT>
+
+<BR><FONT SIZE=3D2>work on chemical formulae up between ``the printer'' =
+and ``the draughtsman''.</FONT>
+
+<BR><FONT SIZE=3D2>Thus, some formulae can be typeset, but others are =
+treated as ``artwork''</FONT>
+
+<BR><FONT SIZE=3D2>and are drawn.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although there have been valiant attempts \cite{4-5} =
+to define \TeX\ macros for</FONT>
+
+<BR><FONT SIZE=3D2>drawing chemical structure diagrams,</FONT>
+
+<BR><FONT SIZE=3D2>I think&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it is =
+inevitable that, whatever \TeX\ macros</FONT>
+
+<BR><FONT SIZE=3D2>are defined, there will be chemists who come along =
+with requirements that</FONT>
+
+<BR><FONT SIZE=3D2>are beyond the abilities of the macro packages.&nbsp; =
+Therefore, it seems sensible</FONT>
+
+<BR><FONT SIZE=3D2>to retain the traditional division between =
+typesetting and artwork:&nbsp; to</FONT>
+
+<BR><FONT SIZE=3D2>typeset those formulae that can be typeset easily and =
+to get the other</FONT>
+
+<BR><FONT SIZE=3D2>formulae drawn in some way.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In \TeX\&nbsp;&nbsp; terms, artwork can be treated as =
+``graphics'' to be</FONT>
+
+<BR><FONT SIZE=3D2>``pasted'' into a typeset document via {\tt \bs =
+special}.</FONT>
+
+<BR><FONT SIZE=3D2>For example,</FONT>
+
+<BR><FONT SIZE=3D2>{\smc chemdraw}</FONT>
+
+<BR><FONT SIZE=3D2>\cite{6} can produce ``encapsulated {\smc =
+PostScript}'',</FONT>
+
+<BR><FONT SIZE=3D2>so a \LaTeX-ed document with {\smc chemdraw} diagrams =
+can be printed on</FONT>
+
+<BR><FONT SIZE=3D2>a {\smc PostScript} printer.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\heading Desirable facilities for chemists in the new =
+\LaTeX \endheading</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\LaTeX\ is never going to be a system for producing =
+``artwork'',</FONT>
+
+<BR><FONT SIZE=3D2>so it seems to me that it would be unwise to attempt =
+to provide comprehensive</FONT>
+
+<BR><FONT SIZE=3D2>facilities for ``chemical artwork'' in \LaTeX.</FONT>
+
+<BR><FONT SIZE=3D2>However, it does seem worth providing a limited =
+number of</FONT>
+
+<BR><FONT SIZE=3D2>facilities to make it =
+easier&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+to produce the&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+chemical</FONT>
+
+<BR><FONT SIZE=3D2>formulae that should be treated as =
+``typesetting''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subheading{Environments}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Chemists' problems start when they use \LaTeX's =
+``mathematics''</FONT>
+
+<BR><FONT SIZE=3D2>environments for ``chemistry''. Chemistry is not =
+mathematics, and</FONT>
+
+<BR><FONT SIZE=3D2>the conventions for typesetting chemistry are =
+different from those for</FONT>
+
+<BR><FONT SIZE=3D2>typesetting mathematics.&nbsp; In terms of the =
+\LaTeX\ philosophy \cite{2, p.\ 6},</FONT>
+
+<BR><FONT SIZE=3D2>``mathematics'' and ``chemistry'' represent =
+``logically distinct structural</FONT>
+
+<BR><FONT SIZE=3D2>elements''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would seem natural to:</FONT>
+
+<BR><FONT SIZE=3D2>\roster</FONT>
+
+<BR><FONT SIZE=3D2>\item define environments for chemists that =
+are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; analogous to the =
+environments that are available for mathematicians</FONT>
+
+<BR><FONT SIZE=3D2>\item within these ``chemistry'' environments,&nbsp; =
+aim to keep to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; whatever typesetting =
+conventions are usual in chemistry.</FONT>
+
+<BR><FONT SIZE=3D2>\endroster</FONT>
+
+<BR><FONT SIZE=3D2>How about defining {\tt chem}, {\tt displaychem} and =
+{\tt chemequation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;environments,</FONT>
+
+<BR><FONT SIZE=3D2>by analogy with {\tt math}, {\tt displaymath} and =
+{\tt equation}?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If such environments were defined, the style-file =
+writer would then</FONT>
+
+<BR><FONT SIZE=3D2>have control over ``mathematics'' and ``chemistry'' =
+separately.</FONT>
+
+<BR><FONT SIZE=3D2>In particular:</FONT>
+
+<BR><FONT SIZE=3D2>\roster</FONT>
+
+<BR><FONT SIZE=3D2>\item The default would be {\tt \bs rm} for chemistry =
+(although</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a designer could =
+change the default in a {\tt .sty} file).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Individual</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; authors would no =
+longer have to&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; search =
+through</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``double bend'' =
+sections of the \TeX book themselves</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite{7, pp. 163 =
+\&amp; 179}.</FONT>
+
+<BR><FONT SIZE=3D2>\item A designer could implement a house-style&nbsp; =
+in which</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mathematical and =
+chemical equations are numbered in separate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sequences \cite{3, p.\ =
+224} or a house-style in which there is only one</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sequence of numbers =
+\cite{8, p.\ 132}.</FONT>
+
+<BR><FONT SIZE=3D2>\item It might be possible to arrange that subscripts =
+will normally be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at the same level =
+\cite{7, p.\ 179} inside the environments</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for chemistry.</FONT>
+
+<BR><FONT SIZE=3D2>\endroster</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subheading{Commands}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At first sight, the \LaTeX\ manual \cite{2, ch.\ 3} =
+gives</FONT>
+
+<BR><FONT SIZE=3D2>the impression that \LaTeX\ 2.09 provides the</FONT>
+
+<BR><FONT SIZE=3D2>``building =
+blocks''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to give all the =
+arrows, harpoons and annotation that</FONT>
+
+<BR><FONT SIZE=3D2>a chemist could want.&nbsp; However, it is often =
+difficult to get these</FONT>
+
+<BR><FONT SIZE=3D2>building blocks arranged in the ways required.</FONT>
+
+<BR><FONT SIZE=3D2>For example:</FONT>
+
+<BR><FONT SIZE=3D2>\roster</FONT>
+
+<BR><FONT SIZE=3D2>\item How does one obtain CH${_3}$(C=3DO)OCl \cite{3, =
+p.\ 235} in ``math mode''?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can't</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use ``=3D''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to mean ``double =
+bond'', since \TeX\ puts space</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; around it.</FONT>
+
+<BR><FONT SIZE=3D2>\item To represent a reversible reaction with rate =
+constants above/below</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a pair of harpoons, I =
+ended up with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\tt&nbsp; =
+\newline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \bs[&nbsp; =
+\newline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \bs renewcommand\{\bs =
+arraystretch\}\{0.5\}&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+A&nbsp;&nbsp;&nbsp;&nbsp; \bs begin\{array\}\{c\}&nbsp; \newline</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \bs scriptstyle k\_1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \bs\bs&nbsp; =
+[1mm]&nbsp; \newline</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \bs rightleftharpoons&nbsp;&nbsp;&nbsp;&nbsp; \bs\bs&nbsp; =
+\newline</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \bs scriptstyle k\_2&nbsp; \newline</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \bs =
+end\{array\}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \bs]&nbsp; =
+\newline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; before it looked =
+right.&nbsp; Surely individual \LaTeX\ users shouldn't have</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to re-do the =
+``tuning''&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; needed to get these =
+things&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; right?</FONT>
+
+<BR><FONT SIZE=3D2>\item As in the above example,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arrows and harpoons =
+are often labelled&nbsp; to show reaction conditions.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It is not clear how to =
+get&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+arrows/harpoons that expand to the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; width of the =
+labels.</FONT>
+
+<BR><FONT SIZE=3D2>\endroster</FONT>
+
+<BR><FONT SIZE=3D2>Many of these difficulties =
+are&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; another consequence of trying to =
+use,</FONT>
+
+<BR><FONT SIZE=3D2>for chemistry,</FONT>
+
+<BR><FONT SIZE=3D2>the structural elements that were designed for =
+mathematics.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>So what commands might usefully be made available =
+inside some future</FONT>
+
+<BR><FONT SIZE=3D2>``chemistry'' environments?</FONT>
+
+<BR><FONT SIZE=3D2>\roster</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>It seems desirable \cite{3, p.\ 237} to have =
+documented facilities for</FONT>
+
+<BR><FONT SIZE=3D2>single and double bonds.&nbsp; Triple bonds might =
+also be needed \cite{9}.</FONT>
+
+<BR><FONT SIZE=3D2>A documented facility for representing single</FONT>
+
+<BR><FONT SIZE=3D2>bonds by raised dots would also be useful \cite{10, =
+p.\ 59}.</FONT>
+
+<BR><FONT SIZE=3D2>Might commands such as {\tt \bs =
+bond},&nbsp;&nbsp;&nbsp; {\tt \bs doublebond} and</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs triplebond}</FONT>
+
+<BR><FONT SIZE=3D2>be appropriate?</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>It seems desirable to have specific commands for =
+typesetting arrows/harpoons</FONT>
+
+<BR><FONT SIZE=3D2>with labels above/below (to indicate conditions or =
+rate</FONT>
+
+<BR><FONT SIZE=3D2>constants).&nbsp; \cite{11, p.\ 371} gives an =
+indication of the combinations</FONT>
+
+<BR><FONT SIZE=3D2>of arrows/harpoons that might have traditionally been =
+typeset.</FONT>
+
+<BR><FONT SIZE=3D2>Thus, as well as providing simple arrows for one-way =
+reactions, it might</FONT>
+
+<BR><FONT SIZE=3D2>be worth aiming to provide commands for: equilibrium =
+reactions (beginning</FONT>
+
+<BR><FONT SIZE=3D2>at left and right); reversible reactions (beginning =
+at left and right);</FONT>
+
+<BR><FONT SIZE=3D2>reactions beginning at left/right and completed to =
+left/right.</FONT>
+
+<BR><FONT SIZE=3D2>Might it be worth defining some commands such =
+as</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs oneway},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs equilibriumR},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs equilibriumL},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs reversibleR},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs reversibleL},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs rightright},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs rightleft},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs leftright},</FONT>
+
+<BR><FONT SIZE=3D2>{\tt \bs leftleft}, that each accept two =
+parameters:&nbsp; one to give a label</FONT>
+
+<BR><FONT SIZE=3D2>above the symbol, the other to give a label below the =
+symbol?</FONT>
+
+<BR><FONT SIZE=3D2>For example,</FONT>
+
+<BR><FONT SIZE=3D2>{\tt&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>\bs begin\{chem\}&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>\quad 2H\_2 + O\_2 \bs oneway\{catalyst\}\{300 K; 4 =
+bar\}&nbsp;&nbsp;&nbsp; 2 H\_2O&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>\bs end\{chem\}&nbsp; \newline</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>might be a natural way to specify</FONT>
+
+<BR><FONT SIZE=3D2>$$</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; This is the line that contains the command =
+that made me use AMSTeX.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; I couldn't find anything else ready-made in =
+plain TeX or LaTeX.</FONT>
+
+<BR><FONT SIZE=3D2>\text{2H}_2 + \text{O}_2</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @&gt; \text{catalyst} =
+&gt; \text{300 K; 4 bar} &gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \text{2H}_2\text{O}</FONT>
+
+<BR><FONT SIZE=3D2>$$</FONT>
+
+<BR><FONT SIZE=3D2>\endroster</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\heading Work involved \endheading</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'd guess that my suggestions about environments could =
+be implemented</FONT>
+
+<BR><FONT SIZE=3D2>by slight modications of the code that implements the =
+corresponding</FONT>
+
+<BR><FONT SIZE=3D2>environments for mathematics.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Some new work would be required for commands such as =
+{\tt \bs oneway},</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ , {\tt \bs leftleft}.&nbsp; The only similar =
+facility that I've found</FONT>
+
+<BR><FONT SIZE=3D2>in an existing macro package is that for arrows in =
+\AmSTeX\ \cite{12, p.\ 140},</FONT>
+
+<BR><FONT SIZE=3D2>but (from a chemist's point-of-view) this doesn't =
+provide sufficient</FONT>
+
+<BR><FONT SIZE=3D2>choice of symbols.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It might be worth seeking advice about =
+objectives</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from people who typeset chemistry =
+professionally.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Perhaps the UK's Royal Society of Chemistry =
+would be prepared to advise</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; about details.&nbsp; I've been in e-mail =
+correspondence with their Publications</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Manager about authors submitting mansuscripts =
+electronically to them,</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; although they seem to be going the =
+wordprocessor + chemdraw + SGML route.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\heading Documentation \endheading</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If the facilities that I've outlined above were =
+provided, I would</FONT>
+
+<BR><FONT SIZE=3D2>be inclined to give them less prominence in the =
+documentation than</FONT>
+
+<BR><FONT SIZE=3D2>the analogous facilities for =
+mathematicians.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; This would help</FONT>
+
+<BR><FONT SIZE=3D2>give the impression that, whereas mathematicians can =
+expect \LaTeX\</FONT>
+
+<BR><FONT SIZE=3D2>to do everything they want, chemists can only expect =
+\LaTeX\ to do a certain</FONT>
+
+<BR><FONT SIZE=3D2>proportion of what they want.</FONT>
+
+<BR><FONT SIZE=3D2>For example, in the successor to \cite{2}, the =
+description of facilities for</FONT>
+
+<BR><FONT SIZE=3D2>chemists might be relegated to an appendix, =
+which&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+could start with a</FONT>
+
+<BR><FONT SIZE=3D2>paragraph explaining that the facilities are intended =
+to support ``typesetting''</FONT>
+
+<BR><FONT SIZE=3D2>but not ``artwork''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\Refs</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 1</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; Sorry about the lack of umlaut.&nbsp; \: =
+gives an error here.</FONT>
+
+<BR><FONT SIZE=3D2>\by Frank Mittelbach and Rainer Schopf</FONT>
+
+<BR><FONT SIZE=3D2>\paper With \itlatex\ into the Nineties</FONT>
+
+<BR><FONT SIZE=3D2>\jour TUGboat \vol 10 \yr 1989</FONT>
+
+<BR><FONT SIZE=3D2>\pages 681--690</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 2</FONT>
+
+<BR><FONT SIZE=3D2>\by Leslie Lamport</FONT>
+
+<BR><FONT SIZE=3D2>\book \LaTeX: A Document Preparation System</FONT>
+
+<BR><FONT SIZE=3D2>\publ Addison-Wesley</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1986</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 3</FONT>
+
+<BR><FONT SIZE=3D2>\by Judith Butcher</FONT>
+
+<BR><FONT SIZE=3D2>\book Copy-editing</FONT>
+
+<BR><FONT SIZE=3D2>\publ Cambridge University Press</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \publaddr Cambridge</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1981</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 4</FONT>
+
+<BR><FONT SIZE=3D2>\by Roswitha T. Haas and Kevin C. O'Kane</FONT>
+
+<BR><FONT SIZE=3D2>\paper Typesetting chemical structure formulae with =
+the text formatter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \TeX/\itlatex</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1987 \vol 11</FONT>
+
+<BR><FONT SIZE=3D2>\jour Computers and Chemistry</FONT>
+
+<BR><FONT SIZE=3D2>\pages 251-271</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 5</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; How does one do &quot;inproceedings&quot; in =
+AmSTeX?</FONT>
+
+<BR><FONT SIZE=3D2>\by Michael Ramek</FONT>
+
+<BR><FONT SIZE=3D2>\book Chemical structure formulae and $x/y$ diagrams =
+with \TeX''.&nbsp; {\rm In:}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\rm Malcolm Clark =
+(editor).}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ``\TeX: applications, =
+uses, methods</FONT>
+
+<BR><FONT SIZE=3D2>\publ Ellis Horwood</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \publaddr London</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1990</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 6</FONT>
+
+<BR><FONT SIZE=3D2>\book CHEMDRAW (A program for the Macintosh)</FONT>
+
+<BR><FONT SIZE=3D2>\publ Cambridge Scientific Computing</FONT>
+
+<BR><FONT SIZE=3D2>\publaddr Cambridge, Massachusetts</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 7</FONT>
+
+<BR><FONT SIZE=3D2>\by Donald E. Knuth</FONT>
+
+<BR><FONT SIZE=3D2>\book The \TeX book</FONT>
+
+<BR><FONT SIZE=3D2>\publ Addison-Wesley</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1986</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 8</FONT>
+
+<BR><FONT SIZE=3D2>\by Janet S. Dodd</FONT>
+
+<BR><FONT SIZE=3D2>\book The ACS Style Guide</FONT>
+
+<BR><FONT SIZE=3D2>\publ American Chemical Society</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \publaddr Washington, DC</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1986</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 9</FONT>
+
+<BR><FONT SIZE=3D2>\book Handbook for Chemical Society Authors</FONT>
+
+<BR><FONT SIZE=3D2>\publ The Chemical Society</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1961</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 10</FONT>
+
+<BR><FONT SIZE=3D2>\book Hart's Rules</FONT>
+
+<BR><FONT SIZE=3D2>\publ Oxford University Press</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1983</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 11</FONT>
+
+<BR><FONT SIZE=3D2>\book Chicago Manual of Style</FONT>
+
+<BR><FONT SIZE=3D2>\publ Chicago University Press</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \publaddr Chicago</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1982</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\ref \no 12</FONT>
+
+<BR><FONT SIZE=3D2>\book The Joy of \TeX</FONT>
+
+<BR><FONT SIZE=3D2>\by Michael Spivak</FONT>
+
+<BR><FONT SIZE=3D2>\publ American Mathematical Society</FONT>
+
+<BR><FONT SIZE=3D2>\yr 1986</FONT>
+
+<BR><FONT SIZE=3D2>\endref</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\enddocument</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D545E96C--
+

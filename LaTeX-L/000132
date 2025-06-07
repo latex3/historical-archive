@@ -1,0 +1,209 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 11 Jun 90 21:43:39 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Lists for The List: some thoughts
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 132
+
+And now, as they used to say in my youth, for something completely
+different.  (Except see 6. below).
+Some thoughts on the requirements of various types of lists.
+
+1.  A new parametrisation of (some types of) list:
+
+Whilst investigating a sensible way to describe lists in which the
+labels are left-aligned (eg standard Latex's description-list),
+rather than right-aligned (eg standard Latex's enumerate),
+I discovered that the latter are "over-parametrised" (see below).
+
+This led me to the following ideas concerning both types of label.
+They are intended to achieve three things: use parameters which accord
+with the way designers specify lists; eliminate the need to insist
+on certain relationships between the parameters; eliminate the need
+for \makelabel to contain things like \hskip \labelsep.
+
+[The by-products of the analysis are also very interesting,
+particularly what it reveals about the true role of \labelwidth.]
+
+It turns out that I introduced only one new parameter, one which
+is certainly more natural when trying to specify a more general
+class of left-aligned lists, in which the alignment is not
+necessarily on the "outer margin".  It may also be a natural parameter
+to specify for right-aligned lists.
+
+Thus the only completely new parameter is:
+
+\labelalignindent
+
+which I have taken to be measured from the "outer margin" so that,
+like the other parameters, it is "normally" zero or positive
+(but this could easily be changed to measure it from the "inner
+margin").
+
+It measures a point on which each label will be aligned *provided*
+there is room, ie the label is no wider than \labelwidth.
+
+1A.  "right-aligned" labels
+
+These are labels such as standard Latex's itemize and
+enumerate. For these it is necessary to specify only three parameters
+out of the following four:
+
+1. \leftmargin
+2. \labelsep
+3. \itemindent  (it is probably best to think of this as the minimum
+amount by which the text of the first line of the item is indented
+>from the "inner margin", further indentation possibly being permitted
+when the label is wider than \labelwidth)
+4. \labelalignindent
+
+since they are related as follows:
+
+\labelalignindent + \labelsep  =  \leftmargin + \itemindent
+
+Since I never use such labels, I have no feeling for which three
+should be specified: there are obviously problems in allowing all
+four to be specified since they must satisfy this equation!
+Probably one of the two on the Left Side of the equation should be
+dropped.
+
+The thing to note here is that \labelwidth does not appear: it could
+still be specified but would be used only as a measure of
+when the label is "too wide" in which case, depending on the
+definition of \makelabel, some different action may be desirable.
+Thus in many cases it should be specified but it should not be described
+in such a way that it appears to contribute to the normal layout of an
+item-label.
+
+To fully implement this idea, \widelabelaction needs to be defined and
+the appropriate part of \@item needs a small amendment.
+(At present, for enumerate and itemize, any such change in action has
+been suppressed---try \item[(cmmlxxxviii)] !---
+thus \labelwidth can be given any non-negative value!)
+Perhaps the choice of which three parameters are used to describe this
+class of lists depends on what the wide-label action is: i.e. on which
+of the four is unchanged for "wide" labels.
+
+I should perhaps add here that \widelabelaction will probably be
+superceded by a method of looking at the widths of all the labels
+in a list before deciding the details of the typographic format of
+that list.
+
+
+1B.  "left-aligned" labels
+
+In this case there are much more obvious differences between the
+present method of obtaining such labels (eg in description and various
+trivlists, such as theorem environments) and my suggested
+parametrisation.
+For "left-aligned" labels four parameters are needed, they can be
+chosen from the following five:
+
+1. \labelsep    (this now becomes the minimum space between the
+right-hand end of the label and the first line of text of the item)
+2. \itemindent  (it is probably best to think of this as the minimum
+amount by which the text of the first line of the item is indented
+>from the "inner margin", further indentation possibly being permitted
+when the label is wider than \labelwidth)
+3. \leftmargin  (with global label-width scanning, this can also
+becomes just a the minimum value)
+4. \labelalignindent
+5. \labelwidth
+
+since they are related as follows:
+
+\labelalignindent + \labelwidth + \labelsep  =  \leftmargin + \itemindent
+
+I think that it is best to think of \labelwidth as being the widest
+label which can be accommodated before "something's gotta give", but
+which in this case does not need to be specified as it can be
+calculated.  A suitable \widelabelaction still needs to be specified,
+and a default (which should, I think, be as in \@item at present)
+for this action should be specified (this may not be the best default
+when global label-width scanning is used).
+
+Thus for the present description list, the following values should be
+assigned:
+
+\leftmargin = <default>
+\labelsep = <default>
+\itemindent = -\leftmargin  (personally, I would prefer 0pt here)
+\labelalignindent = 0pt
+
+These give  \labelwidth = -\labelsep, which may seem odd but is
+really just saying "always use \widelabelaction".
+
+My preference gives  \labelwidth = \leftmargin - \labelsep, which makes
+its interpretation clearer (note that it is not typographically
+identical, thus a genuine choice is needed).
+
+A consequence would be that \trivlist would need to set \labelsep to
+0pt, which seems very reasonable.
+
+
+2. Some other types of list:
+
+The idea of a list needs to be extended to cover lists in which the
+label is set on a line by itself; this is because these are logically,
+if not typographically, lists.
+
+I am also implementing some designs in which the label is set on a line
+by itself only if a sublist starts immediately, otherwise the text is
+run-on.
+
+Possibly more common than the last style is that in which the label is
+set on a line by itself unless a sub-list starts immediately, in which
+case it is, as normal, run-on.
+
+3.  Justification in run-on lists:
+
+For lists whose design is to have the label run-on into the text
+(such as description) it should be possible for \labelsep to be a
+rubber length so that this space can take part in the justification of
+the line.  This can be achieved by simply unhboxing the label box when
+its contents are actually to be typeset.  As Frank has pointed out to
+me, a small modification to the present construction of this box
+(starting it with an empty box) would allow this unboxing to happen for
+all lists.  If, for a certain type of list, it is essential that the
+label itself should be kept in a box, then \makelabel can ensure that
+this happens.
+
+
+4.  Interrupted lists:
+
+There is often a need for what is logically a single list to be
+"interrupted" by some "main text".  Typographically, this may well be
+identical to two (or more) separate lists, the only difference being
+that the same counter is used in every part of the "interrupted list"
+but it is not reset (except at the start of the list!).
+
+I have implemented some special cases of this for a highly structured
+environment (as is found in Exercise Sections or Examinations,
+especially in math) using \reusecounter (like \usecounter
+without resetting).  This could easily
+be extended to a more generic environment.
+
+
+5.  I have not listed here the well-known (??) need for a thorough
+overhaul of the provision of vertical spacing both around and within
+lists.  I have, however, given to Frank some well thought through
+ideas from David Rhead on this subject.
+
+
+6.  It would be nice to hear from Frank which of the above he
+thinks should be "attributes" of a list, and which would be changed by
+setting the values of parameters (either as part of a "decls="
+attribute or as in the present argument of \list).
+
+
+7.  That's enough on lists for now,
+
+
+chris
+
+

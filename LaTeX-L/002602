@@ -1,0 +1,154 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5481" "Sat" "27" "June" "1998" "20:53:46" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "112" "Re: Modules" "^Date:" nil nil "6" nil "Modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id VAA23560;
+	Sat, 27 Jun 1998 21:06:30 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.EAD54165@listserv.gmd.de>; Sat, 27 Jun 1998 21:06:29 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372507 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Jun 1998 21:06:24 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id VAA17628
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 27 Jun 1998 21:06:23
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          VAA31900 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Jun 1998
+          21:06:23 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          UAA29351; Sat, 27 Jun 1998 20:53:46 +0200
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+Message-ID:  <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806230127.LAA12452@ricetub.anu.edu.au>
+Date:         Sat, 27 Jun 1998 20:53:46 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2602
+
+I think Richard Walker asked whether or not the Team thinks that
+concepts of modules are relevant for LaTeX3.
+
+well here are my own thoughts, Team or no Team for the moment.
+
+i think that looking carefully at the idea of modules for structuring
+code in some way is relevant for latex3 but i go with Chris who said:
+
+ > Hans' very interesting ideas are for modules to handle the name-clash
+ > problem at the document-level.
+ >
+ > This is certainly something that needs attention but is probably
+ > independent of L3PL modularization, or maybe there is some overlap?
+
+what he points out here with just two sentences that he thinks that
+there are different levels of modularizations and essentially that a
+modularization as suggested can't be used for low-level programming and
+i fully agree with him here.
+
+in other words as nice and sensible the modularizations as suggested
+by Hans or in a different fashion by Volkan are (or may be) they can
+probably be successfully applied in a layer that is high above the
+actual programming action, eg perhaps on a document level (as
+suggested by Chris) or perhaps at one level deeper in a sort of
+high-level design language that is used to produce certain effects
+from low-level modules which offer certain functions via such a naming
+concept.
+
+the problem then however is that this is most likely very
+unsatisfactory if the same concepts can't be applied deeper down. and
+my claim is they can't (at least not reasonably)
+
+why?
+
+a) because TeX in its current incarnations (ie TeX3, eTeX, Omega) is a
+token based interpreter which works only at an acceptable speed if its
+internal coding is based on tokens which can directly be looked up in
+a hash table either resulting in a primitive action or into a macro
+which consist of tokens. the recursion here has to be coming to an end
+pretty fast and in current TeX code it reasonably does but there are a
+number of recursions. if you change that to implement a manual lookup
+functionality on all levels then you will find yourself slowing down
+the system by i would guess a factor of 50 or more --- and even if
+these days we are having bigger machines than the one i had when i
+first saw LaTeX this is still far outside of what is usable.
+
+b) a large amount of the language lives due to expansion
+facilities. this is at the heart of the language like it or not and it
+mainly works by altering the order of expansions on the token
+level. now if you get rid of the token level and replace it my a
+manual lookup mechanism then a large part of the language becomes
+unusable, and there is nothing you can replace it with. if on the
+other hand you make the lookup functionality usable with the expansion
+paradigm then you have to slow down the process even further.
+
+if you don't believe me i suggest you try the following medium sized
+experiment:
+
+take the plain TeX format ie plain.tex and replace all tokens \<name>
+within all macro definitions by, say, !name> and at the very beginning
+define something like
+
+  \catcode`\!=\active
+  \def!#1>{\csname#1\endcsname}
+
+which would be the simplest case of name lookup. of course this is a
+bit (or even more than a bit) of handwork to get this going, beside
+going through all the code you would need to carefully check all the
+places where the code picks up arguments as single tokens which would
+now need {...}
+
+but it might be worthwhile to try it for two reasons: a) to compare
+how fast it compiles the TeX book or some comparable document
+compared to compiling it with the original plain format and b) how big
+the format gets compared to the original one.
+
+b) will be drastic: a current LaTeX format (without any packages
+loaded) uses about 51088 words of memory before begin document; if the
+average word length in commands is 10 (which is far too low with a
+consequent implemented module concept) then this gets basically blown
+to 500000 which is twice the amount of main mem that i have available
+on this machine for everything. i just looked: when we compiled the
+Companion the log file showed 208957 words of memory out of 262141
+try to imagine to what size this would grow.
+
+so i fear this is impossible. perhaps i'm wrong and if somebody proves
+me so, so much the better, but it must me something more than just the
+sketch of an generic idea that makes me believe that this can work
+with TeX.
+
+for this reason our approach for LP3 was to provide a token based
+language with a module concept being based on conventions rather than
+absolute force. In other words \module_prog:nnn is a convention and
+nobody is forced to obey it; we don't think we can enforce that (one
+could make the above a variable and use it as such or define a command
+with 1 argument that has this name). but we also think we don't really
+need to enforce this, assuming that such (or rather a similar)
+convention is finally adopted. experience with TeX code has shown that
+people do obey conventions (if they get any:-): look at typical latex
+code it looks like latex code, unreadable and all, with a few twists
+depending on who wrote it (ie some people have their special
+conventions).
+
+of course you could surround such a language with a programming
+front-end that would enforce any concept and help you along be it some
+emacs more or some fancy gui support.
+
+well, so much for my view on this. hope this is not disappointing it is
+not meant to be but i think that my view is backed from years of
+programming experience within TeX and in real programming languages
+
+frank
+

@@ -1,0 +1,144 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3874" "Fri" "11" "February" "1994" "16:44:53" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402111731.AA00416@mail.cs.tu-berlin.de>" "113" "Re: On compatibility in LaTeX2e [was: Re: keyed options lis" "^Date:" nil nil "2" "1994021116:44:53" "On compatibility in LaTeX2e [was: Re: keyed options lis" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA22303; Fri, 11 Feb 94 18:32:07 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA09434; Fri, 11 Feb 94 18:31:06 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA00416
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 11 Feb 1994 18:31:03 +0100
+Message-Id: <199402111731.AA00416@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 4487; Fri, 11 Feb 94 18:30:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 4482; Fri,
+ 11 Feb 1994 18:30:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 4702; Fri,
+ 11 Feb 1994 17:51:10 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Fri, 11 Feb 1994 16:44:53 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: On compatibility in LaTeX2e [was: Re: keyed options lis
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1547
+
+From:          Joachim Schrod <schrod@ITI.INFORMATIK.TH-DARMSTADT.DE>
+
+
+%>
+%>(Yesterday, I promised myself not to react to Mike Piff any more --
+%>but his statements are *******<censored>. Below is a general comment I
+Funny, Schrod doesn't have 7 letters.
+
+%>> With hard-wired limited options?
+%>
+%>Options are the means to _configure_ a module, they are by definition
+%>from a fixed set. (Def: `To configure s.th.' is the action to choose
+%>a feature from a predefined, and therefore limited, set of
+%>possibilities.)
+%>
+
+No!
+
+configuration    = mode of arrangement
+option           = choice
+
+No restriction.
+
+Your interpretation entirely. I had a quick look at the code earlier and
+couldn't see any reason for the limitation. In fact, the code in article is
+perfectly sensible in the way it sets up the page area, calculates the text
+area, etc, whichever type of paper you are trying to feed in, whether it be
+a4, an envelope or whatever. Although it makes unwarranted assumptions about
+the margin area.
+
+And I fully appreciate the fact that I can write myarticle to parse envelope
+as an option. It is the sheer futility of forcing the user to do this that
+gets me.
+
+I can see why it was done this way. In
+\documentstyle[ccc]{article}
+ccc might contain code that completely screws up article. You want to prevent
+this. So you limit ccc to certain predefined options. *Only* those can be
+used in
+\documentclass[ccc]{article}
+
+However, on the down side, you now force people to use
+\usepackage[landscape]{a4envelope}
+which looks utterly illogical when the \documentclass allows [a4paper] as an
+option! What is so special about a4paper, that a4envelope misses out on,
+other than its appearance in what attempts to be a comprehensive list of
+options?
+
+Here is the LaTeX2e database record for a4paper:
+
+USletter:   No
+a4paper:    Yes
+legal:      No
+.....
+
+
+Here is my database record for a4paper:
+
+PaperType   a4
+
+At least we can learn something from database design. You don't name the
+fields with the names of the things that should be data.  Even more extreme,
+here is the record for Schrod:
+
+Schrod:     Yes
+Schoepf:    No
+Taylor:     No
+Piff:       No
+Rahtz:      No
+....
+
+
+Here we are enumerating all the possibilities as field names, rather than
+store them as data. Contrast
+
+Name:       Schrod
+
+That's better. An infinitely extensible list. Any problems with that?
+
+%>       "Extensible" means you can go beyond simple customization and
+%>    write entirely new commands, programs in the Lisp language to be run
+%>    by Emacs's own Lisp interpreter.  Emacs is an "on-line extensible"
+%>    system: it is divided into many functions that call each other.  You
+%>    can redefine any function in the middle of an editing session and
+%>    replace any part of Emacs without making a separate copy of all of
+%>    Emacs.  [...]  Only a programmer can write an extension to Emacs,
+%>    but anybody can use it afterward.
+%>                                                [Info node: emacs(Intro)]
+
+Someone writes the code to process c, el and pascal files in the lemacs
+editor. Then someone else comes along and says they want to do tex files.
+Except that the standard manual says you can *only* do c, el or pascal files.
+Two alternatives:
+
+a) write your own code to do tex, but we don't allow you to say
+
+language(tex)
+
+only
+
+language(c)
+language(el)
+language(pascal)
+
+because that is hard-wired, even though the effect is that of reading in a
+file xxx.gel. However, you can say mylanguage(tex) if you like, that is
+perfectly acceptable. Don't know whether this isn't a better analogy.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

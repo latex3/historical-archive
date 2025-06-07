@@ -1,0 +1,57 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1384" "Tue" "15" "June" "93" "20:44:38" "+0200" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "30" "getting information about the x/y values for a given point" "^Date:" nil nil "6"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA07577; Tue, 15 Jun 93 20:49:11 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA29715; Tue, 15 Jun 93 20:49:10 +0200
+Message-Id: <9306151849.AA29715@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7681; Tue, 15 Jun 93 20:47:39 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2692;
+ Tue, 15 Jun 93 20:47:35 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2690;
+ Tue, 15 Jun 93 20:47:33 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 15 Jun 93 20:44:38 +0200
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      getting information about the x/y values for a given point
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1051
+
+
+
+> I would find it incredibly useful if there were a special form of
+> \label that would report to the aux file on the position, say in x and
+> y coordinates, of the baseline under a given point on the page of output.
+
+I would find this useful too. Unfortunately, short of using \special's
+and letting some driver doing the work for you there is no way in TeX
+to get at this information. You can get some approximation as far as
+the y coordinate is concerned (but then you never know what happens to
+your text in the output routine (it might even get thrown away) but x
+in a paragraph is impossible unless you are prepared to pay the price
+of getting bad line breaks nearby (some Heisenberg effect, the
+experiment changes the outcome).
+
+But perhaps the idea of using \specials for this purpose isn't so dumb
+after all. One could have some extra dvidriver that would do nothing
+except retrieving the information which would mean some extra step when
+applications use the feature but at least it would be available. This
+approach is used even more extensively in Type&Set (where the whole
+page layout is done externally to TeX and the information is passed
+via specials) and as far as I know Graham would be willing to give
+away his special-analysing driver. Anyway, it wouldn't be much of an
+effort to produce such a beast from a dvitype source.
+
+Any thoughts on this?
+
+cheers
+
+Frank
+

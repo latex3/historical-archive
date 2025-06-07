@@ -1,0 +1,138 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 4 Jan 2009 17:16:09 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n04GG6ch003508
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 4 Jan 2009 17:16:07 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n04GCDxa018375
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 4 Jan 2009 17:12:13 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n03N1HNh012441;
+	Sun, 4 Jan 2009 17:12:00 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 185011 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 4 Jan
+          2009 17:12:00 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n04GBxdQ009292 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 4 Jan 2009 17:12:00 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.186]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n04GBuKQ018177 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 4 Jan 2009 17:11:59 +0100
+Received: from morse.mittelbach-online.de (p54A87FD1.dip.t-dialin.net
+          [84.168.127.209]) by mrelayeu.kundenserver.de (node=mrelayeu5) with
+          ESMTP (Nemesis) id 0ML25U-1LJVZq3E6t-0000QJ; Sun, 04 Jan 2009
+          17:11:47 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 8FDAC52D32; Sun,  4 Jan 2009 17:11:43 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <495F8D32.3080703@morningstar2.co.uk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18I5eL71Qxw4oUmU02UwOxiEL6HTLbdrp8Qhqv
+              hxhtrQiM8IjEtXOROUWMoGS0js/vCFiXXmBZeQK4xf6eRenFOW
+              /5R2UZbx8nAMYS8DajKq3eZXtWWeP+D
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18784.57279.169516.67064@morse.mittelbach-online.de>
+Date:         Sun, 4 Jan 2009 17:11:43 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: \begin{<env>} ... \end{<env>}
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <495F8D32.3080703@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Jan 2009 16:16:09.0304 (UTC) FILETIME=[C0EB0D80:01C96E87]
+Status: R
+X-Status: A
+X-Keywords:                 
+X-UID: 5579
+
+Joseph Wright writes:
+
+ > The recent question about macro names got me thinking about how
+ > environments should be implemented in LaTeX3.  I think I've seen this
+ > mentioned briefly somewhere, but not really worked through.
+ > 
+ > My thinking is that, although using \<env> ... \end<env> is convenient,
+ > it is probably not the best way to (1) keep user and internal macros
+ > separate and (2) to show what is going on.  I'd therefore imagine a
+ > "virtual" module begin used for all of the \begin/\end names, something
+ > like:
+ > 
+ > \envs_<env>_begin:w % Seems easiest here to use :w
+ > \envs_<env>_end:
+ > 
+ > That means that the business with \end... is removed from command
+ > creation much clearer) and that there is no possibility of accidentally
+ > using an environment-starting command without \begin.
+
+I agree that the 2.09 (and 2e) method of storing the internal form of user
+level environments withing \<name> \end<name> is defective for a number of
+reasons but mimicking envionments with corresponding infernal forms seems to
+me is  mixing up different levels of access in the wrong manner.
+
+First of all, who says that environments are the right user interface (as Arno
+asked by suggesting an ConTeXt like approach). They may well be (I personally
+rather like them as on the user inferface they allow certain type of checks
+that are otherwise difficult is not impossible) but even if they are the goal
+for L3 should be to completely decouple the designer and the user interface.
+
+That means that it should be possible to produce a 2e like interface or an XML
+like interface or a ConTeXt like interface from the same code provided at the
+designer/functional interface.
+
+As for the designer/functional level interface I envision something based on
+template.sty (plus a more extensive/general key/val concept for setting
+variable values --- the latter hasn't been written).
+
+With xparse we have actually provided such an example interface that offers
+document-level syntax  a la 2e/2.09
+
+With a template interface on that designer level, things like "heading
+commands" or "lists" etc will be built from defining instances of templates,
+for example,
+
+  \DeclareDocumentCommand{\chapter}{ s o m }
+     { \UseInstance {head} {A-head-main} {#1} {#2} {#3} }
+
+In a similar fashion 2e like environments would be supported through similar
+commands such a \DeclareDocumentEnvironment.
+
+The point here is that xparse does the translation of the user level syntax
+(with optional arguments star form, envionments, ...) to an internal form that
+doesn't have any optional arguments but a very precise set of arguments. Eg,
+the signature of a "head" template has always three arguments, ie the first
+being a boolean to decide if a toc entry is made, the second an alternate TOC
+text or \NoValue and the third the  actual heading text.
+
+This resolves two issues:
+
+ a) a designer can replace one "head" instance with any other "head" instance
+ to provide different layouts without changing the the way the document is
+ interpreted.
+
+ b) one can replace the top level syntax with something else, eg some XML
+ parser or some ConTeX like syntax or ...
+
+as long as the separation is properly done, the top-level user interface can
+be  fairly freely chosen and to be honest I'm not too concerned about it.
+
+What concerns me is the clean separation which as missing within LaTeX209/2e
+as the user interface was grabbing directly through to the internal
+implementation.
+
+frank
+

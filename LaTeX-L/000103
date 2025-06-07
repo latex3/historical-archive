@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 17 May 90 07:41:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      Front matter
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 103
+
+It's not pleasant, but it is possible to keep the old syntax and get things like
+
+an abstract on the titlepage, say, to work.
+
+First of all, we need to determine what actually constitutes the beginning of
+the text for the abstract on the titlepage example. The possibilities are a
+table of contents, list of figures or tables, section header, or text. e.g., the
+
+beginning of our document could look like:
+
+\maketitle
+\begin{abstract} ... \end{abstract}
+\tableofcontents % or listoffigures or listoftables
+
+\maketitle
+\begin{abstract} ... \end{abstract}
+\section{...}
+
+or
+
+\maketitle
+\begin{abstract} ... \end{abstract}
+Some text.
+
+What we do is have \maketitle _not_ print the title, but just start it (either
+printing but not finishing the titlepage or storing the results in a box). We
+then set a flag saying that we've just done the title and it should be finished.
+
+\section, \listoffigures, \tableofcontents, etc. all check this flag and if all
+is well, finish off the title. If there had been an abstract intervening, it
+would have been added to the title material appropriately. The only (slightly)
+tricky bit is dealing with the last case. 10 bonus points if you can guess the
+answer before you turn the page
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+\everypar.
+
+We just put the code for finishing the titlepage into \everypar (the stuff in
+\tableofcontents, etc. will have to reset \everypar of course). It's elegant and
+
+it keeps the old syntax.
+
+BTW, I want a hook into the \everypar stuff in section headings so that I can
+have drop caps and the like after my sections.
+
+-dh
+
+P.S. I take back what I said about this being unpleasant. It's actually kind of
+nice.
+
+

@@ -1,0 +1,190 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7487" "Thu" "4" "February" "93" "20:08:20" "CET" "Michael Downes" "MJD@MATH.AMS.ORG" nil "162" "Re: document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA18053; Fri, 5 Feb 93 08:09:17 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA25866; Thu, 4 Feb 93 20:07:42 +0100
+Message-Id: <9302041907.AA25866@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 6246; Thu, 04 Feb 93 20:08:41 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9095;
+ Thu, 04 Feb 93 20:08:39 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9093;
+ Thu, 04 Feb 93 20:08:35 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <01GUAIZ63HCIFN4Y4W@MATH.AMS.ORG>
+Date:         Thu, 4 Feb 93 20:08:20 CET
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 936
+
+
+>
+> ... I don't see any reason to really consider
+> these [examples] to be items which _demand_ a new class of document style.
+> There's a certain point at which we have to accept that simply
+> changing the \documentstyle cannot do everything for us.
+>  It won't
+> change a text which is written using the US style of
+>   ``this.''
+> to Viking Penguin's house requirement of
+>   `this'.
+> (note change in quotes and movement of period). Or consider the
+> fact that grammatical statements which make sense with one
+> citation format will be different for another. The kind of
+> ``plug-and-play'' which we'd like to have is just not possible,
+> but I think the correct response is not to say that we will
+> multiply the numbers of document classes, but rather to say that
+> we will accept some limitations to what is possible.
+...
+>-[Subclasses weren't what I was arguing for here, (1) was intended only
+>-to be taken together with (2).]
+>
+> Perhaps I misunderstand?
+
+I realize my explanations haven't been clear as vodka. Let me try to
+restate.
+
+Suppose we have a document class "journal-article" and documentstyles
+"article", "article-a", "article-b", "article-c", ... producing
+different visual results for documents in this class but sharing a
+standard set of document elements with standard syntax.
+
+Suppose we want to be able to freely switch between documentstyles of
+the same class, e.g. "article-a" and "article-b", without modifying
+anything in the document body.
+
+Question 1 (submitted for debate): Is it a good idea to
+allow documentstyles in the class "journal-article" to have varying
+defaults for the numbering of the standard elements?
+
+Your first reaction was "Of course it's a good idea, don't be
+ridiculous" [my paraphrase]. Maybe you're right, but I wanted to raise
+before the subscribers to this list the idea that numbering changes
+can sometimes have bad side-effects, side-effects of a sort that
+can easily be overlooked by a publisher, *especially* when the
+publisher is striving to meet authors' desire to have their documents
+published without any meddling by the publisher in the electronic
+files, and striving to save the cost of redundant proofreading.
+
+Question 2 (for debate): Is there any way to reduce the
+possibility of these bad effects?
+
+Your answer was "no, this problem is similar in difficulty to the
+quotes/punctuation problem" [my paraphrase].
+
+But suppose that it were to be required that all documentstyles for
+a given class must have the same default numbering system for the
+standard elements. Your response was "you can't do this because
+publishers almost always want to customize the numbering to their own
+preferences in their documentstyles" [my paraphrase].
+
+Question 3 (for debate): Is there a reasonable way to give publishers
+what they want while still requiring a standard default numbering
+system among all members of a particular class?
+
+On the face of it this probably sounds like nonsense, but perhaps it
+is only nonsense under the prevailing understanding of
+documentstyles---and isn't it one of the purposes of the LaTeX-L list
+to re-examine existing concepts under the light of LaTeX3 design
+goals?
+
+To tell the truth, I don't know any good answer to Question 3. I was
+hoping that someone else might come up with one! But here is a bad
+answer to give some idea of my line of thought.
+
+Start by assuming that documentstyles of the "journal-article" class
+must all adhere to a standard numbering system for the defined
+elements of that class.  Next suppose publisher X wants to create a
+documentstyle "article-x" and they want their authors to use a default
+numbering system that differs from the decreed standard. Let's say,
+for the sake of example, that they want sections to be numbered as
+
+  \thesection=\Roman{section}
+  \thesubsection=\thesection-\roman{subsection}
+  \thesubsubsection=\thesubsection-\alph{subsubsection}
+  secnumdepth=3
+
+In other words, a subsubsection number would look something like
+"III-iv-a" and sectioning levels from \paragraph on down would be
+unnumbered.
+
+Well, if the publisher is not allowed to put these numbering changes
+into the main documentstyle, where can they go? If they should go into
+the document preamble, then presumably LaTeX3 would provide some sort
+of nice interface:
+
+  \renewnumbering{%
+    section=Roman,
+    subsection[section]{-}=roman,
+    subsubsection[subsection]{-}=alph,
+    secnumdepth=3
+  }
+
+Then, the publisher can get what they want by stating in the
+documentation for documentstyle "article-x" that the above
+\renewnumbering command must be included in the document preamble.
+
+I can't say that I care very much for this approach, but notice that
+documents written in this way *can* be switched to another
+documentstyle of the same class without fear of bad side-effects from
+numbering changes.
+
+Another possibility might be to allow a main documentstyle such as
+"article-x" to set up a different default numbering system, but write
+a compact description of that numbering system into the .aux file.
+Then require that documents must be submitted together with their .aux
+file; and during a switch to a different documentstyle of the same
+class, arrange to issue a warning if any numbering-system
+discrepancies are detected. This will at least alert the publisher
+that side-effects should be checked for. And if the numbering system
+specified in the .aux file is not too bizarre, I'd bet that publishers
+would generally prefer to preserve that numbering system rather than
+enforce the defaults of their own documentstyle, so that once again
+the possibility of side-effects related to numbering changes would be
+eliminated. (This is certainly the past and present philosophy of the
+AMS editorial department.)
+
+Another possible answer to all these questions is to say that
+portability between documentstyles of a given class is impractical and
+abandon the attempt. (You seem to be leaning that way a bit---the
+quotes/punctuation thing, etc.) Then---theoretically speaking---each
+documentstyle would be in a class by itself and any interchangeability
+would be regarded as a happy coincidence. Hand-editing of documents
+when going from one documentstyle to another would be considered
+normal, even when both documentstyles have the same set of elements.
+
+Although I myself might be favorably inclined to this last answer, at
+the same time it goes against a rather strong tide of opinion from
+authors who are gung-ho on the idea that their documents can be
+submitted to the publisher and used *without any changes whatsoever*.
+In order to turn the tide, I can't just say "that's impractical", I
+need to be able to explain why. How fortunate I am that I can turn to
+all you LaTeX aficionados on this mail list for help in coming up with
+answers!
+
+>->-(2) Any numbering changes are done in the individual documents.
+>
+> ... numbering is part of the style specification.
+
+/////
+|@ @|
+|  >|
+ \_~) (tongue in cheek): If changes in numbering style are immaterial
+to the essential contents of a document, then what persuasive reason
+can be given by any publisher for deviating from a standard numbering
+system required for a given document class? When creating a document
+class, why not poll a few publishers, distill a happy-medium numbering
+system from their various preferences, and say to them "Here's the
+numbering system you have to use, unless you can give us a good reason
+for deviating from it"?
+
+Michael Downes                              mjd@math.ams.org (Internet)
+

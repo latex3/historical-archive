@@ -1,0 +1,65 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1764" "Sun" "7" "March" "93" "16:34:03" "+0100" "rolf.lindgren@USIT.UIO.NO" "rolf.lindgren@USIT.UIO.NO" nil "38" "Fonts and LaTeX 3" "^Date:" nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA12203; Sun, 7 Mar 93 16:36:26 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA02424; Sun, 7 Mar 93 16:36:16 +0100
+Message-Id: <9303071536.AA02424@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2823; Sun, 07 Mar 93 16:36:33 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2448;
+ Sun, 07 Mar 93 16:36:30 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2446;
+ Sun, 07 Mar 93 16:36:27 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 7 Mar 93 16:34:03 +0100
+From: rolf.lindgren@USIT.UIO.NO
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Fonts and LaTeX 3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 996
+
+
+I've been trying to come to grips with the problems of font use and abuse
+both in typography in general, and implementing various fonts in LaTeX. I
+see a few things that I'd like LaTeX 3 to be able to to which would make
+all of this easier.
+
+First, just substituting one font for another (as with D. M. Jones' PS
+font package) isn't really good enough, because different x heights reqire
+different baselines. My point is, simply saying
+\family{somefont}\selectfont isn't good enough because the leading is
+still prepared for cmr.
+
+Sometimes I'd like to keep cmtt (or, indeed, cmsf) and only replace cmr
+with a PS font. But this requires some work because font encoding between
+MF fonts and PS fonts normally differ slightly. So I'd like commands to
+switch between different font encodings.
+
+I'd like to be able to turn _off_ ligatures at large point sizes because
+ligatures look to cramped. But this can't be done from a macro
+unfortunately, you'd have to have to build tfm's for different point
+sizes.
+
+A solution to some of this is to write a program, say, xfm2sty, that takes
+a font metric file (or a bunch of metric files of the same font family)
+and writes a macro that contains commands to manipulate fonts. Say, Adobe
+Garamond gives rise to a macro \AdobeGaramond that switches to Adobe
+Garamond Regular at \family{garamond}\selectfont\rm, SemiBold at \bf, etc.
+
+The command \AdobeGaramond would set appropriate baselines, correct
+mapping between input and output character encoding (to do this, it might
+have to read tfm files as well ... sigh).
+
+Such a beast should be able to read not only PS fonts, but also HP
+softfonts I suppose, and be able to recognize Mac and Latin1 input
+encoding as well as the IBM codepages.
+
+Does this sound too far-fetched?
+
+

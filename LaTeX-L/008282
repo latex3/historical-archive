@@ -1,0 +1,473 @@
+Return-Path: <rainer.schoepf@gmx.net>
+Delivered-To: rainer
+Received: from h2774747.stratoserver.net
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by h2774747.stratoserver.net (Dovecot) with LMTP id TXvMLVuz+WFPbAAA4+3H6A
+	for <rainer>; Tue, 01 Feb 2022 23:25:31 +0100
+Return-Path: <rainer.schoepf@gmx.net>
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	by h2774747.stratoserver.net (8.15.2/8.15.2/Debian-3) with ESMTP id 211MPTOl027725
+	for <rainer@rainer-schoepf.de>; Tue, 1 Feb 2022 23:25:30 +0100
+Authentication-Results:  mqgmx121.server.lan; dkim=none
+Received: from relay.uni-heidelberg.de ([129.206.100.212]) by mx-ha.gmx.net
+ (mxgmx117 [212.227.17.5]) with ESMTP (Nemesis) id 1MXYpz-1mjQcT2rBH-00Yvem
+ for <rainer.schoepf@gmx.net>; Tue, 01 Feb 2022 23:25:18 +0100
+Received: from listserv.uni-heidelberg.de ([129.206.100.94])
+  by relay.uni-heidelberg.de with ESMTP; 01 Feb 2022 23:25:18 +0100
+Received: from listserv (localhost [127.0.0.1])
+	by listserv.uni-heidelberg.de (Postfix) with ESMTP id B87CA126E96;
+	Tue,  1 Feb 2022 23:25:12 +0100 (CET)
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 17.0) with
+          spool id 50087598 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 1 Feb
+          2022 23:25:12 +0100
+Delivered-To: LATEX-L@listserv.uni-heidelberg.de
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (Postfix) with ESMTP
+          id 9F90B1244A5 for <LATEX-L@listserv.uni-heidelberg.de>; Tue,  1 Feb
+          2022 23:25:12 +0100 (CET)
+X-IronPort-MID: 146491000
+X-IronPort-RemoteIP: 209.85.221.177
+X-IronPort-SenderGroup: UNKNOWNLIST
+X-IronPort-MailFlowPolicy: $ACCEPTED
+X-IronPort-Reputation: 2.7
+X-IPAS-Result: =?us-ascii?q?A0BICADisvlhf7HdVdFaFgYBAQE8AQEEBAEBAgEBBwEBg?=
+               =?us-ascii?q?W8CgiYzS1YsBAsxhEmBHo4jBwEBAQaBPwMDixiKfoY8FIFoCwEBAQEBAQEBA?=
+               =?us-ascii?q?QkSAQEWAQoMBAEBPYMScUUCg1oCHQcBBDAJDgECBAEBAQEDAgMBAQEBAQEDA?=
+               =?us-ascii?q?QEFAQEBAgEDAwQUAQENCxAICgIFDhMkhWgNhkMBAQECAQEBEBEdARsSCwEDA?=
+               =?us-ascii?q?QsGAwILNwICIQEBBAEMAQUBHAYTCAwOgmOCZAEDDSEPkzSPGYEEPYsygRUFF?=
+               =?us-ascii?q?4EBggkGgT8BgwsKGSgNaoE+GgIHEoEoAYEShHlUSgEBhwcnFgZ9gRCBS4J0P?=
+               =?us-ascii?q?oIhQgEBA4EoARIBToJrgmUEkUpyZFUBAVALgVcLjnyDKxsrglWMZ4dbBYNAk?=
+               =?us-ascii?q?XZrXoJyiQ6Bc4xwgXOFeTOFPZB2kVSWSo0Pg06DOY0gCIUdECMSgSyBJXBNI?=
+               =?us-ascii?q?xU7MYI4CQo+GQ+SETM3gW+CO4VrIzACATUCBgEKAQEDCY1MAQE?=
+IronPort-PHdr: A9a23:72YWAByLSeO9OH3XCzIozFBlVkEcU9TcJAMR44thlrRPN6Su/pjvO
+               EbS//orgFKaFZ7D5adijOzb+7vlRXRG+YyI5X8PdJhJSjcKjMwXm0orB8vWQVbjIqvSZjchV
+               N9HSEcj+ni6NUZPH8OraFDWpnivxTEXExT7cwFyI7e9AZbc2uKw0e364JjPe0NIiT66NKt1N
+               wmzpB7Nu9M+hIJjLuMvyUKMrCIXJKJZwmRnIV/VlBH5jiup1Lhk9SkY++gs88dRF7j8fuE4Q
+               L1UATAsPno6osHm51HFSkOU630QX39z8FIAChXZ7Bz8Qpb6szfr/ut71i6AOMTqTLcyET285
+               qZvQRXshW8JLTk8uG3Qj8VxiupcrnfD71RwzorQZZy9O/93f6ebdtQfBCJAUstXSy1dE9akd
+               YJcR+EFPOtes8z8vw5U9Ur4VVTqXrm2jGYX2SyTv+VyyekqHADY0RZ1Bd8KuWWSsdP0cacfU
+               Oy4yKPF1zqFY/4FvFW1oIXObB0lpumBGLxqds+Eg0YiEwfAk32frIXkO3We0eFH4A35p6JwE
+               PmijWIqsVQ7rTWrwsIxoobMj4MRjFvD8G8qiJZwLtq+RklhZNeiG5YFrCCWObx9RcY6Sn1ps
+               iI3olEfkaayZzNCiI4qwxfOLeGBcs2I7xPvWeKbLC13wn5oKvqzgBO78E7ozeOZNIH831tOq
+               i9YutbJv3EJkRfU74CLR+B88UGoxTuUn1qLu6cUfAZuz/OdcsF+ircr3oIeq0HCAjP7lCCUx
+               OeNe0Mo9/Lpo+Xrb7P6p4ONYop9iwXwKKMryYS0BeU1NBRLXnDOo7ztku2+uxejGfMT0aJl9
+               8uR+IrXLskauKOjVhVY1o8yrQu5DnKm3dUUkH0NIUhKPh6K3O2LcxnDJu71CfCnjhGiijBuk
+               rrJM7nlB4jlIX3KkbOndrF4oR05qkJ73ZVE6pRYB6tUav3+Xkv0qfTXCxY4N0q/xOOtW51tk
+               4gZX2yIGKqQNqjf5ESJ6uwYKO6JfIYJuTz5JqtAhbamnTojlFQaZ6XswYoPZSXyAKF9O0vAK
+               ymkkpIbHGwNpAZ7UOH6lAjIT2tIf3jrOsB0rjAjVND9UMGaF9jr2uDemn/8RMEeZ3gaWA7QV
+               y2zLMPdBa9KMGXLc4dgimBWC+bnEtd7k0no7Eigk98FZqLV4nFK68yljoQkob2L00l1r2Q8D
+               tzBgT7XCTgo2DpZHXlum/kv6U1llgXcje4h2aEeTZoLoKoXN2VyfZ/Ek74jU4C0A12eOIfPE
+               BH8G52nGW1jF41qhYZfPwAlXY3l106L3jL2UeVNxvrbWdptqPKahz+oeKMfgz7HzPVz1QB4B
+               JYfczT33OgnsFGCT4/RzxfDzvjsL/9NmnWXsj/ElDvGqkhcVEQYvbzte3cZawOWt9n971KEU
+               rmvTLQqMwdMzcSPMKQMZtC7xVNBDOzuPtjTeQfT0y+5GAqIy7WQbYHrZ3RV3SPTD1IBmhwS+
+               nDOPBY3ByOoqWbTRDJ0Elenb0Tp+Oh44HS1Ky18hxmNdFFk3qGp9wQ9gPWdT7YN3etBtn5+9
+               HN7G1Gy29+QAN2F5kJgcKhafdIh8QJH2Gbe5GkfdtSrK6FvgEJbchwi5Ru/kUUqTN8ayI5z8
+               yx5hBB/Iq+Zzl5bIimV2ZnhfKDRKyzy8RGjZqrc10vRltqbqcJtoLw1rUvuuAaxGw8s6XJih
+               pNa3n+Y44jiAw8bUJa3WUEyvUsfxfmScmwm6oXY2Gc5e7GzqSPH0sk1CfENzx+he5JBM/rBG
+               latTIsVAM+hLOFskF+sJEFhXqga5Os/OMWocOGD0aigMbN7nT6oum9A5Zh0zkOG8ycUogvg0
+               JMMwvXe1QyCBW+UZLaJt8n2ncVaZmhXEDPglm7rA4leYqA0doEOWz/GyyKfydB3hpqrUHldp
+               gfLOg==
+IronPort-Data: A9a23:GCtm5q4ZvCo5jh7nThd1BQxRtMvHchMFZxGqfqrLsTDasY5as4F+v
+               jYdD2zXOPiOYzf8L4p3aYni9kMEuJbXnYRlSQQ6pC5kZn8b8sCt6faxdxqvZXPMcqUvb67FA
+               +E2MISowBUcFyeEzvuV3zyIQUBUjclkfJKkYAL/En03FV8MpBsJ00o5wbZj2tcw2rBVPivU0
+               T/Mi5yHULOa82MsWo4kw/rrRMRH5amaVJsw5zTSVNgT1LPsvyB94KE3fcldG0DFrrx8RYZWc
+               QpjIIaRpQs19z91Yj+sfy2SnkciGtY+NiDW4pZatjTLbhVq/kQPPqgH2PU0TXVUpTOno8lN6
+               9RUqrqIQjwXLKDpl7FIO/VYO3kW0axu/bbGJT2hspXWwRSZLD3jxPJhCExwNoodkgp1KTsWp
+               LpIdXZXNEnF3r3pqF64YrEEasALI8TvOIYCkn5lxDDdS/0hRPgvRo2TuYEEjW5o3pgm8fD2X
+               vNFeCZubxn5QiZhIG0aKrgggr2smSyqG9FfgAvN+fBfD3Lo5ChY7JXddf79ft2RWd5YhFjeu
+               2THumT0Ax0XMNaS0zXD/n/EuwPUtSbyWYZXCr7hs/Az3wLVyWsUBxkbE1C8pJFVl3JSRfp7G
+               U86/AQStJQR9VW0aOH2ZCOqrVuL60t0t8VrL8U27wSEy6zx6gmfB3QZQjMpVDDAnJ9nLdDN/
+               g/Y9+4FFQCDo5XOFi3Arub8QSeafHlKfTVbNEfoWCNcu4G7yLzfmC4jWTqKLUJYptj8GDW13
+               TPT6SZn2OpVgskM2KG2u1vAhlpAR6QlrCZlv207vUr/tmuVgbJJgaT2sDA3Ct4ede6koqGp5
+               iRspiRnxLlm4WuxvCKMWv4RO7qi+uyINjbR6XY2QcV6qGj1oSb7Jt4PiN2bGKuPGpZVEdMOS
+               B+C0T69GLcOVJdXRfMtOtnpUpxCIVbIT4y0B6m8giVyjmhZLVfbpkmClGaf2GfilEVErE3ME
+               cbzTCpYNl5DUf4P5GPuGY81iOZzrghnnD+7bc2lknyPjOXGDFbIGO9tGAbfNYgRsfLUyDg5B
+               v4FaKNmPT0EALOgCsQWmKZPRW03wY8TXsGr8pEHK7LYf2KL2ggJUpfs/F/oQKQ994w9qwsC1
+               ijVtpNwoLY+uZHGFelOQnVqabeqQ5Um6HxiYnNqMlGv1HwuJ42o6c/zsnfxkaYPrIReITxcF
+               pHpuPlsxtxATz3G/3IWapyVQElKakGwnQzXV8a6SGFXQnOjLjAlPvfrewLu8G8FCS/fWQ7SZ
+               VG//luzfKfvnzhfMfs=
+IronPort-HdrOrdr: A9a23:okVfDqyqCfDzadabT73KKrPwOL1zdoMgy1knxilNoHtuHfBw9v
+                  rBoB11726WtN98YgBDpTniAsi9qA3nmKKdiLN5VdzJYOCMghrNEGgN1/qG/9XRcReTygck78
+                  ddT5Q=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.88,335,1635199200";  d="scan'208,217";a="146491000"
+X-MGA-submission: =?us-ascii?q?MDHceoKDE81ZV0UKK+iORe37cPkCpJoiZ7r8RA?=
+                  =?us-ascii?q?dmZARMq//ZM7RHaGGbw/WNB6Ygix6xzjDyoFZHKA7yj/gEfORpamyWpG?=
+                  =?us-ascii?q?pa7S7LE6NzLjBvw3s0vouEpm8M2NREH+8rpxQ/nu6IgT1/UMcBdhTNU3?=
+                  =?us-ascii?q?nmnsE1Gwdmeu1BDfKL5NptQQ=3D=3D?=
+Received: from mail-vk1-f177.google.com ([209.85.221.177]) by
+          relay.uni-heidelberg.de with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256;
+          01 Feb 2022 23:25:11 +0100
+Received: by mail-vk1-f177.google.com with SMTP id u25so8117674vkk.3 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 01 Feb 2022 14:25:11 -0800
+          (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+                         s=20210112;
+                         h=x-gm-message-state:mime-version:references:in-reply-to:from:date :message-id:subject:to:cc;
+                         bh=ZbHutihqKHTxhKpdRI10uj+AItbWSDfR9kXJ322gUjQ=;
+                         b=vE5oEuSBoFOSuHBKPeCSvKoQS8ubQqypf/mm+wX7OSB2gPHVbeyJUwRx1KQ5I1CaZL
+                         5o3Pevrs2DYYv/1MOLemXNxEgEF2DRw5/tWiSYW6wBVFu/yDDrgPfhZUoGMvDQ12ypQQ
+                         vNJF1RjiyxwjnC4sCi5C3APNZNgdCK8W/DGqUGO/tSk/eszAJUDNN1ABrJP3tuQcDxfL
+                         KTmg5kSDX1rI8U4s57Yk23cxaGWVh/SFJnBTXa3r4bbbnxdiQIfi3ZyVsgzYHdNx5/dn
+                         W488fBF4CmynVJ2/5P8X+I9Ceamqspl2tELMhgtvimeN1PCIMoc8Myofh5CVln0r5LL/
+                         22Nw==
+X-Gm-Message-State: AOAM533iDmj9PNuOPQuRHxg9lJz3XFx3TI6+GyyQXHNV7spYnEATswYq
+                    7Fdnddx7riplP0VnEysx5r47FqgdJFJdyrHfeMc=
+X-Google-Smtp-Source: ABdhPJxAHutFo+2/nUf7xSUWeAyqugtBBLtW6QxKA273/RRD2AVj9yflCIhYeMvgYkYrC/0ypy4gQWUB6YyK4Vg/ZJ0=
+X-Received: by 2002:a05:6122:221b:: with SMTP id
+            bb27mr11398251vkb.25.1643754310529; Tue, 01 Feb 2022 14:25:10 -0800
+            (PST)
+MIME-Version: 1.0
+References: <CANjPgh-PyyVZykjujzrxkN9_CB7-MdQVSR4Mnk0NS4mYGBhSPQ@mail.gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000c6f60705d6fc5f9e"
+Message-ID:  <CAH_0fy65ixANoub0pY4pQFu5cSFjLPGwxfY7hdt7jJcZ79n0XQ@mail.gmail.com>
+Date:         Tue, 1 Feb 2022 14:24:34 -0800
+Reply-To:     Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender:       Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From:         William F Hammond <gellmu@GMAIL.COM>
+Subject: Re: [LaTeXML] A new MathML-native preview site for arXiv
+To:           LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <CANjPgh-PyyVZykjujzrxkN9_CB7-MdQVSR4Mnk0NS4mYGBhSPQ@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+Envelope-To: <rainer.schoepf@gmx.net>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+X-UI-Filterresults: notjunk:1;V03:K0:66FXVdh6v5o=:bBjf1Rrun8hZb86z3DoxqCIgui
+ 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
+X-UI-Loop:V01:6ISWMSMbxxI=:d+hVsYTuRbuq59YvuPwwTt65GHn6PftjzhnOpAvyrXE=
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UGhDSa5n2dM=:IWjoXt/1njREhurnO/PoVu
+ buH8YXAxcydeH+QyH8KGvh0OAcrXQA5iunUFlRTLg/WF4cSRFe25dpRFtzJ2UBJGr3tUxAONB
+ aVgQLAkLt87vfLu8q1vuqzQ/WfbwYRhWzpuaZRpXkzaDCpwYpqEEZmH/2lkHoHNtANyZLdfzs
+ dVs7W8Dza/yP3JeG+qfMH5QAa4J+IK3j6eN7TdwTRPIMwJPxBm+UJT5npd0iQtE1Egbob4cRI
+ JuTvP3kDyrYoOEQ8lSZwLLTRCo9QLxYh51KhxQyL0oDCsv5j/7Flnxwqykv4a7BkPPVw8jCXd
+ GYpUKyOZl3U4/qNEbgSXQ5vI97SW3pWQSbyXzIF1RDdJuZ20ppzXJVzhQlIipjWxj7596RIU1
+ QU1xGbc1PUD/r701vQQ/W8/sybER7WhS27Hh/By6ODJWLT0Kdfto8ewrt2XW3SfhenhmCVyEN
+ VsYfJADwCkOZnCfnspQfi/nZAPrbYBjgApvbC5J4kUSXXRw0gN0ZzGB8fMTZ7lo9dTORDafPl
+ A==
+X-Scanned-By: MIMEDefang 2.78 on 81.169.212.23
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 8282
+
+--000000000000c6f60705d6fc5f9e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Deyan,
+
+Many thanks for this.
+
+I'm really impressed with how deep into the thicket of baroque markup
+LaTeXML has penetrated, even to plain with 1990s style ams, e.g.,
+https://ar5iv.org/html/alg-geom/9304003 (which, by the way, is a great
+article).
+
+=F0=9D=90=9A=F0=9D=90=AB=F0=9D=90=97=F0=9D=90=A2=F0=9D=90=AF =F0=9D=90=AC=
+=F0=9D=90=A1=F0=9D=90=A8=F0=9D=90=AE=F0=9D=90=A5=F0=9D=90=9D =F0=9D=90=A0=
+=F0=9D=90=A8 =F0=9D=90=9F=F0=9D=90=A8=F0=9D=90=AB =F0=9D=90=AD=F0=9D=90=A1=
+=F0=9D=90=A2=F0=9D=90=AC.
+
+            -- Bill
+
+William F Hammond
+Email: gellmu@gmail.com
+https://www.facebook.com/william.f.hammond
+http://www.albany.edu/~hammond/
+
+=F0=9D=91=BA=F0=9D=92=96=F0=9D=92=91=F0=9D=92=91=F0=9D=92=90=F0=9D=92=93=F0=
+=9D=92=95=F0=9D=92=8A=F0=9D=92=8F=F0=9D=92=88 =F0=9D=92=82=F0=9D=92=87=F0=
+=9D=92=87=F0=9D=92=8A=F0=9D=92=93=F0=9D=92=8E=F0=9D=92=82=F0=9D=92=95=F0=9D=
+=92=8A=F0=9D=92=97=F0=9D=92=86 =F0=9D=92=82=F0=9D=92=84=F0=9D=92=95=F0=9D=
+=92=8A=F0=9D=92=90=F0=9D=92=8F =F0=9D=92=87=F0=9D=92=90=F0=9D=92=93 =F0=9D=
+=92=95=F0=9D=92=89=F0=9D=92=86
+=F0=9D=92=87=F0=9D=92=8A=F0=9D=92=8F=F0=9D=92=8A=F0=9D=92=95=F0=9D=92=86 =
+=F0=9D=92=91=F0=9D=92=8D=F0=9D=92=82=F0=9D=92=84=F0=9D=92=86=F0=9D=92=94
+
+
+
+
+On Mon, Jan 31, 2022 at 7:11 AM Deyan Ginev <deyan.ginev@gmail.com> wrote:
+
+> Hello everyone,
+>
+> I am happy to announce a new preview site for arXiv.org's scientific
+> preprints:
+>
+> https://ar5iv.org
+>
+> To try it out, change the "X" in any arXiv article link to the "5" in
+> ar5iv to get a modern HTML5 document.
+>
+> ---
+> What is included?
+>
+> You can expect to find a collection of 1.75 million preprints,
+> readable (and machine-readable) today.
+>
+> The underlying data is converted from TeX/LaTeX to HTML5 by latexml.
+> It is indeed the latest installment of the exact data I have been
+> packaging as a versioned "arXMLiv dataset", available under
+> SIGMathLing:
+> https://sigmathling.kwarc.info/resources/arxmliv/
+>
+> A new "arXMLiv 2021" edition is planned for Februrary.
+>
+> ---
+>
+> My hope for the short-term is that the new preview site will be
+> helpful to stress-test MathML Core support in all browsers, especially
+> ones striving to newly add support in 2022.
+>
+> For the longer term, we hope to reintegrate back with the main
+> arXiv.org site, and propose a reliable transition away from PDF,
+> especially for the 2 million articles that have already been
+> submitted.
+>
+> And for the readers in the lists here - to enable a wide variety of
+> exciting MathNLP and MathIR research!
+> - The formulas and fragments in ar5iv are enriched with "id"
+> attributes, making them attractive targets for search indexes
+> - Our attempt at generating  "Scholarly HTML5" offers a range of
+> reliable additional markup, such as classes for a variety of
+> scientific statements (theorems, proofs, definitions,...) +more!
+>
+> ---
+>
+> You're welcome to use and reuse, share widely, and send feedback my
+> way. The plan is to keep actively improving, while offering this
+> service to the wider academic community.
+>
+> For a more detailed overview, here is a link to the social media
+> announcement:
+> https://twitter.com/dginev/status/1488157927001268231
+>
+> I will also give an overview talk in next week's SIGMathLing seminar,
+> and would welcome early feedback and discussion from anyone who has
+> time to attend. My gratitude to Michael and Frederik for organizing!
+> Details as usual at:
+> https://sigmathling.kwarc.info/seminar/
+>
+> Greetings,
+> Deyan
+> _______________________________________________
+> LaTeXML mailing list
+> LaTeXML@lists.informatik.uni-erlangen.de
+> https://lists.informatik.uni-erlangen.de/mailman/listinfo/latexml
+>
+
+--000000000000c6f60705d6fc5f9e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Deyan,<div><br></div><div>Many thanks for this.</div><div>=
+<br></div><div>I&#39;m really impressed with how deep into the thicket of b=
+aroque markup LaTeXML has penetrated, even to plain with 1990s style ams, e=
+.g., <a href=3D"https://ar5iv.org/html/alg-geom/9304003" target=3D"_blank">=
+https://ar5iv.org/html/alg-geom/9304003</a>=C2=A0(which, by the way, is a g=
+reat article).</div><div><br></div><div>=F0=9D=90=9A=F0=9D=90=AB=F0=9D=90=
+=97=F0=9D=90=A2=F0=9D=90=AF =F0=9D=90=AC=F0=9D=90=A1=F0=9D=90=A8=F0=9D=90=
+=AE=F0=9D=90=A5=F0=9D=90=9D =F0=9D=90=A0=F0=9D=90=A8 =F0=9D=90=9F=F0=9D=90=
+=A8=F0=9D=90=AB =F0=9D=90=AD=F0=9D=90=A1=F0=9D=90=A2=F0=9D=90=AC.<br></div>=
+<div><br clear=3D"all"><div><div dir=3D"ltr" data-smartmail=3D"gmail_signat=
+ure"><div dir=3D"ltr"><div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 -- Bil=
+l</div><div><br></div>William F Hammond<br>Email: <a href=3D"mailto:gellmu@=
+gmail.com" target=3D"_blank">gellmu@gmail.com</a><br><a href=3D"https://www=
+.facebook.com/william.f.hammond" target=3D"_blank">https://www.facebook.com=
+/william.f.hammond</a><br><a href=3D"http://www.albany.edu/~hammond/" targe=
+t=3D"_blank">http://www.albany.edu/~hammond/</a><div><br></div><div>=F0=9D=
+=91=BA=F0=9D=92=96=F0=9D=92=91=F0=9D=92=91=F0=9D=92=90=F0=9D=92=93=F0=9D=92=
+=95=F0=9D=92=8A=F0=9D=92=8F=F0=9D=92=88 =F0=9D=92=82=F0=9D=92=87=F0=9D=92=
+=87=F0=9D=92=8A=F0=9D=92=93=F0=9D=92=8E=F0=9D=92=82=F0=9D=92=95=F0=9D=92=8A=
+=F0=9D=92=97=F0=9D=92=86 =F0=9D=92=82=F0=9D=92=84=F0=9D=92=95=F0=9D=92=8A=
+=F0=9D=92=90=F0=9D=92=8F =F0=9D=92=87=F0=9D=92=90=F0=9D=92=93 =F0=9D=92=95=
+=F0=9D=92=89=F0=9D=92=86 =F0=9D=92=87=F0=9D=92=8A=F0=9D=92=8F=F0=9D=92=8A=
+=F0=9D=92=95=F0=9D=92=86 =F0=9D=92=91=F0=9D=92=8D=F0=9D=92=82=F0=9D=92=84=
+=F0=9D=92=86=F0=9D=92=94</div><div><br><br></div></div></div></div><br></di=
+v></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr=
+">On Mon, Jan 31, 2022 at 7:11 AM Deyan Ginev &lt;<a href=3D"mailto:deyan.g=
+inev@gmail.com" target=3D"_blank">deyan.ginev@gmail.com</a>&gt; wrote:<br><=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">Hello everyone,<br>
+<br>
+I am happy to announce a new preview site for arXiv.org&#39;s scientific pr=
+eprints:<br>
+<br>
+<a href=3D"https://ar5iv.org" rel=3D"noreferrer" target=3D"_blank">https://=
+ar5iv.org</a><br>
+<br>
+To try it out, change the &quot;X&quot; in any arXiv article link to the &q=
+uot;5&quot; in<br>
+ar5iv to get a modern HTML5 document.<br>
+<br>
+---<br>
+What is included?<br>
+<br>
+You can expect to find a collection of 1.75 million preprints,<br>
+readable (and machine-readable) today.<br>
+<br>
+The underlying data is converted from TeX/LaTeX to HTML5 by latexml.<br>
+It is indeed the latest installment of the exact data I have been<br>
+packaging as a versioned &quot;arXMLiv dataset&quot;, available under<br>
+SIGMathLing:<br>
+<a href=3D"https://sigmathling.kwarc.info/resources/arxmliv/" rel=3D"norefe=
+rrer" target=3D"_blank">https://sigmathling.kwarc.info/resources/arxmliv/</=
+a><br>
+<br>
+A new &quot;arXMLiv 2021&quot; edition is planned for Februrary.<br>
+<br>
+---<br>
+<br>
+My hope for the short-term is that the new preview site will be<br>
+helpful to stress-test MathML Core support in all browsers, especially<br>
+ones striving to newly add support in 2022.<br>
+<br>
+For the longer term, we hope to reintegrate back with the main<br>
+arXiv.org site, and propose a reliable transition away from PDF,<br>
+especially for the 2 million articles that have already been<br>
+submitted.<br>
+<br>
+And for the readers in the lists here - to enable a wide variety of<br>
+exciting MathNLP and MathIR research!<br>
+- The formulas and fragments in ar5iv are enriched with &quot;id&quot;<br>
+attributes, making them attractive targets for search indexes<br>
+- Our attempt at generating=C2=A0 &quot;Scholarly HTML5&quot; offers a rang=
+e of<br>
+reliable additional markup, such as classes for a variety of<br>
+scientific statements (theorems, proofs, definitions,...) +more!<br>
+<br>
+---<br>
+<br>
+You&#39;re welcome to use and reuse, share widely, and send feedback my<br>
+way. The plan is to keep actively improving, while offering this<br>
+service to the wider academic community.<br>
+<br>
+For a more detailed overview, here is a link to the social media announceme=
+nt:<br>
+<a href=3D"https://twitter.com/dginev/status/1488157927001268231" rel=3D"no=
+referrer" target=3D"_blank">https://twitter.com/dginev/status/1488157927001=
+268231</a><br>
+<br>
+I will also give an overview talk in next week&#39;s SIGMathLing seminar,<b=
+r>
+and would welcome early feedback and discussion from anyone who has<br>
+time to attend. My gratitude to Michael and Frederik for organizing!<br>
+Details as usual at:<br>
+<a href=3D"https://sigmathling.kwarc.info/seminar/" rel=3D"noreferrer" targ=
+et=3D"_blank">https://sigmathling.kwarc.info/seminar/</a><br>
+<br>
+Greetings,<br>
+Deyan<br>
+_______________________________________________<br>
+LaTeXML mailing list<br>
+<a href=3D"mailto:LaTeXML@lists.informatik.uni-erlangen.de" target=3D"_blan=
+k">LaTeXML@lists.informatik.uni-erlangen.de</a><br>
+<a href=3D"https://lists.informatik.uni-erlangen.de/mailman/listinfo/latexm=
+l" rel=3D"noreferrer" target=3D"_blank">https://lists.informatik.uni-erlang=
+en.de/mailman/listinfo/latexml</a><br>
+</blockquote></div>
+
+--000000000000c6f60705d6fc5f9e--
+

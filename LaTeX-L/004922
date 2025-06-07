@@ -1,0 +1,127 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 24 Feb 2006 14:44:58 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k1ODipoE025317
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 24 Feb 2006 14:44:52 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k1ODhHvj008175;
+	Fri, 24 Feb 2006 14:43:17 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k1O9utFr004082;
+	Fri, 24 Feb 2006 14:41:03 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1352953 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 24 Feb
+          2006 14:41:03 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k1ODf30M011029 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 24 Feb 2006 14:41:03 +0100
+Received: from mx1.informatik.uni-stuttgart.de
+          (mailgw.informatik.uni-stuttgart.de [129.69.211.41]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          k1ODguvj008071 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 24 Feb
+          2006 14:42:56 +0100 (MET)
+Received: by mx1.informatik.uni-stuttgart.de (Postfix,
+          from userid 60001) id 4CBA92D37; Fri, 24 Feb 2006 14:40:47 +0100 (CET)
+X-Spam-Checker-Version: SpamAssassin 3.1.0 (2005-09-13) on mx1
+X-Spam-Level: 
+X-Spam-Status: No,
+               score=-2.4 required=5.0 tests=ALL_TRUSTED,AWL
+               autolearn=unavailable version=3.1.0
+Received: from isostar.informatik.uni-stuttgart.de
+          (isostar.informatik.uni-stuttgart.de [129.69.215.240]) by
+          mx1.informatik.uni-stuttgart.de (Postfix) with ESMTP id AE16A2D09;
+          Fri, 24 Feb 2006 14:40:44 +0100 (CET)
+Received: (from raichle@localhost) by isostar.informatik.uni-stuttgart.de
+          (8.9.3p2/2.2) id OAA06399; Fri, 24 Feb 2006 14:40:44 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <200602231927.45843.lehman@gmx.net>
+            <17406.56847.567915.709994@morse.mittelbach-online.de>
+X-Mailer: VM 7.17 under Emacs 21.1.1
+Message-ID:  <17407.3292.411102.175224@isostar.informatik.uni-stuttgart.de>
+Date:         Fri, 24 Feb 2006 14:40:44 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Bernd Raichle <raichle@INFORMATIK.UNI-STUTTGART.DE>
+Subject: Re: [latex/3844] uc/lccode controls in inputenc?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17406.56847.567915.709994@morse.mittelbach-online.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Feb 2006 13:45:00.0379 (UTC) FILETIME=[81BE2AB0:01C63948]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4922
+
+On Friday, 24 February 2006 11:21:03 +0100,
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+ > I suggested to Philipp that we discuss this here as I have the feeling that
+ > there are a number of problems associated with his suggested approach and I
+ > hope to hear a few more opinions.
+
+
+[...]
+ > so lets have a look at the suggestions:
+ > 
+ >  > My suggestion was: why not set the uppercase and lowercase codes of 
+ >  > all bytes used in UTF-8 to zero? The concept of uc/lccodes doesn't 
+ >  > apply to UTF-8 anyway (at least not with an 8-bit engine...), why 
+ >  > take the risk of having it backfire?
+ > 
+ > because ...
+ > 
+ > lc codes are unfortunately not only used for lowercasing text they are also
+ > used for hyphenation. but they are used for hyphenation of the LICRs that
+ > result from changing the UTF8 to the final glyph in the font encoding. Thus if
+ > we would turn all lc codes for the upper half to zero, good by hyphenation of
+ > most languages when typeset in T1 font encoding.
+
+Some background: When TeX is breaking a paragraph into lines and a
+word has to be hyphenated, TeX uses the current values in the lccode
+table to "normalize" all glyph codes using the lowercase code.  If the
+glyph has a zero lccode value, TeX will stop the word at this
+character trying to hyphenate only the first part (cf. TeX.web,
+section "@<Skip to node |hb|, putting letters into |hu| and |hc|@>",
+where |hu| contains the original glyph code, |hc| the normalized
+(=lowercased) code; the code line "if lc_code(c)=0 then goto done3;"
+will stop collecting further glyph for hyphenation.).
+
+
+ > furthermore
+ >  
+ >  > There is one thing I didn't mention in the report. Since inputenc may 
+ >  > switch the input encoding mid-stream, the codes would also need to be 
+ >  > restored before a new encoding is initialized. So the issue at stake 
+ >  > is really: should there by a central uc/lccode management in 
+ >  > inputenc?
+ > 
+ > again the lc/uc is not really only a property of the inputenc it is formost a
+ > property of the output encoding due to the unfortunate overloading with
+ > hyphenation. And it gets one step further: the values for that are --- at least
+ > with std TeX --- only looked at at the very end of the paragraph but inputenc
+ > can bechanged in mid-paragraph.
+[...]
+
+Using e-TeX (or pdf-(e)-TeX) instead of standard TeX, the new register
+\savinghyphcodes can be set to a positive value when reading
+hyphenation \patterns to create the format files.  This will save the
+lccode values at the time the \patterns{...} are added for the current
+language.  And if there are saved lccode values, they are used instead
+of the \lccode values for hyphenation.
+
+What is needed to make this work is add the assignment of this new
+e-TeX register when loading hyphenation patterns.  In addition one has
+to check the "correct" lccode settings for each language at that time.
+
+
+But this will not solve the problem for standard TeX.  For TeX the
+current LaTeX approach is fine.
+
+
+-bernd
+

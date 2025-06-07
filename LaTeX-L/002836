@@ -1,0 +1,211 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7464" "Tue" "10" "November" "1998" "23:54:17" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "168" "Re: What is \"base\" LaTeX" "^Date:" nil nil "11" nil "What is \"base\" LaTeX" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id AAA14236;
+	Wed, 11 Nov 1998 00:05:23 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.6E2A2C3A@listserv.gmd.de>; Wed, 11 Nov 1998 0:05:18 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407033 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 11 Nov 1998 00:01:02 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (Ufrank@kralle.zdv.Uni-Mainz.DE
+          [134.93.8.158]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id XAA23939 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 10 Nov
+          1998 23:57:03 +0100 (MET)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA30661 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Tue, 10 Nov 1998 23:57:02
+          +0100 (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          XAA27547; Tue, 10 Nov 1998 23:54:17 +0100
+References: <199811061649.RAA18880@na6.mathematik.uni-tuebingen.de>
+            <13894.46384.268699.379786@srahtz>
+            <3646CC04.6171ADF1@na.uni-tuebingen.de>
+            <13894.53699.585814.765836@srahtz>
+            <3646DE15.11B3C148@na.uni-tuebingen.de>
+Message-ID:  <199811102254.XAA27547@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <3646DE15.11B3C148@na.uni-tuebingen.de>
+Date:         Tue, 10 Nov 1998 23:54:17 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: What is "base" LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2836
+
+i think that we have several problems here which to some extend
+pulling the ship into different directions; i think we first need to
+dis-tangle some of this a bit before it really makes sense to talk
+models (or even approaches)
+
+some claims:
+
+- one of the major driving forces of latex is not necessarily the
+  quality of its output but the exchangeability and portability of its
+  input while maintaining a reasonable quality output and (with the
+  necessary skill/knowledge (luck?)) being able to produce without too
+  much fuss really high quality output from a nearly unchanged source
+
+- by mid 1992 this was seriously in danger because too many kernel
+  dialects floated around, maintenance was poor and because of a few
+  other reasons. in essence by that time it was often impossible to
+  run even a moderately simple document at one site and expect it to
+  compile without errors somewhere else (let alone produce the same
+  visual document)
+
+- 2e was the try to bring that chaos back into some order and by the
+  same time introduce a number of enhancements (at one hand to help
+  promoting the new standard but at the other to provide a basis that
+  allow extensions which can peacefully live together (or at least
+  better than in the past)
+
+- i claim that we more or less actually achieved this, it is again
+  possible to exchange documents quite freely as long as they are
+  "clean and simple". Simple here goes a long way further than
+  original latex as defined by lamport, even though Marcel thinks (and
+  he is right) that it is still narrow (but it does cover graphics,
+  color, fonts especially ps fonts, input and output encoding,
+  language support (although i don't think that is where it should be
+  one day) math via amsmath and other stuff)
+
+- what hasn't been addressed at all (or only very very marginally) was
+  style or layout design --- [ by the way, anybody who knows my talk
+  given at Stanford 1990 or so about what is wrong with LaTeX 2.09
+  will see that what i said back then is actually overachieved already
+  with 2e --- so no need for anything like ltx3, is there? well don't
+  answer that now :-} ]
+
+- and neither has be front matter stuff been addressed unfortunately
+
+
+Marcel wrote
+
+> My basic claim is that base LaTeX is too narrowly defined, and
+> therefore causes a lot of the document exchange problems which seem
+> to occur frequently not only between author and publisher, but also
+> between different authors.
+
+well, as David explained, the core LaTeX is simply being defined of
+what we support personally plus some extensions like amsmath or psnfss
+for which we either have definite maintenance paths or thought we can
+support in addition.
+
+for this block of the core we provide very strict consistency checks
+and documents that used this stuff two years ago will run now and will
+do so in with the december release (will produce identical output) ---
+exceptions proving the rule.
+
+this stability is extremely important in the latex community, even
+upward compatible changes are considered bad by the majority of the
+users as we often had to find out because any such change means that
+some document only works if everybody uses version xyz dated... so
+portability goes down the drain. the need to be up-to-date if
+extensions are part of the game is far more accepted (ie getting a new
+package) but to be forced to change "the latex installation" is
+unfortunately something most people think is an unnecessary luxury
+since after all it does work.
+
+so ...
+
+i followed the discussion with interest and some amusement (sometimes)
+
+in my opinion the "core" whatever this is at a certain point in time
+can only be maintained by a cathedral solution, and staying with the
+picture, without much better arguments as those brought forward so
+far, i wouldn't give my blessing to anything else. but as Michael
+said, we do have the bazaar situation already in anything that appears
+in contrib (supported or other(wise)) and that is essentially what
+people feel which is the problem. the crux therefore seems to me how
+to make the "core" bigger ie move some of the bazaar stuff into the
+cathedral in an acceptable way
+
+second, the linux example is a red herring. its development and
+implementation model works because it doesn't effect peoples use of
+the system as it is the single system that is effected if you upgrade
+your linux (but your ip protocol stays the same it is still tcpic if
+not the linux model would die too); with latex the situation is that
+the "system" is not the single latex installation but the combination
+of all those latex systems out there that you like to communicate
+with.
+
+===================================================================
+
+so ...
+
+i do see some good reasons for extending the "core" distribution but
+it would require new maintenance and support models and it would need
+somewhat conservative people that understand why it can be dangerous
+to fix the spacing in article.cls (even though we all know that
+design-wise it is mostly rubbish)
+
+all such extensions and new ideas are great and producing code that
+works better is fine and those people who know me know that my name is
+attached to a few extentions that have finally ended up being in
+standard use --- but with my background in TeX programming i can only
+say that it is very hard and difficult to try keeping the bigger
+picture in mind when taking out the knife to make things better. this
+is all fine if you write your own package class or whatever to serve
+your private writing style but it is a very different situation if you
+try to maintain a world wide distributed system which is supposed to
+be portable world wide.
+
+====================================================================
+
+so ...
+
+what i would ask for an extended "core" distribution is (as a minimum)
+
+- stability within the distribution, ie all packages would need to
+  work with each other in any legal combination
+
+- source stability between distributions, eg at least 98% of the
+  documents should work without problems and without changes to the
+  result in a suitable large number of different maintenance releases
+
+- clearly defined and supported maintenance cycles such as the core
+  LaTeX nowadays has (they may be longer, eg a year, but one should
+  not go back to the old days of 2.09 maintenance which was applied
+  whenever it was raining in California)
+
+- a maintenance method that supports this core distribution, the
+  current method using latexbug and ending up on the screen of ltx3
+  project people can't be the way from that point on
+
+====================================================================
+
+so ...
+
+in my mind this would mean a lot of volunteer work and a lot of good
+ideas how to actually set something like this up. perhaps both is
+possible but it is not enough to draw a recommended list (even though
+this would need to be at the start of it) it needs more
+
+taken the above it would need
+
+- standard installation concepts (and thus reimplementation at least
+  of the setup)
+
+- standard integration into a regression test concept (see recent tub
+  article by me and David on this for the current core)
+
+- a support structure and people how fill it with life
+
+- interface documentation (and probably development) for those parts
+  which are not yet clearly defined
+
+- ...
+
+good night
+
+frank
+
+ps i should have said something of the about aspects as promised in
+  the beginning but i'm too tired --- perhaps tomorrow
+

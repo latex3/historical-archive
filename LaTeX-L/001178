@@ -1,0 +1,65 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1502" "Wed" "24" "November" "93" "11:29:04" "+0100" "Anselm Lingnau" "lingnau@MATH.UNI-FRANKFURT.DE" nil "35" "Re: \\em and italic correction" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09793; Wed, 24 Nov 93 11:41:52 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA25375; Wed, 24 Nov 93 11:41:45 +0100
+Message-Id: <9311241041.AA25375@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1404; Wed, 24 Nov 93 11:40:02 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2159;
+ Wed, 24 Nov 93 11:39:38 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2156;
+ Wed, 24 Nov 93 11:39:34 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  (Your message of Wed,
+              24 Nov 93 11:01:58 EST.)
+              <9311241018.AA30454@gauss.math.uni-frankfurt.de>
+Date:         Wed, 24 Nov 93 11:29:04 +0100
+From: Anselm Lingnau <lingnau@MATH.UNI-FRANKFURT.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: \em and italic correction
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1178
+
+
+
+Thus quoth Werenfried Spit <SPIT@VM.CI.UV.ES>:
+
+> I do not really know myself how difficult or expensive it would
+> be to give \em  the power to include an italic correction at
+> the end. An italic correction at its begin is easy, of course.)
+
+As far as the end is concerned, it's easy to make an \em that peeks ahead to
+see whether the next character is a comma or period and omits the italic
+correction in that case. At least, this is the rationale I use when typing
+stuff by hand. I've casually looked at the \emph{...} that comes with NFSS2
+and it seems to me that it puts the italic correction in no matter what.
+
+For a friend, I've written something like
+
+	\catcode`\^^S=\active \catcode`\^^T=\active
+	\def^^S{\bgroup\em}
+	\def^^T{\futurelet\@next\ee@close}
+	\def\ee@close{\relax\if\@next,\else\if\@next.%
+	  \else\/\fi\fi\egroup}
+
+(in the TeX we use, ^^S and ^^T are the TeX versions of the `french quotes' in
+the character set), so he could write <<emphasized>> (where the quotes are
+actually one character each). A solution without special characters might use
+\aftergroup to do basically the same thing.
+
+I'll leave the italic-correction-at-the-beginning bit to Werenfried (if he
+says it's easy), since I haven't thought about that yet and don't have the
+time to play around with it just now. Maybe somebody else has?
+
+Anselm
+---
+Anselm Lingnau .................................. lingnau@math.uni-frankfurt.de
+Now let me explain why this makes intuitive sense.    --- Prof. Larry Wasserman
+

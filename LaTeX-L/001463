@@ -1,0 +1,63 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["814" "Tue" " 8" "February" "1994" "14:08:55" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" "<199402081412.AA16552@mail.cs.tu-berlin.de>" "30" "Re: A philosophical question about packages and options" "^Date:" nil nil "2" "1994020814:08:55" "A philosophical question about packages and options" nil "<9402081336.AA03919@m1.cs.man.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08538; Tue, 8 Feb 94 15:15:25 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA18304; Tue, 8 Feb 94 15:12:51 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA16552
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 15:12:45 +0100
+Message-Id: <199402081412.AA16552@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6719; Tue, 08 Feb 94 15:12:33 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6718; Tue,
+ 8 Feb 1994 15:12:32 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2672; Tue,
+ 8 Feb 1994 15:11:22 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9402081336.AA03919@m1.cs.man.ac.uk> (message from Mike Piff on
+              Tue, 8 Feb 1994 12:41:43 LCL)
+Date:         Tue, 8 Feb 1994 14:08:55 GMT
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: A philosophical question about packages and options
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1463
+
+Mike> \usepackage[mjplet]{somas}
+Mike> where mjplet is an option that modifies the behaviour of somas.
+Mike> However, presumably I can't do that
+
+Despite some reports to the contrary, the LaTeX3 team are not trying
+to stop you doing anything:-)
+
+somas.sty
+can look like this
+
+\DeclareOption{no-logo}{code to suppress PS dept log}
+\DeclareOption{someoption}{code to do something}
+...
+...
+\DeclareOption*{%
+  \InputIfFileExists{\CurrentOption.pls}%
+  {}% input the Personal  Letter Style dont do anything else
+  {\@unknownoptionerror}% If a .pls file is not there, complain
+  }
+
+Then each person can put their personal customisations in a file
+name.pls
+
+and \usepackage[name]{somas}
+works as requested.
+
+Actually it might be better to make somas into a class rather than a
+package (it can \LoadClass{letter})
+
+David
+

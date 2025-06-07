@@ -1,0 +1,99 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 10 Aug 2009 21:23:44 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7AJNjgg028575
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 10 Aug 2009 21:23:45 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7AJJQsg012317
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 10 Aug 2009 21:19:26 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7AG7s2L014993;
+	Mon, 10 Aug 2009 21:19:18 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 299883 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 10 Aug
+          2009 21:19:18 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7AJJI3j029804 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 10 Aug 2009 21:19:18 +0200
+Received: from mordell.elzevir.fr (mordell.elzevir.fr [92.243.3.74]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7AJJ4sX004460
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 10 Aug 2009 21:19:07
+          +0200
+Received: from roth.elzevir.fr (thue.elzevir.fr [88.165.216.11]) by
+          mordell.elzevir.fr (Postfix) with ESMTPS id C4D6935ECB for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 10 Aug 2009 21:19:03 +0200
+          (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by roth.elzevir.fr (Postfix)
+          with ESMTP id CF2B2BFEB for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 10 Aug 2009 21:19:02 +0200 (CEST)
+User-Agent: Mozilla-Thunderbird 2.0.0.19 (X11/20090103)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>
+X-Enigmail-Version: 0.95.0
+OpenPGP: url=http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x50A89B42
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4A8072A6.9080005@elzevir.fr>
+Date:         Mon, 10 Aug 2009 21:19:02 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Manuel_P=E9gouri=E9-Gonnard?= <mpg@ELZEVIR.FR>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A7921CF.5020803@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Aug 2009 19:23:44.0154 (UTC) FILETIME=[13625FA0:01CA19F0]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5866
+
+Joseph Wright a écrit :
+> As promised yesterday, I'd like to discuss finalising xparse. There are
+> two parts to this e-mail: first, a description of xparse for those
+> people who are not familiar with it, then in the second part my
+> conclusions based on earlier discussion and reading the code.
+> 
+I'd like to ask about one point, that was maybe discussed earlier: if so, please
+excuse me for not reading the archives first.
+
+Some argument specifiers imply peeking at the next token, using
+\peek_meaning_remove:NTF (or maybe charcode in the future, but anyway the
+unexpandable \peek_token_remove_generic_NTF at some point).
+
+The point is that peeking doesn't work purely by expansion, and it will
+sometimes cause problems. A not-so-unfrequently-asked-question is about command
+with an optional argument trying to call \multicolumn in a table, ending with
+"misplaced \omit" error.
+
+In the 2e world, people have proposed variants of \@ifnextchar "working" purely
+by expansion: there is at least xoptarg by Josselin Noirel and more recently
+\FE@testopt and \FE@ifstar in Florent Chevret's etextools. Of course those are
+not perfect and have their limitations, but those packages probably show there
+is an interest for such tests. (I've been using xoptarg in a few personal macros
+myself, and already considered implementing similar functionnality in xargs (but
+didn't have to come to a decision, since I'm not working on xargs atm)).
+
+So, my question is: do you think it's worth proposing such a feature in xparse?
+Of course it would be optional (eg, accessed using a modifier before the
+argument specifier invloving peeking ahead) and the limitations of this approach
+should be properly documented (unlike xoptarg).
+
+It would be quite a relief for authors wanting to define their personal macros
+to be used in tabs, but not wanting (or even able to) handle all the
+testing/argument-shuffling involved in writing the argument parser themselves.
+
+Manuel.
+

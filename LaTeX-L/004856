@@ -1,0 +1,116 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Sun, 17 Apr 2005 12:31:51 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j3HAVnqc021878
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 17 Apr 2005 12:31:49 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j3HARttL024276;
+	Sun, 17 Apr 2005 12:27:55 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j3GM1B1c022803;
+	Sun, 17 Apr 2005 12:25:54 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 211172 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 17 Apr 2005 12:25:50 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j3HAPorw006130 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr 2005 12:25:50 +0200
+Received: from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j3HARLfK026637 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr
+          2005 12:27:22 +0200 (MET DST)
+Received: from localhost ([127.0.0.1] helo=localhost.localdomain) by
+          fencepost.gnu.org with esmtp (Exim 4.34) id 1DN6y1-0004GD-E0 for
+          LATEX-L@listserv.uni-heidelberg.de; Sun, 17 Apr 2005 06:25:29 -0400
+References: <5.1.0.14.0.20050417104145.0247e860@pop3.web.de>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j3HAPorw006131
+Message-ID:  <85y8bhem3i.fsf@gnu.org>
+Date:         Sun, 17 Apr 2005 12:25:37 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Re: \output trick; Re: lineno.sty question
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <5.1.0.14.0.20050417104145.0247e860@pop3.web.de> (Uwe
+              =?utf-8?Q?L=C3=BCck's?= message of "Sun, 17 Apr 2005 11:14:47
+              +0200")
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 17 Apr 2005 10:31:51.0569 (UTC) FILETIME=[AAFA5810:01C54338]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4856
+
+Uwe Lück <uwe.lueck@WEB.DE> writes:
+
+> Dear Erik Luijten,
+>
+> At 01:00 16.04.05, Erik Luijten wrote:
+>>2. As a physicist, I frequently use the widely-used package "revtex". I
+>>found that this breaks lineno completely (both version 3 and version 4). I
+>>was wondering whether there is a chance that lineno.sty can be made
+>>compatible with revtex?
+>
+> This is due to a mistake in revtex's way of changing the output routine.
+> After a \newtoks\output, the new output routine invokes \the\output,
+> it should use a private string instead (\let\rev@output\output ...).
+> lineno.sty tries the same trick, but due to revtex's \the\output,
+> lineno's output routine is entirely ignored.
+>
+> This was pointed out by David Kastrup recently. I had made the
+> mistake myself, and so has lineno.sty done up to now. David Kastrup
+> called it a "standard mistake", I wondered who made it else, now
+> I find it funny to see another instance.
+
+Perhaps the most glaring instance: latex.ltx
+
+\let\frozen@everymath\everymath
+\let\frozen@everydisplay\everydisplay
+\newtoks\everymath
+\newtoks\everydisplay
+\frozen@everymath = {\check@mathfonts
+                     \the\everymath}
+\frozen@everydisplay = {\check@mathfonts
+                        \the\everydisplay}
+
+I have reported this as a bug several years ago, IIRC including
+examples of stuff that breaks because of this.
+
+I think it was more or less declined to fix this because of "bug
+compatibility".
+
+If you take a look at amsmath.sty, it sometimes uses \everymath and
+\everydisplay, sometimes \frozen@everymath and \frozen@everydisplay.
+The resulting code is rather opaque, and it is hard to imagine that it
+can be both correct and _recognizable_ as correct.
+
+All of this would be unnecessary if latex.ltx redirected the hooks in
+the proper manner described.
+
+> "Mistake" may be inappropriate, but David Kastrup's proposal is
+> a helpful convention.
+
+A programming practise that will break if anybody else will use it
+too, is a mistake.  Call it a violation of a programmer's
+"Kategorischer Imperativ".
+
+You can see that as a result amsmath.sty broke in several places, and
+a fragile pseudofix has been applied at those places that actually
+triggered a bug report up to now.
+
+I think "mistake" is quite appropriate to characterize such coding
+practices.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

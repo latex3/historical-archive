@@ -1,0 +1,93 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Fri, 25 Mar 2005 23:05:04 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j2PM51Ni005944
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 25 Mar 2005 23:05:02 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j2PM0xtL024408;
+	Fri, 25 Mar 2005 23:00:59 +0100 (MET)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j2PG2CdT013355;
+	Fri, 25 Mar 2005 22:58:58 +0100
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 187326 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 25 Mar 2005 22:58:58 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j2PLwvYd016932 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 25 Mar 2005 22:58:57 +0100
+Received: from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j2PM0TtL024316 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 25 Mar
+          2005 23:00:30 +0100 (MET)
+Received: from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org
+          with esmtp (Exim 4.34) id 1DEwq8-0007Li-Ay for
+          LATEX-L@listserv.uni-heidelberg.de; Fri, 25 Mar 2005 16:59:36 -0500
+References: <5.1.0.14.0.20050325194659.02471690@pop3.web.de>
+            <yfivf7fqyhl.fsf@triumf.ca>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j2PLwvYd016933
+Message-ID:  <x5sm2jwfnc.fsf@lola.goethe.zz>
+Date:         Fri, 25 Mar 2005 22:59:35 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Kastrup <dak@GNU.ORG>
+Subject: Re: \@reinserts
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <yfivf7fqyhl.fsf@triumf.ca> (Donald Arseneau's message of "Fri,
+              25 Mar 2005 12:09:10 -0800")
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 25 Mar 2005 22:05:05.0276 (UTC) FILETIME=[B3421BC0:01C53186]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4838
+
+Donald Arseneau <asnd@TRIUMF.CA> writes:
+
+> Uwe Lück <uwe.lueck@WEB.DE> writes:
+>
+>> No, sorry, it rather seems that the proposal in latex/3719 has
+>> little to do with my situation. Before I think about what to do
+>> with \@reinserts, I must find out how \holdinginserts>0 affects the
+>> \footins box.
+>
+> Triggering the output routine with \holdinginserts>0 means
+> *nothing* is put in the footins box. If you ship out the
+> page contents, the inserts are lost.
+>
+> It is tricky to program.  The one thing it works for is
+> recycling the page through the output routine (without
+> \@reinserts).
+>
+> The output triggering has to be rewritten to usually keep
+> \holdinginserts=1,
+
+If you are hooking into the output routine, it might make sense to
+have \holdinginserts=10035 (or so), some special output penalty
+associated with the output routine hook.  That convention leaves one
+less possibility for collision if ids.
+
+> until a page is ready to ship out (normal output), then temporarily
+> set \holdinginserts=0 and recycle the page contents (\unvbox255
+> etc).  Then the next invocation of the output routine can ship out
+> the page.  That's what the answer in 3719 appears to do.  What is
+> wrong with it?  I see a misuse of \outputpenalty, which may be the
+> only problem.
+>
+> This probably doesn't belong on this list, so email me.
+
+Guffaw.  Output routine design details in connection with LaTeX don't
+belong on the LaTeX-L list?
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+

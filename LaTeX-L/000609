@@ -1,0 +1,638 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.9EDBA364@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:29 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.9EDBA364"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      {1} Size options (and \documentstyle syntax)
+Date: Wed, 4 Mar 1992 17:13:13 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE94F@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@VME.NOTT.AC.UK>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Multiple recipients of" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 609
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.9EDBA364
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+This a comment about the message from R. Bernstein =
+(rocky@watson.ibm.com)
+about "Why isn't \documentstyle[10pt]{article} allowed?".
+
+                                   GOALS
+
+Is the following goal attainable?
+  "Style-files that will deliver good/valid designs:
+   * for all permutations of 9pt, 10pt, 11pt, 12pt with/without =
+twocolumn
+   * on A4 (or similar) paper without any crop marks that indicate
+     the size of paper for which the design is intended."
+
+I'm not sure that it is.  9pt and 10pt single-column designs won't =
+usually
+be appropriate for A4 paper.  So what should the style-file do: put
+crop-marks to indicate the paper-size for which the single-column design =
+is
+intended, or switch to twocolumn and give an appropriate design for A4?
+
+I suspect that the
+\documentstyle[pointsize]{mainstyle} syntax may make people =
+over-confident
+that they'll get something reasonable out when in fact the goal is not
+attainable (or could only be attained in a messy way, e.g. by trying to
+build intelligence into mainstyle.sty about when to put crop marks
+and/or when to switch to double-column).
+
+                      PUBLISHERS' AUTHOR-SUPPORT KIT
+
+The conventions for electronic submission of manuscripts to "real
+publishers" seem in their infancy, so there isn't much evidence to go on
+about what is appropriate.  From what evidence I can see (a browse =
+through
+the style-files in the Aston archive, etc.), there may be a useful
+distinction between:
+*  the target design:
+   - at the recent UK meeting on "book and journal publishing", Geeti =
+Granger
+     of Wiley said that they have about 6 designs that they usually use
+   - I presume that the 9-point ISO style-file at Aston gives the target
+     design (i.e., the ISO house-style design)
+   - the AMS has style-files for in-house use when producing =
+journals/books
+   - the UK Institute of Physics has style-files for in-house use when
+     producing journals on B5
+   - US Physics people have style-files for use when producing their
+     publications with 10pt main text
+   - Formal Aspects of Computing is typeset with non-CMR fonts.
+   - I think Nico once mentioned people printing "too big", ready for
+     photoreduction. In such cases, the "too big" design would be =
+LaTeX's
+     target.
+*  the design used by the author for proofreading:
+   - I don't know what Wiley's authors would use for proofreading (but
+     they'd probably find laserprinted 10pt a bit hard going)
+   - I presume that the 10-point ISO style-file at Aston gives a
+     design that is easier to read when laserprinted (for proofreading)
+     than the final ISO house-style will be
+   - the AMS supplies "preprint styles" for authors to use while =
+developing
+     their papers.
+   - the UK Institute of Physics supplies a preprint style-file that
+     gives output scaled up for A4 (i.e., they go \magnification=3D1200,
+     so as to give a page-width of "width of journal page" x 1.2).
+   - US Physics people have preprint styles that use 12pt for the main =
+text
+   - there's a style-file at Aston that "Formal Aspects of Computing" =
+authors
+     can use while drafting their papers.  It uses the CMR fonts.
+   [Maybe proofreading is the wrong word.  That's what was done when =
+people
+   had to check typeset galleys against the typewritten original.  Maybe
+   we're talking about styles that will suit the author while drafting
+   the text, and/or will suit the publisher while copy-editing.]
+
+Thus, there seems to be a "target style", which the publisher will use =
+for
+final typesetting, plus an author/copy-editor support style which will =
+be
+used on a laserprinter, with A4 paper, for scrutiny prior to final
+typesetting.  A syntax that had things like
+   \documentstyle[draft]{targetdesign}
+or
+   \documentstyle[copy-edit]{targetdesign}
+or
+   \documentstyle[preprint]{targetdesign}
+might correspond better to such realities (where the effect of the
+style-option would be to scale the target design up for A4 while leaving
+line-endings and page-breaks largely unchanged).
+
+                            DO-IT-YOURSELF-ERS
+
+That leaves us hackers who produce our own documents (or have to support
+computer-users who want to produce documents).
+
+Either these will be for publication (in which case the stuff above =
+about
+"publishers' support kit" applies) or they will be in-house =
+publications,
+such as reports, theses, etc.  Even for in-house publications, I doubt
+whether the goal of producing style-files that will deliver good/valid
+designs
+   * for all permutations of 9pt, 10pt, 11pt, 12pt with/without =
+twocolumn
+   * on A4 (or similar) paper without any crop marks that indicate
+     the size of paper for which the design is intended
+is attainable.  For A4 paper, one might have 11pt and 12pt variations of =
+a
+single-column design, or 9pt and 10pt variations of a double-column =
+design,
+but generally I'd guess that amateurs have a target design in mind just =
+like
+professional publishers.  (People submitting files to archives have gone
+through the motions of following the 2.09 precedents by supplying 10pt,
+11pt and 12pt style-options.  E.g., there's uct10.sty to go with
+ucthesis.sty.  But I'd be surprised if \documentstyle[10pt]{ucthesis},
+\documentstyle[11pt]{uctthesis} and \documentstyle[12pt]{ucthesis} all
+give theses that look like "well-designed books".)
+
+                                CONCLUSION
+
+Although it might be worth tidying up the way the LaTeX reads
+<pointsize>.sty option files internally, I'd be inclined to give less
+emphasis in LaTeX 3.0 to the \documentstyle[pointsize]{...} =
+user-interface
+than it had at LaTeX 2.09.  It might be better to think in terms of
+something like \documentstyle[draft]{targetdesign} while providing
+sufficient variety of targetdesign.sty files to give hackers somewhere =
+to
+start (e.g., 11pt or 12pt single-column for A4, 10pt single-column for =
+B5,
+9pt or 10pt double-column for A4).
+
+More radically, do we need to ensure a clear distinction between:
+*  the structure that a style-file supports (i.e., in SGML terms, the
+   document-type declaration)
+*  the physical layout given to that structure by a particular =
+house-style.
+Things like \documentstyle{book} lead to misunderstandings because =
+"book" is
+* both a definition of the structures supported by the "book DTD"
+* and a particular typographic design for typesetting those structures.
+
+Do we need to move to something like
+   \mapping{structure}{design}[design-options]
+where one might conceive of things like
+*  \mapping{BK-1}{AMSmonograph}[draft], for when the AMS wants to
+   take something that has a BK-1 structure (as defined by the AAP's =
+SGML-ers),
+   wants the final design to be in "AMS monograph" house-style, but =
+wants to
+   provide an "author-support kit" that enables the author to simulate =
+the
+   "AMS monograph" on their laserprinter with CMR fonts and A4 paper.
+*  \mapping{BK-1}{AMSmonograph}[copy-edit], for the next stage, where =
+the
+   copy-editor wants some scribbling space
+*  \mapping{BK-1}{tugboat-article} being immediately recognised as a
+   mismatch between structure and design
+*  \mapping{BK-1}{default}, to produce output on A4 paper just to permit
+   publisher-independent formatting (e.g., for e-mailing stuff around =
+the
+   world), but without any pretence that it is suitable for any binding
+   and publishing (and no "design options", i.e., main text in [say]
+   11 point just to give "something OK on A4" without any support for
+   9, 10 or 12 point [or twocolumn] variations).
+*  publishers having the option of arranging that
+   \mapping{BK-1}{targetdesign}[draft] has the same effect as
+   \mapping{BK-1}{default} if they don't want to be bothered providing
+   their authors with their own publisher-dependent preprint styles
+*  \mapping{book}{book}[11pt], to give "the LaTeX book structure" =
+typeset
+   according to "the LaTeX book design" with the 11pt "design option".
+
+                                 ---------
+
+David Rhead
+d.rhead@uk.ac.nottingham.ccc.vme
+
+
+------_=_NextPart_001_01C19443.9EDBA364
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     {1} Size options (and \documentstyle syntax)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>This a comment about the message from R. Bernstein =
+(rocky@watson.ibm.com)</FONT>
+
+<BR><FONT SIZE=3D2>about &quot;Why isn't \documentstyle[10pt]{article} =
+allowed?&quot;.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+GOALS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Is the following goal attainable?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &quot;Style-files that will deliver good/valid =
+designs:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; * for all permutations of 9pt, 10pt, =
+11pt, 12pt with/without twocolumn</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; * on A4 (or similar) paper without any =
+crop marks that indicate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the size of paper for which =
+the design is intended.&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'm not sure that it is.&nbsp; 9pt and 10pt =
+single-column designs won't usually</FONT>
+
+<BR><FONT SIZE=3D2>be appropriate for A4 paper.&nbsp; So what should the =
+style-file do: put</FONT>
+
+<BR><FONT SIZE=3D2>crop-marks to indicate the paper-size for which the =
+single-column design is</FONT>
+
+<BR><FONT SIZE=3D2>intended, or switch to twocolumn and give an =
+appropriate design for A4?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I suspect that the</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[pointsize]{mainstyle} syntax may make =
+people over-confident</FONT>
+
+<BR><FONT SIZE=3D2>that they'll get something reasonable out when in =
+fact the goal is not</FONT>
+
+<BR><FONT SIZE=3D2>attainable (or could only be attained in a messy way, =
+e.g. by trying to</FONT>
+
+<BR><FONT SIZE=3D2>build intelligence into mainstyle.sty about when to =
+put crop marks</FONT>
+
+<BR><FONT SIZE=3D2>and/or when to switch to double-column).</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+PUBLISHERS' AUTHOR-SUPPORT KIT</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The conventions for electronic submission of =
+manuscripts to &quot;real</FONT>
+
+<BR><FONT SIZE=3D2>publishers&quot; seem in their infancy, so there =
+isn't much evidence to go on</FONT>
+
+<BR><FONT SIZE=3D2>about what is appropriate.&nbsp; From what evidence I =
+can see (a browse through</FONT>
+
+<BR><FONT SIZE=3D2>the style-files in the Aston archive, etc.), there =
+may be a useful</FONT>
+
+<BR><FONT SIZE=3D2>distinction between:</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; the target design:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - at the recent UK meeting on &quot;book =
+and journal publishing&quot;, Geeti Granger</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of Wiley said that they have =
+about 6 designs that they usually use</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - I presume that the 9-point ISO =
+style-file at Aston gives the target</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; design (i.e., the ISO =
+house-style design)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - the AMS has style-files for in-house =
+use when producing journals/books</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - the UK Institute of Physics has =
+style-files for in-house use when</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; producing journals on =
+B5</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - US Physics people have style-files for =
+use when producing their</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; publications with 10pt main =
+text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - Formal Aspects of Computing is typeset =
+with non-CMR fonts.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - I think Nico once mentioned people =
+printing &quot;too big&quot;, ready for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; photoreduction. In such =
+cases, the &quot;too big&quot; design would be LaTeX's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; target.</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; the design used by the author for =
+proofreading:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - I don't know what Wiley's authors =
+would use for proofreading (but</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; they'd probably find =
+laserprinted 10pt a bit hard going)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - I presume that the 10-point ISO =
+style-file at Aston gives a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; design that is easier to =
+read when laserprinted (for proofreading)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; than the final ISO =
+house-style will be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - the AMS supplies &quot;preprint =
+styles&quot; for authors to use while developing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; their papers.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - the UK Institute of Physics supplies a =
+preprint style-file that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; gives output scaled up for =
+A4 (i.e., they go \magnification=3D1200,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; so as to give a page-width =
+of &quot;width of journal page&quot; x 1.2).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - US Physics people have preprint styles =
+that use 12pt for the main text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - there's a style-file at Aston that =
+&quot;Formal Aspects of Computing&quot; authors</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; can use while drafting their =
+papers.&nbsp; It uses the CMR fonts.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; [Maybe proofreading is the wrong =
+word.&nbsp; That's what was done when people</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; had to check typeset galleys against the =
+typewritten original.&nbsp; Maybe</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; we're talking about styles that will =
+suit the author while drafting</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; the text, and/or will suit the publisher =
+while copy-editing.]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus, there seems to be a &quot;target style&quot;, =
+which the publisher will use for</FONT>
+
+<BR><FONT SIZE=3D2>final typesetting, plus an author/copy-editor support =
+style which will be</FONT>
+
+<BR><FONT SIZE=3D2>used on a laserprinter, with A4 paper, for scrutiny =
+prior to final</FONT>
+
+<BR><FONT SIZE=3D2>typesetting.&nbsp; A syntax that had things =
+like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\documentstyle[draft]{targetdesign}</FONT>
+
+<BR><FONT SIZE=3D2>or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\documentstyle[copy-edit]{targetdesign}</FONT>
+
+<BR><FONT SIZE=3D2>or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\documentstyle[preprint]{targetdesign}</FONT>
+
+<BR><FONT SIZE=3D2>might correspond better to such realities (where the =
+effect of the</FONT>
+
+<BR><FONT SIZE=3D2>style-option would be to scale the target design up =
+for A4 while leaving</FONT>
+
+<BR><FONT SIZE=3D2>line-endings and page-breaks largely =
+unchanged).</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; DO-IT-YOURSELF-ERS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That leaves us hackers who produce our own documents =
+(or have to support</FONT>
+
+<BR><FONT SIZE=3D2>computer-users who want to produce documents).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Either these will be for publication (in which case =
+the stuff above about</FONT>
+
+<BR><FONT SIZE=3D2>&quot;publishers' support kit&quot; applies) or they =
+will be in-house publications,</FONT>
+
+<BR><FONT SIZE=3D2>such as reports, theses, etc.&nbsp; Even for in-house =
+publications, I doubt</FONT>
+
+<BR><FONT SIZE=3D2>whether the goal of producing style-files that will =
+deliver good/valid</FONT>
+
+<BR><FONT SIZE=3D2>designs</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; * for all permutations of 9pt, 10pt, =
+11pt, 12pt with/without twocolumn</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; * on A4 (or similar) paper without any =
+crop marks that indicate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the size of paper for which =
+the design is intended</FONT>
+
+<BR><FONT SIZE=3D2>is attainable.&nbsp; For A4 paper, one might have =
+11pt and 12pt variations of a</FONT>
+
+<BR><FONT SIZE=3D2>single-column design, or 9pt and 10pt variations of a =
+double-column design,</FONT>
+
+<BR><FONT SIZE=3D2>but generally I'd guess that amateurs have a target =
+design in mind just like</FONT>
+
+<BR><FONT SIZE=3D2>professional publishers.&nbsp; (People submitting =
+files to archives have gone</FONT>
+
+<BR><FONT SIZE=3D2>through the motions of following the 2.09 precedents =
+by supplying 10pt,</FONT>
+
+<BR><FONT SIZE=3D2>11pt and 12pt style-options.&nbsp; E.g., there's =
+uct10.sty to go with</FONT>
+
+<BR><FONT SIZE=3D2>ucthesis.sty.&nbsp; But I'd be surprised if =
+\documentstyle[10pt]{ucthesis},</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[11pt]{uctthesis} and =
+\documentstyle[12pt]{ucthesis} all</FONT>
+
+<BR><FONT SIZE=3D2>give theses that look like &quot;well-designed =
+books&quot;.)</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONCLUSION</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although it might be worth tidying up the way the =
+LaTeX reads</FONT>
+
+<BR><FONT SIZE=3D2>&lt;pointsize&gt;.sty option files internally, I'd be =
+inclined to give less</FONT>
+
+<BR><FONT SIZE=3D2>emphasis in LaTeX 3.0 to the =
+\documentstyle[pointsize]{...} user-interface</FONT>
+
+<BR><FONT SIZE=3D2>than it had at LaTeX 2.09.&nbsp; It might be better =
+to think in terms of</FONT>
+
+<BR><FONT SIZE=3D2>something like \documentstyle[draft]{targetdesign} =
+while providing</FONT>
+
+<BR><FONT SIZE=3D2>sufficient variety of targetdesign.sty files to give =
+hackers somewhere to</FONT>
+
+<BR><FONT SIZE=3D2>start (e.g., 11pt or 12pt single-column for A4, 10pt =
+single-column for B5,</FONT>
+
+<BR><FONT SIZE=3D2>9pt or 10pt double-column for A4).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>More radically, do we need to ensure a clear =
+distinction between:</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; the structure that a style-file supports =
+(i.e., in SGML terms, the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; document-type declaration)</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; the physical layout given to that structure =
+by a particular house-style.</FONT>
+
+<BR><FONT SIZE=3D2>Things like \documentstyle{book} lead to =
+misunderstandings because &quot;book&quot; is</FONT>
+
+<BR><FONT SIZE=3D2>* both a definition of the structures supported by =
+the &quot;book DTD&quot;</FONT>
+
+<BR><FONT SIZE=3D2>* and a particular typographic design for typesetting =
+those structures.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Do we need to move to something like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\mapping{structure}{design}[design-options]</FONT>
+
+<BR><FONT SIZE=3D2>where one might conceive of things like</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; \mapping{BK-1}{AMSmonograph}[draft], for when =
+the AMS wants to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; take something that has a BK-1 structure =
+(as defined by the AAP's SGML-ers),</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; wants the final design to be in =
+&quot;AMS monograph&quot; house-style, but wants to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; provide an &quot;author-support =
+kit&quot; that enables the author to simulate the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; &quot;AMS monograph&quot; on their =
+laserprinter with CMR fonts and A4 paper.</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; \mapping{BK-1}{AMSmonograph}[copy-edit], for =
+the next stage, where the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; copy-editor wants some scribbling =
+space</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; \mapping{BK-1}{tugboat-article} being =
+immediately recognised as a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; mismatch between structure and =
+design</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; \mapping{BK-1}{default}, to produce output on =
+A4 paper just to permit</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; publisher-independent formatting (e.g., =
+for e-mailing stuff around the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; world), but without any pretence that it =
+is suitable for any binding</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; and publishing (and no &quot;design =
+options&quot;, i.e., main text in [say]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; 11 point just to give &quot;something OK =
+on A4&quot; without any support for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; 9, 10 or 12 point [or twocolumn] =
+variations).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; publishers having the option of arranging =
+that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \mapping{BK-1}{targetdesign}[draft] has =
+the same effect as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \mapping{BK-1}{default} if they don't =
+want to be bothered providing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; their authors with their own =
+publisher-dependent preprint styles</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; \mapping{book}{book}[11pt], to give &quot;the =
+LaTeX book structure&quot; typeset</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; according to &quot;the LaTeX book =
+design&quot; with the 11pt &quot;design option&quot;.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---------</FONT>
+</P>
+
+<P><FONT SIZE=3D2>David Rhead</FONT>
+
+<BR><FONT SIZE=3D2>d.rhead@uk.ac.nottingham.ccc.vme</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.9EDBA364--
+

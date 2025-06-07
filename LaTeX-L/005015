@@ -1,0 +1,70 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 11 May 2007 18:40:19 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l4BGeIm9016967
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 11 May 2007 18:40:18 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l4BGWUfI002633;
+	Fri, 11 May 2007 18:34:17 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 82189 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 11 May
+          2007 18:34:16 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l4BGYGKW004805 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 11 May 2007 18:34:16 +0200
+Received: from mx04.kabsi.at (mx04.kabsi.at [62.40.128.131]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l4BGY6GW004809
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 11 May 2007 18:34:10
+          +0200
+Received: from buckbeak.hogwarts (h081217001071.dyn.cm.kabsi.at [81.217.1.71])
+          by mx04.kabsi.at (8.13.8/8.13.8) with SMTP id l4BGY5OR010780 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 11 May 2007 18:34:05 +0200
+Received: by buckbeak.hogwarts (Postfix, from userid 1000) id E355B330047; Fri,
+          11 May 2007 18:34:03 +0200 (CEST)
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <87lkfvl3pg.fsf@buckbeak.hogwarts>
+Date:         Fri, 11 May 2007 18:34:03 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Andreas Matthias <amat@KABSI.AT>
+Subject: l3token: \char_set_mathcode:nn defined twice
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 11 May 2007 16:40:22.0241 (UTC) FILETIME=[116EA510:01C793EB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5015
+
+I think the second definition of \char_set_mathcode:nn should
+be a global one: \char_gset_mathcode:nn
+
+Ciao
+Andreas
+
+
+--- l3token.dtx.orig    2007-05-09 15:46:41.000000000 +0200
++++ l3token.dtx 2007-05-11 18:26:38.000000000 +0200
+@@ -807,7 +807,7 @@
+   \char_set_mathcode:w #1 = \int_eval:n{#2}
+ }
+ \def_protected_new:Npn \char_gset_mathcode:w {\pref_global:D\tex_mathcode:D}
+-\def_new:Npn \char_set_mathcode:nn #1#2{
++\def_new:Npn \char_gset_mathcode:nn #1#2{
+   \char_gset_mathcode:w #1 = \int_eval:n{#2}
+ }
+ \def_new:Npn \char_value_mathcode:w {\int_use:N\tex_mathcode:D}
+

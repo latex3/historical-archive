@@ -1,0 +1,145 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 13 Jan 2008 19:46:25 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m0DIkKNC007826
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 13 Jan 2008 19:46:20 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m0DIcMFD027071
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 13 Jan 2008 19:38:22 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m0CN1A9u002069;
+	Sun, 13 Jan 2008 19:41:10 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 264354 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 13 Jan
+          2008 19:41:10 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m0DIf9fL001462 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 13 Jan 2008 19:41:09 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m0DIc0nT026857 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 13 Jan 2008 19:38:05 +0100
+Received: from morse.mittelbach-online.de (p4FD44FF9.dip.t-dialin.net
+          [79.212.79.249]) by mrelayeu.kundenserver.de (node=mrelayeu4) with
+          ESMTP (Nemesis) id 0ML21M-1JE7lX3LwY-0005vl; Sun, 13 Jan 2008
+          19:41:04 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 01F7161E73; Sun, 13 Jan 2008 19:41:00 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX19gPqsGM2+gLadm9pnhetxl0sWA8wvo5b7Yx1c
+              nseJyqFUp8+nUYIWThtESscZ6v1CodR1Kq90b5FtqskbC7/siL
+              L+qTGIkzLrlFlZlUzW/BHNMhT+MtpOh
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18314.23356.700357.114633@morse.mittelbach-online.de>
+Date:         Sun, 13 Jan 2008 19:41:00 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Internal and external page setup control
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Jan 2008 18:46:26.0063 (UTC) FILETIME=[99DA89F0:01C85614]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5152
+
+I'm having a bit of trouble to find a good way to specify internal or external
+page setup control. In LaTeX2e this concept only exists in some rudimentary
+form, i.e., it is possible to influence that page style as far as running
+headings are concerned by placing a \pagestyle or \thispagestyle command in
+the source but that's about all that is available.
+
+Float placement is only controlled via individual float attributes (that is
+all pages offer the same areas to put floats in) and other changes to the
+page, e.g., one/two column, can only be made (if at all) by forcing a
+controlled page break first. 
+
+What I'm looking for for the new output routine is to be able to change, for
+example, the area specifications for the current or the following pages. The
+tricky part is: how should this be specified and when should it act? 
+
+If it works like \thispagestyle, i.e., is intended to act on the "current"
+page then this might result in the following problem: 
+
+    * Some such directive would be picked up when gathering material and would
+      change, say, which float areas are allowed on the current page. But then
+      adding floats to these areas the point with the directive might get
+      pushed out of the current page (since each float takes away space from
+      the galley). As a result all the placements done may no longer be
+      valid. 
+
+A possible (but probably bad) way out would be the following algorithm:
+
+   1. Do a dry run without floats to find out the maximum text material that
+   can go on the page. 
+   2. If this material contains such a page setup directive, change the page
+   setup to the new one. 
+   3. Start doing trial float placements (i.e., add one float after another)
+   using the new page setup. 
+   4. After each trial check if the point in the galley where the directive
+   was found is still on the current page. If not declare that float placement
+   invalid. 
+
+Thus this would end up with a page in the new page setup. However, it is most
+likely not a good approach at all since, it effectively means that we do not
+place floats just because we made a decision to use a new page setup. If we
+would have kept the old page setup we might have been able to place many more
+waiting floats (and this way pushing the page setup request to the next
+page). 
+
+There is another snag with the above algorithm: after having changed to a new
+page setup the galley space in the new setup might have changed (if page setup
+means more than just float areas, e.g., the vertical size of the columns might
+differ or the number of columns on the page might differ). Thus that means
+that after the second step the galley size might be smaller or larger thus the
+directive might already got pushed out (which would be bad since it means we
+have two instable states) or (nearly equally bad) we get more space in the
+galley and as a result hit a later directive requiring a different page
+setup. 
+
+So what would be the alternatives? Anybody any good suggestions? Here is one:
+
+    * Use the directives to always specify what should happen on the next not
+      on the current page. This way we could simply wait until we typeset the
+      final page and pick up the directives in the text at that point thus
+      knowing exactly what should happen with the next page. 
+
+One problem that I see with this one is that one isn't used to it,
+e.g. instead of \chapter{foo} =\thispagestyle{empty}= one would now have to
+say something like \nextpagestyle{empty} =\chapter{foo}=. Not being used to
+isn't in itself a problem (though it might be one for adoption by the
+users). But this also means that such directives can't be easily issues from
+within other commands, since in such a case the area of influence is the page
+on which the current point will finally end up and not the page after
+thereafter. Now with a command that itself starts a new page the command can
+push out the directive, then starts the new page, but if the command doesn't
+start a new page then directives can't be used. 
+
+Now I don't know how much of a problem this is (if any) but it is something
+that needs to be considered as it would be a restriction if this approach is
+used. 
+
+Any other suggestions how one could conceptually handle page control?
+
+cheers
+frank
+
+ps if you read down to here you will have noticed that this only dicusses
+internal page setup control not external ones, but the message was already too
+long and both parts need solving
+

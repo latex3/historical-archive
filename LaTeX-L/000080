@@ -1,0 +1,182 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Apr 90 16:00:49 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 80
+
+I like to respond to Michaels description about the enunciation
+environment he is planning for amsbook.sty and amsart.sty.
+First a few general remarks:
+
+I think it is very important that we find a syntax for things
+like theorem envs or enunciation or whatever you call them which
+is sufficent general to serve in a wide range of documents.
+This is one of the reasons for this list.
+It would be really bad if Michael is going to propose some syntax
+for use with the amsart.sty and we, later on, propose a different
+one.
+One of my main goals is to specify document classes, I called them
+meta styles in previous messages, and any incarnation of such
+a class should define exactly the same commands with the same syntax.
+This is the only way to achieve portability between document styles
+in the same class. I therefore hope that Michael is not going to
+implement things of this sort as long as there is no agreement.
+
+If the enunciation env. is implemented as a style option, i.e. usable
+with, let's say the siam document style, too, it would be okay, but
+his intention is, if I judge this correctly, to make it part of the
+document style, and therefore implicit part of the document class.
+
+This is not a judgment of his ideas, I only want to avoid producing
+standards through the back-door (as it often happens) by simply
+throwing it to the user and later on saying: sorry can't be changed
+is used too often.
+********
+Since I think this is a very important topic, I would urge you,
+if you could spare a few minutes, to write your opinion about it.
+********
+
+Now for some detailed answers to his last message.
+
+  ... They are based on the term `enunciation' rather
+  than `theorem' (\newenunciation instead of
+  \newtheorem, and so on) because the idea of `theorem'
+  doesn't seem general enough to encompass the whole
+  class of structures including examples, remarks,
+  notes, claims, etc. for which the macros are
+  designed.
+
+In German we would say names are `Schall und Rauch'.
+I accept that the name \newtheorem is probably missleading
+but I never saw any LaTeX user who had realy any problems with it.
+I don't intent to change the name for LaTeX version 2.10  because
+this would produce unnecessary compatibilty problems. But maybe you
+can convince me otherwise?
+For LaTeX 3.0 a rename is more apropiate.
+
+  I define an enunciation as a piece of text at least one
+  paragraph long that has a label (or `header') and ...
+
+Michaels definition correponds exactly to my understanding of
+theorem like environments and my implementation of an extended
+theorem env in TUB is very similar to his opinion how things should be
+handled. To make things clear I try to sumerize the differences
+between his and my syntax.
+
+
+1) enunciation styles:
+
+We both support the idea of having different classes of enunciations
+with different typographical treatement.
+
+1a) FMi uses three seperate  macros: \theoremstyle \theoremheaderfont
+and \theorembodyfont during definition to denote the treatement.
+MDo uses one optional argument.
+Advantage FMi: single users can define their wanted layout in a
+simple but easy changable way. The splitting of style and fonts
+keeps the number of predefined style low.
+Advantage MDo: his idea supports the document class idea better
+because the decision that a `remark' has to be formatted using
+....... is part of the style design and not a problem of the user.
+
+Personal remark: I don't like to fix everything in a style file
+because this means that one has to design a new style file for
+every change one like to have. The golden middle way seems to be
+better. It is no problem to say that files submitted four specific
+journals have to use style suchandsuch for remarks but this would
+allow the user to do differently at home (still using amsart)
+
+2) Special variants:
+
+FMi provides nothing, MDo provides star and colon form.
+Advantage MDo: the possibility for changing or removing the number
+is important.
+
+Personal remark: I don't think the : form is necessary. I had
+enough experience the mathematician using LaTeX  there was no
+confusion about the meaning of a star form. In LaTeX star means
+only this is a special variant, think of \\* figure* tabular* etc.
+I would also propose a different syntax for \newtheorem,
+namely using the starform to denote that this enunciation has
+also a star form, i.e. a variant where the number can be *left out*
+or changed.
+
+
+3) Extra enunciation env:
+
+Not handled by FMi.
+Again a very good and important idea.
+
+
+Summary:
+
+The main difference between both implementation is that I used
+descriptive names like `marginbreak' while Michael would like to
+say `remark class'. His class is the combination of one style of
+mine with a font.
+
+So I would propose one of the following syntax variants:
+
+\theoremstyle{<style>}
+\theorembodyfont{<font>}
+\newtheorem{<name>} ... as before but defining
+                        <name> and <name*> in case
+                        of \newtheorem*
+
+or
+
+\newtheorem:<style>|{<name>}... as proposed by Michael
+                                but with different meaning for *
+
+Usage in both cases:
+
+\begin{<name*>}{<extra or no number>}
+...
+
+\begin{<name>}  as before
+
+\begin{enunciation}{<style>}{<Label>}
+...
+\end{enunciation}
+
+
+(I don't like the enunciation env the way it is when the first
+  variant is used but otherwise it prefer the first one (since it's
+  coming from me))
+
+Greetings Frank
+
+
+P.S. *************************************************************
+     At the moment I got Victors mail:
+
+  (remark aside: Frank, the discussion on this list does feel
+  a bit strange. After all, we can discuss all we like, you are still
+  the sole implementor. Maybe if you give some more hints of
+  your decision processes that arguments will flow more freely.)
+
+I do not know how to handle the implementation at the moment but
+I have done big projects together with a few people. I believe that
+some of you can really help in the implementation if they like.
+Of course this can only work if I make final decisions, for example
+the font selection and the amstex.sty project was done by Rainer and
+me and most parts were done indepently of the other after discussing
+the syntax.
+At the moment I'm only interested in getting the syntax straight.
+Take for example the \section stuff. This dicussion stopped before
+a good syntax was found (and I will go back to this topic, believe
+me). Take the theorem topic discussed above. I hope that many of you
+will respond and give examples of different and/or better syntax
+if we find something were most of us agree on (and of course I'm
+satisfied with) then I would have no problem to ask let's say
+Michael to implement a test version (I have worked with him long
+enough to know his quality programming)
+
+Does this answer the question?
+
+

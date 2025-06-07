@@ -1,0 +1,140 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4649" "Sun" "15" "June" "1997" "13:37:42" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "99" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id LAA08972; Sun, 15 Jun 1997 11:39:54 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.4E1F7ACC@listserv.gmd.de>; Sun, 15 Jun 1997 11:39:53 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153445 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 11:39:48 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id LAA06682 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15 Jun 1997 11:39:39
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id NAA32493 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997
+          13:37:28 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id NAA00451 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Sun, 15 Jun 1997 13:37:42 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <Pine.GSO.3.96.970615082938.26008C-100000@uxp1.hrz.uni-dortmund.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A3B7E6.3C31A9D1@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 15 Jun 1997 13:37:42 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2044
+
+Hello,
+
+Werner Lemberg wrote:
+
+> > Because of this, it is possible, for example, to `combine' one
+> > of european languages (most offten English) and Russian language
+> > as a *one* `combined' language.
+>
+> `Combined' may be a solution for Russian but not for, say, Georgian.
+
+Yes, of course. It is one of possible configurations which
+can be used for e.g. russian+english documents (the case which
+is used very often).
+
+I meant the following: if somebody uses _only_ russian as a language
+with letters with codes > 0x80, then _why_ should he have in mind
+some `default' lccode+uccode settings for charactets > 0x80,
+especially if these settings conflict with the common russian encodings?
+IMHO in this case it is not too bad to allow to change lccodes+uccodes.
+
+At least, I think that LCY encoding which is currently used in LH
+fonts should be defined in Babel (among other cyrillic encodings encluding T2).
+And in this LCY encoding it is very useful to have russian letters
+to stay _real_ letters (not active chars). And therefore one needs
+to change lccode and uccode before switching to LCY (and restore
+the defaults before switching to another language).
+I'm finishing this work now.
+
+Moreover, do the _one_ default lccode+uccode settings conform to _all_
+languages (which are already TeXized)?
+
+> > Next, when somebody uses Russian language in his TeX document,
+> > very offten the other language(s) used in the same document
+> > will have the codes of it's letters below 128. So,
+> > why not to allow Babel to change lccodes for Russian
+> > in this case?
+>
+> Why not define a proper font encoding and using vf fonts if people are too
+> lazy to recompile the LH fonts with a proper font encoding?
+
+Ok, probably this will be the `final' solution, but here are also some problems.
+If we will have the TeX's internal encoding for _letters_ of some language
+different from the _native_ encoding(s) used in this language
+(i.e. encoding, which is used to typeset the documents in text editors,
+and which is built into screen fonts, etc.), then we will have to
+perform a translation from the language-native encoding into TeX's internal
+encoding. This can be done in different ways:
+1) do this transliteration `on the fly' by means of external tools
+   before sending text to TeX (and also before examiming TeX's logs).
+   This approach is not ideal, but it can be used.
+2) use TeX Code Pages (TCP). This has advantage because it is universal,
+   and lets us preserve catcodes of translated characters.
+   But TCP are not supported by all TeX implementations.
+3) declare all _letters_ of this language to be non-letters (!)
+   from the TeX's point of view -- i.e. declare them active characters.
+   But this approach has some disadvattages:
+   * letters are now `not letters' -- so it becomes impossible
+     to define and use macroses with names consisting of letters of this language.
+   * TeX log files become unreadable (because our fonts have encoding different
+     from TeX's internal encoding). So it becobes very tricky to work with TeX.
+     This, again, can be avoided by translating TeX log files `manually',
+     but this approach is not applicable to all users...
+   * there probably will be problems with aux, toc files and index files.
+     May be, I'm wrong?
+
+BTW, how one can make virtex (I use NTeX under Linux) or teTeX to
+show characters with codes above 0x80 as normal characters?
+In the case of emtex, it is possible to use options like `-o' and `-8'.
+But I didn't find the way to do this with virtex.
+
+> this third language must of course also follow the default \lccode and
+> \uccode values in the ASCII range. As long you don't have more than 256
+> characters in your alphabet (including punctuation marks) this IS
+> POSSIBLE!
+
+I did not catch what you meant. Do you mean that all cyrillic characters
+will not fit into T2 table, so there will be two tables?
+
+> [BTW, there is no `high half' of ASCII! ASCII is a 7bit encoding...]
+
+Yes, of course. :-) I did not find the proper word to say about the whole
+256-character table.
+
+> I've complete font encoding support for LH encoding with the `fil' option
+> at home. But I have decided not to publish them because of the problems
+> with other Cyrillic languages.
+
+IMHO it is better to publish them because unfortunately babel
+is currently not commonly used in Russia because of it's incopleteness
+(for russian language). And some other not very good hacks (for russification)
+are becoming a de facto standard. :-(
+
+> I want to change my own code to T2.
+
+BTW, do you have the new alpha version of LH fonts (with T2 encoding)?
+
+--
+With best regards,
+                   Vladimir.
+

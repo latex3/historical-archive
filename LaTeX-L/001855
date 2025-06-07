@@ -1,0 +1,145 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5274" "Mon" "3" "March" "1997" "19:23:47" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "109" "Re: Shortref mechanism" "^Date:" nil nil "3" nil "Shortref mechanism" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id TAA11100; Mon, 3 Mar 1997 19:22:27 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.B0A9B72C@listserv.gmd.de>; Mon, 3 Mar 1997 19:22:25 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108097 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 19:22:20 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id TAA17938 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 19:22:19 +0100
+          (MET)
+Received: from [130.237.37.145] (sl101.modempool.kth.se [130.237.37.127]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id TAA26650; Mon, 3 Mar 1997
+          19:22:01 +0100 (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130502af40bf1778b7@[130.237.37.145]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 3 Mar 1997 19:23:47 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1855
+
+"Randolph J. Herber" <herber@fnal.gov> wrote:
+
+>        Your following comments are not pertinent to my comments above.
+>
+>        You may feel that you are making up nomenclature to describe your
+>        proposed algorithms.  But, in fact, you are using nomenclature
+>        with already assigned meaning in the field of computer language
+>        processing.
+>
+>        Furthermore, you ``added insult to injury'' by deleting my
+>        provision of the proper nomenclature from the field of computer
+>        language processing that does pertain to your proposed changes
+>        to TeX's handling of its input, to wit:
+>
+>
+>                I believe that what you intended is the distinction of
+>                context free and context sensitive languages.  From
+>                what I have read in the TeX book, the tokenizer of TeX
+>                is context sensitive with a single character look-ahead
+>                and the TeX language based on the recognized tokens is
+>                context free.
+>
+>                It is a significant change in the behavior of the TeX
+>                language to change it from being context free to being
+>                context sensitive.  But, it may be a necessary change.
+>                Most modern computer languages are context sensitive
+>                with a single token look ahead.  A few look ahead two
+>                tokens in some situations.  I imagine that some look
+>                ahead three tokens.  Parser generators for single token
+>                look ahead readily are availed.
+>
+>                What you are proposing is a change from zero token look
+>                ahead to one token look ahead.
+>
+>        Please. would you use the proper nomenclature?
+>
+>        The pairing from your improper nomenclature to what I believe
+>        is the pertinent nomenclature for what you are attempting to
+>        discuss is:
+>
+>                deterministic           ==>             context free
+>                non-deterministic       ==>             context sensitive
+
+  This looks like a "flame". :-)
+
+  When I spoke about deterministic parsing versus non-deterministic
+parsing, that is what I meant.
+  The problem is simply that when you make a simple 1-lookhead parsing (=
+deterministic parsing), TeX strips out the brackets "{}", so you cannot
+pass the stuff to the next routine, when doing parsing in that generality
+(even though it is possible in special cases).
+  Therefore, a way, in TeX, to get around it, is to pick down a rather
+large argument, surely containing what you intend parse. Then you parse
+that stuff until something is going wrong. If something is going wrong,
+then you return to the original, unparsed argument, killing off whatever
+you have parsed so far. This is called non-deterministic parsing.
+
+  The best way of understanding these problems, is to sit down and write a
+parser in TeX. It is extremely difficult.
+
+>        My observations above pertain to all languages which have syntax.
+>        TeX is a language which has syntax.  Therefore, it is such a language.
+
+  TeX is not really a computer language, but a computer program, as matters
+stand right now, with severe memory limits. If you would want to
+demonstrate that TeX is a Turing machine, you would need to demonstrate
+that it can handle an infinite binary strip of paper. But if you do, then
+what? It has absolute no practical importance for any TeX macro package
+implementation.
+
+  I can note that even though it is possible to translate non-deterministic
+automatas into deterministic automatas, space of the latter may depend
+exponentially on the space of the former, making it not possible in
+practise.
+
+  And how should that be implemented in TeX?
+
+  The problem with writing parsers in TeX is that the information you need
+for the parsing cannot easily be extracted without being corrupted.
+
+
+>        Deciding whether TeX should have a context free or a context
+>        sensitive grammar is an appropriate topic for this forum.
+
+  This group does not discuss changes to TeX itself; try
+    NTS-L Distribution list <NTS-L@relay.urz.uni-heidelberg.de>
+which is project for developing a new TeX.
+
+>|  The third thing one must consider, is that a computer language is not
+>|only used to manipulate logical data, but logical data that has a semantic
+>|interpreation attached to it. Any logical transformation must keep track of
+>|that semantic interpretation, and this is related to the practicality
+>|question, I guess.
+>
+>        At the syntax level of language processing, the semantics do
+>        not pertain.  At the semantics level of language processing,
+>        semantics is the entire purpose of the processing.  Any
+>        compiler or interpreter that does any semantics processing
+>        must handle the semantics processing that is dictated by the
+>        specifications indicated by the semantics associated with
+>        the syntactical elements.
+
+  When I mentioned this, I was not thinking of "computer language
+semantics", but the semantics of the objects of the real world, which we
+use computers to describe.
+  Therefore, logically (Turing) equivalent computer languages react rather
+differently when interacting with the rest of the world. :-)
+
+  Hans Aberg
+

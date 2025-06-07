@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1286" "Thu" "30" "September" "1999" "14:59:46" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "32" "Re: xparse and end-users" "^Date:" nil nil "9" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id QAA31720
+	for <schoepf@UNI-MAINZ.DE>; Thu, 30 Sep 1999 16:03:14 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.C1AEB629@mail.listserv.gmd.de>; Thu, 30 Sep 1999 16:03:10 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445040 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 30 Sep 1999 16:01:48 +0200
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id QAA28651 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 30 Sep 1999 16:01:36 +0200 (MET
+          DST)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          OAA06004; Thu, 30 Sep 1999 14:59:46 +0100 (BST)
+References:  <199909301342.JAA23860@hilbert.math.albany.edu>
+Message-ID:  <199909301359.OAA06004@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199909301342.JAA23860@hilbert.math.albany.edu>
+              (hammond@CSC.ALBANY.EDU)
+Date:         Thu, 30 Sep 1999 14:59:46 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xparse and end-users
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3341
+
+> Since what is happening is that "foo" is being added to a namespace,
+> would it not be logical for the usage to be:
+
+> \DeclareDocumentCommand foo {...}{...}      ?
+
+
+You may want to describe it that way, but that isn't really the latex
+view. The latex view is that the name of the command is `\foo' not that
+\ is markup and the command is called `foo'. (What happens at the
+primitive TeX level is probably nearer the latter, but much of latex is
+concerned with hiding primitive tex notions with higher level
+constructs, so the implementation details are not really relevant here.)
+
+It would probably be
+
+\DeclareDocumentCommand {foo} {...}{...}
+                        ^   ^
+as otherwise the exact syntax for what is the `foo' argument appears to
+be somewhat under specified.
+
+but while some things (environments, pagestyles, ...) are referred to by
+name (with no backslash), commands are always referred to by name
+starting with \. There are no user level constructs that use both of
+these forms. (Internal macros such as \@ifundefined do switch between
+these views).
+
+In latex the `name' of the \mbox command is `\mbox'. The fact that
+if you go \catcode`j=0 then  jbox{this} also works as well as
+\mbox{this} is a technical detail that probably you don't want to
+highlight.
+
+David
+

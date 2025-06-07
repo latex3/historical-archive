@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1537" "Thu" "19" "June" "1997" "14:56:14" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "37" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA01422; Thu, 19 Jun 1997 14:52:12 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.D4329D2A@listserv.gmd.de>; Thu, 19 Jun 1997 14:52:10 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 155878 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 19 Jun 1997 14:52:02 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id OAA00811 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 19
+          Jun 1997 14:51:56 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Thu, 19 Jun 1997 14:51:48 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          OAA16559; Thu, 19 Jun 1997 14:56:15 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970619144154.16528A-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A84856.4C60C211@vvv.vsu.ru>
+Date:         Thu, 19 Jun 1997 14:56:14 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2113
+
+On Thu, 19 Jun 1997, Vladimir Volovich wrote:
+
+> I noticed two problems with using the `canonical' approach (with \DeclareInputText)
+> in the LCY encoding:
+> first, when I do not redefine \lccode and \uccode values, and use \inputenc,
+> then all seems Ok, because russian letters become active characters after
+> the line \usepackage[...]{inputenc}. But if I do not use inputenc, then
+> russian letters are not active, -- and I get incorrect results in \MakeUppercase
+> (as well as \uppercase).
+
+Well, this is an unfurtunate consequence of this approach. If you have,
+say, \CYRA for the Cyrillic A declared with \DeclareTextSymbol, then you
+must either use \CYRA in your text, or you define an input encoding which
+maps this macro to an active character (via \DeclareInputText).
+
+There are no other choices.
+
+But tell me a reason why you want to omit inputenc?
+
+> Second, I ran a LaTeX file which contained
+> \setbox0=\hbox{...}                 % Here ... mean all (33) *uppercase* russian letters
+> \showbox0
+> \setbox0=\hbox{\MakeUppercase{...}} % Here ... mean all (33) *lowercase* russian letters
+> \showbox0
+>
+> I expected to get the same results for these two \showbox commands.
+> However, all kernings between letters disappeared in the second box. :-(
+> I've got in a transcript file:
+
+This info isn't enough to really check it. You must make sure that only
+expansion of macros take place---not a single other token may occur,
+otherwise kerning disappears.
+
+Send a log file (for only _two_ letters with kerning :-).
+
+
+    Werner
+

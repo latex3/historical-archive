@@ -1,0 +1,120 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3269" "Sat" "21" "June" "1997" "01:03:03" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "73" "Re: [Bug Report] Problem with INPUTENC package and TOC files." "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA06550; Fri, 20 Jun 1997 23:13:12 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.06C1D2F0@listserv.gmd.de>; Fri, 20 Jun 1997 23:06:19 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 157016 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 23:04:47 +0200
+Received: from cc.vsu.ru (root@VSU-Relarn.Relarn.ru [194.226.29.62]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id XAA20609 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 20 Jun 1997 23:04:42
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id BAA17343 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 21 Jun 1997
+          01:03:27 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id BAA00585 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Sat, 21 Jun 1997 01:03:04 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <m0wdxiT-000OVnC@dcarlisle.demon.co.uk>
+            <199706181237.MAA00063@ew160061.nets.de.eds.com>
+            <199706191620.RAA07046@fell.open.ac.uk>
+            <33A97714.34BAB20B@vvv.vsu.ru>
+            <199706200736.JAA07288@perdita.zdv.Uni-Mainz.de>
+            <33AA7A81.6F1137F1@vvv.vsu.ru>
+            <199706201304.PAA08599@perdita.zdv.Uni-Mainz.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33AAF007.12526594@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 21 Jun 1997 01:03:03 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: [Bug Report] Problem with INPUTENC package and TOC files.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2146
+
+Hello,
+
+Rainer Schoepf wrote:
+
+>  > Is it *stated* somewhere in documentation that one cannot use primitive TeX commands
+>  > (and syntax) in a LaTeX files? ;-)
+>
+> No, but you were asking what are the correct LaTeX commands. See
+> Appendix E of the LaTeXbook.
+
+Ok, I agree that there are some `standard' LaTeX commands, which are
+`recommended for use'. But since the only 100% correct interpreter
+of LaTeX files is TeX, then, in principle, all TeX commands
+are valid (and they are also LaTeX commands by definition---since LaTeX
+is able to parse them). Yes, the use of some TeX constructs can seriously
+hamper parsing of LaTeX source files by `third party' parsers,
+and because of that one should use `undocumented' LaTeX commands
+only inspecial cases.
+
+>  > > TeX has a syntax? New concept.... :-)
+>  >
+>  > Of course, it has. :-) If not, than how can one get LaTeX to have syntax?
+>
+> By the very same argument, the ASCII code table has syntax, since you
+> can build Pascal, C, C++,... out of it. That's a red herring.
+
+I can't agree with this. :-)
+There are obvious distinctions between these situations:
+* first, let's sepatate TeX as a parser (interpreter) and TeX as a language
+  (BTW, it's *syntax* could be expressed in terms of LR(1) grammars).
+* ASCII code table is not a (programming) language, because there is no obvious
+  parser, for which the set of all ASCII letters would be the set of tokens.
+  Since ASCII is not a progr. language, it is nonsensial to talk about
+  it's syntax, semantics, et al. All progr. languages are based on ASCII table --
+  but they use it only to construct their tokens. The same is TeX.
+* But TeX-language *is* a language---it has syntax, because
+  those constructs which will not conform to this syntax, will cause
+  TeX-parser to produce an error message.
+* Many other progr. languages are also able to dynamically change it's
+  `syntax rules' and semantics---e.g. via macro substitutions it is possible
+  to cause C or C++ to behave very strangely. ;-)
+  But these are not `real' (low level) syntax rules.
+  The same situation we have in the case of TeX---it also has macro capabilities
+  (although much more powerful then, say, in C).
+  But TeX's `low level' syntax rules may act on different levels of macro substitution.
+* LaTeX is written in TeX-language, so it has the same syntax power as TeX.
+* Give your definition of syntax---and I'll either prove that TeX has syntax, or
+  prove that LaTeX does not have one. ;-)
+
+> TeX input has a lexical structure that is determined dynamically during
+> the run, plus a macro language that doesn't have any syntax beyond the
+> notion of (token,catcode) pairs.
+
+And what about e.g. syntax rules for determining arguments of macros?
+What about all those syntax rules describing TeX's notions (numbers,
+syntax of \haligh construct, etc, etc), which are so pedantically written
+in the TeXbook? ;-)
+
+Catcodes in TeX are means to dynamically change it's `high level' syntax
+(visible at the level of ASCII table ;-) ) and semantics.
+
+> Not even brace tokens are proper
+> syntactical elements, as the famous
+>
+>   \ifnum0=`{\fi
+>
+> example shows.
+
+IMHO this example is in complete correspondence with TeX's syntax *and* semantics.
+
+--
+With best regards,
+                   Vladimir.
+

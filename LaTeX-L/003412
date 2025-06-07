@@ -1,0 +1,124 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3459" "Tue" "16" "November" "1999" "10:26:42" "+0100" "Denis B. Roegel" "Denis.Roegel@LORIA.FR" nil "79" "Re: babel 3.7 beta release" "^Date:" nil nil "11" nil "babel 3.7 beta release" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id KAA08974
+	for <schoepf@UNI-MAINZ.DE>; Tue, 16 Nov 1999 10:27:07 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.8D539764@mail.listserv.gmd.de>; Tue, 16 Nov 1999 10:26:48 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445521 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 16 Nov 1999 10:26:31 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id KAA17115 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov
+          1999 10:26:29 +0100 (MET)
+Received: from lorraine.loria.fr (lorraine.loria.fr [152.81.1.17]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id KAA29365 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 16 Nov 1999 10:26:47 +0100 (MET)
+Received: from bar.loria.fr (bar.loria.fr [152.81.2.13]) by lorraine.loria.fr
+          (8.9.3/8.9.3/8.9.3/JCG-DG) with ESMTP id KAA11148; Tue, 16 Nov 1999
+          10:26:43 +0100 (MET)
+Received: (from roegel@localhost) by bar.loria.fr
+          (8.9.3/8.9.3/8.9.3-client/JCG) id KAA02909; Tue, 16 Nov 1999 10:26:43
+          +0100 (MET)
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199911160926.KAA02909@bar.loria.fr>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <14384.30231.698701.576525@Wincenty.nowhere.edu.pl> from "Marcin
+              Wolinski" at Nov 15, 99 10:07:35 pm
+Date:         Tue, 16 Nov 1999 10:26:42 +0100
+From: "Denis B. Roegel" <Denis.Roegel@LORIA.FR>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: babel 3.7 beta release
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3412
+
+`Marcin Wolinski' wrote
+>
+>   Denis B. Roegel wrote:
+>   > Among the language attributes, there should IMHO be "default encodings."
+>   > These encodings would be either a pair of < input encoding, output encoding >
+>   > or a pair of lists of encoding, which would enable priorities.
+>   > For instance, English should have as a default < ASCII, OT1 >.
+>   > French should have < latin1, T1 >, Russian could have < koi8-r, X2 >, etc.
+>   > These encodings would then just be triggered when one writes
+>   > \selectlanguage{french}, etc. I haven't tried the new version of babel,
+>
+>   Unfortunatelly many input encodings can be appropriate for a given
+>   language (e.g. for Polish we have at least 3 widely used encodings),
+>   and it may be difficult to judge, which of them should be default
+>   (this may depend on the operating system).  So it probably is not such
+>   a good idea to have global defaults.
+>
+>   On the other hand using different encodings for a language within one
+>   document is somewhat perverse.  So it would be reasonable to have per
+>   document defaults.
+
+Yes, but these defaults should depend on the language.
+
+Anyways, there are already defaults, after all:
+
+  - output encoding default for English, French, Russian, etc.: OT1
+
+      (when you write \usepackage[russian,english]{babel}
+       you don't get an output encoding different from OT1, you get OT1,
+       so OT1 is the default output encoding)
+
+      clearly, this is not suited for French or Russian
+
+  - input encoding default for English, French, Russian, etc.: ASCII
+
+      (when you write \usepackage[russian,english]{babel}
+       you don't get an input encoding different from ASCII, you get ASCII,
+       so ASCII is the default input encoding)
+
+      again, this is not suited for Russian. (As far as I know, the two
+      main input encodings are koi8 and alt, so one of them should be
+      a default)
+
+Of course, this can be overridden with things like
+
+  \usepackage[X2,OT1]{fontenc}
+  \usepackage[koi8-r,ascii]{inputenc}
+
+and in addition to this, if you switch from one language/encoding
+to another in the same document, you have to use commands like \anglais
+or \russe defined as
+
+  \newcommand{\langue}[3]{\inputencoding{#2}\renewcommand\latinencoding{#3}%
+                          \fontencoding{#3}\selectfont
+                          \selectlanguage{#1}}
+  \newcommand{\anglais}{\langue{english}{ascii}{OT1}}
+  \newcommand{\russe}{\langue{russian}{koi8-r}{X2}}
+
+Clearly, this seems to me as an inconvenience. One would expect
+that a decent language package not only selects the correct
+hyphenation rules, but also appropriate encodings.
+Nothing prevents the use from overriding this.
+
+I know that for some languages there is maybe not only one choice
+of (input/output) encoding, but this doesn't mean a default cannot
+be chosen. In my opinion, a default that suits a large proportion
+(even a minority) of people is better than a default that suits nobody.
+Don't you agree?
+
+Also, for output encodings at least, we can have a list of
+default encodings in decreasing priority, in case some files
+are not present. I think some russian package does implement this.
+
+It seems to me that nobody writes in more than one language in babel
+and with different encodings (probably most people are using T1/latin1
+for the different languages) and so that nobody has faced the problems
+I am raising... But with Russian, T1/latin1 does not work!
+
+Denis Roegel
+

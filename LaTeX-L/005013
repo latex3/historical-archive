@@ -1,0 +1,109 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 8 May 2007 13:30:37 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l48BUWB7019036
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 8 May 2007 13:30:32 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l48BKWe3012488;
+	Tue, 8 May 2007 13:24:07 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 74710 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 8 May
+          2007 13:24:07 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l48BE7bm026482 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 8 May 2007 13:14:07 +0200
+Received: from wr-out-0506.google.com (wr-out-0506.google.com [64.233.184.231])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          l48BFKu1022228 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 8 May
+          2007 13:15:24 +0200
+Received: by wr-out-0506.google.com with SMTP id 68so2009208wri for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 08 May 2007 04:14:03 -0700
+          (PDT)
+Received: by 10.114.183.1 with SMTP id g1mr898483waf.1178622842623; Tue, 08 May
+          2007 04:14:02 -0700 (PDT)
+Received: by 10.114.185.11 with HTTP; Tue, 8 May 2007 04:14:02 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <877irnt2pk.fsf@buckbeak.hogwarts>
+X-Google-Sender-Auth: dbffeec88208923d
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <859ec5630705080414p56e6b3b3ob8ef2e7e211ea08b@mail.gmail.com>
+Date:         Tue, 8 May 2007 13:14:02 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?=
+              <morten.hoegholm@LATEX-PROJECT.ORG>
+Subject: Re: l3prop
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <877irnt2pk.fsf@buckbeak.hogwarts>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.599 () AWL,BAYES_00,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 May 2007 11:30:37.0199 (UTC) FILETIME=[4CA509F0:01C79164]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5013
+
+On 5/5/07, Andreas Matthias <amat@kabsi.at> wrote:
+> 1) I suppose there's a bug in \prop_map_function_aux:NNn.
+
+Yes, thanks. Will fix in source as soon as I get access from my laptop
+(tonight I hope).
+
+> 2) I have no idea how to use \prop_map_inline:NN. Can someone
+>    show me? There seems to be a missing \prop_map_function:N.
+
+Hmm, the code does look odd. I wonder why it wasn't written in a more
+straightforward manner. Here's a combined test+fix document.
+
+
+\documentclass{article}
+
+\usepackage{l3prop,l3quark}
+\CodeStart
+
+% also missing:
+\def:Npn \prop_map_function:Nc {\exp_args:NNc \prop_map_function:NN}
+% fix
+\def:Npn \prop_map_function_aux:NNn #1#2#3{
+  \if_meaning:NN \q_nil #2
+    \exp_after:NN \prop_map_break:w
+  \fi:
+  #1#2{#3}
+  \prop_map_function_aux:NNn #1
+}
+% fix
+\def_long:Npn \prop_map_inline:Nn #1#2 {
+  \num_incr:N \l_prop_inline_level_num
+  \def_long:cpn {prop_map_inline_ \num_use:N \l_prop_inline_level_num :n}
+    ##1##2{#2}
+  \prop_map_function:Nc #1
+    {prop_map_inline_ \num_use:N \l_prop_inline_level_num :n}
+  \num_decr:N \l_prop_inline_level_num
+}
+
+\prop_new:N \l_testa_plist
+\prop_put:NNn \l_testa_plist \keya {info1}
+\prop_put:NNn \l_testa_plist \keyb {info2}
+\prop_put:NNn \l_testa_plist \keyc {info3}
+
+\prop_map_inline:Nn \l_testa_plist{
+    \io_put_term:x{\token_to_string:N #1\space =\space #2}
+}
+
+\stop
+
+-- 
+Morten
+

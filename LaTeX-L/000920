@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2675" "Wed" "3" "February" "93" "09:36:52" "EDT" "Charles Wells" "cfw2@PO.CWRU.EDU" nil "73" "Re: document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA15473; Wed, 3 Feb 93 15:37:48 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA22208; Wed, 3 Feb 93 15:37:45 +0100
+Message-Id: <9302031437.AA22208@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4338; Wed, 03 Feb 93 15:38:48 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1087;
+ Wed, 03 Feb 93 15:38:46 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1085;
+ Wed, 03 Feb 93 15:38:44 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  POPPE@SWOV.NL Wed, 3 Feb 93 09:58:00 +0100
+Date:         Wed, 3 Feb 93 09:36:52 EDT
+From: Charles Wells <cfw2@PO.CWRU.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 920
+
+
+
+This is a reply to Frank Poppe's.
+
+> Each time I make an enumerated list I have two problems:
+> - English not being my native language, I have to think twice where to put an
+> "e" and where to put an "a" in "enumerate" - but that's not the subject :-)
+
+You think native English speakers don't have such problems?
+
+> - when I make a reference in the following paragraph(s) to "item~2" or
+> "item~b" I realize that is is illogical to have LaTeX make the labels, and
+> then hardcode them myself. But then I see how tedious it is to make and use a
+> reference and leave it.
+>
+> Wouldn't it be possible to define an \item command with an (optional)
+> parameters that give a pointer to the item-reference? Each
+> enumerate-environment should use the same bits of memory otherwise TeX would
+> run out of memory very soon. That means that the references are valid until
+> the next enumerate. Only when it has to be valid after that, one should have
+> to use the "old" system.
+>
+> Example:
+> bla bla \begin{enumerate}
+> \item[subjx] an x item
+> \item[subjz] a z item\end{enumerate}
+> The description of item~\ref{subjz} is....
+>
+> which should give "The description of item 2 is" or "...item ii is", depending
+> on the document style.
+
+I believe by your reference to the old system that you
+understand that this could be done this way:
+
+bla bla \begin{enumerate}
+\item\label{subjx} an x item
+\item\label{subjz} a z item\end{enumerate}
+The description of item~\ref{subjz} is....
+
+In my writing, the references to enumerated items are not a very
+big percentage of all the references, and I believe this is true
+of most mathematical writing.  So I think having a special
+mechanism to reuse memory from one enumerate to the next would
+not be helpful.  Is there any style of writing where most of the
+references are to items in an enumeration?
+
+I frequently use labeled lists so that I can refer to items in a
+list anywhere in a large document.  Here is the code:
+
+\newenvironment{labeledlist}[1]
+{\begin{list}{{\rm#1.\arabic{lister}}}{\usecounter{lister}
+\settowidth{\labelwidth}{#1.9}
+\leftmargin\labelwidth \advance\leftmargin by \labelsep
+}}%begin text
+{\end{list}}
+
+You start such a list by \begin{labeledlist}{BR} (for example)
+and then the items are numbered BR.1, BR.2, and so on.  You
+refer to an item as~BR.\ref{labelname} for that list, which
+means in a big document you have a clue in the source file of
+what you are referring to.
+
+Michael Barr and I used labeledlist in a book we wrote, and I no
+longer remember who wrote the code.
+
+
+
+--
+Charles Wells
+Department of Mathematics, Case Western Reserve University
+University Circle, Cleveland, OH 44106-7058, USA
+216 368 2893
+
+

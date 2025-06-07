@@ -1,0 +1,206 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["8391" "Sun" "14" "February" "93" "21:40:41" "CET" "Joachim Schrod" "schrod@ITI.INFORMATIK.TH-DARMSTADT.DE" nil "179" "MakeIndex 3, state of affairs" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA01176; Sun, 14 Feb 93 21:49:08 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA16147; Sun, 14 Feb 93 21:49:02 +0100
+Message-Id: <9302142049.AA16147@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7983; Sun, 14 Feb 93 21:49:46 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4587;
+ Sun, 14 Feb 93 21:49:42 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4585;
+ Sun, 14 Feb 93 21:49:38 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 14 Feb 93 21:40:41 CET
+From: Joachim Schrod <schrod@ITI.INFORMATIK.TH-DARMSTADT.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      MakeIndex 3, state of affairs
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 979
+
+
+Hi,
+
+The last weeks saw some discussion about MakeIndex on this list.
+barbara beeton was so friendly to point this out to me, and forwarded
+me the mails concerning the topic. Since in some of this mails
+explicit questions concerning my work was raised, I thought some
+statement of mine is in order.
+
+If you read the text below, please keep in mind that I'm subscribed
+to latex-l since last Thursday. I don't know of discussions which are a
+while ago. And be patient, this mail will be a bit longer. :-)
+    I will start with a few reflexions about the current version of
+MakeIndex, concerning both its functionality and its implementation.
+Then I will describe shortly my not-yet released changes to MakeIndex
+and will explain why they are not yet released.
+
+
+MAKEINDEX 2
+===========
+
+Let me start with a bit of background about the current publically
+released version of MakeIndex, with the major revision number 2.
+
+It's very important to remember that MakeIndex in principle has
+nothing to do with TeX or LaTeX -- and that this is deliberately so,
+as described in the SP&E paper. A point where this clearly shines
+through: The documentation is in troff, not in TeX. Just some
+defaults are set up for the easy usage with TeX.
+    MakeIndex is a system for generating a made-up index from a raw
+index. A raw index is a set of tuples (name, location identifier)
+where the location identifier is often numeric, but this is not
+necessarily the case. A made-up index is a list of tuples (name, list
+of location identifiers). Between and within these tuples there are
+places (hooks) where strings may be inserted by the user. Ie,
+MakeIndex does basically four tasks: (1) It decides which names are
+the same, (2) lumps together, ie, merges all location identifiers of
+each name, (3) sorts the names, transforming the set of tuples into a
+list, and (4) outputs the list with the user specified strings
+attached to the respective hooks.
+    (The actual model is a bit more complex due to the handling of
+sub-indices, but this generalization suffices for the context of this
+mail.)
+
+MakeIndex enables the configuration of task (4). There it happens to
+have defaults for the hooked strings which fit to LaTeX, but it is
+used with other systems as well. On example is [tng]roff. Another
+one: In the moment I'm working on the integration in a language
+independent WEB system based upon SGML (for creating the cross
+references); there MakeIndex gets a part of the back end which works
+on the ESIS. Etc.
+
+
+The implementation is not a good one. (You should take this with a
+grain of salt, these comments are of course personal ones. This does
+not mean that they are arbitrary -- I have my reasons and can defend
+them.)
+
+There is some kind of modularization, but this modularization is
+algorithm oriented. Ie, the overall design is oriented solely towards
+the Structured Programming paradigm. The well known disadvantages of
+this programming method pops up very early: Changes are not easy to make
+due to the high module coupling.
+    There are no specifications of the modules. Not even some design
+paper. Module abstraction and coupling must be derived from the code.
+
+The original program was not portable. Nelson took over the (heroic)
+work of porting it -- but this doesn't necessarily imply that the
+code structure itself is better now... Basically the problem is that the
+system dependent code is not concentrated in lower layers which can
+be adapted to new platforms. Instead it is sprinkled throughout the
+whole program. I can tell you: Horrible if you have to change the
+code in central areas.
+    Btw, IMHO MakeIndex is a good program to show to CS undergrads:
+Here one can point out why conditional compilation (#ifdef's) might
+be good for configuration, but that they are bad for adaption to new
+environments. The data flow is not recognizable any more. The
+arguments of Dijkstra's famous letter apply here to the full extent.
+Ie, MakeIndex is a good bad example... ;) Gi'me change files to work with!
+
+
+MAKEINDEX 3
+===========
+
+From the four tasks outlined above, MakeIndex 2 can only be
+configured at task (4). I specified a configuration possibility for
+task (3), a prototype implementation of this specification was done
+by a grad student working for me (his name is Gabor Herr). During
+our experiments with this protoype it got appearant that we had
+introduced an implicite configuration possibility for task (1) as
+well. In a next iteration we introduced it explicitely.
+    But still we were working on prototypes, to check if the
+requirement analysis really fits to the problem at hand and if the
+chosen design delivers a solution. When this check was complete and
+the design seemed stable I presented the stuff at the EuroTeX meeting
+in Paris.
+
+For those who don't know this paper (I can make it available by
+anonymous ftp if it's of interest): The configuration is done by
+finite state automatons. Ie, the configuration file is a list of
+mappings "pattern -> pattern".
+    The system is an international, but not a multi-lingual one. Ie,
+there is only one mapping, not multiple ones. At the time I designed
+it I did not see the need; I thought a given index is handled by one
+criteria. If one has more than one index in a document, the index can
+be of different languages, but not within an index. By now Yannis
+convinced me that this is wrong and that one needs multiple mappings.
+(But I don't think I will implement this in the near future.)
+
+Coming back from Paris I checked the code again and discovered that I
+underestimated the amount of work to make it stable, reliable, and
+portable. The reasons are outlined above. So I started to integrate a
+lower layer of support modules which encapsulate the platform, to
+make the upper-level modules clearer.
+    This lower level is partly new, partly it's taken over from other
+projects (eg, from my DVI driver family -- I had to convert the CWEB
+code to documented C first :( ).
+
+I could not spend more money for a student who codes the modules;
+after all, MakeIndex has near-to-no relationship to my work.
+Therefore the work must be done in my private free time and
+progresses slowly. Actually, in the last half year I have not changed
+a byte in the code; too much work in different, more important, areas.
+
+But I plan to continue work intensively in March. Hopefully I can
+contact the beta-testers in the start of April. (Art, you're meant
+too -- even though I haven't answered your mail from Dec 31 yet...)
+
+Note that MakeIndex will still not be a TeX specific tool. Eg, it
+might be that the new documentation will be tagged SGML conformant...
+(Then I can create easily LaTeX, `nroff man', and texinfo sources
+from it.)
+
+
+
+MAKEINDEX AND BIBTeX
+====================
+
+I don't think that any of my code can be used for BibTeX. BibTeX is a
+monolithic program, MakeIndex is (partly ;-) ) a modular system; this
+influences the code design. The only thing one might use is the
+specification of the configuration language.
+    You might be tempted to say: When MakeIndex is reimplemented in
+WEB we can share code. Well, I don't really want to enter the
+discussion about the reimplementation of MakeIndex at this point, but
+consider a few warnings: MakeIndex depends heavily on dynamic
+allocatable memory. One has already memory problems on PCs with
+larger indices. If you will implement it in Pascal with this ugly
+restriction on fixed memory limits, I don't think it will be usable.
+In addition you don't have seperate compilation units, not to speak
+of modules; ie, no support for more than procedural abstraction.
+    You see: I do not favour the usage of Pascal, I would consider it
+a step backwards to ancient times.
+
+
+
+A PLEA
+======
+
+If you have indices with more then 2000 entries in the raw index,
+please send them to me. I would need them for statistical analysis.
+(The question is: Does the integration of a string pool lower the
+memory requirements for large indices?)
+    Please indicate if I should treat the data confidiential. (Ie:
+Can I use them as part of the test suite which is distributed with
+MakeIndex?)
+
+
+
+A big THANK YOU for all who have read the text 'til here...
+
+See ya in Birmingham,
+    Joachim
+
+--
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Joachim Schrod			Email: schrod@iti.informatik.th-darmstadt.de
+Computer Science Department
+Technical University of Darmstadt, Germany
+

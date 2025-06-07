@@ -1,0 +1,183 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 27 Feb 90 12:27:10 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Subject: @startsection
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 32
+
+I spend some time this weekend on the problem of
+finding a good syntax for generic commands like \@startsection.
+Here are some comments on Nicos proposal.
+
+> The kernel should pass things like numbers back to the
+> style, so that the macros defined there can really put
+> the components of the text on the page in whatever wild
+> arrangement the designer comes up with.
+
+Here I agree wholeheartly. But what are the proper objects to
+be passed back from the kernel to the style file? This question is
+not as trivial as it seems:
+Take for example the problem of the heading number. Commands like
+\thesection seem to do the work. But what is with text attached to
+such a number like in article part: ``Part \thepart''. It is in my
+opinion that such a group will form one object in the sense that
+the designer will specify the form of this object and the kernel will
+give this object back either unchanged or empty (in case of
+level > secnumdepth) in a macro named \headingnumber for example.
+We have to remember that there is not only the case of \section
+versus \section*; generation of a number heading also depends
+on the value of the counter secnumdepth. So if level > secnumdepth
+we either have to generate the header from the stared specification
+(I will comment on this approach below) or give the designer an
+object named \headingnumber (see above). Otherwise the designer has
+to use such monsters like \ifnum level > \c@secnumdepth ...\else
+in the definition of the unstared heading layout, brrrr.
+
+
+> 1. I think that it is clear to everyone on the list
+> that LaTeX's \@startsection macro is not generic enough
+> to allow all possible wishes a designer might have.
+>
+> My idea was the following: \@startsection takes care of
+> two things
+>
+> - embed the sectional unit heading in the vertical
+>   list, i.e. add spacing and appropriate penalties
+> - generate an entry in the table of contents (I will
+>   come back to the table of contents in part 2. of this
+>   message)
+>
+> My version of \@startsection would have the following
+> syntax:
+>
+> \@startsection{NAME}{LEVEL}{BEFORESKIP}{UNSTAR}{STAR}{AFTERSKIP}
+>                *[ARG1]{ARG2}
+>
+>
+> The designer sees to it that STAR and UNSTAR create
+> appropriate \hbox'es if the heading is run-in, and is a
+> construction such as \hangfrom for the other case.
+
+I strongly disagree with the the use of beforeskip, afterskip and
+its special - syntax to denote things like run-in heading
+and afterindent. The task of a designer is difficult enough.
+Therefore I don't think we should propose a syntax which is
+unreadable and not easy to remember. I would suggest to
+provide one argument similar to the one in the list environment
+where declarations are to be made. Then a generic
+command definition could look like
+
+\@startsection{section}{1}{\afterindentfalse
+                           \runinfalse
+                           \headbeforeskip 10pt plus 5 pt
+                           \headafterskip 5pt plus 3 pt
+                           ...}
+                          {....}...
+
+instead of
+
+\@startsection{section}{1}{-10pt plus -5pt}{-5pt plus -3pt}...
+
+This has the additional advantage that it is much shorter
+because one does not have to retrieve implicit information
+(i.e. convert - syntax internally into \afterindentfalse etc.)
+and for every explicit command like \headbeforskip we have
+two braces removed. So its not only more reabale it is also
+shorter.
+
+
+> I find the idea outlined above attractive because of
+> its simplicity, and because of the similarity with the
+> current situation for table captions, figure captions,
+> chapter headings and part headings, where in all cases
+> separate macros are defined.
+
+I'm not sure if the idea of a stared and unstared argument is
+really useful. It actually means that there is one definition
+for each combination of number (present/not present) and
+heading text (present/not present). In this special case this means
+there are only two definitions necessary because the heading is
+always present. But consider the case of the table of contents:
+Here we have three objects namely number, pagenumber and text.
+And depending on the application one or both numbers might be missing.
+
+Granted that even this would be manageble it is a questionable
+syntax in general. My question here is: do we really need to
+destinguish normally between present/not present of numbers etc.
+I would assume (please comments!) that one definition would
+be enough if objects given back by the kernel (like \headingnumber)
+would produce different things (i.e. empty for example). For the
+real special applications one could provide a test, say \ifpresent,
+which could be used by the style designer to take certain actions
+depending on \ifpresent\headingnumber ...\else ... \fi.
+
+Another point is that we have to provide a few more utility macros
+like \@hangfrom which would help the designer to specify the
+layout of a heading or a tableofcontents entry without too many
+tears in the standard cases.
+
+
+2. Table of contents
+
+> Similar arguments can be given for the table of
+> contents, list of figures etc. Again, I think that the
+> macros defined in the file should receive NUMBER, TITLE
+> and PAGENUM as arguments and do with these components
+> what the designer chooses. In the current approach
+> these three are not clearly separated, which makes it
+> hard to typeset each in a different font for instance.
+
+Again I agree. Table of contents lines produced by
+\addcontentsline or something similar should simply
+write NUMBER TITLE and PAGENUM to the aux file and then
+to the toc (or whatever) file so that commands like
+\l@section could pick them up again.
+A generic command for these tableofcontents macro
+should follow the same syntax (similar) as \@startsection.
+
+
+> I propose that in the new approach the kernel routines
+> write these components to the appropriate files, where
+> they can be `picked up' by the macros defined in the
+> document style.
+
+I already discussed with Rainer the possibilty to implement a
+sequence of commands which would allow certain environments or
+commands to write informations on the aux file for retrival in
+a later state. In the special case of heading/contents however
+I think the write read mechanism of the current version is okay.
+
+
+> While I'm on the subject, I would like to suggest the
+> addition of a few new tools. In some books, Elsevier
+> books but also Martin Bryan's SGML book, you found
+> tables of contents per chapter AS WELL AS a table of
+> contents in the front of the book. In the current
+> version \addcontentsline{toc} means: `write to
+> \jobname.toc'. If you divide a document in
+> sub-documents with \include{...}, you could also write
+> toc entries to .toc files of the sub-documents.
+
+What Nico is discussing here seems in my opinion partly a question
+of ``which commands to provide in which meta style''.
+I will say more of this in a separate message. Nelson sent me
+a list of all commands sorted by style which I will redistribute.
+
+
+I hope that this this time I it is understandable what I'm trying
+to say. My last message on this subject was probably too
+chaotic. Awaiting your comments
+
+Frank
+
+
+P.S. Nodename to be used DRUEDS2 (EARN/Bitnet nodename)
+.... Do not use nodename RUIPC1E (internal use only)
+
+

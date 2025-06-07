@@ -1,0 +1,66 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1368" "Mon" " 7" "February" "1994" "17:55:32" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" "<199402071756.AA18203@mail.cs.tu-berlin.de>" "33" "Re: register usage" "^Date:" nil nil "2" "1994020717:55:32" "register usage" nil "<9402071743.AA20959@m1.cs.man.ac.uk>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA07073; Mon, 7 Feb 94 18:57:36 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA13969; Mon, 7 Feb 94 18:56:34 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA18203
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 7 Feb 1994 18:56:32 +0100
+Message-Id: <199402071756.AA18203@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9873; Mon, 07 Feb 94 18:56:23 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9872; Mon,
+ 7 Feb 1994 18:56:23 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9857; Mon,
+ 7 Feb 1994 18:55:50 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  <9402071743.AA20959@m1.cs.man.ac.uk> (message from Mike Piff on
+              Mon, 7 Feb 1994 16:17:48 LCL)
+Date:         Mon, 7 Feb 1994 17:55:32 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: register usage
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1453
+
+>>>>> "Mike" == Mike Piff <M.Piff@shef.ac.uk> writes:
+
+Mike> From: Philip TAYLOR <CHAA006@vax.rhbnc.ac.uk>
+      ... Would it not be better to use pseudo-registers for the
+      register allocation mechanism, rather than real count registers?
+      ...
+
+Mike> I think I understand what you mean. You keep the fact that
+Mike> \dimen88 is the next to be allocated in a macro defined to
+Mike> expand to 88. You then get \newdimen to use this 88, which is
+Mike> assigned to \count5, say, incremented, and then put back instead
+Mike> of 88 ready for next time. Is this right?
+...
+
+I'd use \countdef rather than a macro, but that is the basic idea (I
+assume:-)
+
+However there are lots of places that latex could be optimised, but
+that is out of the scope of what we are trying to do with 2e.
+LaTeX2e *is* LaTeX2.09 apart from the publicised changes (NFSS2 &
+output routine) & the extended and new commands.
+
+The whole \footheight saga began as, while looking at the output
+routine, it was noticed that it was never used anywhere. So we thought
+it would be safe to omit it, and put a `fake definition' in
+compatibility mode'.
+
+Well it turns out that this was wrong, as people (one person at least)
+have used this register `because it was there' so compatibility mode
+at least, will allocate a new register for \footheight (once we get
+round to adding the definition).
+
+David
+

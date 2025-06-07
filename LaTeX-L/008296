@@ -1,0 +1,789 @@
+Return-Path: <rainer.schoepf@gmx.net>
+Delivered-To: rainer
+Received: from h2774747.stratoserver.net
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by h2774747.stratoserver.net (Dovecot) with LMTP id g4FOE8PKw2QkUQAA4+3H6A
+	for <rainer>; Fri, 28 Jul 2023 16:03:47 +0200
+Return-Path: <rainer.schoepf@gmx.net>
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	by h2774747.stratoserver.net (8.15.2/8.15.2/Debian-3) with ESMTP id 36SE3icb020770
+	for <rainer@rainer-schoepf.de>; Fri, 28 Jul 2023 16:03:45 +0200
+Authentication-Results:  gmx.net; dkim=none
+Received: from relay.uni-heidelberg.de ([129.206.100.212]) by mx-ha.gmx.net
+ (mxgmx007 [212.227.15.9]) with ESMTP (Nemesis) id 1MLyzL-1q7Rhz2V7Z-00XyfH
+ for <rainer.schoepf@gmx.net>; Fri, 28 Jul 2023 16:03:38 +0200
+Received: from listserv.uni-heidelberg.de ([129.206.100.94])
+  by relay.uni-heidelberg.de with ESMTP; 28 Jul 2023 16:03:39 +0200
+Received: from listserv (localhost [127.0.0.1])
+	by listserv.uni-heidelberg.de (Postfix) with ESMTP id 5AB5E128654;
+	Fri, 28 Jul 2023 16:03:27 +0200 (CEST)
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 17.0) with
+          spool id 55621423 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 28 Jul
+          2023 16:03:27 +0200
+Delivered-To: latex-l@listserv.uni-heidelberg.de
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.119.212]) by listserv.uni-heidelberg.de (Postfix) with ESMTP
+          id 36B8D12758E for <latex-l@listserv.uni-heidelberg.de>; Fri, 28 Jul
+          2023 16:03:27 +0200 (CEST)
+X-IronPort-MID: 200989153
+X-IronPort-RemoteIP: 80.12.242.50
+X-IronPort-SenderGroup: UNKNOWNLIST
+X-IronPort-MailFlowPolicy: $ACCEPTED
+X-IronPort-Reputation: 5.2
+X-IPAS-Result: =?us-ascii?q?A0AQAAAKysNkmDLyDFBaHAEBAQEBAQcBARIBAQQEAQFAg?=
+               =?us-ascii?q?TsHAQELAYIydVYtAwcIR4xuX4Y7ggcdA513gXkUAQEBAQEBAQEBCS4HDQIEA?=
+               =?us-ascii?q?QGLSx8GAQQwCQ4BAgQBAQEBAwIDAQEBAQEBAwEBBQEBAQIBAwQEFAEBAQEBA?=
+               =?us-ascii?q?QEBHhkFDhAnhWgNhgUBBQEBGA0FDgYBATgPCwcRLhBHBQGDEQGCKAMxB64Ee?=
+               =?us-ascii?q?IEBMx5jggkBAQZSr00YdYFJCRWBLQGHZRoBBWCGY4IvQoINgRWBfYEuPosGh?=
+               =?us-ascii?q?xoNgmSDKIInBxQEGoEXDAmBC4kkK4EICF+Bbj0CDVULC2OBGIJJAgIRJxMTU?=
+               =?us-ascii?q?HMbAwcDgQUQLwcEMh0JBgkYGBclBlEHLSQJExVABIF6gVYKgQg/FQ4Rgk4rN?=
+               =?us-ascii?q?jgbTIJqCRUMNFB4EC4EFBiBFAROFREhGh49ERIbDQUIgQEDGgMGAgkCAgQIC?=
+               =?us-ascii?q?gIpTQNEHUADC3A9NRQbBmqgTQFgFQYTASqBHDEFM3WSfI5ZolaQEpVRhAGBV?=
+               =?us-ascii?q?pE+DjeRfpgojV+VHIVFgWM6gVtwgzcJSRkPjiCDdIE+jj0/NTsCBwsBAQMJh?=
+               =?us-ascii?q?UiGAAEB?=
+IronPort-PHdr: A9a23:X5v+oh9tt33HM/9uWZ+6ngc9DxPP2p3uMwoc+8BhlrRPN6Su/pjvO
+               EbS//orgFKaFZ7D5adijOzb+7vlRXRG+YyI5WwGeYZLURMIod0Rmx0mHcvDAkr+f7bxdyJvJ
+               M1ZTxd++m2jd01cGcLwfVrX93m79zkUFhi5KQp0K/7vC6bVlc2x2O309YeAKx5Qim+FaKhpZ
+               A6zsR2XtsQSht56Lb0tzxLSvnZSU/9T2XsuPlePhxHh+oG35pdl/CkWtehJG9dod6L8cux4V
+               7FcBSV8dX0z5YjruBjPQA+F62ETFGkbwFJOBEDe4Rf2U42U0GOyv/dh2CScIcz9TKwlETWk4
+               aBxTRb0iSABfzcn+WDTg8Z0gepVuhWk7xB4xofVZsmSOp8cNuvBedoAQmxNU+5JUChQBJ65K
+               YAICqtJPOpVqZX8u0pbtQG3VkGnAOLizCMNh2ejjfV8ir5nS12cmlF4TLds+DzOod74NbkfS
+               7Wvwa3B3G+FcvVXnDfw6YTFdhosu/7KUb8jFKiZgUQpCQ7BiU2d7IL/ODbAnOAEqW+d4+cmS
+               eKuhnQ9uil2uDGpycpqhJOD1ed3ghjUsD50xoo4P4jyVEpye9miHJZ4ryaeJo1rR4UpRGQi6
+               0NYgvUW/JW8eiYN0pEuwRXSPueGf4a/6RXmTO+NID18iRqJYZqHjg2puQi6x+n1R5PyzVBL6
+               ypIk9XBsnoAzROV5sXVAvd6+06g336I2WWxoqlAKFozk6bWbYIhw7MqjIs7tl7KGCD73kvsx
+               KObbUQr/OG05v+vMu2g/8XabdMuzFymeq01/673Sfw1KA0PQ3SW9ayn2bvv8Fe4CLRGg/sqk
+               7XI5ZXTJMAVvKm8UEde1ocu7Qr6Di/zgIxexCNBdg4fPk/f3O2LcxnULfv1DOmymQG2nTNi1
+               qqAI7vgR5XAL3TOlL3sZ7k750MPrWh7hd1Z+Z9QDakMZfzpXUqk/tjRFBg/PwHy3+bmBc9nx
+               6sZQ2uJDaLfPrmY4jrqrqo/ZvKBYoMYomO3L/E/4PjigDklmV4QZ7O49ZwNYXa3E7JoOQ/KB
+               BikysdEGmAMsA0kSeXsg1DXSj9faUG5WKck7y06AoarXs/TA5qgi7ub0GKnD4VbMypYX0uUH
+               y6iJODmE78cLTifKch7nnkYWKi9HsU/gAq2ulayyqI7fLqMvHRC88i/jp4toLeO8HN6vT1sU
+               5bEgjrLFTwu2DlTAWVvhOck+AR80gvRiPkjxaYFT5oJvLUTC119bsa5raQyCsiuCFuQJZHTF
+               QzgGI/gWXZrE5pmytsKKS6RAv2ahwvYl2qwDrschubNGZo1t6LR3nT8I8xw0XmA2KRzx1UhR
+               8JOMyWhiMsdv0DLAJXVlkyCi6uwXb8ZwDaL72Kf1W2ToAdfSgd2XqiDU2pXakbNrNv/71/PV
+               Pf+UfJ+aE0blZTEd/MCY8aM7x0OXPr5PdXCf2+903y9AxqF3PLEbYbnfXkcwDSICEUAlFNb9
+               nKHOA4iQya59jKGSmU0UwizOQWxqbobyjvzVEI/wgCUYlc0zbex8w9Pw+GaSrYT07MItSMrp
+               i97WlqwjLe0Q5KNoRRseKJEbJYz+lBCgCjdvhZ6OJCtabxih1MEaRVfuFnn0Rp6TIta25tPz
+               jti3E9pJKSU3UkUPSufxoz1M6bLJ3Pa5xWzc+jN303G18uKvKAV4fI3phPtpkv6cyhqu2Ui2
+               N5T3XyG45zMBwdHSpP9XHE88B1irq3baC0wtMvEkGdhOq6uvnreysokUaE7nw24cY4VY8bmX
+               EfiVtcXDM+0JKk2lki1O1gaaftK+vd8Ptv6Javenvfxerw8xnT+yj4aheI1mkOUq3glG7WOh
+               ctfhavDmFHeD3Cn1R+gqpylwNEfI2tPRCzlkm6+XdQWPfUXH85DCH/ycZTmnZMk2sSrASQer
+               Bn5WhtR0cutM3J6inTl2glB01kS53egnHngp9SbuzYzp6yQ0WrA2ba7HPLmEnVOWHEkllLwO
+               Y+pk5YdRkGuYAVvmgH3vC7H
+IronPort-Data: A9a23:bqJcoaupIt3gBdYGaQfr+goSvufnVM5eMUV32f8akzHdYApBsoF/q
+               tZmKWuOP/eKMWqhc40lOtu09xtVvpGHzdY1SQdvrHgzQy8WgMeUXt7xwmXYZn7NdJ2dECqLz
+               Cm8hv3odp1coqr0/0/1WlTZhSAgk/vOHNIQMcacUghpXwhoVSw9vhxqnu89k+ZAjMOwa++3k
+               YuaT/b3Zhn9glaYDkpOs/jY8Ew17Kyr0N8llgVWic5j7Qe2e0Y9Ucp3yZGZdxPQXoRSF+imc
+               OfPpJnRErTxpkpF5nuNy94XQ2VSKlLgFVHmZkl+A8BOtiN/Shkaic7XAha8hXB/0F1ll/gpo
+               DlEWAfZpQ0BZsUgk8xFO/VU/r0X0aBuoNf6zXaDXcO7/RPPMCvW/dBVDFgHZK0T19tGKDgRz
+               KlNQNwNRkjra+Oe27enUq93g9g7K9T3eoQFs3dvwHfXF57KQ7iTG+OTv5kCgG1225gm8fX2P
+               6L1bRJrZQ7HZRFCfEsXCZ8khvaAgWP2dTJV7lyPzUYyyzKLlF0hgeGwa7I5fPS7XMRLmFSWv
+               FjLpT30KBceGs6V0ASKpyfEaujnx3+qA9JLfFGizdZuiUGe1ikXIBkXTkegrOOnzFO4WpdfJ
+               k0Y9y4koLI9skCmJuQRRDWjpWKcu1tBA5xLFvEi7xyRjK3O6gCWCy4KVFatdeDKqucEGzVph
+               mW3uujpHA02kLa4dEO0r+it+Gba1TcuEUcOYioNTA0g6tbloZ0ugh+ncjqFOPPk5jESMW+oq
+               w1mvBTSlJ1P3Z5Wh//TEUTv2Wn39sehohsdu12PNl9J+D+Vc6aLXeSVBbXz9vNcNIPcEwHHp
+               30Yg8+D8KYJF5iLmyHLTv9l8FCVCxStbmy0bb1HRcVJG9GRF5iLJtE4DNZWfxYBDyr8UWW1C
+               HI/QCsIjHOpAFOkbLVsf6W6ANkwwK7rGLzND66FNoYeOMYqK1bdo0mCgHJ8OUizzyDAdolha
+               f+mnTqEUCly5VlPlmLqHbhAi+dDKt4WmD+PG8iTI+ubPUq2PiLEEudcWLd/Rucj5aWLrW3oH
+               yV3aKO3J+FkeLSmOEH/qNdLRXhTdCRTLc6t8aR/KLXcSjeK7Ul8UZc9N5t7Jdw890mU/8+Vl
+               kyAtrhwkwKm3yCeeFTXMxiOqtrHBP5CkJ7yBgR0VX7A5pTpSd/HAHs3H3f2QVUmyACn5eVxU
+               +FDYMCcGvNSVnLA4T0bYpS7opYKmNGDm1eVJyT8CNQgV8cIeuAL0oaMksjTGO0mCTC+s8Qz5
+               bO6vu8eaYRWXBxsVa46d9r2p25cfhEhdCZaR0zMM99OfQPn940Cx+kdSBMoC5lkFCgvHgen6
+               js=
+IronPort-HdrOrdr: A9a23:6Vcs36uv1pWdHKLXQaAoRWoF7skD5NV00zEX/kB9WHVpW+a2vO
+                  XrtPkXzhPvkl8qKQ4dsPquE4zFbn/R+JV864tUHZrKZniEhILIFvAd0WKG+Vfd8kLFmtK1qp
+                  0BT0ETMqyMMbFRt7eC3ODAKbkdKYC8npxA5t2y854Od3AJV0gI1W4QYTpyeCVNNW577PECZe
+                  GhD6R81kKdkDssD/iTNz0uWujOoMCjruObXTc2QzQ68hSJiT+ygYSKdSRwpi1uNw9n8PMH+W
+                  jBkwv2j5/Tyc2T+1vR02fS6v1t6b7c9uc=
+X-Talos-CUID: 9a23:XkdbeGwt+ABCdpK2kadGBgUmRMlmIkfj6UzQOn7hKW1EdYy8EACprfY=
+X-Talos-MUID: 9a23:uQsIdwqqImQvKKnEYCwezwB7Ndlu8aq0Mk1XyJgsvc2qJyZpBTjI2Q==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.01,237,1684792800";  d="scan'208";a="200989153"
+X-MGA-submission: =?us-ascii?q?MDFDcCzS1j99MrNGv3hQ+NJ9mpXe26qEqEr9CW?=
+                  =?us-ascii?q?P5OPs0SqXylI5kQaQ1+DtMLKAsZMMfUcF3R2b+Yrs1VCuikLwS9hB9SD?=
+                  =?us-ascii?q?AIDIaVev6Vol90OOovSnna0dIeyprsFE6oIbpSu62g81lcv0AIwvguTm?=
+                  =?us-ascii?q?mxp5PanIcXhPwBkFl0Mi+dcA=3D=3D?=
+Received: from smtpm-50.smtpout.orange.fr (HELO smtp.smtpout.orange.fr)
+          ([80.12.242.50]) by relay2.uni-heidelberg.de with
+          ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Jul 2023 16:03:26 +0200
+Received: from cauchy.polynum.local ([92.184.112.116]) by smtp.orange.fr with
+          ESMTPSA id PO3xqSnZ9a4l8PO3xq2UJD; Fri, 28 Jul 2023 16:03:26 +0200
+X-ME-Helo: cauchy.polynum.local
+X-ME-Auth: bGFyb25kZS50aGllcnJ5QG9yYW5nZS5mcg==
+X-ME-Date: Fri, 28 Jul 2023 16:03:26 +0200
+X-ME-IP: 92.184.112.116
+Received: from cauchy.polynum.local (localhost [127.0.0.1]) by
+          cauchy.polynum.local (8.15.2/8.15.2) with ESMTP id 36SE3OIb002119 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 28 Jul 2023 16:03:24 +0200
+          (CEST)
+Received: (from tlaronde@localhost) by cauchy.polynum.local
+          (8.15.2/8.14.9/Submit) id 36SE3OoA007916 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 28 Jul 2023 16:03:24 +0200
+          (CEST)
+X-Authentication-Warning: cauchy.polynum.local: tlaronde set sender to
+                         laronde.thierry@orange.fr using -f
+References: <ZMOmcGMzh8nPU//O@polynum.com>
+            <15dc4a03-d009-c962-46a4-2d89ef221156@morningstar2.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <ZMPKrCeJr2AtsXgH@polynum.com>
+Date:         Fri, 28 Jul 2023 16:03:24 +0200
+Reply-To:     Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender:       Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From:         LARONDE Thierry <tlaronde@POLYNUM.COM>
+Subject: Re: "new" \input vs. primitive behavior
+To:           LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <15dc4a03-d009-c962-46a4-2d89ef221156@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+Envelope-To: <rainer.schoepf@gmx.net>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+UI-InboundReport: notjunk:1;M01:P0:1b1wQRdCGvU=;VzhICuNnmpSlei5qe3xXz+7jwwuX
+ yFFI8mdvFtyn5rnC5SorwCHavKNF2Jtmn7btZRmUEm1Mu72EFHZqcLNhWOXJJOHOUDjXLikG7
+ aK29Gi//NrefwD2MEv3jrgYFu2EVXErFX/IPu1FT1CEaMzvnL6fAy+VTgHGGAlD6TiXQXuiL4
+ pkZAuOUqsioYqTRnAhIbz3M3szxyIKhtQhRALm9kBw4T+FWWHOCfgbtXS4RTxU+1FpKOL1ywP
+ IWRC7kZexiz9aEVWJsUtrnCywuWAw++2cEUHJkFS/fxLYF0nzFxfn9W9e6wbh+oHrmpBeFfZW
+ 8qoY3JAtFS6x1wn8MA5N4EtHVfjYmYkPS0tgXxF7/btuXUlF7xi+Nafu4GVTXuN/+Ovj1+Nbd
+ 629S7dIF/ZsDVr6JKiZt3gFfF7wH37tz2oONnc6AiXu66TxLULBuNPdUCbOtcasEHNjn/NwU8
+ mMQ9RR4i5y6dMXltLcOzXa2LetHBcZel2UKPQ1q0qsjrQeA+1bF+LGkFIw1HHW9V7UZwoYClV
+ eOf2q0Z4dPiKxi794761CM6v7YHckdDNAhDz1Coeo8x5Vrx7BO8yCgfmGqbHFPX/Oc55bXZyR
+ 28E5+nG/n4JEntaaMaRZ4f3WgfL9546dypDJnLbHHTI8yDX4n2J8eGSwn9d5b8qwae2uL1Xpu
+ U/aepqcG8KhVX2coM007b3cvGy7GSF6M9mtZI9RQxdCx5+60IhlNDlph6vChRagcIWNwiZnVB
+ bJvbWN5F6V81+kEBAxO2Q3LH7/i/wXVyABKvScr/c+6xl+JUZjSkzlKCEnsRiu7AhrqSRbU3v
+ zPadjuDRm07/JqXzEiNVDJIQIchXLen0uDK6PQBhRHujUUZGKhsUxcOJihBtLBBXnA9GNZtmS
+ 3Y6WKC9DdYzUBuLkKScfDR9xGLPBDw9Z0scQO42ZfJnGyd+VR7BAT2TWBhj2NrWgiLDySUyur
+ Ytb1puMQB9ujyIFOuhq1YVnhtsCby2j8HmnPjZdWooezOD6z3jryFahkjCyIr+jziCuUGfm6q
+ j+3cLK433d9qoywoZZZ2VDYd5Q8OPECL4CEmHS8YxlE4eyfZy32R0OalIEonYka/TJGltJFOi
+ MdSaLryMqV8onsmgIY6OiG2kLr0MbFMhE18yZrNSZxPuMeKxf+YCKc3/4w1iMTehSVuHirNV5
+ 61+4Efr46/xoJ4+bR7BvUNs0sd7wVx+Pt3MUi3Z7BR0zC0f4C+k+XQs2yw+EhWvMo8iwfgCFb
+ x1alfyxWnlruJtPhmIWMawWtGQ107v7Z8jVL8kGFzstaHgxUxHKCRfro5SMwFbHlXUFvmOtIZ
+ GttUip5cxhLPJ4WM/2MHV2404utsxI1fdo+B2kcTpUJCQY0nRE8SYUftfjbgmf5mIbrgQMZhC
+ XNjAqYiVXnOVyJtvA3igXkyESp3IQr2/8GvpKIdow9ImLfouSM38jYxVawuuYx4XFawId6Inx
+ t7QslEfqRde77KTVp4CzDr9txahvup3IhfMwsoxygu6fT/iOVMHoldYg9+gdiJ8Tj2CdSZ4mK
+ Wv1YtFEG9B8C6WnkxYFDbUxsspqWvPHf6ulALTZHC86Bx3s+j5awNDO4ErLHdPxmwxZpkxZmM
+ +vXbgckymTOisU3JaXI0a7UafzkS50kFErctLqrjylybiK5iFEgmVFYcKlqs2qT5PYypGwYJD
+ 5IzxP0m8b5YCBjYuHCKxVxDt/BsuEog9GC48r73ZFqIoKGYili0ZLZ4FfQE0RFuYE/drkUAEH
+ oNJnXAGSVzp1p414b6emhD5Bm0VQRvjogOL6r7+NnWJQsAKYciOYNh4R498fjj3KsyIqBzGLQ
+ eWuXguk0Vt/q7UBWv2HE6a+qpayzf4+JlwEzMIJ/IwZqSuMMtRCX4NjjkEsnnEjoutMqQIJqv
+ IE9xbjRBg1/ljdk/CWTuCazh1UcuGpf4Oe1diqsFlNacHXsHi3xkH4VyifHzhRPlvn/PGab5W
+ ojEkd6rY39A9bdnd1Vv2GgPZmXVtYEYCN7g4Rp5SRt18r99EmoBSKEnjZ1qwK4kw4r+DCU+j6
+ I5lJTM3XddxbZgg5k6hcYbTYp0eZNNcifHZoJ+ikJDmqrs9OQV7U10MMO2y7w31C6Uv7LTLbw
+ AVanlmGXEr7rAh66u+1DJsbNa7f5lQHIM3PCwryrjI2Hn7onyAXcRn2fb0Nc/JPiCAP6dlWpy
+ qir1q1rrLoxY061YDRa6mbsJxWwf6q5jpYgyY5LUqP8Myfud3ktkUvtOWkWnGT62JfNDT+nu4
+ SOdK5F8p+D91+7iGM7x2Wr9b0l0PaXDmOYbQowXywKB0S9y8YIfzD6Pp5gUb2xKdVxc5M6XOR
+ budHhGY+a65ERE17MyO/Mt7+3/3nbkUUHAxwNyONn54v8SVr4e70M+OG2Ht6foB8ltduILqYu
+ Z58OWKsrQJQ3hi/vsNLelQrmBCi6hpSg/as1LaSVm2nlztT4ivWmhxc5iEcfejxww4mnC1iuo
+ g4/rJcUqz6AvoSiGIuAEgYeytOeE1L9wt9XvwWP7kvygM3ZE3z/8FuULX2iusSd6SydOk1aqW
+ 5nFT4BwoU+TfbUwPQea9Qzor+YgzOTesYCw8s2Fsoe1iR6oYLsPXIgg+y3U80nT4Wh29TVlC0
+ oN8PeXdcX+lLPZjN+fglull7Fg0LCRy/YEmXA2XY+j6nR2S2GZ3bp8SidH0sP5bENyB13/QNk
+ ZP/ZBNpJhGyfY6NCQehemw8qRqdJmDtQ1VtEBHelQBSrJkSdM8KWIA6xZo7ZlyDrm27FPsH35
+ wN21z/v2kPFFiqnGIuH2orWcjqsx1Jt6ypE+6rW/RGyeaNTsnVBW2LRHdOlaF4KWYym/BlgFc
+ mEoB/LyZgFM220fvxig15HcWW1OXNTez+w/QGYE0JoUBemY3VsibOpjmrawVSAceGV6haKv24
+ LNNvyIpHqY5XSO7yS7eBL/qKVCxkIr3vW9BtfvprzuakWg1WrgHmxKj6kJUgIInjVwhXK2cQ0
+ Vycir69WpAPmr+vO2bGAkVp4EL2DQwJkIHfD4gXS2jHRCOJyyGrhGNRF7Ry4EkcA9xFc/NZ8g
+ yayIJJkoS3J4PBfGGe0U0PjJ+/t9eYIzsd7seRBzqXp+PpDuI7vWux+fIKzKcKxnQXqU/s8Sp
+ Ke8haYTs+XT/DiDeKvkWzae101R3SY/bVaRixvJYTxI8x44egwxVFdMzm2+a7x4tN42aq+pHd
+ Kxq2wXhGRiCV2UqQwuZPcH0/lTX4yCNDUEyHZqpYkwpdmGao/BXOZE4UvIBD2Zj2gWSqmCQhr
+ hfrGjRA7pCVSJHQ7LoMTJpXMypuMLVg0R6c9SRDNXo2Fz+B/UHa0xICXRd3DazVGI1ift4Pgb
+ KAsDTU6H8XJ3KYrICgLKLRWpUw8bZZ+840YKZIw4ghJqy995Jn1wRt+h1s7mgDqZfTPULw5MH
+ IAkVnbLzMXAxNzfSDFv3Xhg4x10PVEro9BziEM8dW8EjreRcmOIsyHb0XYZw1iYR0ceGhu6cC
+ qBNpYsgAshTsfL5iOcO2mGoJa4wjWXFzdRXUNXy5pq7tDawmEMUkhSGSGh2LZnSdIKkeLebwL
+ aQEOVdfyuLuGYnNoYgNLiYMFT87rhUNflhwhlFKA+BiOPq8MfTJGsoEuvVb4KqWOIh2giqmZa
+ yVqWw/zK6jPd/JkKhGpGNidmCXM7Kz1cY8n6XNMJ3XdrtgaAcejoWjDuIZx364/25p0CuO9co
+ qdN3AD4M6PQmhvzZJ6a6ZG196mCaDIs3NAZ21UmvIyl0eYgkVqKcMhiPRHHrJsY/t4RYAiJaa
+ +uFD/ogKFJ7gSep0W6uaIMLHDaZAqY5id4RDrNnGQNuLoh5NBIM6VUqe65HBJM3W4CBxU6vFi
+ Gr+8SVyS0w/h+V8m6rjcr9cNvQe9mv7u9Ayz+34CW9ZdiOUPu+P7lQwL5k25WSV94H0sJXj80
+ biVRrpWF+wfcYnbdnhc+e1sCyzmMHFFRcDxeUftsww40cIjlGZGWei5jgZ2e0x6YXb59xJMnQ
+ oNlxkP66vq/1bhbIsZCxo3JRe/KYgFpYTsIAX5+gJpJUuE//ICkZl42FGT2QZsfoiA1sL7uyf
+ OUi/IXG6TZWQQsYM/6kJCUgfHjgAiqlGjKFa5Aiu5tQQhrS5KbCTMhSEqENJSBU+oLL/TqYdz
+ BrQXWCoSewMlgjc46u4+LRfJez7y5h/9jKa7zQbxvw4xdmP2f8dtewaQ02SFr0uVCQMZ3rj+U
+ SQAULtiXf4mdFwyP8AujEBL4VQB4TRPxBwOIGihSep02JoYg==
+X-UI-Loop:V01:o159JE+G24g=:vUX526w8f0HTOdOsYe21iM98rS+ba3TiGNukB71QcqM=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LCkf6++N608=;n1qpLMj231jznyBpzY+QMwuQ6Sl
+ GZ+7NU53t1Lp9wChdbn2jop6IlF1WfKsoMMF2NTuRduVP0wE0BFIZv3Gnsc60eOMgoYtzB/Yf
+ swQQ8i6vmmEXJt1tZvsciNjTMkkP1n6aTvDCmZY49vIE4qraefwGAzGLNOXEUdfJELGhGNoXp
+ xAB2XOw5XrbWhk9S2pHLjZAw3PbSE9TTekRZaPoH3sUyMoTn0168cJ0kFHRW6mGv0Z84bOdAx
+ toJMqSDNFkPFSDkhAWK8y2U6gApVaiB9eplX8p/R4mLHmotJ4+hvX0B5Wkl0/yg7OKOzwlqe4
+ MonC+eUCTyNzPOqB1sZ1sdQbNsLcV7eoqc27Cjg7A7t9wDnabYSPQzkyEwyxhdlSMdSNB35PY
+ jKsUa1fR1ZiGfUNdKo3T1BxOZrnOwiwC96O7eq7XbXl3BABkAmBIbu8+83+XfkoRCMz0L/dkm
+ MiFqm/GaBNyD8gEysYSMcm57YyXDPaO6lKbC6jlIDN0lRyUvPveFZdpiDJWPqHaiL5qRJIvV2
+ KnYNznl9sQMsAOjb1F5spgiesOovOnbLW2FL0WIB2NdAdkFklZ+Px3PGBijD9tzFB3JV6FWHR
+ DqjZIsLbcaiIOaPJbv1tOmALuOkj3HXDaEfAImUgpnbvTfMhCCm8ItWP+34wZolvl6A/yiVwc
+ /uitjN2wiPgmJ4tGh2hwdpntjHRDFrFQflE9kJ+b7WzPWF+6vd3TB9ZGHm79oPLPFretpZGws
+ UiQ51vRNHWH
+X-Scanned-By: MIMEDefang 2.78 on 81.169.212.23
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 8296
+
+On Fri, Jul 28, 2023 at 12:57:44PM +0100, Joseph Wright wrote:
+> On 28/07/2023 12:28, LARONDE Thierry wrote:
+> > Hello,
+> > 
+> > Apparently, somewhere between 2022 and 2023, you have changed the way
+> > the LaTeX \input macro, replacing the primitive, is behaving regarding
+> > the extension when brackets are used.
+> > 
+
+To be more specific, somewhere between 2022-11-01 and today (CTAN
+2023-06-30).
+
+As a remainder: I'm the developer of kerTeX (a distribution) and of
+Prote (a change file to add LaTeX needed primitives to TeX + e-TeX). So
+the glue code is the kerTeX one; and the engine is the Prote one.
+
+So there is a stack of things:
+
+1) Glue added by the distribution (TeXLive doesn't implement the same
+thing as kerTeX);
+
+2) The engine: here it is Prote;
+
+3) LaTeX (and different behavior with different versions).
+
+
+When dumping the LaTeX macro package (today's version on CTAN), LaTeX
+running on the Prote engine, the \input is not the primitive but a
+wrapper. Now:
+
+---8<---
+$ echo '\input{docstrip}' | latex
+
+This is Prote, Version kerTeX C 3.141592653-2.6-1.0.0
+entering extended mode
+entering prote mode
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-06-30>
+
+*
+! LaTeX Error: File `docstrip.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+<*> \input{docstrip}
+                    ^^M
+No pages of output.
+Transcript written on texput.log.
+--->8---
+
+I can add debugging information about the searching:
+
+---8<---
+$ export KERTEXDEBUG="s"
+$ echo '\input{docstrip}' | latex 2>&1
+
+This is Prote, Version kerTeX C 3.141592653-2.6-1.0.0
+nameoffile: `'
+searched: `texput.log'.
+#realname found: `texput.log'
+#opened for writing as FILE *: `0x319a360'
+entering extended mode
+entering prote mode
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-06-30>
+
+*searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+
+! LaTeX Error: File `docstrip.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+<*> \input{docstrip}
+                    ^^M
+No pages of output.
+Transcript written on texput.log.
+--->8---
+
+What is passed is "docstrip" without the extension.
+
+If I force the use of the Prote primitive the extension is added and
+the file is found:
+
+---8<---
+$ export KERTEXDEBUG="s"
+$ echo '\primitive\input{docstrip}' | latex 2>&1
+This is Prote, Version kerTeX C 3.141592653-2.6-1.0.0
+nameoffile: `'
+searched: `texput.log'.
+#realname found: `texput.log'
+#opened for writing as FILE *: `0x319a360'
+entering extended mode
+entering prote mode
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-06-30>
+
+*searched: `./latex/KXPATH'.
+searched: `./latex/docstrip.tex'.
+searched: `./KXPATH'.
+searched: `./docstrip.tex'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip.tex'.
+#realname found: `/usr/pkg/share/kertex/latex/docstrip.tex'
+#opened for reading as FILE *: `0x319a3f8'
+(/usr/pkg/share/kertex/latex/docstrip.texsearched: `./latex/KXPATH'.
+searched: `./latex/docstrip.cfg'.
+searched: `./KXPATH'.
+searched: `./docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip.cfg'.
+
+Utility: `docstrip' v2.6b <2022-09-03>
+English documentation    <2022-09-03>
+
+**********************************************************
+* This program converts documented macro-files into fast *
+* loadable files by stripping off (nearly) all comments! *
+**********************************************************
+
+********************************************************
+* No Configuration file found, using default settings. *
+********************************************************
+
+)
+*
+! Emergency stop.
+<*> \primitive\input{docstrip}
+                              
+No pages of output.
+Transcript written on texput.log.
+--->8---
+
+Now, when using LaTeX as of 2022-11-01 (L3 2023-02-22):
+
+---8<---
+This is Prote, Version kerTeX C 3.141592653-2.6-1.0.0
+entering extended mode
+entering prote mode
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-02-22>nameoffile: `'
+searched: `texput.log'.
+#realname found: `texput.log'
+#opened for writing as FILE *: `0x319a360'
+
+*searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip.tex'.
+searched: `./KXPATH'.
+searched: `./docstrip.tex'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip.tex'.
+#realname found: `/usr/pkg/share/kertex/latex/docstrip.tex'
+#opened for reading as FILE *: `0x319a3f8'
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip'.
+searched: `./KXPATH'.
+searched: `./docstrip'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip'.
+searched: `./latex/KXPATH'.
+searched: `./latex/docstrip.tex'.
+searched: `./KXPATH'.
+searched: `./docstrip.tex'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip.tex'.
+#realname found: `/usr/pkg/share/kertex/latex/docstrip.tex'
+#opened for reading as FILE *: `0x319a3f8'
+(/usr/pkg/share/kertex/latex/docstrip.texsearched: `./latex/KXPATH'.
+searched: `./latex/docstrip.cfg'.
+searched: `./KXPATH'.
+searched: `./docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/carlisle/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/english/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/ly1/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/bbold/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/etoolbox/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/l3kernel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/l3backend/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/tools/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/firstaid/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/graphics-cfg/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/cyrillic/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/amscls/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/amsmath/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/latexbug/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/required/psnfss/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/latex/pkg-misc/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/KXPATH'.
+searched: `/usr/pkg/share/kertex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/KXPATH'.
+searched: `/usr/pkg/share/kertex/etex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/etex/babel/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/prote/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/prote/KXPATH'.
+searched: `/usr/pkg/share/kertex/prote/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/latex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/latex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/KXPATH'.
+searched: `/usr/pkg/share/kertex/tex/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/babel/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/babel/french/docstrip.cfg'.
+searched: `/usr/pkg/share/kertex/tex/ly1/docstrip.cfg'.
+
+Utility: `docstrip' v2.6b <2022-09-03>
+English documentation    <2022-09-03>
+
+**********************************************************
+* This program converts documented macro-files into fast *
+* loadable files by stripping off (nearly) all comments! *
+**********************************************************
+
+********************************************************
+* No Configuration file found, using default settings. *
+********************************************************
+
+)
+*
+! Emergency stop.
+<*> \input{docstrip}
+                    
+No pages of output.
+Transcript written on texput.log.
+--->8---
+
+Note that it is beating about the bushes, trying several times the same
+file; finally adding the extension; then retrying to load without the
+extension. But well: it is found.
+
+So what has been changed between 2022-11-01 and 2023-06-30.
+
+Something has been changed in LaTeX, because the Prote engine is exactly
+the same (this is the same version running the two version of LaTeX).
+
+Am I more "specific" now?
+-- 
+        Thierry Laronde <tlaronde +AT+ polynum +dot+ com>
+                     http://www.kergis.com/
+                    http://kertex.kergis.com/
+Key fingerprint = 0FF7 E906 FBAF FE95 FD89  250D 52B1 AE95 6006 F40C
+

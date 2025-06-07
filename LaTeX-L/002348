@@ -1,0 +1,143 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3504" "Mon" "6" "October" "1997" "11:34:41" "+0100" "Sebastian Rahtz" "s.rahtz@ELSEVIER.CO.UK" nil "100" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id MAA17673;
+	Mon, 6 Oct 1997 12:36:39 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.F348DE06@listserv.gmd.de>; Mon, 6 Oct 1997 12:36:36 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 208730 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Oct 1997 12:36:29 +0200
+Received: from pillar.elsevier.co.uk (root@pillar.elsevier.co.uk
+          [193.131.222.35]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id MAA16345 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6
+          Oct 1997 12:36:22 +0200 (MET DST)
+Received: from snowdon.elsevier.co.uk (snowdon.elsevier.co.uk
+          [193.131.197.164]) by pillar.elsevier.co.uk (8.8.5/8.8.5) with ESMTP
+          id LAA01715 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Oct
+          1997 11:35:12 +0100 (BST)
+Received: from SRAHTZ (actually host srahtz.elsevier.co.uk) by
+          snowdon.elsevier.co.uk with SMTP (PP); Mon, 6 Oct 1997 11:35:31 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <97100208475917@multivac.jb.man.ac.uk>
+            <m0xHCO3-000OWCC@dcarlisle.demon.co.uk>
+X-Mailer: VM 6.33 under Emacs 19.34.6
+Message-ID:  <3305-Mon06Oct1997113441+0100-s.rahtz@elsevier.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <m0xHCO3-000OWCC@dcarlisle.demon.co.uk>
+Date:         Mon, 6 Oct 1997 11:34:41 +0100
+From: Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2348
+
+David Carlisle writes:
+ > What is the main purpose of a standard markup convention for journal
+ > articles?
+ >
+add
+ * to allow sensible conversion to other systems
+
+ > Some journals give full postal addresses for each author.
+ > Some just give an `affiliation' for each author and highlight one
+ > `corresponding author' for whom full address is given.
+...
+ > or some other markup scheme. The question is, does it make sense to
+ > try to have one preprint class that covers both schemes. If such a
+ > class is to guarantee that documents can be run without error on
+ > either production class, then it seems that authors will be asked to
+ > provide lots of `redundant' information such as full address and
+ > affiliation for each author, even though a typical class will only use
+ > one or the other.
+my immediate reaction is that the pain of doing this is relatively
+trivial, compared to the advantages. i would expect to supply the full
+affiliation and address for every author (allowing for 2 or more at
+the same address, of course), and to mark which is the corresponding
+author. the production class can throw away the extra addresses if it
+likes.
+
+(by the way, one should consider more structure in addresses, to allow
+for elision of common elements. consider 4 authors from different
+departments in a hospital - its nice not to repeat the whole hospital
+address each time. but i dont have a suggested markup)
+
+...
+ > is cross referenced back to the authors.  Does it make sense to try
+ > to capture all these systems with a standard markup scheme. Especially
+ > as author order in some disciplines involves political implications of
+ > `seniority' (In others, authors are always listed alphabetically
+ > irrespective of seniority).
+ >
+i wouldn't even consider dropping the concept of a single common markup
+scheme. without that, whats the point of the exercise?
+
+i would say that author sorting is up to the production class, god
+help it. obviously as a minimum you have to mark affiliation
+differently from postal address (and email); my only question is
+whether you have to break address down further (see above).
+
+so i'd be expecting to see something like
+
+\author*{...}  % * means main author/corresponding author
+\affiliation{...}
+\address{...}
+
+\author[a]{...}
+\affiliation{...}
+\affiliation[Also affiliated to ]{alternate affiliation}
+\address{...}
+\address[Temporary address to June 1999]{alternate address}
+
+
+\author[b]{...}
+\affiliation{...}
+\address{...}
+
+\author{...}
+\affiliationlink{a}
+\addresslink{a}
+
+
+where the notation for re-using addresses is a bit Elsevier-like
+
+anothe thing to consider is structure within author. consider the
+paper by "Professor Hans Eysenck and Dr Sir Lord Dennis The Menace, DD";
+it would common to have a running head of
+
+ Eysenck and Menace
+
+which means that the markup should possibly be
+
+ \author{Professor Hans \surname{Eysenck}}
+ \author{Dr Sir Lord Denis the \surname{Menace}, DD}
+
+i'd rather see a specific isolation of known useful elements (ie
+surname) than any more structured setup.
+
+and Hans Eysenck is dead. better make that
+
+ \author#{Professor Hans \surname{Eysenck}}
+
+or ... or ...
+
+
+but as has been said, notation is not so important as function. i
+would claim we have to distinguish:
+ - author full name from summary form, ie surname
+ - dead authors (commonly marked with a \dag)
+ - corresponding authors
+ - multiple affiliations (with annotation)
+ - multiple address (with affiliation)
+ - common addresses and affiliations
+
+sebastian
+

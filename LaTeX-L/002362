@@ -1,0 +1,111 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3542" "Mon" "6" "October" "1997" "20:24:22" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "75" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id XAA32383;
+	Mon, 6 Oct 1997 23:36:09 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.1492BFF6@listserv.gmd.de>; Mon, 6 Oct 1997 23:36:06 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209165 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Oct 1997 23:35:58 +0200
+Received: from punt-1.mail.demon.net (punt-1d.mail.demon.net [194.217.242.138])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id XAA05204
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Mon, 6 Oct 1997 23:35:53
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-1.mail.demon.net  id aa1019284; 6 Oct 97 20:21 BST
+Received: by dcarlisle.demon.co.uk id m0xIIlS-000OWFC (Debian Smail-3.2
+          1996-Jul-4 #2); Mon, 6 Oct 1997 20:24:22 +0100 (BST)
+Message-ID:  <m0xIIlS-000OWFC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110713b05ed065d97f@[130.237.37.113]> (message from Hans Aberg
+              on Mon, 6 Oct 1997 19:40:20 +0200)
+Date:         Mon, 6 Oct 1997 20:24:22 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2362
+
+Hans>   So, unless this is changed, I think 1 and 2 above are somewhat
+Hans>   intertwined.
+
+but my point was that for something of tugboat length why do you need
+to \include (as opposed to \input) the separate articles. In that case
+questions of separate aux files do not arise.
+
+Other comments from Michael
+
+> If you put each article in a group the save stack can take a serious
+> hit
+I had in mind to not group the articles, but to explicitly check that
+certain document-critical things are not changed by one of the `sub documents'
+eg if the page size or default font setup gets changed by one chapter
+then complain loudly.
+
+> Nevertheless imho they are troublesome enough that a better approach
+> would be to set up a system of communicating between the different parts
+> through an auxiliary file.
+
+Ah. interesting. In general this would mean that the page break
+calculations at the end of the article do not `see' what is coming up
+in the next article, but TeX's page break lookahead is so pitiful
+compared to its line break algorithm perhaps you are not losing so much.
+
+> At the end of the first part, measure the
+> actual depth of the last page and pass it to the next article, along
+> with the current page number and whatever else is needed.
+
+So this implicitly implies (I think) that no float will float into or
+out of a region that may be \included. For sub articles that is
+probably anyway what you want but people often seem to ask for a
+general include system acting on arbitrary portions of the document
+just as a technical convenience to avoid re-compiling every time.
+
+> This means using an OS-specific script
+or another cousin to docstrip and fontinst:-)
+
+> Understood; but isn't it true that the floats will get printed in any
+> case (in the next really included portion, or at \end{document})? The
+> worst scenario that I can see is some floats from section 3 get printed
+> in section 5 if the user didn't happen to include section 4 on this
+> particular LaTeX run. Will this happen often enough in practice to
+> really be a problem?
+
+my point was that in a situation where the included files do not form
+a logical `float boundary' (I think boom is the term used for oil slicks:-)
+then if a float comes out of a section into the following part of the
+document then if that section is not included on some run, the source
+for the float is not available and so it is hard to see how to leave
+the space for it in the later parts. If page breaks are not faithfully
+reproduced there does not seem to be much point in an \include system
+and you may as well use \input. (It would be possible for the aux file
+to record the size of all pending floats at an \include).
+
+I return to my original point. Most of the difficulties of \include
+relate to \includeonly, ie the potential for *not* including certain
+sections. The case of just wanting to `include' certain independent
+units (but to include all of them) is not really directly related.
+
+> take all the floats in \@toplist, \@botlist,
+> \@deferlist and set them at the end of the preceding text as `here!'
+
+yes some kind of \flushfloats command would be generally useful to put
+at the end of sections, again independant of \include. I think I once
+saw such a command. Chris? Donald Arseneau?, you?
+
+> Isn't the main unsolved problem for \include making sure that non-immediate
+> \write's go to the proper .aux file?
+
+Pah, write then all to the main aux file (with a note to say which bit
+they come from, if that is needed) (not that I've tried coding it that
+way:-)
+
+David
+

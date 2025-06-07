@@ -1,0 +1,93 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1951" "Tue" " 8" "February" "1994" "12:41:43" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402081245.AA14206@mail.cs.tu-berlin.de>" "62" "A philosophical question about packages and options" "^Date:" nil nil "2" "1994020812:41:43" "A philosophical question about packages and options" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA08355; Tue, 8 Feb 94 13:46:21 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA17745; Tue, 8 Feb 94 13:45:19 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA14206
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 13:45:12 +0100
+Message-Id: <199402081245.AA14206@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 6178; Tue, 08 Feb 94 13:44:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 6177; Tue,
+ 8 Feb 1994 13:44:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2365; Tue,
+ 8 Feb 1994 13:44:22 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 8 Feb 1994 12:41:43 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      A philosophical question about packages and options
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1460
+
+Suppose I wish to set up a package to produce customizable letterheads. I
+have a .sty file to do this, so it isn't going to be much hassle. Currently,
+the letterhead style sets certain defaults for the letterhead, and the user
+customizes by making changes. For instance, here is my own style, although I
+could have more than one, and some people do.
+
+\input{somas.sty}%%School of maths letterhead
+\name{Dr M. J. Piff}       % In letterhead
+\signature{M. J. Piff}  % at end of letter
+\telephone{(0742)~824431 (direct)\\824366/7 (secretaries)}
+\extension{}
+\fax{}
+\email{M.Piff@shef.ac.uk}
+\oddsidemargin0in
+\textwidth6.25in
+
+I put this into a file called mjplet.sty, because I don't want to have to
+include that information in every preamble. Then I use
+
+\documentstyle[.....,mjplet,...]{letter}
+
+and away.
+
+Clearly I would now have to use something like
+
+\documentclass{letter}
+\usepackage{mjplet}
+
+where mjplet contains
+
+\usepackage{somas}
+\name{Dr M. J. Piff}       % In letterhead
+\signature{M. J. Piff}  % at end of letter
+\telephone{(0742)~824431 (direct)\\824366/7 (secretaries)}
+\extension{}
+\fax{}
+\email{M.Piff@shef.ac.uk}
+\oddsidemargin0in
+\textwidth6.25in
+
+but there is possibly a more natural way to do this:(?)
+
+\usepackage[mjplet]{somas}
+
+where mjplet is an option that modifies the behaviour of somas.
+
+However, presumably I can't do that because mjplet, xyzlet, abclet, etc would
+all have to be pre-defined in somas, is that right? And the options are
+infinitely extensible, or at least, there are a fair number of them.
+
+In fact, somas modifies the behaviour of letter. I don't understand the
+distinction between packages and options.
+
+Mike Piff
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

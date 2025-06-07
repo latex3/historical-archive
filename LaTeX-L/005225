@@ -1,0 +1,96 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 7 Sep 2008 20:32:51 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m87IWkK1014825
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 7 Sep 2008 20:32:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m87ISCrZ000932
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 7 Sep 2008 20:28:12 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m86M1Rgw025539;
+	Sun, 7 Sep 2008 20:28:04 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 20792 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 7 Sep
+          2008 20:28:03 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m87IS3wb022799 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Sep 2008 20:28:03 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.183]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m87IS2co000845 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Sep 2008 20:28:05 +0200
+Received: from morse.mittelbach-online.de (p4FD45F5C.dip.t-dialin.net
+          [79.212.95.92]) by mrelayeu.kundenserver.de (node=mrelayeu6) with
+          ESMTP (Nemesis) id 0ML29c-1KcOzP2BkQ-0001QG; Sun, 07 Sep 2008
+          20:27:59 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 7515F64676; Sun,  7 Sep 2008 20:27:56 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <48C38EC1.9040807@morningstar2.co.uk>
+            <E8E9A43D-3D11-469C-A988-49CA19CA0519@gmail.com>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX19vpQJsXntee0tK6GbIAhuYvP26kt4/FINOPyy
+              xn0PcZmjEdKPqoxZ03YBxurPOg+hWyFcNmR1xdKjduevwQsx3h
+              QG8lLdx9iGkl3JAvmW+YRZXvALDxokB
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18628.7468.77437.963030@morse.mittelbach-online.de>
+Date:         Sun, 7 Sep 2008 20:27:56 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Spaces
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <E8E9A43D-3D11-469C-A988-49CA19CA0519@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Sep 2008 18:32:51.0496 (UTC) FILETIME=[22A5FA80:01C91118]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5225
+
+Will Robertson writes:
+ > On 07/09/2008, at 5:50 PM, Joseph Wright wrote:
+ > 
+ > > Only the last one works as intended (by me).  Is there a LaTeX3 way to
+ > > do this?
+ > 
+ > Interesting.
+ > This is weird:
+ > 
+ >    \err_warn:nn{\temp~stuff~stuff}{}
+ > 
+ > Only the second tilde causes a space.
+
+why would that be weird?
+
+in plain TeX
+
+  \errwarn{\temp stuff stuff} 
+
+and only
+
+  \errwarn{\temp\space stuff stuff}
+
+in expl3 ~ is a space token and not an active char expanding to \space.
+
+It is a bitof a pity that space tokens are so deep down within the TeX engine
+behavior and that sometimes they get gobbled if explicit.
+
+Interesting question if it would be possible to do ~ -> \space instead but my
+guess is that this would break a lot of the current code
+
+frank
+

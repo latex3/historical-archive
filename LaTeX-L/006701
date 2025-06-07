@@ -1,0 +1,94 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p3DFlU4v016069
+	for <rainer@rainer-schoepf.de>; Wed, 13 Apr 2011 17:47:32 +0200
+Received: (qmail 16130 invoked by alias); 13 Apr 2011 15:47:25 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 13 Apr 2011 15:47:24 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx024) with SMTP; 13 Apr 2011 17:47:24 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p3DFilGb013799
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 13 Apr 2011 17:44:48 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p3DFFVbI017006;
+	Wed, 13 Apr 2011 17:44:47 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1245803 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 13 Apr
+          2011 17:44:47 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p3DFilQP017218 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 13 Apr 2011 17:44:47 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id p3DFiZ9X006054 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 13 Apr 2011 17:44:40 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1QA2F9-00017S-bG; Wed, 13 Apr 2011 15:44:35 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.15)
+            Gecko/20110303 Thunderbird/3.1.9
+MIME-Version: 1.0
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4DA5C4E2.8090005@morningstar2.co.uk>
+Date:         Wed, 13 Apr 2011 16:44:34 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: The nature of popping from an empty sequence
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p4yCuwxJv6KYxPVw4M2NAdyi4y3XGOgXeb4HjE503dRkVGeudXsiBuCVr4xK
+ uhQJijqnnLTz4xYizQ+DloeaR/oszHet/tVb3Huqz1An9rvSYTbmGOCuHMbsLeDms0newuLWJEld
+ 2XZkuS9UZ5+W3eTgcipug4PIrAwilHAViYmzV0uKNXelbAS90h1oK1ampAmlYi6ivmuBA==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6701
+
+Hello all,
+
+Currently, if you do
+
+  \prop_get:NnN \<prop-list> { <key> } \<tl var>
+
+and the <key> is not in the \<prop-list> then the \<tl var> ends up as
+\q_no_value. On the other hand, for sequences trying to 'pop' or 'get'
+from an empty sequence leads to a (deliberate) error.
+
+There are arguments for and against the difference in behaviour.
+
+On the side of the current approach, an empty sequence is very different
+from a missing key in a a property list. If a sequence is being used as
+a stack, then trying to get/pop once it is empty is probably going to be
+due to a coding error. If you potentially return \q_no_value then there
+has to be a quark test each time you get a value, and that does not make
+so much sense for a stack.
+
+On the other hand, \q_no_value is defined as being a special return
+value used when there is 'nothing to return'. Doing
+
+  \seq_pop_left:NN \<seq> \<tl var>
+  \quark_if_no_value:NF \<tl var>
+
+is not going to be too much slower than the current code, as there is an
+internal test which would be removed if the behaviour was changed.
+
+Thoughts?
+-- 
+Joseph Wright
+

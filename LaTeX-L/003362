@@ -1,0 +1,125 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3415" "Tue" "26" "October" "1999" "08:51:57" "-0400" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "88" "Re: footnote templates (was Experimental `template' interface               code)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA23358
+	for <schoepf@UNI-MAINZ.DE>; Tue, 26 Oct 1999 14:52:06 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.1FF503DE@mail.listserv.gmd.de>; Tue, 26 Oct 1999 14:52:01 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445524 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 26 Oct 1999 14:50:14 +0200
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA21323 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 26 Oct 1999 14:50:11 +0200 (MET
+          DST)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.9.3/8.9.3) with ESMTP id
+          IAA18241 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 26 Oct 1999
+          08:51:58 -0400 (EDT)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.9.3/8.9.3) id
+          IAA08223 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Tue, 26 Oct 1999 08:51:57
+          -0400 (EDT)
+Message-ID:  <199910261251.IAA08223@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 26 Oct 1999 08:51:57 -0400
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: footnote templates (was Experimental `template' interface
+              code)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3362
+
+(Perhaps some who are quiet are busy or do not know quite what to say.
+I don't think that the silence indicates a lack of interest.)
+
+Inasmuch as I have never written a package or a style and, therefore,
+do not have a serious grasp of the issues, I am nonetheless interested
+in the hierarchy of function that you are implementing, and I do want
+to see it exploited fully.
+
+I suspect that some of the gains over 2E achieved this way correspond
+to gains that can be had with SGML/XML pre-processing from a language
+that is LaTeX-like.  That is, there is more than one way to cut the
+cake.
+
+While I have been focused on modeling author-level LaTeX, not always
+as closely as possible, I wonder if it might be useful for somebody to
+think about modeling in SGML or XML a LaTeX package language.  (Just
+a thought.)
+
+Frank Mittelbach writes:
+
+> let's forget for a second the template side of this, how would you consider
+> providing an interface for that on the LaTeX level?
+>
+> this is a serious \footnote[question]{Like this? which would of course be
+> incompatible with the current interface.}
+
+In my prototype I began with a command
+
+\anch[href="http://www.ctan.org"]{CTAN}
+
+where the option has a much stricter string-like variable=string
+(possibly repeated) content model, a model not fully expressible in
+dtd language, but the argument can take inline markup.  *ML processing
+of the variable=string pairs is keyed on the variable name.  So href
+is an external ref, iref an internal ref to a \label, and fref a
+footnote ref, ... (others could be added).  For href the value string
+is the url, which is set in strict LaTeX as a footnote to the
+argument.  For fref the value string is the footnote text, which in
+HTML goes in a list of footnotes at the bottom of the doc.  For iref,
+the value string corresponds to HTML "#location" that is set in LaTeX
+as a \cite.  I might later add jref for a ref to another part of the
+same document that is not quite technically internal.
+
+Later I decided to add ordinary \footnote even though \anch provides
+the same thing.
+
+And I decided to save the author time by providing
+
+\urlanch{http://www.ctan.org} .
+
+Here the argument is a url string that is set in LaTeX with \verb,
+which enables me to use the somewhat shady character `~' in a url,
+which I cannot do in an href option for \anch since that goes into
+a regular LaTeX footnote (and \string~ is not quite what I consider
+regular LaTeX, anyway).
+
+One of the points here is that somebody who does not like my choices
+can easily make changes to my perl.  Side effects will not usually
+be a problem.
+
+>   text text\footnote{first}\footnote{second}
+>
+> in most case this would be supposed to come out as
+>
+>             1, 2
+>   text text
+>
+> and not as
+>
+>             12
+>   text text
+>
+> as it would in current LaTeX.
+>
+> now please don't tell me that \footnote could easily scan for a \footnote
+> following. i know, but how do i specify this if we separate frontend (ie
+> \footnote declared via something like the xparse package from the typesetting
+> declaration)
+
+From my point of view one wants different types of "macro"
+declarations that can be made at various stages, and one wants to have
+very clearly laid out rules about what can be done with each.
+
+That said, what about giving the issue to the authors with
+something new for this purpose such as \footnotesequence ?
+
+                                   -- Bill
+

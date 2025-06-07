@@ -1,0 +1,461 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D3B8948C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:48 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D3B8948C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      RE: ENVTEST.TEX
+Date: Wed, 22 Aug 1990 10:40:57 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1F1@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <PZF5HZ@RUIPC1B.bitnet>
+To: "Rainer Schoepf" <BK4@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 229
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D3B8948C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+% In definitions using environments directly (no \begin \end)
+% there is no problem
+
+\def\example{Some bla ``\quotu'' some more bla }
+\def\endexample{\endquotu\ last bla.}
+
+
+\def\quotu                                   % internal definitions
+       {some blub \listi\ and blub           % not using \begin
+        \lista\ some more blub}
+\def\endquotu{\endlista\endlisti\ end blub}
+
+
+% \halign's need \@aligningtrue, otherwise a final \cr (as it happens
+% within the tabular, e.g., \\ \hline) will start a new column as shown.
+\makeatletter
+\def\tab{%\@aligningtrue
+         \halign\bgroup b\"ah ##\cr}
+\def\endtab{\crcr\egroup}
+
+
+% some more primitive nonsense environments for testing
+%
+\def\listi{ listi }
+\def\endlisti{ endlisti }
+
+\def\lista{ lista }
+\def\endlista{ endlista }
+
+% here is an example of a command which allows checking.
+% Of course the implementation
+% with the dummy environment is not acceptable and anyway it would be =
+nicer
+% to allow commands like \fbox also as environments.
+% The only thing necessary is a different command name for the env =
+start.
+% That is, if all envs start with \_envname and are ended by \envname_
+% we just have to replace dummy by those names.
+\catcode`\_=3D11
+\let\oldfbox\fbox
+\def\fbox#1{\oldfbox{\inner_begin\dummy#1\inner_end\enddummy}}
+\catcode`\_=3D8
+
+\let\dummy\empty
+\let\enddummy\empty
+
+\errorcontextlines=3D1000
+
+\documentstyle[environ]{article}
+
+% Sometimes we turn errors into warnings for testing
+\makeatletter
+\catcode`\_=3D11
+%\let\@latexerr\err_warn
+\catcode`\_=3D8
+
+
+% here is now a user env definition where nested envs are allowed:
+\newenvironment{quota}
+               {some blub \begin{listi} and blub
+                \begin{lista} some more blub}
+               {\end{lista}\end{listi} end blub}
+
+
+
+\begin{document}
+
+
+
+\fbox{\begin{minipage}{7cm}
+      \begin{center}
+           A Table\\[2pt]
+      \begin{tabular}{|l|}
+      \hline
+       bla\\ blaaaa \\
+      \hline}
+
+
+
+
+
+\begin{itemizr}
+% this is an example for an misspelled begin environment
+% it will produce some problems because now \item is at a funny position
+% Try correcting the env name und watch the results.
+% The way \item reacts here is horrible it should be corrected.
+\item bla
+\end{itemize}
+% this will end the misspelled env. by either producing an error
+% (never opened) which should get perhaps a different text, or by
+% running smothly if the user inserted \begin{itemize} after the
+% first error message.
+
+
+\begin{quota}
+\end{listi}
+% this should insert quota with warning since it is
+% part of quota's definition.
+% Then should produce error message that listi was
+% never opened. This is perhaps confusing but it is logical because
+% listi is part of the quota definition. I this isn't the case, e.g.,
+% if the user would have been misspelled quota (wuota) then  we would
+% get the undefined message.
+
+
+\begin{quotu}
+\end{listi}
+% this should produce only an error message, i.e., quotu will be still
+% open afterwards because listi is an environment and its usage in
+% quotu is hidden. The recovery makes the assumption that  it was left =
+over
+% after moving some code arround. If it is actually a misspelled quotu
+% then it will be detected at the next closing environment which was
+% actually open. The chances that is is the real reason are slight, is =
+there
+% are no envs with nearly identical names.
+
+
+\begin{lista}
+\begin{example}
+\begin{tab}
+bla \cr
+% the \cr in the line above will result in a new column (two b\"a in
+% the output), because we left out the \if@aligning switch.
+\end{ttab}
+% this should be turned into tab since it is undefined, i.e. the =
+assumption
+% is that it is misspelled.
+\end{document}
+% this should insert example and lista and the still open quotu from
+% above.
+
+
+------_=_NextPart_001_01C19442.D3B8948C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     RE: ENVTEST.TEX</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>% In definitions using environments directly (no =
+\begin \end)</FONT>
+
+<BR><FONT SIZE=3D2>% there is no problem</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\example{Some bla ``\quotu'' some more bla =
+}</FONT>
+
+<BR><FONT SIZE=3D2>\def\endexample{\endquotu\ last bla.}</FONT>
+</P>
+<BR>
+
+<P><FONT =
+SIZE=3D2>\def\quotu&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp; % internal definitions</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {some blub =
+\listi\ and =
+blub&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; % not =
+using \begin</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \lista\ =
+some more blub}</FONT>
+
+<BR><FONT SIZE=3D2>\def\endquotu{\endlista\endlisti\ end blub}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% \halign's need \@aligningtrue, otherwise a final \cr =
+(as it happens</FONT>
+
+<BR><FONT SIZE=3D2>% within the tabular, e.g., \\ \hline) will start a =
+new column as shown.</FONT>
+
+<BR><FONT SIZE=3D2>\makeatletter</FONT>
+
+<BR><FONT SIZE=3D2>\def\tab{%\@aligningtrue</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\halign\bgroup b\&quot;ah ##\cr}</FONT>
+
+<BR><FONT SIZE=3D2>\def\endtab{\crcr\egroup}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% some more primitive nonsense environments for =
+testing</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\def\listi{ listi }</FONT>
+
+<BR><FONT SIZE=3D2>\def\endlisti{ endlisti }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\lista{ lista }</FONT>
+
+<BR><FONT SIZE=3D2>\def\endlista{ endlista }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% here is an example of a command which allows =
+checking.</FONT>
+
+<BR><FONT SIZE=3D2>% Of course the implementation</FONT>
+
+<BR><FONT SIZE=3D2>% with the dummy environment is not acceptable and =
+anyway it would be nicer</FONT>
+
+<BR><FONT SIZE=3D2>% to allow commands like \fbox also as =
+environments.</FONT>
+
+<BR><FONT SIZE=3D2>% The only thing necessary is a different command =
+name for the env start.</FONT>
+
+<BR><FONT SIZE=3D2>% That is, if all envs start with \_envname and are =
+ended by \envname_</FONT>
+
+<BR><FONT SIZE=3D2>% we just have to replace dummy by those =
+names.</FONT>
+
+<BR><FONT SIZE=3D2>\catcode`\_=3D11</FONT>
+
+<BR><FONT SIZE=3D2>\let\oldfbox\fbox</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\fbox#1{\oldfbox{\inner_begin\dummy#1\inner_end\enddummy}}</=
+FONT>
+
+<BR><FONT SIZE=3D2>\catcode`\_=3D8</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\dummy\empty</FONT>
+
+<BR><FONT SIZE=3D2>\let\enddummy\empty</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\errorcontextlines=3D1000</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentstyle[environ]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% Sometimes we turn errors into warnings for =
+testing</FONT>
+
+<BR><FONT SIZE=3D2>\makeatletter</FONT>
+
+<BR><FONT SIZE=3D2>\catcode`\_=3D11</FONT>
+
+<BR><FONT SIZE=3D2>%\let\@latexerr\err_warn</FONT>
+
+<BR><FONT SIZE=3D2>\catcode`\_=3D8</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% here is now a user env definition where nested envs =
+are allowed:</FONT>
+
+<BR><FONT SIZE=3D2>\newenvironment{quota}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; {some blub \begin{listi} and blub</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; \begin{lista} some more blub}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; {\end{lista}\end{listi} end blub}</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\fbox{\begin{minipage}{7cm}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{center}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A =
+Table\\[2pt]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{tabular}{|l|}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \hline</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bla\\ blaaaa =
+\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \hline}</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{itemizr}</FONT>
+
+<BR><FONT SIZE=3D2>% this is an example for an misspelled begin =
+environment</FONT>
+
+<BR><FONT SIZE=3D2>% it will produce some problems because now \item is =
+at a funny position</FONT>
+
+<BR><FONT SIZE=3D2>% Try correcting the env name und watch the =
+results.</FONT>
+
+<BR><FONT SIZE=3D2>% The way \item reacts here is horrible it should be =
+corrected.</FONT>
+
+<BR><FONT SIZE=3D2>\item bla</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>% this will end the misspelled env. by either =
+producing an error</FONT>
+
+<BR><FONT SIZE=3D2>% (never opened) which should get perhaps a different =
+text, or by</FONT>
+
+<BR><FONT SIZE=3D2>% running smothly if the user inserted =
+\begin{itemize} after the</FONT>
+
+<BR><FONT SIZE=3D2>% first error message.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{quota}</FONT>
+
+<BR><FONT SIZE=3D2>\end{listi}</FONT>
+
+<BR><FONT SIZE=3D2>% this should insert quota with warning since it =
+is</FONT>
+
+<BR><FONT SIZE=3D2>% part of quota's definition.</FONT>
+
+<BR><FONT SIZE=3D2>% Then should produce error message that listi =
+was</FONT>
+
+<BR><FONT SIZE=3D2>% never opened. This is perhaps confusing but it is =
+logical because</FONT>
+
+<BR><FONT SIZE=3D2>% listi is part of the quota definition. I this isn't =
+the case, e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>% if the user would have been misspelled quota =
+(wuota) then&nbsp; we would</FONT>
+
+<BR><FONT SIZE=3D2>% get the undefined message.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{quotu}</FONT>
+
+<BR><FONT SIZE=3D2>\end{listi}</FONT>
+
+<BR><FONT SIZE=3D2>% this should produce only an error message, i.e., =
+quotu will be still</FONT>
+
+<BR><FONT SIZE=3D2>% open afterwards because listi is an environment and =
+its usage in</FONT>
+
+<BR><FONT SIZE=3D2>% quotu is hidden. The recovery makes the assumption =
+that&nbsp; it was left over</FONT>
+
+<BR><FONT SIZE=3D2>% after moving some code arround. If it is actually a =
+misspelled quotu</FONT>
+
+<BR><FONT SIZE=3D2>% then it will be detected at the next closing =
+environment which was</FONT>
+
+<BR><FONT SIZE=3D2>% actually open. The chances that is is the real =
+reason are slight, is there</FONT>
+
+<BR><FONT SIZE=3D2>% are no envs with nearly identical names.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{lista}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{example}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tab}</FONT>
+
+<BR><FONT SIZE=3D2>bla \cr</FONT>
+
+<BR><FONT SIZE=3D2>% the \cr in the line above will result in a new =
+column (two b\&quot;a in</FONT>
+
+<BR><FONT SIZE=3D2>% the output), because we left out the \if@aligning =
+switch.</FONT>
+
+<BR><FONT SIZE=3D2>\end{ttab}</FONT>
+
+<BR><FONT SIZE=3D2>% this should be turned into tab since it is =
+undefined, i.e. the assumption</FONT>
+
+<BR><FONT SIZE=3D2>% is that it is misspelled.</FONT>
+
+<BR><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT SIZE=3D2>% this should insert example and lista and the still =
+open quotu from</FONT>
+
+<BR><FONT SIZE=3D2>% above.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D3B8948C--
+

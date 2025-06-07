@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1396" "Mon" "6" "July" "1998" "14:26:54" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "35" "Miscellany" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA17720;
+	Mon, 6 Jul 1998 14:29:38 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.F6D2FCB2@listserv.gmd.de>; Mon, 6 Jul 1998 14:29:36 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 379910 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Jul 1998 14:29:32 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA10224 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 6 Jul 1998 14:29:30 +0200
+          (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA144 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 6 Jul 1998
+          14:29:29 +0200
+Received: from [195.122.197.67] by fclients0.redestb.es (Post.Office MTA v3.1.2
+          release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAA211 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 6 Jul 1998 14:32:57 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199807061229.OAA10224@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 6 Jul 1998 14:26:54 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Miscellany
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2650
+
+1. The \toks_put_left is defined
+
+\def_new:Npn \toks_put_left:Nn #1{\exp_after:NN\toks_put_left_aux:w
+                        \toks_use:N #1\q_stop #1}
+\def_long_new:Npn \toks_put_left_aux:w #1\q_stop #2#3{#2{#3#1}}
+
+but if the toks contains a quark stop the command fails. This sort of
+errors
+is very disconcerting (I found it very often in 2e) and I think should
+be avoided as possible. This could be defined
+
+\def_new:Npn \toks_put_left:Nn #1{\exp_after:NN\toks_put_left_aux:w
+      \exp_after:NN{\toks_use:N #1}#1}
+\def_long_new:Npn \toks_put_left_aux:w #1#2#3{#2{#3#1}}
+
+which is only a token longer.
+
+2. Every people is a world and it's impossible to devise a syntax which
+all people will be happy with. But even so, I think I must avoid just
+"importing" to TeX the syntax from our favourite programming language.
+TeX has its own internal logic and its own established syntax and
+this should be our starting point. Am I the only guy in the
+world whose favourite language is TeX? :-)
+
+3. David said
+>although looking at your example above / looks too `hard'
+>a break to me, I can read \chk_var_or_const:N as one token but \chk/
+>looks too split off.
+I think so, but I prefer it (or !) to _ which is too weak. Personally,
+I've always disliked the underscore because it looks as it was out of the
+text line, and I've preferred the uppercase convention of Modula2 or
+AppleTalk.
+
+Javier
+Regards
+

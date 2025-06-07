@@ -1,0 +1,91 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2517" "Tue" "23" "June" "1998" "11:27:29" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "49" "Re: Modules" "^Date:" nil nil "6" nil "Modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id DAA08963;
+	Tue, 23 Jun 1998 03:27:56 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.5F935B2A@listserv.gmd.de>; Tue, 23 Jun 1998 3:27:54 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 368057 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 23 Jun 1998 03:27:46 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id DAA15228
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 23 Jun 1998 03:27:36
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.2) id
+          LAA12452; Tue, 23 Jun 1998 11:27:29 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id DAA15229
+Message-ID:  <199806230127.LAA12452@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110703b1b3df3f0cc6@[130.237.37.30]>
+Date:         Tue, 23 Jun 1998 11:27:29 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2587
+
+Hans Aberg writes:
+ >   Then one may discuss how long the long names should be: Certainly, one
+ > cannot diminish the number of module separators (like "/" in these
+ > discussions), because they tell something about the logical structure. But
+ > it is possible to let the module named "environment" have names starting
+ > "envir/" by simply letting the command \environment/ expand
+ > \environment/<command name> to \envir/<command name>. But then the module
+ > name "envir" cannot be used.
+
+Aha, yes, I'm sure this is something else my stomach was thinking
+about . . . :-)  A renaming like this may inadvertently conflict with
+something else in the system.  Perhaps the way around this is to
+enforce the use of a \newshortcut, which does checking a là
+\newcommand.
+
+ >   Similarly, the module named "environment" should not be required be in a
+ > file named like that; if one wants to specify a special file or file
+ > position, there should be command doing this. (Such command could be made
+ > to be platform independent between say UNIX, MacOS and MSOS if there is
+ > another command telling which platform it is.)
+
+Implementors might take a leaf out of web2c's book - the
+texfonts.map file.  (See the kpathsea documentation.)
+
+ >   So here, they way I see it, the long names (1) are only used really in
+ > order to keep the code straight and avoid code clashes. The user
+ > (preferably also developers) should only need to use short names by various
+ > of simplifying schemes; this is (2) then. But non-local names should expand
+ > to long names.
+
+Hmm . . . this is the exact opposite of what I was suggesting.
+Developers use the long names to make it easier to write; these get
+translated by docstrip/doc.sty into short names to minimize format
+size and control sequence usage.  Still no word from the Team as to
+whether this matters for LaTeX3.
+
+ >   When developing the simplifying schemes (2), I do not know how to do it
+ > for the simple reason that TeX is too tricky to program. One can simply not
+ > invent some nice general schemes, then sit down, program it in TeX and hope
+ > it is going to work. Generalities is evidently not Knuth's strong side.
+
+I have some ideas about how to implement the suggestions in my earlier
+e-mail.  I don't think it would be too hard; it's primarily a matter of
+making sure that implementors and package-writers keep to the `rules'
+(i.e. like always using \newcommand instead of \def).
+
+ >   So (2) must be developed together with (1), so that the two cooperate.
+
+Indeed.
+

@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1486" "Mon" "6" "October" "1997" "12:37:25" "+0200" "Bernard GAULLE" "gaulle@IDRIS.FR" nil "39" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id MAA12953;
+	Tue, 7 Oct 1997 12:08:51 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.82A8E6CA@listserv.gmd.de>; Tue, 7 Oct 1997 12:03:38 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209630 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997 12:03:31 +0200
+Received: from lumiere.idris.fr (root@lumiere.idris.fr [130.84.8.14]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id MAA03292 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Oct 1997 12:03:28 +0200
+          (MET DST)
+Received: from murnau.idris.fr (murnau.idris.fr [130.84.8.20]) by
+          lumiere.idris.fr (8.8.7/8.8.7) with ESMTP id MAA01087 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Oct 1997 12:37:28 +0200
+          (MET DST)
+Received: (from gaulle@localhost) by murnau.idris.fr (8.8.4/8.8.4) id MAA00326;
+          Mon, 6 Oct 1997 12:37:25 +0200
+Message-ID:  <199710061037.MAA00326@murnau.idris.fr>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 6 Oct 1997 12:37:25 +0200
+From: Bernard GAULLE <gaulle@IDRIS.FR>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2349
+
+>>>>> On Mon, 6 Oct 1997 09:59:18 +0100,
+>>>>>    Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK> write about "Re: LaTeX journal and publisher macros":
+SR> Hans Aberg writes:
+  >   So it appears that what is needed is a document hierarchy:
+  >   \documentclass{journal}       % Start of journal class
+  >   \begin{document}
+  >
+  >     \documentclass{article}     % Start of article 1 class
+  >     \begin{document}
+  >       %% Article 1 stuff
+  >     \end{document}              % End of article 1 class
+
+[...]
+SR> i agree that its an interesting subject...
+
+all users working as editor agree and wish (since... a long time)
+to be able to include articles in a report (or journal), reports
+in a book, ... without any modification. It looks like the Multi Master
+Fonts... we need a mechanism for our personnal cooking. So, may be,
+the document hierarchy should not exactly be seen as suggested but
+preferably like this:
+
+\documentclass{MyJournal}
+\usepackage[WithToc,WithoutIndex,% some global options of interest
+            DeferedBiblio,EvenStartingPage]{mmarticle}
+   \begin{document}
+
+     \begin{mmarticle}
+     \documentclass{article}     % Start of article 1 class
+     \begin{document}
+       %% Article 1 stuff
+     \end{document}              % End of article 1 class
+     \end{mmarticle}
+
+This scheme suggests that there is not a lot of stuff to include in
+the LaTeX kernel and that, probably, the most important part of
+the job could be done inside a [standard] package.
+
+  --bg
+

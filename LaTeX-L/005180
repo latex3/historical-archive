@@ -1,0 +1,104 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 8 Mar 2008 14:38:23 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m28DcLqp016056
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 8 Mar 2008 14:38:21 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m28DYfb0003396
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 8 Mar 2008 14:34:41 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m27N1GeO032112;
+	Sat, 8 Mar 2008 14:34:29 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 211201 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 8 Mar
+          2008 14:34:29 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m28DYTBQ009419 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 8 Mar 2008 14:34:29 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.183]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m28DTdxd017659 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 8 Mar 2008 14:29:43 +0100
+Received: from morse.mittelbach-online.de (p4FD44CAE.dip.t-dialin.net
+          [79.212.76.174]) by mrelayeu.kundenserver.de (node=mrelayeu6) with
+          ESMTP (Nemesis) id 0ML29c-1JXzBv3iKq-0001kd; Sat, 08 Mar 2008
+          14:34:24 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 34EF3634B4; Sat,  8 Mar 2008 14:34:21 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <85wsoeto1k.fsf@lola.goethe.zz>
+            <18385.42387.268037.81145@morse.mittelbach-online.de>
+            <20080307234555.GA6607@irwin.vpn.uni-freiburg.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX18sYcXnSlz+oSvXKoVPsBOZ6TIGCFr3WiuKKss
+              falgfU9ASCxSBEkvkcy+gm+iQIM7618ao1VR6kACDFJn4/Dftv
+              vNpo4hqjWL6gVEjwDFD+94d4eK3JlKm
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18386.38365.176041.393185@morse.mittelbach-online.de>
+Date:         Sat, 8 Mar 2008 14:34:21 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: A really, really bad bug.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20080307234555.GA6607@irwin.vpn.uni-freiburg.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Mar 2008 13:38:23.0897 (UTC) FILETIME=[AE581090:01C88121]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5180
+
+Heiko,
+
+ > On Fri, Mar 07, 2008 at 09:29:07PM +0100, Frank Mittelbach wrote:
+ > 
+ > > David Kastrup writes:
+ > > 
+ > >  > Another possibilities are to remove the grouping from the end of
+ > >  > document action testing the labels. 
+ > > 
+ > > from briefly staring at the code I see no reason why this group is needed at
+ > > all. Does anybody see one why it could make a difference?
+ > 
+ > You mean the following group?
+ > 
+ >   \def\enddocument{%
+ >     ...
+ >     \begingroup
+ >       ...
+ >       \input\jobname.aux
+ >       ...
+ >     \endgroup
+ >     ...
+ >   }
+ > 
+ > Then it isn't known what .aux files may contain (apart from \newlabel).
+ > Many packages write definitions and other stuff in the .aux files.
+
+well it is known to me, but in which case would that make a difference at this
+point? The only thing that happens after the endgroup is
+
+  \deadcycles\z@\@@end
+
+and that shouldn't even output another page unless the aux files are missued
+to the point that they contribute again to the page galley
+
+so what am I missing that you think can make a problem even if such
+definitions or stuff are not executed in a group?
+ 
+frank
+

@@ -1,0 +1,297 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Tue, 12 Oct 2004 22:51:20 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i9CKpwrT013535 for <rainer.schoepf@PROTEOSYS.COM>; Tue, 12 Oct 2004 22:51:58 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i9CKcgbY004425; Tue, 12 Oct 2004 22:38:42 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C4B09D.39D79400"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i9BDwlDh011246; Tue, 12 Oct 2004 22:37:52 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 665841 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 12 Oct 2004 22:37:52 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i9CKbpRP001410 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 12 Oct 2004 22:37:51 +0200
+Received:  from moutng.kundenserver.de (moutng.kundenserver.de          [212.227.126.188]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with          ESMTP id i9CKcIbY004365 for <LATEX-L@listserv.uni-heidelberg.de>;          Tue, 12 Oct 2004 22:38:18 +0200 (MET DST)
+Received:  from [212.227.126.162] (helo=mrelayng.kundenserver.de) by          moutng.kundenserver.de with esmtp (Exim 3.35 #1) id 1CHTPU-0007o7-00          for LATEX-L@listserv.uni-heidelberg.de; Tue, 12 Oct 2004 22:38:16          +0200
+Received:  from [80.129.21.102] (helo=istrati.mittelbach-online.de) by          mrelayng.kundenserver.de with asmtp (TLSv1:EDH-RSA-DES-CBC3-SHA:168)          (Exim 3.35 #1) id 1CHTPU-000733-00 for          LATEX-L@listserv.uni-heidelberg.de; Tue, 12 Oct 2004 22:38:16 +0200
+Received:  (from frank@localhost) by istrati.mittelbach-online.de          (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) id i9CKaLr00538; Tue, 12 Oct          2004 22:36:21 +0200
+In-Reply-To:  <AIEMLDLODGHKHCOBLEFCAEEHCKAA.hendri@uvt.nl>
+References: <AIEMLDLODGHKHCOBLEFCAEEHCKAA.hendri@uvt.nl>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: VM 6.96 under Emacs 20.7.1
+X-OriginalArrivalTime: 12 Oct 2004 20:51:21.0033 (UTC) FILETIME=[3A753390:01C4B09D]
+X-Authentication-Warning: istrati.mittelbach-online.de: frank set sender to                         frank@mittelbach-online.de using -f
+X-Scanned-By: MIMEDefang at proteosys.com
+X-Provags-ID: kundenserver.de abuse@kundenserver.de              auth:923c546e49b26a7485eda6910e23f403
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: naming conventions LaTeX3
+Date: Tue, 12 Oct 2004 21:36:21 +0100
+Message-ID: A<16748.16453.482612.266244@istrati.mittelbach-online.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: naming conventions LaTeX3
+Thread-Index: AcSwnTqNo6DlPtDIR+GU5aVkC33vmA==
+From: "Frank Mittelbach" <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4819
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C4B09D.39D79400
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hendri
+
+ > When reading the docs on the new naming conventions,
+ > I thought about the following:
+ > Will the rules be general enough to cope with most future
+ > situations? I fear that a lot of macros (especially internal
+ > macros) will fall in the :w category which will make the
+ > convention less informative.
+
+in my experience this is not a problem.
+
+the strength of the expl3 conventions are in
+
+ - clear separation of global and local variables and their global and =
+local
+   mutators in the various modules
+
+ - the strength of the exp module, e.g. the fact that many of the =
+expansion
+   tricks that typically a TeX source vanish, e.g.
+
+   \let:NN \foo \bar        let one token to another token
+
+   \let:cc {foo-#1}{bar-#2} let two tokens both generated from strings =
+->
+                            csnames to each other
+
+   normal LaTeX coding for the latter would be:
+
+    \expandafter\let\csname foo-#1\expandafter\endcsname
+                    \csname bar-#2\endcsname
+
+  and all that with full generality, eg to get only the second argument =
+as a
+  csname generated we need the declaration
+
+   \def_new:Npn \let:Nc {\exp_args:NNc \let:NN}
+
+  and then \let:Nc \foo {foo-#1} works etc.
+
+all that makes codes enormously more readable.
+
+now how often do you need :w commands?
+
+if you look at the low-level module code that comes with expl3 itself or =
+if
+you think about parsing applications like xkeyval one might get the =
+impression
+that this happens very often but in any other circumstances the number =
+is very
+very low indeed.
+
+my (not quite finished) conversion of the xor package has used on 9 =
+lines some
+:w macros  (all of which are actually fixes to expl3 code) and the whole
+package has current 7947 code lines (excluding documentation)
+
+template.sty (in the converted version) has 26 left out of 526 code =
+lines most
+of which are stuff like
+
+\exp_after:NN \show \cs:w ... \cs_end:
+
+where simply the functionality in epxl3 is missing ,ie where the =
+correction
+form would be something like
+
+ \cs_show:N      ( =3D \show)
+
+and the above would then turn into
+
+ \cs_show:c {...}
+
+so all in all my experience is that this is only really used in the very
+low-level modules that set up data structures like queues and those that =
+deal
+with special parsing of special input syntax
+
+cheers
+frank
+
+------_=_NextPart_001_01C4B09D.39D79400
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: naming conventions LaTeX3</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hendri</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&gt; When reading the docs on the new naming =
+conventions,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; I thought about the following:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; Will the rules be general enough to cope =
+with most future</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; situations? I fear that a lot of macros =
+(especially internal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; macros) will fall in the :w category which =
+will make the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; convention less informative.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in my experience this is not a problem.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>the strength of the expl3 conventions are in</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- clear separation of global and local variables =
+and their global and local</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; mutators in the various modules</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- the strength of the exp module, e.g. the fact =
+that many of the expansion</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; tricks that typically a TeX source =
+vanish, e.g.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; \let:NN \foo =
+\bar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; let one token to another =
+token</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; \let:cc {foo-#1}{bar-#2} let two tokens =
+both generated from strings -&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; csnames to each other</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; normal LaTeX coding for the latter would =
+be:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \expandafter\let\csname =
+foo-#1\expandafter\endcsname</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \csname =
+bar-#2\endcsname</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; and all that with full generality, eg to get =
+only the second argument as a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; csname generated we need the =
+declaration</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp; \def_new:Npn \let:Nc {\exp_args:NNc =
+\let:NN}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; and then \let:Nc \foo {foo-#1} works =
+etc.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>all that makes codes enormously more readable.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>now how often do you need :w commands?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>if you look at the low-level module code that comes =
+with expl3 itself or if</FONT>
+
+<BR><FONT SIZE=3D2>you think about parsing applications like xkeyval one =
+might get the impression</FONT>
+
+<BR><FONT SIZE=3D2>that this happens very often but in any other =
+circumstances the number is very</FONT>
+
+<BR><FONT SIZE=3D2>very low indeed.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>my (not quite finished) conversion of the xor package =
+has used on 9 lines some</FONT>
+
+<BR><FONT SIZE=3D2>:w macros&nbsp; (all of which are actually fixes to =
+expl3 code) and the whole</FONT>
+
+<BR><FONT SIZE=3D2>package has current 7947 code lines (excluding =
+documentation)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>template.sty (in the converted version) has 26 left =
+out of 526 code lines most</FONT>
+
+<BR><FONT SIZE=3D2>of which are stuff like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\exp_after:NN \show \cs:w ... \cs_end:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>where simply the functionality in epxl3 is missing ,ie =
+where the correction</FONT>
+
+<BR><FONT SIZE=3D2>form would be something like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;\cs_show:N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ( =3D =
+\show)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and the above would then turn into</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;\cs_show:c {...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>so all in all my experience is that this is only =
+really used in the very</FONT>
+
+<BR><FONT SIZE=3D2>low-level modules that set up data structures like =
+queues and those that deal</FONT>
+
+<BR><FONT SIZE=3D2>with special parsing of special input syntax</FONT>
+</P>
+
+<P><FONT SIZE=3D2>cheers</FONT>
+
+<BR><FONT SIZE=3D2>frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C4B09D.39D79400--
+

@@ -1,0 +1,81 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 8 Sep 2008 21:10:16 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m88JABAR013778
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 8 Sep 2008 21:10:12 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m88J5VWE001392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 8 Sep 2008 21:05:32 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m88EGNo6014594;
+	Mon, 8 Sep 2008 21:05:28 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 23237 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 8 Sep
+          2008 21:05:27 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m88J5RpW004558 for <latex-l@listserv.uni-heidelberg.de>;
+          Mon, 8 Sep 2008 21:05:27 +0200
+Received: from anchor-post-30.mail.demon.net (anchor-post-30.mail.demon.net
+          [194.217.242.88]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m88J5ES6009313 for <latex-l@listserv.uni-heidelberg.de>;
+          Mon, 8 Sep 2008 21:05:18 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-30.mail.demon.net with esmtp (Exim 4.67) id
+          1Kcm30-000EpO-0q for latex-l@listserv.uni-heidelberg.de; Mon, 08 Sep
+          2008 19:05:14 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48C57767.9030602@morningstar2.co.uk>
+Date:         Mon, 8 Sep 2008 20:05:11 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Something like \patchcmd
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Sep 2008 19:10:16.0767 (UTC) FILETIME=[8758E4F0:01C911E6]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5245
+
+Hello,
+
+I've been trying to work out if the current expl3 has anything like
+\patchcmd from etoolbox.  Will suggested looking at the various \tlp_
+... macros.  However, even a simple two-part test in this way fails:
+
+\documentclass{article}
+\usepackage{expl3}
+\CodeStart
+\cs_if_really_exist:cT{thanks}{
+  \tlp_if_in:NnT\thanks{\footnotemark}{
+    % Do something
+  }
+  \tlp_if_in:NnT\thanks{\footnotetext}{
+    % Also do something
+  }
+}
+\CodeStop
+\begin{document}
+\end{document}
+
+I guess I'm abusing the functions.  So have I missed something obvious?
+ The ability to patch existing functions is very handy.
+-- 
+Joseph Wright
+

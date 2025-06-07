@@ -1,0 +1,129 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id t62FWkIC011751
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Thu, 2 Jul 2015 17:32:47 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62FWbbM000395;
+	Thu, 2 Jul 2015 17:32:38 +0200
+Received: from mail-ie0-x230.google.com (mail-ie0-x230.google.com
+ [IPv6:2607:f8b0:4001:c03::230])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62FWY4s000386
+ (version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <latex-team@latex-project.org>; Thu, 2 Jul 2015 17:32:35 +0200
+Received: by ieqy10 with SMTP id y10so59285936ieq.0
+ for <latex-team@latex-project.org>; Thu, 02 Jul 2015 08:32:28 -0700 (PDT)
+MIME-Version: 1.0
+X-Received: by 10.50.90.179 with SMTP id bx19mr43337958igb.43.1435851148614;
+ Thu, 02 Jul 2015 08:32:28 -0700 (PDT)
+Received: by 10.50.163.37 with HTTP; Thu, 2 Jul 2015 08:32:28 -0700 (PDT)
+In-Reply-To: <5595540F.9080605@telecom-bretagne.eu>
+References: <559534D0.2060001@morningstar2.co.uk>
+ <5595540F.9080605@telecom-bretagne.eu>
+Date: Thu, 2 Jul 2015 16:32:28 +0100
+Message-ID: <CAEW6iOgEZmRptF1K_8ecZ2=kM8O2tRC4VOnYuHqWJsmU5DbKog@mail.gmail.com>
+Subject: Re: LuaTeX support in the LaTeX kernel
+From: David Carlisle <d.p.carlisle@gmail.com>
+To: =?UTF-8?Q?=C3=89lie_Roux?= <elie.roux@telecom-bretagne.eu>
+X-DANTE-Spam-Score: -102 () BAYES_00, DKIM_SIGNED, DKIM_VALID, DKIM_VALID_AU,
+ FREEMAIL_FROM, SPF_PASS, USER_IN_DKIM_WHITELIST
+X-Scanned-By: MIMEDefang 2.71 on 85.214.41.38
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on IPv6:2a01:488:67:1000:b01c:36b8:0:1
+X-MIME-Autoconverted: from quoted-printable to 8bit by comedy.dante.de id
+ t62FWY4s000386
+Cc: Heiko Oberdiek <heiko.oberdiek@googlemail.com>,
+        Philipp Gesang <Philipp.Gesang@alumni.uni-heidelberg.de>,
+        "latex-team@latex-project.org" <latex-team@latex-project.org>,
+        Philipp Maximilian Stephani <p.stephani2@gmail.com>, mpg@elzevir.fr,
+        Lars Madsen <daleif@imf.au.dk>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by h1439878.stratoserver.net id t62FWkIC011751
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7737
+
+On 2 July 2015 at 16:09, Élie Roux <elie.roux@telecom-bretagne.eu> wrote:
+
+
+>> *Catcode allocation*
+
+> This would be helpful indeed, or most package using catcodetables will
+> define their document, string and makeatother tables...
+
+Yes probably, although one concern that I had with the existing ones
+is that they
+only differ in the ascii range whereas (perhaps) they ought to reflect
+the catcode settings as specified in unicode-letters.def ie 11 or 12
+depending on unicode class.
+
+
+
+>
+>> *Callbacks*
+>>
+>> We have significantly minimised the callback allocator from
+>> luatexbase to cover just the idea of registering multiple callbacks
+>> but not resetting/removing/...
+>
+> I think removing a callback is quite useful: for instance in Gregorio
+> (https://github.com/gregorio-project/gregorio, soon to be integrated
+> into TeXLive) I make quite convoluted treatment in postlinebreak_filter,
+> but only in the context of a score, so I register the callback at the
+> beginning of a score and remove it at the end.. Well, I could find other
+> means to check if I need to run the callback or not, but I admit I liked
+> this way of using callbacks.
+
+use cases are good here, nothing fixed yet....
+
+
+> That seems like a terrible idea: some packages would register callbacks
+> in the LaTeX core interface, and if another registers a callback in the
+> more sophisticated interface, the first callback will be overwritten...
+> Maybe a solution to this and the removal could be to make the callback
+> function lists public?
+
+Clearly we should look at this...
+
+
+>
+> Why not include the code adding kpse to package.searchers ? Or would it
+> be better to add it when building the format (so that LaTeX doesn't
+> depend on kpse
+
+clearly something we should look at....
+
+>
+> Why not include a whatsit allocator (like the one in
+> https://github.com/lualatex/luatexbase/blob/master/luatexbase-attr.dtx#L484)?
+> This was a request from users and could have its place alongside the
+> other allocators.
+>
+
+I think it just got missed, partly I suppose as it's almost all on the lua side
+although as you say, the  allocator could be done in tex to match the others.
+Again: more testing required..
+
+Thanks for your comments!
+
+David
+
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

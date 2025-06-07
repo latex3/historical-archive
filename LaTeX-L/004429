@@ -1,0 +1,261 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Thu, 9 Jan 2003 21:29:30 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h09KTR6C025862 for <rainer.schoepf@PROTEOSYS.COM>; Thu, 9 Jan 2003 21:29:28 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h09KNiwO011175; Thu, 9 Jan 2003 21:23:45 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2B81D.CFD1F100"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h090ugrM003608; Thu, 9 Jan 2003 21:16:22 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6288 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 9 Jan 2003 21:16:22 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h09KGMTk011354 for          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 9 Jan 2003 21:16:22 +0100
+Received:  from mail.umu.se (mail.umu.se [130.239.8.30]) by          relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h09KMuEV022145          for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 9 Jan 2003 21:22:57          +0100 (MET)
+Received:  from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by          mail.umu.se (8.12.4/8.12.4) with ESMTP id h09KMvwH059229 for          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 9 Jan 2003 21:22:57 +0100          (MET)
+In-Reply-To:  <15899.14827.804209.458595@istrati.mittelbach-online.de>
+References: <200212031601.gB3G11cQ009558@sun.dante.de>            <200212031601.gB3G11cQ009558@sun.dante.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 09 Jan 2003 20:29:30.0119 (UTC) FILETIME=[CFE41970:01C2B81D]
+X-Sender: lars@abel.math.umu.se
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id h09KGMTk011355
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -1.3 () IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01
+Content-class: urn:content-classes:message
+Subject:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Date: Thu, 9 Jan 2003 21:22:57 +0100
+Message-ID: A<l03130303ba437e2e7d70@[130.239.20.144]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Thread-Index: AcK4HdAH+/cOaHU0R66WHmNgUCX7sg==
+From: =?iso-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4429
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2B81D.CFD1F100
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 21.34 +0100 2003-01-07, Frank Mittelbach wrote:
+>following up on the discussion concering utf-8 support for LaTeX, below =
+is a
+>package written to provide that support within the inputenc framework.
+>
+>it is not complete, nor are its tables set up finally, we would need =
+some
+>volunteers to help us here.
+>
+>but first i would like to hear comments/suggestions on the approach
+
+I like it -- it's a nice compromise between practical usefulness and the
+ideal that input and output encodings should be independent.
+
+>%    \begin{macrocode}
+>\gdef\DeclareUnicodeCharacter#1#2{%
+>   \count@"#1\relax
+>   \typeout{ \space\space defining Unicode char #1 (decimal =
+\the\count@)}%
+
+That should probably be better as
+
+  \typeout{ \space\space defining Unicode char U+#1 (decimal =
+\the\count@)}%
+
+
+
+>%</t1>
+>%    \end{macrocode}
+>%    The following definitions are in the encoding file but have no
+>%    direct equivalent in Unicode or simply do not make sense in that
+>%    context (or I couldn't find anything or \ldots :-).
+>%\begin{verbatim}
+>%\DeclareTextSymbol{\j}{OT1}{17}
+>%\DeclareTextSymbol{\SS}{T1}{223}
+>%\DeclareTextSymbol{\textcompwordmark}{T1}{23}
+
+I would say that the compwordmark is U+200C (ZERO WIDTH NON-JOINER); =
+that
+character is for example supposed to prevent ligaturing between =
+characters.
+Adobe has assigned dotlessj to U+F6BE (LATIN SMALL LETTER DOTLESS J), =
+but
+that is inofficial (and thus not universal) as it resides in the private
+use area. U+00DF (LATIN SMALL LETTER SHARP S) is uppercased as SS (two
+U+0053), so there probably isn't any \SS.
+
+>% But the following (and some others) might actually lurk in Unicode
+>%    somewhere\ldots
+>%\begin{verbatim}
+>%\DeclareTextSymbol{\textasteriskcentered}{OMS}{3}   % "03
+
+How about U+2217 (ASTERISK OPERATOR)?
+OTOH, \textasteriskcentered is probably a glyphic variation on the =
+normal
+asterisk rather than a separate character.
+
+>%\DeclareTextCommand{\textcircled}{OMS}
+
+U+24B6 (CIRCLED LATIN CAPITAL LETTER A) is decribed as being =
+approximately
+"<circle> A", where "<circle>" means "something expressed by a higher =
+level
+protocol" (such as LaTeX). Hence I don't think there is a character for
+this.
+
+Lars Hellstr=F6m
+
+------_=_NextPart_001_01C2B81D.CFD1F100
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: latex/3480: Support for UTF-8 missing in =
+inputenc.sty</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 21.34 +0100 2003-01-07, Frank Mittelbach =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;following up on the discussion concering utf-8 =
+support for LaTeX, below is a</FONT>
+
+<BR><FONT SIZE=3D2>&gt;package written to provide that support within =
+the inputenc framework.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;it is not complete, nor are its tables set up =
+finally, we would need some</FONT>
+
+<BR><FONT SIZE=3D2>&gt;volunteers to help us here.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;but first i would like to hear =
+comments/suggestions on the approach</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I like it -- it's a nice compromise between practical =
+usefulness and the</FONT>
+
+<BR><FONT SIZE=3D2>ideal that input and output encodings should be =
+independent.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\gdef\DeclareUnicodeCharacter#1#2{%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; \count@&quot;#1\relax</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; \typeout{ \space\space defining =
+Unicode char #1 (decimal \the\count@)}%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That should probably be better as</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \typeout{ \space\space defining Unicode char =
+U+#1 (decimal \the\count@)}%</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;%&lt;/t1&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; The following definitions are =
+in the encoding file but have no</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; direct equivalent in Unicode =
+or simply do not make sense in that</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; context (or I couldn't find =
+anything or \ldots :-).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%\DeclareTextSymbol{\j}{OT1}{17}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%\DeclareTextSymbol{\SS}{T1}{223}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;%\DeclareTextSymbol{\textcompwordmark}{T1}{23}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I would say that the compwordmark is U+200C (ZERO =
+WIDTH NON-JOINER); that</FONT>
+
+<BR><FONT SIZE=3D2>character is for example supposed to prevent =
+ligaturing between characters.</FONT>
+
+<BR><FONT SIZE=3D2>Adobe has assigned dotlessj to U+F6BE (LATIN SMALL =
+LETTER DOTLESS J), but</FONT>
+
+<BR><FONT SIZE=3D2>that is inofficial (and thus not universal) as it =
+resides in the private</FONT>
+
+<BR><FONT SIZE=3D2>use area. U+00DF (LATIN SMALL LETTER SHARP S) is =
+uppercased as SS (two</FONT>
+
+<BR><FONT SIZE=3D2>U+0053), so there probably isn't any \SS.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;% But the following (and some others) might =
+actually lurk in Unicode</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%&nbsp;&nbsp;&nbsp; somewhere\ldots</FONT>
+
+<BR><FONT SIZE=3D2>&gt;%\begin{verbatim}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&gt;%\DeclareTextSymbol{\textasteriskcentered}{OMS}{3}&nbsp;&nbs=
+p; % &quot;03</FONT>
+</P>
+
+<P><FONT SIZE=3D2>How about U+2217 (ASTERISK OPERATOR)?</FONT>
+
+<BR><FONT SIZE=3D2>OTOH, \textasteriskcentered is probably a glyphic =
+variation on the normal</FONT>
+
+<BR><FONT SIZE=3D2>asterisk rather than a separate character.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;%\DeclareTextCommand{\textcircled}{OMS}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>U+24B6 (CIRCLED LATIN CAPITAL LETTER A) is decribed as =
+being approximately</FONT>
+
+<BR><FONT SIZE=3D2>&quot;&lt;circle&gt; A&quot;, where =
+&quot;&lt;circle&gt;&quot; means &quot;something expressed by a higher =
+level</FONT>
+
+<BR><FONT SIZE=3D2>protocol&quot; (such as LaTeX). Hence I don't think =
+there is a character for</FONT>
+
+<BR><FONT SIZE=3D2>this.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Lars Hellstr=F6m</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2B81D.CFD1F100--
+

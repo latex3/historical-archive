@@ -1,0 +1,60 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1242" "Tue" "3" "November" "1998" "09:53:18" "GMT" "David Carlisle" "davidc@NAG.CO.UK" nil "24" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id KAA27464;
+	Tue, 3 Nov 1998 10:53:49 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.B22E1466@listserv.gmd.de>; Tue, 3 Nov 1998 10:53:47 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407087 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 3 Nov 1998 10:53:42 +0100
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id KAA12804 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 3 Nov 1998 10:53:40 +0100 (MET)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          JAA04308; Tue, 3 Nov 1998 09:53:18 GMT
+References: <98102213123551@man.ac.uk> <98102213123551@man.ac.uk>
+            <v03110700b2647e640c40@[130.237.37.81]>
+Message-ID:  <199811030953.JAA04308@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110700b2647e640c40@[130.237.37.81]> (message from Hans Aberg
+              on Tue, 3 Nov 1998 10:36:19 +0100)
+Date:         Tue, 3 Nov 1998 09:53:18 GMT
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2716
+
+>  One can get around this by using a pair of active characters. Denote
+> these by "<" and ">"; then the above would read
+>     He said <She said to me <bar>>, and so on
+> and \futurelet could be used.
+
+This works for a few more cases, but only a few. What if the quote is
+inside a font change, or a section head, or any other command, you still
+have the potential problem of the lookahead coping with {}.
+
+Of course you can follow the above to its logical conclusion of
+implementing _everything_ via active characters and implementing your
+own parsing routines _in_ TeX rather than using the parser built into
+tex-the-program. This is certainly possible (some people have done
+exactly that) but TeX isn't really the best language for implementing a
+parser, and certainly isn't the fastest. If more involved contextual
+analysis is required in the input stream then it probably makes more
+sense to look to an extended system that can provide such extended
+functionality. (Something like omega's OTP processes.) They may not be
+quite what you want here, but the principle is the same, to make a
+controlled extension of the underlying system rather than try to build a
+tower of macros on the rather fragile sand that is tex-the-program.
+
+David
+
+

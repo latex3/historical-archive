@@ -1,0 +1,621 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Fri, 1 Apr 2005 16:25:04 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j31EP1qc027260 for <rainer.schoepf@PROTEOSYS.COM>; Fri, 1 Apr 2005 16:25:02 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j31EIstL005504; Fri, 1 Apr 2005 16:18:54 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C536C6.9881E000"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j31Cdrdd008231; Fri, 1 Apr 2005 16:16:30 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 189230 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 1 Apr 2005 16:16:30 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id j31EGTYd010062 for          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr 2005 16:16:29 +0200
+Received:  from smtp07.web.de (smtp07.web.de [217.72.192.225]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          j31EIJtL005335 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr          2005 16:18:20 +0200 (MET DST)
+Received:  from [212.144.144.147] by smtp07.web.de with smtp (WEB.DE 4.104 #268)          id 1DHMxU-0005Ql-00 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 01          Apr 2005 16:17:13 +0200
+In-Reply-To:  <yfi7jjqui9e.fsf@triumf.ca>
+References: <5.1.0.14.0.20050329212401.02478aa0@pop3.web.de>            <5.1.0.14.0.20050329212401.02478aa0@pop3.web.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+X-OriginalArrivalTime: 01 Apr 2005 14:25:04.0873 (UTC) FILETIME=[99071590:01C536C6]
+X-Sender: uwe.lueck@web.de
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id j31EGTYd010063
+X-Scanned-By: MIMEDefang at proteosys.com
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: \penalty for \holdinginserts
+Date: Fri, 1 Apr 2005 15:14:05 +0100
+Message-ID: A<5.1.0.14.0.20050401124528.02490e30@pop3.web.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: \penalty for \holdinginserts
+Thread-Index: AcU2xpkhDja2icQiSJaUSBq8BHsAGA==
+From: =?iso-8859-1?Q?Uwe_L=FCck?= <uwe.lueck@WEB.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4851
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C536C6.9881E000
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+A discussion of which penalty to put into the main vertical list
+to trigger \output again after lowering \holdinginserts to < 1
+(within a modified LaTeX \output):
+
+At 01:47 30.03.05, you [Donald Arseneau] wrote:
+>Uwe L=FCck <uwe.lueck@WEB.DE> writes:
+> > And what about
+> >      \ifnum\outputpenalty=3D10000 \else % [replaced \@M]
+> >        \penalty\outputpenalty
+> >      \fi
+>
+>I see no reason to reproduce the exact output penalty, since you
+>are looking to get the same page break, so I would probably put a
+>negative penalty there.
+
+1. Some obvious requirements are:
+
+R1. -10001 for \clearpage must be reproduced.
+
+R2. \@specialoutput refers to -20000 to decide about \deadcycles.
+To keep this feature exactly, (of course) a \penalty < -20000 must
+be turned into a \penalty < -20000, and a \penalty \geq -20000 must
+be turned into a \penalty \geq -20000 (or may be dropped if
+ > -10000). -- I wonder what this feature is good for, I cannot see
+from the LaTeX code how using genuine LaTeX commands only
+(so no explicit \penalty, but what about \addpenalty?) can produce
+an \outputpenalty < -10004. (I cannot find a "supereject" feature --
+\penalty-20000 as in Plain TeX -- in LaTeX.) Perhaps it is support
+for some class or package, or it was ...
+
+R3. To avoid a wrong call of \@specialoutput, a \penalty > -10001
+must not be turned into a \penalty < -10000.
+
+Not so clear:
+
+R4. There may be a reason for reproducing -10000, but I don't
+see any.
+
+2. Of course, reproducing the exact output penalty is a simple
+way to meet requirements R1, R2, R3 (and R4). With "simple"
+I especially think of the length of the code (and of the
+documentation). -- I consider this a "reason" for reproducing
+... as Donald Arseneau wondered about. (The wider context
+of the above quotation is reproduced below.)
+
+3. On the other hand (see "wider context" below), Donald
+Arseneau (seems to have) thought of replacing an output
+penalty -9999, ..., 10000 by, say, -10000 -- to get the same
+break as before. However, for the simplicity mentioned in 2.
+above, it would be nice if, say, the proposal at the top of
+this message (i.e., reproduce unless 10000, maybe
+replacing \penalty\outputpenalty line in the proposal in
+latex/3719) would yield the same break anyway. This nice
+thing would be the case if (after the \output which was met
+with \holdinginserts>0) the vertical list were the same as
+before, or if the difference were a \penalty10000 (TeXbook
+p. 125) neighbouring the \penalty that we are inserting only
+-- and if dimensions like \pagegoal were not changed (or
+only in some appropriate way). And is such a nice thing the
+case? I guess David Kastrup has addressed such questions,
+maybe sometimes tending towards "yes", sometimes
+qualifying. I am attaching below his contributions which I
+have in mind here, together with some context. (Of course,
+unequivocality cannot be expected in e-mails, unless one
+spends hours on one e-mail like I do.)
+
+[End of discussion. Quotations:]
+
+At 01:47 30.03.05, you [Donald Arseneau] wrote:
+[wider context for 2. and 3. above, not complete,
+  the subject was "\@reinserts"]
+>Uwe L=FCck <uwe.lueck@WEB.DE> writes:
+>
+> > >Donald Arseneau <asnd@TRIUMF.CA> writes:
+> > > > The problem with \penalty\outputpenalty is that =
+\outputpenalty=3D10000
+> > > > and prevents the same page break instead of forcing the same =
+break.
+>
+>\pagediscards is an etex primitive (built-in) command.  David is
+>probably right (since he has been looking at that stuff) but I
+>don't see the benefit, since we want to get the same page break
+>again.
+>
+> > And what about
+> >      \ifnum\outputpenalty=3D\@M \else
+> >        \penalty\outputpenalty
+> >      \fi
+>
+>I think that would work.
+>The point is that if TeX breaks the page *not* at a penalty (effective
+>penalty=3D0) it flags that by setting \outputpenalty=3D10000 (which =
+could
+>never happen naturally).
+>
+>I see no reason to reproduce the exact output penalty, since you
+>are looking to get the same page break, so I would probably put a
+>negative penalty there.
+>
+>You do not want to hold inserts when performing "supereject"
+>(-20000), so you do need to release the inserts then.
+
+At 10:46 30.03.05, you [David Kastrup] wrote:
+[for 3. above, not complete, subject was "\@reinserts"]
+>Donald Arseneau <asnd@TRIUMF.CA> writes:
+> > Uwe L=FCck <uwe.lueck@WEB.DE> writes:
+> >> At 13:30 26.03.05, you [David Kastrup] wrote:
+> >> >Donald Arseneau <asnd@TRIUMF.CA> writes:
+> >> >
+> >> > > The problem with \penalty\outputpenalty is that =
+\outputpenalty=3D10000
+> >> > > and prevents the same page break instead of forcing the same =
+break.
+> >> >
+> >> >Well, when rebreaking, I find that using \pagediscards seems like =
+the
+> >> >best thing to do.  Then you get the same vertical list again, =
+unless
+> >> >\outputpenalty is less than 10000, in which case you need to =
+reinsert
+> >> >it in front of the discards (it will be replaced with \nobreak in =
+the
+> >> >\pagediscards in this case).
+>
+>[...]
+>
+>If we are aiming for the same break, indeed the pagediscards are not
+>interesting.  Indeed, as opposed to splitdiscards, the page discards
+>are what has been removed at the _start_ of the current output page,
+>not after it.  So the pagediscards are only interesting if the
+>_previous_ break might need reversal.
+>
+>[...]
+>
+> > I see no reason to reproduce the exact output penalty, since you are
+> > looking to get the same page break, so I would probably put a
+> > negative penalty there.
+>
+>As the sort of a note aside: a forced penalty will lead to different
+>values of \pagetotal, \pageshrink and so on (more useful values,
+>actually), so if you have some subordinate output routine looking at
+>those values, it might make different decisions.
+>
+> > There are references to \footins in \@specialoutput that have to be
+> > rewritten for the case when \holdinginserts is holding the
+> > inserts. (The whole point of holding them is that they do *not* come
+> > out when cycling through \@specialoutput.)
+> >
+> > I'm not sure that it is even possible to maintain the \@pageht
+> > methods when using \holdinginserts.
+>
+>The page break decisions including splits of insertions and limiting
+>of insertion material to the respective dimen remain the same.  It is
+>just that the material does not make it into the boxes, but stays in
+>insertion items in box255.
+
+[U. L.: Yes, but D. A. addressed a different matter, I think.
+He indicated something like -- I'm generalizing a little -- that
+LaTeX's float placement mechanism does not cooperate with
+TeX's algorithm of choosing among past insertions for the
+next page as nicely as intended. The simple uses of
+\holdinginserts discussed so far just replace one problem
+with another one.]
+
+------_=_NextPart_001_01C536C6.9881E000
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: \penalty for \holdinginserts</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>A discussion of which penalty to put into the main =
+vertical list</FONT>
+
+<BR><FONT SIZE=3D2>to trigger \output again after lowering =
+\holdinginserts to &lt; 1</FONT>
+
+<BR><FONT SIZE=3D2>(within a modified LaTeX \output):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At 01:47 30.03.05, you [Donald Arseneau] wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;Uwe L=FCck &lt;uwe.lueck@WEB.DE&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; And what about</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifnum\outputpenalty=3D10000 \else % [replaced \@M]</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\penalty\outputpenalty</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;I see no reason to reproduce the exact output =
+penalty, since you</FONT>
+
+<BR><FONT SIZE=3D2>&gt;are looking to get the same page break, so I =
+would probably put a</FONT>
+
+<BR><FONT SIZE=3D2>&gt;negative penalty there.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1. Some obvious requirements are:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>R1. -10001 for \clearpage must be reproduced.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>R2. \@specialoutput refers to -20000 to decide about =
+\deadcycles.</FONT>
+
+<BR><FONT SIZE=3D2>To keep this feature exactly, (of course) a \penalty =
+&lt; -20000 must</FONT>
+
+<BR><FONT SIZE=3D2>be turned into a \penalty &lt; -20000, and a \penalty =
+\geq -20000 must</FONT>
+
+<BR><FONT SIZE=3D2>be turned into a \penalty \geq -20000 (or may be =
+dropped if</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; -10000). -- I wonder what this feature is =
+good for, I cannot see</FONT>
+
+<BR><FONT SIZE=3D2>from the LaTeX code how using genuine LaTeX commands =
+only</FONT>
+
+<BR><FONT SIZE=3D2>(so no explicit \penalty, but what about =
+\addpenalty?) can produce</FONT>
+
+<BR><FONT SIZE=3D2>an \outputpenalty &lt; -10004. (I cannot find a =
+&quot;supereject&quot; feature --</FONT>
+
+<BR><FONT SIZE=3D2>\penalty-20000 as in Plain TeX -- in LaTeX.) Perhaps =
+it is support</FONT>
+
+<BR><FONT SIZE=3D2>for some class or package, or it was ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>R3. To avoid a wrong call of \@specialoutput, a =
+\penalty &gt; -10001</FONT>
+
+<BR><FONT SIZE=3D2>must not be turned into a \penalty &lt; =
+-10000.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Not so clear:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>R4. There may be a reason for reproducing -10000, but =
+I don't</FONT>
+
+<BR><FONT SIZE=3D2>see any.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2. Of course, reproducing the exact output penalty is =
+a simple</FONT>
+
+<BR><FONT SIZE=3D2>way to meet requirements R1, R2, R3 (and R4). With =
+&quot;simple&quot;</FONT>
+
+<BR><FONT SIZE=3D2>I especially think of the length of the code (and of =
+the</FONT>
+
+<BR><FONT SIZE=3D2>documentation). -- I consider this a =
+&quot;reason&quot; for reproducing</FONT>
+
+<BR><FONT SIZE=3D2>... as Donald Arseneau wondered about. (The wider =
+context</FONT>
+
+<BR><FONT SIZE=3D2>of the above quotation is reproduced below.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>3. On the other hand (see &quot;wider context&quot; =
+below), Donald</FONT>
+
+<BR><FONT SIZE=3D2>Arseneau (seems to have) thought of replacing an =
+output</FONT>
+
+<BR><FONT SIZE=3D2>penalty -9999, ..., 10000 by, say, -10000 -- to get =
+the same</FONT>
+
+<BR><FONT SIZE=3D2>break as before. However, for the simplicity =
+mentioned in 2.</FONT>
+
+<BR><FONT SIZE=3D2>above, it would be nice if, say, the proposal at the =
+top of</FONT>
+
+<BR><FONT SIZE=3D2>this message (i.e., reproduce unless 10000, =
+maybe</FONT>
+
+<BR><FONT SIZE=3D2>replacing \penalty\outputpenalty line in the proposal =
+in</FONT>
+
+<BR><FONT SIZE=3D2>latex/3719) would yield the same break anyway. This =
+nice</FONT>
+
+<BR><FONT SIZE=3D2>thing would be the case if (after the \output which =
+was met</FONT>
+
+<BR><FONT SIZE=3D2>with \holdinginserts&gt;0) the vertical list were the =
+same as</FONT>
+
+<BR><FONT SIZE=3D2>before, or if the difference were a \penalty10000 =
+(TeXbook</FONT>
+
+<BR><FONT SIZE=3D2>p. 125) neighbouring the \penalty that we are =
+inserting only</FONT>
+
+<BR><FONT SIZE=3D2>-- and if dimensions like \pagegoal were not changed =
+(or</FONT>
+
+<BR><FONT SIZE=3D2>only in some appropriate way). And is such a nice =
+thing the</FONT>
+
+<BR><FONT SIZE=3D2>case? I guess David Kastrup has addressed such =
+questions,</FONT>
+
+<BR><FONT SIZE=3D2>maybe sometimes tending towards &quot;yes&quot;, =
+sometimes</FONT>
+
+<BR><FONT SIZE=3D2>qualifying. I am attaching below his contributions =
+which I</FONT>
+
+<BR><FONT SIZE=3D2>have in mind here, together with some context. (Of =
+course,</FONT>
+
+<BR><FONT SIZE=3D2>unequivocality cannot be expected in e-mails, unless =
+one</FONT>
+
+<BR><FONT SIZE=3D2>spends hours on one e-mail like I do.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[End of discussion. Quotations:]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At 01:47 30.03.05, you [Donald Arseneau] wrote:</FONT>
+
+<BR><FONT SIZE=3D2>[wider context for 2. and 3. above, not =
+complete,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the subject was =
+&quot;\@reinserts&quot;]</FONT>
+
+<BR><FONT SIZE=3D2>&gt;Uwe L=FCck &lt;uwe.lueck@WEB.DE&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt;Donald Arseneau &lt;asnd@TRIUMF.CA&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt; &gt; The problem with =
+\penalty\outputpenalty is that \outputpenalty=3D10000</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; &gt; &gt; and prevents the same page break =
+instead of forcing the same break.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\pagediscards is an etex primitive (built-in) =
+command.&nbsp; David is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;probably right (since he has been looking at that =
+stuff) but I</FONT>
+
+<BR><FONT SIZE=3D2>&gt;don't see the benefit, since we want to get the =
+same page break</FONT>
+
+<BR><FONT SIZE=3D2>&gt;again.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; And what about</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifnum\outputpenalty=3D\@M \else</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\penalty\outputpenalty</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;I think that would work.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;The point is that if TeX breaks the page *not* at =
+a penalty (effective</FONT>
+
+<BR><FONT SIZE=3D2>&gt;penalty=3D0) it flags that by setting =
+\outputpenalty=3D10000 (which could</FONT>
+
+<BR><FONT SIZE=3D2>&gt;never happen naturally).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;I see no reason to reproduce the exact output =
+penalty, since you</FONT>
+
+<BR><FONT SIZE=3D2>&gt;are looking to get the same page break, so I =
+would probably put a</FONT>
+
+<BR><FONT SIZE=3D2>&gt;negative penalty there.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;You do not want to hold inserts when performing =
+&quot;supereject&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;(-20000), so you do need to release the inserts =
+then.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>At 10:46 30.03.05, you [David Kastrup] wrote:</FONT>
+
+<BR><FONT SIZE=3D2>[for 3. above, not complete, subject was =
+&quot;\@reinserts&quot;]</FONT>
+
+<BR><FONT SIZE=3D2>&gt;Donald Arseneau &lt;asnd@TRIUMF.CA&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; Uwe L=FCck &lt;uwe.lueck@WEB.DE&gt; =
+writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; At 13:30 26.03.05, you [David Kastrup] =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;Donald Arseneau =
+&lt;asnd@TRIUMF.CA&gt; writes:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt; &gt; The problem with =
+\penalty\outputpenalty is that \outputpenalty=3D10000</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt; &gt; and prevents the same page =
+break instead of forcing the same break.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;Well, when rebreaking, I find that =
+using \pagediscards seems like the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;best thing to do.&nbsp; Then you =
+get the same vertical list again, unless</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;\outputpenalty is less than 10000, =
+in which case you need to reinsert</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;it in front of the discards (it =
+will be replaced with \nobreak in the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;&gt; &gt;\pagediscards in this case).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;[...]</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;If we are aiming for the same break, indeed the =
+pagediscards are not</FONT>
+
+<BR><FONT SIZE=3D2>&gt;interesting.&nbsp; Indeed, as opposed to =
+splitdiscards, the page discards</FONT>
+
+<BR><FONT SIZE=3D2>&gt;are what has been removed at the _start_ of the =
+current output page,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;not after it.&nbsp; So the pagediscards are only =
+interesting if the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;_previous_ break might need reversal.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;[...]</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; I see no reason to reproduce the exact =
+output penalty, since you are</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; looking to get the same page break, so I =
+would probably put a</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; negative penalty there.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;As the sort of a note aside: a forced penalty =
+will lead to different</FONT>
+
+<BR><FONT SIZE=3D2>&gt;values of \pagetotal, \pageshrink and so on (more =
+useful values,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;actually), so if you have some subordinate output =
+routine looking at</FONT>
+
+<BR><FONT SIZE=3D2>&gt;those values, it might make different =
+decisions.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; There are references to \footins in =
+\@specialoutput that have to be</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; rewritten for the case when \holdinginserts =
+is holding the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; inserts. (The whole point of holding them =
+is that they do *not* come</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; out when cycling through =
+\@specialoutput.)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; I'm not sure that it is even possible to =
+maintain the \@pageht</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; methods when using \holdinginserts.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;The page break decisions including splits of =
+insertions and limiting</FONT>
+
+<BR><FONT SIZE=3D2>&gt;of insertion material to the respective dimen =
+remain the same.&nbsp; It is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;just that the material does not make it into the =
+boxes, but stays in</FONT>
+
+<BR><FONT SIZE=3D2>&gt;insertion items in box255.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[U. L.: Yes, but D. A. addressed a different matter, I =
+think.</FONT>
+
+<BR><FONT SIZE=3D2>He indicated something like -- I'm generalizing a =
+little -- that</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX's float placement mechanism does not cooperate =
+with</FONT>
+
+<BR><FONT SIZE=3D2>TeX's algorithm of choosing among past insertions for =
+the</FONT>
+
+<BR><FONT SIZE=3D2>next page as nicely as intended. The simple uses =
+of</FONT>
+
+<BR><FONT SIZE=3D2>\holdinginserts discussed so far just replace one =
+problem</FONT>
+
+<BR><FONT SIZE=3D2>with another one.]</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C536C6.9881E000--
+

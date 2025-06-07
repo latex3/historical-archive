@@ -1,0 +1,216 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D36DB2D4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:47 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D36DB2D4"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Gotcha in thebibliography
+Date: Sat, 18 Aug 1990 18:15:10 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1EE@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Nelson H. F. Beebe" <Beebe@SCIENCE.UTAH.EDU>
+To: "Rainer Schoepf" <BK4@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 226
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D36DB2D4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+I just hit what I view as a design flaw in thebibliography
+environment.  It was precipitated by the following BibTeX
+bibliography entry in the .bbl file:
+
+\bibitem{Steele:floating-point-output}
+Guy~L. {Steele Jr.} and Jon~L. White.
+\newblock How to print floating-point numbers accurately.
+\newblock {\em ACM SIG\-PLAN Notices}, 25(6):112--126, June 1990.
+\newblock In electronic mail dated Wed, 27 Jun 90 11:55:36 EDT, Guy
+Steele reported that an intrepid pre-SIGPLAN 90 conference
+implementation of what is stated in the paper revealed 3 mistakes:
+
+  \begin{enumerate}
+    \item
+         Table~9 (page 125):\par\noindent
+        \begin{tabular}{ll}
+          for & {\tt -1:USER!({"}{"});} \\
+          substitute & {\tt -1:USER!({"}0{"});}
+        \end{tabular} \par\noindent
+       and delete the comment.
+    \item
+          Table~10 (page 125):\par\noindent
+          \begin{tabular}{ll}
+            for & {\tt fill(-k, {"}0{"})}\\
+            substitute & {\tt fill(-k-1, {"}0{"})}
+          \end{tabular}
+    \item
+          Table~5 (page 124):\par\noindent
+          insert {\tt k <-- 0} after assertion, and also delete {\tt k
+          <-- 0} from Table~6.
+  \end{enumerate}
+
+The effect of this is that the next bibliography entry gets
+number 4, one more than the last enumerate counter.  The reason
+lies in latex.tex:
+
+%  The thebibliography environment is a list environment.  To save the
+%  use of an extra counter, it should use  enumiv  as the item counter.
+
+For now, I will switch to an itemize instead of enumerate.
+
+The question for this list is, is the saving of an extra counter
+at what is usually almost the end of a document anyway worth this
+design gotcha?  I suggest not.
+
+
+------_=_NextPart_001_01C19442.D36DB2D4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Gotcha in thebibliography</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>I just hit what I view as a design flaw in =
+thebibliography</FONT>
+
+<BR><FONT SIZE=3D2>environment.&nbsp; It was precipitated by the =
+following BibTeX</FONT>
+
+<BR><FONT SIZE=3D2>bibliography entry in the .bbl file:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem{Steele:floating-point-output}</FONT>
+
+<BR><FONT SIZE=3D2>Guy~L. {Steele Jr.} and Jon~L. White.</FONT>
+
+<BR><FONT SIZE=3D2>\newblock How to print floating-point numbers =
+accurately.</FONT>
+
+<BR><FONT SIZE=3D2>\newblock {\em ACM SIG\-PLAN Notices}, =
+25(6):112--126, June 1990.</FONT>
+
+<BR><FONT SIZE=3D2>\newblock In electronic mail dated Wed, 27 Jun 90 =
+11:55:36 EDT, Guy</FONT>
+
+<BR><FONT SIZE=3D2>Steele reported that an intrepid pre-SIGPLAN 90 =
+conference</FONT>
+
+<BR><FONT SIZE=3D2>implementation of what is stated in the paper =
+revealed 3 mistakes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Table~9 (page 125):\par\noindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{tabular}{ll}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for =
+&amp; {\tt -1:USER!({&quot;}{&quot;});} \\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+substitute &amp; {\tt -1:USER!({&quot;}0{&quot;});}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\end{tabular} \par\noindent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and delete the =
+comment.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Table~10 =
+(page 125):\par\noindent</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{tabular}{ll}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; for &amp; {\tt fill(-k, {&quot;}0{&quot;})}\\</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; substitute &amp; {\tt fill(-k-1, {&quot;}0{&quot;})}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\end{tabular}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Table~5 =
+(page 124):\par\noindent</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; insert =
+{\tt k &lt;-- 0} after assertion, and also delete {\tt k</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;-- =
+0} from Table~6.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The effect of this is that the next bibliography entry =
+gets</FONT>
+
+<BR><FONT SIZE=3D2>number 4, one more than the last enumerate =
+counter.&nbsp; The reason</FONT>
+
+<BR><FONT SIZE=3D2>lies in latex.tex:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%&nbsp; The thebibliography environment is a list =
+environment.&nbsp; To save the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; use of an extra counter, it should use&nbsp; =
+enumiv&nbsp; as the item counter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For now, I will switch to an itemize instead of =
+enumerate.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The question for this list is, is the saving of an =
+extra counter</FONT>
+
+<BR><FONT SIZE=3D2>at what is usually almost the end of a document =
+anyway worth this</FONT>
+
+<BR><FONT SIZE=3D2>design gotcha?&nbsp; I suggest not.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D36DB2D4--
+

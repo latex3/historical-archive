@@ -1,0 +1,140 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5003" "Thu" "10" "April" "1997" "15:08:48" "+0200" "Matthias Clasen" "mclasen@SUN2.MATHEMATIK.UNI-FREIBURG.DE" nil "102" "Re: math fonts" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id PAA27853; Thu, 10 Apr 1997 15:09:00 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.94A593C0@listserv.gmd.de>; Thu, 10 Apr 1997 15:08:59 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123088 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 15:08:55 +0200
+Received: from sun2.mathematik.uni-freiburg.de (sun2.mathematik.uni-freiburg.de
+          [132.230.30.2]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id PAA17873 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10
+          Apr 1997 15:08:54 +0200 (MET DST)
+Received: from localhost (mclasen@localhost) by sun2.mathematik.uni-freiburg.de
+          (8.7.5/8.6.9) with SMTP id PAA29719 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10 Apr 1997 15:08:50
+          +0200 (MET DST)
+X-Sender: mclasen@sun2
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.SOL.3.93.970410143802.27446F-100000@sun2>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <9704101205.AA08054@sgibulirsch6.mathematik.tu-muenchen.de>
+Date:         Thu, 10 Apr 1997 15:08:48 +0200
+From: Matthias Clasen <mclasen@SUN2.MATHEMATIK.UNI-FREIBURG.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: math fonts
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1909
+
+On Thu, 10 Apr 1997, Johannes Kuester wrote:
+
+  [some valuable comments deleted]
+
+>
+> Some comments on MC: the ordering of the Greek glyphs seems to be somewhat
+> arbitrary, they should either be ordered in the order of the Greek
+> alphabet or according to the input conventions of e.g. Haralambous's
+> Greek fonts (I think the first is preferable, but the current alpha,beta,
+> delta,... gives a new ordering never to be seen so far). I also think that
+> upright and slanted/italic glyphs should reside at a multiple-of-8 distance
+> in the font; e.g. upright Alpha at "81, slanted Alpha at "B9, to make
+> then more easily findable and comparable. There are some glyphs for
+
+I'll try to correct the ordering, for the distance-8-question I'm not so
+sure which constraint is more important: keeping groups together or
+having a nicely laid out font table ? The upright greek is just a
+one-minute hack of mine and I don't really know how upright greek for use
+in mathematics should look like. And I have no idea about the appearance
+of the letters varbeta, Qoppa, Sampi. Are there any metafont versions
+of these glyphs out there ?
+
+> which I don't see any reason for being in the core, namely "5F, "61,
+> "F8 and "F9 (barred V, upright and slanted, thorn (variant) and Thorn),
+> as they are very rarely used in mathematics (if at all?). Justin didn't
+> give any example of their usage. Also, to include the upright "d" seems
+> arbitrary, as other upright glyphs aren't taken into account.
+
+Yes, I wondered about that myself. Perhaps people who were actively
+involved in the math-font-discuss list at the time the paper was written
+can comment on the reason for these glyphs to be in the math core ?
+
+>   Freeing some slots could be advantageous, but for some delimiters the
+> reason to reside here is kerning, so this should be considered before
+> taking them elsewhere.
+>
+>   Oh, and the digits should be upright, I think, as slanted/italic digits
+> should not appear in mathematics.
+
+Yes.
+
+> >  - moving *all* charlist-accessed glyphs (even the wide accents) out of
+> >    MC, MSP, MS1 and MS2 .
+>
+> Consider kerning, taken them out of the fonts could well be quite
+> disadvantageous.
+>   I didn't like Justin's proposal at first, because doesn't seem to me
+> that it cleanses up the current mess of math fonts, but puts together
+> some new fonts which show the same mess only on a larger scale, but
+> I didn't think of kerning then: this is still the major restriction
+> here to make deliberate decision and putting different groups in different
+> fonts (this restriction won't be overcome in TeX, though). So here
+> Justin made some very valuable points: to get proper kerning at least
+> with the most important symbols, one has to keep things in the same font
+> here. And the basic sizes of the delimiters occur more often than their
+> extended counterparts, so I think they should kern properly e.g. with
+> italic letters.
+
+This point can certainly be made for keeping basic size delimiters
+in MC, but is it valid for wide accents ? If I read appendix G, rule 12
+correctly, the only kerning that affects the positioning of accents
+is the kerning between the nucleus and the skewchar of its font (and even
+this only for single-glyph-nuclei). So there should be no need to keep
+the wide accents in the same font as their most frequent nuclei.
+
+> And there should be upright versions of all the integral sings (as the
+> integral falls under the "upright type rule" discussed here before; to
+> be consistent in using this rule, these glyphs are needed.
+
+You might be right about the need for a third MX encoding then...
+but I'll try to find a place for them.
+
+> I have metafonted a few glyphs which I could contribute
+> (in rather poor METAFONT, as these were among my first glyphs,
+> but I think they look the right way, even when their programs need
+> to be polished). Namely:
+
+I would really appreciate such contributions.
+
+[ list of glyphs deleted]
+
+> upright lowercase Greek glyphs
+>     (these are merely a matter of taste, I made them by "unslanting"
+>      the usual ones and changing the code when it seemed appropriate
+>      to get a goodlooking glyph. May be Greek has to be redesigned
+>      completely anyway, as I don't see a reason for having uppercase
+>      Greek letters which are undistinguishable for their Latin counterparts)
+
+I did the same; my change can be cooked down to just inserting slant := 0;
+at the right spot :-).
+
+> And as for font naming conventions: please do use preliminary names
+> for the fonts (how about "d" instead of "e" as a starting letter?).
+> I don't see a good reason for the naming "emsp", I think this should
+> just be the first math symbol font, named "emsa" ("dmsa" for now?),
+> the other names shifted accordingly, thus it will be privileged enough.
+
+I'll rename the fonts accordingly, the names I gave them were just the
+first choices I came up with, and at that point of time I did not think
+about showing them to other people...
+
+Regards,  Matthias
+

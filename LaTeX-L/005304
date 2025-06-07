@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 13 Sep 2008 05:33:46 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8D3Xd9q022329
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 13 Sep 2008 05:33:40 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8D3RaoN007852
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 13 Sep 2008 05:27:36 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8CM1Jfg006892;
+	Sat, 13 Sep 2008 05:27:27 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 29453 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 13 Sep
+          2008 05:27:27 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8D3RRv1030419 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sat, 13 Sep 2008 05:27:27 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.250])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          m8D3RNft008736 for <LATEX-L@listserv.uni-heidelberg.de>; Sat, 13 Sep
+          2008 05:27:27 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so1107697rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 12 Sep 2008 20:27:21 -0700
+          (PDT)
+Received: by 10.141.96.21 with SMTP id y21mr3073481rvl.132.1221276441555; Fri,
+          12 Sep 2008 20:27:21 -0700 (PDT)
+Received: from ?10.0.1.102? ( [219.90.252.239]) by mx.google.com with ESMTPS id
+          g31sm17702440rvb.7.2008.09.12.20.27.19 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Fri, 12 Sep 2008 20:27:20 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v928.1)
+References: <48CAE551.3020004@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.928.1)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <7D36A23D-7FC0-45F0-A573-C74CF564A723@gmail.com>
+Date:         Sat, 13 Sep 2008 12:57:16 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Broken things
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48CAE551.3020004@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Sep 2008 03:33:46.0722 (UTC) FILETIME=[87893420:01C91551]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5304
+
+On 13/09/2008, at 7:25 AM, Joseph Wright wrote:
+
+> Some of the recent updates seem to break things.  In l3basics:
+>
+> \def_test_function_new:npn {engine_if_aleph:} {\if_cs_exist:N
+> \etex_eTeXversion:D}
+> \def_test_function_new:npn {engine_if_aleph:} {\if_cs_exist:N
+> \aleph_textdir:D}
+
+Oops, my bad on that one.
+If anyone's listening, would you mind if I changed \etex_eTeXversion  
+to \etex_version?
+Seems to make more sense that way...
+
+Also, is it redundant to have checks for eTeX since we're requiring  
+it, anyway?
+I'm also guessing we can drop the aleph conditional these days?
+
+> is an issue.  The name change \use_i:n => \use:n breaks xparse (plus I
+> guess other xpackages).
+
+I can't see any immediate problems...I think Frank changed the  
+xpackages separately to the expl3 modules; do you still see the  
+problem after an `svn update` ?
+
+> Also in l3messages, \NamesStart: and \int_while:nNnT are wrong (but  
+> I'm
+> having all sorts of problems with l3messages in any case!).
+
+With any luck I'll check this out today :)
+
+Cheers,
+Will
+

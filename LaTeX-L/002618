@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1860" "Tue" "30" "June" "1998" "15:17:27" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "40" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id PAA08699;
+	Tue, 30 Jun 1998 15:18:32 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.CD6694E6@listserv.gmd.de>; Tue, 30 Jun 1998 15:18:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 375222 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 30 Jun 1998 15:18:26 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id PAA04510 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 30 Jun 1998 15:18:24
+          +0200 (MET DST)
+Received: from [130.237.37.151] (sl22.modempool.kth.se [130.237.37.42]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id PAA14740 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 30 Jun 1998 15:18:12
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <199806301016.UAA18253@ricetub.anu.edu.au> (message from Richard   
+            Walker on Tue, 30 Jun 1998 20:16:20 +1000) 
+            <v03110701b1bbd09a78ca@[130.237.37.112]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+            <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+            <v03110700b1bc30d2e3e0@[130.237.37.112]>
+            <199806300901.KAA02857@nag.co.uk>
+            <199806301016.UAA18253@ricetub.anu.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110702b1be8f41eae8@[130.237.37.151]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806301131.MAA03021@nag.co.uk>
+Date:         Tue, 30 Jun 1998 15:17:27 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2618
+
+At 12:31 +0100 98/06/30, David Carlisle wrote:
+>> So instead of e.g. \chk_var_or_const:N we have \chk/var_or_const:N.
+>> Again: / _ : all have catcode 11.
+>
+>Perhaps allowing _ as the separator and for use within the final names
+>is not ideal, although looking at your example above / looks too `hard'
+>a break to me, I can read \chk_var_or_const:N as one token but \chk/
+>looks too split off. Perhaps another idea would be to use _ as now, but
+>not use it within the final name, as in \chk_VarOrConst:N.
+
+  The main thing is of course keeping the module and word separator signs
+different. But otherwise, I think it is mainly a question of getting used
+to:
+
+  The variation \chk/var_or_const:N probably looks difficult to people
+spending nearly all their time programming in TeX and not other languages,
+but I think that this use of "_" is difficult to accept for say a
+mathematician also only using TeX but which never programs in computer
+languages where underscore is often used as a word separator within a name.
+
+  There is a programming subtlety though, which is quite convenient, namely
+the difference between
+\@nameuse{\foo/bar}  % Call the expansion of the name "foo/bar"
+\@nameuse{\foo /bar} % Call the expansion of the name "foo" appended with
+"/bar"
+where
+    \def\@nameuse#1{\csname #1\endcsname}
+as in LaTeX.
+
+  So one can make use of this subtlety when programming, and the fact that
+"/" breaks off then after a while becomes appreciative.
+
+  But another common module separator would be :, but that is already
+occupied. One could change the argument spec separator to ., so that names
+soul look like \foo:bar.n or something.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

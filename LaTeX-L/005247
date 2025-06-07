@@ -1,0 +1,112 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 8 Sep 2008 21:19:20 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m88JJFkl013910
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 8 Sep 2008 21:19:16 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m88JG9RZ023794
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 8 Sep 2008 21:16:09 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m88EGNoi014594;
+	Mon, 8 Sep 2008 21:16:08 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 23266 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 8 Sep
+          2008 21:16:08 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m88JG7aG005249 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 8 Sep 2008 21:16:07 +0200
+Received: from anchor-post-37.mail.demon.net (anchor-post-37.mail.demon.net
+          [194.217.242.87]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m88JFwUe007555 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 8 Sep 2008 21:16:01 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-37.mail.demon.net with esmtp (Exim 4.69) id
+          1KcmDK-0001p9-P1 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 08 Sep
+          2008 19:15:54 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48C2348C.908@morningstar2.co.uk>
+            <859ec5630809080556g36259d1fnd01204c84a3a8adf@mail.gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <48C579E8.4020704@morningstar2.co.uk>
+Date:         Mon, 8 Sep 2008 20:15:52 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: keyval
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <859ec5630809080556g36259d1fnd01204c84a3a8adf@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Sep 2008 19:19:20.0765 (UTC) FILETIME=[CB9866D0:01C911E7]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5247
+
+Morten Høgholm wrote:
+> On Sat, Sep 6, 2008 at 9:43 AM, Joseph Wright
+> <joseph.wright@morningstar2.co.uk> wrote:
+> 
+>> I've been looking at the current expl3 work, and I'm wondering about the
+>> planned direction with keyval stuff.  The current l3keyval only covers
+>> some very basic functions, and it's not clear to me whether this will be
+>> extended to higher-level commands.
+> 
+> It will. So far only data extraction was done because a) it was needed
+> and b) I need to sit down, preferably with someone, and take a good
+> look at how to tackle this. Judging from the hacks we see in pstricks
+> and many other packages, the current approach as implemented in keyval
+> is insufficient. The model used in pgf looks interesting.
+
+I agree.  I think overall the idea of separating "properties" of keys is
+much bettr than (say) xkeyval.
+> 
+> How the keyvals are used depends on the circumstances. If you take a
+> look at template, it both runs traditional "turn key into csname, then
+> assign it a value" but also contains a more complex run when declaring
+> the template. In the latter instance, the value in fact consists of
+> individual values, each requiring different action.
+
+That might be a challenge.  I was mainly thinking about providing a way
+for programmers to set up options, etc.  I suspect template will push
+everything.
+
+>> [snip] if no-one else is likely to
+>> work on this in the near future I can perhaps see whether I can produce
+>> some basic macros in this area (for preference I'd probably adopt the
+>> pgfopts model, which I find quite accessible).
+> 
+> Please do go ahead.
+> 
+
+Okay, I will have a look at this.  For first preference, I might use the
+pgfopts syntax:
+
+/<module>/<description>/.<property>
+
+although I suppose:
+
+<module>_<description>.<property>
+
+or
+
+<module>_<description>:<property>
+
+might both be more in line with the LaTeX3 system. However, I think the
+analogy with UNIX paths works quite nicely for the pgfopts approach.
+-- 
+Joseph Wright
+

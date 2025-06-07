@@ -1,0 +1,127 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4758" "Fri" "18" "April" "1997" "14:21:30" "+0200" "Johannes Kuester" "kuester@MATHEMATIK.TU-MUENCHEN.DE" nil "83" "Re: Alternatives to LaTeX" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA15487; Fri, 18 Apr 1997 14:22:36 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.6B8CCA36@listserv.gmd.de>; Fri, 18 Apr 1997 14:22:33 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 127236 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 18 Apr 1997 14:22:29 +0200
+Received: from tuminfo2.informatik.tu-muenchen.de
+          (root@tuminfo2.informatik.tu-muenchen.de [131.159.0.81]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id OAA14890 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 18 Apr 1997 14:22:13
+          +0200 (MET DST)
+Received: from sunbulirsch4.mathematik.tu-muenchen.de ([131.159.68.4]) by
+          tuminfo2.informatik.tu-muenchen.de with SMTP id <109534-17058>; Fri,
+          18 Apr 1997 14:21:55 +0200
+Received: from sgibulirsch6.mathematik.tu-muenchen.de ([131.159.68.57]) by
+          sunbulirsch4.mathematik.tu-muenchen.de with SMTP id <20793>; Fri, 18
+          Apr 1997 14:21:25 +0200
+Received: by sgibulirsch6.mathematik.tu-muenchen.de (931110.SGI/930416.SGI) for
+          @sunbulirsch4.mathematik.tu-muenchen.de:LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE id AA20310; Fri, 18 Apr 97
+          14:21:30 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-ID:  <9704181221.AA20310@sgibulirsch6.mathematik.tu-muenchen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v02130500af7ce92b0a9a@[130.237.37.128]> from "Hans Aberg" at Apr
+              18, 97 11:39:09 am
+Date:         Fri, 18 Apr 1997 14:21:30 +0200
+From: Johannes Kuester <kuester@MATHEMATIK.TU-MUENCHEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Alternatives to LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1996
+
+Hans Aberg wrote:
+
+>   If you write a paper with say a Levi-Civita connection, then the best way
+> is to first make a macro-name, say \LC, \LeviCivita, or \connection, or
+> something, which could expand to any makeshift symbol. At a later point,
+> one could substitute something better (like
+>     \def\LC{\hbox{\raise2pt\hbox{$\bigtriangledown$}}}
+> or something).
+>
+>   This sort of follows the same principle as typing \em for emphasis, or
+> the principles for choosing an international set of characters. (One
+> difference thou, is that new math concepts are being invented, so one would
+> need pay special attention to that.)
+>
+>   TeX consists of a jumble of these two different ideas, selecting a glyph,
+> that is a typeset output, and choosing a semantically correct typing input.
+> =46or example $\emptyset$ produces a specific rendering of the empty set
+> symbol, but now, there is another AMS-fonts alternative, $\varnothing$. So
+> here one should really have one name for the empty set concept, and then
+> one could choose rendering of it.
+>
+>   This sort of bring us back to ideas presented here earlier, by J=F6rg
+> Knappen, Barbara Beeton, and others, (discussions about standard for gcd,
+> differentials, etc) but then it was not very explicit. Has one discussed of
+> introducing such a feature in the LaTeX3 project?
+
+TeX's math control sequences are mixing two different concepts: partly
+they describe the shape of the glyph, partly they desribe the mathematical
+meaning and/or concept behind the symbol (\otimes is an example of the
+former, \sum an example of the latter). A `good' author would of course
+choose his macro names according to their mathematical meaning (e.g.
+using \tensor and not \otimes, when using this glyph to denote a tensor
+product) thus rendering his source code much more readable, sometimes
+even more readable than the actual output: if the same glyph is used
+for different concepts, a careful author could use different control
+sequences for these concepts. For existing glyphs, this could easily be
+done with a suitable set of \let commands. May be some rather standard
+ways could be added here to TeX's standard, e.g. something like
+\tensor as an alternative way to get the \otimes glyph, as this is
+standard mathematical usage. I think that in general control sequences
+are preferable which describe the mathematical meaning rather than those
+which describe the outlook of the glyph.
+
+    It should be clear that a mathematical concept is always developed
+before its proper notation, but this should not hinder a user to choose
+a proper control sequence for it, even if the needed glyph doesn't exist
+yet (or even if the user couldn't yet think of a matching notation), so
+this could later be added (or the source code could be easily searched
+and changed, e.g. if something entered as a product is later decided to
+be written by a single symbol or something like that). So I think
+LaTeX could provide some control sequences even for not yet existing
+or not yet universally available glyphs, as -- I think -- this would
+be helpful: existing documents could then be easily updated to match
+`better' standards (e.g. for a next edition), or a publishing house
+which has some special glyphs in its own fonts could insert these by
+simply changing some macro definitions. It seems to be more important
+to set math documents to the best standard and with the best available
+glyphs rather than keeping their looks fixed for all time.
+
+    To give an explicit example: I'm using my own macros for intervals,
+namely \ivc,\ivo,\ivco and \ivoc (closed, open, left-closed right-open,...,
+with \bigivc etc. through all sizes and \Ivc etc. for automatic \left and
+\right insertion), to be used like \ivc{a}{b} (as it has the further
+feature of choosable separator: I'm using a semicolon instead of a comma,
+as comma is the decimal separator in German notation, i.e. [a;b] etc.),
+even as the author of the book I'm texing with these macros doesn't want
+to use special delimiters here. For a later edition, this could easily
+changed; and similarly for other documents and other control sequences.
+Of course, this could be done by non-standard macros, too, but why
+not adding some standard macros for agreed-upon concepts?
+
+   The danger here is to arrive at far too many macros, and all those
+macros need to be well documented, and this then still relies on very
+careful typists (to continue the above example: from this standpoint
+using \ivc{a}{b} seems preferable, but it can't be avoided that a user
+still enters [a,b] instead, thus making these macros useless to some degree).
+
+Johannes
+
+--
+Johannes Kuester                    kuester@mathematik.tu-muenchen.de
+Mathematisches Institut der
+Technischen Universitaet Muenchen
+

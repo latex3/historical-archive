@@ -1,0 +1,158 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4145" "Sun" "31" "October" "1999" "18:54:02" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "122" "Re: section heading templates" "^Date:" nil nil "10" nil "section heading templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA14109
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 17:54:13 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.75E27C0C@mail.listserv.gmd.de>; Sun, 31 Oct 1999 17:54:37 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445023 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 18:54:34 +0200
+Received: from ssmtp02.arrakis.isp ([212.59.199.83]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA02673 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 17:54:25 +0100 (MET)
+Received: from [195.5.77.69] ([195.5.77.69]) by ssmtp02.arrakis.isp (Netscape
+          Messaging Server 4.1) with SMTP id FKH89K00.09M for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 17:53:47 +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199910311654.RAA02673@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 31 Oct 1999 18:54:02 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3375
+
+>
+> o should there be user level control on whether or not a heading has
+>   a number? (or are those things logically simply different tags and
+>   we are only used to saying \chapter* instead of \frontmatterchapter
+>   or whatever because nothing else was available)
+>
+>   in other words is this really a flexibility that is needed/wanted
+>   or only there to hide the fact that some general functionality is
+>   missing?
+[...]
+>so
+>
+> \chapter*{BAR}
+>
+>makes a heading with no number but BAR in the toc and in runhead
+>
+> \chapter**{BAR}
+>
+>makes a heading with no number and no toc entry but BAR  in runhead
+>
+>if you really would like to have a number but no toc entry this would
+>be possible as well but only with some difficulty:
+>
+> \chapter[]*{BAR}
+
+The more I analyze this problem, the more I become convinced that
+the star mechanism should be avoided in favour of a markup-like
+syntax. Let's suppose there are some sections containing exercises.
+Instead of using a starred version, we could use an environment:
+
+\begin{exercises}
+\section{Easy}
+...
+\section{Not so easy}
+...
+\end{exercises}
+
+If headings (or their short form) are in the TOC or in the headlines
+is a decision taken by exercises, which in addition may set the
+text to \small, add the word "Exercises" to the head, etc. (At
+the end of this message, I copy part of the manual of one of my
+packages, which it's to the point.) The mean to get this could
+be to provide a set of flags which determine the behaviour of
+section headings; these flags shouldn't be changed directly in
+the main document but through an intermediary (in this example,
+the exercises environment). For instance:
+  numbered
+  in-toc
+  in-headings
+
+The natural way of doing that in template is \UseCollection, but
+another possibility is to use a key which will expand at
+\UseInstance with the actual flag values in "usual" tex macros.
+Perhaps in a future a new structure could be created so that
+\sections are not inside an environment (other than document)
+and flags are properly handled.
+
+Javier
+
+========
+
+The following definition supresses numbers but neither toc lines
+nor headers.
+\begin{verbatim}
+\newenvironment{exercises}
+  {\setcounter{secnumdepth}{0}}
+  {\setcounter{secnumdepth}{2}}
+\end{verbatim}
+
+The following one adds a toc line but headers will remain
+untouched:
+\begin{verbatim}
+\newenvironment{exercises}
+ {\setcounter{secnumdepth}{0}%
+  \renewcommand\sectionmark[1]{}}
+ {\setcounter{secnumdepth}{2}}
+\end{verbatim}
+
+The following one updates the headers but there will be
+no toc line:
+\begin{verbatim}
+\newenvironment{exercises}
+ {\setcounter{secnumdepth}{0}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{0}\ignorespaces}}
+ {\setcounter{secnumdepth}{2}%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{2}\ignorespaces}}
+\end{verbatim}
+(I find the latter a bit odd in this particular example; the
+first and second options are more sensible. The |\ignorespaces|
+is not very important, and you needn't it unless there is
+unwanted space in the toc.)
+
+That works with standard classes, but if you are using
+\textsf{fancyhdr} or \textsf{titlesec} to define headers you need an
+extra command. I will name it |\printthesection| and you
+could define it in the preamble as follows:
+\begin{verbatim}
+\newcommand{\printthesection}{\thesection\ }
+\end{verbatim}
+If you define the header with \textsf{titlesec}, for instance:
+\begin{verbatim}
+\newpagestyle{myps}{
+  \sethead{\printthesection\sectiontitle}{}{\usepage}}
+\end{verbatim}
+then you have to write:
+\begin{verbatim}
+\newenvironment{exercises}
+  {\setcounter{secnumdepth}{0}%
+   \renewcommand{\printthesection}{}}
+  {\setcounter{secnumdepth}{2}}
+\end{verbatim}
+and so on.
+
+As you can see, there are no |\addcontentsline|, no
+|\markboth|, no |\section*|, just logical structure. Of
+course you may change it as you wish; for example if you decide
+that these sections should be typeset in small typeface, include
+|\small|, and if you realize that you don't like that, remove it.
+
+While the standard LaTeX commands are easier and more
+direct for simple cases, I think the proposed method above is
+far preferable in large documents.
+

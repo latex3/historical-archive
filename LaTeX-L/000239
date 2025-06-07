@@ -1,0 +1,301 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D46FF6CC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:49 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D46FF6CC"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      RE: VERB IN HEADINGS (full)
+Date: Wed, 10 Oct 1990 13:12:55 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1FA@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "MITTELBACH FRANK" <PZF5HZ@DRUEDS2.bitnet>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.uucp>
+To: "Rainer Schoepf" <JL2@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 239
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D46FF6CC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Sorry that the unfinished mail went through the list.
+here is the completed answer.
+
+>
+> His suggestion of using \meaning doesn't seem right to me:
+> it would work only if the verbatim object is a control sequence.
+> Or have I misunderstood something?
+
+I don't know. One can say:
+
+\def\strip#1->{}
+\def\verb#1{\def\@tempa{#1}\expandafter\strip\meaning\@tempa}
+
+(something of this sort). Of course the reading
+mechanism for \verb has to be different, and I don't
+know whether I remembered the outcome of \meaning
+correctly.  This has the advantage that it will always
+work correctly in the sence that it does not produce
+errors. I will however produce some kind of generalized
+spacing, i.e. \verb{\ab   \ab} will come out `\ab \ab'
+if I remember correctly.
+One has to scan perhaps for spaces and turn them into
+something like \ before sending the result back but
+this is a minor matter.
+
+>
+> It should be possible to absorb the macro argument
+> one token, or rather: one undelimited macro argument,
+> at a time. Whenever the token is \verb (test by \ifx,
+> this will work even if the user has \let something to
+> \verb), verbatim mode is switched on, and character tokens are
+> produced for every character in the verbatim string.
+>
+> Other fun part: macros can scoop up whole groups, and
+> you have to recognize that you have got hold of a group
+> instead of a token, if that is the case you have to
+> reinsert the braces (I programmed something like this
+> a while ago. How do you generate a single brace:
+> \iftrue{\else}\fi. Ho hum.) because presumably there is
+> a macro in front of the group. This will only lose braces
+> around single tokens, but I don't think that matters.
+
+The idea of \iftrue{\else}\fi will work only when you
+are reconstruction the originial tokenlist very
+carefully using \edef together with noexpand etc.
+Otherwise one will end up with things like
+\mbox\iftrue{... which will bomb. A better possibility
+is perhaps the use of \aftergroup to construct the
+internal stuff.
+
+>
+> All of this is not particularly fast, and the one case where
+> it goes wrong is if the user has the verbatim text
+> inside a group.
+
+But h ere is the problem, it is actually not fast it is
+also a pain to write it for the general case but this
+could be solved.  The real problem however is that it
+will not work for cases like \section{ A {\em very
+\verb=3D\special=3D macro} system}
+
+This would mean that there is again a nice class of
+headings which would produce big problems for the
+inexperienced user.  What I like to see is a verb
+command that will always work.  I think it is much
+better to tell the user that he has to use two (or
+more) \verb commands (in arguments) if he wants to
+generate spaces instead of leaving him with a mess of
+errors.
+
+Frank
+
+
+------_=_NextPart_001_01C19442.D46FF6CC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     RE: VERB IN HEADINGS (full)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Sorry that the unfinished mail went through the =
+list.</FONT>
+
+<BR><FONT SIZE=3D2>here is the completed answer.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; His suggestion of using \meaning doesn't seem =
+right to me:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; it would work only if the verbatim object is a =
+control sequence.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Or have I misunderstood something?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I don't know. One can say:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\strip#1-&gt;{}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\verb#1{\def\@tempa{#1}\expandafter\strip\meaning\@tempa}</F=
+ONT>
+</P>
+
+<P><FONT SIZE=3D2>(something of this sort). Of course the reading</FONT>
+
+<BR><FONT SIZE=3D2>mechanism for \verb has to be different, and I =
+don't</FONT>
+
+<BR><FONT SIZE=3D2>know whether I remembered the outcome of =
+\meaning</FONT>
+
+<BR><FONT SIZE=3D2>correctly.&nbsp; This has the advantage that it will =
+always</FONT>
+
+<BR><FONT SIZE=3D2>work correctly in the sence that it does not =
+produce</FONT>
+
+<BR><FONT SIZE=3D2>errors. I will however produce some kind of =
+generalized</FONT>
+
+<BR><FONT SIZE=3D2>spacing, i.e. \verb{\ab&nbsp;&nbsp; \ab} will come =
+out `\ab \ab'</FONT>
+
+<BR><FONT SIZE=3D2>if I remember correctly.</FONT>
+
+<BR><FONT SIZE=3D2>One has to scan perhaps for spaces and turn them =
+into</FONT>
+
+<BR><FONT SIZE=3D2>something like \ before sending the result back =
+but</FONT>
+
+<BR><FONT SIZE=3D2>this is a minor matter.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; It should be possible to absorb the macro =
+argument</FONT>
+
+<BR><FONT SIZE=3D2>&gt; one token, or rather: one undelimited macro =
+argument,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; at a time. Whenever the token is \verb (test by =
+\ifx,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; this will work even if the user has \let =
+something to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \verb), verbatim mode is switched on, and =
+character tokens are</FONT>
+
+<BR><FONT SIZE=3D2>&gt; produced for every character in the verbatim =
+string.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Other fun part: macros can scoop up whole =
+groups, and</FONT>
+
+<BR><FONT SIZE=3D2>&gt; you have to recognize that you have got hold of =
+a group</FONT>
+
+<BR><FONT SIZE=3D2>&gt; instead of a token, if that is the case you have =
+to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; reinsert the braces (I programmed something like =
+this</FONT>
+
+<BR><FONT SIZE=3D2>&gt; a while ago. How do you generate a single =
+brace:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \iftrue{\else}\fi. Ho hum.) because presumably =
+there is</FONT>
+
+<BR><FONT SIZE=3D2>&gt; a macro in front of the group. This will only =
+lose braces</FONT>
+
+<BR><FONT SIZE=3D2>&gt; around single tokens, but I don't think that =
+matters.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The idea of \iftrue{\else}\fi will work only when =
+you</FONT>
+
+<BR><FONT SIZE=3D2>are reconstruction the originial tokenlist =
+very</FONT>
+
+<BR><FONT SIZE=3D2>carefully using \edef together with noexpand =
+etc.</FONT>
+
+<BR><FONT SIZE=3D2>Otherwise one will end up with things like</FONT>
+
+<BR><FONT SIZE=3D2>\mbox\iftrue{... which will bomb. A better =
+possibility</FONT>
+
+<BR><FONT SIZE=3D2>is perhaps the use of \aftergroup to construct =
+the</FONT>
+
+<BR><FONT SIZE=3D2>internal stuff.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; All of this is not particularly fast, and the =
+one case where</FONT>
+
+<BR><FONT SIZE=3D2>&gt; it goes wrong is if the user has the verbatim =
+text</FONT>
+
+<BR><FONT SIZE=3D2>&gt; inside a group.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But h ere is the problem, it is actually not fast it =
+is</FONT>
+
+<BR><FONT SIZE=3D2>also a pain to write it for the general case but =
+this</FONT>
+
+<BR><FONT SIZE=3D2>could be solved.&nbsp; The real problem however is =
+that it</FONT>
+
+<BR><FONT SIZE=3D2>will not work for cases like \section{ A {\em =
+very</FONT>
+
+<BR><FONT SIZE=3D2>\verb=3D\special=3D macro} system}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This would mean that there is again a nice class =
+of</FONT>
+
+<BR><FONT SIZE=3D2>headings which would produce big problems for =
+the</FONT>
+
+<BR><FONT SIZE=3D2>inexperienced user.&nbsp; What I like to see is a =
+verb</FONT>
+
+<BR><FONT SIZE=3D2>command that will always work.&nbsp; I think it is =
+much</FONT>
+
+<BR><FONT SIZE=3D2>better to tell the user that he has to use two =
+(or</FONT>
+
+<BR><FONT SIZE=3D2>more) \verb commands (in arguments) if he wants =
+to</FONT>
+
+<BR><FONT SIZE=3D2>generate spaces instead of leaving him with a mess =
+of</FONT>
+
+<BR><FONT SIZE=3D2>errors.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D46FF6CC--
+

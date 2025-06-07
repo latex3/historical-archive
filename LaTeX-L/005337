@@ -1,0 +1,78 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 17 Sep 2008 15:20:12 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8HDK7XZ006605
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 17 Sep 2008 15:20:07 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8HDE9oG017281
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 17 Sep 2008 15:14:09 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8GM1HtQ010773;
+	Wed, 17 Sep 2008 15:14:07 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 40083 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 17 Sep
+          2008 15:14:07 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+          by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id
+          m8GM1HtK010773 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 17 Sep
+          2008 15:14:07 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id m8HDE71W026000
+Message-ID:  <LISTSERV%200809171514075698.0309@LISTSERV.UNI-HEIDELBERG.DE>
+Date:         Wed, 17 Sep 2008 15:14:07 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: l3messages
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 17 Sep 2008 13:20:12.0363 (UTC) FILETIME=[1D76F1B0:01C918C8]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5337
+
+Will and I have briefly discussed l3messages, and I thought I'd summarise
+for the list a few observations:
+
+- The module prefix \err is not really that helpful, as some of the
+functions are related to information rather than errors: would \msg_ be
+better (at least for the non-error parts)?
+
+- Saving the error messages to file to save memory is not really relevant
+today, especially as every message needs a tlp in any case.  
+
+- On the other hand, perhaps having the errors in this way makes
+localisation of messages easier? Is this something that should be
+considered, and if so an alternative mechanism is needed.
+
+- The interface is not that helpful. As well as some problems creating
+messages, there is no easy way to re-create \PackageInfo, etc. from LaTeX2e:
+no automated adding of package name, etc. This leaves the programmer to sort
+out their own system (or not).
+
+- The messages themselves need some attention. Compared to LaTeX2e messages,
+some extra lines of code appear in the output that don't really help.
+Currently, \g_file_curr_name_tlp is set to "no file" and (apparently) never
+changed elsewhere. So messages never give a clue to the file concerned.
+
+- Some parts of the file are not documented (for example \text_put_sp:).
+
+Over all, I'd suggest this needs some attention, but first some kind of
+updated structure should be agreed.
+--
+Joseph Wright
+

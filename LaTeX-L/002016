@@ -1,0 +1,92 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2683" "Tue" "10" "June" "1997" "18:44:53" "-0400" "Michael John Downes" "mjd@MATH.AMS.ORG" nil "52" "automatic numbering" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id IAA09960; Wed, 11 Jun 1997 08:18:24 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.7E174EE1@listserv.gmd.de>; Wed, 11 Jun 1997 8:18:23 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 151282 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 11 Jun 1997 08:18:13 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id IAA02830 for
+          <latex-l@relay.urz.uni-heidelberg.de>; Wed, 11 Jun 1997 08:18:10
+          +0200 (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 11 Jun 1997
+          06:18:06 UT
+Received: from epsilon.ams.org by AXP14.AMS.ORG (PMDF V5.1-8 #16534) with SMTP
+          id <01IJX1OU11U8001U4E@AXP14.AMS.ORG> for
+          latex-l@relay.urz.uni-heidelberg.de; Tue, 10 Jun 1997 18:44:55 EST
+Received: by epsilon.ams.org; (5.65v3.2/1.1.8.2/12Oct95-1155AM) id AA31833;
+          Tue, 10 Jun 1997 18:44:54 -0400
+X-Mailer: Gnus v5.3/Emacs 19.34
+Lines: 52
+Message-ID:  <pc910inkm2.fsf@epsilon.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 10 Jun 1997 18:44:53 -0400
+From: Michael John Downes <mjd@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      automatic numbering
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2016
+
+Some other thoughts on automatic numbering.
+
+The automatic numbering and cross-referencing features of LaTeX are
+immensely helpful to the author during the process of writing. However,
+when a document is sent to the publisher, the numbering of its elements
+is fixed, and continued use of the automatic numbering mechanisms
+consumes system resources needlessly and can become actually dangerous
+during the production process: If there are any mistakes in the
+production, such as running a document only twice that needs to be run
+three times, the document might be printed with wrong numbering.
+
+I am inclined to think, therefore, that the ideal submission process
+should involve a step where all the automatic numbers are replaced by
+their explicit values from the .aux file. (In particular, what the
+publisher ought to be given is the set of all document numbers *except*
+page numbers---if not for that exception, it would just about suffice to
+submit the .aux file along with the document file and add \nofiles to
+the document preamble.)
+
+This is best done (imho) by expanding the syntax of all the
+automatically numbered elements to include two mandatory arguments:
+label and number. If the number arg is left empty, generate an automatic
+number; if the label arg is left empty (or if it is equal to "-" or "/"
+or some such convention), leave the element unnumbered (obviating the
+need for * form of eqnarray and the like); otherwise use the given
+number arg.
+
+The presence of the explicit element numbers has obvious pleasant
+ramifications for document navigation, for those who may still be using
+ordinary text editors to work on LaTeX documents instead of Scientific
+Workplace, LyX, emacs+AUC-TeX, or the like.
+
+It is not too extremely rare for the author to add or remove elements
+from a document after it is submitted to a publisher, in a way that
+changes element numbers. But it is after all not that frequent either
+(most changes don't affect numbering), and in any case recycling the
+document through the automatic numbering mechanisms and substituting the
+new numbers wouldn't be too difficult.
+
+The missing piece: a portable program to plug in the explicit numbers at
+the right place (or erase them) on demand. If the syntax is chosen
+carefully I dare say a sed script will suffice for all practical
+purposes, and sed is available for a lot of platforms these days. Perl, awk,
+and emacs-lisp versions wouldn't be too hard to supply either, to give
+people a choice.
+
+I haven't looked at AUC-TeX lately, for all I know it already provides
+in-document number updating (in the form of a comment?), does anyone
+know what the current situation is?
+
+Michael Downes
+mjd@ams.org
+

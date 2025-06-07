@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2837" "Thu" "22" "October" "1998" "16:04:26" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "56" "Re: Users dropping into TeX" "^Date:" nil nil "10" nil "Users dropping into TeX" nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id QAA14992;
+	Thu, 22 Oct 1998 16:19:55 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.D98DF6C7@listserv.gmd.de>; Thu, 22 Oct 1998 16:09:46 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 403679 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 22 Oct 1998 16:09:26 +0200
+Received: from mail0.nada.kth.se (mail0.nada.kth.se [130.237.222.70]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id QAA10985 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 22 Oct 1998 16:09:19 +0200 (MET
+          DST)
+Received: from [130.237.37.111] (sl85.modempool.kth.se [130.237.37.111]) by
+          mail0.nada.kth.se (8.8.7/8.8.7) with ESMTP id QAA02234 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 22 Oct 1998 16:09:11 +0200 (MET
+          DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <v03110700b2549d1fbafb@[130.237.37.63]>
+            <009CE0B8.3AA44DD4.13@triumf.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110701b254e5bdcaa2@[130.237.37.28]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <13871.9933.597248.116184@fell.open.ac.uk>
+Date:         Thu, 22 Oct 1998 16:04:26 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Users dropping into TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2704
+
+At 14:51 +0200 98/10/22, Chris Rowley wrote:
+>Here are some desirable features of such a specification:
+>
+>-- provide a straightforward means of extending the available
+>document-level environments (and commands), with clearly
+>defined rules for what is allowed;
+>
+>-- distinguish (to both humans and software) clearly between such
+>extensions (where the detailed syntax is very flexible) and an
+>inner-level which has a rigorously defined syntax that is extensible
+>only in more complex ways within (something like) package files;
+
+  The second rule translates into saying "provide an interface for the
+implementation" (unless I have misunderstood what you are trying to say),
+which should be avoided. Instead the desirable cause of action would be to
+keep track of the information needed for defining environments: The
+interface must be sufficiently general. (People trying to beat this
+interface is to ask for trouble.)
+
+  With respect to nesting environment definitions, one needs some extra
+variables keeping track of both the name of the defining environment and
+the environment currently at the top of the stack.
+
+  I think LaTeX3 should define an entirely environment definition
+structure, and try to make old environments works reasonably well in a
+compatibility mode.
+
+  This may not be as difficult as it sounds, because new and old
+environments would doffer mainly in the number of variables they use and
+where the commands are executed: For example, in LaTeX, I recall the
+\begingroup & \endgroup commands are executed by the \begin{foo} and
+\end{foo} commands; for environments with hooks, it should be executed by
+what corresponds to \foo and \endfoo, according to my analysis. I recall
+that I tried a version where old style environments could be used to define
+new style environments (even though there were some problems).
+
+  In addition, one should cut out the illogical stuff: For example, the
+\begin{document} is not a start of an environment: It instead cancels a
+\begingroup, I recall. This is used to force a Pascal-like top level
+structure, but will cause problems if one will want to group documents
+together in larger structures (say a journal).
+
+  I think that the things I did will not require a major effort to
+implement. It is however imperative that it is implemented as a part of the
+LaTeX macro package itself: I recall that when LaTeX2e changed, some of the
+quick-and-dirty stuff stopped working.
+
+  When defining new style environments one needs to have special knowledge
+about the special typesetting variables some environments need to have: So
+perhaps only some of Them have it.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+
+

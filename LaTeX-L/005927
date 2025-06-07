@@ -1,0 +1,82 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 15 Aug 2009 13:02:22 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7FB2L5k027115
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 15 Aug 2009 13:02:21 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7FAvoRe009138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 15 Aug 2009 12:57:50 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7EM1lul015568;
+	Sat, 15 Aug 2009 12:57:43 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 286559 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 15 Aug
+          2009 12:57:43 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7FAvglh007438 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 15 Aug 2009 12:57:42 +0200
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n7FAvSX0003754 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 15 Aug 2009 12:57:32 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id 1McGwy-00079Q-eT
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 15 Aug 2009 10:57:28
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A86949D.3090500@morningstar2.co.uk>
+Date:         Sat, 15 Aug 2009 11:57:33 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A7921CF.5020803@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Aug 2009 11:02:22.0144 (UTC) FILETIME=[DD2CAC00:01CA1D97]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5927
+
+Hello everyone,
+
+If you consult the LaTeX3 SVN, you'll see that I've now committed a lot
+of what has been discussed here to the real xparse module, removing
+xparse-alt and doing a little tidying of other xpackages to fit the
+updated model. At present, the update will break the "xcontent" package,
+which I'll try to sort out later today if I get time.
+
+At present, the implementation covers all of the argument types
+discussed (including Will's optional-braced-argument, which I've called
+g = "grouped"), with "+" representing a long argument. I've gone with
+the idea of ">{\some_function:n}" for processing arguments, for example
+
+\DeclareDocumentCommand \foo { >{\xparse_arg_split_on_comma:n}D(){0,0} }
+  { code }
+
+is currently correct for finding an optional pair of co-ordinates and
+splitting at the comma.
+
+I've not yet implemented \DeclareExpandableDocumentCommand. I'll
+probably try to do that over the weekend, with the very restricted set
+of valid arguments I suggested in my e-mail from yesterday.
+-- 
+Joseph Wright
+

@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1948" "Tue" "14" "October" "1997" "16:15:06" "+0100" "Sebastian Rahtz" "s.rahtz@ELSEVIER.CO.UK" nil "56" "Re: frontmatter 98" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id RAA29479;
+	Tue, 14 Oct 1997 17:56:13 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.D992C747@listserv.gmd.de>; Tue, 14 Oct 1997 17:55:41 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 215038 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 17:55:32 +0200
+Received: from pillar.elsevier.co.uk (root@pillar.elsevier.co.uk
+          [193.131.222.35]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id RAA12903 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14
+          Oct 1997 17:55:20 +0200 (MET DST)
+Received: from snowdon.elsevier.co.uk (snowdon.elsevier.co.uk
+          [193.131.197.164]) by pillar.elsevier.co.uk (8.8.5/8.8.5) with ESMTP
+          id QAA29937 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14 Oct
+          1997 16:53:58 +0100 (BST)
+Received: from SRAHTZ (actually host srahtz.elsevier.co.uk) by
+          snowdon.elsevier.co.uk with SMTP (PP); Tue, 14 Oct 1997 16:54:29 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <1622-Tue14Oct1997113530+0100-s.rahtz@elsevier.co.uk>
+            <199710141441.QAA09578@macbeth.uni-duesseldorf.de>
+X-Mailer: VM 6.33 under Emacs 19.34.6
+Message-ID:  <9620-Tue14Oct1997161506+0100-s.rahtz@elsevier.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199710141441.QAA09578@macbeth.uni-duesseldorf.de>
+Date:         Tue, 14 Oct 1997 16:15:06 +0100
+From: Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: frontmatter 98
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2472
+
+ > Nice idea, but what about journals that print initials withouth dots?
+ > In the IOP physics journal, they print author names like "T T C Jones",
+ > so if you say \author{surname=Jones, inits=T.T.C.}, your're already
+ > encoding some part of the presentation, not just the information.
+sigh. troublemaker. "inits=t t c", and journal B can cycle over the
+elements adding dots?
+
+ > * What about papers representing a team effort?  In the proceedings
+ >   issues of plasma physics journals you often find something like
+ >
+ >       <author list> and the ITER Joint Central Team and Home Teams
+
+\author{type=collab, name=The ITER Team}
+
+or
+
+\collab{name=The ITER Team}
+
+ >       ITER Joint Central Team, presented by A. U. Thor
+um. tricky one. our DTD has a tag for this. i am tempted to
+say
+
+\author{type=presenter,surname=Thor,forename=A U}
+
+ >       A. U. Thor and ITER Joint Central Team
+ >
+ >   to put the presenting author first regardless of the ordering
+ >   in the original paper.
+ah, now ordering of authors is hard... i am assuming natural order, if
+in doubt. we didnt promise to generate a BibTeX heade from the frontmatter
+
+ >      \address{id=lab1,address=Forschungszentrum Juelich, Germany}
+ >      \address{id=lab2,address=Ecole Royale Militaire, Belgium}
+ >      \address{id=lab3,address=FOM Institut voor Plasmafysica, Netherlands}
+ >
+ >   the official policy may ask for a footnote such as
+ >
+ >      \note{id={lab1,lab2,lab3},
+ >        text={partners in the Trilaterial Euregio Cluster}}
+well, you solved it yourself. there comes a point where you have to
+giev up and use a \note, perhaps.
+
+ >   (This is indeed a real life example, not something that I've made up.)
+oh, i believe you. i bet the wretches publish with Elsevier....
+
+another one i am not happy about is shared departments:
+
+  A U THor
+    Dept Chemistry
+  B L User
+    Dept Physics
+    University of Noddyland
+
+i really dont see a clean markup for this
+
+sebastian
+

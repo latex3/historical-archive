@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1990" "Wed" "12" "April" "1995" "13:42:54" "+0200" "Hans ]berg" "haberg@MATEMATIK.SU.SE" nil "41" "Re: modularity" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzj.zdv.Uni-Mainz.DE [134.93.8.16]) by trudi.zdv.Uni-Mainz.DE (8.6.11/8.6.11) with ESMTP id NAA19652 for <schoepf@goofy.zdv.uni-mainz.de>; Wed, 12 Apr 1995 13:46:49 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP951RTOMO9KNCYM@MZDMZA.ZDV.UNI-MAINZ.DE>; Wed,
+ 12 Apr 1995 13:46:19 +0100
+Received: from degate.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP951H6K6O9TDH80@MZDMZA.ZDV.UNI-MAINZ.DE>; Wed,
+ 12 Apr 1995 13:46:07 +0100
+Received: from vm.gmd.de by degate.gmd.de (SF for OpenVMS v1.0-a)
+ with SMTP id 35F068AD ; Wed, 12 Apr 1995 13:46:00 +0200
+Received: from VM.GMD.DE by vm.gmd.de (IBM VM SMTP V2R2)
+ with BSMTP id 7945; Wed, 12 Apr 95 13:40:39 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2a/1.8a) with BSMTP id 2924; Wed,
+ 12 Apr 1995 13:40:38 +0200
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Message-id: <01HP951HKRDU9TDH80@MZDMZA.ZDV.UNI-MAINZ.DE>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Wed, 12 Apr 1995 13:42:54 +0200
+From: "Hans ]berg" <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Subject: Re: modularity
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1639
+
+  I want to note that there is an easy way to "objectify" TeX, without having to
+do extensions of TeX itself:
+
+  An object with name "X" is given command names of type "X/x" (backslahses "\",
+as in "\X/x" excluded, since they should not be considered part of the name); a
+subobject of X with name "Y" is then given the name "X/Y/x" (corresponding to
+the command \X/Y/x), and so forth.
+  Objects could be environments and packages.
+
+  When you want to read a package, you first read the macro-definitions, as
+usual. Secondly you make use of a set-paths mechanism. An environment that wants
+to use commands from package X sets the path "X/", so that when the command \x
+is entered, it first checks \X/x, and if that does not exist, it tries \x.
+
+  I can think of two ways to implement this set paths function:
+*1 The first is, instead of making use of \x, having a special command \do{x},
+which reads the paths list.
+
+*2 The second is having a command \set{X} which run through all the macros of X,
+and is doing a \let\x=\X/x, after which \x can be used as normal.
+
+  Since *2 is likely to be slow, *1 would be preferrable. Even better would be
+to extend TeX itself, allowing such techniques.
+
+  Anyhow, it is then easy to extract just the part that you want to make use of,
+and combine packages which are variants on the same task.
+  For instance, if you want to make use of the package "article", except for the
+equation numbering, which should make use of the "report" format, then you can
+write (symbolic code)
+        \load{article}
+        \load{report}
+        \set{article}
+        \let\theequation=\report/theequation
+
+  One can think of refinements: For instance, the article and report packages
+should probably have a superclass called "manuscript" with a more general
+definition of \theequation (named "manuscript/theequation") which the article
+and report packages set some variables to. Users could then easily do their own
+variations of the \theequation command.
+
+  Hans Aberg
+

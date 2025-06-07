@@ -1,0 +1,96 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 22 Jan 2009 15:09:34 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0ME9UsF016747
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 22 Jan 2009 15:09:33 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0ME4586005135
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Jan 2009 15:04:05 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0MBVUYX006126;
+	Thu, 22 Jan 2009 15:03:52 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 225729 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 15:03:52 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0ME3qfL024266 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 22 Jan 2009 15:03:52 +0100
+Received: from nf-out-0910.google.com (nf-out-0910.google.com [64.233.182.187])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          n0ME3ou1005026 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 22 Jan
+          2009 15:03:53 +0100
+Received: by nf-out-0910.google.com with SMTP id e27so662951nfd.30 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 22 Jan 2009 06:03:48 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.86.65.9 with SMTP id n9mr767699fga.61.1232633028627; Thu, 22
+          Jan 2009 06:03:48 -0800 (PST)
+References: <49758499.5080004@morningstar2.co.uk>
+            <150532.45020.qm@web82002.mail.mud.yahoo.com>
+            <49782F88.9090501@morningstar2.co.uk>
+            <18808.14594.895857.730057@morse.mittelbach-online.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <859ec5630901220603q48bbe1e4kb6043967e3581051@mail.gmail.com>
+Date:         Thu, 22 Jan 2009 15:03:48 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: changing page dimensions in mid-document (was Re: Key points of LaTex3)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18808.14594.895857.730057@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Jan 2009 14:09:34.0298 (UTC) FILETIME=[0D609BA0:01C97C9B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5622
+
+On Thu, Jan 22, 2009 at 10:14 AM, Frank Mittelbach
+<frank.mittelbach@latex-project.org> wrote:
+> Joseph, Paul
+>
+>  > > 5) Changing page dimensions in the middle of the document:
+>  > > Middlebach says this can't be done, but I have done it in
+>  > > my newlfm macro, and I say "rubbish" to Frank -
+>  > > it can be done, and it should be possible.
+>  >
+>  > I always thought this was an engine issue.  Shows you what I know!
+>
+> Joseph, your knowledge is up to date. There is no way to modify horizontal text
+> dimensions in TeX in mid document, except in very restricted situations. I
+> think we had these discussions before.
+>
+> The main restricting reasons are
+>
+>  - paragraph breaking and page breaking are asynconous, i.e. TeX does
+>   paragraph shaping before deciding on where to place that paragraph
+>
+>  - you can't reformat an already broken paragraph into a different shape (as
+>   the material lost on the ine breaks is not fully recoverable
+
+Reading newlfm it seems to me as if it simply deals with changing page
+dimensions in situations where pages are already complete, just like
+it is possible to do so after a \clearpage in current LaTeX. Paul,
+correct me if I am mistaken.
+
+Note: The implementation in newlfm will not work (as intended) when
+the calc package is loaded. To be more specific,
+  \global\setlength{\hsize}{\columnwidth}%
+will not do a global assignment to \hsize with calc loaded (but to an
+internal variable).
+-- 
+Morten
+

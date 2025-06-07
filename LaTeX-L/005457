@@ -1,0 +1,101 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 08:15:00 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mAO7Ewjl022114
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 24 Nov 2008 08:14:59 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mAO7AZSb016000
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 24 Nov 2008 08:10:35 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mANAMSwf001634;
+	Mon, 24 Nov 2008 08:10:32 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 166364 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 24 Nov
+          2008 08:10:32 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mAO7AWZ8023771 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 24 Nov 2008 08:10:32 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.247])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          mAO7ARDF021318 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 24 Nov
+          2008 08:10:31 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so2038198rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 23 Nov 2008 23:10:27 -0800
+          (PST)
+Received: by 10.141.15.19 with SMTP id s19mr1728016rvi.148.1227510626910; Sun,
+          23 Nov 2008 23:10:26 -0800 (PST)
+Received: from ?10.0.1.100? (122-49-160-236.ip.adam.com.au [122.49.160.236]) by
+          mx.google.com with ESMTPS id k2sm11762284rvb.1.2008.11.23.23.10.24
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Sun, 23 Nov 2008 23:10:25 -0800
+          (PST)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v929.2)
+References: <49293F92.2080401@morningstar2.co.uk>
+            <6898DF36-24E2-465E-9958-7AA38C4C1AE6@gmail.com>
+            <492A511D.1070507@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.929.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <E42A3D4E-EFD7-44CA-8522-2416A879E427@gmail.com>
+Date:         Mon, 24 Nov 2008 17:40:20 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: l3quark/l3tlp
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <492A511D.1070507@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Nov 2008 07:15:00.0969 (UTC) FILETIME=[5D588D90:01C94E04]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5457
+
+On 24/11/2008, at 5:30 PM, Joseph Wright wrote:
+
+> Will Robertson wrote:
+>> This brings up the question: is there any reason for us to keep the
+>> modules logically separate? An easy fix might be to add
+>> \RequirePackage{expl3} to the top of each l3module.
+>
+> But there will still be a sensible order to load things: l3names, then
+> l3basics, then (hmm, don't know what's next!).
+
+Yep :)
+I guess we need to sort that out in expl3.sty itself. Although,  
+miraculously, things have tended to work without too much thought put  
+into the loading order.
+
+>> Regarding the best way to fix this particular problem with l3tlp, an
+>> alternative is to move
+>>  \use_none_delimit_by_q_recursion_stop:w
+>> into l3basics, where are also defined "\use_none_delimit_by_q_nil:w"
+>> and so on.
+>
+> I'd agree.  My suggested fix was to get things working, but it seemed
+> obvious that the better solution was to move the entire thing  
+> earlier in
+> the code.
+
+In which case we'll start to move everything into l3basics :)
+
+It would be good to keep that module as small as possible, but these  
+delimit_by_some_quark \use functions kind of belong together anyway.
+
+Before we start solving the problem properly, we should answer the  
+question: "are the modules *supposed* to be able to be loaded  
+independently?". I'm not the one to answer that...
+
+W
+

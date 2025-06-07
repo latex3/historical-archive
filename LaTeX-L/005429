@@ -1,0 +1,84 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 11 Nov 2008 15:32:57 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mABEWtIW000697
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 11 Nov 2008 15:32:56 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mABESGnR003873
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 11 Nov 2008 15:28:16 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mAAN1eCi009439;
+	Tue, 11 Nov 2008 15:28:10 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 135333 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 11 Nov
+          2008 15:28:09 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mABES9nw030742 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 11 Nov 2008 15:28:09 +0100
+Received: from ey-out-1920.google.com (ey-out-1920.google.com [74.125.78.150])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          mABES67W003713 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 11 Nov
+          2008 15:28:09 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so1068210eyk.58 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 11 Nov 2008 06:28:05 -0800
+          (PST)
+Received: by 10.210.121.8 with SMTP id t8mr9132210ebc.143.1226413685685; Tue,
+          11 Nov 2008 06:28:05 -0800 (PST)
+Received: by 10.210.123.11 with HTTP; Tue, 11 Nov 2008 06:28:05 -0800 (PST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <491924C4.3020702@morningstar2.co.uk>
+            <B6461DD9-6DDB-4AE8-9F9B-BA8D16C48A5E@gmail.com>
+            <18713.15630.241986.200940@morse.mittelbach-online.de>
+X-Spam-Whitelist: <morten.hoegholm@gmail.com>
+Message-ID:  <859ec5630811110628r6e00e26avb1974d36679a25b6@mail.gmail.com>
+Date:         Tue, 11 Nov 2008 15:28:05 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: \tlp_reverse:N?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18713.15630.241986.200940@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 11 Nov 2008 14:32:57.0924 (UTC) FILETIME=[6442F040:01C9440A]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5429
+
+On Tue, Nov 11, 2008 at 9:06 AM, Frank Mittelbach wrote:
+
+> depends on how efficient you want to make it ...
+
+Or how much you want it expanded.
+
+> \def_new:Npn \tlp_reverse:N #1 {
+>  \tlp_set:Nx #1
+>    {\tlist_reverse:o{#1}}
+> }
+>
+> \def_new:Npn \tlist_reverse:o { \exp_args:No \tlist_reverse:n }
+
+\def_new:Npn \tlp_reverse:N #1 {
+   \tlp_set:Nf #1
+   {\tlist_reverse:o{#1\exp_stop_f:}}
+}
+
+This reverses the list, leaving \exp_stop_f: in front, which in turn
+is removed by the f expansion which comes to a halt.
+-- 
+Morten
+

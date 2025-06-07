@@ -1,0 +1,112 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 27 Nov 2008 11:18:30 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mARAISkn004849
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 27 Nov 2008 11:18:29 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mARAEDPB009459
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 27 Nov 2008 11:14:13 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mAQN18KH022759;
+	Thu, 27 Nov 2008 11:14:08 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 174867 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 27 Nov
+          2008 11:14:08 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mARAE7Ws014445 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 27 Nov 2008 11:14:08 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id mARADoAo008981
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 27 Nov 2008 11:13:54
+          +0100
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1L5clt-0005kj-JV for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 27 Nov 2008 09:02:49 +0000
+Received: from [139.222.114.254] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1L5clt-0003Wg-IX for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 27 Nov
+          2008 09:02:49 +0000
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+References: <LISTSERV%200811192230181624.04A3@LISTSERV.UNI-HEIDELBERG.DE>      
+            <27990a880811191758x2a29ecb4m33d2dcead1f32093@mail.gmail.com>      
+            <859ec5630811200508x17ef357dvc7cf352f5bc1031f@mail.gmail.com>
+            <FFBA056D-6B16-4FB2-AD0F-CD95B6719230@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <492E623B.1090300@morningstar2.co.uk>
+Date:         Thu, 27 Nov 2008 09:02:51 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: \exp_after:NN
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <FFBA056D-6B16-4FB2-AD0F-CD95B6719230@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 27 Nov 2008 10:18:30.0919 (UTC) FILETIME=[7F06D970:01C95079]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5474
+
+Will Robertson wrote:
+> In order of preference, I think I like idea 1, then 2, then 3. It seems
+> like with the current system, we can't really anticipate every
+> possibility of weird expansion that comes along.
+
+I think that you have to accept that not everything will fit into a neat
+set of characterisations.  The key is to cover enough cases to make
+sense.  For example, whatever you do about \exp_after:NN, it will always
+be a bit odd (but I'd suggest not using :w, which I think is not the
+case most of the time!).
+> 
+> Arg specs n, N, w, D, e, E can be ignored for this discussion, so here's
+> what's left: (since an 'n' argument has no added braces)
+> o O
+> x X
+>   C
+> f
+> d
+
+I'd suggest the following:
+
+New	Current Input		Output		Description
+
+D	D	Varies		Varies		Do not use (kernel only)
+E	E	Single token	Unbraced	One expansion
+N	N	Single token	Unbraced	No expansion
+O	O	Single token	Braced		One expansion
+P	p	Parameters	n/a		Primitive TeX parameters
+W	w	Varies		Varies		"Weird" argument
+X	X	Single token	Braced		Full expansion
+
+c	c	Braced tokens	Braced		Tokens to csname
+e	e	Braced tokens	Unbraced	Expand once
+f	F	Braced tokens	Braced		False branch
+n	n	Braced tokens	Braced		No expansion
+o	o	Braced tokens	Braced		One expansion
+s	f	Braced tokens	Braced		"Stop" expansion
+t	T	Braced tokens	Braced		True branch
+u	d	Braced tokens	Braced		Double expansion
+v	C	Braced tokens	Braced		To csname, expand once
+x	x	Braced tokens	Braced		Full expansion
+
+My thinking here is that all of the capital letters take unbraced
+arguments, and all of the lower case ones take braced ones. I've tried
+to keep lower and upper case behaviour the same.  I struggled a bit with
+the existing "C": I've not actually used that one at all. "v" is next to
+"c" on a QUERTY keyboard!
+-- 
+Joseph Wright
+

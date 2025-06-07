@@ -1,0 +1,97 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 9 May 2005 13:28:34 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j49BSV0w005485
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 9 May 2005 13:28:32 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j49BO3tL005991;
+	Mon, 9 May 2005 13:24:03 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j499omho025259;
+	Mon, 9 May 2005 13:21:28 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 212732 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 9 May 2005 13:21:27 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j49BLRd4028148 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 9 May 2005 13:21:27 +0200
+Received: from dogmatix.mecheng.adelaide.edu.au
+          (dogmatix.mecheng.adelaide.edu.au [129.127.14.1]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j49BNnfK026889 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 9 May
+          2005 13:23:51 +0200 (MET DST)
+Received: (from uucp@localhost) by dogmatix.mecheng.adelaide.edu.au
+          (8.8.7/8.8.7) id VAA16538 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 9 May 2005 21:28:22 +0930
+Received: from UNKNOWN(129.127.14.10),
+          claiming to be "watt.mecheng.adelaide.edu.au" via SMTP by
+          dogmatix.mecheng.adelaide.edu.au,
+          id smtpda16535; Mon May  9 21:28:18 2005
+Received: from WATT/SpoolDir by watt.mecheng.adelaide.edu.au (Mercury 1.44); 9
+          May 05 20:51:27 -9:30
+Received: from SpoolDir by WATT (Mercury 1.44); 9 May 05 20:51:27 -9:30
+Received: from [10.0.1.2] (129.127.14.244) by watt.mecheng.adelaide.edu.au
+          (Mercury 1.44) with ESMTP; 9 May 05 20:51:21 -9:30
+Mime-Version: 1.0 (Apple Message framework v728)
+References: <20050427075026.GD10313@mathematik.tu-darmstadt.de>
+            <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <20050427104412.GF10313@mathematik.tu-darmstadt.de>
+            <E25267B0-4E12-4075-8E0A-1FE5FCFC8404@guerilla.net.au>
+            <20050509105844.GG7601@mathematik
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.728)
+Message-ID:  <E8F6F93B-3DD9-4A8D-BA61-9B9B434D05FC@guerilla.net.au>
+Date:         Mon, 9 May 2005 20:51:27 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Will Robertson <will@GUERILLA.NET.AU>
+Subject: Re: new^2 font selection scheme
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <20050509105844.GG7601@mathematik.tu-darmstadt.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 09 May 2005 11:28:34.0794 (UTC) FILETIME=[3C8BC4A0:01C5548A]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4869
+
+On 9 May 2005, at 8:28 PM, Achim Blumensath wrote:
+
+> The only problem I see with this approach is how to select the
+> appropriate substitutions if the requested shape is not available.
+> Say,
+> the user specifies {it,sc,osf} but the font only provides
+> {it,u&lc,osf}
+> and {n,sc,osf}. Which of them should be taken?
+
+Hmmmm.
+For such a system, I assume you'd have something like an
+\addfontshape command, since you don't want to specify all previous
+font shapes when supplying a new one (in the same way as \bfseries is
+applied without having to say \sffamily -- this is the whole point of
+orthogonal axes).
+
+[I guess it would have to be clever enough to realise that a
+definition like {u&lc,sc} doesn't make sense and decompose it to {sc}
+(with a warning).]
+
+So, the current shape is {n,u&lc,osf}. You want to get to
+{it,sc,osf}. I assume here that the \addfontshape{it,sc} command is
+actually a shorthand for \addfontshape{it}\addfontshape{sc} and you'd
+get
+     \addfontshape{it} -> {it,u&lc,osf}, then
+     \addfontshape{sc} -> {it,u&lc,osf} + warning
+
+If the arguments to \addfontshape command were reversed, you'd get
+the {n,sc,osf} + warning instead.
+
+How does this sound?
+
+Will
+

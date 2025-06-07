@@ -1,0 +1,538 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.9A352BFC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:21 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.9A352BFC"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Summary: validating LaTeX
+Date: Tue, 11 Feb 1992 13:52:48 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE929@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Frank Mittelbach" <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@DB0TUI11.BITNET>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@DB0TUI11.BITNET>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 571
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.9A352BFC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> Don Hosek:
+> What are we trying to validate? Answer that question and the
+> answer to how to do it will be simplified.
+>
+> Leslie Lamport:
+> Will everyone please forget that the word "trip test" was ever
+> used.  The problem is
+>
+>   REGRESSION TESTING OF NEW VERSIONS OF LaTeX AND LaTeX DOCUMENT =
+STYLES.
+>
+
+Let me try to outline the goals behind validating LaTeX and possible
+steps to achieve it:
+
+Goals:
+
+Validating LaTeX means a concept the helps maintaining updates LaTeX
+releases like the Dec91 one.
+
+So what we are trying to validate is that, for example, we don't
+introduce new bugs by fixing old ones. This means that any concept
+that helps in this respect is mainly for the maintainers of LaTeX and
+not for the system peoples at site X who have to install the new
+release (but see also below).
+
+I we can find such a concept then a second goal is to make the
+procedures public in a way that providers of major packages for LaTeX
+can provide input that allows to validate their additions, i.e., their
+style files.
+
+
+Reasons:
+
+The reasons for the desirability of such a concept should be clear to
+everybody, but to make it a bit concrete remember the Dec91 release of
+the current LaTeX. This release was tested on 15 or 20 sites prior its
+official release in Dec91. There have been many changes covering the
+integration of ILaTeX into the official distribution, none of them
+produced a problem. However we also corrected about 30 bugs that have
+been reported over the last year and two of them unfortunately
+introduced new bugs in certain special situations. Neither bug showed
+up during the beta tests, or what is more likely at least with one of
+them, wasn't noticed. If we have a concept of validating a new release
+that allows us to check the correctness of many implementation and
+layout special automatically we probably had discovered the new bugs,
+or more exactly the automagic:-) system would have found them.  To
+give a last example: I just discovered that the new letter style has a
+bug since we forgot to put in a change to \document that was
+introduced in latex.tex to catch \maketitle etc. before
+\begin{document}. By forgetting this, spacing before and after list
+environments in a letter will come out wrong. (You can correct this
+error by adding \@noskipsecfalse at the end of the definition of
+\document, the offical bug fix will follow as soon as Rainer is back
+>from skiing)
+
+
+A possible procedure:
+
+The idea of using dvitype is in my eyes the wrong approach for various
+reasons. As Leslie already remarked, LaTeX provides a very good
+possibility to check for unchanged output by applying \showoutput.
+This should cover all tests that try to validate that the output from
+some test file is unchanged.
+
+There are two type of tests that are necessary:
+
+1) test of internal features and their correct implementation. For
+ltx3, test files of that kind will be developed for every module
+implementing something. This is probably not so important for the
+current release at least as far as its basic data structures are
+concerned.
+
+2) test of higher level features and their correct result in various
+situation. Some people have asked what does correct means in layout?
+We don't have to judge the quality of a a certain design, what we want
+is that it produces results according its spec. Take again the example
+of the above bug in the letter style. If there had been a test file
+for certain features of the letter style including the application of
+a list environment this bug would have surfaced before we had send out
+the release.
+
+Of course, we can not hope that we can check for all possible bugs but
+we can hope that we get the number of problems down and by adding new
+code to the test files whenever a new bug shows up that wasn't catched
+we can hope to make this procedure better and better (just like the
+trip test gets updated whenever Don has to write a new check).
+
+
+Implementation of such a concept:
+
+What we need:
+
+- a shell script that takes a .log and a, say, .tlg file and compares
+  them after stripping of the lines that would necessarily be
+  different, e.g. the first one and also the some of the last ones.
+
+- a shell script, or something, that takes one argument (the base name
+  of the test file) runs it through latex then to the above script.
+
+- a maintaining script, perhaps a makefile, in which new test files
+  can be easily incorporated.
+
+- many many test files.
+
+- ideas how features are best tested.
+
+- a documentation of the stuff and its ideas. This would include
+  documentation of what a test file is supposed to test.
+
+
+I said shell script because the current LaTeX source lives on unix
+boxes but in the long run I would prefer to have this a OS independent
+as possible. The reason for this wish is that I hope that we can
+influence with a successful implementation of the above concept
+providers of non standard packages that are maintained to follow it
+and prepare test files for their own styles.
+
+A system programmer at site X could then do the tests as well running
+not only the standard tests but also tests for local styles. I'm aware
+that a .tlg file may not give correct results on another system since
+we have to deal with floating point arithmetic of TeX and other
+problems but is isn't a real problem. The system programmer would need
+to check the differences once by hand and then rename the log files
+produced from the test files to be the local tlg files.
+
+After all the whole concept is meant for things that are fixed and
+stable and shouldn't change very often.
+
+
+I hope that this resolves some of the misunderstandings and questions.
+
+
+The helper question:
+
+Now after outlining what I would like to have for the current and also
+for ltx3 the main question is:
+
+  Any takers?
+
+It would be fine if a small group of people has enough interest in a
+better software distribution of the current LaTeX to volunteer for
+this project so that it can be started. This would also be very
+helpful for ltx3, in fact for every TeX macro software.
+
+In hope for a full mailbox
+
+Frank Mittelbach=1A
+
+
+------_=_NextPart_001_01C19443.9A352BFC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Summary: validating LaTeX</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; Don Hosek:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; What are we trying to validate? Answer that =
+question and the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; answer to how to do it will be =
+simplified.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Leslie Lamport:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Will everyone please forget that the word =
+&quot;trip test&quot; was ever</FONT>
+
+<BR><FONT SIZE=3D2>&gt; used.&nbsp; The problem is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; REGRESSION TESTING OF NEW VERSIONS =
+OF LaTeX AND LaTeX DOCUMENT STYLES.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Let me try to outline the goals behind validating =
+LaTeX and possible</FONT>
+
+<BR><FONT SIZE=3D2>steps to achieve it:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Goals:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Validating LaTeX means a concept the helps maintaining =
+updates LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>releases like the Dec91 one.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>So what we are trying to validate is that, for =
+example, we don't</FONT>
+
+<BR><FONT SIZE=3D2>introduce new bugs by fixing old ones. This means =
+that any concept</FONT>
+
+<BR><FONT SIZE=3D2>that helps in this respect is mainly for the =
+maintainers of LaTeX and</FONT>
+
+<BR><FONT SIZE=3D2>not for the system peoples at site X who have to =
+install the new</FONT>
+
+<BR><FONT SIZE=3D2>release (but see also below).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I we can find such a concept then a second goal is to =
+make the</FONT>
+
+<BR><FONT SIZE=3D2>procedures public in a way that providers of major =
+packages for LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>can provide input that allows to validate their =
+additions, i.e., their</FONT>
+
+<BR><FONT SIZE=3D2>style files.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Reasons:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The reasons for the desirability of such a concept =
+should be clear to</FONT>
+
+<BR><FONT SIZE=3D2>everybody, but to make it a bit concrete remember the =
+Dec91 release of</FONT>
+
+<BR><FONT SIZE=3D2>the current LaTeX. This release was tested on 15 or =
+20 sites prior its</FONT>
+
+<BR><FONT SIZE=3D2>official release in Dec91. There have been many =
+changes covering the</FONT>
+
+<BR><FONT SIZE=3D2>integration of ILaTeX into the official distribution, =
+none of them</FONT>
+
+<BR><FONT SIZE=3D2>produced a problem. However we also corrected about =
+30 bugs that have</FONT>
+
+<BR><FONT SIZE=3D2>been reported over the last year and two of them =
+unfortunately</FONT>
+
+<BR><FONT SIZE=3D2>introduced new bugs in certain special situations. =
+Neither bug showed</FONT>
+
+<BR><FONT SIZE=3D2>up during the beta tests, or what is more likely at =
+least with one of</FONT>
+
+<BR><FONT SIZE=3D2>them, wasn't noticed. If we have a concept of =
+validating a new release</FONT>
+
+<BR><FONT SIZE=3D2>that allows us to check the correctness of many =
+implementation and</FONT>
+
+<BR><FONT SIZE=3D2>layout special automatically we probably had =
+discovered the new bugs,</FONT>
+
+<BR><FONT SIZE=3D2>or more exactly the automagic:-) system would have =
+found them.&nbsp; To</FONT>
+
+<BR><FONT SIZE=3D2>give a last example: I just discovered that the new =
+letter style has a</FONT>
+
+<BR><FONT SIZE=3D2>bug since we forgot to put in a change to \document =
+that was</FONT>
+
+<BR><FONT SIZE=3D2>introduced in latex.tex to catch \maketitle etc. =
+before</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}. By forgetting this, spacing before =
+and after list</FONT>
+
+<BR><FONT SIZE=3D2>environments in a letter will come out wrong. (You =
+can correct this</FONT>
+
+<BR><FONT SIZE=3D2>error by adding \@noskipsecfalse at the end of the =
+definition of</FONT>
+
+<BR><FONT SIZE=3D2>\document, the offical bug fix will follow as soon as =
+Rainer is back</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from skiing)</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>A possible procedure:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The idea of using dvitype is in my eyes the wrong =
+approach for various</FONT>
+
+<BR><FONT SIZE=3D2>reasons. As Leslie already remarked, LaTeX provides a =
+very good</FONT>
+
+<BR><FONT SIZE=3D2>possibility to check for unchanged output by applying =
+\showoutput.</FONT>
+
+<BR><FONT SIZE=3D2>This should cover all tests that try to validate that =
+the output from</FONT>
+
+<BR><FONT SIZE=3D2>some test file is unchanged.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There are two type of tests that are necessary:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1) test of internal features and their correct =
+implementation. For</FONT>
+
+<BR><FONT SIZE=3D2>ltx3, test files of that kind will be developed for =
+every module</FONT>
+
+<BR><FONT SIZE=3D2>implementing something. This is probably not so =
+important for the</FONT>
+
+<BR><FONT SIZE=3D2>current release at least as far as its basic data =
+structures are</FONT>
+
+<BR><FONT SIZE=3D2>concerned.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2) test of higher level features and their correct =
+result in various</FONT>
+
+<BR><FONT SIZE=3D2>situation. Some people have asked what does correct =
+means in layout?</FONT>
+
+<BR><FONT SIZE=3D2>We don't have to judge the quality of a a certain =
+design, what we want</FONT>
+
+<BR><FONT SIZE=3D2>is that it produces results according its spec. Take =
+again the example</FONT>
+
+<BR><FONT SIZE=3D2>of the above bug in the letter style. If there had =
+been a test file</FONT>
+
+<BR><FONT SIZE=3D2>for certain features of the letter style including =
+the application of</FONT>
+
+<BR><FONT SIZE=3D2>a list environment this bug would have surfaced =
+before we had send out</FONT>
+
+<BR><FONT SIZE=3D2>the release.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Of course, we can not hope that we can check for all =
+possible bugs but</FONT>
+
+<BR><FONT SIZE=3D2>we can hope that we get the number of problems down =
+and by adding new</FONT>
+
+<BR><FONT SIZE=3D2>code to the test files whenever a new bug shows up =
+that wasn't catched</FONT>
+
+<BR><FONT SIZE=3D2>we can hope to make this procedure better and better =
+(just like the</FONT>
+
+<BR><FONT SIZE=3D2>trip test gets updated whenever Don has to write a =
+new check).</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Implementation of such a concept:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>What we need:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- a shell script that takes a .log and a, say, .tlg =
+file and compares</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; them after stripping of the lines that would =
+necessarily be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; different, e.g. the first one and also the =
+some of the last ones.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- a shell script, or something, that takes one =
+argument (the base name</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; of the test file) runs it through latex then =
+to the above script.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- a maintaining script, perhaps a makefile, in which =
+new test files</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; can be easily incorporated.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- many many test files.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- ideas how features are best tested.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- a documentation of the stuff and its ideas. This =
+would include</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; documentation of what a test file is supposed =
+to test.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>I said shell script because the current LaTeX source =
+lives on unix</FONT>
+
+<BR><FONT SIZE=3D2>boxes but in the long run I would prefer to have this =
+a OS independent</FONT>
+
+<BR><FONT SIZE=3D2>as possible. The reason for this wish is that I hope =
+that we can</FONT>
+
+<BR><FONT SIZE=3D2>influence with a successful implementation of the =
+above concept</FONT>
+
+<BR><FONT SIZE=3D2>providers of non standard packages that are =
+maintained to follow it</FONT>
+
+<BR><FONT SIZE=3D2>and prepare test files for their own styles.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A system programmer at site X could then do the tests =
+as well running</FONT>
+
+<BR><FONT SIZE=3D2>not only the standard tests but also tests for local =
+styles. I'm aware</FONT>
+
+<BR><FONT SIZE=3D2>that a .tlg file may not give correct results on =
+another system since</FONT>
+
+<BR><FONT SIZE=3D2>we have to deal with floating point arithmetic of TeX =
+and other</FONT>
+
+<BR><FONT SIZE=3D2>problems but is isn't a real problem. The system =
+programmer would need</FONT>
+
+<BR><FONT SIZE=3D2>to check the differences once by hand and then rename =
+the log files</FONT>
+
+<BR><FONT SIZE=3D2>produced from the test files to be the local tlg =
+files.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>After all the whole concept is meant for things that =
+are fixed and</FONT>
+
+<BR><FONT SIZE=3D2>stable and shouldn't change very often.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>I hope that this resolves some of the =
+misunderstandings and questions.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>The helper question:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now after outlining what I would like to have for the =
+current and also</FONT>
+
+<BR><FONT SIZE=3D2>for ltx3 the main question is:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; Any takers?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would be fine if a small group of people has enough =
+interest in a</FONT>
+
+<BR><FONT SIZE=3D2>better software distribution of the current LaTeX to =
+volunteer for</FONT>
+
+<BR><FONT SIZE=3D2>this project so that it can be started. This would =
+also be very</FONT>
+
+<BR><FONT SIZE=3D2>helpful for ltx3, in fact for every TeX macro =
+software.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In hope for a full mailbox</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank Mittelbach=1A</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.9A352BFC--
+

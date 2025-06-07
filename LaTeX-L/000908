@@ -1,0 +1,235 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["10075" "Thu" "17" "December" "92" "18:44:21" "EST" "Werenfried Spit" "SPIT@VM.CI.UV.ES" nil "206" "Some ideas about multilingual use of BibTeX" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA21360; Thu, 17 Dec 92 18:56:12 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA04636; Thu, 17 Dec 92 18:56:04 +0100
+Message-Id: <9212171756.AA04636@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2713; Thu, 17 Dec 92 18:56:15 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1304;
+ Thu, 17 Dec 92 18:56:11 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1302;
+ Thu, 17 Dec 92 18:56:07 CET
+Reply-To: LaTeX-L@vm.urz.Uni-Heidelberg.de
+Comments:     Resent-From: "Werenfried Spit" <SPIT@vm.ci.uv.es>
+Comments:     Originally-From: "Werenfried Spit" <SPIT@vm.ci.uv.es>
+Date:         Thu, 17 Dec 92 18:44:21 EST
+From: Werenfried Spit <SPIT@VM.CI.UV.ES>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Some ideas about multilingual use of BibTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 908
+
+
+%  Having developed a bibliographystyle for dutch users I have
+%  some ideas about the use of BibTeX in a non-english environment.
+%  Below is an article that resumes these. I'd appreciate if
+%   * developers of LaTeX 3
+%   * developers of BibTeX 1
+%   * developers of the Babel package
+%  would read it and comment on it. I hope it's of some use.
+%
+%  Warning 1: the closer the subject gets to actually doing something
+%             (like writing a style file) the sloppier the ideas are.
+%  Warning 2: if I say that something needs to be done it does not mean
+%             it cannot be done with LaTeX2+BibTeX0.99, it just means
+%             that I do not know how to do it easily
+%
+\documentstyle[a4,english,sober]{article}
+\newcommand{\BibTeX}{{\sc Bib}\TeX}
+\newcommand{\BBT}{Babel-\BibTeX}
+\begin{document}
+\title{Multilingual \BibTeX}
+\author{Werenfried Spit \\
+        {\sl  Departament de F\'\i sica Te\`orica, Universitat de Val\`encia}\\
+        \verb|spit@vm.ci.uv.es| }
+\maketitle
+\section{Introduction}
+The Babel package of style files makes \LaTeX\ (and plain \TeX)
+better suited for writing in other languages than english and
+for writing multilingual documents. I think a corresponding functionality
+is needed in \BibTeX. I will try to specify what we should
+demand from a \BBT-package, and maybe even develop some ideas
+about how to implement the demands.
+
+I got this not-so-original-idea while I was updating a
+dutch bibliography style; the situation is completely the
+same as Johannes Braams describes in Tugboat {\bf 12} (1991) for designing
+a language specific \LaTeX-style. Just as for \LaTeX-styles
+it is better to move some language specific parts to separate
+files, it is for \BibTeX.
+
+
+Babel does, in its present incarnation, three things for two types
+of \LaTeX-users:
+\begin{itemize}
+\item adaptation of text that is input by style files to other languages
+      than english (\verb|\chaptername|, \verb|\today| and the like)
+\item dynamically loading hyphenation patterns (if possible)
+\item making input easier (especially for accented letters)
+\end{itemize}
+for
+\begin{itemize}
+\item anyone who writes a document in language other than english
+      (or even english)
+\item people that include longer parts in another language in their
+      documents, or even write essentially multilingual documents.
+\end{itemize}
+
+Parallel to this taxonomy I'll try to formulate what \BBT\ might do.
+
+\section{Demands}
+There are a few actions of \BibTeX\ that need to be internationalized
+by  \BBT, just like Babel internationalized some \LaTeX-functions.
+I think we need:
+\begin{enumerate}
+\item Language-specific versions of strings and sentences. This would
+      be things like \verb|\andname| to get
+      \verb|J. Smith \andname\ T. Jones|  to produce
+      ``J. Smith and T. Jones''\footnote{In fact
+         we need two versions of and, since in cases with many authors
+         separated by comma's some languages require ``, and'' between
+         the penultimate and the ultimate name, while others do without
+         the comma.}
+      in an english bibliography, or \verb|\partofname{#1}|
+      to make \verb|\partofname{2}  Nuttige Verhandelingen| produce
+      ``Deel 2 van Nuttige Verhandelingen'' if the language is dutch.
+\item Language-dependant sorting algorithms. These are threefold:
+      \begin{enumerate}
+      \item We need the possiblility to specify an alphabetical ordering, e.g.
+            to enable a scandinavian user to get all \aa\ sorted after z; this
+            will be especially needed by users using 8-bit input.
+      \item We need to be able to change the way names are parsed to the
+            sorting algorithm since e.g. English prefer Ludwig van Beethoven
+            to appear under `v', whereas Dutch and Germans list him under `b'.
+      \item When titles are parsed to a sorting algorithm we need an
+            expandable list of `choppable words' like ``A'' and ``The'' for
+            english, ``Un'' or ``Sur'' for french, etc.
+      \end{enumerate}
+\item Making input of names easier. Although with proper bracing
+      and permutationing of first `von' and last parts of names
+      anything that is wished can be accomplished, it might
+      be desirable to facilitate things a little bit for some.
+      \BibTeX\ supposes that a name consists of multiple first
+      names, a `von' part, one last name and a junior part. This
+      is indeed the standard format for many names. In spanish,
+      however, names normally consist of a first name and two
+      last names, each possibly with its own `von-part'. It would
+      be handy if \BibTeX\ could switch to a mode in which names
+      are interpreted according to this scheme. Probably there
+      exist other languages with other standard naming schemes.
+\end{enumerate}
+The first two items of this list are the most important, I think, and
+fortunately probably also the easiest to implement; maybe even already
+in \BibTeX0.99. The last item is trickier, and maybe not as badly needed.
+
+The use of multilingual facilities could be twofold:
+\begin{itemize}
+\item Bibliographies in documents in other languages than english.
+\item Multilingual bibliographies (in which each entry in the
+      bibliography is quoted in the language of the {\em cited} document,
+      instead of the language of the citing document).
+\end{itemize}
+At first I thought that the first case would be the common one, and the
+second rather rare. Then, I read the AMS-\LaTeX\ manual where it says that
+mathematicians need a cyrillic font to be able to cite Russian papers
+with their original title; I also realized that in Russian physics journals
+Russian papers are cited in Russian, but English in English. It would
+certainly be very strange to cite
+ \begin{verbatim} \bibitem{1} {\cyr A.B. Popov} and {\cyr V.G.
+Popov}\end{verbatim}
+instead of
+ \begin{verbatim} \bibitem{1} {\cyr A.B. Popov i  V.G. Popov}\end{verbatim}
+even in an english paper, but I found that many books extend this
+practice to any language, so you would find
+\begin{verbatim} \bibitem{1} J. Jansen en K. Jansen,
+             {\em Over Nederlandse voornamen}. Amsterdam, 1980.
+ \bibitem{2} W. Smith and X. Smith,
+             {\em English family names}. London, 1982.
+\end{verbatim}
+
+\section{Implementation}
+Some of the language-dependant facilities mentioned above
+could be implemented by adding them to the Babel \LaTeX-styles,
+as others, however, can only be handled inside \BibTeX, I think
+it would be best to let \BBT\ exist of a set of bibstyles
+(\verb|.bst|-files) that handle everything.
+
+A scheme to use these could be the following:
+\begin{itemize}
+\item \LaTeX\ parses (via the \verb|.aux|-file) the language
+     of the document (or better: the current language at the
+     point in the document where the bibliography is to appear)
+     to \BibTeX.
+\item \BibTeX\  starts by reading from the \verb|.aux|-file not
+     only the name of the bibstyle (\verb|.bst|-file) and the
+     name of the bibliography(\verb|.bib|-file), but also the
+     value of the language. Then it reads the modification
+     file \verb|language.bst| to get the values of language
+     dependant strings, the sorting scheme, etc.
+\end{itemize}
+
+For multilingual bibliographies a new type of \BibTeX-field needs
+to be introduced: \verb|language|. This field could be defaulted
+to a value given at the top of a biliography file, or to the
+language of the citing document. (Thus, if a user has only french
+documents in a \verb|.bib|-file she sould not need to put
+\verb|language = "french"|  in every entry.) If a user wants a
+bibliography to be multilingual the bibliographystyle should
+use the value of \verb|language| to determine for each entry
+which values of strings like \verb|\andname| to use, how to
+format dates, and which font family to use (to be able to
+switch to cyrillic, greek, hebrew or any other alphabet).
+The language field should not be used to switch completely
+to the corresponding \LaTeX- or \BBT-style as reading hyphenation
+patterns would be an unnecessary overload, and alphabetization
+should not change (to be consistent throughout).
+
+The sorting of names could be performed by defining macros
+like \verb|firstlast|, \verb|lastfirst| or \verb|vonlastfirst|,
+that are defined in terms of \BibTeX's name formatting
+control sequences like \verb|ff| or \verb|l|.
+These could than e.g. be defined by the language specific file as:
+
+\begin{tabular}{|l|l|l|} \hline
+                 & english                      & dutch              \\ \hline
+\verb|firstlast| & \verb|{ff }{vv }{ll}{,jj}|   & \verb|{ff }{vv}{ll}{,jj}|  \\
+\verb|lastfirst| & \verb|{vv }{ll}{,jj}{, ff}|  & \verb|{ll}{, ff}{ vv}{,jj}|\\
+\verb|citename|  & \verb|{vv }{ll }|            & \verb|{vv }{ll }|          \\
+\verb|sortname|  & \verb|vv ll ff jj|           & \verb|ll vv ff jj|  \\ \hline
+\end{tabular}
+
+This would than produce:
+
+\begin{tabular}{|l|l|l|} \hline
+                 & english                    & dutch              \\ \hline
+\verb|firstlast| & Ludwig van Beethoven       &  Ludwig van Beethoven \\
+\verb|lastfirst| & van Beethoven, Ludwig      &  Beethoven, Ludwig van \\
+\verb|citename|  & van Beethoven              &  Van Beethoven \\
+\verb|sortname|  & {\tt van beethoven ludwig} &  {\tt beethoven van ludwig} \\
+\hline
+\end{tabular}
+
+
+The biblographystyle would then use \verb|sortname| to sort names,
+choose one of \verb|firtlast|, \verb|lastfirst|, or similar to format
+the name in the bibliography, and use \verb|citename| to create
+a citation key for those bibliographystyles that allow citation
+by author (and year) instead of a number.
+\end{document}
+
+P.S. I {\em do not} volunteer to actually create \BBT, I do
+     volunteer, however, to $\alpha$- $\beta$- and $\gamma$-test anything
+     that is written to address these issues.
+
+------------------------------------------------------------------------
+Werenfried Spit                         tel: +34-6-386 4551
+  Departament de F¥sica Teèrica         spit@vm.ci.uv.es
+  Universitat de ValÛncia               spit@evalun11.bitnet
+

@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1674" "Sun" "31" "October" "1999" "21:13:27" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "37" "extending xparse --- any takers?" "^Date:" nil nil "10" nil "extending xparse --- any takers?" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id XAA07743
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 23:40:54 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.E5CC8FF9@mail.listserv.gmd.de>; Sun, 31 Oct 1999 23:41:20 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445125 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 1 Nov 1999 00:41:18 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA14350
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 23:41:14 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin364.zdv.Uni-Mainz.DE
+          [134.93.175.64]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          XAA14689 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999
+          23:40:44 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          VAA00827; Sun, 31 Oct 1999 21:13:27 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+Message-ID:  <199910312013.VAA00827@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 31 Oct 1999 21:13:27 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      extending xparse --- any takers?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3378
+
+we had a bit of discussion some time ago on how to extend xparse
+
+here is one suggestion which i think might be of interest:
+
+suppose we have a parsing class "x" in the second argument of
+\DeclareUserCommand which would take a list of tokens (for example comma
+spearated) and parses the input to see if any of those tokens follows. If so
+it would return \BooleanTrue otherwise \BooleanFalse. eg
+
+\DeclareUserCommand \footnotemark { o x{\footnotemark,\footnote} }
+
+would scan for an optional argument and returns it as #1 (or \NoValue if not
+found) and then scans for either \footnotemark or \footnote and returns
+\BooleanTrue or False respectively
+
+if this is a sensible extension (not sure) one has to be clear about a couple
+of points:
+
+ a) is the parsing happening only on top-level of the source document or does
+ one parse using expansion? That is, if the user says
+ \newcommand\fn[1]{\footnote{#1}} would \footnotemark\fn{foo} see the hidden
+ \footnote or not? --- i think it probably should find it
+
+ b) what do we do about spaces: is the first  in \footnote{foo} \footnote{bar}
+ seeing the second one despite the fact that there is a space inbetween and if
+ so what happens to this space? --- again i think it should probably see the
+ second footnote (or perhaps there should be a variation class "X" that can
+ look past such spaces) but it would need to communicate that such a space is
+ there (somehow)
+
+any suggestions/comments on something like this? --- it certainly would need
+some further thought to become useful (if it is useful at all)
+
+anybody out there who needs a nightcap puzzle?  would be interesting to
+experiment with such an implementation.
+
+frank
+

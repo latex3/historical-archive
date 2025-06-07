@@ -1,0 +1,119 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3643" "Wed" "6" "January" "1999" "08:47:33" "-0500" "Michael J. Downes" "mjd@AMS.ORG" nil "71" "Re: Layout parameters in LaTeX" "^Date:" nil nil "1" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA11299;
+	Wed, 6 Jan 1999 14:48:00 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.04645765@listserv.gmd.de>; Wed, 6 Jan 1999 14:47:59 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 414460 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 6 Jan 1999 14:47:55 +0100
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id OAA15043 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 6 Jan 1999 14:47:45 +0100 (MET)
+Received: from sun06.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 6 Jan 1999
+          13:47:36 UT
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0F55007014Z8XX@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;
+          Wed, 6 Jan 1999 08:47:33 -0500 (EST)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=ISO-8859-1
+Lines: 71
+References: <199812141041.LAA13591@mozart.ujf-grenoble.fr>
+            <199901051451.PAA16364@relay.urz.uni-heidelberg.de>
+            <199901051739.SAA16408@mozart.ujf-grenoble.fr>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from QUOTED-PRINTABLE to 8bit by
+                      relay.urz.uni-heidelberg.de id OAA15053
+Message-ID:  <199901061347.OAA15043@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  Thierry Bouche's message of Tue, 05 Jan 1999 18:39:57 +0100
+Date:         Wed, 6 Jan 1999 08:47:33 -0500
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Layout parameters in LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3243
+
+Thierry Bouche <Thierry.Bouche@UJF-GRENOBLE.FR> writes:
+
+> » For homogeneous text like in a novel, snapping to a grid may be
+> » considered quality typography. For material with lots of odd-sized
+> » objects such as equations or smaller-typesize quotes or section heads,
+> » snapping to a grid can easily lead to vertical spacing that looks
+> » worse than the usual TeX approach.
+>
+> I don't agree. It is very easy to have section heading withs 1.5
+> \baselineskip above, and .5 below, e.g. If you're using a multicolumn
+> layout, facing lines that disagree are horrible _and_ disturbing.
+
+I'm not sure I can agree. It seems that you are describing a merely
+aesthetic view of the page from a distance, not something that
+interferes with active reading (where you don't *want* to pay
+attention to any columns other than the current column).
+
+And there is more trouble unless you impose a restriction that section
+titles cannot be more than one line long. Suppose your text is 10pt
+with 13pt linespacing and suppose your section title font is 12pt.  In
+order to keep to the grid with a two-line section title you are
+required to use 13pt or 26pt linespacing for the title. Although I
+suppose the natural answer is that your section heading macro must
+count the lines and compute the amount of space needed to get back to
+the grid (probably requires adjusting the space above the title to
+match).
+
+There is still more trouble when at the top of the left column you
+have two lines of text followed by a section title, and in the right
+column you have a section title at the very top. Now your .5
+baselineskip is quite likely to miss the grid and if you modify the
+space to reach the grid you have two section titles almost
+side-by-side with noticeably different vertical spacing. Similar
+scenarios occur if the designer wants to have extra .5 space
+before/after a numbered list: what if you have two lists, one
+beginning on page 4 and ending on page 5, the other entirely on page
+5. Then snapping to a grid forces the two lists to have respectively
+1.0 and 0.5 linespacing.
+
+> What is very bad is TeX's behaviour of linespacing the lines with
+> overhanging material (like integrals, badly formatted inline
+> fractions...). I believe to be the responsability of the editors to
+> "flatten" inline formulas, and display others.
+
+Yes and no. Simple forcing to a grid is not the answer. What we need
+for material with a lot of mathematics is a kind of skyline fitting
+approach for deciding when lines need extra space. The system used by
+the AMS before the switch to TeX always set text lines on the grid and
+our production staff spent many hours fixing adjacent lines where a
+second-order subscript in the first line collided with a second-order
+superscript or accented capital letter in the second line, and things
+like that.
+
+> Also, It seems so obvious that double pages are the unit of book
+> composition that it looks weird to me that TeX simply ignores
+> that.
+
+I think it is only a consequence of the comparatively severe memory
+constraints that were prevalent in the early days of TeX's development.
+
+> Imho, this should be handled at TeX's level rather than
+> LaTeX's.
+
+I'm not sure I understand you here. Yes, it would be good for
+TeX to provide more access to certain parts of the page makeup
+process; but I still think you're going to want to write custom
+output routines at the macro package level. Frank Mittelbach's
+multicol package effectively solves the two-page spread problem if you
+adapt it for output routine use ... except that floating figures and
+footnotes are still very difficult to integrate with the basic layout
+strategy.
+

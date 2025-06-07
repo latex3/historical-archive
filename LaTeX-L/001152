@@ -1,0 +1,124 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3027" "Sun" "14" "November" "93" "10:41:36" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "97" "Re: questions on NFSS2" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA15980; Sun, 14 Nov 93 10:42:08 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA26670; Sun, 14 Nov 93 10:42:05 +0100
+Message-Id: <9311140942.AA26670@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2915; Sun, 14 Nov 93 10:40:40 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8099;
+ Sun, 14 Nov 93 10:40:27 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8096;
+ Sun, 14 Nov 93 10:40:23 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 14 Nov 93 10:41:36 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: questions on NFSS2
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1152
+
+
+
+Denis asked some question:
+
+> Subj:	OT2 and OT3 encodings
+> What is the current status of these two encodings ?
+
+NFSS2 and thus LaTeX2e will declare a (growing) number of encodings as
+official. For example, we hope that the TWG on languages will define
+256 char encodings for various languages. such encodings will then get
+T?? names. Also, the work done on math font encoding this year wil
+most certainly result in new "official" encoding names.
+
+this does not necessarily mean that we provide all support to typeset
+with these encodings directly. here, we most certainly do need
+volunteer help and contributed material. The purpose of naming, say,
+OT2 to be the encoding defined by the University of Washington
+cyrillic fonts is that if somebody uses those fonts (or other fonts
+with the same encoding, they can rely on getting the same result for
+\symbol{<x>} etc.
+
+> And what with respect to OT3,
+> the International Phonetic Alphabet ?
+> It is mentionned in the interfac.ltx file but there
+> are no OT3*.fd files in NFSS2. So, is this going to be
+> part of LaTeX 2e ?
+
+the OT3 files (and in fact also the OT2 files) should come with the
+fonts. There is no point in providing .fd files at a site if you don't
+have the fonts to go with it. So OT2.. will be removed for
+cmrfonts.fdd or at least we will make their installment optionally.
+
+> Subj:	psfonts.dtx
+>
+> In the file psfonts.dtx, I read the following:
+> ...
+>
+> %<*chancery>
+> \immediate\write\sixt@@n{File: `chancer3.sty' }
+> \renewcommand{\rmdefault}{chancery}
+>
+> %</chancery>
+>
+> Is `chancer3' a typo ?
+
+well, let's say, a missing update. this is still some internal name
+while Sebastian made version 3 to go with the alpha test of NFSS2
+
+> Subj:	\DeclareFontShape
+
+> Is there a NFSS2 built-in function that would help
+> to shorten the following declarations ?
+>
+> \DeclareFontShape{OT1}{cmr}{bx}{sc}{
+>       <5-9> gen * cmr
+>       <8-11> cmbcsc10
+>       <10.95> <12> <14.4> <17.28> <20.74> <24.88> cmbcsc10
+>       }{}
+
+it is not completely clear to me what the question means. first of all
+the entry doesn't look too long. also it has a bug (or at least a
+problem):
+
+<8-11> means that all sizes in that range result in
+
+   \font\foo = cmbscs10 at <size>
+
+that might result in a lot of mf generation. however, if you don't
+mind that in the first place yu can shorten the entry to
+
+<8-> cmbcsc10
+
+the second problem is that the range <5-9> will catch everything below
+9, thus 8 for example will come out as cmr not as cmbcsc10 at 8.
+
+so possible solutions are:
+
+\DeclareFontShape{OT1}{cmr}{bx}{sc}{
+       <-8> sub * cmr/m/n               % gen does work too
+       <8> <9> <10>
+       <10.95> <12> <14.4> <17.28> <20.74> <24.88> cmbcsc10
+       }{}
+
+or even
+
+\DeclareFontShape{OT1}{cmr}{bx}{sc}{
+       <-8> sub * cmr/m/n               % gen does work too
+       <8-> cmbcsc10
+       }{}
+
+
+
+hope that helps a bit. Don't be surprised if i don't answer further
+questions that fast---there's no time for it. this was just a sunday
+morning exception :-)
+
+frank
+

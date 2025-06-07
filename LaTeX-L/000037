@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 28 Feb 90 08:48:00 MET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: "Nico (Poppelier@Hutruu51.Bitnet)" <POPPELIER%HUTRUU51@unido.bitnet>
+Subject:      Re: \@startsection
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 37
+
+Re: Frank Mittlebach's note on \@startsection
+
+
+> Otherwise the designer has to use such monsters like \ifnum level >
+> \c@secnumdepth ...\else in the definition of the unstared heading
+> layout, brrrr.
+
+See: \@part and \ps@headings in book.sty, and \@chapter in bk1*.sty.
+It's not an unusual construction for a document style designer
+to use, apparently.
+
+> I strongly disagree with the the use of beforeskip, afterskip and
+> its special - syntax to denote things like run-in heading
+> and afterindent.
+
+You're right. But replacing this convention with a set of flags
+doesn't add functionality, which is what this discussion is about.
+
+[ A suggestion: if you change the syntax to
+
+  \@startsection{XXX}{1}{\afterindentfalse \runinfalse}
+                        {10pt plus 5 pt}{5pt plus 3 pt}{....}...
+
+  you could assign #4 to \beforeXXXskip and #5 to \afterXXXskip, and
+  change these glue parameters any time you wish without calling
+  \@startsection again.]
+
+> Granted that even this would be manageble it is a questionable syntax
+> in general. My question here is: do we really need to destinguish
+> normally between present/not present of numbers etc.
+
+Yes, we do need to distinguish.
+
+> I would assume (please comments!) that one definition would be enough
+> if objects given back by the kernel (like \headingnumber) would
+> produce different things (i.e. empty for example).
+
+I believe the following theorem holds
+
+Theorem: for every generic syntax there is at least one style of
+-------  sectional unit headings that can not be fitted into this
+         generic syntax.
+It's a bit like G\"odel's theorem (just kidding).
+
+I will give an example from my own work:
+
+- section  := \Large ragged-right `hangfrom', for level < secnumdepth
+- section  := \large centered heading, for level >= secnumdepth
+- section* := \large centered heading
+
+(1) You do need to distinguish and (2) for every syntax you propose I
+think I can find a heading that doesn't fit into the scheme.
+
+> For the real special applications one could provide a test, say
+> \ifpresent, which could be used by the style designer to take certain
+> actions depending on \ifpresent\headingnumber ...\else ... \fi.
+
+There's no difference between this and \ifnum level > \c@secnumdepth.
+
+> In the special case of heading/contents however I think the write read
+> mechanism of the current version is okay.
+
+\numberline needs to be re-defined if section numbers have to be
+typeset in a font that differs from that of the section title. I
+thought this a bit awkward.
+
+> What Nico is discussing here seems in my opinion partly a question of
+> ``which commands to provide in which meta style''.
+
+Yes, but only partly: there are no tools for this in LaTeX 2.09. If I
+want to produce Bryan's book in LaTeX I have to create new tools.
+
+
+Nico
+
+

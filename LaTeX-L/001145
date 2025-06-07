@@ -1,0 +1,104 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3190" "Thu" "11" "November" "93" "11:37:36" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "77" "Option handling in LaTeX2e" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA12384; Thu, 11 Nov 93 11:55:07 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA18031; Thu, 11 Nov 93 11:55:04 +0100
+Message-Id: <9311111055.AA18031@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7816; Thu, 11 Nov 93 11:53:40 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3703;
+ Thu, 11 Nov 93 11:53:30 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3701;
+ Thu, 11 Nov 93 11:53:27 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 11 Nov 93 11:37:36 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Option handling in LaTeX2e
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1145
+
+
+Subj:	RE: all-purpose files & suffixes
+
+
+Werenfried Spit  said:
+
+> On 09 Nov 1993 18:26:54 +0000 Paul Taylor said:
+> >
+> >While we're here, I suggest it's about time we distinguished between
+> >"options" (eg A4, Times) and "features" (diagrams, pictex, ...).
+> >An "option" is something that can be altered without making LaTeX fall
+> >over on the document.  Rather than worry too much at this stage about
+> Hear, hear. I'd like to second this. I think it would not be a real
+> problem if options and features used the same filenamesuffix, but a
+> different calling sequence would be in order. This would make things
+> so much clearer, and therefore so much easier to explain to people.
+
+Even given the danger that Paul Taylor see's another
+
+> (as is usually the case when our rulers :-) disdain to ask our opinions)
+
+[ smilie or not smilie, I think that is near or below the belt; do you
+really believe that it makes sense it is possible to ask beforehand
+everybodys opinion for everything? do you do so for your own code? ]
+
+below is what LaTeX2e will support as an option model to classes and
+packages.
+
+Frank
+
+----------------- draft from the Companion book
+
+\subsection{Processing of Options and Packages}
+\label{sec:optionproc}
+
+The algorithm in \LaTeXe{} used to  process the options of
+\Lmcs{documentclass} and \Lmcs{usepackage} is more powerful than the
+mechanism that handled options in the \LaTeX~2.09 \Lmcs{documentstyle}
+command.  There is a clear distinction between declared options (of a
+class or package) and general purpose package
+files.\footnote{In \LaTeX~2.09 the options of the
+\Lmcs{documentstyle} command were a mixture of declared options (executed
+directly) and undeclared options (which resulted in a \Lfn{sty} file
+to be read after the \Lmcs{documentstyle} command finished
+processing). In \LaTeXe this is now cleanly separated.} The latter
+have to be specified using the
+\Lmcs{usepackage} command. Think of options as properties of the
+whole document (when used in \Lmcs{documentclass}) or as properties
+of individual packages (if specified in \Lmcs{usepackage}).
+
+You can only specify options in a \Lmcs{usepackage} command
+if these options are declared by the package. Otherwise, you will receive an
+error message, informing you that your
+specified option is unknown to the package in question.
+Options to the \Lmcs{documentclass} are handled slightly differently. If a
+specified option is not declared by the class it will assumed to be
+a ``global option.''
+
+All options to \Lmcs{documentclass} (declared and global ones)
+are automatically passed as
+class options to all \Lmcs{usepackage} declarations. Thus, if
+a package file loaded with a \Lmcs{usepackage} declaration
+recognizes (\ie declares) some of the class options it can take
+appropriate actions; otherwise, the class options will be ignored
+while processing that package.
+Since all options have to be
+defined inside the class or package file
+their action is under the
+control of the class or package
+(it can be anything
+from setting internal switches to reading an external file).
+For this reason
+ their order in the optional
+argument of \Lmcs{documentclass} or \Lmcs{usepackage} is
+irrelevant.
+
+
+

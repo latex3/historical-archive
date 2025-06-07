@@ -1,0 +1,122 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3849" "Thu" "18" "June" "1998" "15:46:02" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "82" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id HAA22971;
+	Thu, 18 Jun 1998 07:46:57 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.BA875468@listserv.gmd.de>; Thu, 18 Jun 1998 7:46:55 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 364751 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 18 Jun 1998 07:46:37 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id HAA05772
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 18 Jun 1998 07:46:14
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.2) id
+          PAA08908; Thu, 18 Jun 1998 15:46:02 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <v03110700b1ada22893b8@[130.237.37.25]>
+            <13704.121.527407.877988@fell.open.ac.uk>
+            <v03110702b1adbc84c616@[130.237.37.46]>
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Message-ID:  <199806180546.PAA08908@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110702b1adbc84c616@[130.237.37.46]>
+Date:         Thu, 18 Jun 1998 15:46:02 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2569
+
+Well . . . Hans's ideas sent me scurrying back to The TeXbook (always
+a good thing) to study the fine print about <parameter text>s.
+
+Hans has come up with a useful hierarchical namespace system for
+macros.
+
+All I can say is . . . `cool!'.
+
+I was a little concerned about ambiguities in L3PL caused by using _
+to separate components, and then allowing _ within components.  I
+think it is good to allow _ within a component (and @ for internals?!)
+and then use something else (such as /) to separate the components.
+This will be useful for external indexing programs (e.g. Emacs etags)
+or even doc.sty.
+
+Now bear with me for a few moments of madness.  Come to think of it,
+what follows isn't much weirder^H^H^H^H^H^H^Hmore unusual than some of
+the details of L3PL.  Even if you don't like the particulars, maybe
+they might trigger a better idea or a totally different application?
+
+OK, so now the base's internal macros look like this:
+
+\base/ltbibl/@citex
+
+and if I write a package called `splat' my internal macros will
+look like this:
+
+\contrib/supported/splat/somethinguseful
+
+The result: massive fmt file and control sequence bloat.  We need some
+shortcuts.  Here are some possibilities.
+
+============================================================
+1.  Use a variant of the Apple solution:  author/product
+codes.  E.g. assign a four-(hex-)digit code to a developer.  Assume I
+am allocated a5d4; then my macros begin \a5d4/. . .
+There might be special codes for e.g. the LaTeX base and packages.
+============================================================
+2.  Extend doc.sty to do the following:
+(a)  The package writer uses the long names as above when editing the
+dtx file.  We assume that the writer has the help of a good text
+editor to save on keystrokes!
+(b)  When run through TeX to extract the .cls/.sty/whatever file, the
+long names of internal macros are rewritten in a canonical,
+unique-across-all-packages short form, perhaps based on point 1 above.
+(This must also be the same across TeX implementations.)  The package
+writer might make the renaming explicit or give `hints'; there might
+be a (more or less) sensible default.
+(c)  Write out a .cut file (for `short cut') which specifies the
+correspondence between long and short forms.  This file could also
+include macro documentation, error messages, etc.  Something like
+Emacs documentation strings?  (Write it out in a format that can be
+loaded by AUC TeX?) Zillions of possibilities.  Maybe .cut is the
+wrong suffix . . . .
+
+People who only use the package don't need to worry about any of this;
+the `exported' macros have `nice' names.
+
+People who want to build on the package can `load' the .cut file in a
+`special' way which sets up correspondences between long and short
+names.  <- This needs some work to get it right; when you redefine an
+internal macro you have to redefine both long and short names.  Once
+you are done messing with the internals you can `undo' the
+correspondences to free up the control sequence space.
+
+Error messages relating to internal macros go via the .cut file so
+that the user sees something `sensible', i.e. using the long names.
+============================================================
+3.  Similar to point 2 above, but doc.sty writes out two separate
+.cls/.sty/whatever files, one using the short names and one using the
+long names.  Load whichever you need.  You still need the .cut file.
+============================================================
+4.  As for 3, but write just one file; you specify what you want when
+you load the file via a [shortnames] or [longnames] option.
+(Hmm . . . not so good when used as \documentclass[longnames]{blah};
+this filters down to later \usepackages unless you override it.)
+You still need the .cut file.
+============================================================
+
+What do you think?
+
+Richard.
+

@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 18 Sep 2008 15:16:06 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8IDG0Uv020576
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 18 Sep 2008 15:16:01 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8ID9H15010068
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 18 Sep 2008 15:09:17 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8HM1hSl005980;
+	Thu, 18 Sep 2008 15:09:16 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 45758 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 18 Sep
+          2008 15:09:16 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8ID9F5C009384 for <latex-l@listserv.uni-heidelberg.de>;
+          Thu, 18 Sep 2008 15:09:15 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8ID8xX3011433
+          for <latex-l@listserv.uni-heidelberg.de>; Thu, 18 Sep 2008 15:09:03
+          +0200
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1KgJFk-0003IH-3X for
+          latex-l@listserv.uni-heidelberg.de; Thu, 18 Sep 2008 14:09:00 +0100
+Received: from [139.222.200.93] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1KgJFk-0000ML-2N for latex-l@listserv.uni-heidelberg.de; Thu, 18 Sep
+          2008 14:09:00 +0100
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48D252EC.7030802@morningstar2.co.uk>
+Date:         Thu, 18 Sep 2008 14:09:00 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \scantokens, \everyeof, \endlinechar
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 18 Sep 2008 13:16:06.0204 (UTC) FILETIME=[B527CFC0:01C91990]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5356
+
+Hello all,
+
+I'm taking a look at how to begin on siunitx in expl3, and I've already
+found something I'm stuck with.  The code I have at present is essentially:
+
+\def\example#1{
+  \begingroup
+    \makeatletter
+    \@makeother{\,}%
+    \@makeother{\.}%
+    \@makeother{\+}%
+    \@makeother{\-}%
+    \def~{}%
+    \def\,{}%
+    \catcode`\~=\active\relax
+    \catcode`\^=\active\relax
+    \catcode`\_=\active\relax
+    \everyeof{\noexpand}%
+    \endlinechar\m@ne
+    \protected@xdef\storage{\scantokens{#1}}%
+  \endgroup
+}
+
+which results in \storage containing an expanded copy of #1, with any
+hard spaces (~ and \,) removed.  This may not be the best way, but it
+works.  (In siunitx, see \si@num for the context of this).
+
+In expl3, I can only find \scantokens, \everyeof and \endlinechar in the
+:D range, so these are out.  I'm guessing that I should do things a
+different way, but could do with enlightenment.  Does no-one want
+\scantokens?
+-- 
+Joseph Wright
+

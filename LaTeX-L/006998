@@ -1,0 +1,84 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q0TDbMOn030566
+	for <rainer@rainer-schoepf.de>; Sun, 29 Jan 2012 14:37:23 +0100
+Received: (qmail 1700 invoked by alias); 29 Jan 2012 13:37:17 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 29 Jan 2012 13:37:17 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx060) with SMTP; 29 Jan 2012 14:37:17 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id q0TDZ9NF012184
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 29 Jan 2012 14:35:09 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id q0T876QV002175;
+	Sun, 29 Jan 2012 14:35:08 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1936009 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 29 Jan
+          2012 14:35:08 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id q0TDZ8Tw018120 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 29 Jan 2012 14:35:08 +0100
+Received: from mail-lpp01m010-f49.google.com (mail-lpp01m010-f49.google.com
+          [209.85.215.49]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id q0TDZ4e7014086 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 29 Jan
+          2012 14:35:08 +0100
+Received: by lagr15 with SMTP id r15so2666986lag.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 29 Jan 2012 05:35:04 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.112.25.33 with SMTP id z1mr3698386lbf.7.1327844104000; Sun, 29
+          Jan 2012 05:35:04 -0800 (PST)
+Received: by 10.152.21.39 with HTTP; Sun, 29 Jan 2012 05:35:03 -0800 (PST)
+References: <D6C19E2C-AAB5-4237-8102-0FCE69E1F442@gmail.com>
+            <CANQYN6zLA5Fjra0OsHr3+VBJpGxOfreppH20NA5ipuz=KY0jCA@mail.gmail.com>
+            <4F254990.5050407@morningstar2.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <CANQYN6wyyisb63+rfrMVO3sAfGQJd2JP+17PQprM3qkcpzH0Gg@mail.gmail.com>
+Date:         Sun, 29 Jan 2012 08:35:03 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Re: Unexpandability inside \csname
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4F254990.5050407@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6998
+
+>> Perhaps you meant
+>>
+>>   \csname\ifnum 3>2\fi\endcsname
+>>
+>> which indeeds does \csname\relax\endcsname, an error.
+>
+> We should be fine here in expl3, I think, as internally we have
+> something like
+>
+>   \csname\ifnum\numexpr3\relax>\numexpr2\relax\fi\endcsname
+>
+> in this scenario, and that is fine.
+
+Precisely. If there were stray "implicit \relax", then they would
+appear in x-expansion as well.
+
+Bruno
+

@@ -1,0 +1,152 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 29 Mar 90 14:41:59 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 60
+
+I would like to respond to some of Michaels comments but I
+think the best strategy would be if Michael and/or somebody else
+would come up with explicit examples how the syntax for theorem-like
+structures should (could) look like.
+
+>>I have started working on a prototype that I think
+>>will convince you otherwise.  ....
+
+Please give examples.
+
+>>I don't understand this, unless you mean that the
+>>user should do something like
+>>
+>>\renewcommand{\thetheorem}{}
+>>
+>>after using \newtheorem to define the `theorem'
+>>environment.  In that case perhaps it is only a
+>>shortcoming in the documentation.  I don't recall any
+>>discussion in the LaTeX book of turning off numbers
+>>this way, only changing the form of the number, and
+>>so I bet that the average user would not know how to
+>>do it.   But also I think it would be easier for the
+>>users to have something like \newtheorem* to do this.
+
+Yes I meant changing \the... but I accept that this is not
+explained in detail and it is probably not the best syntax.
+Using a star form to provide unnumbered versions might be a good
+idea.
+
+
+>>If I understand correctly what you mean by
+>>subdefinition, in the examples that I have seen this
+>>is generally not true.  Definition 2.1' is more often
+>>a complete restatement of Definition 2.1, in modified
+>>form.  Logically speaking, I don't think it should be
+>>a separate theorem type.  However for 2.1a, b, ... I
+>>could agree with you.
+
+
+I see the point. Probably the best way would be that \newtheorem
+would generate two environments (i.e. also the star form).
+The star form could then  have an extra argument were the number
+is specified. Using \label and \ref it should be possible to
+refer back to the first Definition or whatever so that a syntax like
+\begin{DEF*}{\ref{firstdef}'} ....
+would produce that wanted results.
+But there are some points why I'm not satisfied with such a
+solution:
+  1) This would make \begin{DEF*}{2.1'} .. possible which dangerous
+  because changes to the numbering scheme would not affect this.
+  2) I'm not sure that this should be part of a general interface
+     at least it has to be part of the peripheral part.
+
+
+>>Actually it is not a general design decision, at the AMS.
+>>
+>>Theorem 2.1 (Gelfand)   and     Theorem 2.2 [19]
+>>
+>>could occur in the same paper, not to mention in
+>>different articles within the same issue of a journal
+>>(where a common definition of \@opargbegintheorem
+>>would usually prevail).  These are two different
+>>kinds of added notes, one a mathematician's name, the
+>>other a reference.  The possibility
+>>
+>>Theorem 2.2 ([19])
+>>
+>>seems OK in my personal opinion but as I said the AMS
+>>editorial department considers the parentheses to be
+>>redundant.
+
+
+I don't think this is a proper way to do it, but coming back to
+the way my style does it, is no problem to set up a \theoremstyle
+which would check whether or not the argument is a \cite. But
+I don't want to make this a major part of the interface.
+
+
+
+>>The point I was trying to think about is that maybe
+>>according to the author's underlying logic the
+>>`preskip' amount in this case ought to be the
+>>subsection preskip rather than the theorem preskip,
+>>assuming that they are not the same amount.
+
+In my opinion the theorem environments are for theorem like
+structures which come within a section or something. That is there
+is text below and/or above the structure. In the special case that
+a theorem is something like a section itself, I would say regard it
+as a section in this case. If normally the theorem text is set in
+italic this would mean that it would look different then other
+(short) theorems but I think this would be correct in this special
+case.
+
+
+>>I am not sure that I can agree.  To a certain extent
+>>the numbering system in a document is interdependent
+>>with the logic of the author's material, and
+>>therefore needs to be under the author's control.
+>>And the form of the numbers is part of the numbering
+>>scheme in the sense that it is used to help the
+>>reader understand the relations between parts.  Isn't
+>>this also the philosophy of LaTeX?  Why else does the
+>>documentation describe how to redefine \thesection
+>>and so on?
+
+No, I don't think that the way things are numbered is part of the
+document, or let's say is part of the structure of the document.
+Of course numbering equations every chapter or every theorem would
+change the structure in some sense but it would not change the
+meaning of some reference much.
+Why does LaTeX allow to change \thesection? In my opinion because
+it is a good middle way between GML and visual layout. Redefinition
+of \thesection should not be necessary if there exists a suitable
+documentstyle. But to provide variations for the user such possibilities
+are available. Nevertheless one should bann them into the preamble so
+that an editor of a journal could easily undo such changes.
+
+
+
+>>In reading the theorem.sty article I was puzzled
+>>about why you provided the `margin' and `break' (and
+>>therefore `marginbreak') options.  I would consider
+>>these to be changes of a kind that should be done in
+>>the style file, not in the document file.
+
+I prepared different theoremstyles  because I thought it unlikly
+that all professors would like it the same way (and I was right!).
+Therefore the strategy was: have a default in our standard document
+styles for master and pdh thesis but allow the user to use a different
+layout. Remember this is for inhouse production where it is not
+necessary to have always the same layout. If such a scheme is in
+general use it would be easy for articles submitted to
+journals either remove the declarations because they are all at the
+beginning of the document or to define journal document styles which
+simply ignore some of the standard theorem styles.
+
+Frank
+
+

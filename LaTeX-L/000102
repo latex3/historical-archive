@@ -1,0 +1,397 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 17 May 90 11:45:59 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 102
+
+To bring some life into the discussion about attributes
+I implemented a version with a simple syntax. The code
+below is not meant to be good, correct or something
+else. It is simply  a playground for you a possible
+syntax but perhaps not a good one.
+
+I also changed the end tag to  detect wrong and or
+missing nested environments. See comments in the code.
+Again this part was only hack to provide the
+functionality
+
+To give a possible application I redefined the
+\newtheorem command to provide the attributes
+`nonumber' , `number=....' and `name=...' Examples are
+given in the short test file. I used my theorem.sty as
+a basis but it will work (with a few error messages)
+with the standard theorem stuff. The example .tex file
+also shows certain error cases with typos missing end's
+etc.  I used \Start and \Stop instead of \begin \end
+for testing reasons.
+
+I would be interested in comments about this approach
+especially about the syntax. There are numerous other
+possibilties, for example, allowing spaces (with no
+effect) or using spaces as delimiters and double quotes
+for strings (that's similar to IBM DCF) and and and
+
+Okay, below is the code in three parts: test.tex,
+environ.ltx and theorem.tst.
+
+Greetings Frank Mittelbach
+
+
+%%%%%%%%
+
+\documentstyle[theorem]{article}
+
+\errorcontextlines-200
+\scrollmode
+
+\theoremstyle{plain}
+\newtheorem{lem}{Lemma}
+
+
+\makeatletter
+\input environ.ltx
+\input theorem.tst
+
+\Start{document|paper=A4|twocolumn}
+
+This is some starting bla  bla
+
+\Start{lem}
+  \label{first}
+  A normal lemma.
+\Stop{lem}
+
+But now:
+\Start{lem|name=Zorn'sches Lemma|nonumber}
+   Well, this is something which shouldn't be called lemma at all.
+\Stop{lem}
+
+And finally:
+\Start{lem|number=\ref{first}'}
+  Here we have a sub lemma to the first one.
+\Stop{lem}
+
+\Start{lem}
+  Another normal lemma. But unfortunatly, the number is off by two
+  (see remarks in theorem.tst).
+\Stop{lem}
+
+
+
+\Start{itemize|form=compact}
+\item more bla bla
+\Stop{itemi}
+
+
+\Start{small}
+some small text
+
+\Start{quote|compact}
+  this is a quote
+
+\Stop{document}
+
+
+
+
+%%%%%%%% environ.ltx %%%%%%%%%%%%
+
+
+
+%          ****************************************
+%          *            ENVIRONMENTS              *
+%          ****************************************
+%
+%  \Start{foo} and \Stop{foo} are used to delimit environment foo.
+%  \Start{foo} starts a group and calls \foo if it is defined, otherwise
+%  it does nothing.  \Stop{foo} checks to see that it matches the
+%  corresponding \Start and if so, it calls \endfoo and does an
+%  \endgroup.  Otherwise, \Stop{foo} tries the following recovery:
+%
+%  1) if \Stop{foo} is unknown we assume that the user misspelled the
+%     name and recover by replacing \Stop{foo} with \Stop{<currenvir>}
+%
+%  2) if \Stop{foo} is a legitime end command we check whether there
+%     exists any unresolved \Start{foo}.
+%
+%     a) if so, the currently open environment (\Stop{<currenvir>} is
+%        closed. Afterwards \Stop{foo} is tried again.
+%        This mechanism will close all open enviroments until the
+%        correct one is found.
+%
+%     b) if there is no open \Start{foo} we simply ignore the \Stop tag.
+%
+%  To make this error recovery work correctly one has to define things
+%  like \endsmall to be different from \relax. (i.e. \@empty) Otherwise
+%  the end tag is mistaken as undefined in case of errors.
+%
+%  If \Stop{foo} needs to ignore blanks after it, then \endfoo should
+%  globally set the @ignore switch true with \global\@ignoretrue.
+%
+%
+
+
+% First some stuff which is necessary if the macros are used as a
+% substitute for LaTeX's environments part in latex.tex.
+
+\addto@hook\everyjob{\typeout{environ: new error recovery for
+                              missplaced \string\end.}}
+
+
+
+\def\@preamblecmds{\do\document \do\documentstyle \do\@documentstyle
+   \do\@options \do\@preamblecmds \do\@optionlist \do\@optionfiles
+   \do\nofiles \do\includeonly \do\makeindex \do\makeglossary}
+
+\newif\if@ignore
+
+\def\@testdef #1#2#3{\def\@tempa{#3}\expandafter \ifx \csname #1@#2\endcsname
+ \@tempa  \else \@tempswatrue \fi}
+
+\long\def\@writefile#1#2{\@ifundefined{tf@#1}{}{\expandafter
+   \immediate\write\csname tf@#1\endcsname{#2}}}
+ % \long added 8 Feb 90
+
+\def\stop{\clearpage\deadcycles\z@\let\par\@@par\@@end}
+
+\everypar{\@nodocument} %% To get an error if text appears before the
+\nullfont               %% \begin{document}
+
+
+% cmds removed: They are still needed in other places of LaTeX
+%               at the moment!
+%
+% \def\@checkend#1{}
+% \def\@badend#1{}
+
+
+\def\@checkend#1{\def\@tempa{#1}\ifx
+      \@tempa\@currenvir \else\@badend{#1}\fi}
+
+
+
+%%% Here the new stuff
+
+% The next two commands are added to allow simple tests with special
+% prefixes for the internal environment commands.
+
+\def\end@prefix{end}
+\def\begin@prefix{}
+
+
+
+\expandafter\def
+\csname \end@prefix document\endcsname{\clearpage\begingroup
+\if@filesw \immediate\closeout\@mainaux
+\def\global\@namedef##1##2{}\def\newlabel{\@testdef r}%
+\def\bibcite{\@testdef b}\@tempswafalse \makeatletter\input \jobname.aux
+\if@tempswa \@warning{Label(s) may have changed.  Rerun to get
+cross-references right}\fi\fi\endgroup\deadcycles\z@\@@end}
+
+\expandafter\let
+\csname\begin@prefix document\endcsname\document
+
+\def\@currenvir{document}
+
+
+% we save the enviroment names on a simple stack. \edef can be used
+% because env names will contain no expandable stuff.
+
+\def\env@stack{document}
+
+\def\push@currenvir{\edef\env@stack{\@currenvir,\env@stack}}
+
+
+
+
+
+\def\Start#1{%
+%
+%   First we grab the attributes and extract the real env name.
+%
+ \get@attrib#1|\@nil
+ \typeout{EnvName: \env@name.}%
+ \typeout{Attribs: \meaning\env@attribs.}%
+ \with@attribs\env@attribs\do
+      {\typeout{Attrib: \attrib\space with \meaning\value.}}
+ \begingroup  \@endpefalse
+%
+%   Here we push the name onto the stack.
+  \push@currenvir
+  \let\@currenvir\env@name
+%
+%   The rest is executing the env macros if defined.
+%   If an env macro is undefined the name is nevertheless
+%   placed onto the stack so that the end tag doesn't produce
+%   a second error (if both are the same).
+  \expandafter
+  \ifx\csname \begin@prefix\@currenvir \endcsname\relax
+    \@latexerr{Environment \@currenvir\space undefined}\@eha
+  \else
+    \csname \begin@prefix\@currenvir \expandafter\endcsname
+  \fi}
+
+
+% The way it works at the moment \env@name isn't really necessary
+% (the local \@currenvir would do if we move \get@attrib after the
+% \begingroup. But I also wrote a version where spaces etc where allowed.
+%
+
+\def\get@attrib#1|#2\@nil{%
+  \gdef\env@name{#1}%
+  \gdef\env@attribs{|#2}}
+
+
+% \Stop will implement the recoveries above. Of course, a version
+% prducing only warnings or nothing in case of omitted end tags could
+% be defined  similar.
+
+
+\def\Stop#1{%
+    \let\end@game\normal@game
+    \def\@tempa{#1}%
+    \ifx  \@tempa\@currenvir
+    \else
+      \@ifundefined{\end@prefix #1}%
+         {\@latexerr{\string\Start{\@currenvir} ended by
+                     \string\Stop{#1} which is undefined}%
+                    {Your command was replaced by
+                     \string\Stop{\@currenvir}.}}%
+         {\ifonstack{#1}%
+             {\@latexerr{\string\Start{\@currenvir} ended by
+                     \string\Stop{#1}}%
+                    {A \string\Stop{\@currenvir} tag was
+                     added.}%
+% The next lines are necessary to put the \Stop macro after the
+% \endgroup inside \end@game. (\@gtempa would do, too, I suppose).
+                \gdef\retry@Stop{\Stop{#1}}%
+                \aftergroup\retry@Stop}%
+             {\@latexerr{\string\Start{\@currenvir} ended by
+                     \string\Stop{#1} which was never opened}%
+                    {The offending \string\Stop{#1} tag was ignored.}%
+              \let\end@game\@empty}}%
+    \fi
+    \end@game}
+
+\def\normal@game{\csname \end@prefix \@currenvir\endcsname
+    \if@endpe\aftergroup\@doendpe\fi
+    \endgroup
+    \if@ignore \global\@ignorefalse
+                      \ignorespaces\fi}
+
+
+% Here the test macros for looking at the stack, the \in@ macro
+% is coming from the AMS-TeX implementation.
+
+\def\ifonstack#1#2#3{%
+  \edef\@tempa{\noexpand\in@{#1,}{\env@stack,}}%
+  \@tempa \ifin@ #2\else #3\fi}%
+
+
+\def\in@#1#2{%
+  \def\in@@##1#1##2##3\in@@{%
+    \ifx\in@##2\in@false\else\in@true\fi}%
+  \in@@#2#1\in@\in@@}
+
+\newif\ifin@
+
+
+% The \with@attribs macros runs through the attrib list (given)
+% and executes a list of commands for every attribute.
+% The attributes are stored in \attrib and \value during looping.
+
+% \with@attribs can't be used recurive since it has a global variable
+% i.e., \do@attr. This is done for speed but it is only faster
+% if a suitable number of attributs are to be processed.
+
+\def\with@attribs#1\do#2{\expandafter\def\expandafter
+                                         \@tempa\expandafter{#1}%
+   \def\@tempb{|}%
+   \ifx\@tempa\@tempb
+     \typeout{Empty Attrib list}%
+   \else
+     \def\do@attr{#2}%
+     \expandafter\attr@for#1\@nil\fi}
+
+\def\attr@for|#1|#2\@nil{%
+   \get@value#1=\@nil
+   \def\@tempa{#2}%
+   \ifx\@tempa\@empty \let\next\do@attr
+   \else
+      \def\next{\do@attr\attr@for|#2\@nil}\fi
+   \next}
+
+
+% then ext one will fail for format= without a right side value.
+% so it's not very stable
+
+\def\get@value#1=#2\@nil{%
+  \def\attrib{#1}%
+  \def\value{#2}%
+   \ifx\value\@empty
+    \else \correct@value#2\fi}
+
+\def\correct@value#1={\def\value{#1}}
+
+
+
+\endinput
+
+% The next lines show a dirty trick where we get \verb+\Stop<foo>+
+% to be undefined instead of \verb+\relax+ if it was undefined before.
+      {\aftergroup\ifx
+       \expandafter\aftergroup\csname\end@prefix #1\endcsname}%
+       \undefined
+
+
+
+%%% theorem.tst %%%%%%%%%%%%%%
+
+\gdef\@thm#1#2{%
+   \trivlist
+%   \tracingall
+   \@topsep \theorempreskipamount               % used by first \item
+   \@topsepadd \theorempostskipamount           % used by \@endparenv
+%
+% Default is to update and use the counter.
+% If number or nonumber attribute is used this
+% command will be overwritten.
+% We also have to disable updating the counter
+% and should generate a new \@currentlabel, but this is left
+% out at the moment.
+   \refstepcounter{#1}%
+   \def\avth@number{\csname the#1\endcsname}%
+%
+% Default is to use the supplied name. This will be overwritten
+% by the name attribute.
+   \def\avth@name{#2}%
+   \use@attribs{th}%
+   \@ifnextchar [%
+      \@ythm{\@begintheorem\avth@name\avth@number\ignorespaces}}
+
+\def\@ythm[#1]{\@opargbegintheorem\avth@name\avth@number{#1}\ignorespaces}
+
+
+% the use@attribs command will look whether \a#1<attrib> is defined and
+% if so will execute it using \value as an argument. Otherwise it will
+% store the \value in \av#1<attrib> for later use.
+% Whether such a scheme is useful depends on the number of occasions
+% where an attributes value has to be filed away.
+
+\def\use@attribs#1{\with@attribs\env@attribs\do
+   {\expandafter\ifx\csname a#1@\attrib\endcsname\relax
+    \expandafter\let\csname av#1@\attrib\endcsname\value
+    \else \csname a#1@\attrib\expandafter\endcsname\expandafter{\value}%
+    \fi}}
+
+
+\def\ath@nonumber{\let\avth@number\@empty}
+
+%%%% finish
+
+

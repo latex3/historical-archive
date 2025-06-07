@@ -1,0 +1,200 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Mon, 17 May 2004 05:24:49 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i4H3Oclo009737 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 17 May 2004 05:24:38 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i4H3J7D6015851; Mon, 17 May 2004 05:19:08 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C43BBE.825A5680"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i4E1RhTH005625; Mon, 17 May 2004 05:17:05 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 210543 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 17 May 2004 05:17:04 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i4H3H3UZ008178 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 17 May 2004 05:17:04 +0200
+Received:  from mutant.triumf.ca (mutant.triumf.ca [142.90.112.22]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i4H3IDD6015679 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 17 May          2004 05:18:14 +0200 (MET DST)
+Received:  (from asnd@localhost) by mutant.triumf.ca (8.9.3/8.9.3) id SAA04071;          Sun, 16 May 2004 18:37:28 -0700
+In-Reply-To:  Frank Mittelbach's message of "Sun, 16 May 2004 20:56:52 +0200"
+Lines: 42
+Organization: TRIUMF: Canada's national meson facility
+References: <16549.4057.399610.750080@istrati.mittelbach-online.de>            <x5sme2vwu3.fsf_-_@lola.goethe.zz>            <16550.4621.526207.509473@istrati.mittelbach-online.de>            <x5brkpvl21.fsf@lola.goethe.zz>            <16551.33482.606374.833460@istrati.mittelbach-online.de>            <x5r7tkp832.fsf@lola.goethe.zz>            <16551.47476.13708.161193@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 17 May 2004 03:24:50.0276 (UTC) FILETIME=[831D0A40:01C43BBE]
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+X-Authentication-Warning: mutant.triumf.ca: asnd set sender to asnd@triumf.ca                         using -f
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: Why don't we do just the following:
+Date: Mon, 17 May 2004 02:37:28 +0100
+Message-ID: A<yfiekpj4yw7.fsf@triumf.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Why don't we do just the following:
+Thread-Index: AcQ7voNKHN6MJTsvSNC9djWInPgMQQ==
+From: "Donald Arseneau" <asnd@TRIUMF.CA>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4790
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C43BBE.825A5680
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+>  > It was supposed to hit at \label time.  But since putting a label
+>
+> i still don't see how that would work
+
+You did analyze it already: it is a confusing undefined control
+sequence  error, where the "real" error message is the csname.  The
+\csname must be constructed in a way that does not equate it to \relax.
+
+Url.sty contains:
+
+\def\Url@movingtest{\begingroup
+ \ifx\let\HyPsd@LetCommand % we are already in a pdf string!
+  \expandafter\Url@unmove \fi % give the argument and hope for the best
+ \let\Url@moving\relax\relax\relax
+ \ifx\Url@moving\relax\else \expandafter\Url@unmove \fi
+ \endgroup}
+\long\def\Url@unmove#1\Url@y{\endgroup =
+\ifx\protect\relax\else\protect\Url\fi}
+\edef\Url@moving{\csname Url Error\endcsname}
+\expandafter\edef\Url@moving
+ {\csname url used in a moving argument.\endcsname}
+\expandafter\expandafter\expandafter \let \Url@moving\@undefined
+
+Note the last line!  This gives error messages like:
+
+! Undefined control sequence.
+\Url Error ->\url used in a moving argument.
+
+l.104 \section{\url{moving}}
+
+
+Anyway, We should still allow \label for purposes of \pageref, so the
+error should indeed be encoded to occur at \ref.  It would be nice if
+\label would put the current \inputlineno into the error message, but
+that requires altering the definition of \label.  The error message
+should at least make use of the page number also stores.
+
+
+Donald Arseneau                          asnd@triumf.ca
+
+------_=_NextPart_001_01C43BBE.825A5680
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: Why don't we do just the following:</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach =
+&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; It was supposed to hit at \label =
+time.&nbsp; But since putting a label</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; i still don't see how that would work</FONT>
+</P>
+
+<P><FONT SIZE=3D2>You did analyze it already: it is a confusing =
+undefined control</FONT>
+
+<BR><FONT SIZE=3D2>sequence&nbsp; error, where the &quot;real&quot; =
+error message is the csname.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>\csname must be constructed in a way that does not =
+equate it to \relax.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Url.sty contains:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\Url@movingtest{\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifx\let\HyPsd@LetCommand % we are already in a =
+pdf string!</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \expandafter\Url@unmove \fi % give the =
+argument and hope for the best</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\let\Url@moving\relax\relax\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifx\Url@moving\relax\else =
+\expandafter\Url@unmove \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\endgroup}</FONT>
+
+<BR><FONT SIZE=3D2>\long\def\Url@unmove#1\Url@y{\endgroup =
+\ifx\protect\relax\else\protect\Url\fi}</FONT>
+
+<BR><FONT SIZE=3D2>\edef\Url@moving{\csname Url Error\endcsname}</FONT>
+
+<BR><FONT SIZE=3D2>\expandafter\edef\Url@moving</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;{\csname url used in a moving =
+argument.\endcsname}</FONT>
+
+<BR><FONT SIZE=3D2>\expandafter\expandafter\expandafter \let =
+\Url@moving\@undefined</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Note the last line!&nbsp; This gives error messages =
+like:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>! Undefined control sequence.</FONT>
+
+<BR><FONT SIZE=3D2>\Url Error -&gt;\url used in a moving =
+argument.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>l.104 \section{\url{moving}}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Anyway, We should still allow \label for purposes of =
+\pageref, so the</FONT>
+
+<BR><FONT SIZE=3D2>error should indeed be encoded to occur at =
+\ref.&nbsp; It would be nice if</FONT>
+
+<BR><FONT SIZE=3D2>\label would put the current \inputlineno into the =
+error message, but</FONT>
+
+<BR><FONT SIZE=3D2>that requires altering the definition of =
+\label.&nbsp; The error message</FONT>
+
+<BR><FONT SIZE=3D2>should at least make use of the page number also =
+stores.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Donald =
+Arseneau&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; asnd@triumf.ca</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C43BBE.825A5680--
+

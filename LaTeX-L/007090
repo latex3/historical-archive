@@ -1,0 +1,120 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q6UKf6nr011820
+	for <rainer@rainer-schoepf.de>; Mon, 30 Jul 2012 22:41:07 +0200
+Received: (qmail 13146 invoked by alias); 30 Jul 2012 20:41:00 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 30 Jul 2012 20:41:00 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx027) with SMTP; 30 Jul 2012 22:41:00 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id q6UKcpdx020179
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 30 Jul 2012 22:38:51 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.8/8.13.1) with ESMTP id q6UD42kx008220;
+	Mon, 30 Jul 2012 22:38:51 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 2371077 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 30 Jul
+          2012 22:38:51 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.8/8.13.1) with
+          ESMTP id q6UKcpcp027189 for <latex-l@listserv.uni-heidelberg.de>;
+          Mon, 30 Jul 2012 22:38:51 +0200
+Received: from mail-vb0-f49.google.com (mail-vb0-f49.google.com
+          [209.85.212.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id q6UKckTu020168 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <latex-l@listserv.uni-heidelberg.de>; Mon, 30 Jul
+          2012 22:38:49 +0200
+Received: by vbbfo1 with SMTP id fo1so6547795vbb.22 for
+          <latex-l@listserv.uni-heidelberg.de>; Mon, 30 Jul 2012 13:38:45 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.52.98.8 with SMTP id ee8mr10765463vdb.58.1343680725909; Mon, 30
+          Jul 2012 13:38:45 -0700 (PDT)
+Received: by 10.58.231.106 with HTTP; Mon, 30 Jul 2012 13:38:45 -0700 (PDT)
+References: <CAFUtaNEvBktQbJytj8MhWuZtOBODbT+AQ_eBHqxhh7DXu29BnQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Whitelist: <joelcsalomon@gmail.com>
+Message-ID:  <CAFUtaNFqo=mHZtP2LOE29S6APD=9m7m7VX2oDptNLh_C+wsj2Q@mail.gmail.com>
+Date:         Mon, 30 Jul 2012 16:38:45 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: "Joel C. Salomon" <joelcsalomon@GMAIL.COM>
+Subject: Re: Peek ahead for next token not in token-list
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <CAFUtaNEvBktQbJytj8MhWuZtOBODbT+AQ_eBHqxhh7DXu29BnQ@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7090
+
+Folks,
+
+After some experimentation, it seems that the \peek_* family of
+functions don't work well inside l3prg conditionals; source3.pdf seems
+to bear this out in the justification for \__peek_def:nnnn.
+
+On TeX.SE, Clemens Niederberger posted an answer to the specific
+question I'd posed; see <http://tex.stackexchange.com/a/64351/2966>.
+It works well, but it's built on recursive expansion of macros with :w
+specifiers that I'm really not understanding. I'm thinking, therefore,
+that I'm better off getting help implementing the functionality I want
+in parts.
+
+What sorts of restrictions are there on the use of \l_peek_token
+inside the true-code & false-code branches of the \peek_* functions?
+
+Is it reasonable to use \__peek_def:nnnn to generate something like
+\peek_unconditional:TF? (The false-code branch should never execute, I
+expect.)
+
+Actually, it's \peek_unconditional_remove:T I think I need. The
+general outline I'm thinking of is something like this:
+
+\tl_new:N \g_jcs_matchlist_tl
+\tl_new:N \g_jcs_ignorelist_tl
+\tl_new:N \l_jcs_ignored_tokens_tl
+
+\cs_new:Npn \jcs_peek_in_matchlist_ignore_ignorelist:TF #1#2
+  {
+    \tl_clear:N \l_jcs_ignored_tokens_tl
+    \__jcs_peek_in_matchlist_ignore_ignorelist_aux:TF #1#2
+  }
+\cs_new:Npn \__jcs_peek_in_matchlist_ignore_ignorelist_aux:TF #1#2
+  {
+    \peek_unconditional_remove:T
+      {
+        \tl_if_in:N?TF \g_jcs_ignorelist_tl { something involving
+\l_peek_token }
+          {
+            \tl_put_right:N? \l_jcs_ignored_tokens_tl  { something
+involving \l_peek_token }
+            keep looking, probably by recursing
+          }
+          {
+            \tl_use:N  \l_jcs_ignored_tokens_tl
+            \tl_if_in:N?TF \g_jcs_matchlistlist_tl { something
+involving \l_peek_token }
+              {#1} {#2}
+          }
+      }
+  }
+
+Does this sound like the correct path to head down?
+
+--Joel
+

@@ -1,0 +1,109 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2992" "Wed" "3" "November" "1999" "20:33:15" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "74" "Re: footnote templates" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA18707
+	for <schoepf@UNI-MAINZ.DE>; Wed, 3 Nov 1999 22:24:11 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.9A93EDB7@mail.listserv.gmd.de>; Wed, 3 Nov 1999 22:24:06 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445623 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 3 Nov 1999 22:24:01 +0100
+Received: from downtown.oche.de (root@downtown.oche.de [194.94.253.3]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA02738 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Nov 1999 22:23:54 +0100 (MET)
+Received: from corona.oche.de (uucp@localhost) by downtown.oche.de
+          (8.9.3/8.9.3/Debian/GNU) with UUCP id WAA20269 for
+          URZ.UNI-HEIDELBERG.DE!LATEX-L; Wed, 3 Nov 1999 22:20:10 +0100
+Received: by corona.oche.de (wUUCP 1.10) id <1irk@corona.oche.de>; Wed, 3 Nov
+          99 22:20:24 CET
+X-Mailer: AmiGate 1.6 (13.11.95)
+Message-ID:  <407fe02b@corona.oche.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 3 Nov 1999 20:33:15 CET
+From: Achim Blumensath <blume@CORONA.OCHE.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: footnote templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3386
+
+Frank Mittelbach wrote:
+> on the user syntax level this could still be provided a different
+> function though in that particular case my feeling is that it should
+> not be a different command if possible, eg if i have the following case
+>
+>  text text\footnote{foo} text text
+>
+> and i decide to add another footnote to this point i think it would be
+> more logical to be able to say
+>
+>  text text\footnote{foo}\footnote{bar} text text
+>
+> and let the commands sort out that they come in a sequence (see my other
+> post on xparse extension --- to be written :-) rather than forcing the
+> user to replace the first thing by something like
+>
+>  text text\begin{footnotesequence} \item foo \item bar\end{footnotesequence}
+>  text text
+>
+> handwaving on the actual syntax. my suggestion some days ago to have
+>
+>  text text\footnote*{foo}\footnote{bar} text text
+>
+> has effectively the same defect, only that it is far easier for the user
+> to change from one form to the other, but logically speaking the right
+> kind of abstract information is already present in the first example
+> with the two \footnote commands and in my eyes this is all that should
+> be needed (preferably).
+
+I agree that this would be preferable but I don't think there is a clean
+solution which does this automatically. E.g., if you just look at the next
+token something like
+
+  \footnote{aaa}\index{bbb}\footnote{ccc}
+
+will fail even if semantically it is the same as
+
+ \footnote{aaa}\footnote{ccc}\index{bbb}
+
+Therefore, I suggest using one of the less ideal but working solutions
+you mentioned above, e.g., an environment.
+
+> A similar case is
+>
+>  \section{foo} text
+>
+> compared to
+>
+>  \section{foo} \subsection{bar} text
+>
+> where we don't have to tell the subsection command that a section
+> command immediately follows. it figures this out by itself and adjusts
+> the spacing automatically (no need for manual intervention)
+
+IMHO the only clean solution for context-sensitive commands would be
+to generate an abstract syntax tree of the document and provide
+methods to check things like: Is my right neighbour a \footnote
+command? Am I the first child of type \subsection? etc.
+Unfortunately one can't implement such methods in TeX easily (if at all).
+One example are caterpillars as described in
+
+   A. B. Klein, D. Wood,  Caterpillars, Context, Tree Automata, and Tree
+   Pattern Matching, Developments in Language Theory, 1999.
+
+I don't know if a description is available online, but Wood's
+homepage (which I haven't looked at) is at www.cs.ust.hk/~dwood.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ |
+    //  Achim Blumensath       | \  _                        \O/ \___/\ |
+   //   blume@corona.oche.de   |-< /_\                       =o=  \ /\ \|
+ \X/    (p^2 - m^2)\psi = 0    |_/ \_                        /"\   o----|
+____________________________________________________________________\___|
+

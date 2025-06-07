@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 27 Jun 90 10:50:54 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: CA_ROWLEY@VAX.ACS.OPEN.AC.UK
+Subject:      Extra commands after font loading/calling
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 140
+
+>
+> \extra@def{cmtt}{<action performed when a new font is loaded>}
+>                 {<action performed whenever the font is used
+>                   in math mode>}
+>
+> I wonder whether we should add a third arguement which would
+> hold <actions to be performed whenever a font of this family is
+> used in ordinary text>.
+I have not seen any examples of the last two: ie actions to perform
+whenever a font is used.  Thus difficult to say anything definite,
+but the "out-of-math" alternative seems as useful as the "in-math
+alternative": is it impossible/impractical/useless to combine these
+two and let the user (of the scheme) make the distinction with
+\ifmmode  \else  \fi ???
+
+We (UKTeX users group) had a workshop on fonts last Monday at which
+the Postscript mapping problem was discussed, particularly with
+relation to accented letters and 8-bit input.  The only conclusion we
+came to is that Virtual Fonts could solve the charmapping problem, but
+that nothing could solve the input problem (which is not relevant
+here).
+
+> The reason why I'm asking this is that this will allow to
+> rearrange charmappings, for example, if postscript and other
+> fonts are used together. On the other hand (and that's the reason
+> why it is not included so far) it will slow down the processing.
+Will the existence of such an extra slow it down a lot?  Obviously,
+actually doing a remapping will, but there is no way round that: if
+remapping is needed then the time has to be taken to do it.
+
+>
+> 1) Do you see applications where it is necessary to perform
+>    actions whenever a family changes?
+I have not yet, but I have not tried using any such scheme: all my
+font-changing at present is to paticular fonts, rather than to
+families, series, etc.
+
+> 2) Do you think mapping is a legitimate action?
+>    (The Kinch AP-TeX fonts are already in TeX mapping)
+It is essential to allow it: who knows what font-formats people may be
+using soon: a new one appears every week, and it is not clear that the
+remapping can be done anywhere else (as it can be with PS).
+
+> 3) Or should we say that the virtual font concept makes mapping
+>    unnecessary?
+It probably does, but there may be other things needed.
+
+> It would be fine if most of you find the time to answer.
+I hope this is fine enough!
+
+***************
+One other issue that was thought to be important by the workshop
+members is closely related to this idea, and you need to consider it
+seriously now:
+
+Some people like to change the \fontdimen parameters font the same
+font for different uses or add extra \fontdimen s.  the latter has to
+be done immediately the font is loaded, and the former is best done
+then.  Thus these font-scheme implementors could not use your scheme
+as it is now.  They could, of course, achieve the same by building
+different copies of the .TFM file with the differnt values, but should
+they have to??? ie. should you deny them access to some of TeX's
+adaptability if they use your scheme?
+****************
+
+
+chris
+
+

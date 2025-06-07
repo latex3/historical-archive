@@ -1,0 +1,281 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7725" "Wed" "27" "October" "1999" "11:12:09" "-0400" "Michael J. Downes" "mjd@AMS.ORG" nil "238" "Re: Robustness (was Re: Expandable templates)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA31463
+	for <schoepf@UNI-MAINZ.DE>; Wed, 27 Oct 1999 17:12:13 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.DFCDB39D@mail.listserv.gmd.de>; Wed, 27 Oct 1999 17:12:13 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445244 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 27 Oct 1999 17:12:12 +0200
+Received: from sun06.ams.org (sun06.ams.org [130.44.1.6]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA02342 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 27 Oct 1999 17:12:09 +0200 (MET
+          DST)
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0FK900E02OW9RW@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;
+          Wed, 27 Oct 1999 11:12:09 -0400 (EDT)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 238
+References: <199910171448.PAA27438@mimosa.csv.warwick.ac.uk>
+            <199910180907.KAA17744@nag.co.uk>
+            <199910211901.VAA00546@istrati.zdv.uni-mainz.de>
+Message-ID:  <199910271512.RAA02342@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  Frank Mittelbach's message of Thu, 21 Oct 1999 21:01:30 +0200
+Date:         Wed, 27 Oct 1999 11:12:09 -0400
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Robustness (was Re: Expandable templates)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3365
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> questions:
+>
+>  a) anybody having any idea whatsoever to deal with this problem of robustness
+>  other than LaTeX currently does? (conceptually i mean)
+
+There are various reasons for the expansion done by LaTeX on
+user-supplied text, but there is (I think) only one purpose for which
+the expansion is really indispensable:
+
+  Getting the current element number when preparing to make a running
+  head or toc entry.
+
+I.e., when copying material for multiple use.
+
+[When the problem is posed in this way it can be seen that another way
+around would be to write some kind of \ref-like string instead of the
+actual number, assuming that the generation of labels could be suitably
+automated---and that string-pool/hash-table limits were not a problem.]
+
+The expansion done by \mark (for running heads) and \write (for table of
+contents) does not need to be applied to the title of a chapter or
+section, only to the section number---assuming that the user does not
+use commands in the titles that change their meaning during the course
+of the document. (If the chief reason for the current \protect mechanism
+is only to allow this seldom-used possibility then the cost is too high.
+There are other ways to reach the same ends. The switching from, e.g.,
+\chaptername to \appendixname is the main counter-example here I think,
+but that can, and probably should, be taken care of by a separate
+mechanism. Some steps in this direction can already be seen in
+amsart.cls.)
+
+There is a well-known difficulty with \write, however. Non-immediate
+\write for writing .toc or index information does full expansion on its
+argument *at the time the page is shipped out* in order to get the
+correct page number. But no assignments can be done at this time, only
+expansion. Therefore the standard token-register method for keeping text
+unexpanded can't be applied to section titles. (For index terms the
+\index command reads the data with verbatim-like catcodes since the data
+does not need to be printed at its initial location, only written to the
+.idx file.)
+
+I guess what we really need is an e-TeX feature \unexpandedwrite that
+writes material without expansion, then a section title could be sent to
+the aux file by (a) pre-expanding the element number (b) applying
+\unexpandedwrite to everything except for the page number. [Maybe this
+is already in e-TeX? I don't remember.]
+
+However in the absence of an \unexpandedwrite primitive we can put the
+title in a macro and write the \meaning. I think this works for any
+material that doesn't include actual # tokens (which would get doubled),
+given that multiple-use text like section titles and figure captions
+already have the restriction that they cannot have internal catcode
+changes.
+
+I did a test file for this, see below. The idea of the test file is that
+that end-users never have to use \protect unless they put something
+fragile into a numbering macro like \thesection.
+
+I wrote "there is only one purpose for which the expansion is really
+indispensable"; \MakeUppercase might be cited as another application,
+but I think we really ought to look strongly into the possibility of
+making .vf files for uppercase fonts and ensuring that they get widely
+available, instead of continuing with the present edef mechanism (which
+is mainly done to insure that \aa gets expanded to \r{a} so that the "a"
+can be uppercased). Most applications really need \MakeTextUppercase, to
+skip over math and \ref and stuff like that, where the difficulties of
+the edef solution become more apparent.
+
+Michael Downes
+
+========================================================================
+\documentclass{book}
+\title{Expansion tests}
+\author{Michael Downes}
+
+\makeatletter \catcode`\_=10 \catcode`\ =9 \catcode\endlinechar=9
+
+% First let's fix up the uses of \mark, that is easier than the toc stuff.
+
+\newtoks\@currentmark
+
+\def\markboth#1#2{%
+  \global\@currentmark{{#1}{#2}}
+  \xdef\@themark{\the\@currentmark}% For compatibility
+  \mark{\the\@currentmark}
+  \if@nobreak\ifvmode\nobreak\fi\fi
+}
+
+\def\@markright#1#2#3{
+  \global\@currentmark{{#1}{#3}}
+  \xdef\@themark{\the\@currentmark}
+}
+
+\def\markright#1{
+  \expandafter\@markright\@themark{#1}
+  \mark{\the\@currentmark}
+  \if@nobreak\ifvmode\nobreak\fi\fi
+}
+
+% Need a better solution for \MakeUppercase.
+
+\let\MakeUppercase=\relax
+
+% It would be better if \addcontentsline had a separate argument for the
+% number. Lacking that, we have to scan "by hand" for \numberline.
+%
+% Typical usage:
+%
+% \addcontentsline{toc}{chapter}
+%   {\numberline{chapnum}Title of this here chapter}
+%
+\def\addcontentsline#1#2#3{
+  \begingroup
+  \def\@tempa##1\numberline##2##3\numberline##4\@nil{
+    \gdef\element@number{##2}
+    \def\@tempb####1{\WriteTocEntry{#1}{#2}{####1}{##2}{##3}}
+  }
+  \@tempa#3\numberline{}{}\numberline\@nil
+  \ifx\@empty\element@number
+    \WriteTocEntry{#1}{#2}{}{}{#3}
+  \else
+    \expandafter\@tempb\csname#2name\endcsname
+  \fi
+  \endgroup
+}
+
+% Here is a better alternative for \addcontentsline:
+%
+% \WriteTocEntry{toc}{chapter}{\chaptername}{\thechapter}{Title of chapter ...}
+%
+\def\WriteTocEntry#1#2#3#4#5{
+  \begingroup
+  \protected@xdef\element@number{#4}
+  \endgroup
+  \toks@\expandafter{#3}
+  \@temptokena{#5}
+  \toks\tw@\expandafter{\element@number}
+  \edef\reserved@a{
+    \noexpand\addtocontentswithpage{#1}{
+      \noexpand\tocentry{#2}
+        {\the\toks@}{\the\toks\tw@}{\the\@temptokena}
+      }
+    }
+  \reserved@a
+}
+
+\def\fwrite{\@writefile}
+
+\long\def\addtocontents#1#2{
+  \def\reserved@a{#2}
+  \edef\reserved@b{
+    \write\@auxout{
+      \string\fwrite{#1}{
+        \expandafter\strip@prefix\meaning\reserved@a
+      }
+    }
+  }
+  \reserved@b
+}
+
+% The \addtocontentswithpage function is similar to \addtocontents but
+% provides more separation between the parts that need different
+% expansion.
+%
+\long\def\addtocontentswithpage#1#2{
+  \def\reserved@a{#2}
+  \edef\reserved@b{
+    \write\@auxout{
+      \string\fwrite{#1}{
+        \expandafter\strip@prefix\meaning\reserved@a
+        {\noexpand\thepage}
+      }
+    }
+  }
+  \reserved@b
+}
+
+% For toc entries made with \WriteTocEntry we need something that
+% handles more arguments than \contentsline:
+%
+\def\tocentry#1#2#3#4#5{
+  \csname l@#1\endcsname{\numberline{#2\enspace #3}#4}{#5}
+}
+
+%% % Simplified, for testing:
+%% %
+%% \renewcommand{\numberline}[1]{\begingroup \bfseries#1.\endgroup\quad }
+%%
+%% \renewcommand*\l@chapter[2]{%
+%%   \par
+%%   \addpenalty{-\@highpenalty}%
+%%   \addvspace{6pt plus1pt}%
+%%   \begingroup \parfillskip0pt
+%%   \noindent#1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+%%   \endgroup
+%%   \penalty\@highpenalty
+%% }
+
+\newcommand{\fragilecommand}{\relax\ifmmode Math\else Text\fi ?}
+
+\makeatother \catcode`\_=8 \catcode\endlinechar=5 \catcode`\ =10
+
+\begin{document}
+\frontmatter
+\tableofcontents
+
+\chapter*{Preface \begin{math}\fragilecommand\end{math}}
+Some prefatory text.
+
+% Trying to send a fragile command to the toc without \protect:
+\addtocontents{toc}{\enlargethispage*{10pt}}
+
+\mainmatter
+\chapter{Title of a Chapter \begin{math}\fragilecommand\end{math}}
+
+Some text.
+
+\chapter{And Another Chapter \begin{math}\fragilecommand\end{math} Here}
+\markboth{Other Chapter \begin{math}\fragilecommand\end{math}}
+         {Other Chapter \begin{math}\fragilecommand\end{math}}
+
+Some text.
+
+\begin{figure}
+\framebox[\columnwidth]{\rule{0pt}{5\baselineskip}}
+\caption{Here is a figure caption containing some fragile
+  stuff: \begin{math}\fragilecommand\end{math}.}
+\end{figure}
+
+\backmatter
+\begin{thebibliography}{B}
+\bibitem{A} Joe Author, \textit{Some title}.
+\bibitem{B} Terry Berry, \textit{Another different title}.
+\end{thebibliography}
+
+\end{document}
+

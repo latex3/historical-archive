@@ -1,0 +1,107 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2759" "Tue" "2" "November" "1999" "21:39:40" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "61" "Re: section heading templates" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA15283
+	for <schoepf@UNI-MAINZ.DE>; Tue, 2 Nov 1999 22:43:28 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.3B89EF3C@mail.listserv.gmd.de>; Tue, 2 Nov 1999 22:44:06 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446084 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 2 Nov 1999 22:44:03 +0100
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA19435
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 2 Nov 1999 22:44:00 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin02.zdv.Uni-Mainz.DE
+          [134.93.174.2]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA04216 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 2 Nov 1999
+          22:43:18 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          VAA00443; Tue, 2 Nov 1999 21:39:40 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199910011527.LAA04020@hilbert.math.albany.edu>
+            <199910281728.SAA15046@mimosa.csv.warwick.ac.uk>
+            <14361.49815.612920.201449@n15ux24.nets.de.eds.com>
+            <381A1F7A.20B59B6C@ujf-grenoble.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=unknown-8bit
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199911022039.VAA00443@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <381A1F7A.20B59B6C@ujf-grenoble.fr>
+Date:         Tue, 2 Nov 1999 21:39:40 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3384
+
+Thierry Bouche writes:
+ > Frank Mittelbach a écrit:
+ > >  o should there be user level control on whether or not a heading has
+ > >    a number?
+ >
+ > What happens to text like "see section \ref{sec:xx}" if the class
+ > designer withdrawed numbers, the author being not aware of that?
+
+that is a question for which there isn't really a good answer.
+
+in current LaTeX, the ref refers to the last unit that sets \@currentlabel
+which means that if in the hierarchy of headings there is a heading which
+still is number you will get that number. that may not be perfect (eg if that
+is the chapter but the text says "see section 1" then, but it is better than
+nothing).
+
+some people would like to see the possibility of getting the heading text as a
+reference (like the IBM manuals do) and come up with "see section ``How to
+Configure XYZ'', other people say that you can never get this right and
+definitely can't automatically change from one style to another.
+
+it is most certainly the case that any design change of the type "different
+levels for heading numbers" or "references using heading text" can not really
+be made without checking and potentially correcting a document afterwards.  in
+other words i think that to some extend the author of a document has to be
+aware of the layout he/she is targetting for in this respect. (a similar
+example and perhaps worse is citation styles, eg author/date viz
+sequence-numbers: you can't typeset a document in both styles using the same
+source)
+
+=================================
+
+i would call two latex classes (the term class is actually bad in 2e) "source
+compatible" if they can successfully process the same documents, ie provide
+the same user commands and functionality. in other words a document that can
+be processed by article.cls would be processable (with sensible results) by
+any other class that is source compatible to article.cls --- one could say the
+two LaTeX2e classes belong to the same class, urg (this is when i meant the
+term was badly chosen).
+
+now i wonder if i would claim that article.cls and myarticle.cls differing
+only in the setting of the secnumdepth counter should be considered
+incompatible in the above sense.
+
+there are arguments for it and arguments against it:
+
+ - since the availibility of numbering or generally the availability of
+   refering to  a heading via \ref differs one can argue the classes are not
+   source compatible
+
+ - on the other hand this is making the granularity very small and it might
+   mean that coming up with sufficient additional issues of that type nearly
+   no class can be considered compatible to another one.
+
+ - ...
+
+
+frank
+
+ps seems that the post i replied to, took a long time (three days?) to get
+past the listserv, or was this only to me?
+

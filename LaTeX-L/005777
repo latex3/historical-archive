@@ -1,0 +1,88 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 1 May 2009 13:16:23 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n41BG2RQ007253
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 1 May 2009 13:16:03 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n41BA7nh006626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 1 May 2009 13:10:07 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n3UM5iDB019902;
+	Fri, 1 May 2009 13:09:55 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 273487 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 1 May
+          2009 13:09:54 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n41B9r3B015402 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 1 May 2009 13:09:53 +0200
+Received: from fmmailgate01.web.de (fmmailgate01.web.de [217.72.192.221]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n41B9lGp002982
+          for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 May 2009 13:09:50
+          +0200
+Received: from smtp08.web.de (fmsmtp08.dlan.cinetic.de [172.20.5.216]) by
+          fmmailgate01.web.de (Postfix) with ESMTP id BC56110120741; Fri,  1
+          May 2009 13:08:57 +0200 (CEST)
+Received: from [89.50.24.195] (helo=uwe.lueck) by smtp08.web.de with esmtp
+          (SSLv3:DES-CBC3-SHA:168) (WEB.DE 4.110 #277) id 1Lzqbv-0004Kz-00;
+          Fri, 01 May 2009 13:08:56 +0200
+X-Sender: uwe.lueck@pop3.web.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+X-Sender: uwe.lueck@web.de
+X-Provags-ID: V01U2FsdGVkX1+5+P1o/wWw2N7W0r3QV1M64kDhdPvWXYkAX2A6
+              W/vRCQbmcOHSqT6JEdbTXB7xbnzONuxb3n8rxiBCkUw0FuoFDQ Hs+tbEotA=
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id n41B9s3B015403
+Message-ID:  <5.1.0.14.0.20090501112851.02a90b30@pop3.web.de>
+Date:         Fri, 1 May 2009 11:46:17 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Uwe =?iso-8859-1?Q?L=FCck?= <uwe.lueck@WEB.DE>
+Subject: Re: \in@ wrong? ("core", essential failure)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 May 2009 11:16:23.0147 (UTC) FILETIME=[42AA0BB0:01C9CA4E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5777
+
+An essential problem for \in@ are patterns containing `{...}' (with usual 
+catcodes). The present approach to find a substring <pattern> by defining a 
+macro that has <pattern> in its parameter text is perfectly unable to deal 
+with this. At least one of stringstrings, ted, xstring *is* able to do this 
+because of a very different imlementation -- analyzing tokens one by one 
+and creating an "internal representation" of the <pattern>. But this is a 
+heavy machinerybthat should *not* be in the LaTeX kernel -- cf.:
+
+>Date: Wed, 29 Apr 2009 22:07:23 +0200
+>From: Uwe Lück <uwe.lueck@web.de>
+>At 13:23 27.04.09, Manuel Pégourié-Gonnard wrote:
+>>Heiko Oberdiek a écrit :
+[solutions dealing with unbalanced \if... and #]
+>>Anyway, depending on the intended use of \in@, certain resctrictions (such as
+>>"no unbalanced \if" or "no # token" or "no \@nil token" are probably 
+>>acceptable,
+>>as long as they are properly documented.
+>When I countered "unbalanced \if..." by "#", this rather meant the same.
+[...]
+>The LaTeX kernel should just provide essential things.
+>A perfect bombastic substring detector is not essential.
+
+Cheers,
+
+     Uwe.
+

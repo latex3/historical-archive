@@ -1,0 +1,104 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o8H5NYln022489
+	for <rainer@rainer-schoepf.de>; Fri, 17 Sep 2010 07:23:35 +0200
+Received: (qmail 23936 invoked by alias); 17 Sep 2010 05:23:29 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 17 Sep 2010 05:23:29 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx046) with SMTP; 17 Sep 2010 07:23:29 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id o8H5LeQ1008454
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 17 Sep 2010 07:21:40 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o8GM1CLg013151;
+	Fri, 17 Sep 2010 07:21:42 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 435831 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 17 Sep
+          2010 07:21:42 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o8H5Lghx011120 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 17 Sep 2010 07:21:42 +0200
+Received: from mail-pz0-f49.google.com (mail-pz0-f49.google.com
+          [209.85.210.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id o8H5LaGA017589 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 17 Sep 2010 07:21:40 +0200
+Received: by pzk32 with SMTP id 32so756356pzk.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 16 Sep 2010 22:21:36 -0700
+          (PDT)
+Received: by 10.114.109.14 with SMTP id h14mr4844886wac.186.1284700895892; Thu,
+          16 Sep 2010 22:21:35 -0700 (PDT)
+Received: from [129.127.15.244] ([129.127.15.244]) by mx.google.com with ESMTPS
+          id d2sm5794490wam.14.2010.09.16.22.21.33 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Thu, 16 Sep 2010 22:21:34 -0700 (PDT)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v1081)
+X-Mailer: Apple Mail (2.1081)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id o8H5Lghx011121
+Message-ID:  <0BFA7483-6E3E-45D0-9094-3DEE5D880A1E@gmail.com>
+Date:         Fri, 17 Sep 2010 14:51:30 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Consistently active characters
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6v/Sb97LojnDtMgfETrECMLUO9erHzOJe+OynZRhvlGqb5A0X
+ bbiCt2rAnnct/NAlbHMvoAL6GY+23tB3khNK7aqcuJkHrktl7heUBBMuxWDU8MR6sgnaA+ruWxex
+ YrTyw==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6395
+
+Hi,
+
+In, say, breqn and unicode-math, we have a need to occasionally assign meanings to characters that may or may not be active at the time they're defined. The usual method for doing this is to use the \lowercase trick with something like
+
+\def\foo{...
+  \lccode`#1=`\~
+  \lowercase{%
+    \def ~{...}
+  }
+}
+
+But this requires that ~ is naturally active; and that's not necessarily always a good assumption (well, in expl3 isn't definitely not).
+
+breqn uses a better technique:
+
+\edef\tmp{\catcode\z@=\the\catcode\z@}
+\catcode\z@=\active
+...
+  as above but with ^^@ instead of ~
+...
+\tmp % restore catcode
+
+Do you think it would be a good addition to expl3 to formalise this sort of programming structure? I guess it would be something like
+
+\begin_active_char:n {^^@}
+  ...
+\end_active_char:
+
+which doesn't really gain us too much.
+
+What if ^^@ were *always* active as part of the expl3 syntax?
+
+Just thinking out loud, really. Comments, thoughts?
+
+-- Will
+

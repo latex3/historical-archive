@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1568" "Mon" "15" "November" "93" "12:06:20" "+0100" "Rainer Schoepf" "schoepf@SC" nil "48" "Re: psfonts.dtx" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA17835; Mon, 15 Nov 93 12:41:02 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA28590; Mon, 15 Nov 93 12:40:57 +0100
+Message-Id: <9311151140.AA28590@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4335; Mon, 15 Nov 93 12:17:29 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2420;
+ Mon, 15 Nov 93 12:17:20 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2418;
+ Mon, 15 Nov 93 12:17:17 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <9311151044.AA28400@sc.ZIB-Berlin.DE>
+Date:         Mon, 15 Nov 93 12:06:20 +0100
+From: Rainer Schoepf <schoepf@SC>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: psfonts.dtx
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1161
+
+
+H Sami Sozuer writes in reply to my message:
+
+ > > They are. But all math fonts need to be loaded before math mode is
+ > > entered, remember? So, you are effectively asking for a much larger
+ > > set of fonts, namely (9 + 9) * (1 + number of math fonts per size).
+ >
+ > No Rainer, you haven't done your homework. Math fonts need not,
+ > repeat, NOT be assigned BEFORE you enter math mode.
+
+OK, I wasn't sufficiently clear. It is true that TeX requires you to
+assign them only before you leave math mode.
+
+But you have to keep in mind that there are a lot of situations where
+math mode is used internally, e.g.,
+
+\underbar
+\dag
+\ddag
+\S
+\P
+\dotfill
+\ldots
+
+and these are only the plain ones. This means that there are a lot of
+situations where you need to enter math mode without it being obvious
+or even vaguely visible (1st level itemize is another one -- it uses
+$\bullet$). Second, all math fonts for symbols which are defined with
+\mathchardef must be loaded when the first math mode list is processed
+(and their group number must be fixed).
+
+ >
+ > > Sorry, but we are using TeX here and have to be content with what it
+ > > offers.
+ >
+ > I am positive that this is a limitation of NFSS and not
+ > of TeX.
+
+NFSS offers the possibility to switch off math mode for a given size.
+But for the reasons explained above, we didn't make it the default.
+
+   Rainer Schoepf
+   Konrad-Zuse-Zentrum
+    fuer Informationstechnik Berlin
+   Heilbronner Strasse 10
+   D-10711 Berlin
+   Federal Republic of Germany
+   <Schoepf@sc.ZIB-Berlin.de> or <Schoepf@sc.ZIB-Berlin.d400.de>
+

@@ -1,0 +1,50 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1330" "Thu" "1" "October" "92" "20:19:57" "EDT" "Michael Barr" "barr@TRIPLES.MATH.MCGILL.CA" nil "23" "Arctan" "^Date:" nil nil "10"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA06721; Fri, 2 Oct 92 01:26:28 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA24511; Fri, 2 Oct 92 01:26:04 +0100
+Message-Id: <9210020026.AA24511@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7976; Fri, 02 Oct 92 01:26:48 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7964;
+ Fri, 02 Oct 92 01:26:44 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7962;
+ Fri, 02 Oct 92 01:26:41 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 1 Oct 92 20:19:57 EDT
+From: Michael Barr <barr@TRIPLES.MATH.MCGILL.CA>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Arctan
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 821
+
+
+I think the point about arctan has gotten a bit muddied.  What Paul was saying
+was that if you are using something like latex \picture mode and want to
+draw a line, you are likely to know the slope, not the angle and to go from
+slope to angle is an arctan (BTW, that is the inverse function to tangent
+a point that is relevant) computation.  But the worst is that to draw a line
+using the angle informatin requires computing the slope (that is the tangent)
+because you are going to have to know how many dots to move in the x-direction
+for every one in the y direction (or vice versa depending on slope less than
+or greater than 1).  So not only is the arctan hard to compute, but the
+device driver is going to have to invert the computation anyway.  So this
+suggests that a much better form for the angular parameter to take is
+the slope, or else two numbers whose ratio is the slope.  This is the
+way it is done in Latex now and that seems clearly to be the best way
+to go.  I assume that some variation of this is used in xypic, since
+doing an arctan in tex is unthinkable.
+
+There is a downside.  It is hard to arrange an even angular distribution
+using slopes.  I assume that the xypic line segment fonts simply have an
+approximation to an even distribution.  That is more or less what the
+latex line fonts do.
+
+Michael Barr
+

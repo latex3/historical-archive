@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil t t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 25 May 90 11:58:08 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 112
+
+I'm know that Don Hoseks solution to the frontmatter will work
+after carefully redefining all commands which are involved in
+generating the frontmatter stuff. But nevertheless I'm not very
+pleased with is approach.
+
+Reason:
+
+1) such a definition will only work for a specific layout and it
+   will involve complicated definition which make it imposible
+   for a style designer to specify something different without going
+   very deep into TeX internals. It is far more difficult to change
+   such a style without breaking it in some sense as it is with
+   the current style files (which are bad enough). And our goal
+   should be to make style definitions easier for expert designers.
+
+2) His solution is to simply the trial to make something happen
+   in a syntax which isn't build to support this. It tries to
+   support a \begin{frontmatter} .... \end{frontmatter}
+   syntax without saying so. This cries in my ears for a change
+   of syntax.
+
+3) The solution will  become nearly unhandable if we think about
+   a proper style for books which involve extra parts in the
+   front matter if we want to do it right.
+
+On the other hand, we will need a compatibilty style option
+anyway when we switch from 2.09 to 2.10 or 3.10 and I see no
+problem to find a way to support the old syntax
+in such a style option.
+
+Some comment on Leslies answer:
+
+
+      I'm afraid these plans are starting to get a
+      little too grandiose.  I agree that it is more
+      elegant to let the style decide where to put the
+      talbe of contents and the list of figures.  But
+      think of all the decisions this entails.  For
+      example:
+
+           Does the list of figures go before or after
+           the list of tables.
+
+This is the only option which is currently left to the user.
+The posibilties below are determined by the style and/or by style
+options which areadded to the \documentstyle command, e.g.,
+`titlepage' in the article style.
+
+           Do the list of figures and list of tables:
+             (a) Go on successive pages?
+             (b) Go on successive right-hand pages?
+             (c) Go on the same page?
+
+      The choice of (a), (b), or (c) might depend on
+      the lenths of the lists.  Either the \frontmatter
+      command would have an astronomical number of
+      options, or the user would have to learn how to
+      define his own \frontmatter command.
+
+No, I don't believe that it is necessary to have an astronomical
+number of options. What I want is a syntax both external and
+internal (for the style designers) which is easy to understand
+and easy to handle (i.e., changable if necessay).
+I have nearly never seen a document starting with something different
+(i.e., different in a different order) than
+
+\maketitle
+\tableofcontents
+\listoffigures
+
+but what the ordinary user doesn't understand is that the book style
+*always* start the next stuff one a right-hand page.
+What we need is a clear syntax which is easy to  specify usual
+formats. If we find it it should be no problem to write a style option
+where, for example, the abstract is placed between the title and
+the tableofcontents etc.
+
+      Let's not become so obsessed with the ideal of
+      separating content from format that we produce
+      something unwieldy.
+
+It is not the ideal of separating content from format but rather
+the problem of specifying often desired formats in a reasonable
+way.
+
+Frank
+
+

@@ -1,0 +1,92 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 26 Feb 2009 09:40:35 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1Q8gn4q031963
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 26 Feb 2009 09:42:51 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n1Q8aLI5028869
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 26 Feb 2009 09:36:21 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1Q3rPRn003276;
+	Thu, 26 Feb 2009 09:36:18 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 187669 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 26 Feb
+          2009 09:36:18 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1Q8aI8T030410 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 26 Feb 2009 09:36:18 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n1Q8ZFLN028226
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 26 Feb 2009 09:35:19
+          +0100
+Received: from [139.222.131.78] (helo=ueams01.uea.ac.uk) by mailgate5.uea.ac.uk
+          with esmtp (Exim 4.50) id 1Lcbi6-0005rh-8q for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 26 Feb 2009 08:35:14 +0000
+Received: from [139.222.114.250] by ueams01.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1Lcbi3-0006rn-Rp for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 26 Feb
+          2009 08:35:11 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <49A453A1.9040000@morningstar2.co.uk>                      
+            <18853.41885.687824.539619@morse.mittelbach-online.de>           
+            <6173011C-79F7-4BD1-A948-EBBCFEE06A0B@gmail.com>           
+            <49A63F88.7020507@morningstar2.co.uk>
+            <310BAF49-D111-49E6-82E9-DE84908F987A@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49A65443.9090102@morningstar2.co.uk>
+Date:         Thu, 26 Feb 2009 08:35:15 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Missing expl3 primitives
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <310BAF49-D111-49E6-82E9-DE84908F987A@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 26 Feb 2009 08:40:35.0492 (UTC) FILETIME=[E4971640:01C997ED]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5690
+
+Will Robertson wrote:
+
+> Well, I'll leave it there for now but I wonder if that implies we need a
+> macro that has "setup" parameters:
+
+Somethine like:
+
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{expl3}
+\begin{document}
+\ExplSyntaxOn
+  \cs_new:Npn \tlist_rescan:nn #1#2 {
+    \group_begin:
+      \etex_everyeof:D { \exp_not:N }
+      #1
+      \toks_set:Nx \l_tmpa_toks { \etex_scantokens:D {#2} }
+    \exp_args:NV \group_end: \l_tmpa_toks
+  }
+
+  \tlist_rescan:nn { \char_make_other:N \^ \char_make_other:N \_ }
+    {1_2^3}
+\ExplSyntaxOff
+\end{document}
+
+perhaps?
+-- 
+Joseph Wright
+

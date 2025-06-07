@@ -1,0 +1,122 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 31 May 2006 22:02:29 +0200
+Received: by mail.proteosys.com (8.12.11.20060308/8.12.2) with ESMTP id k4VK2OOX017041
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 31 May 2006 22:02:25 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k4VJwZjK027639
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 31 May 2006 21:58:36 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k4VEdnFK023653;
+	Wed, 31 May 2006 21:58:21 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1294606 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 31 May
+          2006 21:58:21 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k4VJwLST008278 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 31 May 2006 21:58:21 +0200
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          k4VK28vj002650 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 31 May
+          2006 22:02:08 +0200 (MET DST)
+Received: from remote218-21.home.uni-freiburg.de ([132.230.218.21]
+          helo=m0A023293.vpn.uni-freiburg.de) by
+          atlas.informatik.uni-freiburg.de with esmtpsa (TLSv1:AES256-SHA:256)
+          (Exim 4.60) (envelope-from <oberdiek@uni-freiburg.de>) id
+          1FlWpW-0005z7-HA for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 31 May
+          2006 21:58:10 +0200
+Received: by m0A023293.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 98B5936B0A; Wed, 31 May 2006 21:29:25 +0200 (CEST)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <Pine.LNX.4.64.0604270936420.8277@bk-ng-05.proteosys>
+            <20060427182251.GA23586@m0A023293.vpn.uni-freiburg.de>
+            <20060530155648.GA16268@m0A023293.vpn.uni-freiburg.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <20060531192925.GA7290@m0A023293.vpn.uni-freiburg.de>
+Date:         Wed, 31 May 2006 21:29:25 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LaTeX Release 2005/12/01
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20060530155648.GA16268@m0A023293.vpn.uni-freiburg.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0.001 () HTML_MESSAGE
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 31 May 2006 20:02:34.0048 (UTC) FILETIME=[2809BC00:01C684ED]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4954
+
+Hello,
+
+I got questions, thus I try to explain it a little more verbose:
+
+On Tue, May 30, 2006 at 05:56:49PM +0200, Heiko Oberdiek wrote:
+
+> On Thu, Apr 27, 2006 at 08:22:51PM +0200, Heiko Oberdiek wrote:
+>
+> * I have written a wrapper file that merges all the ltnews??.tex
+>   documents: ltnews.pdf contain all LaTeX News issues 1--17.
+
+Now base-tds.zip contains
+    doc/latex/base/ltnews.pdf
+instead of
+    doc/latex/base/ltnews01.pdf
+    doc/latex/base/ltnews02.pdf
+    ...
+    doc/latex/base/ltnews17.pdf
+
+(The source/latex/base directory is not changed,
+the files ltnews01.tex, ltnews02.tex, ... remain there.)
+
+> * To get smaller pdf file sizes I have experimented with
+>   destinations:
+>   * Unused destinatins are removed.
+>   * The destination names are renamed to shorter names.
+>     I am using all bytes (0-255) except for
+>     - 0: dangerous for PDF viewers that work with C strings (xpdf?)
+>     - 13: carriage return needs quoting, otherwise it would be
+>           normalized to 10 (line feed).
+>     - 40, 41, 92 (parentheses, backslash): needs quoting
+>     - 255: avoids unicode marker at string start
+>     I would be interested, if there are problems with the links/outlines.
+>     (Apart from links that unhappily point to the baseline.)
+
+Consider an HTML page foo.html with a lot of internal links:
+    <a name="section.1">...</a> or <a ref="#codline.127">...</a>
+In a similar way destinations are used in the PDF file.
+Additionally the names are also stored in a data structure with the
+function of a search tree.
+
+The correct spelling of the destination name does matter, if someone
+wants use the destination externally: http://somewhere/foo.html#section.1
+But in case of the documents that I have generated for latex-tds, these  
+destination names are (randomly) choosen by hyperref, not a property     
+of the document. You cannot rely that the destination name for the       
+implementation section is "section.4", it can be "section*.27" or        
+"chapter.3" or ...
+
+Thus I made the assumption the spelling of the destinations are not
+intended for external referencing. This allows two optimizations:  
+* Unused destinations are removed.
+* The destination names must still unique, but I can choose shorter
+  names, e.g. instead of
+      section.1, section.23, codline.127   (30 bytes)
+  the shortest possible, but unique names are used:  
+      A, B, C                                (3 bytes)
+  The HTML example from above would be transformed to:
+      <a name="A">...</a> or <a ref="#C">...</a>
+
+Example: file size decrease of source2e.pdf: around 4.5 %.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

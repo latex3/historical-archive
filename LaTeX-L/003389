@@ -1,0 +1,87 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1812" "Fri" "5" "November" "1999" "20:58:55" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "48" "Re: on general structure" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA03475
+	for <schoepf@UNI-MAINZ.DE>; Fri, 5 Nov 1999 22:17:32 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.02AFA366@mail.listserv.gmd.de>; Fri, 5 Nov 1999 22:17:29 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445632 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 5 Nov 1999 22:17:23 +0100
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA17659
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 5 Nov 1999 22:16:57 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin407.zdv.Uni-Mainz.DE
+          [134.93.175.107]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          WAA28818 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 5 Nov 1999
+          22:17:03 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          UAA00398; Fri, 5 Nov 1999 20:58:55 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <eaa92e19@corona.oche.de>
+Message-ID:  <199911051958.UAA00398@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <eaa92e19@corona.oche.de>
+Date:         Fri, 5 Nov 1999 20:58:55 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: on general structure
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3389
+
+Achim Blumensath writes:
+
+ > Here are two (random) things I've thought of:
+ >
+ > a) General structure.  IMHO LaTeX should be much more modular so you can
+ > replace parts you don't like with your own implementation. It could be
+ > divided into the kernel containing just the programming environment
+ > like xparse, etc., and a lot of modules, one for each aspect of actual
+ > typesetting (lists, math, fonts, headings, pagestyle,...).
+ >
+ > The structure of a class file would be
+ >
+ >   preamble
+ >   including modules
+ >   declaring instances of templates defined in the modules
+
+this is sort of what we have in mind. perhaps even more separated on the class
+file level in the sense that a class file of the new type might in fact come
+as (probably two files):
+
+ a) a layout specification file which declares the layout which means loading
+ template modules and declaring instances
+
+ b) an interface file which maps those instances to document-level design.
+
+ c) perhaps a third file which does nothing but essentially loads part a) and
+    b)
+
+this way the part a) can be also used by applications which use LaTeX as a
+backend and perhaps prefer a different document syntax
+
+at the same time part b) then declares class compatibility, ie two classes
+sharing the same file b) can process the same documents.
+
+ > The advantage would be that you could
+ >
+ >  o make cosmetic changes by writing a new class which uses other
+ >    values to instantiate the templates, and
+ >
+ >  o make fundamental changes by writing a new module with different
+ >    implementation of templates.
+
+right. if this properly formalized one can also make use of graphical
+interfaces (or rather build them) which allow to declare or modify a class by
+changing it through such an interface, eg, a la Scientific Word class editor
+
+frank
+

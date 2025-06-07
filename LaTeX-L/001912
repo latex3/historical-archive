@@ -1,0 +1,172 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5749" "Thu" "10" "April" "1997" "15:24:07" "+0200" "Ulrik Vieth" "vieth@THPHY.UNI-DUESSELDORF.DE" nil "132" "Re: math fonts" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id PAA10872; Thu, 10 Apr 1997 15:25:40 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.E865ACF8@listserv.gmd.de>; Thu, 10 Apr 1997 15:25:38 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123110 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 15:25:35 +0200
+Received: from thphy.uni-duesseldorf.de (www.thphy.uni-duesseldorf.de
+          [134.99.64.123]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          SMTP id PAA18369 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10
+          Apr 1997 15:24:01 +0200 (MET DST)
+Received: from macbeth.uni-duesseldorf.de (macbeth.thphy.uni-duesseldorf.de) by
+          thphy.uni-duesseldorf.de (4.1/SMI-4.1) id AA15987; Thu, 10 Apr 97
+          15:24:09 +0200
+Received: by macbeth.uni-duesseldorf.de (SMI-8.6/SMI-SVR4) id PAA03462; Thu, 10
+          Apr 1997 15:24:07 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199704101324.PAA03462@macbeth.uni-duesseldorf.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <9704101205.AA08054@sgibulirsch6.mathematik.tu-muenchen.de>
+              (message from Johannes Kuester on Thu, 10 Apr 1997 14:05:44 +0200)
+Date:         Thu, 10 Apr 1997 15:24:07 +0200
+From: Ulrik Vieth <vieth@THPHY.UNI-DUESSELDORF.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: math fonts
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1912
+
+Johannes Kuester wrote:
+
+> Some comments on MC: the ordering of the Greek glyphs seems to be somewhat
+> arbitrary, they should either be ordered in the order of the Greek
+> alphabet or according to the input conventions of e.g. Haralambous's
+> Greek fonts (I think the first is preferable, but the current alpha,beta,
+> delta,... gives a new ordering never to be seen so far). I also think that
+> upright and slanted/italic glyphs should reside at a multiple-of-8 distance
+> in the font; e.g. upright Alpha at "81, slanted Alpha at "B9, to make
+> then more easily findable and comparable.
+
+I'd agree witghthan, and if possible I'd even argue for a multiple-of-32
+distance in the font, e.g. upright Alpha at "81, upright alpha at "A1,
+italics Alpha at "C1, italics alpha at "E1.  This would obvioulsly make
+it necessary to rearrange some of the extra characters and perhaps even
+restricting the number of variants.
+
+> There are some glyphs for
+> which I don't see any reason for being in the core, namely "5F, "61,
+> "F8 and "F9 (barred V, upright and slanted, thorn (variant) and Thorn),
+> as they are very rarely used in mathematics (if at all?). Justin didn't
+> give any example of their usage.
+
+I don't know where the barred V is used, but there might be a valid
+reason in some field.  However, I severely doubt the necessity of
+having \eth and \thorn in a math font.  AFAIK, these are icelandic
+text characters left over from the AMS symbol fonts, which simply
+weren't available otherwise.  Anyone from the AMS knows better?
+
+> Also, to include the upright "d" seems
+> arbitrary, as other upright glyphs aren't taken into account.
+
+NO!!!  The upright "d" and upright \partial are despartely needed for
+differentials, at least according to typesetting rules applicable in
+physics.  The reason to have them in the MC font is kerning: If you
+run the math test of the MFbook testfont.tex program, you'll find that
+there are numerous kern pairs between italics "d" and other italics or
+greek letters.  Kerning between upright "d" and other letters may not
+be as critical as for the italics "d", but one shouldn't rule out this
+possibility by banning the upright "d" from the MC font prematurely.
+
+BTW, from the point of view of physics requirements, I'd also like to
+have an upright "i" (and perhaps also "j") in the MC font for kerning
+reasons.  I'm afraid that this suggestion somehow never made it into
+Justin's report.  Just look closely at
+
+$$
+  \mathrm{i}k,  \quad \mathrm{i}\omega, \quad
+  2u + 2\mathrm{i}v, \quad  \mathrm{e}^{\mathrm{i}(kx - \omega t)}
+$$
+
+[...]
+
+> I have metafonted a few glyphs which I could contribute
+> (in rather poor METAFONT, as these were among my first glyphs,
+> but I think they look the right way, even when their programs need
+> to be polished). Namely:
+[...]
+
+> a special symbol for the Laplace operator and a matching Nabla
+>     (looking like a \bigtriangle, a bit larger and bolder though;
+>      may be useful as I think \Delta (the upright one for Laplace) is
+>      overused and ambiguous)
+
+Very good idea!  Reserving a slot for \Laplacian would allow the font
+designer to choose between different styles for \Laplacian and \nabla,
+either in ``Greek'' style (upright and inverted \Delta) or geometric
+(upright and inverted triangle of uniform line thickness).  Another
+symbol in this grooup would be the d'Alembert operator (a.k.a. quabla),
+usually just a geometric square, but it should match the size of
+the Laplacian.
+
+$$
+  \quabla = \Delta - \partial_t^2 = \nabla^2 - \partial_t^2
+$$
+
+BTW, here's my metafonted suggestion for \quabla:
+
+% A square matching the size (height) of \triangle from mathsy.mf
+cmchar "Quabla operator";
+beginchar(oct"0",16u#,asc_height#,desc_depth#);
+  adjust_fit(0,0); pickup rule.nib;
+  bot y1=0; y1=y2; top y3=h; y3=y4;
+  x1=x4=good.x (w/2-h/2); x2=x3=x1+h;
+  draw z1--z2--z3--z4--cycle;
+  labels(1,2,3,4);
+endchar;
+
+> upright lowercase Greek glyphs
+>     (these are merely a matter of taste, I made them by "unslanting"
+>      the usual ones and changing the code when it seemed appropriate
+>      to get a goodlooking glyph. May be Greek has to be redesigned
+>      completely anyway, as I don't see a reason for having uppercase
+>      Greek letters which are undistinguishable for their Latin counterparts)
+
+I also experimented with making a cmmr10 font by unslanting cmmi10
+quite a long time ago.  It was very obvious that the design of many
+lowercase greek required ajustments to prevent them from looking like
+slightly backslanted.  In addition the kerning tables needs to be
+redone completely.
+
+>     Here again, Justin's proposal seems to be too restricted: There
+>     are at least two variant glyhs for each of Qoppa, qoppa, Sanpi and sanpi,
+>     and there is "stigma" (merely a sigma-tau ligature, to be found in
+>     Unicode), which hasn't been considered yet.
+
+Question: Are these really math characters, or just greek text characters?
+Remember, we want to do a math font not a greek text font, so if they are
+never ever used in math, I'd suggest to get rid of them.
+
+> And as for font naming conventions: please do use preliminary names
+> for the fonts (how about "d" instead of "e" as a starting letter?).
+> I don't see a good reason for the naming "emsp", I think this should
+> just be the first math symbol font, named "emsa" ("dmsa" for now?),
+> the other names shifted accordingly, thus it will be privileged enough.
+
+
+I don't think it is a good idea to discuss font naming at this stage.
+However, if we're already talking about it: What about font names
+starting with "x" for experimental and including the initials of the
+designer/proponent?
+
+x mc  NN 10
+x msp MC
+x msa JK
+x msb UV
+x mxa NN
+x mxb NN
+
+
+So much for my random comments.
+Cheers, Ulrik.
+

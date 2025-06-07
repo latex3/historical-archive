@@ -1,0 +1,935 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 11 Jun 90 10:21:20 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 128
+
+Chris gave me a large file (paper) from David  R. which I think
+contains a lot of very useful and welltaken suggestions. One
+part of it was also in machine readable form and I send it to the
+list for you to look at. I will bring the whole stuff with me to Texas.
+
+Greetings Frank
+
+P.S. Since we always have problems with char translations I also
+append a character table below.
+
+
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+
+
+
+
+\documentstyle[11pt]{article}
+
+\newcounter{exhibit}
+
+\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+      T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\section{General}
+
+\subsection{Assumptions about structure}
+
+\LaTeX\ 2.09's assumptions about the structure of a
+{\tt book} or {\tt report} seem at odds with the usual assumptions in publishing
+practice.  Consequently, the author often ends up doing things that are really
+the designer's responsibility.
+
+In publishing practice, a book-like document would have the following major
+divisions:
+\begin{itemize}
+\item ``preliminary pages'' or ``front matter'', containing table of contents,
+      acknowledgements, etc.  Usually numbered in roman.
+\item main text, containing the chapters.
+\item ``end pages'' or ``back matter'', containing appendices, bibliography,
+      index, etc.
+\end{itemize}
+See exhibit \addtocounter{exhibit}{1} \theexhibit.
+
+This divergence between the real structure and that assumed by \LaTeX\ 2.09
+forces the author to think visually rather than logically.  The author gets
+involved with:
+\begin{itemize}
+\item \verb+\chapter*+ plus \verb+\addcontentsline+ for most ``top level''
+      units in the front and back matter.  The \verb+\chapter*+ command may be
+     appropriate for use inside {\tt sty} files for \verb+\def\tableofcontents+,
+      etc., but will rarely be appropriate (except in conjunction with
+      \verb+\addcontentsline+) in a user's input file.
+\item having to put \verb+\pagenumbering{roman}+
+      and \verb+\pagenumbering{arabic}+ around the ``front matter''.
+\end{itemize}
+(See exhibit 1 again.)
+
+Could (the standard styles for)
+\LaTeX\ 3.0 work more in terms of the concepts used in publishing
+practice?  The author might, for example, create an input file of the form
+shown in exhibit \addtocounter{exhibit}{1} \theexhibit.  Then details such as
+roman-numbering, table-of-contents entry, etc.\ could be dealt with in the
+{\tt sty} file without the author being involved.  The \verb+\chapter*+ command
+(and much use of \verb+\addcontentsline+) would be redundant.
+
+Exhibit 1 shows structures that would be better for book-like documents than
+the structure assumed by \LaTeX\ 2.09's {\tt report} and {\tt book}.  It might
+also be worth looking at some SGML DTDs before deciding on the precise
+structures to be supported by \LaTeX\ 3.0.
+(One-to-one mappings between standard \LaTeX\ styles and standard SGML DTDs
+would be nice!)
+
+\subsection{Use of {\tt count}s}
+
+When a {\tt dvi} file has been produced by \LaTeX\ 2.09, it is difficult
+to do page-selection (as usually provided by {\tt dvi}-to-printer
+software) in the vicinity of roman-numbered ``preliminary pages''.
+The roman-numbered pages use the same values of
+\verb+\count0+ as the arabic-numbered ``main text'', so page-specifications
+can be ambiguous.
+
+Could something be done \marginpar{At \protect\LaTeX\ 2.10?}
+to make page-selection straightforward where roman-numbered pages are followed
+by arabic-numbered pages?  This could take the form of:
+\begin{itemize}
+\item roman pages setting \verb+\count0+ negative, as is done in ``plain
+      \TeX''.  (There's a {\tt romanneg} style-option at Aston that claims
+      to do this for \LaTeX\ 2.09, but I couldn't get it to work!)
+\item more ambitiously, use \verb+\count0+ for the page number,
+      \verb+\count1+ for the chapter/appendix number, and \verb+\count2+
+      for ``major division'' number.  (See exhibit \addtocounter{exhibit}{1}
+      \theexhibit.)  Then people could:
+      \begin{itemize}
+      \item select by chapter, as suggested by Trevorrow (see exhibit 3),
+            using \verb+\count1+
+      \item select a particular ``preliminary page'' by using \verb+\count2+
+            to specify ``preliminary pages'' and \verb+\count0+ to specify
+            the particular page.
+      \end{itemize}
+\end{itemize}
+
+\subsection{Ragged right}
+
+People may wish to implement ``ragged right'' designs.  They may want \TeX's
+mathematical typesetting capability and the help that \LaTeX\ can give with
+section-numbering, cross-referencing, etc., but not want any of the
+right-justification that \TeX\ supplies by default.  This seems respectable,
+since there are books on design that advocate ``ragged right'' (see exhibit
+\addtocounter{exhibit}{1} \theexhibit).
+
+Unfortunately, to implement a ``ragged right'' design in \LaTeX\ 2.09, it seems
+necessary to make individual changes to any definitions in a style file that
+involves ``paragraph makeup''.  For example, it is necessary to specify
+``ragged right'' for main text, footnotes, captions and list-elements
+separately.
+
+However, if the ``main text'' is to be typeset ``ragged right'', it is most
+likely that ``ragged right'' will be required everywhere else, too.  Could
+there be some easy mechanism for specifying, in a {\tt sty} file, that
+``everything is to be ragged right''?  Better still, could there be some
+easy way of choosing, in a {\tt sty} file, to have everything as what exhibit
+4 calls ``rough rag'', ``tight rag'' or ``minimal rag''?
+
+\subsection{File names}
+
+Might it be worth introducing a naming convention such as:
+\begin{itemize}
+\item extension {\tt sty} for a style file
+\item extension {\tt opt} for a style-option file?
+\end{itemize}
+It may help people to find their way round archives such as that
+at Aston.
+
+\section{Preliminary pages}
+
+\subsection{Title-page}
+
+In \LaTeX\ 2.09, \verb+titlepage+ does a \verb+\setcounter{page}{0}+.
+Unfortunately, when \verb+twoside+ is used, this leads to the titlepage
+being given the margins appropriate for a left-hand page, when it should
+really have the margins for a right-hand page.
+See exhibit \addtocounter{exhibit}{1} \theexhibit.
+
+Since \verb+\thispagestyle{empty}+ is used, the actual number makes no
+difference in \verb+titlepage+.  Presumably the intention is to ensure
+that the following page is, by default, numbered ``1''.
+
+Could some way be found of ensuring that a title-page is given the
+margins for a right-hand page even when {\tt twoside} is in effect?
+
+Perhaps ``0'' could be treated as ``odd'' for the purpose of margins.
+
+Better still (because it would be a move towards standard publishing
+practice), if \verb+\begin{prelimpages}+ and \verb+\end{prelimpages}+ were
+defined in \LaTeX\ 3.0 (as suggested in exhibit 2), perhaps
+\verb+\end{prelimpages}+ could re-set the page counter so that the following
+page would be arabic ``1''.  The title-page could be given any appropriate
+number, and for book-like documents would probably be given a notional number
+of ``iii'' (see exhibits 1 and 5).
+
+
+\subsection{Those pages without printed numbers}
+
+From exhibits 1 and 5, you'll see that the first 4 or 6 ``preliminary pages''
+will probably be un-numbered, and that the title-page is only one of these.
+This being so, {\tt titlepage} seems a misnomer for the environment
+that one would use to produce such pages.  Might {\tt unnumbered} be a
+better name for the environment used to produce the pages that,
+if they were numbered, would be i--iv or i--vi?
+
+\section{Floats}
+
+\subsection{Confusion}
+
+The {\tt figure} and {\tt table} environments arrange for:
+\begin{itemize}
+\item captions to be numbered
+\item material to be floated.
+\end{itemize}
+
+Our users seem to want the caption-numbering, but to get confused by the
+floating.  Typically, they go \verb+\begin{table}[h]+ but don't read the ``small
+print'' on pages 176--178 of the manual, and then come to our
+Advisory Service asking why
+the table hasn't appeared ``here'' and why they're being told ``{\tt Too many
+unprocessed floats}''.
+
+Admittedly, much of the problem is that (a) they haven't studied printed books
+to see what printed books do with figures and tables (c) there is a typewriter
+tradition of expecting things to stay where they are put (d) they get a
+half-truth ``from a friend'', and don't study the manual to get the whole truth.
+
+But, I think part of the problem is attributable to:
+\begin{itemize}
+\item the environment names. ``{\tt table}'' {\em sounds} like it's ``what you
+      {\em must} use for a table''
+\item the dual role.
+      People may choose {\tt table} and {\tt figure} in order to get
+      numbered captions: there isn't another off-the-shelf way to get
+      them.  They may see the floating as an unwanted side-effect and
+      think (wrongly) that \verb+[h]+ will turn the effect off.
+\end{itemize}
+
+Could environments for ``floating'' be given names that make it obvious that
+their main purpose is to float things?  For example, suppose that someone had
+to go \verb+\begin{floattable}+ or \verb+\begin{float}{table}+.  Even if
+they found out about this ``from a friend'', they would stand a good chance
+of realising that they are asking \LaTeX\ to float something (and get
+a hint that \verb+h+ is ``allowing a null float when aesthetically possible''
+rather than ``forcing the table {\it here} under all circumstances'').
+
+I'm not sure whether to be optimistic or pessimistic about what would happen
+if floating environments were given names that made it absolutely clear that
+their role is to float things.  Being optimistic, I might think that users
+would then be clear what to expect, would be pleased that \LaTeX\ would make
+their document look like a professionally produced book, and would not use the
+environments
+in such a way as to give ``{\tt Too many unprocessed floats}'' over-frequently.
+Being pessimistic, I wonder if it would be worth providing one or other of:
+\begin{itemize}
+\item environments that just put a table or figure ``here'' (with spacing,
+      caption, etc., as for the ``floats''), and give an
+      ``{\tt Underfull vbox}'' if a table or figure can't be fitted on the curre
+      page and has to go on the next one (leaving the current page underfull).
+      For example, \verb+\begin{fixedtable}+ or \verb+\begin{fixed}{table}+.
+\item a command (or commands) to produce captions in ``ordinary text'' that
+      look  the same as (and use the same counters as) the captions produced
+      in the floating environments.
+      For example, \verb+\caption{table}{...}+ or \verb+\tablecaption{...}+.
+\end{itemize}
+
+
+\subsection{Captions}
+
+\subsubsection{\protect\LaTeX\ 2.09's practice}
+
+The \LaTeX\ 2.09 manual seems vague about whether the spacing around
+\verb+\caption+
+is designed to go under or over a table/figure.  Looking at the standard
+{\tt doc} files suggests that the same code is used for both figures and tables,
+and that the resulting caption is intended to go {\it under} the figure or table
+
+However, the 2.09 manual points out that ``there can be several captions in
+a {\tt figure} or {\tt table} environment''.
+
+\subsubsection{Publishing practice}
+
+In publishing practice, it seems respectable to have a combination of:
+\begin{itemize}
+\item table captions {\em above} the table
+\item figure captions {\em below} the figure.
+\end{itemize}
+The {\it Chicago Manual of Style}, Butcher's {\it Copy-editing} and
+and Hart's {\it Rules} all adopt this combination.
+See exhibit \addtocounter{exhibit}{1} \theexhibit.
+(Perhaps it is because tables may have notes underneath and may be split
+over several pages.)
+
+In fact, judging by Chicago, Butcher and Hart, publishing practice seems to put
+the following elements into floats:
+\begin{itemize}
+\item for tables: the title (and possibly a subtitle),
+      the table itself, source notes, general notes,
+      specific notes, probability levels\footnote{A statistician
+      colleague tells me that statisticians now prefer
+      ``confidence intervals''.}
+\item for figures: the figure itself, the caption, the legend.
+      See exhibit 6.
+\end{itemize}
+%  CMoS p. 312.
+
+Sensible examples of floats with more than one caption seem rare.
+Hart has some examples of figures side-by-side, but this is really
+a case of figures ending up together after floating, rather than having
+to be kept together while floated.
+Butcher mentions situations where ``two tables should appear in the same
+% p 161
+opening, so that they can be compared'', but some mechanism other than that
+provided by \LaTeX\ 2.09 would be necessary to achieve this.
+
+Overall, \LaTeX\ 2.09's vagueness about how the author and the designer
+are to use \verb+\caption+ seems likely to:
+\begin{itemize}
+\item make it difficult for the designer to implement decisions
+      about the positioning, spacing and fonts for
+      \begin{itemize}
+      \item table titles and notes
+      \item figure captions and legends
+      \end{itemize}
+\item leave the author doing visual design:  experimenting until
+      things ``look right''.
+\end{itemize}
+
+\subsubsection{\protect\LaTeX\ 3.0}
+\label{float3}
+
+It seems to me that the advantages of having the usual \LaTeX\
+``separation of the designer's and author's roles'' within the body
+of a float would far outweigh any flexibility that ``several captions
+within a float'' allows.  (If it is desired to allow two narrow floats
+side-by-side, this should be done by letting the user tell \LaTeX\
+about the width of the float.  If it is desired to
+cater for rare situations where ``two tables should appear in the same
+opening'', this should be done by arranging some ``magnetic attraction''
+between the two---or by letting the user fiddle with the {\tt tex} file.)
+
+I would suggest that:
+\begin{itemize}
+\item notice be given that ``more than one caption
+      within a float'' will not be supported after \LaTeX\ 2.10
+\item at \LaTeX\ 3.0, ideally
+      \begin{itemize}
+      \item the successor to {\tt table} should
+            require the user to specify the block to be floated
+            in terms of the  logical elements
+            ``title'' (plus possible ``subtitle''),
+            ``table itself'', ``source notes'', ``general
+            notes'', ``specific notes'', ``probability levels''
+      \item the successor to {\tt figure} should
+            require the user to specify the block to be floated
+            in terms of the  logical elements
+            ``figure itself'', ``caption'', ``legend''
+      \item the positioning, typeface, etc. to be used for the logical elements
+            should be under the control of the document-designer via the
+            {\tt sty} file.  A designer should be able to implement
+            a Chicago-Butcher-Hart design
+            that has: table-title at the top of a floated
+            ``table block'', with table-notes at the bottom of the block;
+            ``caption'' and ``legend'' (in that order)
+            at the bottom of a floated ``figure block''.
+            Equally, a designer should be able to implement
+            other conventions for layout of the ``logical elements''
+            within floated blocks.
+      \end{itemize}
+\end{itemize}
+
+\subsection{Landscape}
+
+The precise details of what one does to place an object ``landscape''
+will depend on the \verb+\special+s available for a particular printer.
+
+It may be unwise to define official environments, since they
+would not be available to everyone that has \LaTeX\ 3.0.
+(But if you want to define a standard ``optional extension'',
+you might go for something like
+the definitions of {\tt landscapetable} and {\tt landscapefigure}
+shown in exhibit \addtocounter{exhibit}{1}\theexhibit,
+based on some code put in {\tt UKTeX} by Sebastian Rahtz.)
+
+Nevertheless, you can assume that people are going to want to define
+environments that place objects ``landscape''.  You might
+be able to help by providing the ability to define:
+\begin{itemize}
+\item a float that must appear on a ``page of floats''
+      on which it is the only float
+\item a \verb+\thispagestyle+ that takes effect
+      after floating.  There doesn't seem to be a consensus between the
+      gurus about whether one should print headings on pages with full-page
+      tables (Hart: for; Chicago: against) but if a designer opts to suppress
+      the headings, they'll need a mechanism.
+\end{itemize}
+
+
+\section{Tables}
+
+\subsection{Decimals}
+
+All the books that I've seen about table layout ({\it Chicago Manual of Style},
+Hart's {\it Rules}, White's book, Butcher's {\em Copy-editing}, the British
+Standards Institution's DD52) mention ``making sure that, in a column of
+numbers, the decimal points line up''.  Thus ``alignment of decimal points''
+seems a ``fundamental requirement'', at least as important as
+{\tt tabular}'s current {\tt l}, {\tt c} and {\tt r}, not an ``optional extra''.
+
+I realise that the \LaTeX\ 2.09 manual shows a couple of tricks that can be
+used (zero-width boxes, page 98; high--low, page 182), and that Frank
+Mittlebach has the \verb+>{\centerdots}c<{\endcenterdots}+ idea (TUGboat,
+{\bf 9}, p.\ 299).  But these techniques seem unnecessarily subtle for such a
+fundamental requirement.
+
+Couldn't there be something as easy as {\tt l}, {\tt c} and {\tt r} for
+``alignment on decimal points''?   Bell Labs.\ managed to make
+``lining numbers up'' easy in {\tt tbl} years ago!
+(See exhibit \addtocounter{exhibit}{1} \theexhibit.)
+
+
+\subsection{Rules, i.e.\ lines}
+
+I've tried to use \LaTeX\ 2.09 to typeset some of the tables
+shown as examples by gurus of table layout.  I've had partial success.
+(See exhibit \addtocounter{exhibit}{1} \theexhibit.)
+
+It looks as though, for complete success in laying tables out as the
+gurus recommend, one needs:
+\begin{itemize}
+\item a choice of thickness for \verb+\hline+s.  If one follows DD52,
+      the choice would be between 0.5pt, 1pt, 2pt and 4pt.
+\item an option of specifying that adjacent \verb+\cline+s
+      should not join up.
+\end{itemize}
+
+
+\subsection{Notes}
+
+The facilities provided by \LaTeX\ 2.09
+(``put a {\tt tabular} inside a {\tt minipage} and use \verb+\footnote+'')
+do not seem particularly
+suitable for providing notes about tables in the way advocated by the
+gurus.
+(See exhibit \addtocounter{exhibit}{1}~\theexhibit.)
+\begin{itemize}
+\item The gurus seem to typeset notes no wider than the table.
+      However, if one has to declare the {\tt minipage}
+      before typesetting the {\tt tabular}, the {\tt minipage} must
+      be wider than the expected width of the {\tt tabular}, so the
+      footnotes will generally be wider than the table.
+\item The gurus advocate putting ``general notes'' before ``specific
+      notes''.  There does not seem to be an easy way of getting
+      ``general notes'' out in the style that \verb+\footnote+
+      will use for ``specific notes''.
+\item Having to redefine \verb+\footnoterule+ (to give a null rule)
+      is just an added irritation.
+\end{itemize}
+
+It might be better if:
+\begin{itemize}
+\item the manual for \LaTeX\ 3.0 refrained from suggesting
+      ``put a {\tt tabular} inside a {\tt minipage}, use \verb+\footnote+
+      and re-define \verb+\footnoterule+''
+\item \LaTeX\ 3.0 made the width of the most recently typeset {\tt tabular}
+      available in a variable, so that the user could declare a {\tt minipage}
+      or a {\tt tabular} of the same width (or a related width)
+      immediately below, to hold the notes.
+      See exhibit 9.
+\item there was some means whereby the user could tell \LaTeX\ to base
+      it's decision about {\tt tabular}-width on the rows that hold
+      the table-proper but could let the {\tt tabular} continue below the
+      table-proper. Notes could then be provided in ``extra rows'' that
+      had the same width as the table-proper.
+\end{itemize}
+
+It would be even better if
+the user specified the block to be floated in terms
+of the logical elements ``title'', ``subtitle'', ``table proper'',
+``source notes'', ``general notes'', ``specific notes'', ``probabilities''
+(as suggested in section \ref{float3}), and \LaTeX\ 3.0 and the {\tt sty}
+file took care of the detailed  layout.
+
+\section{Lists of references; bibliographies}
+
+\subsection{Title}
+
+The \LaTeX\ 2.09 ``standard styles'' seem to assume that a ``bibliography''
+is merely a long ``list of references''.  However, many people use
+``bibliography'' to mean something different from ``list of references''
+(e.g., the British Library chap we heard on February 21st).
+There may also be situations where:
+\begin{itemize}
+\item an author wishes to use something like {\tt thebibliography} for
+      ``Select Bibliography'' or ``Further Reading''.
+      See exhibit \addtocounter{exhibit}{1}~\theexhibit.
+\item a document might have more than one {\tt thebibliography}, for
+      example (a) ``References'' then ``Further reading'' (b)
+      as suggested in the draft British Standard for theses, ``List of
+      references'' then ``Bibliography''.
+\end{itemize}
+Thus it seems to me that it is important to enable the author
+to give {\tt thebibliography} a title that accurately describes
+its contents.
+
+Consequently, I think that the approach take in {\tt german.sty} (in the
+Aston archive) is mistaken.  For example, having
+\verb+\def\refname{References}+ and \verb+\def\bibname{Bibliography}+
+for English will tend to perpetuate the mistaken assumption that
+``an article has a list-of-references while a report or book has
+a bibliography'', and hence to perpetuate inaccurate titles.
+
+I think that:
+\begin{itemize}
+\item it would be better to have just one default title per language,
+      irrespective of \verb+\documentstyle+
+\item the default title should be the usual description of a list
+      from which one \verb+\cite+s.
+      For English, we might have \verb+\def\refname{References}+
+      as the default.
+\item there should be an easy mechanism (such as that shown in exhibit
+      11) to allow the author to replace the default title.
+\end{itemize}
+
+
+\subsection{Schemes supported}
+
+In publishing practice, the two most important citation schemes
+are ``reference by number'' and author-date.
+See exhibit \addtocounter{exhibit}{1}~\theexhibit.
+
+The definition of \verb+\cite+ and \verb+\bibitem+ in \LaTeX\ 2.09
+supports ``reference by number'', but anyone wanting to use
+a standard  author-date scheme:
+\begin{itemize}
+\item has to re-define \verb+\cite+,  to get ``('' and ``)''
+\item has to re-define \verb+\bibitem+, to suppress the
+      \verb+[+{\it key\/}\verb+]+ printed by default
+\item will probably want a command such as \verb+\shortcite+,
+      to deliver just the ``date'' part when the author's name
+      occurs naturally in a sentence.  (See exhibit 12.)
+\end{itemize}
+
+This generally means that people wanting to use author-date:
+\begin{itemize}
+\item are unable to use standard programs such as {\tt lablst}
+      which assume the original \LaTeX\ 2.09 definitions
+\item have to specify ``I'm using author-date'' in two places:
+      as a style-option in their \verb+\documentstyle+ command, and in their
+      \verb+\bibliographystyle+ command.
+      This seems unreasonable.
+\end{itemize}
+
+Can anything be done in \LaTeX\ 3.0 to give author-date the same status
+as ``reference by number''?
+\begin{itemize}
+\item Perhaps if \verb+\bibitem+ had {\it two}
+      optional arguments, it could cope with both reference-by-number and
+      author-date (where author-date would support \verb+\shortcite+).
+      (Could this  support the ``short title'' scheme too?
+      See exhibit 12.)
+\item Alternatively, it might be worth having 2 parallel sets of commands:
+      \begin{itemize}
+      \item \verb+\cite+, \verb+thebibliography+ and \verb+\bibitem+,
+            for reference by number
+      \item \verb+\adcite+, \verb+\shortadcite+, \verb+adbibliography+
+            and \verb+\aditem+, for author-date.
+      \end{itemize}
+      This would go against the
+      \LaTeX\ philosophy of separating appearance from structure,\footnote{%
+Or would it?  Maybe an author-date scheme is structurally different from
+a reference-by-number scheme.}
+      but would give a standard interface for author-date users, thus
+      getting away from a lot of ad-hoc-ery.
+\end{itemize}
+
+
+\subsection{Consequences for \protect\BibTeX}
+
+The situation mentioned in section 5.1, where a document may have more than one
+{\tt thebibliography} may have particular implications for \BibTeX.
+A document might have ``References'' to list all the works cited,
+and ``Further reading'' to gives further details of some of them.
+
+In \LaTeX\ 2.09 terms, one might need 2 \verb+\bibliography+s
+with 2 different \verb+\bibliographystyle+s.
+Does one need the ``bibliography style'' to be an
+argument of the \verb+\bibliography+ command, so as to allow
+for this possibility?
+
+
+\subsection{Subdivisions}
+
+Except when using an author-date scheme, an author might reasonably
+wish to subdivide a reference list.
+See exhibit \addtocounter{exhibit}{1}\theexhibit.
+Can some mechanism (\verb+\subbibliography{...}+?) be provided
+so that the author can place a
+subheading in a reference list to indicate the start of a new category?
+(It would be nice if the mechanism allowed a {\tt bst} file
+programmer to sort by ``category field'', and then
+write an appropriate category heading to a {\tt bbl} file,
+so that \BibTeX\ users could potentially
+have subdivided reference lists too.)
+
+\section{``Over-long'' headings}
+
+Although the \LaTeX\ 2.09 manual explains that giving an over-long {\it heading}
+argument in sectioning commands, \verb+\caption+, etc.\ can cause a ``{\tt
+buffer size}'' error, it seems perverse that an error can occur (for example)
+because of  the size of a ``list of tables'' string {\em when
+the user hasn't actually given a \verb+\listoftables+  command}.
+
+Could \LaTeX\ 3.0 deal with over-long arguments in sectioning, \verb+\caption+,
+etc., commands as follows?
+\begin{itemize}
+\item Instead of regarding {\it heading} as the default {\it toc-entry},
+      text to go in page-header,
+      {\it lot-entry}, {\it lof-entry}, etc., regard just the first
+      50-or-so characters of {\it heading} as the  default
+      {\it toc-entry}, etc.
+\item If the user supplies a {\it heading} that is more than 50-or-so
+      characters:
+      \begin{itemize}
+      \item If there is no \verb+[+{\it lst-entry}\verb+]+ argument, put the
+            first 50-or-so characters of {\it heading} to the {\tt aux} file,
+            followed (if truncation was necessary) by \verb+\dots+ or ``etc.''
+            or some other truncation indicator.
+
+            The chances are that the user
+            doesn't want an entry in the table-of-contents, list-of-tables,
+            list-of-figures, or hasn't thought about the implications of the
+            length of {\it heading} for the table-of-contents, etc.
+            The user may well be
+            mis-using \verb+\caption+ for (in a table) the title {\em and notes}
+            or (in a figure) the caption {\em and legend}.
+            As page 126 of the \LaTeX\
+            2.09 manual says ``such a long entry won't help the reader''.
+            The first 50-or-so characters will give the user something that
+            ``will do'' until they've thought about what they really want.
+
+      \item If truncation was necessary, send a message to the user's terminal
+            and {\tt log} file saying, for example, ``{\tt Warning: Your caption
+            is more than 50 characters long.  Use \verb+\caption+'s
+            optional lot-entry
+            argument if you intend to use \verb+\listoftables+}''.
+      \item Allow the user to supply a {\it lst-entry} of up to the 2.09
+            limits if they do it explicitly through the optional
+            \verb+[+{\it lst-entry\/}\verb+]+ argument.  (They're explicitly
+            using {\it lst-entry}, so they probably know what they're doing and
+            really want these characters in the table-of-contents or whatever.)
+      \end{itemize}
+\end{itemize}
+
+This approach should:
+\begin{itemize}
+\item eliminate the situations where \LaTeX\ gives an error message
+      because of an over-long {\it heading} even when
+      {\it heading} isn't actually going to be printed anywhere
+      where its length will be a problem
+\item give the user an authoring problem ``How can I improve this
+      stopgap list-of-tables entry that \LaTeX\ has kindly supplied?''
+      rather than a de-bugging problem ``Why is user-hostile
+      \LaTeX\ giving me this obscure error message?''.
+\end{itemize}
+
+\section{Page headers}
+
+Suppose that, in a book:
+\begin{itemize}
+\item the design requires chapters to start on a right-hand page
+\item chapter $i$ ends on a right-hand page, so \LaTeX\
+      must produce an empty left-hand page before starting
+      chapter $i+1$.
+\end{itemize}
+
+In this situation, a publisher seems to assume that the
+empty left-hand page is neither in chapter $i$ nor
+in chapter $i+1$ (see exhibit \addtocounter{exhibit}{1} \theexhibit)
+and hence that the empty page should have no
+``Chapter \dots'' page-heading.
+\LaTeX\ 2.09, on the other hand, gives it a page-heading
+to say that it it is part of chapter $i$ (which looks silly).
+
+Could the \LaTeX\ 3.0 version of {\tt book} use \verb+\thispagestyle{plain}+
+or \verb+\thispagestyle{empty}+ for a left-hand blank page that separates
+2 chapters?
+
+\section{Sections}
+
+The definition of \verb+\@startsection+ in {\tt latex.tex}
+allows for ``run-in headings''.
+
+However, a design often involves some punctuation between
+a run-in heading and the following text, e.g. ``a full stop unless
+the heading naturally ends in a question mark or exclamation mark''.
+(See exhibit \addtocounter{exhibit}{1} \theexhibit.)
+Would it be possible, at \LaTeX\ 3.0, to define the successor to
+\verb+\@startsection+ in such a way that, if there is to be a  run-in
+heading, the {\tt sty} file can specify default punctuation betwen the
+heading and the following text?
+
+\section{Lists}
+
+\subsection{Within paragraphs}
+
+The reader needs to be able to distinguish between:
+\begin{enumerate}
+\item ``list at end of paragraph''
+\item ``list within paragraph''.
+\end{enumerate}
+
+With \LaTeX\ 2.09, this is difficult in designs that have un-indented
+paragraphs, because ``the vertical space following the environment is the
+same as the one preceding it'' (2.09 manual, page 114).  Case 1 looks
+identical to case 2.
+
+Please could \LaTeX\ 3.0 implement ``the text following a displayed paragraph
+environment begins a new paragraph if there is a blank line after the
+\verb+\end+ command'' (2.09 manual, page 165) for both \verb+\parindent+
+and \verb+\parskip+, so that case 1 looks different from case 2 even
+when \verb+\parindent+ is zero?\footnote{%
+I'm probably just agreeing here with Frank Mittelbach that \LaTeX\
+2.09 has ``an actual conceptual bug'' (TUGboat, {\bf 10}, p.\ 684).}
+
+\subsection{An interrupted {\tt enumerate}?}
+
+Would commands such as \verb+\suspend{enumerate}+ and
+\verb+\resume{enumerate}+ be possible,
+so that the author can introduce some items in
+a list with one sentence and then introduce further items in the same list with
+another sentence?  It would be easier than getting
+involved with \verb+\setcounter{enumi}+.
+
+
+\section{{\tt verbatim}}
+
+\subsection{Vertical space}
+
+For lists in designs that have un-indented paragraphs, I generally set
+\verb+\parsep+ and \verb+\itemsep+ to zero and \verb+\topsep+ to
+\verb+-\parskip+, to eliminate all vertical spacing.
+
+The objective is to make it clear where paragraphs begin and end.
+I think that:
+\begin{itemize}
+\item extra ``blank lines'' in lists, and around {\tt verbatim},
+      will make paragraph-divisions less clear
+\item the bullet or ``label'' is a clear enough indicator of where a
+      list-item starts, and the font-change is a clear enough indication
+      of where verbatim starts.
+\end{itemize}
+
+So far, with \LaTeX\ 2.09, I've been unable to produce {\tt sty} files
+that close lists up satisfactorily when a list contains some \verb+verbatim+.
+I guessed that, since \verb+verbatim+ uses \verb+\trivlist+, changing the list
+spacing should eliminate the vertical space around \verb+verbatim+ too.
+Unfortunately, I end up with the wrong spacing around \verb+verbatim+
+(see exhibit \addtocounter{exhibit}{1} \theexhibit).
+
+Anything that can be done in \LaTeX\ 3.0 to make it easier to eliminate
+the vertical spacing around {\tt verbatim}, as can be done for lists,
+would be appreciated.
+
+
+\subsection{Horizontal space}
+
+For computer input/output, one should use the {\tt verbatim} environment.
+One might reasonably say that ``computer input/output is a type of quote'', and
+so want to put  a particular horizontal space onto  each line before
+{\tt verbatim} material is printed.  In \LaTeX\ 2.09, this does not seem
+easy (and, because {\tt verbatim} can't be used in the definitions of other
+environments, one can't define another environment that does it either).
+
+Could something be provided in \LaTeX\ 3.0 that does for {\tt verbatim}
+what \verb+\leftmargin+ does for lists?
+
+
+\section{Borrowing some margin}
+
+It may be possible to deal with features (such as tables, figures and
+equations) that are a little too wide for the normal portrait text-width
+by temporarily increasing the text-width.
+This seems to be countenanced, in publishing practice, by Chicago (see exhibit
+\addtocounter{exhibit}{1} \theexhibit).
+
+Might it be worth defining a standard environment ({\tt borrowmargin} ?)
+in \LaTeX\ 3.0 that does this?  Exhibit \theexhibit\ shows a prototype
+definition.  (It would be better to avoid the {\tt minipage}
+in this prototype, since it changes footnote numbering and affects the
+vertical spacing around the enclosed feature.)
+
+\section{A user's comments}
+
+\begin{footnotesize}
+\begin{verbatim}
+
+Subject:  LaTeX changes
+From:     Peter_A._Brook@uk.ac.nottingham.ccc.vme
+Date:     Tue,24 Apr 90 13:45:40 BST
+To:       David_Rhead@uk.ac.nottingham.ccc.vme
+Msg ID:   <24 Apr 90 13:45:40 A1029E@UK.AC.NOTT.VME>
+
+
+David
+
+These comments below are the distillation of comments made by our post-grads
+and myself.
+
+1. A greater availability of fonts, such as Times-Roman. An improvement in the
+existing fonts to allow larger (and smaller) sizes as well as bold fonts in
+sans serif styles as well.
+2. Improved spacing in the tabular environment. At present we find that tables
+can look cluttered, especially if large fonts or sub(super)footnotes are used in
+them.
+3. Easier generation of tables of contents. At present, References and so on
+are ommitted and it is very difficult to get them included.
+4. Better figure and table environments. It is difficult to know where these
+are going to end up in the document.
+5. The ability to have grey shades as a background to text. For example, in
+a table it may be desireable to have one column or row highlighted to make it
+stand out.
+6. Better picture drawing facilities, especially thicker lines and in different
+grey-shades.
+7. We frequently wish to leave a number of blank pages for figures etc. and a
+command such as \blankpage{4} to give 4 blank pages would be useful.
+
+The fourth point is one which you cover in your wish-list but I have included
+it for completeness.
+Peter.
+
+
+\end{verbatim}
+\end{footnotesize}
+
+\section{My comments}
+
+\subsection{Fonts}
+
+Judging by Frank Mittelbach's article (TUGboat, {\bf 10}, 681--690),
+it looks as though you have ``greater availability of fonts'' in hand.
+
+\subsection{Spacing in {\tt tabular} and {\tt array}}
+
+Peter Brook's comment reminded me of:
+\begin{itemize}
+\item one of our other users who had problems with superscripts touching
+      an \verb+\hline+
+\item Frank Mittelbach's paragraph about \verb+\extrarowheight+
+      in his article about new {\tt array} and {\tt tabular} environments
+      (TUGboat, {\bf 9}, 298--313).
+      It worried me that his default would be ``horizontal lines to touch
+      capitals and superscripts'' (with the user able to
+      use \verb+\extrarowheight+ or, presumably, \verb+\arraystretch+),
+      rather than the default being ``horizontal lines {\em don't\/} touch
+      capitals or superscripts'' (with the user having the option
+      to make them touch in the unlikely event that touching is required).
+\end{itemize}
+
+\TeX-related software is usually very good at ensuring ``the right space''
+between things.  Couldn't \LaTeX\ 3.0 ensure that, by default,
+a horizontal line will keep clear of the tops of capital letters and
+of superscripts?  (A strut or some \verb+\\[...]+
+in the definition of \verb+\hline+, perhaps?)
+I don't see any snag from a ``design'' point-of-view:  the gurus seem
+to put space around horizontal rules.
+See exhibit \addtocounter{exhibit}{18}\theexhibit.
+
+From a user-support point-of-view, I think that
+``keeping \verb+\hline+ visually distinct from the characters in
+preceding/following rows'' is a better default than
+``risking \verb+\hline+ touching characters in preceding/following rows''.
+
+Similarly, better automatic vertical spacing within {\tt array} would
+be nice.
+
+\subsection{Easier generation of table-of-contents}
+
+This was one of the things I had in mind in Section 1.1 and
+exhibits 1 \& 2 of my initial ``wish list''.
+
+\subsection{One row or column of a table highlighted}
+
+I doubt whether grey shades would fit in with the way that \TeX\ works,
+but easy ways to emphasise a row/column would be nice.
+
+In Frank Mittelbach's TUGboat {\bf 9} article, he gives a way of emphasising
+the whole of a column (without having to begin every entry with, e.g.,
+\verb+\bf+).
+Would something similar be possible for rows?  For example, could there
+be an easy way of specifying that a row of column-headings is to be
+typeset in bold, without having to \verb+\bf+ each one individually?
+See exhibit \addtocounter{exhibit}{1}\theexhibit.
+
+\subsection{Better picture drawing}
+
+I'm not sure about this.
+I doubt whether \LaTeX\ will ever be able to compete with software
+that is {\em designed\/} for drawing pictures.
+If we are able to provide facilities whereby people can get ``encapsulated
+PostScript'' from their favourite graphics package into a \LaTeX-ed
+document, the demand for anything more sophisticated in {\tt picture}
+may die away.
+
+\subsection{Blank pages for figures}
+
+Technical documents often have full-page graphs etc.\ produced by
+separate picture-drawing software.  The picture-drawing software may
+be told that it is to prepare output for A4, and the output may appear
+as an A4 sheet from a graph-plotter or laser-printer.  The user may
+be able to cut down the size a bit by asking for generous margins
+or photoreducing.
+
+In these circumstances, my guess is that the user would want \LaTeX\
+to provide a page that has a number and possibly a caption, but otherwise
+to leave ``as much space as aesthetically possible'' for the
+illustration that was put onto A4 by the other software.
+
+Some convention about the command needed to get
+``as much space as aesthetically possible'' might be useful
+(although the actual values might vary between styles).
+For example, perhaps a user should be able to go
+\begin{verbatim}
+\begin{figure}[p]
+    \vspace{\maxportfigure}
+    \caption{...}
+\end{figure}
+\end{verbatim}
+or
+\begin{verbatim}
+\begin{landscapefigure}
+    \vspace{\maxlandfigure}
+    \caption{...}
+\end{landscapefigure}
+\end{verbatim}
+so as to get captions at the edge of where the text area would have been
+if the page hadn't been almost blank.
+See exhibit \addtocounter{exhibit}{1}\theexhibit.
+
+\end{document}
+
+

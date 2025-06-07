@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1617" "Mon" "24" "February" "1997" "13:41:53" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "36" "Interface and Implemntation" "^Date:" nil nil "2" nil "Interface and Implemntation" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id NAA18725; Mon, 24 Feb 1997 13:43:20 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.16C620F1@listserv.gmd.de>; Mon, 24 Feb 1997 13:42:49 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 105858 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 24 Feb 1997 13:40:32 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id NAA15593 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 24 Feb 1997 13:40:24
+          +0100 (MET)
+Received: from [130.237.37.107] (sl14.modempool.kth.se [130.237.37.34]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id NAA29099 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 24 Feb 1997 13:40:14
+          +0100 (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130501af3734302909@[130.237.37.107]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 24 Feb 1997 13:41:53 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Interface and Implemntation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1832
+
+  About the the question of implementation and interface, I just developed
+my "environment with hooks" I posted here a few years ago, as a LaTeX2e
+.sty file, developed in an "object oriented" style, with names like
+    \Environment/@error
+and so on. This works out quite nicely.
+
+  The user style is like
+    \Environment{LaTeX}{equation}
+using the name \Environment as a "constructor" for converting an old LaTeX
+environment "equation" to one of the new type. This definition then calls
+the name
+   \Environment/@def/LaTeX
+with the "@" indicating that the name "def" is private to the locality
+"Environment/". More or less, this is C++ terminology straight on.
+
+  Some specs:
+
+  The environments can execute commands both before and after each of the
+\begingroup and \endgroup environment commands, and all of these four
+possible commands can take arguments, with definitions of the form
+  \new{Environment}%
+    {foo}par1{before cmds}{begin cmds}par2{end cmds}{after cmds}
+where the first parameter block par1 (like "#1#2..") is used by both the
+before and begin commands, and the second parameter block par2 is used by
+both the end and after commands, so one can send arguments to these
+commands quite freely.
+
+  The environments also keep track of environments nested in the definition
+of another environment. It is also possible to, as a user command, to
+exclude the name in the endgroup (corresponding to constructs like
+"\begin{foo} .. \end{}").
+
+  If I get time, I might work this up to something more serious -- perhaps
+introducing the ability of creating environments with optional arguments.
+
+  Hans Aberg
+

@@ -1,0 +1,169 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 5 Aug 2009 08:12:00 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n756BxHX024030
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 5 Aug 2009 08:11:59 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7568WBU001391
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 5 Aug 2009 08:08:32 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n74M1QjF007784;
+	Wed, 5 Aug 2009 08:08:30 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285177 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 5 Aug
+          2009 08:08:30 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7568UiU012409 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Aug 2009 08:08:30 +0200
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n7568F2f001072 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 5 Aug 2009 08:08:18 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1MYZfa-0005gQ-k3 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 05 Aug
+          2009 06:08:14 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4A7921CF.5020803@morningstar2.co.uk>
+Date:         Wed, 5 Aug 2009 07:08:15 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Aug 2009 06:12:00.0462 (UTC) FILETIME=[A4E976E0:01CA1593]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5816
+
+Hello all,
+
+As promised yesterday, I'd like to discuss finalising xparse. There are
+two parts to this e-mail: first, a description of xparse for those
+people who are not familiar with it, then in the second part my
+conclusions based on earlier discussion and reading the code.
+
+================================================================
+
+xparse is intended as the main way to generate user functions (macros)
+in LaTeX3. It always generates \protected functions, the idea being that
+every user function is robust in LaTeX3.The current implementation uses
+the idea of "one letter per argument" to represent user input, for example:
+
+\DeclareDocumentCommand \foo { o m } { <code> }
+
+creates a function \foo which takes one optional argument ("o") then one
+mandatory one ("m"). In this case, both arguments are "short". The idea
+behind this is that it separates out input from internal code (you can
+imagine altering what "o" and "m" mean globally, to alter the nature of
+input, with no low-level code changes to most functions).
+
+For optional arguments, xparse provides a mechanism to test if the
+argument was given: \IfNoValueTF. This looks for a special "marker"
+argument, as is not expandable. (There is a need to make sure that there
+cannot be an infinite loop if an argument which was not given is
+typeset, hence the quark mechanism is out.)
+
+================================================================
+
+Several questions have come up about xparse.  At the most basic level,
+the idea of using something like xparse rather than \def (with things
+like \@ifstar, \@ifnextchar, etc.) is a good "good thing". So it is a
+question of picking the best form for xparse.
+
+The idea of using one letter per argument keeps the input simple but
+does cost in power. However, I think that, for reasons I'll outline in a
+bit, it works.  The current system uses modifiers for \long arguments.
+In xparse-alt, I've explored the alternative idea that lower-case
+letters are always used for short arguments, and upper-case for \long ones:
+
+\DeclareDocumentCommand \foo { o m } % Both short
+\DeclareDocumentCommand \foo { O M } % Both \long
+\DeclareDocumentCommand \foo { o M } % Optional short, mandatory \long
+
+If you compare xparse and xparse-alt, you'll also find I've tried to
+simplify the input somewhat. I've allowed optional modifiers to some
+letters, to include a default input:
+
+\DeclareDocumentCommand \foo { o m } % Optional argument with no default
+\DeclareDocumentCommand \foo { o[default] m } % now has a default!
+
+which keeps the number of letters down and, I hope, is clear enough.
+
+The current xparse implementation lets you create your own specifier
+letters. This is probably very risky:  what if two packages use the same
+letter?  I'd drop this idea. Related, the current xparse also allows
+comparison using different methods (by charcode, by meaning, etc.). This
+is important for things like testing for a star:
+
+\DeclareDocumentCommand \foo { s o m } % test for * as first arg.
+
+Will has pointed out it would be best to only test by charcode: looking
+for a star should do exactly that. By dropping the "different test
+methods" idea, things are also simplified.
+
+Thinking about catcode-sensitive input, most cases can be handled by the
+e-TeX tools we have available. For true verbatim input, that obviously
+does not work, but I feel that truing to "crowbar" verbatim input xparse
+is a mistake.  Almost all user functions are not verbatim, and the
+particular issues for those that are, I think, better handled by hand.
+(The way that xparse works means that it absorbs arguments before
+passing them to the code you program.)  I also suspect that xparse
+handling of verbatim will never be reliable enough for general use.
+
+Will has suggested that we should insist optional arguments follow
+directly on, with no spaces, to mean that:
+
+\foo*{arg}  % #1 = TRUE, #2 = "arg"
+ and
+
+\foo   *{arg} % #1 = FALSE, #2 = "*"
+
+are treated differently. The idea here is that it makes LaTeX syntax
+more "regular", useful for translation to other formats.  I think he's
+right, but wonder how others see it.  The current xparse allows both
+space-skipping and non-space-skipping tests.  I'd certainly say we
+should go with only one: either spaces are allowed or they are not.
+
+Finally, the question about expandability of \IfNoValue has been asked
+before.  As \DeclareDocumentCommand only ever makes \protected
+functions, I don't think we need to worry.  The idea is that the NoValue
+test should be done "early":
+
+\DeclareDocumentCommand \foo { o m } {
+  \IfNoValueTF {#1} {
+    \int_function_one:n {#2}
+  }{
+    \int_function_two:nn {#1} {#2}
+  }
+}
+
+and not in the internal functions.  So the test can never be expanded,
+and there is not an issue (I hope).
+
+================================================================
+
+That is a long e-mail, I'm afraid.  There will probably need to be more
+explanation so that everyone can follow things: ask away.  I'd like to
+finalise xparse soon (I need it for siunitx, and I want people to be
+able to test that!).
+-- 
+Joseph Wright
+

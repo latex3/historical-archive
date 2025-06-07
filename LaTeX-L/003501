@@ -1,0 +1,251 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 19 Jan 2000 04:56:18 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id EAA14647 for <schoepf@mail.uni-mainz.de>; Wed, 19 Jan 2000 04:56:17 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF6231.239BDD00"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id EAA04195 for <schoepf@UNI-MAINZ.DE>; Wed, 19 Jan 2000 04:56:13 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.F1090406@mail.listserv.gmd.de>; Wed, 19 Jan 2000 4:55:59 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 447890 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 19 Jan 2000 04:54:52 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id EAA07843 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 19 Jan          2000 04:54:51 +0100 (MET)
+Received:  from downtown.oche.de (downtown.oche.de [194.94.253.3]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.1) with ESMTP id EAA20653 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 19 Jan 2000 04:54:47 +0100 (MET)
+Received:  from corona.oche.de (uucp@localhost) by downtown.oche.de          (8.9.3/8.9.3/Debian/GNU) with UUCP id EAA16939 for          URZ.UNI-HEIDELBERG.DE!LATEX-L; Wed, 19 Jan 2000 04:50:00 +0100
+Received:  by corona.oche.de (wUUCP 1.10) id <1kmc@corona.oche.de>; Tue, 18 Jan          00 21:13:22 CET
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: AmiGate 1.6 (13.11.95)
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["2432" "Tue" "18" "January" "2000" "21:03:47" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "47" "Re: templates for galley (paragraph) formatting" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Re: templates for galley (paragraph) formatting
+Date: Tue, 18 Jan 2000 22:03:47 +0100
+Message-ID:  <f91f17e9@corona.oche.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Achim Blumensath" <blume@CORONA.OCHE.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3501
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF6231.239BDD00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach wrote:
+> As promised this is the first installment of templates and code for
+> galley formatting, the rest will hopefully follow in couple of days.
+>
+> I think that this document already serves as a good introduction to =
+the
+> high-level aspects of the new galley mechanism and though one can't =
+make
+> use of the code without the low-level interfaces I hope that the
+> documentation will spawn a lively discussion. A lot of issues and
+> requests for comments are already added into the documentation.
+
+Here are my first impressions:
+
+o Name of parameters. At the moment the old LaTeX2e names like \hsize,
+  \@totalleftmargin, etc. are used so that old code does still work.
+  IMHO one should introduce new names right from the start while keeping
+  the old versions in addition. Otherwise, you get in trouble when
+  the interface is finally cleaned up since all LaTeX2e* code using the
+  galley package has to be rewritten as well.
+
+o pshape template. Perhaps it would be a good idea to add two arguments
+  to the pshape template for the horizontal and vertical dimension
+  (where the exact meaning depends on the template). Say, a template
+  for a rectangular cutout could interpret the horizontal dimension
+  as width of the cotout and the vertical dimension as number of lines
+  to be indented.
+
+o hyphenation template. This template should IMHO be dropped. The only
+  important parameters it sets are (ex)hyphenpenalty which can be moved
+  to the linebreak template.
+
+o justification template. I'm not quiet sure how the galley templates
+  are intented to be used -- the package only defines the templates
+  themselve no commands to use them. But I think that the justification
+  templates shouldn't be able to choose whether they affect all
+  paragraphs or only the next one. Instead the user should be able to
+  tell the system which case is desired everywhere such a template is
+  used.
+
+o As mentioned in the item above, the user-level interface is missing.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ =
+|
+    //  Achim Blumensath       | \  _                        \O/ \___/\ =
+|
+   //   blume@corona.oche.de   |-< /_\                       =3Do=3D  \ =
+/\ \|
+ \X/    (p^2 - m^2)\psi =3D 0    |_/ \_                        /"\   =
+o----|
+____________________________________________________________________\___|=
+
+
+------_=_NextPart_001_01BF6231.239BDD00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: templates for galley (paragraph) formatting</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; As promised this is the first installment of =
+templates and code for</FONT>
+
+<BR><FONT SIZE=3D2>&gt; galley formatting, the rest will hopefully =
+follow in couple of days.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I think that this document already serves as a =
+good introduction to the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; high-level aspects of the new galley mechanism =
+and though one can't make</FONT>
+
+<BR><FONT SIZE=3D2>&gt; use of the code without the low-level interfaces =
+I hope that the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; documentation will spawn a lively discussion. A =
+lot of issues and</FONT>
+
+<BR><FONT SIZE=3D2>&gt; requests for comments are already added into the =
+documentation.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here are my first impressions:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>o Name of parameters. At the moment the old LaTeX2e =
+names like \hsize,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@totalleftmargin, etc. are used so that old =
+code does still work.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; IMHO one should introduce new names right from =
+the start while keeping</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the old versions in addition. Otherwise, you =
+get in trouble when</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the interface is finally cleaned up since all =
+LaTeX2e* code using the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; galley package has to be rewritten as =
+well.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>o pshape template. Perhaps it would be a good idea to =
+add two arguments</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; to the pshape template for the horizontal and =
+vertical dimension</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; (where the exact meaning depends on the =
+template). Say, a template</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; for a rectangular cutout could interpret the =
+horizontal dimension</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; as width of the cotout and the vertical =
+dimension as number of lines</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; to be indented.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>o hyphenation template. This template should IMHO be =
+dropped. The only</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; important parameters it sets are =
+(ex)hyphenpenalty which can be moved</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; to the linebreak template.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>o justification template. I'm not quiet sure how the =
+galley templates</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; are intented to be used -- the package only =
+defines the templates</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; themselve no commands to use them. But I think =
+that the justification</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; templates shouldn't be able to choose whether =
+they affect all</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; paragraphs or only the next one. Instead the =
+user should be able to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; tell the system which case is desired =
+everywhere such a template is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; used.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>o As mentioned in the item above, the user-level =
+interface is missing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Achim</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; | \_____/ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; //&nbsp; Achim =
+Blumensath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | \&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \O/ =
+\___/\ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; //&nbsp;&nbsp; =
+blume@corona.oche.de&nbsp;&nbsp; |-&lt; =
+/_\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3Do=3D&nbsp; \ /\ \|</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\X/&nbsp;&nbsp;&nbsp; (p^2 - m^2)\psi =3D =
+0&nbsp;&nbsp;&nbsp; |_/ =
+\_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+/&quot;\&nbsp;&nbsp; o----|</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+____\___|</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF6231.239BDD00--
+

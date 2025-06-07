@@ -1,0 +1,174 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sat, 4 Mar 2006 23:32:38 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k24MWPoF005501
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 4 Mar 2006 23:32:26 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k24MSFMo025824
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 4 Mar 2006 23:28:16 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k23JSb2c029011;
+	Sat, 4 Mar 2006 23:28:15 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1401252 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 4 Mar
+          2006 23:28:15 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k24MSFVP029728 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 4 Mar 2006 23:28:15 +0100
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k24MS1VQ025788
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 4 Mar 2006 23:28:04
+          +0100
+Received: from remote129-151.home.uni-freiburg.de ([132.230.129.151]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.60) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1FFfDo-0006fc-9q for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 04 Mar 2006 23:28:00 +0100
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 411A1201E3; Sat,  4 Mar 2006 23:26:28 +0100 (CET)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <20060304161541.GA23818@irwin.vpn.uni-freiburg.de>
+            <D65EA020-ABC3-11DA-B480-0003930D5AB6@residenset.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Message-ID:  <20060304222628.GA28832@irwin.vpn.uni-freiburg.de>
+Date:         Sat, 4 Mar 2006 23:26:28 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LICR objects
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <D65EA020-ABC3-11DA-B480-0003930D5AB6@residenset.net>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Mar 2006 22:32:38.0330 (UTC) FILETIME=[8AA821A0:01C63FDB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4926
+
+On Sat, Mar 04, 2006 at 10:14:16PM +0100, Lars Hellström wrote:
+
+> Lördagen den 4 mars 2006 kl 17.15 skrev Heiko Oberdiek:
+> >Hello,
+> >
+> >I am interested in a mapping Unicode to LICR, therefore I should
+> >understand what a LICR really is.
+> >
+> >Literature:
+> >[TLC2] Frank Mittelbach et.al., The LaTeX Companion, 2nd edition.
+> >
+> >LICR is an abbreviation for "LaTeX internal character representation"
+> >(TLC2, 7.11.1)
+> >
+> >LaTeX is based on TeX, thus is the following assumption correct?
+> >
+> >(1) LICR consists of a sequence of one or more TeX tokens.
+> >
+> >Conclusion:
+> >(2) LICR cannot be empty.
+> >That would mean ignoring characters cannot not be handled
+> >by an empty LICR.
+> 
+> Ignoring a character can't be done by mapping it to the empty token 
+> sequence, you mean? This would seem to imply that it is important to 
+> record the fact that there was a character there. Why would one need 
+> this?
+
+I don't, but this is used in next.def, where 0xFE and 0xFF isn't
+part of the NextStep encoding:
+  \DeclareInputText{254}{}
+  \DeclareInputText{255}{}
+Thus actually an empty "LICR" is used here.
+
+> >Starting at the basics:
+> >
+> >TLC2, table 7.31 "LICR objects represented with single characters"
+> >I am sure about:
+> >
+> >(3) LICR-letter := A_11, ..., Z_11, a_11, ..., z_11
+> >This means uppercase and lowercase ASCII letters with catcode 11.
+> >
+> >(4) LICR-other := 0_12, ..., 9_12,
+> >                  ._12, ,_12, ;_12, :_12, ?_12, !_12, '_12, `_12,
+> >                  *_12, +_12, -_12, =_12,
+> >                  (_12, )_12, [_12, ]_12, /_12, @_12
+> >
+> >Regarding catcodes: TeX does not differentiate between
+> >A_11 or A_12, if the letter A is typeset. Thus is
+> >A_12 also a LICR and does "A" has more than one LICR?
+> 
+> Hmm... it is probably safe to use them interchangably (as I recall it, 
+> there is in ltoutenc.dtx a command for defining text commands that 
+> would typeset them via tokens whose catcode are the same for letters 
+> and symbols, so there is probably no difference in the boxes that are 
+> generated), but they're not exactly the same. E.g. \ifx would 
+> distinguish A_11 and A_12.
+
+Yes, for typesetting I don't remember a difference between
+catcodes 11 and 12. But the token representations of the LICRs
+are different.
+
+> \mid and \vert are math commands, hence not LICRs. \{ branches 
+> depending on whether you're in math mode or not, so it is a higher 
+> level command than the LICR ones.
+
+That means, the command tokens in LICR are limited to
+commands defined by the nfss2 \Declare... commands?
+
+> \$ I don't know. I wouldn't want to 
+> have it as LICR, but I'm not sure what Frank thinks.
+
+\$ is also higher level and not defined by \Declare...
+and therefore I would assume no LICR.
+
+> >Thus the entry for U+02C6 in utf8enc.dfu is not really correct:
+> >  \DeclareUnicodeCharacter{02C6}{\textasciicircum}
+> >  U+02C6 MODIFIER LETTER CIRCUMFLEX ACCENT
+> >"\^" would be more correct, except that grabbing the
+> >argument isn't too trivial in case of utf-8 characters
+> >consisting of several bytes.
+> 
+> Aren't you thinking of the COMBINING circumflex accent here?
+
+Yes.
+
+> MODIFIER characters are more phonetic alphabet thingies.
+
+Thanks.
+
+> >Does the en dash has two LICRs, "\textendash" and "--"?
+> >
+> >What is the LICR of "fi"?
+> >  U+FB01 LATIN SMALL LIGATURE FI
+> >The ligature mechanism depends on the used fonts, "fi" is not
+> >always available. What is better?
+> >  \DeclareUnicodeCharacter{FB01}{\textfi}
+> >  \ProvideTextCommandDefault{\textfi}{fi}
+> >vs.
+> >  \DeclareUnicodeCharacter{FB01}{fi}
+> 
+> Definitely the latter. As I understand it, these ligatures are in 
+> unicode mostly for compatibility with legacy encodings (and perhaps for 
+> font designers who need to assign something to these glyphs). At least 
+> as far as TeX is concerned, "fi" doesn't carry any semantic information 
+> different from "f" "i".
+
+Example: Assuming there is a word "deaffish" and the
+author does not want a ligature ffi spanning both word parts.
+Therefore, having a good editor, he uses the Unicode sequence
+U+0066 U+FB01 to specify the correct and desired ligature.
+Using the later case of \DeclareUnicodeCharacter{FB01}
+TeX would get "ffi" and then form the wrong ligature.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

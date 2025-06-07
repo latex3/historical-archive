@@ -1,0 +1,163 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p1D24193001661
+	for <rainer@rainer-schoepf.de>; Sun, 13 Feb 2011 03:04:02 +0100
+Received: (qmail 15004 invoked by alias); 13 Feb 2011 02:03:56 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 13 Feb 2011 02:03:55 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx068) with SMTP; 13 Feb 2011 03:03:55 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p1D21gsZ004142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 13 Feb 2011 03:01:42 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p1CN1CNu023645;
+	Sun, 13 Feb 2011 03:01:32 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1205282 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 13 Feb
+          2011 03:01:32 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p1D21WMW002234 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 13 Feb 2011 03:01:32 +0100
+Received: from mail-yw0-f49.google.com (mail-yw0-f49.google.com
+          [209.85.213.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p1D21RRn001658 (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 13 Feb
+          2011 03:01:31 +0100
+Received: by ywf7 with SMTP id 7so2014796ywf.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sat, 12 Feb 2011 18:01:27 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.147.124.1 with SMTP id b1mr2910054yan.22.1297562486251; Sat, 12
+          Feb 2011 18:01:26 -0800 (PST)
+Received: by 10.146.86.8 with HTTP; Sat, 12 Feb 2011 18:01:26 -0800 (PST)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <AANLkTinjH5Ppg2QWWBTDBBU9u3Vvdsjnrrr1OvPvWfnA@mail.gmail.com>
+Date:         Sat, 12 Feb 2011 21:01:26 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Expandable versions of \uppercase, \MakeUppercase, \lowercase, \MakeLowercase
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4WX0t+AtsdWzrXATe7U7iyEYsVEub6UEScnitTuLsF1TdlrkUKNRhypl1WP
+ P4z9N2hLfJzsGszrlv+ygay/ivx19oyBwO3NEg0raNb/3tCvONPdaWhG3fyrhob4EvcA0r7m4G7q
+ eqN5w==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6594
+
+Hello, and sorry for the long title (useful perhaps for searching
+purposes later on).
+
+There was recently a question on tex.stackexchange about writing a purely
+expandable version of LaTeX2e's \MakeUppercase. Joseph Wright and me
+posted two answers with different interpretations of uppercasing, and he asked
+me to transfer the discussion to this list. For the code, see
+         http://tex.stackexchange.com/questions/10805/
+and in particular our two answers.
+
+His method yields
+"\Uppercase{Som{e } {te{x}t} with $math$.}" -> "SOMe  te{x}t WITH $math$."
+Mine yields:
+"\Uppercase{Som{e } {te{x}t} with $math$.}" -> "SOM{E } {TE{X}T} WITH $MATH$."
+
+Two questions:
+- what precise behaviour do we want an uppercase function to have? Note that
+we could even provide hooks to let the user choose. (See near the
+bottom of this
+long email.)
+- what do you think of the advantages/drawbacks described below?
+
+
+== Joseph's way: (correct me if I didn't understand your code properly)
+- Time: ~50*NL,
+where L~26 is the number of letters and various accent tokens (\ae,\oe,etc),
+and N is the length of the string to be uppercased.
+- Number of expansions: O(NL)?
+- Braces disappear, and protect their argument against uppercasing.
+- Spaces are dropped at the start and end, kept in the middle.
+- The stuff between dollars is kept.
+- It expands its argument?
+
+- It does not pollute the macro namespace.
+
+It relies on comparing the current token with a, then b, etc., until
+z, for each token, and replacing it by the uppercase letter. If the
+token is not found, we keep it. The function that does the replacement
+looks like
+
+\prg_case_str:nnn {#1} {
+      { a } { A }
+      { b } { B }
+      ...
+    } {#1}
+
+So it has L lines, and is difficult to patch (i.e. if the user wants
+to add his custom accent, with a given uppercase behaviour, then he
+has to redefine the whole function). Although, I don't understand
+Joseph's code enough yet to be sure of this.
+
+
+
+== My way:
+- Time: ~100*N^2.
+- Number of expansions: 2. (thanks to an \ifcsname hack)
+- All spaces and braces are kept, but braces don't protect against
+uppercasing (can be changed).
+- Dollars could be taken care of.
+- It does not expand the argument at all.
+- It pollutes the macro namespace: uses L~26 macros.
+
+It relies on having one macro for each token that should be transformed
+by the case change. Namely, for uppercase, we would have defined the
+following case table:
+...
+\tl_new:cn{UL_table_u_m}{M} ...
+\tl_new:cn{UL_table_u_\string\ae}{\AE}
+...
+Then we read the tokens one by one. Say we see "\oe". If \UL_table_u_\oe
+is defined, then we use it. Otherwise, we put \oe.
+
+
+== Hooks
+It should not be too hard to give hooks to the user so that he can
+- decide the behaviour of braces
+- define some commands that "do things" (e.g. protect their argument against
+uppercasing)
+- others?
+
+== Final comments on namespace pollution
+
+I don't know if time is an issue or not there, and whether having more macros
+introduces an unacceptable overhead. Several times in the past, when trying
+to convert from a list of tokens to another, I found that putting each
+token in a
+\csname construction, and defining one macro per token made things very much
+easier. Possible issue: after `\let\?=?` and `\escapechar=-1\relax`, one cannot
+distinguish between `\?` and `?`.
+
+This idea of defining macros rather than comparing with a list of tokens makes
+the second method easily customizable: the user can define arbitrary
+"case-change"
+tables by setting the relevant macros \UC_table_mytable_<token>. That would
+lead to a "static" variant of \prg_case_str:nnn.
+
+Best regards,
+Bruno
+@Joseph: were you thinking of the expansion control part?
+

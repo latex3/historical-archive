@@ -1,0 +1,103 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3569" "Mon" "3" "March" "1997" "13:04:36" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "66" "Commands/environments with optional arguments" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id NAA06576; Mon, 3 Mar 1997 13:03:17 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.B8C338F8@listserv.gmd.de>; Mon, 3 Mar 1997 13:03:16 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108288 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 13:03:08 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id NAA23404 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 13:03:05 +0100
+          (MET)
+Received: from [130.237.37.43] (sl32.modempool.kth.se [130.237.37.52]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id NAA24318 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 13:02:50 +0100
+          (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130504af40643c1f39@[130.237.37.43]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 3 Mar 1997 13:04:36 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Commands/environments with optional arguments
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1852
+
+  I made definition commands that can be used to produce commands and
+environments with optional arguments.
+  Because of TeX's lack of being a general purpose language, these
+definition commands have some restrictions: The conditional parsing is
+non-deterministic (= slow), picking down some general look-ahead portion
+(right now the whole paragraph), so one cannot enclose such a command in
+braces "{}" not containing the look-ahead portion (right now, a \par) after
+the command.
+  So the stuff is experimental, and I am not sure it is worth wrestling
+with TeX, getting around these problems, but I thought the specs being of
+interest for a discussion of what might be possible in the LaTeX3 project.
+
+  The command \define used to define commands with optional commands works
+as follows:
+  \define\newtheorem?[#1#2[#3]{def1}%
+                    ?[#1[#2]#3{def2}%
+                        #1#2#3{def3}
+The question mark "?" before the parameter text means that the parameter
+text is optional, and the conditional character to look for is the next
+following the "?", a "[" in this case. If this condition comes out true,
+LaTeX style, the definition following it is executed, otherwise the test
+passes to the next row. (If you want non-conditional parameter text
+starting with a "?", you can start it with a exclamation mark, so by this,
+all conditional/non-conditional parameters are possible).
+  Apart from being an implemented definition command style, this is also a
+convenient way of indicating conditional arguments.
+
+  The environments conditional arguments works along the same principle:
+A definition
+\new{Environment}{bar}?*#1*#2{[1: $\alpha(#1)$]}{[1: $\beta(#2)$]}%
+                         #1#2{[2: $\alpha(#1)$]}{[2: $\beta(#2)$]}%
+                      ??#1?#2{[1: $\gamma(#1)$]}{[1: $\delta(#2)$]}%
+                         #1#2{[2: $\gamma(#1)$]}{[2: $\delta(#2)$]}
+would produce an environment named "bar", with hooks and optional commands
+at both the begin and end groups.
+  The "?" on the first line indicates that it is conditional, with a test
+character "*". If the test comes out true, something corresponding to
+    [1: $\alpha(#1)$]\begingroup[1: $\beta(#2)$]
+plus keeping track of environment variables, will be executed; otherwise,
+it skips to the next line.
+  As this next line is non-conditional, the line following it
+    ??#1?#2{[1: $\gamma(#1)$]}{[1: $\delta(#2)$]}%
+determines the endgroup. This is also conditional, with test character "?".
+If this test is true, something like
+    [1: $\gamma(#1)$]\endgroup[1: $\delta(#2)$]
+plus keeping track of environment variables, will be executed; otherwise,
+it skips to the next line.
+
+  In addition, one needs not indicate the name in the environment endgroup,
+corresponding to "\end{}". I have also abstracted so that one might use
+different styles of environments end and begin groups (a constructor that
+creates the constructor that creates envrionments). This might be useful
+for making environments with syntax closer to say HTML, or something,
+depending on what you want. When abstracting the environments, it became
+clear that the "\begin{foo}", and "\end{foo}" stuff is best treated as a
+shell, or syntaxctic soup, calling the real commands (which are called
+\foo/begin and \foo/end).
+ -- Also, the idea of creating modules, with internal command names of the form
+    "foo/.../bar"
+seems to be highly workable.
+
+  But it is difficult getting around those shortcomings of TeX, working in
+this generality, and so it may not be worthwhile spending a lot of effort
+on that.
+
+  Hans Aberg
+

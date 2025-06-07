@@ -1,0 +1,58 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["776" "Wed" "23" "March" "1994" "12:42:49" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "26" "WARNING: latex2e raisebox bug" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA11797; Wed, 23 Mar 94 13:46:18 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA12312; Wed, 23 Mar 94 13:44:16 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA19083
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 23 Mar 1994 13:44:14 +0100
+Message-Id: <199403231244.AA19083@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9163; Wed, 23 Mar 94 13:43:27 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9162; Wed,
+ 23 Mar 1994 13:43:27 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2389; Wed,
+ 23 Mar 1994 13:42:27 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 23 Mar 1994 12:42:49 GMT
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      WARNING: latex2e raisebox bug
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1607
+
+The distributed version of LaTeX2e has a bug in \raisebox.
+
+The height is set to some more or less random value (exactly which
+wrong value it uses depends on how many of the optional arguments you
+specify)
+
+This is a bug. Somehow I managed to delete the \else marked in the
+code below. Until we are ready to make a new release you may like to
+put the following code in a local fix package, or between
+\makeatletter and \makeatother in your preamble.
+
+
+\long\def\@irsbox#1[#2]#3{%
+  \@begin@tempboxa\hbox{#3}%
+    \setlength\@tempdima{#1}%
+    \ifx\\#2\\\else\setlength{\@tempdimb}{#2}\fi
+    \setbox\@tempboxa\hbox{\raise\@tempdima\box\@tempboxa}%
+    \leavevmode
+    \ifx\\#2\\\else\ht\@tempboxa\@tempdimb\fi
+%             %%%%%
+    \box\@tempboxa
+  \@end@tempboxa}
+
+
+
+David
+

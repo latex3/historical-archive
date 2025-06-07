@@ -1,0 +1,150 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 6 Aug 2009 08:08:47 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7668kV4021687
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 6 Aug 2009 08:08:47 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n7664eAf008730
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 6 Aug 2009 08:04:41 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n75M1sot001169;
+	Thu, 6 Aug 2009 08:04:40 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285519 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 6 Aug
+          2009 08:04:39 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7664dgh005349 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 08:04:39 +0200
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n7664T5M008636 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 08:04:32 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1MYw5V-0001hy-n7 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 06 Aug
+          2009 06:04:29 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>           
+            <4A7A1505.4040604@residenset.net>
+            <DB76B425-0A88-43B4-9CF0-B92FAF159E37@gmail.com>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4A7A726F.3080006@morningstar2.co.uk>
+Date:         Thu, 6 Aug 2009 07:04:31 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <DB76B425-0A88-43B4-9CF0-B92FAF159E37@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Aug 2009 06:08:47.0870 (UTC) FILETIME=[5C8801E0:01CA165C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5823
+
+Will Robertson wrote:
+> Hi Lars,
+> 
+> On 06/08/2009, at 8:55 AM, Lars Hellström wrote:
+> 
+>> I should perhaps point out that I've also explored some variations on
+>> the xparse theme (Jan 2008, in a package I called xdoc2l3 -- see
+>> http://abel.math.umu.se/~lars/xdoc/), but back then I didn't get much
+>> response to the questions that required *decisions* (and then I got
+>> distracted by other projects). I will mention the issues I recall at
+>> suitable locations below.
+> 
+> I'm afraid that I agree with Joseph that regardless of the technical
+> merits of xdoc2l3, the approach it takes sacrifices some measure of
+> simplicity for flexibility. And even with the flexibility we run into
+> the problems of TeX itself -- sure, we can change catcodes, but only if
+> it's not nested within an argument. And even if we use \scantokens, %
+> still kills things.
+
+When Lars first mentioned his stuff, I wasn't really up to speed on the
+idea.  I did take a good look, and reached much the same conclusion as
+Will. Particularly if \DeclareDocumentCommand is to replace \newcommand
+for users, as well as programmers, things need to be reasonably clear.
+
+>> Optional arguments of argument specifiers?!? My feeling is that
+>> optional, star-type, etc. arguments should be considered user-level
+>> syntactic sugar, and that the programming APIs should rather stick
+>> with mandatory arguments and signals like \NoValue.
+>> \DeclareDocumentCommand could be user-level enough that optional
+>> arguments make sense, but there is the alternative of having it be
+>>
+>> \DeclareDocumentCommand \foo { o{\NoValue} m }
+>>    % Optional argument with no default (returns \NoValue)
+>> \DeclareDocumentCommand \foo { o{default} m }
+>>    % now has a default!
+>>
+>> Recall that \newcommand and friends require you to specify a default
+>> value for the optional argument whenever there is one.
+> 
+> The one advantage I can see to allowing { o m } is that there is then a
+> standard technique for testing with \IfNoValueTF, rather than having
+> package authors write things like
+>    ... { o{\q_nil} m }
+>        { ... \quark_if_nil:NTF #1 {}{} ... }
+> which mean the same thing but look different.
+
+Will is on the nail here. The advantage of two different letters for
+optional argument and optional argument + default is that it avoids this
+question. Perhaps that scheme is better over all, even though we then
+need an extra letter.  How about:
+
+- n = optional argument with no default
+- o = optional argument with default (which must therefore be specified)
+- b = optional braced argument (as Will wanted "n" for this)
+
+That leaves what I've done with the delimited "d" specifier. That is
+less commonly used, so perhaps Lars suggestion is best here: you always
+give a default, even if it is \NoValue.
+
+>>> The current xparse implementation lets you create your own specifier
+>>> letters. This is probably very risky:  what if two packages use the same
+>>> letter?  I'd drop this idea.
+>>
+>> Agreed. An analogy with array package definitions of new column
+>> specifiers fails because there it is usually the document author who
+>> would make the definition, thus confining the definition to code under
+>> the control of that author, whereas with xparse it would be arbitrary
+>> package authors that don't have such confinement.
+> 
+> Double agree. Good argument.
+
+Okay, this seems to be a consensus: we'll say that this is a must.
+>> Is that a yes or no to my "harmless character sequences"? These can
+
+>> handle data like URLs which might prompt people to go verbatim, but
+>> they aren't implemented using \catcode changes.
+> 
+> Not sure I understand -- even URLs need to sanitise % if they're used
+> within an argument.
+
+I'm with Will: I'm not sure I follow :-(
+
+> I think a goal for xparse should be simplifying the majority of
+> approaches taken by package writers, and leave the esoteric stuff to
+> continue to be implemented by hand.
+
+That is what I've tried to stay focussed on.  It does mean some stuff is
+dropped, but overall I'd hope we need "enough power for 90% of tasks".
+-- 
+Joseph Wright
+

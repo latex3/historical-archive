@@ -1,0 +1,248 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Mon, 20 Jan 2003 02:24:41 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0K1Oc6C030359 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 20 Jan 2003 02:24:39 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C022.B4879280"
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0K0vwAL022035; Mon, 20 Jan 2003 01:57:58 +0100 (MET)
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0JN04lj032261; Mon, 20 Jan 2003 01:50:54 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6448 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 20 Jan 2003 01:50:53 +0100
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by          listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP          id h0JN04lf032261; Mon, 20 Jan 2003 01:50:52 +0100
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 20 Jan 2003 01:24:41.0224 (UTC) FILETIME=[B4A9C080:01C2C022]
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 2 (**) MSG_ID_ADDED_BY_MTA_3,SPAM_PHRASE_03_05
+Content-class: urn:content-classes:message
+Subject:      Re: LICR objects in math
+Date: Mon, 20 Jan 2003 01:50:52 +0100
+Message-ID: A<200301200050.h0JN04lf032261@listserv.uni-heidelberg.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: LICR objects in math
+Thread-Index: AcLAIrTCoawXjkcURt279Z2HlYFKyQ==
+From: "Vladimir Volovich" <vvv@VSU.RU>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4440
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C022.B4879280
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Frank,
+
+Your implementation says that you are implementing the third approach:
+
+%    \item
+%    Keep the definition expandable and fail if at the start of
+%    \texttt{eqnarry} and the like.
+
+i.e. it will fail if the accented character occurs as the first =
+character
+inside the cell:
+
+$$
+\halign{$#$&$#$\cr
+^^e4^^e4&b\cr
+c&d\cr
+}
+$$
+
+here, the first ^^e4 will be "ignored" by TeX (with default fonts,
+the character will just silently disappear, with a message in LOG file:
+Missing character: There is no ^^e4 in font cmr10!
+
+well... my mathtext package tries to deal with this situation, and =
+produce
+the characters even if they appear at the beginning of the cell... :)
+
+also, i'm not sure how would i define cyrillic letters via the
+\DeclareMathMeaning command, to preserve kerning...
+perhaps i have to use \DeclareMathSymbol for each cyrillic letter
+(having defined the math alphabet for cyrillic letters first),
+and then use that symbol inside \DeclareMathMeaning: - pretty much what =
+is
+being done inside the mathtext package, but in a more compact way
+(perhaps one can redefine \DeclareTextSymbol too, to do all these =
+things)...
+
+Please also look at my (very late) answer to your email on the mathtext =
+package.
+For cyrillic texts, it is important to make the first character in a =
+cell
+work (but not disappear), so we can try to use some extension to the =
+approach
+used in mathtext package WRT \if@mmode hack - i mean that to make it =
+100%
+correct, some changes might be needed to the alignment preamble code...
+
+Of course, users can just use {} or \relax as the first element
+of a cell to solve all these problems with disappearing characters...
+but it would be nice (and possible) to make a "real" solution.
+
+i wonder, maybe eTeX has some replacement to \ifmmode test which will =
+stop
+the look-ahead search for \omit but will not break kerning/ligatures...
+
+also, one noticeable difference between your approach and mathtext is =
+that
+the latter defines math variants of characters depending on font =
+encoding,
+while your variant defines only one math meaning... i need to think =
+about this
+again (it was a long time ago)...
+
+Best,
+v.
+
+------_=_NextPart_001_01C2C022.B4879280
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: LICR objects in math</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hi Frank,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Your implementation says that you are implementing the =
+third approach:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \item</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Keep the definition expandable =
+and fail if at the start of</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \texttt{eqnarry} and the =
+like.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i.e. it will fail if the accented character occurs as =
+the first character</FONT>
+
+<BR><FONT SIZE=3D2>inside the cell:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>$$</FONT>
+
+<BR><FONT SIZE=3D2>\halign{$#$&amp;$#$\cr</FONT>
+
+<BR><FONT SIZE=3D2>^^e4^^e4&amp;b\cr</FONT>
+
+<BR><FONT SIZE=3D2>c&amp;d\cr</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>$$</FONT>
+</P>
+
+<P><FONT SIZE=3D2>here, the first ^^e4 will be &quot;ignored&quot; by =
+TeX (with default fonts,</FONT>
+
+<BR><FONT SIZE=3D2>the character will just silently disappear, with a =
+message in LOG file:</FONT>
+
+<BR><FONT SIZE=3D2>Missing character: There is no ^^e4 in font =
+cmr10!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>well... my mathtext package tries to deal with this =
+situation, and produce</FONT>
+
+<BR><FONT SIZE=3D2>the characters even if they appear at the beginning =
+of the cell... :)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>also, i'm not sure how would i define cyrillic letters =
+via the</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareMathMeaning command, to preserve =
+kerning...</FONT>
+
+<BR><FONT SIZE=3D2>perhaps i have to use \DeclareMathSymbol for each =
+cyrillic letter</FONT>
+
+<BR><FONT SIZE=3D2>(having defined the math alphabet for cyrillic =
+letters first),</FONT>
+
+<BR><FONT SIZE=3D2>and then use that symbol inside \DeclareMathMeaning: =
+- pretty much what is</FONT>
+
+<BR><FONT SIZE=3D2>being done inside the mathtext package, but in a more =
+compact way</FONT>
+
+<BR><FONT SIZE=3D2>(perhaps one can redefine \DeclareTextSymbol too, to =
+do all these things)...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Please also look at my (very late) answer to your =
+email on the mathtext package.</FONT>
+
+<BR><FONT SIZE=3D2>For cyrillic texts, it is important to make the first =
+character in a cell</FONT>
+
+<BR><FONT SIZE=3D2>work (but not disappear), so we can try to use some =
+extension to the approach</FONT>
+
+<BR><FONT SIZE=3D2>used in mathtext package WRT \if@mmode hack - i mean =
+that to make it 100%</FONT>
+
+<BR><FONT SIZE=3D2>correct, some changes might be needed to the =
+alignment preamble code...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Of course, users can just use {} or \relax as the =
+first element</FONT>
+
+<BR><FONT SIZE=3D2>of a cell to solve all these problems with =
+disappearing characters...</FONT>
+
+<BR><FONT SIZE=3D2>but it would be nice (and possible) to make a =
+&quot;real&quot; solution.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i wonder, maybe eTeX has some replacement to \ifmmode =
+test which will stop</FONT>
+
+<BR><FONT SIZE=3D2>the look-ahead search for \omit but will not break =
+kerning/ligatures...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>also, one noticeable difference between your approach =
+and mathtext is that</FONT>
+
+<BR><FONT SIZE=3D2>the latter defines math variants of characters =
+depending on font encoding,</FONT>
+
+<BR><FONT SIZE=3D2>while your variant defines only one math meaning... i =
+need to think about this</FONT>
+
+<BR><FONT SIZE=3D2>again (it was a long time ago)...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Best,</FONT>
+
+<BR><FONT SIZE=3D2>v.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C022.B4879280--
+

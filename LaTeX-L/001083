@@ -1,0 +1,289 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["9045" "Wed" "3" "November" "93" "21:04:00" "+0100" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "262" "nf prefix and statement on LaTeX2e compatibility" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA17820; Wed, 3 Nov 93 21:06:11 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA25036; Wed, 3 Nov 93 21:06:06 +0100
+Message-Id: <9311032006.AA25036@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2408; Wed, 03 Nov 93 21:04:52 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8767;
+ Wed, 03 Nov 93 21:04:32 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8764;
+ Wed, 03 Nov 93 21:04:23 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 3 Nov 93 21:04:00 +0100
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      nf prefix and statement on LaTeX2e compatibility
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1083
+
+
+
+
+I think it might help to give a bit of history as well as some
+statement of intentions concerning the LaTeX2e release.
+
+
+NFSS2 FILE NAMES:
+=================
+
+First the more easier part ...
+
+ When NFSS2 was designed many people involved thought it would be a
+good idea to the have a set of uniform naming convention since it
+would (at least for a long time) be ``just another'' FSS sitting side
+by side at least with the plain TeX times.sty or some lonts-based
+times.sty. so nf as a prefix came into life.
+
+this situation has changed very much with the decision to uniform all
+such latex flavors and release LaTeX2e that is able to run all
+variants under a single format (the has a few consequences on NFSS2 as
+well, see below). thus if the public opinion is strongly for stripping
+"nf" i do have no problem with that, although AW will not like it that
+i change the LaTeX Companion once more a few weeks before printing.
+
+
+> From: Francisco Figueirido <figuei@LUTECE.RUTGERS.EDU>
+>
+> Anyway, I find it more disturbing that the user-interface to NFSS2
+> (especially regarding mathematical typesetting) has changed so much with
+> respect to NFSS1. Luckily we haven't yet used NFSS too much ...
+
+I'm not sure that i can follow here, are you refering to the declaration
+commands like \DeclareMathAlphabet?
+
+I agree that this this part of the interface has changed drastically,
+although there was not much choice if you want to provide `encoding'
+as an important additional attribute (although perhaps not so much for
+math at the moment). Anyway, while nfss1 was (as far as math was
+concerned) a horrible hack nfss2 actually gives you a clean and usable
+interface for additional symbol fonts, so that it now isn't a problem
+any longer to integrate your personal symbol font and/or to typeset in
+completely different math fonts. Last not least, nfss2 will accept the
+nfss math commands and convert them to nfss2 (with a warning).
+
+as i said above, due to the decision to integrate nfss2 into latex it
+will undergo a number of small changes outlined below.
+
+
+COMPATIBILITY
+============
+
+Joachim, I think, said:
+
+> We have hundreds of long-living documents that use constructs like
+>
+>     $({\it colon}, {\it space})$
+>
+> all over the place. If they won't work with a new system, I won't
+> switch. And I will recommend the same action to _everybody_ in a
+> similar situation.
+
+The above wouldn't work under nfss1 (without using oldlfont) and also
+not under nfss2 (without using nfoldfnt) the way you find it currently
+on the servers. However,
+
+    it will work under latex2e (and not only under compatibility mode)
+    ------------------------------------------------------------------
+
+you see, the is already the first change that will happen to nfss2 in a
+few days, so why not change the file names just before reaching home,
+if everybody thinks that is better.
+
+> I don't have a problem, if the constructs above won't work with
+> documents starting with \documentclass. But if they start with
+> \documentstyle, they *must* be compatible. The
+> installation-effort--to--use-enhancement ratio is too low otherwise.
+
+so let me state here what kind of backward compatibilities we have:
+
+
+Document level:
+---------------
+
+- Sources starting with \documentstyle will work as under LaTeX209.
+
+  Possible exception: if they use undocumented commands coming out
+  lfonts.tex in the source, there probably will be undefined commands
+  if that really turns out to be a larger problem one can make the
+  compatibility mode even stronger by trying to emulate `one!' of the
+  many lfonts existing in the world. this is techincally not a problem
+  but eats a lot of space. Actually at this point we are in the area
+  where individual sites had different commands available.
+
+
+- Sources for LaTeX2e will start with \documentclass so that they
+  don't have to load all kind of compatibility internals but can
+  instead load additional features.
+
+
+
+Styles:
+------
+
+ Styles in LaTeX2e are divided into two classes:
+
+       document classes    and      packages
+
+
+Classes are those that appear in the mandatory argument of
+\documentclass (\documentstyle). Packages are those that appear in a
+\usepackage command (or the optional argument of \documentstyle).
+
+- document style files (like darticle.sty) will work as before under
+  LaTeX2e if their extension is renamed to .cls. In addition one might
+  have to add definitions (trivial) for \rm etc. see below (they can
+  be copied from the standard classes coming with latex2e.
+
+- other style files, eg epic.sty will work unchanged with latex2e if
+  used in a \usepackage command, (or in the optional arg of
+  \documentstyle for and old document).
+
+  Execption: as for the source documents: if the styles refer to
+  lfonts.tex commands they will probably need a bit of updating.
+
+
+
+However, latex2e give a much more flexible option concept for
+package/class (style) writer which of course can be used only by
+new or updated styles.
+
+
+To sumarize:
+============
+
+The LaTeX2e is meant to embrace all such TeX flavors so that is not
+necessary any longer to have four different latex versions on a site
+to be able to process documents (without changes) coming from other
+sites.
+
+
+
+Changes to NFSS for integration:
+================================
+
+To the problem of different latex's having different ideas about \rm
+\it in math (yes/no) and so on, the following is going to happen:
+
+
+    NFSS2 (now)		LaTeX2e
+
+    \rm			\rmfamily
+    \bf			\bfseries
+    \it			\itshape
+    .......		.....    (you get the idea)
+
+    \reset@font		\normalfont   (\reset@font will still be usable internally)
+
+    \textem{...}	\emph{..}
+    \textit, and the others  stay but got full italic correction facility
+
+
+
+That completely frees \rm etc from any meaning. In other words,
+LaTeX2e format (!) does not give them a meaning at all. Instead all
+those command will be defined by the class files.
+
+All standard classes will define such cmds to work as in 209 although
+the updated documentation will suggest not to use them (or even
+encourage to user preference definitions in the preamble)
+
+There will be a few additions, for example
+
+DeclareMathSizes{<text-size>}{math-text-size}{math-script-size}
+                             {math-scriptscript-size}
+
+
+
+> Also, if your documents started with a (self-documenting) command such as
+>
+>   \TeXformat{LaTeX}{2.09}{<date>}
+>
+> it would be easier to preserve compatibility.  But the \TeXformat
+> command would have to be recognized by the format file, of course.
+>
+> Michael Downes                              mjd@math.ams.org (Internet)
+>
+>
+> > Also, if your documents started with a (self-documenting) command such as
+> >
+> >   \TeXformat{LaTeX}{2.09}{<date>}
+> >
+> > it would be easier to preserve compatibility.  But the \TeXformat
+> > command would have to be recognized by the format file, of course.
+>
+> Yes, that's ok -- let's introduce this with LaTeX2e. As I wrote, I can
+> live with the fact that the `plain way' does not work anymore in a
+> LaTeX2e or LaTeX3 document. But older LaTeX 2.09 documents should
+> still be valid input and should produce results which are not too far
+> away from the previous ones.
+
+
+It is introduced, with a slightly different name if you need it:
+
+\NeedsFormat{LaTeX2e}[1993/12/24]
+
+I hope that we can get this into amstex as well and perhaps even into
+plain (in some primitive definition) so that a file that really needs
+a certain format can ask for it and the user gets a sensible error
+message, although
+
+
+! Undefined control sequence.
+
+  ... \NeedsFormat
+		  {LaTeX2e}[1993/12/24]
+
+l. 3
+
+isn't too bad.
+
+
+
+I hope this has clarified a few things.
+This is not meant to be something like a WordPerfect upgrade.
+
+Let me finish with some excerpt from a mail by Leslie Lamport:
+
+   REASONS FOR LaTeX2e
+   --------------------
+   There are two primary reasons for introducing a new version of LaTeX:
+
+   1. To incorporate NFSS into standard LaTeX.
+
+   2. To add to standard LaTeX graphics functionality that is currently
+      obtained with driver-dependent macros.
+
+   As long as we are introducing a new version, we will take the opportunity
+   to add some simple features that should have been in version 2.09.
+
+   Although LaTeX-3 will eventually do all this, we feel that it is
+   important to achieve these goals soon to prevent the proliferation of
+   mutually incompatible dialects of LaTeX 2.09.
+
+
+   GUIDING PRINCIPLES
+   ------------------
+   Since LaTeX2e is meant to tide us over until LaTeX 3 is released, it
+   is important that it be viewed as a minor modification to LaTeX 2.09.
+   Thus, the following two guiding principles are to be followed:
+
+    I. Unmodified version 2.09 input files will produce the same output
+       with LaTeX2e as with version 2.09, except when it is absolutely
+       impossible to reconcile this with NFSS.
+
+   II. All new features of LaTeX2e will conform to the conventions of
+       version 2.09, making it as easy as possible for current users to
+       learn to use them.
+
+
+Frank Mittelbach
+LaTeX3 Project
+

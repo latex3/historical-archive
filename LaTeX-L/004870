@@ -1,0 +1,164 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 9 May 2005 23:05:54 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j49L5n0w010720
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 9 May 2005 23:05:52 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j49KvHfK015966;
+	Mon, 9 May 2005 22:57:17 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j499om5a025259;
+	Mon, 9 May 2005 22:54:26 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 215298 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 9 May 2005 22:54:24 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j49KsOd4005512 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 9 May 2005 22:54:24 +0200
+Received: from smtp120.tiscali.dk (smtp120.tiscali.dk [62.79.79.111]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j49KuktL018764 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 9 May
+          2005 22:56:47 +0200 (MET DST)
+Received: from [192.168.0.103] (h191n2c1o260.bredband.skanova.com
+          [81.231.33.191]) by smtp120.tiscali.dk (8.12.10/8.12.10) with ESMTP
+          id j49KsWAY020947 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 9
+          May 2005 22:54:32 +0200 (CEST) (envelope-from
+          Lars.Hellstrom@math.umu.se)
+References: <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <20050427075026.GD10313@mathematik.tu-darmstadt.de>
+            <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j49KsOd4005513
+Message-ID:  <l03102814bea5442baf7d@[192.168.0.103]>
+Date:         Mon, 9 May 2005 22:54:16 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Subject: Re: new^2 font selection scheme
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <20050427104412.GF10313@mathematik.tu-darmstadt.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 09 May 2005 21:05:55.0645 (UTC) FILETIME=[E41A26D0:01C554DA]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4870
+
+At 12.44 +0200 2005-04-27, Achim Blumensath wrote:
+>I forgot one feature:
+>
+>o Being able to load packages from FD files (e.g., keyval).
+
+In the past I've sort of wanted something like that myself, but in view of
+how intricate the contexts can be in which NFSS may decide to load an FD
+file, I now rather think it is a good thing that one cannot start loading
+packages at such times. Packages are loaded in the preamble, and may modify
+the user environment. FD files should rather be considered a representation
+of data tables, and the only reason these tables are dynamically loaded
+when needed is to conserve memory.
+
+This is however not the same thing as saying that FD files should only
+contain data for the tables set by \DeclareFontFamily and
+\DeclareFontShape, as is the current official position, since this, as we
+have observed, is often too restrictive. However about a week ago it
+occurred to me that there is a clean way of writing FD files so that they
+(i) do contain extra information and (ii) can be loaded by LaTeX without
+any extensions to the core. The trick is simply that the FD file must
+contain dummy definitions (that end up gobbling their arguments) of any
+nonstandard data declaration commands used. Users who want to take
+advantage of the extra information would still need to accomplish this by
+loading (in the preamble) a package that (re)defines commands and whatsnot,
+but that package doesn't need to know all fonts it can support and the
+fonts aren't usable only when that package has been loaded, so there is a
+reasonable independence.
+
+As a simple example (but this is typed directly in this mail, so don't 100%
+expect it to work), consider the default definition of \bfseries:
+
+  \DeclareRobustCommand\bfseries
+        {\not@math@alphabet\bfseries\mathbf
+         \fontseries\bfdefault\selectfont}
+
+Suppose now that there is a package XX which redefines this (and presumably
+also its sibling commands) as
+
+  \DeclareRobustCommand\bfseries{%
+     \not@math@alphabet\bfseries\mathbf
+     \@ifundefined{XX@\string\bfseries/\f@encoding/\f@family}{%
+        \fontseries\bfdefault
+     }{%
+        \fontseries{%
+           \csname XX@\string\bfdefault/\f@encoding/\f@family\endcsname
+        }%
+     }
+     \selectfont
+  }
+
+and provides a command \XXDeclareFamilyDefault defined as
+
+  \newcommand*{\DeclareFamilyDefault}[4]{%
+     \global\@namedef{XX@\string#1/#2/#3}{#4}%
+  }
+
+With those in place, the declaration
+
+  \XXDeclareFamilyDefault{\bfdefault}{T1}{ptm}{b}
+
+will have the effect of changing the series selected by e.g. \textbf from
+bx to b, but only for the encoding/family combination T1/ptm, which means
+it makes sense to place that declaration in t1ptm.fd. All one has to do is
+to write it as
+
+  \providecommand*\XXDeclareFamilyDefault[4]{}
+  \XXDeclareFamilyDefault{\bfdefault}{T1}{ptm}{b}
+
+since the \providecommand does nothing if the XX package has been loaded,
+and the net effect of them both is to do nothing if XX has not been loaded.
+(The dummy definition of \XXDeclareFamilyDefault disappears when the group
+ends inside which the FD file is loaded.) Either way, it works out for the
+best!
+
+
+Obviously this is a very simple example, but the idea can be utilized also
+in implementing additional font axes on top of the NFSS shape and series.
+To begin with one needs a new and richer set of user level commands for
+font selection, but that's straightforward. The tricky part is how to do
+substitution when a requested font does not exist, and here additional
+tables (such as that implemented above) of information about particular
+font families can be very useful. It certainly needs a lot of thought in
+designing a good model, but it should be possible to do in a completely
+generic fashion.
+
+>Internally all axes could be implemented as shape parameter. I suggest
+>replacing the current shape value by a comma separated list with one
+>entry for each axis:
+>
+>  \fontshape{it,sc,osf}\selectfont
+
+A disadvantage with using comma as the separator is that all comma
+separated lists in LaTeX (that I can think of right now: class/package
+options, package lists, keyval options) are unordered, in the sense that
+relative order of the items is almost irrelevant. This is not the case
+here; instead each axis has a fixed position. Perhaps a period `.' would be
+more appropriate as separator?
+
+   \fontshape{it.sc.osf}\selectfont
+
+
+One final point to note is that even for a font family with some elaborate
+scheme of additional axes in place, there should be a set of font
+declarations with "standard" series and shapes, for use if the font is
+accessed using the standard font selection scheme of m versus bx and n vs.
+it vs. sc vs. sl. These declarations could (preferably?) be set up using
+the ssub "size function".
+
+Lars Hellström
+

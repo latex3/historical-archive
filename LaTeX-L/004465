@@ -1,0 +1,432 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Wed, 22 Jan 2003 07:20:12 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0M6KA6C007456 for <rainer.schoepf@PROTEOSYS.COM>; Wed, 22 Jan 2003 07:20:11 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0M66JAa023585; Wed, 22 Jan 2003 07:06:19 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C1DE.51DAF600"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0LN0491021675; Wed, 22 Jan 2003 06:59:02 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6751 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 22 Jan 2003 06:59:02 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0M5x15f023342 for          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 22 Jan 2003 06:59:02 +0100
+Received:  from mutant.triumf.ca (mutant.Triumf.CA [142.90.112.22]) by          relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0M668X3009271          for <LATEX-L@listserv.uni-heidelberg.de>; Wed, 22 Jan 2003 07:06:09          +0100 (MET)
+Received:  (from asnd@localhost) by mutant.triumf.ca (8.9.3/8.9.3) id WAA10984;          Tue, 21 Jan 2003 22:07:49 -0800
+In-Reply-To:  Frank Mittelbach's message of "Tue, 21 Jan 2003 11:54:17 +0100"
+Lines: 110
+Organization: TRIUMF: Canada's national meson facility
+References: <15915.60496.798501.907773@lin2.idris.fr>            <15915.64379.146524.772099@istrati.mittelbach-online.de>            <x5el77de5q.fsf@lola.goethe.zz>            <15916.8635.946195.989212@istrati.mittelbach-online.de>            <x5r8b7agsd.fsf@lola.goethe.zz>            <15916.14608.340151.43815@istrati.mittelbach-online.de>            <yfifzrns4pm.fsf@triumf.ca>            <15917.9945.473122.219613@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 22 Jan 2003 06:20:13.0339 (UTC) FILETIME=[52A746B0:01C2C1DE]
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id h0M5x25f023343
+X-Authentication-Warning: mutant.triumf.ca: asnd set sender to asnd@triumf.ca                         using -f
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -4.8 () EMAIL_ATTRIBUTION,IN_REP_TO,NOSPAM_INC,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_GNUS_UA,X_AUTH_WARNING
+Content-class: urn:content-classes:message
+Subject:      Re: LICR objects in math
+Date: Wed, 22 Jan 2003 07:07:49 +0100
+Message-ID: A<yfiof69u37u.fsf@triumf.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: LICR objects in math
+Thread-Index: AcLB3lLH4Lw8kOiUQFy553eQjyO2Tg==
+From: "Donald Arseneau" <asnd@TRIUMF.CA>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4465
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C1DE.51DAF600
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> Donald,
+>
+>  > > nope nope (imho:-)
+>  > >
+>  > > that's for the case where \"a is precisely *not* executing an =
+\accent but is
+>  > > actually a glyph in the current font
+>  >
+>  > But that is the only case you have to handle!  \accent combinations
+>  > don't have the right kerning anyway, so just stick \relax before
+>  > the \accent.
+>
+> you both are right and i was wrong (for the case of accents). however =
+you would
+> have to identify that \"a is a glyph first, even more, you would need =
+to do the
+> right thing concerning any text character eg some are fetched from a =
+different
+> encoding so all that would be very messy indeed
+
+Not at all.  You test the same way as ever,
+ \ifx \csname \<encoding>\<cmd>-<char>\endcsname \relax
+e.g.:
+ \ifx \\T1\"-q \relax
+
+>  > Definition to convert from LICR to glyph:
+
+Note that statement!  This really doesn't have anything to do with
+*input* encoding, but deals with the output encoding.
+
+>  >
+>  > \def{\"a}{\ifmmode \relax % make sure we are in math mode to stay
+>  >           \ifmmode \ddot a%
+>  >           \else \string =E4\fi
+>  >           \else \string =E4\fi}
+>
+> sorry, perhaps i'm still dumb from my cold or else dumb anyway, but i =
+don't
+> get you here. what is this supposed to tell me?
+>
+> one of the problem is that pressing key =E4 (umlaut-a) on the keyboard =
+maps to
+> \"a alright in the LICR but that is not equiv to doing
+>
+>  \string =E4
+>
+> for typesetting ---  the slot to use varies from encoding to encoding. =
+so if i
+> interpret your definition above correctly then you end up with exactly
+> typesetting \char `=E4 always for \"a ... or what?
+
+Yes, this is pseudo-TeX.  Replace  \string =E4  with  \\T1\"-a  as for =
+T1.
+
+To get past some of the "pseudo" aspect, here is a concrete =
+demonstration,
+though *not* a proper implementation:
+
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\begin{document}
+
+Test  {\tracingall =E4 \"a \"q}
+
+\makeatletter
+
+\@namedef{T1\string\"}#1{%
+  \expandafter\@mathtext@composite %% <-- changed from \@text@composite
+  \csname T1\string\"\endcsname
+  #1\@empty
+  \@mathtext@composite
+    {\add@accent{4}{#1}}%
+    {\ddot{#1}}%          %% <-- added new option
+}
+
+\let\@inmathwarn\@gobble  % omit prohibition on math mode
+
+\def\@mathtext@composite #1#2#3\@mathtext@composite{%
+ \expandafter \@mathtext@composite@x \csname \string #1-\string =
+#2\endcsname}
+
+\def\@mathtext@composite@x #1{% based on \@text@composite
+  \ifx #1\relax % No single-glyph defined, use choice of accent commands
+    \relax % stop \halign pre-expansion when using accents
+    \ifmmode \@use@third
+    \else \@use@second
+    \fi
+  \else %  Single character for text mode
+    \ifmmode \relax \fi % test for math mode, even in \halign
+    \ifmmode \@use@third
+    \else \@use@first
+    \fi
+  \fi
+  \@use@ #1}
+
+\def\@use@first#1\@use@#2#3#4{#1#2}
+\def\@use@second#1\@use@#2#3#4{#1#3}
+\def\@use@third#1\@use@#2#3#4{#1#4}
+
+\mathcode`\=E4=3D"8000
+
+Test  {\tracingall =E4 \"a \"q
+
+\halign{#\hfil&$#$\hfil&#\hfil\cr
+   char:  & =E4=E4 & =E4=E4\cr
+   glyph: & \"a\"a & \"a\"a\cr
+   comp:  & \"q\"q & \"q\"q\cr}
+}
+
+\showoutput
+
+\end{document}
+
+
+
+
+Donald Arseneau                          asnd@triumf.ca
+
+------_=_NextPart_001_01C2C1DE.51DAF600
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: LICR objects in math</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach =
+&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Donald,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; nope nope (imho:-)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; that's for the case where =
+\&quot;a is precisely *not* executing an \accent but is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; actually a glyph in the current =
+font</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; But that is the only case you have to =
+handle!&nbsp; \accent combinations</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; don't have the right kerning anyway, =
+so just stick \relax before</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; the \accent.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; you both are right and i was wrong (for the case =
+of accents). however you would</FONT>
+
+<BR><FONT SIZE=3D2>&gt; have to identify that \&quot;a is a glyph first, =
+even more, you would need to do the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; right thing concerning any text character eg =
+some are fetched from a different</FONT>
+
+<BR><FONT SIZE=3D2>&gt; encoding so all that would be very messy =
+indeed</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Not at all.&nbsp; You test the same way as =
+ever,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifx \csname =
+\&lt;encoding&gt;\&lt;cmd&gt;-&lt;char&gt;\endcsname \relax</FONT>
+
+<BR><FONT SIZE=3D2>e.g.:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\ifx \\T1\&quot;-q \relax</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; Definition to convert from LICR to =
+glyph:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Note that statement!&nbsp; This really doesn't have =
+anything to do with</FONT>
+
+<BR><FONT SIZE=3D2>*input* encoding, but deals with the output =
+encoding.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \def{\&quot;a}{\ifmmode \relax % make =
+sure we are in math mode to stay</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifmmode \ddot a%</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\string =E4\fi</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; =
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else =
+\string =E4\fi}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; sorry, perhaps i'm still dumb from my cold or =
+else dumb anyway, but i don't</FONT>
+
+<BR><FONT SIZE=3D2>&gt; get you here. what is this supposed to tell =
+me?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; one of the problem is that pressing key =E4 =
+(umlaut-a) on the keyboard maps to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \&quot;a alright in the LICR but that is not =
+equiv to doing</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; \string =E4</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; for typesetting ---&nbsp; the slot to use varies =
+from encoding to encoding. so if i</FONT>
+
+<BR><FONT SIZE=3D2>&gt; interpret your definition above correctly then =
+you end up with exactly</FONT>
+
+<BR><FONT SIZE=3D2>&gt; typesetting \char `=E4 always for \&quot;a ... =
+or what?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, this is pseudo-TeX.&nbsp; Replace&nbsp; \string =
+=E4&nbsp; with&nbsp; \\T1\&quot;-a&nbsp; as for T1.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To get past some of the &quot;pseudo&quot; aspect, =
+here is a concrete demonstration,</FONT>
+
+<BR><FONT SIZE=3D2>though *not* a proper implementation:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentclass{article}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[latin1]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[T1]{fontenc}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Test&nbsp; {\tracingall =E4 \&quot;a \&quot;q}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\@namedef{T1\string\&quot;}#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \expandafter\@mathtext@composite %% &lt;-- =
+changed from \@text@composite</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \csname T1\string\&quot;\endcsname</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; #1\@empty</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@mathtext@composite</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; {\add@accent{4}{#1}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+{\ddot{#1}}%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; %% =
+&lt;-- added new option</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\@inmathwarn\@gobble&nbsp; % omit prohibition on =
+math mode</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@mathtext@composite =
+#1#2#3\@mathtext@composite{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\expandafter \@mathtext@composite@x \csname =
+\string #1-\string #2\endcsname}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@mathtext@composite@x #1{% based on =
+\@text@composite</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \ifx #1\relax % No single-glyph defined, use =
+choice of accent commands</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \relax % stop \halign =
+pre-expansion when using accents</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifmmode \@use@third</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \@use@second</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \else %&nbsp; Single character for text =
+mode</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifmmode \relax \fi % test for =
+math mode, even in \halign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifmmode \@use@third</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \else \@use@first</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \@use@ #1}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@use@first#1\@use@#2#3#4{#1#2}</FONT>
+
+<BR><FONT SIZE=3D2>\def\@use@second#1\@use@#2#3#4{#1#3}</FONT>
+
+<BR><FONT SIZE=3D2>\def\@use@third#1\@use@#2#3#4{#1#4}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\mathcode`\=E4=3D&quot;8000</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Test&nbsp; {\tracingall =E4 \&quot;a \&quot;q</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\halign{#\hfil&amp;$#$\hfil&amp;#\hfil\cr</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; char:&nbsp; &amp; =E4=E4 &amp; =
+=E4=E4\cr</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; glyph: &amp; \&quot;a\&quot;a &amp; =
+\&quot;a\&quot;a\cr</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; comp:&nbsp; &amp; \&quot;q\&quot;q &amp; =
+\&quot;q\&quot;q\cr}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\showoutput</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>Donald =
+Arseneau&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; asnd@triumf.ca</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C1DE.51DAF600--
+

@@ -1,0 +1,148 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4278" "Sun" "15" "June" "1997" "08:25:01" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "111" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id IAA06238; Sun, 15 Jun 1997 08:22:09 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.ADB8631B@listserv.gmd.de>; Sun, 15 Jun 1997 8:22:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153403 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 08:21:58 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id IAA05419 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15
+          Jun 1997 08:21:53 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Sun, 15 Jun 1997 08:20:47 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          IAA26030; Sun, 15 Jun 1997 08:25:01 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970615073312.26008A-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A2E88B.34AFD500@vvv.vsu.ru>
+Date:         Sun, 15 Jun 1997 08:25:01 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2041
+
+On Sat, 14 Jun 1997, Vladimir Volovich wrote:
+
+> > They use the default \lccode and
+> > \uccode layout. It will not solve all problems with languages using
+> > the Cyrillic script (and extensions of it), but at least you can avoid bad
+> > hyphenation.
+>
+> Yes, the T2-encodins seems to be perspective, but...
+> The problem is that this proposed encoding does not correspond to
+> the currently widely used (in TeX documents) Russian encodings.
+> The most popular encoding used in russian TeX documents is currently a
+> DOS cp866, because the most popular Russian fonts (LH fonts and
+> fonts developed by P.V.Ganelin and A.Shen) use this encoding.
+
+Well, I see no difficulty to add a T2 mapping to the LH fonts; they
+already have a few mapping tables.  But remember that e.g. a Georgian user
+will not be happy with LH's default font encoding since the `hard ghe' is
+missing...
+
+> We also tried to use inputenc package, for example, to process
+> documents in a KOI-8 encoding. This works, but has some limitations.
+> E.g. when one uses inputenc, there is no possibility to use
+> the characters which are being translated as a names of macros,
+> because these characters become active. Also, there are some problems
+> with AUX files.
+
+??? I can't follow you here. The only approach which will work is to
+separate input and output encoding, i.e. you map a input character to a
+character macro if the character is >= 0x80 as it is done for T1 encoding:
+
+[T2 encoding: the Russian A is on 0xC1, and the Russian a is on 0xE1]
+
+two approaches:
+
+1) you say
+
+    \DeclareTextSymbol{\RUSA}{T2}{"0C1}
+    \DeclareTextSymbol{\rusa}{T2}{"0E1}
+
+(repeating this for all other Russian characters); then you add all
+such-defined characters to \@uclclist so that \MakeUppercase and
+\MakeLowercase work -- \lowercase and \uppercase should *never* be used
+directly!
+
+    \begingroup
+      \expandafter\toks@\expandafter{\@uclclist}%
+      \toks@\expandafter{\the\toks@
+        \rusa\RUSA\rusb\RUSB...}%
+      \expandafter\gdef\expandafter\@uclclist\expandafter{\the\toks@}
+    \endgroup
+
+2) you define dummy character accents to avoid modifying \@uclclist for so
+many characters:
+
+    \DeclareTextCommand{\cyra}{T2}[1]
+      {\PackageError{T2enc}{You can't use the \string\cyra command
+       directly}#1}
+
+
+    \DeclareTextCompositeCommand{\cyra}{T2}{A}{\char "0C1}
+    \DeclareTextCompositeCommand{\cyra}{T2}{a}{\char "0E1}
+    ...
+
+Now you can map in an input encoding the Russian A to \cyra{A} and a to
+\cyra{a}.
+
+Both approaches work well (the former I've used in my vncmr package for
+Vietnamese to define an ET5 encoding, the latter for a experimental LLW
+encoding using the `fil' option of the LH fonts to get more characters)
+for *all* encodings in the range 0x80-0xFF since the interface used here
+for TeX is only 7bit, and \uccode and \lccode for characters >= 0x80 will
+be never used.
+
+But the need for T2 is definitely here since 0x80-0xFF is not sufficient
+for all Cyrillic characters, and the characters in the range 0x00-0x7F
+*must* follow the default \lccode and \uccode values.
+
+> BTW, it is interesting to know the opinion of members of this list about the following:
+> not long ago Donald Knuth said that he is against any attempts
+> to change Computer Modern fonts (this happened in one of TeX distributions,
+> probably teTeX, where they changed CM fonts so, that metric files changed).
+> But one of the popular russian fonts for TeX are also based on the idea of
+> changing CM fonts: this fonts replace some files in such a way, that
+> the resulting fonts are called cm*, but they contain also all russian letters.
+> These fonts do not change anything which corresponds to the original letters
+> contained in CM fonts.
+
+Don't do this! I had the same problem with my Vietnamese fonts. There is a
+simple solution: if you need the original cm* macros, then do the
+following to get new names:
+
+e.g. you need cmb10.mf: then call your font rusb10.mf with the following
+contents:
+
+    if unknown cmbase:
+      input cmbase
+    fi
+
+    def generate = enddef;
+    def roman = enddef;
+
+    input cmb10
+    input rusroman
+
+
+cmb10.mf will be read, but the command `generate roman' will be ignored so
+that you can load your own definitions afterwards (contained in
+rusroman.mf).
+
+
+    Werner
+

@@ -1,0 +1,136 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4351" "Thu" "25" "November" "1999" "16:45:47" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "97" "Templates and objects" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id QAA24846
+	for <schoepf@UNI-MAINZ.DE>; Thu, 25 Nov 1999 16:46:48 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.1D89A3AB@mail.listserv.gmd.de>; Thu, 25 Nov 1999 16:46:42 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445679 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 25 Nov 1999 16:46:20 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id QAA00832 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 25 Nov
+          1999 16:46:18 +0100 (MET)
+Received: from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id QAA01925 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 25 Nov 1999 16:46:44 +0100 (MET)
+Received: (qmail 1322 invoked from network); 25 Nov 1999 16:46:36 +0100
+Received: from du137-226.ppp.su-anst.tninet.se (HELO ?195.100.226.137?)
+          (195.100.226.137) by knatte.tninet.se with SMTP; 25 Nov 1999 16:46:36
+          +0100
+X-Sender: haberg@pop.matematik.su.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b462fdf6ce26@[195.100.226.128]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 25 Nov 1999 16:45:47 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Templates and objects
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3439
+
+Here is some ideas on how to use objects to describe the templates in the
+http://www.latex-project.org/talks/tug99.pdf document:
+
+First, the idea of a template and its instantiation seems to be the quite
+similar to that of a class, its derived class, and an instantiation in C++,
+that is, if one disregards the dynamic aspect of in C++. (In C++, derived
+classes are used to construct polymorphic data types, or variables that
+change the data type they hold during runtime.) So the LaTeX template
+corresponds to a C++ abstract class, the name to a derived class, and the
+instantiation to an instantiation of this class. Roughly speaking that is,
+there is no point in pronging into the details here.
+
+This is not so strange, because much of the C++ additions originally comes
+from uses with macros. Perhaps one use this idea to come up with some
+suitable generalization.
+
+However, it is possible to apply object thinking to templates, too. Then it
+seems me that there is an object named ``template'' which has its own
+special definitions of ``new'' and ``use''. These commands have the
+internal names
+    template/new
+    template/use
+
+The ``use'' syntax in the example on page 30
+  \UseTemplate{initial}{std}{...}
+might instead be
+  \use{template}{initial}{std}{...}
+The command \use would pick up one argument {template} and execute the
+command name template/use, which then would make sure the other arguments
+are executed correctly as templates.
+
+The syntax in the example on page 33
+  \DeclareInstance{initial}{A}{std}
+could instead be
+  \new{template}{instance}{initial}{std}{A}
+And
+  \UseInstance{initial}{A}{``}{A}{good initial}
+would become
+  \use{template}{instance}{initial}{A}{``}{A}{good initial}
+
+And on page 47:
+  \DeclareTemplateType{<type>}{<arg-no>}
+  \DeclareTemplate{<type>}{<name>}{<arg-no>}{...}{...}
+would instead be
+  \new{template}{type}{<type>}{<arg-no>}
+  \new{template}{<type>}{<name>}{<arg-no>}{...}{...}
+
+A few remarks: First, why should one accept such a long construction such as
+  \new{template}{instance}{initial}{std}{<name>}
+The thing is though that if we later decide that the ``template'' object is
+obsolete and should be replaced by a ``class'' object, then it is easy to
+change to
+  \new{class}{instance}{initial}{std}{<name>}
+and there will be no name clashes in the definition mechanism.
+
+Such long combinations does not exclude that users in their manuscripts
+make use of some kind of local, simplified syntax. This could then for
+example be to use the simplified
+  \new{instance}{initial}{std}{<name>}
+because it is easy to define an ``instance'' object which calls the correct
+``template'' subobject.
+
+Another problem, rather technical in nature, is that if one should use both
+  \new{template}{type}{<type>}{<arg-no>}
+  \new{template}{<type>}{<name>}{<arg-no>}{...}{...}
+side by side, one may cause the command template/new to do some unwanted
+parsing, as ``new'' would both these two would expand these two to
+  \template/new{type}{<type>}{<arg-no>}
+  \template/new{<type>}{<name>}{<arg-no>}{...}{...}
+
+However, it is relatively easy to work around this problem by instead calling
+  \new{template/type}{<type>}{<arg-no>}
+  \new{template}{<type>}{<name>}{<arg-no>}{...}{...}
+In the first case, one would call
+  \template/type/new{<type>}{<arg-no>}
+and in the second case one would call
+  \template/new{<type>}{<name>}{<arg-no>}{...}{...}
+(One idea that comes to my mind when I write this is to use hyphens ``-''
+instead of slashes ``/'' for subobjects. Then one would instead call
+  \new{template-type}{<type>}{<arg-no>}
+But it might be difficult for computer oriented people to think of this as
+subobjects.)
+
+So there are no name clashes here. (Note that there will be some
+restrictions, such as that one cannot define a template type named ``new'',
+as this would cause the command named template/type/new to be defined.)
+
+So this was some inputs on how to objectify the templates. I think that
+templates are very interesting in connection with objects, because they
+have a very different type of ``new'' operator, and one can see here how
+the object mechanism can easily sort this out.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

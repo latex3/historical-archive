@@ -1,0 +1,87 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 21 Jan 2009 00:24:26 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0KNONU2029185
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 21 Jan 2009 00:24:24 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0KNKJPa013748
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 21 Jan 2009 00:20:19 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0KN1EIN016931;
+	Wed, 21 Jan 2009 00:20:13 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 185630 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 21 Jan
+          2009 00:20:12 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0KN4Xbs017200 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 21 Jan 2009 00:04:33 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n0KN4TDO009832 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 21 Jan 2009 00:04:32 +0100
+Received: from morse.mittelbach-online.de (p54A845AF.dip.t-dialin.net
+          [84.168.69.175]) by mrelayeu.kundenserver.de (node=mrelayeu6) with
+          ESMTP (Nemesis) id 0ML29c-1LPPe10zXB-00029Y; Wed, 21 Jan 2009
+          00:04:29 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 7948865BB9; Wed, 21 Jan 2009 00:04:26 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <A090407D-1D20-4C65-86FE-89EA7DF3AB25@gmail.com>
+            <4975AE9B.4020409@morningstar2.co.uk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+oZBgQWRr72NSnVoLp7zWciVIXC5bIGVn8ub8
+              KG4GaGGw77Yso2iTENitM/KZqOhvh1mltZk7ZcHXo6zQlrgDph
+              tCYoqW/QxErXdoIHRfYFW8Ivs6fkA7R
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18806.22650.454482.2610@morse.mittelbach-online.de>
+Date:         Wed, 21 Jan 2009 00:04:26 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Missing primitives' functionality in expl3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4975AE9B.4020409@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 20 Jan 2009 23:24:26.0853 (UTC) FILETIME=[3C75D950:01C97B56]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5605
+
+Joseph Wright writes:
+ > A quick look at l3names and source3.pdf suggests there are a lot of
+ > other primitives which only have :D names (particularly the pdfTeX
+ > ones).  However, I suspect most of these should only be available within
+ > the kernel, so it's probably not an issue.  (For example, things like
+ > \skipdef are only :D, as far as I can see.)
+
+yes something like \skipdef has no place anywhere other than in a single place
+inside the kernel, where it is used to provide a new register in my opinion. I
+mean either we abstract and provide an interface to "skips" etc or we don't. 
+One of the problems with the TeX language is/was that all such levels got
+horribly intermixed, which might have been ok for something like plain TeX,
+but produced some level of chaos in any bigger format.
+
+I wouldn't claim that our judgement on what we want to provide outside the
+inner part of the kernel is flawless, but with a few exceptions I hope we got
+it more or less right.
+
+So right now while we are making the last set of major changes to the core
+part of expl3 this is the time to point out any such mistakes or omissions,
+please
+
+frank
+

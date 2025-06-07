@@ -1,0 +1,61 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1265" "Fri" "1" "October" "1999" "16:41:33" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "27" "Re: Experimental `template' interface code" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA00551
+	for <schoepf@UNI-MAINZ.DE>; Fri, 1 Oct 1999 17:45:45 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.2BFACCDA@mail.listserv.gmd.de>; Fri, 1 Oct 1999 17:45:10 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445316 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 1 Oct 1999 17:43:46 +0200
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA02791 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 1 Oct 1999 17:43:27 +0200 (MET
+          DST)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          QAA13202; Fri, 1 Oct 1999 16:41:33 +0100 (BST)
+References:  <199910011527.LAA04020@hilbert.math.albany.edu>
+Message-ID:  <199910011541.QAA13202@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910011527.LAA04020@hilbert.math.albany.edu>
+              (hammond@CSC.ALBANY.EDU)
+Date:         Fri, 1 Oct 1999 16:41:33 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Experimental `template' interface code
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3347
+
+> How would the use of such templates affect Gurari style
+> translation to an sgml like docbook?
+
+not so much the templates themselves, but the separation of user syntax
+(xparse) from the internal coding, should make that sort of translation
+easier.
+
+Basically you would just need to arrange that the document interface
+commands became suitably decorated with hooks for the tex4ht back end.
+
+So for docbook level translations you would probably interface
+at the commands defined at the xparse layer.
+
+However one may view templates (some of them at least) as a mechanism
+that encodes a certain parameterised formatting capability.
+This is basically the level of css properties, XSL Formatting Objects,
+and DSSSL flow objects. That is objects like `displayed vertical list'
+`paragraph' `page layout' etc. If one was particularly interested in
+a combined latex XSl FO system one might want to give a template
+interface to the FO functionality, and then build the rest of the latex
+system up from that. then for latex typesetting you would use the actual
+tex implementation of the templates, but for other uses you might trap
+things at the level of the interface to the templates, and trivially
+encode that in XSL FO syntax. (All this is entirely speculative)
+
+David
+

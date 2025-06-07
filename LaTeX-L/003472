@@ -1,0 +1,130 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2582" "Mon" "20" "December" "1999" "13:50:04" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "83" "A couple of TOC templates (3)" "^Date:" nil nil "12" nil nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Mon, 20 Dec 1999 13:51:27 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+	by mailserver2.zdv.Uni-Mainz.DE (8.9.1b+Sun/8.9.1) with ESMTP id NAA01743
+	for <schoepf@mailserver.zdv.uni-mainz.de>; Mon, 20 Dec 1999 13:51:27 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id NAA21111
+	for <schoepf@UNI-MAINZ.DE>; Mon, 20 Dec 1999 13:51:25 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.C1C1041E@mail.listserv.gmd.de>; Mon, 20 Dec 1999 13:51:19 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445982 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Dec 1999 13:50:32 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id NAA13816 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 20
+          Dec 1999 13:50:25 +0100 (MET)
+Received: from ssmtp01.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id NAA10021 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 20 Dec 1999 13:51:16
+          +0100 (MET)
+Received: from [195.5.78.82] ([195.5.78.82]) by ssmtp01.arrakis.isp (Netscape
+          Messaging Server 4.1 Nov 19 1999 19:47:43) with SMTP id FN1IBF03.32F
+          for <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 20 Dec 1999 13:50:03
+          +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199912201251.NAA10021@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 20 Dec 1999 13:50:04 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      A couple of TOC templates (3)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3472
+
+========================== xtitletoc.tex begins
+\documentclass{article}
+
+\usepackage{xtitletoc}
+
+\IgnoreWhiteSpace
+
+\DeclareInstance{contentsobject}{section}{JB1}{
+  pre-action       = \DelayEvaluation{\addvspace{1pc plus 1pt}},
+  right-adjust     = 3pt,
+  title-format     = \textbf{#1},
+  label-format     = \textbf{\thecontentslabel},
+  left-margin      = \DelayEvaluation{1.5em},
+  label-width      = \DelayEvaluation{1.5em},
+  page-format      = \textbf{\hfil#1},
+  leaders-text     = .}
+
+% current left-margin = previous left-margin + label-width
+
+\DeclareInstance{contentsobject}{subsection}{JB1}{
+  right-adjust     = 3pt,
+  left-margin = \DelayEvaluation{3.8em},
+  label-width  = \DelayEvaluation{2.3em}}
+
+\DeclareInstance{contentsobject}{subsubsection}{JB1}{
+  right-adjust     = 3pt,
+  left-margin = \DelayEvaluation{7em},
+  label-width  = \DelayEvaluation{3.2em}}
+
+%========================
+
+\DeclareCollectionInstance{runin}{contentsobject}{section}{JB2}
+  {
+    pre-action     = \addvspace{3pt plus .2pt},
+    decls          = \itshape,
+    right-margin   = 0pt,
+    punct-sub      = \ (,
+    punct-end      = .
+    }
+
+\DeclareCollectionInstance{runin}{contentsobject}{subsection}{JB2}
+  {
+    decls          = \itshape,
+    right-margin   = 0pt,
+    punct-sup      = );\ ,
+    punct-end      = ).
+    }
+
+\begin{document}
+
+\newcommand\testtoc[1]{
+\section*{THE TEST: #1}
+\contentsobject {1}{1}{section}{1}{A first section}{}{1}
+\contentsobject {2}{2}{subsection}{1.1}{A first subsection}{}{1}
+\contentsobject {3}{2}{subsection}{1.2}{A second subsection with an
+   awful long title: some text or other to get us going right?}{}{1}
+\contentsobject {4}{3}{subsubsection}{1.2.1}{A direct subsubsection}{}{1}
+\contentsobject {5}{1}{section}{\NoValue }{Heading two as section}{}{1}
+\contentsobject {6}{2}{subsection}{1.3}{With a direct subsection}{}{1}
+\contentsobject {7}{3}{subsubsection}{1.3.1}{And some subsubsection}{}{1}
+\contentsobject {13}{1}{section}{2}{And another
+section}{}{1}\tracingcode
+\contentsobject {14}{2}{subsection}{2.1}{that has a subsection}{}{1}
+\contentsobject {15}{1}{section}{3}{A test}{}{2}
+\contentsobject {16}{2}{subsection}{\NoValue }{with an unnumbered
+  subsection}{}{2}
+\csname ttl@finish\endcsname %% Added by titletoc to the toc file
+}
+
+\testtoc{1}
+
+\setcounter{tocdepth}{2}
+\UseCollection{contentsobject}{runin}
+\testtoc{2}
+
+% to add another toc example (chose a collection name FOO)
+% add some CollectionInstances above and do:
+
+%\UseCollection{contentsobject}{FOO}
+%\testtoc{3}
+
+\stop
+============================   xtitletoc.tex ends
+

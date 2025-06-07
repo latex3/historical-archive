@@ -1,0 +1,47 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Apr 90 16:00:31 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: Aux file blues.
+To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+In-Reply-To:  Message of Wed, 18 Apr 90 14:33:06 MET from <U641000@HNYKUN11>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 79
+
+What we need is a general mechanism to store arbitrary information in
+the .aux file.  Think of the following:
+
+ - In list-like environments, one could remember the width of the longest
+   label and adjust the list parameters for the following run(s).
+ - In the amstex style option many of the alignments process their text
+   text twice to determine the width of the columns, more specifically
+   to determinewhere the equation tag should go.  This is taken over
+   from plain AMSTeX (nice wording, eh?) where Spivak did this to
+   be compatible with plain TeX's \eqno primitive.  With LaTeX we should
+   devise a way to calculate things in the first run and use them in the
+   second and subsequent runs.
+
+I have spent a bit of time on this problem and I think I have found a
+partial solution.  For every information of this type there is a line
+of the form
+
+   \extra@aux@info{<originator>}{<sequence number>}{<information>}
+
+`originator' is needed to distinguish different types of information,
+the `sequence number' is to identify theplace where it is needed.
+But this is theeasy part.  The real problem is to find a way to
+access this information in a efficient way.  In a largeTeX environment
+one can easily implement \extra@aux@info to define a macro whose name
+is derived from the originator and the sequence number and which expands
+into the information.  But this will not work for small systems.  The
+only alternative I can think of at the moment is to read the .aux file
+(or perhaps a special extra info file) every time information is needed.
+
+Any ideas or comments?
+
+   Rainer
+
+

@@ -1,0 +1,120 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 9 Sep 2008 20:49:25 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m89InKfq014005
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 9 Sep 2008 20:49:21 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m89IiK4n001373
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 9 Sep 2008 20:44:21 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m89GZjqm015958;
+	Tue, 9 Sep 2008 20:44:13 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 28708 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 9 Sep
+          2008 20:44:13 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m89IiDYC016075 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 9 Sep 2008 20:44:13 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m89Ii9NP001192 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 9 Sep 2008 20:44:12 +0200
+Received: from morse.mittelbach-online.de (p4FD43D7D.dip.t-dialin.net
+          [79.212.61.125]) by mrelayeu.kundenserver.de (node=mrelayeu4) with
+          ESMTP (Nemesis) id 0ML21M-1Kd8C82R64-00084s; Tue, 09 Sep 2008
+          20:44:08 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id B9A6164EE2; Tue,  9 Sep 2008 20:44:05 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <48C3DAD1.6030004@morningstar2.co.uk>
+            <4B6A6CEE-A06F-4EAC-B618-3B637A5902E4@gmail.com>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+0yboDDWXgwMODeB6DzIWbRKNxcG0uDKStkDU
+              xvRr6hPkbXcWy1LTLwekZYmfXrbIIRRcs2GOKZrWoWXe8QsjSG
+              fq7v4mpVp5/ySWFDhrD1kYuE/qs/2rU
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18630.50165.621679.420173@morse.mittelbach-online.de>
+Date:         Tue, 9 Sep 2008 20:44:05 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: expl3 variant expansion forms
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4B6A6CEE-A06F-4EAC-B618-3B637A5902E4@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 09 Sep 2008 18:49:25.0923 (UTC) FILETIME=[C832FF30:01C912AC]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5264
+
+I don't really think that it is necessary or even desirable to define all
+types of variant expansion forms (in all permutations) up front just for the
+sake of it.
+
+Ideally when I write \foo:ABC where ABC is some form of arg spec, eg "xoc"
+"noo" or ... then what should happen is that automagically the arguments
+should be get properly expanded and then the corresponding base function (ie
+\foo:nnn should be called passing the correctly expanded arguments). And that
+should work for any permutation that you can think of.
+
+Unfortunately, TeX can't autogenerate functions if they are missing because we
+are missing a callback function that gets called in case of "undefined
+csname".
+
+So either
+
+ - we provide all variants up front
+
+ - we do all our parsing ourselves (so that we can detect missing functions)
+   but that makes a lot of processing very slow but it would be an option
+
+ - get thatm missing functionality into a TeX successor and use it
+
+ - or we do simply do the last step (generation of missing functions) manually
+
+currently the concept is  the latter:
+
+ - there is only one single unique way of providing a variant from a given
+   base function, eg, having the base function \foo:nnn I'll get \foo:noo by
+   doing:
+
+  \def:Npn \foo:noo {\exp_args:Nnoo \foo:nnn }
+
+ - so either the variant is defined in expl3 or a package could define it
+   andone can be sure that two package would define it in exactly the same way
+   so the double definition wouldn't hurt (a simple def is extremly fast and
+   assuming nobody makes a mistake the definitions would always be the same)
+
+ - (one oculd also think of providing a more abstract interface for defining
+   variants from base functions)
+
+
+so far the approach was to not provide all possible permutations but wait
+until it becomes clear that certain forms are actually needed and if so
+gradually move them from packages to the core language.
+
+it is certainly questionable where to draw the line here, but for functions
+with 3 or more arguments the number of permutations become huge and in many
+cases most of them are useless.
+
+So rather than providing everyting for the sake of uniformity I would suggest
+to allow for gaps (as they can be very very easily filled ... for any
+developer who understood the construction method).
+
+cheers
+frank
+

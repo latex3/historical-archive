@@ -1,0 +1,533 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.9B26A08C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:22 +0100
+In-Reply-To:  <01GGRZD4SCGGB122AO@MATH.AMS.COM>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.9B26A08C"
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-class: urn:content-classes:message
+Subject:      {2} Re: {1} Re uppercase problems (was urgent)
+Date: Fri, 21 Feb 1992 20:48:07 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE932@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Michael Downes" <MJD@MATH.AMS.COM>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Multiple recipients of" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 582
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.9B26A08C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+In reply to Yannis mail about uppercasing, Frank wrote
+
+>  1) If so then: given a <token string> how can we upper (or lower)
+> case it while allowing to change uccode table entries in the middle,
+> or as a weaker constraint, can we leave out uppercasing for parts od
+> <token string>? Michael Downes has done some work in this direction in
+> the AMS styles, perhaps he can comment here.
+
+For Yannis' benefit in case the AMSLaTeX files are not ready at hand for
+him, here is the definition of \uppercasetext@ in amsart.doc.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Now a utility macro to do \verb=3D\uppercase=3D but sidestep any =
+math,
+%    to prevent uppercasing math variables.  In order to be handled
+%    properly the \verb=3D$...$=3D or \verb=3D\(...\)=3D must be on the =
+outer
+%    level (not enclosed in braces).  We did not try to handle the
+%    possibility \verb=3D\begin{math}...\end{math}=3D in a title at the
+%    present time (too complicated).  Also we increase inter-word space
+%    in the uppercase text.
+%
+%    One other little problem: uppercasing of a few special characters
+%    like the German "ss" and the undotted i and j (\verb=3D\i=3D and
+%    \verb=3D\j=3D), used sometimes with accents.  We redefine to be =
+upper
+%    case equivalents. (Undotted \verb=3D\i=3D and \verb=3D\j=3D in math =
+would
+%    be typed as \verb=3D\imath=3D and \verb=3D\jmath=3D.)
+%
+%    Note the extra level of braces to localize changes:
+%    \begin{macrocode}
+\def\uppercasetext@#1{%
+   {\spaceskip1.3\fontdimen2\the\font plus1.3\fontdimen3\the\font
+    \upchars@\skipmath@#1$\skipmath@$}}
+%
+\def\upchars@{\def\ss{SS}\let\i=3DI\let\j=3DJ\let\ae\AE\let\oe\OE
+  \let\o\O\let\aa\AA\let\l\L}
+%
+\def\skipmath@#1$#2${\skipmath@b#1\(\skipmath@b\)%
+  \ifx\skipmath@#2\else$#2$\expandafter\skipmath@\fi}
+%
+\def\skipmath@b#1\(#2\){\uppercase{#1}%
+  \ifx\skipmath@b#2\else\(#2\)\expandafter\skipmath@b\fi}
+%    \end{macrocode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+One part of the task is to avoid uppercasing math formulas; however,
+another complication can be seen in \upchars@ which changes the
+definitions of some character-producing macros. This seems relevant to
+Yannis' problem since his active characters can be considered
+character-producing macros; but with the property that they can be
+affected by \uppercase and \lowercase where ordinary macros cannot. I
+therefore suggest the following approach:
+
+Set up your default \uccode and \lccode tables so that all the
+active characters have identical uppercase and lowercase codes.
+Then make a documentstyle option file called let's say
+modcase.sty, containing the following
+
+\let\@@uppercase=3D\uppercase
+\def\uppercase{\protect\puppercase}
+\def\puppercase#1{\begingroup
+  \def\@charcase{u}\@@uppercase{#1}\endgroup}
+
+\let\@@lowercase=3D\lowercase
+\def\lowercase{\protect\plowercase}
+\def\plowercase#1{\begingroup
+  \def\@charcase{l}\@@lowercase{#1}\endgroup}
+
+\def\@charcase{l}
+
+The idea is that an active character will have a definition
+like
+
+ \def ^^88{\csname\@charcase^^88\endcsname}%
+
+where the first instance of ^^88 is active and the second is
+catcode 11 (letter). (This can be accomplished by a common macro
+trick that I can describe in separate mail to Yannis.)
+
+I.e., ^^88 will never be changed to a different character by \lowercase
+or \uppercase, but it will expand to either \l^^88 or \u^^88 depending
+on the current definition of \@charcase, which is switched  by
+\lowercase or \uppercase.
+
+And then you must create all the default definitions (from the DC font
+layout) for \l^^80, \u^^80, ... \l^^ff, \u^^ff. It is easier if you
+make these definitions while the catcodes of the characters is 11, not
+13:
+
+%    Change catcodes of characters 128--255 to 11 (letter)
+\@tempcnta=3D"80
+\loop \catcode\@tempcnta=3D11
+\advance\@tempcnta 1
+\ifnum\@tempcnta<"100 \repeat
+
+\def\l^^80{^^a0} % \u A --> \u a
+\def\u^^80{^^80} % uppercase form is unchanged
+\def\l^^81{^^a1} % A w Polish hook --> a w Polish hook
+\def\u^^81{^^81} % uppercase form is unchanged
+.
+
+The definition of \CyrMacCharacters should also be done while catcode =
+=3D
+11 for the 8-bit characters. \CyrMacCharacters needs to change the
+definitions of \l^^80, \u^^80, but it does not need to modify the
+definitions of the active characters at all.
+
+\def\CyrMacCharacters{\protect\pCyrMacCharacters}
+\def\pCyrMacCharacters{%
+  \setlanguage\russian % probably something like this
+  ...
+  \def\l^^88{I}\def\u^^88{I}%
+  ...
+}
+
+The use of \protect as shown here will prevent the problem  of
+extremely long lines in the .aux file.
+
+There is the question whether redefining \uppercase will cause problems
+with other uses by LaTeX of \uppercase. Actually I think the answer is
+no, because the primitive \uppercase is performed by the 'stomach' (not
+expandable). You will get some probably useless extra computations when
+something like \Alph or \Roman is executed, but I don't think they will
+actually hurt anything.  To minimize the chance of problems, I would
+put the `modcase' option last in the documentstyle options list (except
+for other options that may be designed to work with `modcase').
+
+Finally, it would be better if TeX maintained separate uccode and
+lccode tables for each language, just as it does with hyphenation
+patterns. Then most of this work wouldn't be necessary. Come to think
+of it, maybe Knuth already did this? I didn't check---does anyone know
+off-hand? The idea would be
+
+  \language 0
+  <set up lccode and uccode tables
+  <set up hyphenation patterns>
+  \language 1
+  <set up lccode and uccode tables
+  <set up hyphenation patterns>
+   ...
+
+Michael Downes                              mjd@math.ams.com (Internet)
+
+
+------_=_NextPart_001_01C19443.9B26A08C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     {2} Re: {1} Re uppercase problems (was urgent)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>In reply to Yannis mail about uppercasing, Frank =
+wrote</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; 1) If so then: given a &lt;token string&gt; =
+how can we upper (or lower)</FONT>
+
+<BR><FONT SIZE=3D2>&gt; case it while allowing to change uccode table =
+entries in the middle,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; or as a weaker constraint, can we leave out =
+uppercasing for parts od</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &lt;token string&gt;? Michael Downes has done =
+some work in this direction in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the AMS styles, perhaps he can comment =
+here.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For Yannis' benefit in case the AMSLaTeX files are not =
+ready at hand for</FONT>
+
+<BR><FONT SIZE=3D2>him, here is the definition of \uppercasetext@ in =
+amsart.doc.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+%%%%%%%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Now a utility macro to do =
+\verb=3D\uppercase=3D but sidestep any math,</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; to prevent uppercasing math =
+variables.&nbsp; In order to be handled</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; properly the \verb=3D$...$=3D or =
+\verb=3D\(...\)=3D must be on the outer</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; level (not enclosed in =
+braces).&nbsp; We did not try to handle the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; possibility =
+\verb=3D\begin{math}...\end{math}=3D in a title at the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; present time (too =
+complicated).&nbsp; Also we increase inter-word space</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; in the uppercase text.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; One other little problem: =
+uppercasing of a few special characters</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; like the German &quot;ss&quot; =
+and the undotted i and j (\verb=3D\i=3D and</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \verb=3D\j=3D), used sometimes =
+with accents.&nbsp; We redefine to be upper</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; case equivalents. (Undotted =
+\verb=3D\i=3D and \verb=3D\j=3D in math would</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; be typed as \verb=3D\imath=3D and =
+\verb=3D\jmath=3D.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Note the extra level of braces to =
+localize changes:</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\def\uppercasetext@#1{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; {\spaceskip1.3\fontdimen2\the\font =
+plus1.3\fontdimen3\the\font</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\upchars@\skipmath@#1$\skipmath@$}}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\upchars@{\def\ss{SS}\let\i=3DI\let\j=3DJ\let\ae\AE\let\oe\O=
+E</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \let\o\O\let\aa\AA\let\l\L}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT =
+SIZE=3D2>\def\skipmath@#1$#2${\skipmath@b#1\(\skipmath@b\)%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\ifx\skipmath@#2\else$#2$\expandafter\skipmath@\fi}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\def\skipmath@b#1\(#2\){\uppercase{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\ifx\skipmath@b#2\else\(#2\)\expandafter\skipmath@b\fi}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT =
+SIZE=3D2>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=
+%%%%%%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One part of the task is to avoid uppercasing math =
+formulas; however,</FONT>
+
+<BR><FONT SIZE=3D2>another complication can be seen in \upchars@ which =
+changes the</FONT>
+
+<BR><FONT SIZE=3D2>definitions of some character-producing macros. This =
+seems relevant to</FONT>
+
+<BR><FONT SIZE=3D2>Yannis' problem since his active characters can be =
+considered</FONT>
+
+<BR><FONT SIZE=3D2>character-producing macros; but with the property =
+that they can be</FONT>
+
+<BR><FONT SIZE=3D2>affected by \uppercase and \lowercase where ordinary =
+macros cannot. I</FONT>
+
+<BR><FONT SIZE=3D2>therefore suggest the following approach:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Set up your default \uccode and \lccode tables so that =
+all the</FONT>
+
+<BR><FONT SIZE=3D2>active characters have identical uppercase and =
+lowercase codes.</FONT>
+
+<BR><FONT SIZE=3D2>Then make a documentstyle option file called let's =
+say</FONT>
+
+<BR><FONT SIZE=3D2>modcase.sty, containing the following</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\@@uppercase=3D\uppercase</FONT>
+
+<BR><FONT SIZE=3D2>\def\uppercase{\protect\puppercase}</FONT>
+
+<BR><FONT SIZE=3D2>\def\puppercase#1{\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\def\@charcase{u}\@@uppercase{#1}\endgroup}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\@@lowercase=3D\lowercase</FONT>
+
+<BR><FONT SIZE=3D2>\def\lowercase{\protect\plowercase}</FONT>
+
+<BR><FONT SIZE=3D2>\def\plowercase#1{\begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\def\@charcase{l}\@@lowercase{#1}\endgroup}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@charcase{l}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The idea is that an active character will have a =
+definition</FONT>
+
+<BR><FONT SIZE=3D2>like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;\def =
+^^88{\csname\@charcase^^88\endcsname}%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>where the first instance of ^^88 is active and the =
+second is</FONT>
+
+<BR><FONT SIZE=3D2>catcode 11 (letter). (This can be accomplished by a =
+common macro</FONT>
+
+<BR><FONT SIZE=3D2>trick that I can describe in separate mail to =
+Yannis.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I.e., ^^88 will never be changed to a different =
+character by \lowercase</FONT>
+
+<BR><FONT SIZE=3D2>or \uppercase, but it will expand to either \l^^88 or =
+\u^^88 depending</FONT>
+
+<BR><FONT SIZE=3D2>on the current definition of \@charcase, which is =
+switched&nbsp; by</FONT>
+
+<BR><FONT SIZE=3D2>\lowercase or \uppercase.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And then you must create all the default definitions =
+(from the DC font</FONT>
+
+<BR><FONT SIZE=3D2>layout) for \l^^80, \u^^80, ... \l^^ff, \u^^ff. It is =
+easier if you</FONT>
+
+<BR><FONT SIZE=3D2>make these definitions while the catcodes of the =
+characters is 11, not</FONT>
+
+<BR><FONT SIZE=3D2>13:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; Change catcodes of characters =
+128--255 to 11 (letter)</FONT>
+
+<BR><FONT SIZE=3D2>\@tempcnta=3D&quot;80</FONT>
+
+<BR><FONT SIZE=3D2>\loop \catcode\@tempcnta=3D11</FONT>
+
+<BR><FONT SIZE=3D2>\advance\@tempcnta 1</FONT>
+
+<BR><FONT SIZE=3D2>\ifnum\@tempcnta&lt;&quot;100 \repeat</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\l^^80{^^a0} % \u A --&gt; \u a</FONT>
+
+<BR><FONT SIZE=3D2>\def\u^^80{^^80} % uppercase form is unchanged</FONT>
+
+<BR><FONT SIZE=3D2>\def\l^^81{^^a1} % A w Polish hook --&gt; a w Polish =
+hook</FONT>
+
+<BR><FONT SIZE=3D2>\def\u^^81{^^81} % uppercase form is unchanged</FONT>
+
+<BR><FONT SIZE=3D2>.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The definition of \CyrMacCharacters should also be =
+done while catcode =3D</FONT>
+
+<BR><FONT SIZE=3D2>11 for the 8-bit characters. \CyrMacCharacters needs =
+to change the</FONT>
+
+<BR><FONT SIZE=3D2>definitions of \l^^80, \u^^80, but it does not need =
+to modify the</FONT>
+
+<BR><FONT SIZE=3D2>definitions of the active characters at all.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\def\CyrMacCharacters{\protect\pCyrMacCharacters}</FONT>
+
+<BR><FONT SIZE=3D2>\def\pCyrMacCharacters{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \setlanguage\russian % probably something like =
+this</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\l^^88{I}\def\u^^88{I}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The use of \protect as shown here will prevent the =
+problem&nbsp; of</FONT>
+
+<BR><FONT SIZE=3D2>extremely long lines in the .aux file.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There is the question whether redefining \uppercase =
+will cause problems</FONT>
+
+<BR><FONT SIZE=3D2>with other uses by LaTeX of \uppercase. Actually I =
+think the answer is</FONT>
+
+<BR><FONT SIZE=3D2>no, because the primitive \uppercase is performed by =
+the 'stomach' (not</FONT>
+
+<BR><FONT SIZE=3D2>expandable). You will get some probably useless extra =
+computations when</FONT>
+
+<BR><FONT SIZE=3D2>something like \Alph or \Roman is executed, but I =
+don't think they will</FONT>
+
+<BR><FONT SIZE=3D2>actually hurt anything.&nbsp; To minimize the chance =
+of problems, I would</FONT>
+
+<BR><FONT SIZE=3D2>put the `modcase' option last in the documentstyle =
+options list (except</FONT>
+
+<BR><FONT SIZE=3D2>for other options that may be designed to work with =
+`modcase').</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Finally, it would be better if TeX maintained separate =
+uccode and</FONT>
+
+<BR><FONT SIZE=3D2>lccode tables for each language, just as it does with =
+hyphenation</FONT>
+
+<BR><FONT SIZE=3D2>patterns. Then most of this work wouldn't be =
+necessary. Come to think</FONT>
+
+<BR><FONT SIZE=3D2>of it, maybe Knuth already did this? I didn't =
+check---does anyone know</FONT>
+
+<BR><FONT SIZE=3D2>off-hand? The idea would be</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \language 0</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;set up lccode and uccode tables</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;set up hyphenation patterns&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \language 1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;set up lccode and uccode tables</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;set up hyphenation patterns&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Michael =
+Downes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mjd@math.ams.com (Internet)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.9B26A08C--
+

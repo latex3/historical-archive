@@ -1,0 +1,89 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 16 Sep 2008 10:18:10 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8G8I3Jw018876
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 16 Sep 2008 10:18:04 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8G8Br1j018370
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 16 Sep 2008 10:11:54 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8FM14H1032032;
+	Tue, 16 Sep 2008 10:11:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 40907 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 16 Sep
+          2008 10:11:46 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8G8BkCq010037 for <latex-l@listserv.uni-heidelberg.de>;
+          Tue, 16 Sep 2008 10:11:46 +0200
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8G8BVnw029758
+          for <latex-l@listserv.uni-heidelberg.de>; Tue, 16 Sep 2008 10:11:35
+          +0200
+Received: from [139.222.128.187] (helo=ueams04.uea.ac.uk) by
+          mailgate5.uea.ac.uk with esmtp (Exim 4.50) id 1KfVel-00032B-BM for
+          latex-l@listserv.uni-heidelberg.de; Tue, 16 Sep 2008 09:11:31 +0100
+Received: from [139.222.114.14] by ueams04.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1KfVel-000750-8r for latex-l@listserv.uni-heidelberg.de; Tue, 16 Sep
+          2008 09:11:31 +0100
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48CF6A30.3070104@morningstar2.co.uk>
+Date:         Tue, 16 Sep 2008 09:11:28 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Package options
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 16 Sep 2008 08:18:10.0565 (UTC) FILETIME=[C19E4350:01C917D4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5329
+
+Hello,
+
+Having asked about keys, my next question is package options.  I assume
+that the plan is to stick with the user experience of doing
+
+\usepackage[options]{package}
+
+As you probably all know, the current kernel clobbers spaces in
+<options>, and also expands things.  So there are a couple of fixes for
+this, but using them is awkward (they need to be loaded before anything
+that needs them).
+
+I was wondering if it might be an idea to explore how LaTeX3 will handle
+this.  My suggestion would be to create a testing package (lets call it
+l3options), which loads expl3 and sets up some new, experimental option
+handling things:
+
+\UseExplPackage
+\ProvidesExplOption
+...
+
+This would allow higher-level experimental stuff to be written and
+tested, with the expectation that the LaTeX3 kernel would then support
+everything "out of the box".  By completely bypassing the current
+\usepackage routine, you'd avoid any issues with spaces and so on.  For
+testing, this all seems acceptable.
+
+I'd also suggest that the keyval options should work from the word go.
+That of course depends on how keys are handled in the first place!
+-- 
+Joseph Wright
+

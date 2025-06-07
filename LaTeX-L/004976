@@ -1,0 +1,176 @@
+Received: from webgate.proteosys ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 18 Jul 2006 00:36:27 +0200
+Received: by webgate.proteosys (8.13.6/8.13.4) with ESMTP id k6HMaQGj025103
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 18 Jul 2006 00:36:26 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k6HMWLtY009350
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 18 Jul 2006 00:32:22 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k6HM1OXj006893;
+	Tue, 18 Jul 2006 00:32:00 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1288507 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 18 Jul
+          2006 00:31:59 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k6HMVxNp007950 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 18 Jul 2006 00:31:59 +0200
+Received: from pasmtp.tele.dk (pasmtpa.tele.dk [80.160.77.114]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k6HMVqM4009264
+          for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 18 Jul 2006 00:31:55
+          +0200
+Received: from morten.local (0x535d8f08.banxx4.adsl-dhcp.tele.dk [83.93.143.8])
+          by pasmtp.tele.dk (Postfix) with ESMTP id 878B780113B; Tue, 18 Jul
+          2006 00:31:49 +0200 (CEST)
+Content-Type: text/plain; format=flowed; delsp=yes; charset=iso-8859-1
+MIME-Version: 1.0
+References: <44B57B36.2030603@digi21.net>
+Content-Transfer-Encoding: 8bit
+User-Agent: Opera Mail/9.00 (MacPPC)
+Message-ID:  <op.tcut7fuass64je@morten.local>
+Date:         Tue, 18 Jul 2006 00:31:53 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?iso-8859-1?Q?Morten_H=F8gholm?=
+              <morten.hoegholm@LATEX-PROJECT.ORG>
+Subject: Re: Ifs
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <44B57B36.2030603@digi21.net>
+Precedence: list
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.56 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 17 Jul 2006 22:36:27.0879 (UTC) FILETIME=[713EC770:01C6A9F1]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4976
+
+On Thu, 13 Jul 2006 00:44:06 +0200, Javier Múgica de Rivera  
+<javier@DIGI21.NET> wrote:
+
+Hi Javier,
+
+> There is a control secuence named \chk_if_exist_cs:N with the following  
+> definition:
+>
+> \def:Npn \chk_if_exist_cs:N #1 {
+>   \if:w \cs_if_exist_p:N #1
+>   \else:
+>     \err_latex_bug:x{Command~ `\token_to_string:N #1'~
+>                      not~ yet~ defined!}
+>   \fi:}
+>
+> i.e., if the control sequence already exists it does nothing, but \else  
+> an error is issued. The opposite to \chk_if_exist_cs:N is, amazingly,  
+> \chk_new_cs:N,
+>
+> \def:Npn \chk_new_cs:N #1{
+>   \if_meaning:NN #1\c_undefined
+>   \else:
+>     \if_meaning:NN #1\scan_stop:
+>     \else:
+>       \err_latex_bug:x {Command~name~`\token_to_string:N #1'~
+>                             already~defined!~
+>                         Current~meaning:~\token_to_meaning:N #1
+>                       }
+>     \fi:
+>   \fi:
+> %<*trace>
+> some code
+> %</trace>
+> }
+>
+> \chk_if_exist_cs:N does the check via \cs_if_exist_p:N, which reverts  
+> \cs_if_free_p:N, which in turn checks that the cs is undefined and not  
+> literally \c_undefined. But \chk_new_cs:N does not!, and it is the one  
+> actually used to test for free commands when new-defining something, so  
+> that something like \def_new:Npn\c_undefined{whatever} would work, and  
+> it shouldn't.
+
+It certainly shouldn't! Thanks for pointing this out. I have changed the  
+function \chk_new_cs:N to follow the logic of only allowing to define a  
+control sequence if it is either undefined, \relax, and also textually  
+different from \c_undefined and \scan_stop:.
+
+> It also happens that all the tests purposed to see if a cs is free, they  
+> test for equality with both \c_undefined and \scan_stop: (\relax). The  
+> logical equivalence of a cs equal to \scan_stop: to a undefined cs is  
+> due to the fact that \expandafter\ifx\csname foo\endcsname creates the  
+> control sequence, and lets it equal to \relax, as we all know, and also
+> it was common to ``undefine'' a cs by \let\foo\relax. Now we can  
+> undefine via \let\foo\c_undefined (the control sequence \c_undefined is  
+> the most tricky trick I've ever seen. It would have been nice if we had  
+> known it from the begining) and test for the inexistence of a cs with  
+> etex \ifdefined and \ifcsname without creating it, so there is no reason  
+> why to think about someting equal to \scan_stop: as a free cs.
+
+Unfortunately it is not quite that simple. How can \def_new:Npn or any  
+other function for that matter know how the control sequence to be defined  
+has been passed on to it? Answer is it can't. It would be very impractical  
+if
+   \def_new:Npn \foo{}
+and
+   \def_new:cpn {foo}
+were not identical.
+
+There is only one sure-fire way to make to prevent a \cs:w ... \cs_end:  
+operation from turning the control sequence into \scan_stop: and that is  
+by introducing grouping which can then restore the meaning to undefined  
+after ending the group. For example you could do
+
+   \def:Npn \exp_args:Nc #1#2{
+     {\exp_after:NN } \exp_after:NN#1  \cs:w #2\cs_end:
+   }
+
+This of course renders the whole operation non-expandable and so we are  
+faced with choosing the lesser of two evils. This is also why IMO the  
+\ifdefined primitive is of limited use because the token may very well  
+have been created by \cs:w ... \cs_end: at an earlier step in the  
+processing so you always have to do an additional check for \relax. With  
+the expansion mechanism used in the expl3 code base this is particularly  
+important.
+
+On the other hand the \ifcsname primitive can be used in situations where  
+you know the control sequence in question is guaranteed to not have been  
+defined by accident elsewhere. An example from l3xref, where the property  
+list storing all information for a label is never entered directly as a  
+single token so not reason to create an extra entry in the hash table:
+
+\def_new:Npn \xref_get_value:nn #1#2 {
+   \cs_if_really_free:cTF{g_xref_#2_plist}
+   {??}
+   {
+%    \end{macrocode}
+% This next expansion may look a little weird but it isn't if you
+% think about it!
+%    \begin{macrocode}
+     \exp_args:Ncc \exp_after:NN
+     {xref_get_value_#1_aux:w}{g_xref_#2_plist}
+     \q_nil
+   }
+}
+
+> There exist \if_really_free... that do these tests. In my opinion these  
+> should be the normal \cs_if_free..., and nothing with the extrange names  
+> \if_really_free... should exist. So my point of view is:
+> 1. All tests that finally use tex \ifx for free-cs testing should be  
+> replaced by \if_cs_exist:N and \if_cs_exist:w (\ifdefined and \ifcsname)
+> 2. A control sequence equal to \relax being equivalent to a free control  
+> sequence is an accident of the past we should commpletely forget about.
+
+I disagree on both points for the reasons given above. I'm well aware that  
+the "really_free" name is bad but I couldn't think of anything better at  
+the time... I'm open to suggestions! :-)
+
+> p.s. I also thik that names for testing if a certain condition is true  
+> or false should always contain ``if'' to avoid confusion.
+
+I think I wrote a similar comment in the sources somewhere a while ago.  
+Anything that tests a certain condition should probably have a name  
+containing "if".
+-- 
+Morten
+

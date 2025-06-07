@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil t nil nil nil nil nil]
+	["3350" "Wed" "22" "October" "1997" "12:01:46" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "62" "Re: LaTeX Syntax (Was: \\@ifdefinable)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id TAA25115;
+	Wed, 22 Oct 1997 19:39:04 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.9D96926F@listserv.gmd.de>; Wed, 22 Oct 1997 19:39:03 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 220875 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 22 Oct 1997 19:38:55 +0200
+Received: from post.mail.demon.net (post-10.mail.demon.net [194.217.242.154])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id TAA19420
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Wed, 22 Oct 1997 19:38:53
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by post.mail.demon.net
+          id aa1022556; 22 Oct 97 17:30 BST
+Received: by dcarlisle.demon.co.uk id m0xNyXq-000OXrC (Debian Smail-3.2
+          1996-Jul-4 #2); Wed, 22 Oct 1997 12:01:46 +0100 (BST)
+Message-ID:  <m0xNyXq-000OXrC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110701b073767a877c@[130.237.37.76]> (message from Hans Aberg
+              on Wed, 22 Oct 1997 11:44:19 +0200)
+Date:         Wed, 22 Oct 1997 12:01:46 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX Syntax (Was: \@ifdefinable)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2502
+
+>  This makes only sense if the syntax LaTeX is published and official, and
+> not only used as an internal guiding line for LaTeX developers.
+
+For L2, the syntax for `document authoring' is more or less published
+and official, namely mandatory arguments in {}, optional arguments in
+[], option lists comma separated and environments in \begin\end.
+(With a note in Leslie's book somewhere to the effect that experts may
+sometimes abbreviate a single token mandatory argument by missing off
+the {}).
+
+The syntax and structure of the programmers interface in L2 is, as you
+know, rather less clear. 2e tried at least to document some explicit
+interfaces such as the package/option handling stuff and the font
+declarations, and also converted all the source code comments to `doc'
+format. (But as much of that conversion was automatic from the
+original ascii comments, it is not always beautiful or as well
+structured as you might hope).
+
+In a new system one would hope to do rather better and document the
+structure and syntax of all the programmers commands, and give
+guidelines so people know what syntax conventions to follow for new
+commands. ie people don't have to read through 550 pages of
+source2e.dvi to discover the for-loop \@for, (and to discover it has a
+strange `:=' separated argument structure quite unlike the rest of
+latex) However it really is only feasable to do that for a completely
+new system. If you build on the current system (as we did for 2.09 ->
+2e) then you gain in keeping existing users more or less happy, but
+you lose by keeping a large quantity of basically undocumentable
+coding conventions that have built up over time.
+
+>  I really think that a better syntax would help mathematical authoring. I
+> use it myself. For example, one can use name overloading,
+
+You can, but as I say that makes it difficult (perhaps) to convert the
+source to something else. A common requirement these days is to take
+latex math markup and try to force it into some other system, maybe
+MathML or some other web math DTD, or a symbolic algebra package such
+as mathematica or maple etc. If latex package authors add () delimited
+arguments, or other variations then it makes such uses increasingly
+difficult. Of course a specific extension to support ( ) delimited
+arguments could probably be easily accommodated, what is harder is to
+support arbitrary argument syntax, in the style of \def\foo#1[#2\par#3#{}
+so having some command defining mechanism, more general than
+\newcommand but more restrictive than \def may be a good thing.
+
+>  So now you are saying that tools that are supposed to simplify LaTeX
+> authoring, in fact may make it more difficult...
+
+That is of course a fact of life:-) but the systems I am thinking about
+are not primarily for *authoring* latex (gnu emacs being the one true
+authoring system). They are *consumers* of latex. SW will parse a latex
+math expression written `by hand' and pass it to maple to be
+evaluated, but you need to give it a chance by not making arbitrary
+syntax changes.
+
+I am not saying that such systems have total control over latex
+development, but I think that any discussion of syntax proposals needs
+to bear in mind such issues as conversion to other formats, not just
+be viewed as a matter of convenience for author markup for the `traditional'
+edit->tex->preview->print cycle.
+
+David
+

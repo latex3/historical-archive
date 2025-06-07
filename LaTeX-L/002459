@@ -1,0 +1,101 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2261" "Tue" "14" "October" "1997" "10:45:38" "+0100" "Sebastian Rahtz" "s.rahtz@ELSEVIER.CO.UK" nil "58" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id LAA18074;
+	Tue, 14 Oct 1997 11:50:51 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.E0CAD6AD@listserv.gmd.de>; Tue, 14 Oct 1997 11:50:49 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 214927 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 11:50:42 +0200
+Received: from pillar.elsevier.co.uk (root@pillar.elsevier.co.uk
+          [193.131.222.35]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id LAA18105 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14
+          Oct 1997 11:50:36 +0200 (MET DST)
+Received: from snowdon.elsevier.co.uk (snowdon.elsevier.co.uk
+          [193.131.197.164]) by pillar.elsevier.co.uk (8.8.5/8.8.5) with ESMTP
+          id KAA14499 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14 Oct
+          1997 10:49:35 +0100 (BST)
+Received: from SRAHTZ (actually host srahtz.elsevier.co.uk) by
+          snowdon.elsevier.co.uk with SMTP (PP); Tue, 14 Oct 1997 10:49:51 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199710132045.VAA09228@frank.zdv.uni-mainz.de>
+            <Pine.SUN.3.91.971013171701.6633A-100000@planck>
+X-Mailer: VM 6.33 under Emacs 19.34.6
+Message-ID:  <2749-Tue14Oct1997104538+0100-s.rahtz@elsevier.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <Pine.SUN.3.91.971013171701.6633A-100000@planck>
+Date:         Tue, 14 Oct 1997 10:45:38 +0100
+From: Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2459
+
+ > Maybe BibTeX-like syntax will work, i.e. something like \author{Albert
+ > Einstein} and \author{Einstein, Albert} would produce same output
+ > determined *only* by house class?  Then house classes could process
+ > \author declarations and extract, if required, both Albert Einstein in
+ > title page and A.~Einstein in the running head?
+ >
+ > Actually BibTeX has a very subtle algorithm of dealing with author names;
+ > I think it is possible to reimplement it in TeX for journal styles.
+
+While I (sort of) admire BibTeX's system for second-guessing surnames,
+I have always found it confusing as an author, and as a processor of
+other peoples .bib files. I think a clean separation into surname and
+other bits is better. That does not mean you cannot give a simple case
+like
+
+ \author{name=Sebastian Rahtz}
+
+and have it parsed easily by TeX as if you had typed
+
+ \author{surname=Rahtz, forenames=Sebastian Patrick Quintus} [1]
+
+but it goes further than that, doesn't it. some styles will need to
+suppress that to S.P.Q., others want the full name. you cannot always
+work out that initial compression easily, by the way - people called
+Christian sometimes like to be be abbreviated Chr.
+
+and where do i put my qualifications?
+
+ \author{surname=Rahtz, forenames=Sebastian Patrick Quintus,title=Mr,
+    qualification="AJFL"} [2]
+
+can that be done as ?
+
+  \author{name={Mr Sebastian Rahtz, AJFL}}
+
+not easily, because you have to implement *masses* of bibtex functionality!
+One approach would be to use BibTeX itself to do the parsing, if you
+want something complicated - the production style could write the key
+values out to a .bib file and call up BibTeX with a special
+style. well, thats up to the implementor of the production class.
+
+my (unhappy) proposal would be  that we allow a full form, and a short
+form. the `correct' form is to put:
+
+ \author{surname=Rahtz, forenames=Sebastian Patrick Quintus,title=Mr,
+    qualification="AJFL", initials=S.P.Q.} [2]
+
+(incidentally, the Elsevier SGML DTD allows even more than this);
+but in a simple case
+
+ \author{name=Sebastian Rahtz, AJFL}
+
+will also work. then the production class has to do some hard work.
+
+Sebastian
+
+[1] just for those of you who ask me occasionally
+[2] a prize if you can guess the meaning
+

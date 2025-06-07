@@ -1,0 +1,259 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D3C4CE4C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:48 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D3C4CE4C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      environment error recovery
+Date: Wed, 22 Aug 1990 10:40:20 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1F2@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <PZF5HZ@RUIPC1B.bitnet>
+To: "Rainer Schoepf" <BK4@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 228
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D3C4CE4C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+I spend some time in thinking about a correct way to implement
+error recovery and believe that I now have something which could
+be called a prototype implementation. I will pass it around in a
+separate message.
+A few point to this implementation:
+
+  1) It is not polished in any respect it is not even documented
+     I don't think that it will survive. What I like you to test is
+     whether the algorithms used, are correct.
+
+  2) It will run as a style file within the current LaTeX. This means
+     that it uses, e.g., \itemize and \enditemize as the internal
+     environment names which will not be the case in the final
+     new version.
+
+  3) If we are going to allow things like footnote etc. in environment
+     form it is necessary to change to something different than
+     \footnote as a starter. There has been some discussion a while ago
+     about how to name the internal environments, I would propose to
+     use simply a new character as a letter, for example _ and make it
+     \s_footnote and \e_footnote or something similar. the footnote
+     macro can then be defined as
+        \def\footnote#1{\s_footnote#1\e_footnote}
+     or, to make a check for missing ends as
+        \def\footnote#1{\inner_begin\s_footnote#1\inner_end\e_footnote}
+
+  4) There is one thing that is left open in the implementation:
+     the question whether we will provide commands that are only
+     allowed at the outer level of environments. Something like
+     the \outer primitive on LaTeX level. The reason for such commands
+     is that they can catch problems of forgotten end tags that will
+     otherwise produce error which are very difficult to track down.
+     Take for example a \begin{figure} without an \end. LaTeX will
+     typeset stuff into the figure until it will run out of space
+     and depending on the TeX version this can be a few chapters later.
+     So making, for example, section command to pop the environment
+     stack would prevent those problems. On the other hand it would
+     make it difficult to allow them in userdefined environments.
+     Any suggestions and proposals?
+
+Another point: Michael said I should assign work to people, I would
+like to but I think this is hard to do without some response from
+you.
+
+***************************************************************
+* So anybody please send me his opinion to Michaels proposal
+* regarding his/her person and time.
+***************************************************************
+
+For Michael, please try the implementation against some real life
+documents, testing running time, finding bugs and or differences.
+I don't know whether it will run with the amstex.sty so this is
+another question of interest. (Certainly the \@aligningtrue has
+to be set in a few places)
+
+
+
+Frank
+
+
+------_=_NextPart_001_01C19442.D3C4CE4C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     environment error recovery</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>I spend some time in thinking about a correct way to =
+implement</FONT>
+
+<BR><FONT SIZE=3D2>error recovery and believe that I now have something =
+which could</FONT>
+
+<BR><FONT SIZE=3D2>be called a prototype implementation. I will pass it =
+around in a</FONT>
+
+<BR><FONT SIZE=3D2>separate message.</FONT>
+
+<BR><FONT SIZE=3D2>A few point to this implementation:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; 1) It is not polished in any respect it is not =
+even documented</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; I don't think that it will =
+survive. What I like you to test is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; whether the algorithms used, =
+are correct.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; 2) It will run as a style file within the =
+current LaTeX. This means</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; that it uses, e.g., \itemize =
+and \enditemize as the internal</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; environment names which will =
+not be the case in the final</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; new version.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; 3) If we are going to allow things like =
+footnote etc. in environment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; form it is necessary to =
+change to something different than</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \footnote as a starter. =
+There has been some discussion a while ago</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; about how to name the =
+internal environments, I would propose to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; use simply a new character =
+as a letter, for example _ and make it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \s_footnote and \e_footnote =
+or something similar. the footnote</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; macro can then be defined =
+as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\def\footnote#1{\s_footnote#1\e_footnote}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; or, to make a check for =
+missing ends as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\def\footnote#1{\inner_begin\s_footnote#1\inner_end\e_footnote}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; 4) There is one thing that is left open in the =
+implementation:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the question whether we will =
+provide commands that are only</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; allowed at the outer level =
+of environments. Something like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the \outer primitive on =
+LaTeX level. The reason for such commands</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; is that they can catch =
+problems of forgotten end tags that will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; otherwise produce error =
+which are very difficult to track down.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Take for example a =
+\begin{figure} without an \end. LaTeX will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; typeset stuff into the =
+figure until it will run out of space</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; and depending on the TeX =
+version this can be a few chapters later.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; So making, for example, =
+section command to pop the environment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; stack would prevent those =
+problems. On the other hand it would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; make it difficult to allow =
+them in userdefined environments.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Any suggestions and =
+proposals?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Another point: Michael said I should assign work to =
+people, I would</FONT>
+
+<BR><FONT SIZE=3D2>like to but I think this is hard to do without some =
+response from</FONT>
+
+<BR><FONT SIZE=3D2>you.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>***************************************************************<=
+/FONT>
+
+<BR><FONT SIZE=3D2>* So anybody please send me his opinion to Michaels =
+proposal</FONT>
+
+<BR><FONT SIZE=3D2>* regarding his/her person and time.</FONT>
+
+<BR><FONT =
+SIZE=3D2>***************************************************************<=
+/FONT>
+</P>
+
+<P><FONT SIZE=3D2>For Michael, please try the implementation against =
+some real life</FONT>
+
+<BR><FONT SIZE=3D2>documents, testing running time, finding bugs and or =
+differences.</FONT>
+
+<BR><FONT SIZE=3D2>I don't know whether it will run with the amstex.sty =
+so this is</FONT>
+
+<BR><FONT SIZE=3D2>another question of interest. (Certainly the =
+\@aligningtrue has</FONT>
+
+<BR><FONT SIZE=3D2>to be set in a few places)</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>Frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D3C4CE4C--
+

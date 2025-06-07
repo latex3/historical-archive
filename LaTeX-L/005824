@@ -1,0 +1,175 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 6 Aug 2009 08:24:12 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n766OB19021858
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 6 Aug 2009 08:24:11 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n766Kfod021449
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 6 Aug 2009 08:20:42 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n75M1spv001169;
+	Thu, 6 Aug 2009 08:20:40 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285578 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 6 Aug
+          2009 08:20:40 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n766Keep006415 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 08:20:40 +0200
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n766KNR0020925 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 6 Aug 2009 08:20:27 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1MYwKt-0004B2-om for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 06 Aug
+          2009 06:20:23 +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A7921CF.5020803@morningstar2.co.uk>
+            <4A7A1505.4040604@residenset.net>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4A7A762A.3040105@morningstar2.co.uk>
+Date:         Thu, 6 Aug 2009 07:20:26 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: xparse
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A7A1505.4040604@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Aug 2009 06:24:12.0317 (UTC) FILETIME=[838B6CD0:01CA165E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5824
+
+Hello Lars,
+
+I've answered a lot of things as follow-ons from Will's comments.  Some
+that make most sense here.
+
+>> As promised yesterday, I'd like to discuss finalising xparse. 
+> [snip]
+>> Several questions have come up about xparse.  At the most basic level,
+>> the idea of using something like xparse rather than \def 
+> 
+> Well, it's more a replacement for \newcommand and friends than for \def...
+
+True: in which case the syntax needs to be explainable to normal users.
+(My point about \def was that xparse does things \newcommand can't, and
+that all functions are \protected).
+
+>> The idea here is that it makes LaTeX syntax
+>> more "regular", useful for translation to other formats.  I think he's
+>> right, but wonder how others see it.  The current xparse allows both
+>> space-skipping and non-space-skipping tests.  I'd certainly say we
+>> should go with only one: either spaces are allowed or they are not.
+> 
+> Since TeX always skips spaces (i) after control sequences whose names
+> consist of letters and (ii) in front of a mandatory argument, the only
+> possibility if you want to make it more "regular" for non-TeX parsers is
+> to skip spaces in front of all kinds of argument. I think that is the
+> wrong way to go however, as it increases the risk of LaTeX grabbing text
+> that isn't arguments.
+
+Yes, the space-skipping of TeX does limit us. My take is to go the other
+way: don't skip any spaces we can avoid skipping (so it's only the first
+argument where the issue arises).
+
+>> Finally, the question about expandability of \IfNoValue has been asked
+>> before.  As \DeclareDocumentCommand only ever makes \protected
+>> functions, I don't think we need to worry.  The idea is that the NoValue
+>> test should be done "early":
+>>
+>> \DeclareDocumentCommand \foo { o m } {
+>>   \IfNoValueTF {#1} {
+>>     \int_function_one:n {#2}
+>>   }{
+>>     \int_function_two:nn {#1} {#2}
+>>   }
+>> }
+>>
+>> and not in the internal functions.  So the test can never be expanded,
+>> and there is not an issue (I hope).
+> 
+> There's quite a lot which is wrong with that. First, you presume that
+> optional arguments are mostly a method of combining two
+> implementation-level commands into one user-level command; in that
+> particular case, it would probably be easier to just expose
+> \int_function_one:n and \int_function_two:nn separately. Second, you
+> assume that the \IfNoValueTF test will happen close to the command which
+> takes an optional argument (otherwise protection status becomes
+> irrelevant), but a great advantage of \NoValue is that it can be passed
+> around without syntactic difficulties, so the actual test might happen
+> in a distant helper macro or even completely separate from the \foo
+> command (if the argument is stored away in a token list). Finally,
+> you're thinking too imperatively about the whole thing, thus discarding
+> the possibility of performing such tests at expand-only time.
+> 
+> The following is a short extract from some code I've been using for
+> years, and which occurs entirely within a \protected@edef. Here, I'd
+> like to switch the idiom "\ifx\NoValue#1\@empty" to ”\IfNoValueTF{#1}":
+> 
+>       \LevelSorted{%
+>          #4 \ifx \NoValue#1\@empty
+>             \TD@namespace
+>          \else
+>             \TD@convert@colons #1::\relax
+>          \fi
+>       }{%
+>          \texttt{#3}%
+>          \ifx \NoValue#5\@empty \else\space(#5)\fi, %
+>          \ifx \NoValue#1\@empty
+>             \texttt{\TD@namespace} %
+>          \else\ifx $#1$%
+>             global %
+>          \else
+>             \texttt{\TD@convert@colons #1::\relax} %
+>          \fi\fi \namespacephrase
+>       }%
+> 
+> Good luck rewriting that in imperative style, as a non-expandable
+> \IfNoValueTF would require (and you seem to prefer!!). Mind you, this is
+> maybe a third of the full thing being \edef'ed...
+
+The reason I said this was that my reading of the xparse
+documentation/idea is that it is supposed to be used only to make
+"wrapper" macro.  Everything else is meant to be handed off to
+well-defined internals. As I understand it, you are no supposed to hand
+\NoValue "along": it is not meant to escape from the code you define
+directly using xparse. So if you want to send an marker value or
+something through, you do it explicitly:
+
+\IfNoValueTF {#1} {
+  \int_function:n { \q_no_value } % use \quark_if_no_value:n test later
+}{
+  \in_function:n {#1}
+}
+
+(If we could risk using a quark directly, this would not be an issue,
+but it is pretty clear we can't.)
+
+That said, in xparse-alt I've used an alternative implementation that
+makes \IfNoValueTF expandable with newer engines (it uses \(pdf)strcmp).
+The test is not as clever at the current one, but does have this
+distinct advantage. (I'd much prefer an expandable test, as it leaves
+the programmer freedom to do what they feel is best.)
+
+I guess we need to be clear on what is supposed to happen with \NoValue.
+ I'd be keen to know how other people see this.
+-- 
+Joseph Wright
+

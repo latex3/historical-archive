@@ -1,0 +1,102 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 22 Oct 2009 22:28:51 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n9MKSofp022984
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 22 Oct 2009 22:28:50 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n9MKPuWG002721
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Oct 2009 22:25:57 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n9MJBjL6017657;
+	Thu, 22 Oct 2009 22:25:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 359342 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Oct
+          2009 22:25:46 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n9MKPk9M030586 for <latex-l@listserv.uni-heidelberg.de>;
+          Thu, 22 Oct 2009 22:25:46 +0200
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id n9MKPORc014965 for <latex-l@listserv.uni-heidelberg.de>;
+          Thu, 22 Oct 2009 22:25:27 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1N14Dr-0004XW-mK for latex-l@listserv.uni-heidelberg.de; Thu, 22 Oct
+          2009 20:25:24 +0000
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4AE0BFB3.7080905@morningstar2.co.uk>
+Date:         Thu, 22 Oct 2009 21:25:23 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: xparse processors
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Oct 2009 20:28:51.0583 (UTC) FILETIME=[448C78F0:01CA5356]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6106
+
+Hello all,
+
+A while ago, there was some discussion about the xparse modifications. 
+One idea that probably still needs a bit of thought is the "processors" 
+code. As a reminder, a processor acts on an argument grabbed by xparse 
+before passing to to the code implementing a function:
+
+\DeclareDocumentCommand \foo { >{\Processor} m } {
+   Code including a processed #1
+}
+
+Currently, we have the idea:
+
+ >{ \SomeFunction }
+
+where \SomeFunction should take one argument and return the result in 
+\l_xparse_arg_toks. The processor simply has to absorb one argument, but 
+does not have to be a single token. Lars pointed out that this requires 
+\SomeFunction to be specially "crafted" for xparse, which might not be 
+desirable.
+
+One alternative would be to include the name of the return variable in 
+the argument:
+
+ > { \SomeFunction } \ReturnVariable
+
+or
+
+ > \ReturnVariable { \SomeFunction }
+
+This would allow things like:
+
+ > \ReturnVariable { \MakeHarmless\ReturnVariable }
+   % Will absorb one more argument, as required
+
+(using \MakeHarmless from xdoc). That doesn't work at present as the 
+return has to be in a toks.
+
+As Lars points out, that is quite a bit more flexible at the cost of a 
+little complexity in the syntax. The other alternative is to avoid a 
+return variable entirely, but I'm not sure that is universally 
+applicable (a processor cannot be assumed to be expandable).
+
+This is one thing I'd hope we can tie down in xparse one way or the 
+other soon. Does anyone else have ideas for this?
+--
+Joseph Wright
+

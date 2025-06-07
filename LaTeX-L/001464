@@ -1,0 +1,167 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3912" "Tue" " 8" "February" "1994" "14:55:56" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402081501.AA24242@quepasa.cs.tu-berlin.de>" "134" "Re: A philosophical question about packages and options" "^Date:" nil nil "2" "1994020814:55:56" "A philosophical question about packages and options" nil nil])
+Return-Path: <owner-latex-l%VM.URZ.UNI-HEIDELBERG.DE@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09190; Tue, 8 Feb 94 20:16:59 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA20338; Tue, 8 Feb 94 20:16:03 +0100
+Received: from quepasa.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA24092
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Tue, 8 Feb 1994 20:08:58 +0100
+Received: from tubvm.cs.tu-berlin.de by quepasa.cs.tu-berlin.de with SMTP id AA24242
+  (5.65c8/IDA-1.4.4(fallback.m4[1.7]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 16:01:12 +0100
+Message-Id: <199402081501.AA24242@quepasa.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 7041; Tue, 08 Feb 94 16:01:00 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 7039; Tue,
+ 8 Feb 1994 16:00:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 2906; Tue,
+ 8 Feb 1994 16:00:14 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 8 Feb 1994 14:55:56 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: A philosophical question about packages and options
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1464
+
+%>Date:          Tue, 8 Feb 1994 14:08:55 GMT
+%>Reply-to:      Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.EARN>
+%>From:          David Carlisle <carlisle@computer-science.manchester.ac.uk>
+%>Subject:       Re: A philosophical question about packages and options
+%>To:            Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.EARN>
+
+%>
+%>Mike> \usepackage[mjplet]{somas}
+%>Mike> where mjplet is an option that modifies the behaviour of somas.
+%>Mike> However, presumably I can't do that
+%>
+%>Despite some reports to the contrary, the LaTeX3 team are not trying
+%>to stop you doing anything:-)
+%>
+%>somas.sty
+%>can look like this
+%>
+%>\DeclareOption{no-logo}{code to suppress PS dept log}
+%>\DeclareOption{someoption}{code to do something}
+%>...
+%>...
+%>\DeclareOption*{%
+%>  \InputIfFileExists{\CurrentOption.pls}%
+%>  {}% input the Personal  Letter Style dont do anything else
+%>  {\@unknownoptionerror}% If a .pls file is not there, complain
+%>  }
+%>
+%>Then each person can put their personal customisations in a file
+%>name.pls
+%>
+%>and \usepackage[name]{somas}
+%>works as requested.
+%>
+%>Actually it might be better to make somas into a class rather than a
+%>package (it can \LoadClass{letter})
+%>
+%>David
+%>
+Alan Jeffrey just suggested something similar. But there were two problems.
+
+1) somas.sty was loaded from another directory rather than somas.cls from the
+current directory.
+
+2) I then tried:
+
+%somas.sty
+\ProvidesPackage{somas}
+\DeclareOption*{%
+   \InputIfFileExists{\CurrentOption.clo}{}{\OptionNotUsed}%
+}
+\endinput
+
+
+
+%mjplet.clo
+\name{Dr M. J. Piff}       % In letterhead
+\signature{M. J. Piff}  % at end of letter
+\telephone{(0742)~824431 (direct)\\824366/7 (secretaries)}
+\extension{}
+\fax{}
+\email{M.Piff@shef.ac.uk}
+\oddsidemargin0in
+\textwidth6.25in
+
+
+and
+
+
+\documentclass[12pt]{letter}
+\usepackage[mjplet]{somas}
+\begin{document}
+
+\end{document}
+
+
+
+and got
+
+
+
+This is emTeX (tex386), Version 3.1415 [3c-beta10] (preloaded format=latex2e
+94.2.7)  8 FEB 1994 14:32
+**&latex2e test
+(test.tex
+LaTeX2e <1994/02/03> PRELIMINARY TEST RELEASE
+(l:/latex2e/letter.cls
+Standard Document Class `letter' <1994/02/03>.
+(l:/latex2e/size12.clo)
+\longindentation=\dimen104
+\indentedwidth=\dimen105
+\labelcount=\count83
+) (somas.sty)
+LaTeX error.  See LaTeX manual for explanation.
+              Type  H <return>  for immediate help.
+! Unknown option `mjplet' for package `somas'.
+\@latexerr ...lines \m@ne \errmessage {#1}
+                                          \endgroup
+l.3 \begin
+          {document}
+?
+(l:/latex2e/test.aux)
+Font Note: Check substitution defaults for T1/cmr/m/n on input line 3.
+Font Note: ... okay on input line 3.
+Font Note: Check substitution defaults for OT1/cmr/m/n on input line 3.
+Font Note: ... okay on input line 3.
+Font Note: Check substitution defaults for OML/cmm/m/it on input line 3.
+Font Note: ... okay on input line 3.
+Font Note: Check substitution defaults for OMS/cmsy/m/n on input line 3.
+Font Note: ... okay on input line 3.
+Font Note: Check substitution defaults for OMX/cmex/m/n on input line 3.
+Font Note: ... okay on input line 3.
+Font Note: Check substitution defaults for U/cmr/m/n on input line 3.
+Font Note: ... okay on input line 3.
+ )
+Here is how much of TeX's memory you used:
+ 123 strings out of 56436
+ 1065 string characters out of 216204
+ 39109 words of memory out of 262143
+ 2603 multiletter control sequences out of 10000
+ 3938 words of font info for 15 fonts, out of 81920 for 254
+ 0 hyphenation exceptions out of 607
+ 22i,1n,21p,149b,38s stack positions out of 300i,100n,60p,5000b,1000s
+
+No pages of output.
+
+
+
+What am I doing wrong now?
+
+Mike
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,118 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3349" "Tue" "14" "October" "1997" "14:34:13" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "82" "Re: frontmatter 98" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id SAA13269;
+	Tue, 14 Oct 1997 18:58:31 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.9EABB05C@listserv.gmd.de>; Tue, 14 Oct 1997 18:58:28 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 215099 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 18:58:19 +0200
+Received: from punt-2.mail.demon.net (punt-2d.mail.demon.net [194.217.242.9])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id SAA16723
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 14 Oct 1997 18:58:12
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id aa0628449; 14 Oct 97 17:25 BST
+Received: by dcarlisle.demon.co.uk id m0xL76z-000OWXC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 14 Oct 1997 14:34:13 +0100 (BST)
+Message-ID:  <m0xL76z-000OWXC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <1622-Tue14Oct1997113530+0100-s.rahtz@elsevier.co.uk> (message
+              from Sebastian Rahtz on Tue, 14 Oct 1997 11:35:30 +0100)
+Date:         Tue, 14 Oct 1997 14:34:13 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: frontmatter 98
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2468
+
+Sebastian
+
+> If any part of fm98 ... uses keyword=value, then we might as use it
+> for *everything*.
+
+Well I agree with that (and probably agree with using that kind of
+syntax in general) but I think that in the *everything* I quote above
+you meant `everything in the front matter'.
+
+One reason I didn't use KV in the fmatter package I sketched before
+was the belief that if you can pursuade authors that they should
+use
+\author{MothersMaidenName=Willingham,forename=David,
+ MiddleNameButIDontUseItMuch=Paul,surname=Carlisle}
+
+then they might want to start using
+
+\section{level=C,tocheading=this,runninghead=that,maintitle=the other}
+
+or 1001 other possible extensions. In that case the project is no
+longer about coming up with a frontmatter specification but re-writing
+the whole of latex to use named arguments. That isn't a bad idea,
+but it's probably a different project, one in fact that is not totally
+unrelated to this list...
+
+In a similar vein
+
+> the keyval approach has the great
+> advantage that she need not commit herself immediately to what all
+> those tags are
+
+You don't have to use KV to get that. Using the undef.sty package I
+posted, the fmatter classes can define any new command. Any class that
+does not define that command will skip past the undefined command (and
+any {} or [] arguments) with just a warning message, no error
+generated).
+
+However to assume (for now) we go with a keyvalue syntax, you say
+
+> We don't want to repeat address Y, do we?
+
+If this was only aimed at TeX there would be an obvious solution since
+TeX has quite a powerful macro facility built in:
+
+\newcommand\addrone{a\\long\\full\postal\\address}
+
+\author{name=Me, address=\addrone}
+\author{name=You, address=\addrone}
+
+If you allow TeX expansion on the key values, then you can have any
+amount of saving of keystrokes without the frontmatter system building
+in an explicit cross referencing scheme.
+
+Possibly though you would want to discourage the use of such general
+macro definitions in the front matter and restrict the possibilities,
+either so the frontmatter could be viewed as a general database markup
+without running it through TeX, or because you just want to easily
+check the author isn't doing anything too horrible
+(\renewcommand\section......). In that case some (all?) keys would
+need some cross referencing scheme as you sketched.
+
+> do we simply add more and
+> more keys to \author, to cover such situations?
+
+I don't think you can catch all uses. You will need some kind of
+generic `note' key analogous to the dreaded \thanks. If every class
+comes up with a new specific key for special combinations of temporary
+address then it will once again become hard to share documents between
+journal classes. For most purposes it would be sufficient to have
+a `temporary address' key with some kind of attatched note to say
+`study leave' or `on a visiting KJFJD fellowship' or whatever.
+
+If one class defines a new key for `addresses of KJFD visitors'
+then other class files are not even going to recognise that as an
+address at all, and will have to just ignore it. Whereas a general
+address key with an attatched note is more useable. This is assuming
+you are trying to make documents out of this. If you want to do a
+database lookup to find all KJFD scholars over the past decade then
+having a key for it would help, rather.
+
+
+David
+

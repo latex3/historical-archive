@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 11 May 90 10:48:58 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 99
+
+Roswitha made some interesting remarks about basic
+parameters that designers need to change in design.  I
+would urge everybody who is on this list to specify
+what parameters are necessary in his/her opinion.
+
+Another topic: Many people told me that they would like
+to see the logical tags in LaTeX support some sort of
+attribute concept.  In my opinion this is really an
+important feature which is missing or nearly missing in
+the current LaTeX.  Some sort of attributes are
+supported by variant forms of certain commands, think
+of optional arguments and star forms.  But in general
+the used scheme is not powerful enough.  Standard
+styles, for example, support three kind of lists but
+the layout of the list is fixed.  It seems worthwhile
+to consider adding attributes like `compact', `stream',
+etc.  because a numbered list which is typeset with
+less vertical space is still a numbered list
+(logical),e.g., an enumerate environment and not a
+special new one.  The same goes for figures which might
+have a `frame' and many other things which have
+subconcepts in certain applications.  Barbara Beeton
+and Ron Whitney gave in TUB 10#3 a possible syntax to
+support such attributes (pp.378-385).  I must confess
+that I don't like their way of using what LaTeX would
+call optional arguments to support this concept at
+least not in LaTeX.  In LaTeX the optional arguments
+are already used very often.
+
+My idea is to use the \begin \end syntax directly by
+inserting the attributes simply inside the braces after
+the \begin. For example, one could then have
+
+\begin{enumerate|compact}
+\item ...
+\end{enumerate}
+
+
+I don't propose the above example as an ultimate syntax
+althrough I like it this way, the main point is the
+placement of the attributes. The above example shows a
+primitive attribute. Actually attributes with values
+might be better like in
+
+
+\begin{enumerate|form=compact}
+\item ...
+\end{enumerate}
+
+where form is the attribute and compact or stream are
+possible values.  Of course both concepts could be
+mixed.
+
+Some comments:
+
+1) Such a concept is upward compatible.  Take, for
+example, the generic list environemt it would get some
+attributes. the enumerate env. could then be defined by
+passing the user attributes to the generic list.
+
+2) One could have the syntax that in case of multiply
+used attributes the last one succeeds. This would make
+it possible to provide defaults in a styles simply by
+specifying them first and passing the user ones thereafter.
+I.e. enumerate could be defined as
+
+\def\enumerate{<process attr.>
+      ....
+      \begin{list|form=compact<user attr.>} ...
+
+3) Looking at 2) the proposed syntax is somewhat expensive
+in space but this shouldn't guide us at least not at this stage.
+Scanning of such syntax should be simple and fast.
+
+4) While it is possible to check all attributes for consistency
+I think that this is not necessary.
+
+5) For the theorem env discussion such a syntax would mean
+that one could probably go along without a star form.
+
+6) All this is only suitable for environments. This might be
+a problem but in my opinion it is okay.
+
+Comments?
+
+Frank
+
+

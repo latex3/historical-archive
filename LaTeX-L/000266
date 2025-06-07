@@ -1,0 +1,673 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D7381ABC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:54 +0100
+Return-Path: <LATEX-L@DHDURZ1.bitnet>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D7381ABC"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: Wide things
+Date: Mon, 31 Dec 1990 00:13:28 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE217@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Sender: </PN=David#l#u#r#Rhead/OU=VME/OU=CCC/O=NOTTINGHAM/PRMD=UK.AC/C=GB/@x400-gate>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 266
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D7381ABC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+One of the fundamental ideas behind LaTeX is to separate the job of the
+author from that of the designer.  So, on the question of how to deal
+with wide things (such as tables), I suppose that we have to ask
+"How would the designer(s) deal with wide things?".
+
+Not having any training as a designer, I'm probably not qualified to
+answer the question.  But here goes anyway ...
+
+GENERALLY SYMMETRIC DESIGNS
+
+For symmetric designs, things like Nelson's widecenter will often be OK.
+Chapter-headings will be symmetric about the centre of the text-area,
+section-headings will be symmetric about the centre of the text-area, =
+the text
+will be flush-right (i.e. symmetric), so a "wide thing" that is =
+symmetric
+about the text-area should look OK.  Allowing "wide centred objects" to =
+"spill
+into the margins, evenly on both sides" would often be OK, although I =
+have
+a couple of reservations.
+
+My first reservation is that, in publishing practice, it seems normal
+[1, p. 336; 2, p. 158] to set tables in a smaller typeface than the body =
+of
+the text.  [1] says "tables may be set in small type or footnote size, =
+or the
+size may vary from one table to another ... ".  [2] seems to imply that =
+it
+is normal to set tables in an 8-point typeface, presumably when the
+body of a document is in 10-point (and suggests going down to 7- or =
+6-point
+if a table won't fit in 8-point).  In fact [1] and [2] recognise that
+"getting tables to fit" is often difficult, and devote several =
+paragraphs
+to tactics for dealing with the difficulties.  So I think that:
+*  the user should still get a warning if a centred thing is allowed to
+   spill into the margin.  The user should then e.g. go and read [1] and =
+[2]
+   to decide whether to accept the "spillage" or to e.g. see whether
+   column-headings could be made more concise and/or decide whether to =
+change
+   font-size
+*  there is a case for making the font-size in the "successor to =
+tabular"
+   a feature of the design.  Typically if a design has main text in =
+10-point,
+   the design might give 8-point as the default in the "successor to =
+tabular".
+   Then (a) LaTeX would conform to what appears to me to be publishing
+   practice (b) the proportion of tables whose width causes problems =
+would
+   be reduced (and less users would bother people like me about them).
+
+My other reservation is that the position of the text area on the page
+and the method of binding may mean that "spillage" into an outer
+margin may be acceptable, whereas spillage into an "inner margin" is
+not acceptable [1, p. 343].  It may be best to spill into the right-hand
+margin on right-hand pages, but into the left-hand margin on left-hand
+pages.  For an example, see [3], in which the text-column is placed
+between a narrow inner margin and a wide outer margin:  wide material
+spills into the outer margin, not into the inner margin.
+
+GENERALLY ASYMMETRIC DESIGNS
+
+A document may have an asymmetric design: perhaps ragged-right with
+a wide left margin that is used for section-headings.  [4] and [5]
+might fall into this category.
+
+In these documents, centring may be appropriate for things that fit
+within the text-column (but the author should perhaps be provided
+with a suitable "display" environment, like quote, so that the
+question of whether tables are centred within the text-column
+is left to the designer).  But if something is too wide for the
+normal text-column, these designs give the option of encroaching
+into the space usually reserved for section headings (without
+encroaching into the "left margin proper").  See Figures 2.4 and
+7.2 of [4] and page 127 of [5].  I'd guess that, with these designs,
+we should try to manage by just encroaching into the space usually
+reserved for section-headings, leaving encroachment into the
+left or right margins "proper" as a last resort.
+
+A DIFFERENT QUESTION?
+
+This started with the question "What should happen if a centred
+object won't fit in the text-width.  Should it be allowed to
+spill into the margins and, if so, how?"
+
+I now wonder whether we should play down centring (on the grounds that
+it is "visual design"!) and hence not worry too much about what center
+does if something doesn't fit.
+
+Is the essential question more like "What should a user do with a =
+table?"?
+Shouldn't we be encouraging the author to desribe the logical structure
+of the document, and leave the layout decisions to the designer.  User =
+says:
+"Here's a table.  Do whatever your design specifies should be done with
+tables".  (Question to SGML-ers:  What view would a typical DTD take of
+the logical structures involved here?  Not "stuff to be centred", =
+surely?)
+
+Instead of having the user go
+\begin{center}
+\begin{tabular}{...}
+..
+\end{tabular}
+\end{center}
+shouldn't we be letting the user go something like
+\begin{displaytable}
+\begin{successortotabular}{...}
+..
+\end{successortotabular}
+\end{displaytable}
+where it is up to the designer whether displaytable centres the table
+within the text-area or not.  (This is only like having displaymath
+for mathematics.)
+
+I don't know how much could be built into such an environment.
+
+If displaytable (or whatever) could automatically determine the width
+of its contents, compare this with
+(1) the width of the text-column,
+(2) the width of the text-column plus "section heading space" (in =
+asymmetric
+    designs),
+(3) the width of (1) or (2) plus the amount that the designer thinks can
+    be "stolen" from inner and outer margins
+perhaps displaytable is all that is needed.  The designer can program it
+to do whatever is appropriate for tables of various widths in the style =
+file
+(including telling the user that the contents still won't fit even when =
+the
+maximum available amounts have been stolen).  The designer could choose
+to use Nelson's widecenter or Frank's "center with attributes", for =
+example.
+
+If it would not be possible to have a single "intelligent" displaytable,
+I suppose that the user could be offered a sequence (displaytable,
+displaywidetable, displaywidertable, displaywidesttable) that take
+space from a sequence of locations, the locations depending on the
+design.  This would at least give the user a sequence of opportunities
+to think "Does my table really need to be this wide?".
+
+THINGS THAT AREN'T TABLES
+
+I'd guess that most "wide things" that aren't "tables" are "figures",
+probably being imported as encapsulated PostScript (or pasted in =
+manually).
+If there was a displaytable, there might (analogously) be a =
+displayfigure,
+but that I'd guess that these 2 between them would deal with 99% of all
+"wide things".
+
+THINGS THAT FLOAT
+
+This may need considering in the context of the successors to "table"
+and "figure".  One might want to allow things like displaytable and
+displayfigure to have numbered captions that are part of the same
+numbering sequence that is used for floating analogues.
+
+CONCLUSIONS
+
+If "the center environment" does intrude into the margins automatically,
+ensure that the user is given some warning message, so that s/he
+is encouraged to think about whether the contents of the environment
+really need to be so wide.
+
+Consider having a "displaytable" environment (analogous to quote and
+displaymath) that the author can use for tables.  Then the question of
+whether the "displaytable" is to be centred within the text-column can =
+be
+left to the designer (and "center" can be given a lower profile, =
+deprecated
+as visual design).
+
+Consider whether a "displaytable" environment can be made intelligent =
+enough
+to do sensible (but design-dependent) things if its contents wouldn't =
+fit in
+the usual text-width.
+
+Consider the implications for figures and floats.
+
+Consider having typeface-size within "successor to tabular" as "set
+by the designer" (typically to 8-point if the rest of the document is
+10-point).
+
+REFERENCES
+
+[1] "Chicago Manual of Style", 13th edn., Chicago University Press, =
+1982.
+[2] Judith Butcher, "Copy-editing", 2nd edn., Cambridge University =
+Press, 1981.
+[3] Ruari McLean, "The Thames and Hudson Manual of Typography",
+    Thames and Hudson, 1980.
+[4] "PostScript Language: Program Design", Adobe Systems Inc., 1988.
+[5] Jan V. White, "Graphic Design for the Electronic Age", =
+Watson-Guptill,
+    1988.
+
+
+
+------_=_NextPart_001_01C19442.D7381ABC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Wide things</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>One of the fundamental ideas behind LaTeX is to =
+separate the job of the</FONT>
+
+<BR><FONT SIZE=3D2>author from that of the designer.&nbsp; So, on the =
+question of how to deal</FONT>
+
+<BR><FONT SIZE=3D2>with wide things (such as tables), I suppose that we =
+have to ask</FONT>
+
+<BR><FONT SIZE=3D2>&quot;How would the designer(s) deal with wide =
+things?&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Not having any training as a designer, I'm probably =
+not qualified to</FONT>
+
+<BR><FONT SIZE=3D2>answer the question.&nbsp; But here goes anyway =
+...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>GENERALLY SYMMETRIC DESIGNS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For symmetric designs, things like Nelson's widecenter =
+will often be OK.</FONT>
+
+<BR><FONT SIZE=3D2>Chapter-headings will be symmetric about the centre =
+of the text-area,</FONT>
+
+<BR><FONT SIZE=3D2>section-headings will be symmetric about the centre =
+of the text-area, the text</FONT>
+
+<BR><FONT SIZE=3D2>will be flush-right (i.e. symmetric), so a &quot;wide =
+thing&quot; that is symmetric</FONT>
+
+<BR><FONT SIZE=3D2>about the text-area should look OK.&nbsp; Allowing =
+&quot;wide centred objects&quot; to &quot;spill</FONT>
+
+<BR><FONT SIZE=3D2>into the margins, evenly on both sides&quot; would =
+often be OK, although I have</FONT>
+
+<BR><FONT SIZE=3D2>a couple of reservations.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My first reservation is that, in publishing practice, =
+it seems normal</FONT>
+
+<BR><FONT SIZE=3D2>[1, p. 336; 2, p. 158] to set tables in a smaller =
+typeface than the body of</FONT>
+
+<BR><FONT SIZE=3D2>the text.&nbsp; [1] says &quot;tables may be set in =
+small type or footnote size, or the</FONT>
+
+<BR><FONT SIZE=3D2>size may vary from one table to another ... =
+&quot;.&nbsp; [2] seems to imply that it</FONT>
+
+<BR><FONT SIZE=3D2>is normal to set tables in an 8-point typeface, =
+presumably when the</FONT>
+
+<BR><FONT SIZE=3D2>body of a document is in 10-point (and suggests going =
+down to 7- or 6-point</FONT>
+
+<BR><FONT SIZE=3D2>if a table won't fit in 8-point).&nbsp; In fact [1] =
+and [2] recognise that</FONT>
+
+<BR><FONT SIZE=3D2>&quot;getting tables to fit&quot; is often difficult, =
+and devote several paragraphs</FONT>
+
+<BR><FONT SIZE=3D2>to tactics for dealing with the difficulties.&nbsp; =
+So I think that:</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; the user should still get a warning if a =
+centred thing is allowed to</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; spill into the margin.&nbsp; The user =
+should then e.g. go and read [1] and [2]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; to decide whether to accept the =
+&quot;spillage&quot; or to e.g. see whether</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; column-headings could be made more =
+concise and/or decide whether to change</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; font-size</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; there is a case for making the font-size in =
+the &quot;successor to tabular&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; a feature of the design.&nbsp; Typically =
+if a design has main text in 10-point,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; the design might give 8-point as the =
+default in the &quot;successor to tabular&quot;.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; Then (a) LaTeX would conform to what =
+appears to me to be publishing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; practice (b) the proportion of tables =
+whose width causes problems would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; be reduced (and less users would bother =
+people like me about them).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My other reservation is that the position of the text =
+area on the page</FONT>
+
+<BR><FONT SIZE=3D2>and the method of binding may mean that =
+&quot;spillage&quot; into an outer</FONT>
+
+<BR><FONT SIZE=3D2>margin may be acceptable, whereas spillage into an =
+&quot;inner margin&quot; is</FONT>
+
+<BR><FONT SIZE=3D2>not acceptable [1, p. 343].&nbsp; It may be best to =
+spill into the right-hand</FONT>
+
+<BR><FONT SIZE=3D2>margin on right-hand pages, but into the left-hand =
+margin on left-hand</FONT>
+
+<BR><FONT SIZE=3D2>pages.&nbsp; For an example, see [3], in which the =
+text-column is placed</FONT>
+
+<BR><FONT SIZE=3D2>between a narrow inner margin and a wide outer =
+margin:&nbsp; wide material</FONT>
+
+<BR><FONT SIZE=3D2>spills into the outer margin, not into the inner =
+margin.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>GENERALLY ASYMMETRIC DESIGNS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A document may have an asymmetric design: perhaps =
+ragged-right with</FONT>
+
+<BR><FONT SIZE=3D2>a wide left margin that is used for =
+section-headings.&nbsp; [4] and [5]</FONT>
+
+<BR><FONT SIZE=3D2>might fall into this category.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In these documents, centring may be appropriate for =
+things that fit</FONT>
+
+<BR><FONT SIZE=3D2>within the text-column (but the author should perhaps =
+be provided</FONT>
+
+<BR><FONT SIZE=3D2>with a suitable &quot;display&quot; environment, like =
+quote, so that the</FONT>
+
+<BR><FONT SIZE=3D2>question of whether tables are centred within the =
+text-column</FONT>
+
+<BR><FONT SIZE=3D2>is left to the designer).&nbsp; But if something is =
+too wide for the</FONT>
+
+<BR><FONT SIZE=3D2>normal text-column, these designs give the option of =
+encroaching</FONT>
+
+<BR><FONT SIZE=3D2>into the space usually reserved for section headings =
+(without</FONT>
+
+<BR><FONT SIZE=3D2>encroaching into the &quot;left margin =
+proper&quot;).&nbsp; See Figures 2.4 and</FONT>
+
+<BR><FONT SIZE=3D2>7.2 of [4] and page 127 of [5].&nbsp; I'd guess that, =
+with these designs,</FONT>
+
+<BR><FONT SIZE=3D2>we should try to manage by just encroaching into the =
+space usually</FONT>
+
+<BR><FONT SIZE=3D2>reserved for section-headings, leaving encroachment =
+into the</FONT>
+
+<BR><FONT SIZE=3D2>left or right margins &quot;proper&quot; as a last =
+resort.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A DIFFERENT QUESTION?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This started with the question &quot;What should =
+happen if a centred</FONT>
+
+<BR><FONT SIZE=3D2>object won't fit in the text-width.&nbsp; Should it =
+be allowed to</FONT>
+
+<BR><FONT SIZE=3D2>spill into the margins and, if so, how?&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I now wonder whether we should play down centring (on =
+the grounds that</FONT>
+
+<BR><FONT SIZE=3D2>it is &quot;visual design&quot;!) and hence not worry =
+too much about what center</FONT>
+
+<BR><FONT SIZE=3D2>does if something doesn't fit.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Is the essential question more like &quot;What should =
+a user do with a table?&quot;?</FONT>
+
+<BR><FONT SIZE=3D2>Shouldn't we be encouraging the author to desribe the =
+logical structure</FONT>
+
+<BR><FONT SIZE=3D2>of the document, and leave the layout decisions to =
+the designer.&nbsp; User says:</FONT>
+
+<BR><FONT SIZE=3D2>&quot;Here's a table.&nbsp; Do whatever your design =
+specifies should be done with</FONT>
+
+<BR><FONT SIZE=3D2>tables&quot;.&nbsp; (Question to SGML-ers:&nbsp; What =
+view would a typical DTD take of</FONT>
+
+<BR><FONT SIZE=3D2>the logical structures involved here?&nbsp; Not =
+&quot;stuff to be centred&quot;, surely?)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Instead of having the user go</FONT>
+
+<BR><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{tabular}{...}</FONT>
+
+<BR><FONT SIZE=3D2>..</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+
+<BR><FONT SIZE=3D2>\end{center}</FONT>
+
+<BR><FONT SIZE=3D2>shouldn't we be letting the user go something =
+like</FONT>
+
+<BR><FONT SIZE=3D2>\begin{displaytable}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{successortotabular}{...}</FONT>
+
+<BR><FONT SIZE=3D2>..</FONT>
+
+<BR><FONT SIZE=3D2>\end{successortotabular}</FONT>
+
+<BR><FONT SIZE=3D2>\end{displaytable}</FONT>
+
+<BR><FONT SIZE=3D2>where it is up to the designer whether displaytable =
+centres the table</FONT>
+
+<BR><FONT SIZE=3D2>within the text-area or not.&nbsp; (This is only like =
+having displaymath</FONT>
+
+<BR><FONT SIZE=3D2>for mathematics.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I don't know how much could be built into such an =
+environment.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If displaytable (or whatever) could automatically =
+determine the width</FONT>
+
+<BR><FONT SIZE=3D2>of its contents, compare this with</FONT>
+
+<BR><FONT SIZE=3D2>(1) the width of the text-column,</FONT>
+
+<BR><FONT SIZE=3D2>(2) the width of the text-column plus &quot;section =
+heading space&quot; (in asymmetric</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; designs),</FONT>
+
+<BR><FONT SIZE=3D2>(3) the width of (1) or (2) plus the amount that the =
+designer thinks can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; be &quot;stolen&quot; from inner =
+and outer margins</FONT>
+
+<BR><FONT SIZE=3D2>perhaps displaytable is all that is needed.&nbsp; The =
+designer can program it</FONT>
+
+<BR><FONT SIZE=3D2>to do whatever is appropriate for tables of various =
+widths in the style file</FONT>
+
+<BR><FONT SIZE=3D2>(including telling the user that the contents still =
+won't fit even when the</FONT>
+
+<BR><FONT SIZE=3D2>maximum available amounts have been stolen).&nbsp; =
+The designer could choose</FONT>
+
+<BR><FONT SIZE=3D2>to use Nelson's widecenter or Frank's &quot;center =
+with attributes&quot;, for example.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If it would not be possible to have a single =
+&quot;intelligent&quot; displaytable,</FONT>
+
+<BR><FONT SIZE=3D2>I suppose that the user could be offered a sequence =
+(displaytable,</FONT>
+
+<BR><FONT SIZE=3D2>displaywidetable, displaywidertable, =
+displaywidesttable) that take</FONT>
+
+<BR><FONT SIZE=3D2>space from a sequence of locations, the locations =
+depending on the</FONT>
+
+<BR><FONT SIZE=3D2>design.&nbsp; This would at least give the user a =
+sequence of opportunities</FONT>
+
+<BR><FONT SIZE=3D2>to think &quot;Does my table really need to be this =
+wide?&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>THINGS THAT AREN'T TABLES</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'd guess that most &quot;wide things&quot; that =
+aren't &quot;tables&quot; are &quot;figures&quot;,</FONT>
+
+<BR><FONT SIZE=3D2>probably being imported as encapsulated PostScript =
+(or pasted in manually).</FONT>
+
+<BR><FONT SIZE=3D2>If there was a displaytable, there might =
+(analogously) be a displayfigure,</FONT>
+
+<BR><FONT SIZE=3D2>but that I'd guess that these 2 between them would =
+deal with 99% of all</FONT>
+
+<BR><FONT SIZE=3D2>&quot;wide things&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>THINGS THAT FLOAT</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This may need considering in the context of the =
+successors to &quot;table&quot;</FONT>
+
+<BR><FONT SIZE=3D2>and &quot;figure&quot;.&nbsp; One might want to allow =
+things like displaytable and</FONT>
+
+<BR><FONT SIZE=3D2>displayfigure to have numbered captions that are part =
+of the same</FONT>
+
+<BR><FONT SIZE=3D2>numbering sequence that is used for floating =
+analogues.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>CONCLUSIONS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If &quot;the center environment&quot; does intrude =
+into the margins automatically,</FONT>
+
+<BR><FONT SIZE=3D2>ensure that the user is given some warning message, =
+so that s/he</FONT>
+
+<BR><FONT SIZE=3D2>is encouraged to think about whether the contents of =
+the environment</FONT>
+
+<BR><FONT SIZE=3D2>really need to be so wide.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Consider having a &quot;displaytable&quot; environment =
+(analogous to quote and</FONT>
+
+<BR><FONT SIZE=3D2>displaymath) that the author can use for =
+tables.&nbsp; Then the question of</FONT>
+
+<BR><FONT SIZE=3D2>whether the &quot;displaytable&quot; is to be centred =
+within the text-column can be</FONT>
+
+<BR><FONT SIZE=3D2>left to the designer (and &quot;center&quot; can be =
+given a lower profile, deprecated</FONT>
+
+<BR><FONT SIZE=3D2>as visual design).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Consider whether a &quot;displaytable&quot; =
+environment can be made intelligent enough</FONT>
+
+<BR><FONT SIZE=3D2>to do sensible (but design-dependent) things if its =
+contents wouldn't fit in</FONT>
+
+<BR><FONT SIZE=3D2>the usual text-width.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Consider the implications for figures and =
+floats.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Consider having typeface-size within &quot;successor =
+to tabular&quot; as &quot;set</FONT>
+
+<BR><FONT SIZE=3D2>by the designer&quot; (typically to 8-point if the =
+rest of the document is</FONT>
+
+<BR><FONT SIZE=3D2>10-point).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>REFERENCES</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[1] &quot;Chicago Manual of Style&quot;, 13th edn., =
+Chicago University Press, 1982.</FONT>
+
+<BR><FONT SIZE=3D2>[2] Judith Butcher, &quot;Copy-editing&quot;, 2nd =
+edn., Cambridge University Press, 1981.</FONT>
+
+<BR><FONT SIZE=3D2>[3] Ruari McLean, &quot;The Thames and Hudson Manual =
+of Typography&quot;,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Thames and Hudson, 1980.</FONT>
+
+<BR><FONT SIZE=3D2>[4] &quot;PostScript Language: Program Design&quot;, =
+Adobe Systems Inc., 1988.</FONT>
+
+<BR><FONT SIZE=3D2>[5] Jan V. White, &quot;Graphic Design for the =
+Electronic Age&quot;, Watson-Guptill,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; 1988.</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D7381ABC--
+

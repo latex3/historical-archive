@@ -1,0 +1,92 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 18 Sep 2008 13:09:09 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8IB936T003564
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 18 Sep 2008 13:09:04 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8IB5Yt9032063
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 18 Sep 2008 13:05:34 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8HM1hKl005980;
+	Thu, 18 Sep 2008 13:05:29 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 45187 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 18 Sep
+          2008 13:05:29 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8IB5Tul030664 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 18 Sep 2008 13:05:29 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.241])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          m8IB5EU9023620 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 18 Sep
+          2008 13:05:17 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so3580608rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 18 Sep 2008 04:05:14 -0700
+          (PDT)
+Received: by 10.141.163.12 with SMTP id q12mr7312917rvo.265.1221735914368; Thu,
+          18 Sep 2008 04:05:14 -0700 (PDT)
+Received: by 10.141.167.13 with HTTP; Thu, 18 Sep 2008 04:05:13 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <48D22952.9000204@morningstar2.co.uk>
+Message-ID:  <27990a880809180405v7d5b816fk93b12cd51c6f442e@mail.gmail.com>
+Date:         Thu, 18 Sep 2008 20:35:13 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: \char_set_catcode:nn
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48D22952.9000204@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 18 Sep 2008 11:09:09.0854 (UTC) FILETIME=[F97507E0:01C9197E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5351
+
+On Thu, Sep 18, 2008 at 7:41 PM, Joseph Wright
+<joseph.wright@morningstar2.co.uk> wrote:
+>
+> I was wondering about \char_set_catcode:nn.  The docs don't say if the
+> character has to be escaped or not, although I assume it does.
+
+You're right that should be documented better. Right now this command
+is equivalent to
+  \catcode #1 = \numexpr #1\relax
+
+Not that you're going to be using the \numexpr very often!!
+
+So it's actually looked for a number for its first argument. So I
+don't see why the next sentence (of the docs) says to use the :w form
+if you're using braces!
+
+I guess we need to write another function that does a `\csname
+#1\endcsname --type thing (if that's robust enough) under the name
+\char_set_catcode:Nn.
+
+> Also, any plans to have any shortcuts of the \@makeother type?
+
+Well, depends what you have in mind :)
+I don't see why not...something like \char_set_catcode_other, I
+suppose. I actually quite like ConTeXt's approach (what little I know)
+of giving names to the catcode classes. So perhaps instead of the
+above, we could write
+  \char_set_catcode:nn {`\%} {\g_catcode_other}
+
+Nah, actually. I prefer
+  \char_set_catcode_other:n {`\%}
+
+Will
+

@@ -1,0 +1,100 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Sep 2008 20:59:49 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8AIxhx2020100
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Sep 2008 20:59:44 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8AIt7PM031006
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Sep 2008 20:55:08 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AI4G4K030740;
+	Wed, 10 Sep 2008 20:55:01 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 33059 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 20:55:01 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8AIt02p001730 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 10 Sep 2008 20:55:00 +0200
+Received: from anchor-post-32.mail.demon.net (anchor-post-32.mail.demon.net
+          [194.217.242.90]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m8AIslRT014637 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 10 Sep 2008 20:54:51 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-32.mail.demon.net with esmtp (Exim 4.67) id
+          1KdUpz-000P4q-6Z for latex-l@listserv.uni-heidelberg.de; Wed, 10 Sep
+          2008 18:54:47 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48C817F4.4080208@morningstar2.co.uk>
+Date:         Wed, 10 Sep 2008 19:54:44 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Keys in expl3: some thoughts (might be l3keys)
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Sep 2008 18:59:49.0085 (UTC) FILETIME=[660BB8D0:01C91377]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5276
+
+Hello all,
+
+I'd mentioned to Morten that I would look at how one might implement
+some kind of keyval system for package authors in LaTeX3 (at present my
+xnotes2bib implementation is simply using keyval).  The limitations of
+packages such as xkeyval are well known, so I've been looking at the
+pgfkeys approach.  I think that I can get something working, but
+wondered how others might see the syntax (or if I'm wasting my time!).
+
+Thus far, I'm following pgfkeys, with a UNIX-file-like "tree" for keys
+and "properties":
+
+/module/key name = value % Assigns to key name
+/module/key name/.code = some code % Defines key name
+/module/key name/.code args = {#1#2#3}{Code using #1, #2 and #3}
+
+The last item illustrates the issue best.  I suspect a more expl3
+approach would be:
+
+/module/key name/.code:Nn = 1 {some code} % Not sure about this
+/module/key name/.code:pn = #1#2#3 {Code using #1, #2 and #3}
+
+but then picking up the  end of the parameter list is more difficult.
+Following pgfkeys, the parameter list needs to be stored, so this is
+important.
+
+For those of you not familiar, in the above the .code "property" has one
+argument (I think the ".code 2 args" variant from pgfkeys can happily be
+dropped in favour of simply using ".code args")
+
+I  was wondering about
+
+/module/key name/.code:n = some code % Allows #1 only
+/module/key name/.code:x = some code % \edef version
+/module/key name/.code:nn = #1#2#3 {Code using #1, #2 and #3}
+/module/key name/.code:nx = #1#2#3 {Code using #1, #2 and #3} % \edef
+
+
+as a middle way that takes the best of expl3 and pgfkeys. The same
+approach could then be used for other properties.
+
+I'd be interest to see how others see this.
+-- 
+Joseph Wright
+

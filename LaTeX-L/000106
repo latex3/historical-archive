@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 18 May 90 10:31:13 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 106
+
+
+
+   I think a "compact" parameter is right at the
+   borderline between logical structure and typesetting
+   directions.With
+
+      \Start{document|paper=A4|twocolumn}
+
+   I think that the border has been crossed.
+   Certainly, paper=A4 is a document-style decision and
+   belongs in the \documentstyle command.  The same
+   applies to twocolumn.
+
+I accept that paper=a4 and twocolumn shouldn't be used as
+an attribute. It was left over from my test example where I
+had only four or five enviroments available and tried (for myself)
+to come up with at least some attributes which make some sense.
+
+On the other hand I don't think that a form attribute for lists
+with the possible values `spaced' `compact' `stream' and perhaps
+`runin' (but this one is near the border) is near the border instead
+it is very important to have such attributes instead of having
+separate enviroments. An enumerate enviroment which is used
+as a stream list is still an enumerated list etc. Same is true
+for the theorem enviroments and for a form attribute for floats
+with values `boxed' `rule' `empty'. It is up to the style to decide
+how to typeset a boxed floats and the style has to decide whether
+boxed or rule or whatever is the default.
+
+
+   Allowing both \begin{itemize|compact} and
+   \begin{itemize|form=compact} might lead to
+   confusion.  Since there's no way to eliminate the
+   "name=" in "name=Zorn's Lemma", the standard form
+   has to includ the "name=".  One might allow
+   "compact" as an abbreviation for "form=compact", but
+   I'm not sure there's much point to that.
+
+It wasn't my intention that one can use compact as a short form
+for form=compact. Again this was only a result of tests I made
+during the development. But I think that it is allowable to have
+both forms of attributes, e.g., nonumber (with no argument) and
+name=... etc.
+
+   Finally, is this being proposed for version 2.10?
+   That would violate the premise that 2.10 should
+   minimize user-visible changes.
+
+In my opinion it is impossible to make first a new style file
+interface and then introducing new concepts like the one above.
+Such things are closely related. But we have to discuss this
+aspect further.
+
+
+   In Frank's other message, he writes
+
+      The question of new float classes is deeply
+      connected with the question of front matters.
+
+   I fail to see the connection.  ....
+
+   I presume that the common problem Frank sees is that
+   in front matter, as in floats, the text isn't put
+   into the document at the place where it is typed.
+   However, the reason is quite different in the two
+   cases, and I don't think there should be any common
+   mechanism to handle them.
+
+No, this wasn't the connction I saw. What I was thinking about was
+that \tableofcontents, \listoffigures etc. are used at the moment to
+do several jobs. First of all they tell LaTeX to prepare a list of
+figure but on the other hand they mark the place where the list of
+figures should go to. While Don Hosek gave us some ideas who to handle
+special formatting problems of certain layouts in the current syntax
+I still think that this part of LaTeX standard styles has to be revised.
+Revised in this case not only internally but also at the user interface.
+I don't see any use in preserving a bad syntax for the sake of
+compatibility in this case because 1) this can be achieved by a
+compatibilty style file for older documents and 2) in this case
+many important layout conventions can't be handled satisfactory
+by a style file. A much cleaner syntax would be to have a font matter
+enviroment containing necessary subenviroment and commands.
+The style file is then responsible to typeset this material in
+appropiate places.
+
+Frank
+
+

@@ -1,0 +1,627 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Mon, 20 Jan 2003 01:19:29 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0K0JQ6C030248 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 20 Jan 2003 01:19:27 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C019.98CBBE80"
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0K00ZAL016754; Mon, 20 Jan 2003 01:00:35 +0100 (MET)
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0JN04lD032261; Mon, 20 Jan 2003 00:53:23 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6416 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 20 Jan 2003 00:53:23 +0100
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by          listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP          id h0JN04l9032261; Mon, 20 Jan 2003 00:43:23 +0100
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 20 Jan 2003 00:19:29.0707 (UTC) FILETIME=[99379FB0:01C2C019]
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -1 () EMAIL_ATTRIBUTION,MSG_ID_ADDED_BY_MTA_3,QUOTED_EMAIL_TEXT,SPAM_PHRASE_01_02
+Content-class: urn:content-classes:message
+Subject:      Re: inputenc -> text+math
+Date: Mon, 20 Jan 2003 00:43:23 +0100
+Message-ID: A<200301192343.h0JN04l9032261@listserv.uni-heidelberg.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: inputenc -> text+math
+Thread-Index: AcLAGZlO5EozjW+8Qh6m9IdSVrck9w==
+From: "Vladimir Volovich" <vvv@VSU.RU>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4438
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C019.98CBBE80
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank,
+
+following up an old email... :) but this is related closely to your =
+recent email
+on "LICR objects in math"
+
+On Wed, 31 Jan 2001 20:35:31 +0100, Frank Mittelbach
+<frank.mittelbach@LATEX-PROJECT.ORG> wrote:
+
+>I wrote:
+>
+> > do you mind outlining the solution in a few sentences? how do you =
+want
+> > to be able to find out that you are not in math but will be once
+> > something (eg tha actual letter) triggered the \halign u part =
+without
+> > actually triggering it (with something like \relax which kills
+> > ligaturing)?
+>
+>but by now i got a chance to looked at it. quite a nice idea but i =
+don't think
+>it is fully correct yet. you change \if@mmode at each \halign thus an =
+\halign
+>that doesn't generate math mode cells will have this setting =
+throughout, eg
+>something like
+>
+>\begin{tabular}[t]{..}
+>
+>will have broken text inside, wouldn't it? or do i overlook something?
+
+no, it would not have broken text, because \halign is redefined in the
+following way:
+
+\let\org@halign\halign
+\DeclareRobustCommand\halign{\let\if@mmode\if@mmode@\org@halign}
+
+and \if@mmode@ is defined like this:
+\def\if@mmode@{\reset@if@mmode\ifmmode}
+\DeclareRobustCommand\reset@if@mmode{\let\if@mmode\ifmmode}
+
+so when you have \begin{tabular}[t]{..}, then the FIRST character inside =
+the
+cell
+will execute \if@mmode@ which will reset \if@mmode to just \ifmmode, =
+thus
+preserving all ligatures!
+
+i.e., each cell will at the beginning have \if@mmode defined as
+\reset@if@mmode \ifmmode, but after the first inputenc-generated letter,
+it will go to \ifmmode.
+
+here's an example:
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+\documentclass{article}
+\usepackage{mathtext}
+\usepackage[T2A]{fontenc}
+\usepackage[koi8-r]{inputenc}
+\begin{document}
+
+\makeatletter \showboxdepth\maxdimen \showboxbreadth\maxdimen =
+\tracingonline1
+\setbox0=3D\hbox{^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4}
+\showbox0
+
+\begin{tabular}[t]{|c|c|}
+\show\if@mmode
+^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4
+\show\if@mmode&
+\show\if@mmode
+^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4
+\show\if@mmode
+\\
+\end{tabular}
+
+\end{document}
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+>assuming that the analysis is right, what follows is that instead of =
+changing
+>\halign internally you would have to change those uses of \halign where =
+it is
+>needed (only) and that cuts through all existing macros and isn't =
+transparent
+>ie you can't simply get it done by a single package or inclusion of =
+code in
+>the kernel you actually have to change every second use of \halign
+
+there exists a SMALL probability that the kern will be broken only ONCE =
+(for the
+two characters) in the cell, but that can hallen only once per cell.
+This will happen if the cell contents meets all these conditions:
+1) there is a combination of 7-bit character followed
+   by 8-bit character, and there's a kern for them in a TFM file.
+   (note that for cyrillic texts, this is very rare - the word either =
+consists
+   of all cyrillic letters, or all latin ones, not moxed - and there's =
+usually
+   no kerning between cyrillic and latin letters)
+2) there were no 8-bit characters in this cell before, i.e.
+   such 8-bit character preceeded by 7-bit one is the first occurrence =
+of
+   8-bit char in the cell (kerns between all other characters in this =
+cell
+   will be OK).
+
+> > the approach used in the mathtext package proved to be stable =
+enough:
+> > i know a lot of people do use it for `transparent' cyrillic letters =
+in
+> > math, and i did not hear about bug for a long time now. the =
+mechanism
+>
+>you don't see the problem unless you look closely at kerning and =
+ligatures
+>(and you use fonts that have them) but it may be the case that this is
+>sufficiently rare with the type of characters it is used so far. with =
+latin
+>fonts i guess this would become far more visible.
+
+well, you are correct, - for latin fonts, there's usually a kern between
+V and \'A, so so if the cell would include
+some ascii letters ... V\'A other text
+then the kern between V\'A would have been lost - but only for these two =
+letters
+in the cell - not any other!
+
+this is demonstrated by the following example:
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+\documentclass{article}
+\usepackage{mathtext}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\DeclareTextSymbol{\AGRAVE}{T1}{193}
+\DeclareInputText{193}{\AGRAVE}
+\begin{document}
+
+\makeatletter \showboxdepth\maxdimen \showboxbreadth\maxdimen =
+\tracingonline1
+\setbox0=3D\hbox{V^^c1 V^^c1 V{}^^c1}
+\showbox0
+
+\begin{tabular}[t]{|c|c|}
+\show\if@mmode
+V^^c1 V^^c1 V{}^^c1
+\show\if@mmode&
+\show\if@mmode
+V^^c1 V^^c1 V{}^^c1
+\show\if@mmode
+\\
+\end{tabular}
+
+\end{document}
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+you'll see the kern lost for the first V\'A combination in the cell,
+but not for the second (and not for any other letter pairs in the cell).
+(if it was a combination of accented letter PRECEEDING the non-accented
+letter, then the kern would not have been lost)
+
+I used
+\DeclareTextSymbol{\AGRAVE}{T1}{193}
+\DeclareInputText{193}{\AGRAVE}
+in the above example because the mathtext package redefines only
+the \DeclareTextSymbol command, but not the composite commands like \'A
+(which were not needed for cyrillic, but can be supported too).
+
+Well, the above example shows that there is indeed a possible problem =
+with latin
+texts - in some situations one kern in a cell may be lost.
+
+But, i see a solution to this: we can redefine A FEW internal LaTeX =
+commands
+which build preambles for alignments to insert \reset@if@mmode in the
+before the "#" - i.e. to make sure that \if@mmode will be reset to =
+\ifmmode
+before the first character in a cell is executed.
+
+There are only a very small number of places where latex has (or builds)
+the alignment preambles, so the changes would not be big...
+
+(but for cyrillic letters, this is probably not needed at all, as =
+mentioned
+above)...
+
+Best,
+v.
+
+------_=_NextPart_001_01C2C019.98CBBE80
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: inputenc -&gt; text+math</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>following up an old email... :) but this is related =
+closely to your recent email</FONT>
+
+<BR><FONT SIZE=3D2>on &quot;LICR objects in math&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>On Wed, 31 Jan 2001 20:35:31 +0100, Frank =
+Mittelbach</FONT>
+
+<BR><FONT SIZE=3D2>&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; =
+wrote:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;I wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; do you mind outlining the solution in a few =
+sentences? how do you want</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; to be able to find out that you are not in =
+math but will be once</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; something (eg tha actual letter) triggered =
+the \halign u part without</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; actually triggering it (with something like =
+\relax which kills</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; ligaturing)?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;but by now i got a chance to looked at it. quite =
+a nice idea but i don't think</FONT>
+
+<BR><FONT SIZE=3D2>&gt;it is fully correct yet. you change \if@mmode at =
+each \halign thus an \halign</FONT>
+
+<BR><FONT SIZE=3D2>&gt;that doesn't generate math mode cells will have =
+this setting throughout, eg</FONT>
+
+<BR><FONT SIZE=3D2>&gt;something like</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\begin{tabular}[t]{..}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;will have broken text inside, wouldn't it? or do =
+i overlook something?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>no, it would not have broken text, because \halign is =
+redefined in the</FONT>
+
+<BR><FONT SIZE=3D2>following way:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\org@halign\halign</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareRobustCommand\halign{\let\if@mmode\if@mmode@\org@halign}=
+</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and \if@mmode@ is defined like this:</FONT>
+
+<BR><FONT SIZE=3D2>\def\if@mmode@{\reset@if@mmode\ifmmode}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareRobustCommand\reset@if@mmode{\let\if@mmode\ifmmode}</FON=
+T>
+</P>
+
+<P><FONT SIZE=3D2>so when you have \begin{tabular}[t]{..}, then the =
+FIRST character inside the</FONT>
+
+<BR><FONT SIZE=3D2>cell</FONT>
+
+<BR><FONT SIZE=3D2>will execute \if@mmode@ which will reset \if@mmode to =
+just \ifmmode, thus</FONT>
+
+<BR><FONT SIZE=3D2>preserving all ligatures!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i.e., each cell will at the beginning have \if@mmode =
+defined as</FONT>
+
+<BR><FONT SIZE=3D2>\reset@if@mmode \ifmmode, but after the first =
+inputenc-generated letter,</FONT>
+
+<BR><FONT SIZE=3D2>it will go to \ifmmode.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>here's an example:</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<=
+/FONT>
+
+<BR><FONT SIZE=3D2>\documentclass{article}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{mathtext}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[T2A]{fontenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[koi8-r]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter \showboxdepth\maxdimen =
+\showboxbreadth\maxdimen \tracingonline1</FONT>
+
+<BR><FONT SIZE=3D2>\setbox0=3D\hbox{^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4}</FONT>
+
+<BR><FONT SIZE=3D2>\showbox0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{tabular}[t]{|c|c|}</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode&amp;</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>^^c7^^c4 ^^c7^^c4 ^^c7{}^^c4</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>\\</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<=
+/FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;assuming that the analysis is right, what follows =
+is that instead of changing</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\halign internally you would have to change those =
+uses of \halign where it is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;needed (only) and that cuts through all existing =
+macros and isn't transparent</FONT>
+
+<BR><FONT SIZE=3D2>&gt;ie you can't simply get it done by a single =
+package or inclusion of code in</FONT>
+
+<BR><FONT SIZE=3D2>&gt;the kernel you actually have to change every =
+second use of \halign</FONT>
+</P>
+
+<P><FONT SIZE=3D2>there exists a SMALL probability that the kern will be =
+broken only ONCE (for the</FONT>
+
+<BR><FONT SIZE=3D2>two characters) in the cell, but that can hallen only =
+once per cell.</FONT>
+
+<BR><FONT SIZE=3D2>This will happen if the cell contents meets all these =
+conditions:</FONT>
+
+<BR><FONT SIZE=3D2>1) there is a combination of 7-bit character =
+followed</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; by 8-bit character, and there's a kern =
+for them in a TFM file.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (note that for cyrillic texts, this is =
+very rare - the word either consists</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; of all cyrillic letters, or all latin =
+ones, not moxed - and there's usually</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; no kerning between cyrillic and latin =
+letters)</FONT>
+
+<BR><FONT SIZE=3D2>2) there were no 8-bit characters in this cell =
+before, i.e.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; such 8-bit character preceeded by 7-bit =
+one is the first occurrence of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; 8-bit char in the cell (kerns between =
+all other characters in this cell</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; will be OK).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; &gt; the approach used in the mathtext package =
+proved to be stable enough:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; i know a lot of people do use it for =
+`transparent' cyrillic letters in</FONT>
+
+<BR><FONT SIZE=3D2>&gt; &gt; math, and i did not hear about bug for a =
+long time now. the mechanism</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;you don't see the problem unless you look closely =
+at kerning and ligatures</FONT>
+
+<BR><FONT SIZE=3D2>&gt;(and you use fonts that have them) but it may be =
+the case that this is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;sufficiently rare with the type of characters it =
+is used so far. with latin</FONT>
+
+<BR><FONT SIZE=3D2>&gt;fonts i guess this would become far more =
+visible.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>well, you are correct, - for latin fonts, there's =
+usually a kern between</FONT>
+
+<BR><FONT SIZE=3D2>V and \'A, so so if the cell would include</FONT>
+
+<BR><FONT SIZE=3D2>some ascii letters ... V\'A other text</FONT>
+
+<BR><FONT SIZE=3D2>then the kern between V\'A would have been lost - but =
+only for these two letters</FONT>
+
+<BR><FONT SIZE=3D2>in the cell - not any other!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>this is demonstrated by the following example:</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<=
+/FONT>
+
+<BR><FONT SIZE=3D2>\documentclass{article}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage{mathtext}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[T1]{fontenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[latin1]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareTextSymbol{\AGRAVE}{T1}{193}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareInputText{193}{\AGRAVE}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter \showboxdepth\maxdimen =
+\showboxbreadth\maxdimen \tracingonline1</FONT>
+
+<BR><FONT SIZE=3D2>\setbox0=3D\hbox{V^^c1 V^^c1 V{}^^c1}</FONT>
+
+<BR><FONT SIZE=3D2>\showbox0</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{tabular}[t]{|c|c|}</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>V^^c1 V^^c1 V{}^^c1</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode&amp;</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>V^^c1 V^^c1 V{}^^c1</FONT>
+
+<BR><FONT SIZE=3D2>\show\if@mmode</FONT>
+
+<BR><FONT SIZE=3D2>\\</FONT>
+
+<BR><FONT SIZE=3D2>\end{tabular}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<=
+/FONT>
+</P>
+
+<P><FONT SIZE=3D2>you'll see the kern lost for the first V\'A =
+combination in the cell,</FONT>
+
+<BR><FONT SIZE=3D2>but not for the second (and not for any other letter =
+pairs in the cell).</FONT>
+
+<BR><FONT SIZE=3D2>(if it was a combination of accented letter =
+PRECEEDING the non-accented</FONT>
+
+<BR><FONT SIZE=3D2>letter, then the kern would not have been =
+lost)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I used</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareTextSymbol{\AGRAVE}{T1}{193}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareInputText{193}{\AGRAVE}</FONT>
+
+<BR><FONT SIZE=3D2>in the above example because the mathtext package =
+redefines only</FONT>
+
+<BR><FONT SIZE=3D2>the \DeclareTextSymbol command, but not the composite =
+commands like \'A</FONT>
+
+<BR><FONT SIZE=3D2>(which were not needed for cyrillic, but can be =
+supported too).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Well, the above example shows that there is indeed a =
+possible problem with latin</FONT>
+
+<BR><FONT SIZE=3D2>texts - in some situations one kern in a cell may be =
+lost.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But, i see a solution to this: we can redefine A FEW =
+internal LaTeX commands</FONT>
+
+<BR><FONT SIZE=3D2>which build preambles for alignments to insert =
+\reset@if@mmode in the</FONT>
+
+<BR><FONT SIZE=3D2>before the &quot;#&quot; - i.e. to make sure that =
+\if@mmode will be reset to \ifmmode</FONT>
+
+<BR><FONT SIZE=3D2>before the first character in a cell is =
+executed.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There are only a very small number of places where =
+latex has (or builds)</FONT>
+
+<BR><FONT SIZE=3D2>the alignment preambles, so the changes would not be =
+big...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>(but for cyrillic letters, this is probably not needed =
+at all, as mentioned</FONT>
+
+<BR><FONT SIZE=3D2>above)...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Best,</FONT>
+
+<BR><FONT SIZE=3D2>v.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C019.98CBBE80--
+

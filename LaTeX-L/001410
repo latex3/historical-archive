@@ -1,0 +1,142 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4910" "Wed" " 2" "February" "1994" "22:25:14" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" "<199402022127.AA28420@mail.cs.tu-berlin.de>" "111" "Re: On the death of \\footheight" "^Date:" nil nil "2" "1994020221:25:14" "On the death of \\footheight" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA27543; Wed, 2 Feb 94 22:27:41 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA19162; Wed, 2 Feb 94 22:27:38 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA28420
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 2 Feb 1994 22:27:35 +0100
+Message-Id: <199402022127.AA28420@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 0633; Wed, 02 Feb 94 22:27:30 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 0631; Wed,
+ 2 Feb 1994 22:27:30 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 8952; Wed,
+ 2 Feb 1994 22:26:52 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 2 Feb 1994 22:25:14 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: On the death of \footheight
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1410
+
+Paul,
+
+i think you are wrong and below is why.
+
+david said in another message it has been a long day---so it has for me
+and i can't say that i'm too pleased either about some of the messages
+i've seen this evening after 10 hours hard work. (not talking about this
+message). since this is online excuse me if something is unclear.
+
+generally:
+
+many people complain about many things and it is certainly easy to
+speak about time bombs etc. but if you think a bit about what you ask for
+you might find that you yourself have conflicting goals.
+
+on one hand people complain about stuff getting to large or
+that package X is not running if used together with Y and Z and on the
+other hand you really ask for big blue compatibility. don't forget
+that IBM has at the same time always sold larger machines.
+
+coming back footheight: what does 2e currently provide?
+
+a) the dimen is removed in native mode to make it more likely
+that package X does work with package Y without overflowing the
+fixed number of dimens
+
+result a style that just defines it (without using it as did latex209)
+need to remove this definition. how many classes do you think will have
+this problem?
+
+a style that really uses it needs to declare it to be able to run it
+in 2e, again how many styles will that be?
+
+b) it is let to a scratch dimen in compatibilty mode
+
+this will make it possible to run any old document that contains
+a setting for it in the premable (something unnecessary since it is
+not used, but somebody might have thought it was necessary)
+
+> David Carlisle:
+> > That does not mean that all the other thousands of LaTeX users should
+> > have one of the very limited dimen registers wasted by being allocated
+> > but never used.
+>
+> \dimendef\footheight=0 would solve most of these problems.
+>
+> You can assign to it without trouble (unless you're stupid enough to think
+> that \dimen0 retains its value after your code surrenders control),
+> and since it is nowhere guaranteed to have a meaningful value, can read it.
+
+but  in that case it is of no use to a style that really uses it
+like seminar since such a style might not want to get a random value
+whenever it reads it out.
+
+> It you want an error message,
+> \def\footheight{\begingroup\afterassignment\no@footheight\dimen0=}
+> \def\no@footheight{\@latexerr{footheight is obsolete}\endgroup}
+> would even preserve \dimen0, though you couldn't read \footheight.
+
+i think that is even worse since then you waste space (something
+people complain about) and you gain nothing since Tim still has to
+change seminar to make it run.
+
+so i guess you can't win them all.
+
+> Whilst LaTeX2e is compatability mode looks more or less compatible,
+> this sort of thing is going to mean that it will be a LONG TIME
+> before people (can) switch to native mode.
+
+speaking about LONG TIME: when i joint the project of writing the companion
+there was nothing like latex2e around or thought of. we had dropped
+the idea of producing 2.10 long time ago.
+the companion was perhaps finished to 70% when the discussion was restarted
+and to 90% in april last year when it was finally decided that such a version
+is important for the reasons given in the announcements.
+
+as a result the companion became a sort of test case since the latex at my
+home changed daily. in the middle of it i  froze the whole environment
+and although i had added by then all the text describing 2e I used very an
+early implementation of latex2e (in some cases only partly implemented stuff)
+to produce the book. in other words the book was basially produced with
+latex209 + NFSS2 + a few macro halffinished macros to produce the 2e
+examples.
+
+this book uses nearly all style files it describes in the single latex run
+that is producing it (some example are done offline and pasted via eps fgures)
+
+now in the last few days i have started to rewrite the companion class file
+in latex lingua, eg removing handmade code for newcommand the new
+minipage options etc. after doing this and after finding a bug in
+the changebar.sty that did not show up with the 209 output routine
+the companion compiled under 2e without any change to any package files
+used (and it produced the same page and line breaks as before)
+
+so much for the number of changes necessary to styles to run under 2e
+(of course, there will be styles that need a bit of helping but not many)
+
+as for the compatibility mode: it processed leslie manual without problem
+and it did processed all the test files produced last year by the volunteer
+group without showing differences (well, after fixing a few stupid bugs,
+ie the version you should find on the servers tomorrow or so).
+
+so i really don't think that there will real problems if people are
+only willing.
+
+however one can frighten any everybody one only have to be raising
+the voice enough. whether or not it is to the point does not really matter.
+--- unfortunately if i may say so.
+
+good night
+frank
+

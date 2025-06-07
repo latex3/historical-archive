@@ -1,0 +1,176 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Fri, 1 Apr 2005 21:48:30 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j31JmSqc029826
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 1 Apr 2005 21:48:28 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j31JiktL001622;
+	Fri, 1 Apr 2005 21:44:46 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j31CdrlP008231;
+	Fri, 1 Apr 2005 21:42:20 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 190630 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 1 Apr 2005 21:42:19 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j31JgHYd028443 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr 2005 21:42:17 +0200
+Received: from smtp06.web.de (smtp06.web.de [217.72.192.224]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j31JiCfK011196 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 1 Apr
+          2005 21:44:13 +0200 (MET DST)
+Received: from [212.144.143.34] by smtp06.web.de with smtp (WEB.DE 4.104 #268)
+          id 1DHS2m-0006wz-00 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 01
+          Apr 2005 21:43:01 +0200
+X-Sender: uwe.lueck@pop3.web.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="=====================_5412698==_"
+X-Sender: uwe.lueck@web.de
+Message-ID:  <5.1.0.14.0.20050401192426.024909a0@pop3.web.de>
+Date:         Fri, 1 Apr 2005 19:32:58 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Uwe =?iso-8859-1?Q?L=FCck?= <uwe.lueck@WEB.DE>
+Subject: Re: \@reinserts / \holdinginserts
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 01 Apr 2005 19:48:30.0815 (UTC) FILETIME=[C7DED6F0:01C536F3]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4852
+
+--=====================_5412698==_
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+
+A package file with a proposal for dealing with the \@reinserts
+problem that has occupied the LaTeX-L list this week is attached.
+It contains further informations. I plan to place future versions
+and demonstration .tex's in a CTAN directory
+     /macros/latex/contrib/noreinserts/
+-- or what do you suggest? -- Uwe Lueck.
+--=====================_5412698==_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: attachment; filename="noreins.sty"
+
+%% noreins.sty -- experimental fix of bug
+%%                latex/3370, 3541, 3719.
+%% (C) 2005 Uwe Lueck http://contact-ednotes.sty.de.vu
+%% Adapted from lineno.sty, due to Stephan I. Boettcher
+%% and Frank Mittelbach.
+\def\filedate{2005/04/01} \def\fileversion{v0.1}
+%% RIGHTS: LaTeX Project Public License (LPPL) v1.3a
+%%         -- author-maintained.
+%%
+%% * FIRST BRIEF INTRODUCTION: *
+%
+%% PURPOSE/WARNING:
+% Experts know well that \@reinserts in LaTeX's \@specialoutput
+% -- which handles floats (figures, tables) and \marginpar's --
+% may cause wrong order of footnote splits or output of
+% footnotes on unnecessarily late pages. Just disabling
+% \@reinserts or dropping it, as David Kastrup recommends in
+% latex/3541, has other disadvantages. TeX3 was equipped with
+% \holdinginserts to deal with problems of this kind. Yet LaTeX
+% has still not made use of it, since it seems that this would
+% still require redisigning LaTeX's output routine entirely.
+% Here is an experimental, simple fix (!?). It replaces the
+% problem by another one, yet the new one might show up more
+% rarely or might easier be dealt with by non-expert users -- I
+% would like to know.
+%
+%% USAGE:
+% Just load the package. It doesn't define any user commands.
+%
+%% MISSING:
+% Demonstration files showing problems must be added. One
+% problem with the problem is that it seems to show up only
+% accidentally during working, but disappears when you try to
+% make a demonstration file. Even although I think that I can,
+% in a somewhat abstract way, name the conditions under which
+% the problem shows up, I find it difficult to "reliably"
+% demonstrate it. E.g., when I try to tie two lines together, a
+% surprising \penalty0 comes from the float mechanism and makes
+% it impossible. The "reliable" demonstration files that I could
+% make so far use lineno.sty and so are little useful for a
+% general discussion of \@reinserts and \holdinginserts. -- And
+% it would be good to have a review of discussions of the matter
+% here or in one nearby file. And a digest for non-experts would
+% be good.
+%
+%% MORE INFORMATIONS:
+% In the recent days, there was an intense discussion of the
+% matter on the LaTeX-L e-mail list.
+%
+%% WELCOME:
+% Suggestions on nearly everything, especially implementation,
+% different algorithms, different names; demonstration files;
+% where, how, whether present these experiments.
+%
+%% ACKNOWLEDGEMENT / PRESENT IMPLEMENTATION:
+% This is a variant of how lineno.sty, say v3.02ff., has used
+% \holdinginserts, due to Stephan I. Boettcher and Frank
+% Mittelbach. Particular purposes: As compared with the proposal
+% in latex/3719, the implementation is intended to work
+% relatively independently of other changes of the output
+% routine, maybe due to different LaTeX versions or due to
+% packages like longtable. It is even intended that it doesn't
+% conflict with uses of \holdinginserts by other packages or a
+% future LaTeX version, but it is not clear to me how probably
+% this works. -- The problem that the implementation introduces
+% is that the float mechanism measures the \footins box to
+% decide about placement of floats, while with \holdinginserts>0
+% the \footins box is "spuriously" empty. -- One further
+% difference to the proposal in latex/3719 is that
+% \holdinginserts is not decreased for \clearpage here. -- A
+% problem discussed on LaTeX-L is whether/how
+% \penalty\outputpenalty should be used. The present proposal is
+% just what lineno.sty has done when I found it. -- \@reinserts
+% is neither defined away nor circumvented, it will just find
+% that there is nothing to reinsert.
+%
+\ProvidesPackage{noreins}[\filedate\space\fileversion\space
+                          do without \string\@reinserts]
+% \let\@reinserts\relax % TODO!? another package might use it.
+\chardef\@vl=45 % Latin `vl' is written `ul' in critical editions.
+\global\holdinginserts\@vl % But how cooperate ...!?
+% (cf. lineno.sty)
+\let\@UAR@output\output % Universally Avoiding \@reinserts.
+\newtoks\output
+\output\expandafter{\the\@UAR@output}
+\newif\if@UAR@goodoutput % lineno.sty has used \if@tempswa.
+\@UAR@output{%
+  \@UAR@goodoutputtrue
+  \ifnum\holdinginserts=\@vl
+    \ifnum\outputpenalty>-\@Mii
+      \@UAR@goodoutputfalse
+    \else
+      \ifnum\outputpenalty<-\@Miv % \@Miii breaks.
+        \@UAR@goodoutputfalse
+      \fi
+    \fi
+  \fi
+  \if@UAR@goodoutput
+    \the\output
+    \ifnum\holdinginserts-\@vl
+      \global\holdinginserts\vl
+    \fi
+  \else
+    \unvbox\@cclv
+    \global\holdinginserts-\@vl
+    \ifnum\outputpenalty=\@M \else
+      \penalty\outputpenalty
+    \fi
+  \fi
+}
+\endinput
+
+
+--=====================_5412698==_--
+

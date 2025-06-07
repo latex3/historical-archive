@@ -1,0 +1,66 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["978" "Thu" " 3" "February" "1994" "14:20:23" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402031749.AA26782@opal.cs.tu-berlin.de>" "31" "Re: On the death of \\footheight" "^Date:" nil nil "2" "1994020314:20:23" "On the death of \\footheight" nil nil])
+Return-Path: <owner-latex-l%VM.URZ.UNI-HEIDELBERG.DE@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA00199; Thu, 3 Feb 94 22:35:22 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA26492; Thu, 3 Feb 94 22:34:20 +0100
+Received: from quepasa.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA19077
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Thu, 3 Feb 1994 22:27:16 +0100
+Received: from opal.cs.tu-berlin.de by quepasa.cs.tu-berlin.de with SMTP id AA11138
+  (5.65c8/IDA-1.4.4(fallback.m4[1.7]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Thu, 3 Feb 1994 20:48:11 +0100
+Received: from tubvm.cs.tu-berlin.de by opal.cs.tu-berlin.de with SMTP id AA26782
+  (5.65c8/IDA-1.4.4(fallback.m4[1.7]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 3 Feb 1994 18:49:36 +0100
+Message-Id: <199402031749.AA26782@opal.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 8723; Thu, 03 Feb 94 18:49:30 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 8722; Thu,
+ 3 Feb 1994 18:49:30 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5309; Thu,
+ 3 Feb 1994 18:49:03 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Thu, 3 Feb 1994 14:20:23 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: On the death of \footheight
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1426
+
+From:          Paul Taylor <pt@doc.imperial.ac.uk>
+%>
+%>\dimendef\footheight=0 would solve most of these problems.
+%>
+
+How about "virtual dimen"s, that only get defined when the user needs them,
+for instance, when assigning to them?
+
+Mike Piff
+
+\def\virtualdimen#1{%
+   \edef\virtdef{%
+      \gdef\csname#1\endcsname{%
+         \noexpand\ifx\csname#1\endcsname\csname#1virt\endcsname
+            \noexpand\newdimen\csname#1\endcsname
+            \global\let\csname#1virt\endcsname\noexpand\undefined
+         \noexpand\fi
+         \csname#1\endcsname
+       }
+       \global\let\csname#1virt\endcsname\csname#1\endcsname
+   }%
+   \virtdef
+}
+\virtualdimen{footheight}
+
+\footheight\baselineskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

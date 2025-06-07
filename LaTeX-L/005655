@@ -1,0 +1,118 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 12 Feb 2009 09:20:16 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1C8LpSF019653
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 12 Feb 2009 09:21:51 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n1C8BeiG020858
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 12 Feb 2009 09:11:41 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1BN28pJ011009;
+	Thu, 12 Feb 2009 09:11:35 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 168441 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 12 Feb
+          2009 09:11:34 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1C8BYWv030112 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 12 Feb 2009 09:11:34 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n1C8BKxf020565
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 12 Feb 2009 09:11:23
+          +0100
+Received: from [139.222.131.78] (helo=ueams01.uea.ac.uk) by mailgate5.uea.ac.uk
+          with esmtp (Exim 4.50) id 1LXWfI-0001k1-1k for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 12 Feb 2009 08:11:20 +0000
+Received: from [139.222.114.191] by ueams01.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1LXWfE-00054j-5i for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 12 Feb
+          2009 08:11:16 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <956A99D8-D534-4E72-B784-47F867038030@gmail.com>
+            <6B8546AF-AA17-414A-93BF-35B38A59EEE2@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4993D9A9.3000704@morningstar2.co.uk>
+Date:         Thu, 12 Feb 2009 08:11:21 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: token_if_expandable
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <6B8546AF-AA17-414A-93BF-35B38A59EEE2@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Feb 2009 08:20:16.0449 (UTC) FILETIME=[BC336310:01C98CEA]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5655
+
+Will Robertson wrote:
+> On 12/02/2009, at 5:00 PM, Will Robertson wrote:
+> 
+>> Having some more troubles, this time with \token_if_expandable.
+>> Unfortunately, the only token I can find that trips this "true" is
+>> \relax or \scan_stop:, which isn't exactly what I thought the intended
+>> behaviour was supposed to be.
+> 
+> After searching through c.t.t. for a while, I found an insane thread
+> talking about this sort of thing:
+>   <http://groups.google.com/group/comp.text.tex/msg/2b571c53da89f86f>
+> 
+> Dan Luecking's comment is that
+>   \expandafter\ifx\noexpand#1#1
+> "seems a feasible test for expandability of a token".
+> 
+> I'm in a rush, and might be barking up the wrong tree here, but here's a
+> re-implementation of \token_if_expandable that *seems* to behave in a
+> more coherent manner.
+
+This is still a bit odd.  For example, try:
+
+\documentclass{article}
+\usepackage{expl3}
+\begin{document}
+
+\def\foo{bar}
+\def\test{\edef\test{bar}}
+
+\ExplSyntaxOn
+\def:Npn \token_if_expandable_p:N #1{
+  \cs_if_exist:NTF #1 {
+    \exp_after:NN \if_token_eq:NN \exp_not:N #1 #1
+      \c_false \else: \c_true \fi:
+  } {\c_false}
+}
+\def_test_function:npn {token_if_expandable:N} #1{
+\if:w\token_if_expandable_p:N#1}
+
+\noindent
+Should~be~T:~\token_if_expandable:NTF \foo {T} {F} \\
+
+Should~be~T:~\token_if_expandable:NTF \test {T} {F} \\
+
+Should~be~F:~\token_if_expandable:NTF \undefined {T} {F} \\
+
+Should~be~F:~\token_if_expandable:NTF \def {T} {F} \\
+
+Should~be~F:~\token_if_expandable:NTF \the {T} {F} \\
+
+Should~be~F:~\token_if_expandable:NTF \write {T} {F}
+
+\ExplSyntaxOff
+
+Look at what happens with \the.
+
+Joseph
+

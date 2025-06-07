@@ -1,0 +1,42 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 18 Jul 90 16:00:18 bst
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: Sebastian Rahtz <spqr@ECS.SOTON.AC.UK>
+Subject:      Re: two-column output
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 202
+
+Barbara says
+
+ > well, then, another idea:  make the skips before section headings
+ > fixed -- no stretch.  (the skips after headings shouldn't have stretch
+ > anyhow, if i've learned my lessons right from richard southall.)  and
+ > make the space occupied by section headings a integer multiple of
+dont forget that the heading is probably in a larger font (say 14pt
+instead of 11 or 12 for text), and may span several lines, so you cant
+do it just by adjusting the before and after
+
+ > text baselineskip.  that way, all columns should come out the same, even
+when Nico first asked this, I wrote and suggested a `reset to multiple
+of baselineskip' solution - did anyone get it? the idea is to call the
+`reset' macro whenever you are likely to have gone out of
+synchronisation. along the lines of
+
+\newdimen\desired
+\newcount\xlines
+\def\resynch{
+\xlines=0\desired=\topskip
+\loop\advance\xlines by 1\advance\desired by \baselineskip
+\ifnum \desired < \pagetotal\repeat
+\advance\desired by -\pagetotal
+\typeout{\the\pagetotal-----> \the\desired}
+\vskip\desired}
+
+
+sebastian
+
+

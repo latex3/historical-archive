@@ -1,0 +1,179 @@
+X-VM-VHeader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+X-VM-Bookmark: 1
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: bbeeton <BNB@MATH.AMS.COM>
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Subject:      [Michael Downes <MJD@MATH.AMS.COM>: enunciations, LaTeX]
+Date:         Thu, 5 Apr 90 01:55:30 CET
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 65
+
+
+Date: Wed 4 Apr 90 18:06:29-EST
+From: Michael Downes <MJD@MATH.AMS.COM>
+Subject: enunciations, LaTeX
+To: bnb
+
+Mike Downes has prepared the attached, in response to Frank's request.
+It gives some more details and examples of syntax for the theorem
+macros he's been working on.
+                        --------------------
+
+The \newtheorem macros I've been working on are intended for use in the
+two AMS-specific documentstyles under development, amsart.sty and
+amsbook.sty.  They are based on the term `enunciation' rather than
+`theorem' (\newenunciation instead of \newtheorem, and so on) because
+the idea of `theorem' doesn't seem general enough to encompass
+the whole class of structures including examples, remarks, notes,
+claims, etc. for which the macros are designed.
+
+I define an enunciation as a piece of text at least one paragraph long
+that has a label (or `header') and that is distinguished from the
+surrounding text by its typographical treatment.  As the name
+suggests, the purpose of an enunciation is to declare or assert
+something (note that an ordinary list is usually descriptive rather
+than assertive).  Unlike a sectional unit, which is ended only by the
+start of a new sectional unit at the same or higher level, an
+enunciation has a definite end that doesn't necessarily coincide with
+the start of anything else.  In addition the text of an enunciation
+might be in a different font than the main text of the document, or
+indented, or otherwise visually differentiated.
+
+The in-house styles used for AMS journals and books distinguish several
+classes of enunciations according to their relative importance in
+the author's exposition.  The more important classes have typographical
+treatment that gives them more prominence.  These are sketches of the
+four main classes (named after the member that occurs most often):
+
+Theorem class:
+ header font = \bf
+ body font = \it
+ preskip = \medskipamount
+ postskip = preskip
+ punctuation = .
+ header indent = false
+
+Definition class:
+ header font = \bf
+ body font = \normalshape
+ preskip = \medskipamount
+ postskip = preskip
+ punctuation = .
+ header indent = false
+
+Proof class:
+ header font = \it
+ body font = \normalshape
+ preskip = \medskipamount
+ postskip = preskip
+ punctuation = :
+ header indent = true
+
+Remark class:
+ header font = \it
+ body font = \normalshape
+ preskip = \smallskipamount
+ postskip = 0pt
+ punctuation = .
+ header indent = true
+
+For the time being I have included the proof class with the other
+enunciation classes, but Frank's suggestion of making a \newproof to
+deal with proofs seems worth pursuing further.
+
+The following syntax handles most of the enunciations I have
+seen in AMS publications and is backwardly compatible with \newtheorem
+syntax.
+
+\newenunciation STAR[CLASS]{TYPE}[SHARE COUNTER]{LABEL TEXT}[RESET BY]
+
+Theorem class is assumed if the first square bracket option is absent.
+When the STAR option is used a new counter will not be created
+and the * and : forms of the environment will be undefined.
+
+Otherwise each enunciation environment has two variant forms, the * form
+having the number omitted and the : form allowing substitution of a
+different number.  When the colon form is used the substitute number is
+a required argument.  It will be assigned to \@currentlabel.
+
+This is rather prodigal in terms of control sequence names but I think
+it is easier for the user than other possibilities.  An alternative I
+considered was to have the substitute number a required argument of
+the * form, with instructions to the user to type {} if they don't
+want a number.  But it seemed to me that the user might be confused
+between things like \begin{equation*} and \begin{theorem*} if {} were
+required with the latter but not with the former.  So I began by
+making \begin{theorem*} like \begin{equation*} with respect to extra
+arguments and proceeded from there.
+
+There's also a generalized `enunciation' environment with two required
+arguments, for enunciations with idiosyncratic LABEL TEXT that should
+nevertheless have the typographic treatment of a given enunciation
+class, e.g., `Symmetric Partition Theorem'.  The user syntax is
+
+\begin{enunciation}{CLASS}{LABEL TEXT}
+
+This is what the macros look like in use.
+
+ Input                                   Output
+ -------------------------------------   ------------------------------------
+
+\newenunciation{thm}{Theorem}[section]
+
+\begin{thm}\label{th.xxx}               Theorem 4.9.
+\begin{thm:}{\ref{th.xxx}$'$}           Theorem 4.9'.
+\begin{thm*}                            Theorem.
+\begin{thm}[Fermat]                     Theorem 4.10 (Fermat).
+\begin{enunciation}{theorem}            Fermat's Last Theorem.
+        {Fermat's Last Theorem}
+
+\newenunciation[definition]{defn}{Definition}[section]
+
+\begin{defn}                            Definition 4.1.
+\begin{defn*}                           Definition.
+\begin{defn*}[homotopy                  Definition (homotopy equivalence).
+        equivalence]
+
+\newenunciation*[definition]{exm}{Example}
+
+\begin{exm}                             Example.
+\begin{exm*}                            ! Environment exm* undefined
+\begin{exm:}                            ! Environment exm: undefined
+
+\newenunciation*[remark]{rem}{Remark}
+
+\begin{rem}                             Remark.
+\begin{enunciation}{remark}             Historical remarks.
+        {Historical remarks}
+
+\newenunciation[remark]{note}{Note}
+
+\begin{note}                            Note 1.
+\begin{note*}                           Note.
+\begin{enunciation}{remark}             Historical note.
+        {Historical note}
+
+\newenunciation*[proof]{prf}{Proof}
+
+\begin{prf}                             Proof:
+\begin{prf}[sufficiency]                Proof (sufficiency):
+\begin{enunciation}{proof}              Proof of Theorem 4.10:
+  {Proof of Theorem \ref{th.fermat}}
+\begin{enunciation}{proof}              Sketch of the proof:
+  {Sketch of the proof}
+
+ -----------------------------------------------------------------------------
+
+Internally there is a macro \e@theorem, \e@definition, ... for each enunciation
+class, with 3 arguments LABEL TEXT, NUMBER, and OP ARG.  These macros are
+documentstyle-specific and hence will be defined in amsart.sty and
+amsbook.sty.  (Between AMS journals and AMS books there are some variations in
+enunciation style.)  The remainder of the enunciation macros will be a
+separate module input by both amsart.sty and amsbook.sty.
+-------
+
+

@@ -1,0 +1,191 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4537" "Mon" "9" "November" "92" "09:10:57" "MST" "\"Nelson H. F. Beebe\"" "beebe@MATH.UTAH.EDU" nil "165" "\\raggedbottom and footnote placement" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA02911; Mon, 9 Nov 92 17:23:58 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA04523; Mon, 9 Nov 92 17:23:37 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA06258
+  (5.65c8/IDA-1.4.4(mail.m4[1.11]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Mon, 9 Nov 1992 17:23:34 +0100
+Message-Id: <199211091623.AA06258@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP R1.2.2MX) with BSMTP id 3321; Mon, 09 Nov 92 17:23:26 +02
+Received: from DB0TUI11 by TUBVM.CS.TU-BERLIN.DE (Mailer R2.07B) with BSMTP id
+ 3319; Mon, 09 Nov 92 17:23:24 +0200
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Mon, 9 Nov 92 09:10:57 MST
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      \raggedbottom and footnote placement
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 863
+
+
+The author, columnist, and ANSI X3J3 C Standards committee member, Rex
+Jaeschke asked me about a problem he was having with \raggedbottom in
+a new book he is finishing up.  He found footnotes floating up to the
+bottom of the text, rather than staying down at the bottom of the page
+where his publisher wants them.
+
+I traced the problem to the definition of \skip\footins in lplain.tex,
+which is set to \bigskipamount.  By inserting a redefinition of that
+value in the definition of \raggedbottom, I was able to solve his
+problem.  The new definition is
+
+\def\raggedbottom{\def\@textbottom{\vskip \z@ plus.0001fil}\let\@texttop\relax
+                  \skip\footins=12pt plus 1fil}
+
+where the 2nd line contains the only change I made.
+
+The questions for this group are
+        (1) is this a design oversight in the current LaTeX that should be
+        fixed, or did Leslie Lamport intend that footnotes in raggedbottom
+        float upwards?
+        (2) what is LaTeX 3 going to do with this?
+
+Here is a test file that illustrates the effect of my changes; comment
+out the \raggedbottom definition to see how it works in the current
+LaTeX 2.09.
+
+% -*-latex-*-
+% Document name: /u/sy/beebe/rex.ltx
+% Creator: Nelson H. F. Beebe [beebe@plot79.math.utah.edu]
+% Creation Date: Tue Nov  3 12:56:48 1992
+\documentstyle[]{report}
+
+\newcommand{\bl} {{\vspace{\baselineskip}}} % print blank line
+
+% define a block that cannot be split across a page boundary
+
+\newenvironment{block}{%
+\bl%
+\noindent%
+\begin{minipage}{\linewidth}%
+}%
+{%
+\end{minipage}%
+}
+
+\makeatletter
+% OLD:
+% \def\raggedbottom{\def\@textbottom{\vskip \z@ plus.0001fil}\let\@texttop\relax
+   }
+% NEW:
+\def\raggedbottom{\def\@textbottom{\vskip \z@ plus.0001fil}\let\@texttop\relax
+                  \skip\footins=12pt plus 1fil}
+\makeatother
+
+\newcommand{\blah}
+{
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+Blah blah blah blah blah blah blah blah.
+}
+
+\begin{document}
+\raggedbottom
+
+\chapter{One}
+Blah blah blah blah blah blah blah blah.\footnote{First one.}
+Blah blah blah blah blah blah blah blah.\footnote{Next one.}
+Blah blah blah blah blah blah blah blah.\footnote{A third one.}
+Blah blah blah blah blah blah blah blah.\footnote{The last one.}
+
+\blah
+
+\begin{block}
+\begin{verbatim}
+// Structures versus classes
+
+#include <iostream.h>
+
+struct CircleA {
+        long xorigin;
+        long yorigin;
+        unsigned long radius;
+};
+\end{verbatim}
+\end{block}
+
+\begin{block}
+\begin{verbatim}
+class CircleB {
+public:
+        long xorigin;
+        long yorigin;
+        unsigned long radius;
+};
+\end{verbatim}
+\end{block}
+
+\begin{block}
+\begin{verbatim}
+main()
+{
+        static CircleA circle1;
+        CircleB circle2;
+
+        circle1.xorigin = 5;
+        circle2.yorigin = 6;
+\end{verbatim}
+\end{block}
+
+\begin{block}
+\begin{verbatim}
+        cout << "circle1.radius = " << circle1.radius << '\n';
+        cout << "circle2.radius = " << circle2.radius << '\n';
+
+        cout << "sizeof(CircleA) = " << sizeof(CircleA) << '\n';
+        cout << "sizeof(CircleB) = " << sizeof(CircleB) << '\n';
+
+        return 0;
+}
+\end{verbatim}
+\end{block}
+
+\end{document}
+
+
+========================================================================
+Nelson H. F. Beebe                      Tel: +1 801 581 5254
+Center for Scientific Computing         FAX: +1 801 581 4148
+Department of Mathematics, 105 JWB      Internet: beebe@math.utah.edu
+University of Utah
+Salt Lake City, UT 84112, USA
+========================================================================
+

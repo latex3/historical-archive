@@ -1,0 +1,106 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 18 May 90 10:06:18 -0700
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Leslie Lamport <lamport@SRC.DEC.COM>
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+In-Reply-To:  Your message of Fri,
+              18 May 90 10:31:13 CET. <9005180929.AA24583@decpa.pa.dec.com>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 107
+
+Frank writes:
+
+   \tableofcontents, \listoffigures etc.  are used at the moment to do
+   several jobs.  First of all they tell LaTeX to prepare a list of figure
+   but on the other hand they mark the place where the list of figures
+   should go to...  A much cleaner syntax would be to have a font matter
+   enviroment containing necessary subenviroment and commands.  The style
+   file is then responsible to typeset this material in appropiate places.
+
+I'm afraid these plans are starting to get a little too grandiose.  I
+agree that it is more elegant to let the style decide where to put the
+talbe of contents and the list of figures.  But think of all the
+decisions this entails.  For example:
+
+     Does the list of figures go before or after the list of tables.
+
+     Do the list of figures and list of tables:
+       (a) Go on successive pages?
+       (b) Go on successive right-hand pages?
+       (c) Go on the same page?
+
+The choice of (a), (b), or (c) might depend on the lenths of the lists.
+Either the \frontmatter command would have an astronomical number of
+options, or the user would have to learn how to define his own
+\frontmatter command.
+
+Let's not become so obsessed with the ideal of separating content from
+format that we produce something unwieldy.
+
+...
+
+Here's an idea I just had about parameters.  How about giving
+every environment an optional argument, and letting
+
+  \begin{foo}[args] ... \end{foo}
+
+effectively expand to {\foo args ...  }.  The user could put arbitrary
+declarations, which could be used to set parameters.  Thus, instead
+of writing \begin{itemize|compact|tick=---}, the user would write
+
+   \begin{itemize}[\compact\renewcommand{\tick}{---}]
+
+The disadvantage of this approach is that what you type looks uglier.
+But, there are quite a few advantages:
+
+* It re-uses an existing concept (declarations) rather than introducing
+  a new one (parameters).
+
+* It is more powerful.  For example, one can write
+
+      \begin{itemize}[\ifthenelse{\journalversion}{\runin}{\compact}]
+
+* It makes it easy for user-defined environments to employ parameters.
+  A command \optionalargs in the environment definition would expand
+  to the contents of the optional argument.
+  (With Frank's proposed scheme, to allow parameters in user-defined
+  environments, the manual would have to explain whatever mechanism
+  is employed to translate parameter specifications into declarations.)
+
+* It makes changing ALL parameters for an environment much nicer.  For
+   example, to change \arraycolsep for a single array, one must now write
+
+     {\setlength{\arraycolsep}{...}\begin{array}[t]...
+
+  With my proposal, one would write
+
+     \begin{array}[\top \setlength...]
+
+* It extends easily to commands--including user-defined commands.
+  For example:
+
+    \section [\nonumber
+              \renewcommand{\tochead}{Gnats and Gnus Forever}%
+              \renewcommand{\runninghead}{Gnats and Gnus}]%
+             {Gnats and Gnus: The Example Goes on Forever}
+
+   Of course, \renewcommand{\foo}{...} could probably be replaced
+   by something nicer, like \set{foo}{...}.
+
+* It is trivial to implement.  (Hence, less likely to have bugs.)
+
+In principle, all the advantages of my scheme could be incorporated
+into parameters.  One should be able to write
+
+     \begin{itemize|topsep=12pt|tick=---}
+
+However, imagine trying to implement that in TeX! (Note that
+\def{\topsep}{12pt} would be a disaster--e.g., if the itemize
+environment has \foo=.5\topsep.)
+
+Leslie Lamport
+
+

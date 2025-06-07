@@ -1,0 +1,175 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 May 2008 16:32:41 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m4FEWcJj023011
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 15 May 2008 16:32:38 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m4FENv40015186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 15 May 2008 16:23:58 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m4FE61cW025894;
+	Thu, 15 May 2008 16:25:47 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 4501 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 15 May
+          2008 16:25:47 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m4FEPlEQ031286 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 15 May 2008 16:25:47 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.251])
+          by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id
+          m4FENqnn015077 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 15 May
+          2008 16:23:56 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so458368rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 15 May 2008 07:25:42 -0700
+          (PDT)
+Received: by 10.141.20.7 with SMTP id x7mr1138780rvi.255.1210861542228; Thu, 15
+          May 2008 07:25:42 -0700 (PDT)
+Received: from ?129.127.15.244? ( [129.127.15.244]) by mx.google.com with
+          ESMTPS id g31sm3762598rvb.2.2008.05.15.07.25.40 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Thu, 15 May 2008 07:25:41 -0700 (PDT)
+Content-Type: multipart/signed; boundary=Apple-Mail-20-626103635; micalg=sha1; protocol="application/pkcs7-signature"
+Mime-Version: 1.0 (Apple Message framework v919.2)
+References: <85BC623C-4952-4585-BC7E-4B3F75CA5A10@gmail.com>
+            <alpine.DEB.1.10.0805151610000.9108@bk-ng-05.proteosys>
+X-Mailer: Apple Mail (2.919.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <1A8B3E0C-24D3-4D27-A649-395D2035FB34@gmail.com>
+Date:         Thu, 15 May 2008 23:55:37 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Replacing inputenc for XeTeX/LuaTeX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <alpine.DEB.1.10.0805151610000.9108@bk-ng-05.proteosys>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 May 2008 14:32:42.0011 (UTC) FILETIME=[886BCEB0:01C8B698]
+Status: R
+X-Status: A
+X-Keywords:                 
+X-UID: 5203
+
+--Apple-Mail-20-626103635
+Content-Type: text/plain;
+	charset=ISO-8859-1;
+	format=flowed;
+	delsp=yes
+Content-Transfer-Encoding: quoted-printable
+
+On 15/05/2008, at 11:43 PM, Rainer Sch=F6pf wrote:
+
+> Are your proposing something like this at the beginning of =20
+> inputenc.sty:
+>
+> \ifThisIsXeTeX
+>   \switchInputEncodingTo{\optarg}
+> \endinput \fi
+>
+> ? If so, is there a simple implementation of \ifThisIsXeTeX ?
+
+Pretty much, yes.
+
+The ifxetex package provides \ifxetex (simply by checking for the =20
+presence of \XeTeXversion).
+
+Here's some code that does approximately the right thing: (intended to =20=
+
+be a self-contained package in a XeTeX-exclusive search path to =20
+override the normal inputenc.sty)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{inputenc}
+   [2008/05/15 v0.1 XeTeX-specific inputenc package]
+\typeout{%
+   Loading a XeTeX-specific package to
+   override LaTeX's inputenc package.}
+\RequirePackage{ifxetex}
+\RequireXeTeX
+\DeclareOption*{%
+   \PackageWarning{inputenc}{^^J\space\space
+     XeTeX input encoding set to '\CurrentOption' for the rest of^^J%
+     \space\space '\jobname' and all subsequent files to be read.^^J%
+     This message occured}%
+   \XeTeXinputencoding "\CurrentOption"%
+   \XeTeXdefaultencoding "\CurrentOption"%
+}
+\ExecuteOptions{utf8}
+\ProcessOptions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+It's not very robust at the moment (i.e., the names XeTeX uses don't =20
+always map to the inputenc names; see =
+<http://www.iana.org/assignments/character-sets=20
+ > for the full list of encoding names) so I'll have to do something =20
+about that. But that's the general approach.
+
+I'm happy to maintain such a package that's intended to live in tex/=20
+xelatex/inputenc.sty if you like; otherwise, it should probably be =20
+rolled into inputenc.sty proper.
+
+Many thanks,
+Will=
+
+--Apple-Mail-20-626103635
+Content-Disposition: attachment;
+	filename=smime.p7s
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIGITCCAtow
+ggJDoAMCAQICEDC1OgtYuc79Ry0eIxzNnOUwDQYJKoZIhvcNAQEFBQAwYjELMAkGA1UEBhMCWkEx
+JTAjBgNVBAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQ
+ZXJzb25hbCBGcmVlbWFpbCBJc3N1aW5nIENBMB4XDTA3MDkwMTEwNDA0MFoXDTA4MDgzMTEwNDA0
+MFowQjEfMB0GA1UEAxMWVGhhd3RlIEZyZWVtYWlsIE1lbWJlcjEfMB0GCSqGSIb3DQEJARYQd3Nw
+cjgxQGdtYWlsLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAObV0whQrOhb9IAE
+h8h/Kq1ZJVUme8DpDQycq3ZfSV3dTQCKz8AnQpZ6B254GLEGLKHAf+3NT6Mhh+ZeM0ChnVXlUN7L
+lj81aJaeKNPzvTqFsZGzO3qDSyEzu9rTZrsMtb8ybUJ/rcq0oTD+5jXg8tj5TYSzzVxFv9fp65+Z
+adV6Q6JPKmAHG8dYdxJpu6gt+Ardkz9e/Giq9rzmfnXsMSHyGBIhkDBc/mrZLp46kvthTdWM5pj6
+NV1mePApqyMtjwfzJGmiJTz3XsgHgosMMEctAw1/6iXN4HzMwMYWxA7uV32C+DZf/dwD0I9gcR8l
+egnI5uEkcSdxqz/u8xJ8BJMCAwEAAaMtMCswGwYDVR0RBBQwEoEQd3NwcjgxQGdtYWlsLmNvbTAM
+BgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBBQUAA4GBALieYZi0JG7akMGOdexdGV2fHCipMOwbgNs9
+wSEY7iY0X7DrdjCuvQQHJOS6CC+G4Tom7l7n7PGr8Kt59ZjssTPwHmXxPjH60DKnrkmtllavF+O+
++aaYjynsTx4oRK6honpQcR5oBWTcJgA3R3YhkDfc1dBmQs9BY4I/gdkzG6V2MIIDPzCCAqigAwIB
+AgIBDTANBgkqhkiG9w0BAQUFADCB0TELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2Fw
+ZTESMBAGA1UEBxMJQ2FwZSBUb3duMRowGAYDVQQKExFUaGF3dGUgQ29uc3VsdGluZzEoMCYGA1UE
+CxMfQ2VydGlmaWNhdGlvbiBTZXJ2aWNlcyBEaXZpc2lvbjEkMCIGA1UEAxMbVGhhd3RlIFBlcnNv
+bmFsIEZyZWVtYWlsIENBMSswKQYJKoZIhvcNAQkBFhxwZXJzb25hbC1mcmVlbWFpbEB0aGF3dGUu
+Y29tMB4XDTAzMDcxNzAwMDAwMFoXDTEzMDcxNjIzNTk1OVowYjELMAkGA1UEBhMCWkExJTAjBgNV
+BAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJzb25h
+bCBGcmVlbWFpbCBJc3N1aW5nIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEpjxVc1X7
+TrnKmVoeaMB1BHCd3+n/ox7svc31W/Iadr1/DDph8r9RzgHU5VAKMNcCY1osiRVwjt3J8CuFWqo/
+cVbLrzwLB+fxH5E2JCoTzyvV84J3PQO+K/67GD4Hv0CAAmTXp6a7n2XRxSpUhQ9IBH+nttE8YQRA
+HmQZcmC3+wIDAQABo4GUMIGRMBIGA1UdEwEB/wQIMAYBAf8CAQAwQwYDVR0fBDwwOjA4oDagNIYy
+aHR0cDovL2NybC50aGF3dGUuY29tL1RoYXd0ZVBlcnNvbmFsRnJlZW1haWxDQS5jcmwwCwYDVR0P
+BAQDAgEGMCkGA1UdEQQiMCCkHjAcMRowGAYDVQQDExFQcml2YXRlTGFiZWwyLTEzODANBgkqhkiG
+9w0BAQUFAAOBgQBIjNFQg+oLLswNo2asZw9/r6y+whehQ5aUnX9MIbj4Nh+qLZ82L8D0HFAgk3A8
+/a3hYWLD2ToZfoSxmRsAxRoLgnSeJVCUYsfbJ3FXJY3dqZw5jowgT2Vfldr394fWxghOrvbqNOUQ
+Gls1TXfjViF4gtwhGTXeJLHTHUb/XV9lTzGCAxAwggMMAgEBMHYwYjELMAkGA1UEBhMCWkExJTAj
+BgNVBAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJz
+b25hbCBGcmVlbWFpbCBJc3N1aW5nIENBAhAwtToLWLnO/UctHiMczZzlMAkGBSsOAwIaBQCgggFv
+MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTA4MDUxNTE0MjUzN1ow
+IwYJKoZIhvcNAQkEMRYEFH3R1VR4ZopQ20vkXWrpWfFc+JP/MIGFBgkrBgEEAYI3EAQxeDB2MGIx
+CzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYD
+VQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwgSXNzdWluZyBDQQIQMLU6C1i5zv1HLR4jHM2c
+5TCBhwYLKoZIhvcNAQkQAgsxeKB2MGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUgQ29u
+c3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwgSXNz
+dWluZyBDQQIQMLU6C1i5zv1HLR4jHM2c5TANBgkqhkiG9w0BAQEFAASCAQDXjCWtAH3eFCk8Gi6I
+WeFbW4mi0gHQA0tiCkqINSWWVVh+zdp0719ImEvngZ2Z16Kb9fpaQYp2h6gl8mUF6jOD9/voCyOt
+s5fR3pkoLmlbx6+zhd2WWNPld9+11vEXotaWPml1klBeZxuxdFFRRi9DF9NmaLkYfjdIIgGkRgYG
+e4cwpYocMzbwlsyCN3Vg2jkAZgyGmUrwA6VzSVPI16y0igtQRpDmMIyuOr3MEzubvKC4UCH46anL
+7PWf9y443TO/f8xntfZdUrfpyr7bg0JN7YYHyUSxiyLYWfqoAsZ+2WJ0Fpd7mDgsCGHrwFEOkwtt
+rd8RkCzPeHNO/JjJW3bOAAAAAAAA
+
+--Apple-Mail-20-626103635--
+

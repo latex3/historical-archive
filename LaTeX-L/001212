@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1261" "Thu" "16" "December" "93" "00:35:38" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" nil "41" "Re: newsymbol" "^Date:" nil nil "12" nil nil])
+Return-Path: <LATEX-L@vm.hd-net.uni-heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA05722; Thu, 16 Dec 93 12:38:53 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA10486; Thu, 16 Dec 93 12:38:44 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA04056
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 16 Dec 1993 10:55:59 +0100
+Message-Id: <199312160955.AA04056@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 5768; Thu, 16 Dec 93 10:56:34 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 5765; Thu,
+ 16 Dec 1993 10:56:34 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5597; Thu,
+ 16 Dec 1993 00:35:30 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Thu, 16 Dec 93 00:35:38 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: newsymbol
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1212
+
+
+> Subj:	RE: \newsymbol
+
+> David Carlisle writes:
+> %>
+> %>\begin{decl}
+> %>|\DeclareMathSymbol| \m{symbol} \m{type} \m{sym font name} \m{position}
+> %>\end{decl}
+> %>
+>
+> Yes, I had spotted this, and I do agree that \newsymbol was a bad idea in AMS-
+> LaTeX, but essential for compatibility with AMSTeX.
+
+> However...what are we meant to do, *if* we adopt NFSS2, with all those
+> documents which---legitimately---used \newsymbol explicitly?  Has the AMS
+> shot itself in the foot with this one?
+
+i don't think so, although the code could be improved. In any case at
+the moment amsfonts.sty coming with NFSS2 contains:
+
+\gdef\newsymbol#1#2#3#4#5{%
+    \warn@rel@i\newsymbol\DeclareMathSymbol
+    \@ifdefinable#1{%
+       \edef\next@
+         {\ifcase #2 \or
+            \hexnumber@\symAMSa\or
+            \hexnumber@\symAMSb\fi}%
+       \ifx\next@\@empty
+         \err@{\Invalid@@\newsymbol}\@ehd%
+       \else
+        \global\mathchardef#1"#3\next@#4#5
+       \fi}}
+
+
+so this will work (with a warning). under LaTeX2e this could be
+improved further by omitting the waring when running in compatibility
+mode (ie when an old sources is detected due to \documentstyle versus
+\documentclass). I think that should do the trick of given the support
+you need.
+
+frank
+

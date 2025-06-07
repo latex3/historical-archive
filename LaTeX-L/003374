@@ -1,0 +1,121 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3436" "Sun" "31" "October" "1999" "16:15:20" "+0000" "James Kilfiger" "mapdn@CSV.WARWICK.AC.UK" nil "79" "Re: section heading templates" "^Date:" nil nil "10" nil "section heading templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA15308
+	for <schoepf@UNI-MAINZ.DE>; Sun, 31 Oct 1999 17:15:01 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.FAC32799@mail.listserv.gmd.de>; Sun, 31 Oct 1999 17:15:23 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444990 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 18:15:22 +0200
+Received: from wisteria.csv.warwick.ac.uk (root@wisteria.csv.warwick.ac.uk
+          [137.205.192.41]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id RAA01154 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct
+          1999 17:15:20 +0100 (MET)
+Received: from mimosa.csv.warwick.ac.uk (mapdn@mimosa [137.205.192.34]) by
+          wisteria.csv.warwick.ac.uk (8.9.3/8.9.3) with ESMTP id QAA28568 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 31 Oct 1999 16:15:21 GMT
+Received: (from mapdn@localhost) by mimosa.csv.warwick.ac.uk (8.9.3/8.9.3) id
+          QAA28902 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Sun, 31 Oct 1999 16:15:20
+          GMT
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <199910311615.QAA28902@mimosa.csv.warwick.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <14361.49815.612920.201449@n15ux24.nets.de.eds.com> from Frank
+              Mittelbach at "Oct 29, 99 05:51:51 pm"
+Date:         Sun, 31 Oct 1999 16:15:20 +0000
+From: James Kilfiger <mapdn@CSV.WARWICK.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: section heading templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3374
+
+> James Kilfiger writes:
+>
+>  > I was thinking rather vaguely about templates for sectional heading.
+>  > I can think of at three style for authors to make sectional headings.
+>  > As now, with section commands, with section evironments, and in a
+>  > list-like manner. Templates for headings should be able of supporting
+>  > classes that use a mixture of these styles.
+>
+> as far as section commands ala latex and section environments are
+> concerned i don't see any difficulties. can you be a bit more specific
+> in what you mean by "in a list-like manner"? e.g. show a syntax
+> example of what you mean
+
+Actully I'd doubt there is any difficulty, What I meant is document
+syntax like:
+ \begin{section}
+ ...
+ \end{section}  % section environments
+or
+ \begin{new-section-level}
+ \section{...} ...
+ \begin{new-section-leve}
+ \section{,...}
+ \end{}\end{}  %list like, in that \section is behaving like \item, syntacticly
+
+(Other thought, is minimization like \end{} useful?)
+
+
+>  > of contents.  (BTW this seems to show a general problem in Latex syntax
+>  > when two or more indepedent optional arguments are required.)
+>
+> it is correct that the current LaTeX syntax is a bit poor in this respect
+> but so it is. by separating xparse and templates we are free to
+> provide a better front-end one day by using something else than xparse.
+
+Actully it occured to me that the xparse allows a partial solution to
+this, in that one can say \command[\NoValue][option]  to get the default
+behaviour from the first argument. That won't work with `O{}' type
+arguments, unless \ddc@O does a \IfNoValue check. And the main reason
+for `O' is to avoid \IfNoValue, however the test would only be done when
+an optional argument was given, so it would be less of a problem.
+Perhaps this is an argument for using a real quark for \NoValue, but
+using a quark as part of document syntax would be dangerous.  Perhaps
+this argues for giving up the recursive test in IfNoValue, and just
+doing an \ifx agaist \NoValueInIt.  How well hidden could \NoValue be in
+practice?
+
+
+> as far as the template arguments are concerned i think they should be
+> of type boolean here (how this is mapped to latex top level syntax is
+> a different matter)
+>
+> my current idea about the template type heading is like this:
+>
+>   #1    boolean         number or not
+>   #2    boolean         text into toc or not
+>   #3    boolean         text into running head/foot or not
+>   #4    text            heading text (required)
+>   #5    text/NoValue    text for toc (use #4 if NoValue)
+>   #6    text/NoValue    text for runhead (use #4 if NoValue)
+>   #7    text/NoValue    supplementary text like a motto
+>
+> as i said above i'm not at all sure about the need or the
+> "sensibility" of #2/#3 except perhaps for compatibility purposes to
+> latex2e classes --- to tell me your thoughts.
+
+What is your view of the aim in terms of compatiblity with 2e.  Should
+there be source compatiblity or formatting compatiblity.  I'd say the
+first is essential, if only in a compatiblty mode, the second may be
+desirable, but only in a compatitblty mode.
+
+As for the desirablity of #2/#3, I'm sure if you don't offer them,
+people will complain.  Certainly `I want an unnumbered section in the
+TOC' is a common request on comp.text.tex.  I think this is a case for
+practicality rather than purity and elegance.
+
+By `motto' do you mean epigram, typeset at the end of the chapter?
+
+        James
+

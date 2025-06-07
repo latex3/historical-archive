@@ -1,0 +1,128 @@
+Received: from mi4-p00-ob.smtp.rzone.de (mi4-p00-ob.smtp.rzone.de [81.169.146.146])
+	by h1439878.stratoserver.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id t5C9Ij8D025140
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Fri, 12 Jun 2015 11:18:47 +0200
+Resent-Date: Fri, 12 Jun 2015 11:18:47 +0200
+Resent-Message-Id: <201506120918.t5C9Ij8D025140@h1439878.stratoserver.net>
+X-RZG-FWD-BY: rainer.schoepf@proteosys.eu
+Received: from mailin.rzone.de ([unix socket])
+	by mailin.rzone.de (RZmta 37.6) with LMTPA;
+	Fri, 12 Jun 2015 11:18:27 +0200 (CEST)
+Authentication-Results: strato.com 1;
+	spf=none
+		smtp.mailfrom="rainer.schoepf@proteosys.com";
+	dkim=none;
+	domainkeys=none;
+	dkim-adsp=nxdomain
+		header.from="root@wwwintern.proteosys"
+X-Strato-MessageType: email
+X-RZG-CLASS-ID: mi
+Received-SPF: none
+	client-ip=213.139.130.196;
+	helo="exchange2010.proteosys";
+	envelope-from="rainer.schoepf@proteosys.com";
+	receiver=smtpin.rzone.de;
+	identity=mailfrom;
+Received: from exchange2010.proteosys (watergate.proteosys.com [213.139.130.196])
+	by smtpin.rzone.de (RZmta 37.6 OK)
+	with ESMTPS id K04f51r5C9IRxK4
+	(using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+	(Client CN "mail.proteosys.com", Issuer "Proteosys Issuing CA" (verification FAILED - certificate has expired))
+	(Client hostname not verified)
+	for <rainer.schoepf@proteosys.eu>;
+	Fri, 12 Jun 2015 11:18:27 +0200 (CEST)
+Resent-From: <rainer.schoepf@proteosys.com>
+Received: from wwwintern.proteosys (10.0.0.48) by EXCHANGE2010.proteosys
+ (10.0.0.28) with Microsoft SMTP Server id 14.3.224.2; Fri, 12 Jun 2015
+ 11:18:28 +0200
+Received: by wwwintern.proteosys (Postfix)	id A9FDC4B91B; Fri, 12 Jun 2015
+ 11:18:26 +0200 (CEST)
+Delivered-To: root@wwwintern.proteosys
+Received: by wwwintern.proteosys (Postfix, from userid 0)	id 9AF1D4B87E; Fri,
+ 12 Jun 2015 11:18:26 +0200 (CEST)
+To: <root@wwwintern.proteosys>
+Subject: 2 Ubuntu package update(s) for wwwintern.proteosys 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20150612091826.9AF1D4B87E@wwwintern.proteosys>
+Date: Fri, 12 Jun 2015 11:18:26 +0200
+From: wwwintern root <root@wwwintern.proteosys>
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Scanned-By: MIMEDefang 2.71 on 85.214.41.38
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7725
+
+apticron report [Fri, 12 Jun 2015 11:18:24 +0200]
+========================================================================
+
+apticron has detected that some packages need upgrading on:
+
+	wwwintern.proteosys  
+	[ 10.0.0.48 ]
+
+The following packages are currently pending an upgrade:
+
+	libssl1.0.0 1.0.1-4ubuntu5.31
+	openssl 1.0.1-4ubuntu5.31
+
+========================================================================
+
+Package Details:
+
+Reading changelogs...
+--- Changes for openssl (libssl1.0.0 openssl) ---
+openssl (1.0.1-4ubuntu5.31) precise-security; urgency=medium
+
+  * SECURITY IMPROVEMENT: reject dh keys smaller than 768 bits
+    - debian/patches/reject_small_dh.patch: reject small dh keys in
+      ssl/s3_clnt.c, ssl/ssl.h, ssl/ssl_err.c, update documentation in
+      doc/ssl/SSL_CTX_set_tmp_dh_callback.pod, make s_server use 2048-bit
+      dh in apps/s_server.c, clarify docs in doc/apps/dhparam.pod,
+      switch defaut dh to 2048-bit in apps/dhparam.c, apps/gendh.c.
+  * SECURITY UPDATE: denial of service and possible code execution via
+    invalid free in DTLS
+    - debian/patches/CVE-2014-8176.patch: fix invalid free in ssl/d1_lib.c.
+    - CVE-2014-8176
+  * SECURITY UPDATE: denial of service via malformed ECParameters
+    - debian/patches/CVE-2015-1788.patch: improve logic in
+      crypto/bn/bn_gf2m.c.
+    - CVE-2015-1788
+  * SECURITY UPDATE: denial of service via out-of-bounds read in
+    X509_cmp_time
+    - debian/patches/CVE-2015-1789.patch: properly parse time format in
+      crypto/x509/x509_vfy.c.
+    - CVE-2015-1789
+  * SECURITY UPDATE: denial of service via missing EnvelopedContent
+    - debian/patches/CVE-2015-1790.patch: handle NULL data_body in
+      crypto/pkcs7/pk7_doit.c.
+    - CVE-2015-1790
+  * SECURITY UPDATE: race condition in NewSessionTicket
+    - debian/patches/CVE-2015-1791.patch: create a new session in
+      ssl/s3_clnt.c, ssl/ssl.h, ssl/ssl_err.c, ssl/ssl_locl.h,
+      ssl/ssl_sess.c.
+    - debian/patches/CVE-2015-1791-2.patch: fix kerberos issue in
+      ssl/ssl_sess.c.
+    - debian/patches/CVE-2015-1791-3.patch: more ssl_session_dup fixes in
+      ssl/ssl_sess.c.
+    - CVE-2015-1791
+  * SECURITY UPDATE: CMS verify infinite loop with unknown hash function
+    - debian/patches/CVE-2015-1792.patch: fix infinite loop in
+      crypto/cms/cms_smime.c.
+    - CVE-2015-1792
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 11 Jun 2015 07:35:48 -0400
+
+========================================================================
+
+You can perform the upgrade by issuing the command:
+
+	apt-get dist-upgrade
+
+as root on wwwintern.proteosys 
+
+--
+apticron
+

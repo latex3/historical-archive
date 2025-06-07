@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1783" "Fri" "3" "July" "92" "10:04:58" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "46" "resend re: radical changes needed?" "^Date:" nil nil "7"])
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/6.5.92 )
+	id AA26207; Fri, 3 Jul 92 10:09:21 +0200
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA09835; Fri, 3 Jul 92 10:09:18 +0200
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA29179
+  (5.65c8/IDA-1.4.4(mail.m4[1.9]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Fri, 3 Jul 1992 10:09:14 +0200
+Message-Id: <199207030809.AA29179@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP R1.2.2MX) with BSMTP id 3249; Fri, 03 Jul 92 10:08:56 +02
+Received: from DEARN by TUBVM.CS.TU-BERLIN.DE (Mailer R2.07B) with BSMTP id
+ 3248; Fri, 03 Jul 92 10:08:55 +0200
+Received: by DEARN (Mailer R2.08) id 8604; Fri, 03 Jul 92 10:08:33 MET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Date:         Fri, 3 Jul 92 10:04:58 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Subject:      resend re: radical changes needed?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 727
+
+> Subj:	radical changes needed?
+
+> What is wrong with \footnote{text text text}?
+>
+> Once after the argument of \footnote is read, the catcodes are fixed. This
+> produces problems in mixed language documents, e. g.
+> \footnote{text \begin{greektext}text\end{greektext} text}
+> if the catcodes differ for the different languages. This is, however,
+> common. Therefore a syntax like
+> \begin{footnote}
+> text text text
+> \end{footnote}
+> is preferable.
+
+As already remarked in the Cork proceeding we intend to allow for
+every ``text producing command'' an environment form and vice versa.
+
+
+> I know, that this kind of change produces compatibility problems between
+> LaTeX2.09 and LaTeX3, but I don't see any other way out of the dilemma
+> described above.
+
+Such a change wouldn't produce compatibility problems there are other
+areas which are much more difficult to handle.
+
+> Consequently, any text producing command (those with the famous moving
+> arguments) need to be changed. There are so many and so common ones ...
+> \chapter \caption \footnote...
+
+However, in case of so called moving arguments there is simply no
+perfect solution that avoids fixing catcodes and at the same time
+allows \verb etc. The need to scan the argument of a heading, etc.,
+into a tokenlist without real processing makes this nearly a must. Of
+course there are ideas all over place ranging from writing to and from
+a file, etc., but all such ideas that I know of have defects in one
+way or the other.
+
+Anybody out there who thinks he/she has a new piece of could that is
+really stable? We would certainly be interested to know about.
+
+As an alternative one can prevent the use of catcode changes outside a
+well-defined interface and this may be the solution we will finally go
+for.
+
+Frank Mittelbach
+
+

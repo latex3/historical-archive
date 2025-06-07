@@ -1,0 +1,1075 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Wed, 19 Jan 2000 04:56:56 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id EAA14942 for <schoepf@mail.uni-mainz.de>; Wed, 19 Jan 2000 04:56:56 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF6231.3A423400"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id EAA04215 for <schoepf@UNI-MAINZ.DE>; Wed, 19 Jan 2000 04:56:55 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.05BE6B46@mail.listserv.gmd.de>; Wed, 19 Jan 2000 4:56:34 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 447893 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 19 Jan 2000 04:55:27 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id EAA07883 for <latex-l@URZ.UNI-HEIDELBERG.DE>; Wed, 19 Jan          2000 04:54:57 +0100 (MET)
+Received:  from downtown.oche.de (downtown.oche.de [194.94.253.3]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.1) with ESMTP id EAA20656 for          <latex-l@URZ.UNI-HEIDELBERG.DE>; Wed, 19 Jan 2000 04:54:52 +0100 (MET)
+Received:  from corona.oche.de (uucp@localhost) by downtown.oche.de          (8.9.3/8.9.3/Debian/GNU) with UUCP id EAA16941 for          urz.uni-heidelberg.de!latex-l; Wed, 19 Jan 2000 04:50:00 +0100
+Received:  by corona.oche.de (wUUCP 1.10) id <1kmh@corona.oche.de>; Tue, 18 Jan          00 21:13:23 CET
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: AmiGate 1.6 (13.11.95)
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["8267" "Tue" "18" "January" "2000" "21:05:27" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "295" "Headings templates" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Headings templates
+Date: Tue, 18 Jan 2000 22:05:27 +0100
+Message-ID:  <30001f56@corona.oche.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Achim Blumensath" <blume@CORONA.OCHE.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3502
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF6231.3A423400
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+I wrote some templates for head- and footlines. The code is taken
+mainly from the fancyhdr package.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ =
+|
+    //  Achim Blumensath       | \  _                        \O/ \___/\ =
+|
+   //   blume@corona.oche.de   |-< /_\                       =3Do=3D  \ =
+/\ \|
+ \X/    (p^2 - m^2)\psi =3D 0    |_/ \_                        /"\   =
+o----|
+____________________________________________________________________\___|=
+
+
+% \iffalse
+%%
+%% (C) Copyright 1999 Achim Blumensath
+%% All rights reserved.
+%%
+%% Not for general distribution. In its present form it is not allowed
+%% to put this package onto CD or an archive without consulting the
+%% the authors.
+%%
+%<*dtx>
+          \ProvidesFile{xhdr.dtx}
+%</dtx>
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{xhdr}
+%<driver>\ProvidesFile{xhdr.drv}
+% \fi
+%         \ProvidesFile{xhdr.dtx}
+          [2000/01/16 v0.1 header styles]
+%
+% \iffalse
+%<*driver>
+ \documentclass{ltxdoc}
+ \usepackage{textcomp}
+
+% \usepackage{xparse,xlists,xlists-samples}
+% \usepackage{ldcdoc}
+
+% next three definitions are big hacks to run the file
+% without the above packages
+%
+\newcommand\NoValue{\texttt{\textbackslash NoValue}}
+
+\newenvironment{TemplateInterfaceDescription}[1]
+  {\subsection{The Template Type `#1'}%
+   \begingroup\description
+   \def\TemplateArgument##1##2{\item[Arg: ##1]##2\par}%
+   \def\TemplateSemantics{\enddescription\endgroup
+       \subsubsection*{Semantics:}}%
+  }
+  {\par\bigskip}
+
+\newenvironment{TemplateDescription}[2]
+  {\subsection{The Template `#2' (type #1)}%
+   \subsubsection*{Attributes:}%
+   \begingroup\description
+   \def\TemplateKey##1##2##3##4{\item[##1 (##2)]##3%
+     \ifx\TemplateKey##4\TemplateKey\else
+%         \hskip0ptplus3em\penalty-500\hskip 0pt plus 1filll =
+Default:~##4%
+         \hfill\penalty500\hbox{}\hfill Default:~##4%
+         \nobreak\hskip-\parfillskip\hskip0pt\relax
+     \fi
+     \par}%
+   \def\TemplateSemantics{\enddescription\endgroup
+       \subsubsection*{Semantics \& Comments:}}%
+  }
+  {\par\bigskip}
+
+ \begin{document}
+ \DocInput{xhdr.dtx}
+ \end{document}
+%</driver>
+% \fi
+%
+%
+% \GetFileInfo{xhdr.dtx}
+%
+% \title{The \textsf{xhdr} package\thanks{This file
+%         has version number \fileversion, last
+%         revised \filedate.}}
+% \author{AB}
+% \date{\filedate}
+%
+%  \maketitle
+%
+% \tableofcontents
+%
+% \begin{abstract}
+%   Package for head- and footline styles derived from the
+%   \textsf{fancyhdr} package.
+% \end{abstract}
+%
+% \section{Interfaces}
+%
+% \begin{TemplateInterfaceDescription}{header}
+%
+%   \TemplateArgument{1}
+%       {Page number (\texttt{\textbackslash thepage})}
+%
+%   \TemplateArgument{2}
+%       {Left mark (\texttt{\textbackslash leftmark})}
+%
+%   \TemplateArgument{3}
+%       {Right mark (\texttt{\textbackslash rightmark})}
+%
+%   \TemplateSemantics
+%
+%   This template typesets a head- or footline.
+%
+% \end{TemplateInterfaceDescription}
+%
+%
+% \begin{TemplateDescription}{header}{std}
+%
+%   \TemplateKey{pre-action}{f0}
+%     {Action to perform before the header, e.g., \texttt{\textbackslash =
+hss}.}
+%     {empty}
+%   \TemplateKey{post-action}{f0}
+%     {Action to perform after the header, e.g., \texttt{\textbackslash =
+hss}.}
+%     {empty}
+%   \TemplateKey{left-text}{f3}
+%     {Text to appear at the left of the header. The arguments are the
+%      same as the templates arguments.}
+%     {empty}
+%   \TemplateKey{center-text}{f3}
+%     {Text to appear at the center of the header. The arguments are the
+%      same as the templates arguments.}
+%     {empty}
+%   \TemplateKey{right-text}{f3}
+%     {Text to appear at the right of the header. The arguments are the
+%      same as the templates arguments.}
+%     {empty}
+%   \TemplateKey{valign}{f0}
+%     {\texttt{b} for headlines, \texttt{t} for footlines.}
+%     {\texttt{b}}
+%   \TemplateKey{width}{l}
+%     {Width of the header.}
+%     {\texttt{\textbackslash textwidth}}
+%   \TemplateKey{above-skip}{l}
+%     {Skip above the header. Should be 0 for headlines.}
+%     {0.3\texttt{\textbackslash normalbaselineskip}}
+%   \TemplateKey{above-rule}{l}
+%     {Height of the rule above the header.}
+%     {0pt}
+%   \TemplateKey{below-rule}{l}
+%     {Height of the rule below the header.}
+%     {0pt}
+%
+%   \TemplateSemantics
+%   This implements the \textsf{fancyhdr} layout. Separate instances for
+%   even/odd and head-/footlines are required.
+%
+% \end{TemplateDescription}
+%
+% \DescribeMacro\setheader
+% The \verb|\setheader| command determines which headers should be used.
+% The arguments are the names of instances for odd head, odd foot,
+% even head, and even foot headers.
+%
+% \section{Implementation}
+%
+%    \begin{macrocode}
+%<*package>
+\RequirePackage{xparse}
+\RequirePackage{template}
+
+\IgnoreWhiteSpace
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareTemplateType{header}{3}
+
+\newdimen\HL@width
+\newdimen\HL@aboverule
+\newdimen\HL@belowrule
+\newskip\HL@aboveskip
+
+\DeclareTemplate{header}{std}{3}
+{
+  pre-action  =3Df0 []    \HL@preaction,
+  post-action =3Df0 []    \HL@postaction,
+  left-text   =3Df3 []    \HL@left,
+  center-text =3Df3 []    \HL@center,
+  right-text  =3Df3 []    \HL@right,
+  valign      =3Df0 [b]   \HL@align,
+  width       =3Dl  [\DelayEvaluation{\textwidth}]
+                        \HL@width,
+  above-skip  =3Dl  [\DelayEvaluation{0.3\normalbaselineskip}]
+                        \HL@aboveskip,
+  above-rule  =3Dl  [0pt] \HL@aboverule,
+  below-rule  =3Dl  [0pt] \HL@belowrule
+}
+{
+  \DoParameterAssignments
+  \HL@preaction
+  \hbox to\HL@width{
+    \@normalsize
+    \vbox{
+      \vskip-\HL@aboveskip
+      \vskip-\HL@aboverule
+      \hrule\@width\HL@width\@height\HL@aboverule
+      \vskip\HL@aboveskip
+      \hbox{
+        \rlap{\parbox[\HL@align]{\HL@width}
+                {\raggedright\HL@left{#1}{#2}{#3}\strut}}\hfill
+        \parbox[\HL@align]{\HL@width}
+                {\centering\HL@center{#1}{#2}{#3}\strut}\hfill
+        \llap{\parbox[\HL@align]{\HL@width}
+                {\raggedleft\HL@right{#1}{#2}{#3}\strut}}
+      }
+      \hrule\@width\HL@width\@height\HL@belowrule
+      \vskip-\HL@belowrule
+    }
+  }
+  \HL@postaction
+}
+%    \end{macrocode}
+% Two sample styles.
+%    \begin{macrocode}
+\DeclareInstance{header}{head-plain}{std}
+{
+  above-skip  =3D 0pt,
+  pre-action  =3D {\if@reversemargin\hss\else\relax\fi},
+  post-action =3D {\if@reversemargin\relax\else\hss\fi}
+}
+\DeclareInstance{header}{foot-plain}{std}
+{
+  center-text =3D {#1},
+  valign      =3D t,
+  pre-action  =3D {\if@reversemargin\hss\else\relax\fi},
+  post-action =3D {\if@reversemargin\relax\else\hss\fi}
+}
+\DeclareInstance{header}{head-headings-odd}{std}
+{
+  left-text   =3D {\small\textsl{#2}},
+  right-text  =3D {#1},
+  above-skip  =3D 0pt,
+  below-rule  =3D 0.4pt,
+  pre-action  =3D {\if@reversemargin\hss\else\relax\fi},
+  post-action =3D {\if@reversemargin\relax\else\hss\fi}
+}
+\DeclareInstance{header}{head-headings-even}{std}
+{
+  left-text   =3D {#1},
+  right-text  =3D {\small\textsl{#3}},
+  above-skip  =3D 0pt,
+  below-rule  =3D 0.4pt,
+  pre-action  =3D {\if@reversemargin\relax\else\hss\fi},
+  post-action =3D {\if@reversemargin\hss\else\relax\fi}
+}
+\DeclareInstance{header}{foot-headings-odd}{std}
+{
+  valign      =3D t,
+  pre-action  =3D {\if@reversemargin\hss\else\relax\fi},
+  post-action =3D {\if@reversemargin\relax\else\hss\fi}
+}
+\DeclareInstance{header}{foot-headings-even}{std}
+{
+  valign      =3D t,
+  pre-action  =3D {\if@reversemargin\relax\else\hss\fi},
+  post-action =3D {\if@reversemargin\hss\else\relax\fi}
+}
+%    \end{macrocode}
+%
+% \texttt{\textbackslash setheader} determines which instances are used.
+% The arguments consist of instace names for odd head, odd foot, even
+% head, and even foot.
+%    \begin{macrocode}
+\DeclareDocumentCommand{\setheader}{mmmm}
+{
+  \def\@oddhead{
+    \UseInstance{header}{#1}{\thepage}{\leftmark}{\rightmark}}
+  \def\@oddfoot{
+    \UseInstance{header}{#2}{\thepage}{\leftmark}{\rightmark}}
+  \def\@evenhead{
+    \UseInstance{header}{#3}{\thepage}{\leftmark}{\rightmark}}
+  \def\@evenfoot{
+    \UseInstance{header}{#4}{\thepage}{\leftmark}{\rightmark}}
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\endinput
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+%
+% \Finale
+%
+\endinput
+
+------_=_NextPart_001_01BF6231.3A423400
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Headings templates</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hello,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I wrote some templates for head- and footlines. The =
+code is taken</FONT>
+
+<BR><FONT SIZE=3D2>mainly from the fancyhdr package.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Achim</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+________</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; | \_____/ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; //&nbsp; Achim =
+Blumensath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | \&nbsp; =
+_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \O/ =
+\___/\ |</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; //&nbsp;&nbsp; =
+blume@corona.oche.de&nbsp;&nbsp; |-&lt; =
+/_\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3Do=3D&nbsp; \ /\ \|</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\X/&nbsp;&nbsp;&nbsp; (p^2 - m^2)\psi =3D =
+0&nbsp;&nbsp;&nbsp; |_/ =
+\_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+/&quot;\&nbsp;&nbsp; o----|</FONT>
+
+<BR><FONT =
+SIZE=3D2>________________________________________________________________=
+____\___|</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% \iffalse</FONT>
+
+<BR><FONT SIZE=3D2>%%</FONT>
+
+<BR><FONT SIZE=3D2>%% (C) Copyright 1999 Achim Blumensath</FONT>
+
+<BR><FONT SIZE=3D2>%% All rights reserved.</FONT>
+
+<BR><FONT SIZE=3D2>%%</FONT>
+
+<BR><FONT SIZE=3D2>%% Not for general distribution. In its present form =
+it is not allowed</FONT>
+
+<BR><FONT SIZE=3D2>%% to put this package onto CD or an archive without =
+consulting the</FONT>
+
+<BR><FONT SIZE=3D2>%% the authors.</FONT>
+
+<BR><FONT SIZE=3D2>%%</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*dtx&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ProvidesFile{xhdr.dtx}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/dtx&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;package&gt;\NeedsTeXFormat{LaTeX2e}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;package&gt;\ProvidesPackage{xhdr}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;driver&gt;\ProvidesFile{xhdr.drv}</FONT>
+
+<BR><FONT SIZE=3D2>% \fi</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\ProvidesFile{xhdr.dtx}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+[2000/01/16 v0.1 header styles]</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \iffalse</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*driver&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\documentclass{ltxdoc}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\usepackage{textcomp}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% \usepackage{xparse,xlists,xlists-samples}</FONT>
+
+<BR><FONT SIZE=3D2>% \usepackage{ldcdoc}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% next three definitions are big hacks to run the =
+file</FONT>
+
+<BR><FONT SIZE=3D2>% without the above packages</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand\NoValue{\texttt{\textbackslash =
+NoValue}}</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\newenvironment{TemplateInterfaceDescription}[1]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {\subsection{The Template Type `#1'}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begingroup\description</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \def\TemplateArgument##1##2{\item[Arg: =
+##1]##2\par}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\def\TemplateSemantics{\enddescription\endgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\subsubsection*{Semantics:}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {\par\bigskip}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newenvironment{TemplateDescription}[2]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {\subsection{The Template `#2' (type =
+#1)}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \subsubsection*{Attributes:}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begingroup\description</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \def\TemplateKey##1##2##3##4{\item[##1 =
+(##2)]##3%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; =
+\ifx\TemplateKey##4\TemplateKey\else</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\hskip0ptplus3em\penalty-500\hskip 0pt plus 1filll Default:~##4%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\hfill\penalty500\hbox{}\hfill Default:~##4%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\nobreak\hskip-\parfillskip\hskip0pt\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \par}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\def\TemplateSemantics{\enddescription\endgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\subsubsection*{Semantics \&amp; Comments:}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {\par\bigskip}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;\begin{document}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\DocInput{xhdr.dtx}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\end{document}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/driver&gt;</FONT>
+
+<BR><FONT SIZE=3D2>% \fi</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \GetFileInfo{xhdr.dtx}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \title{The \textsf{xhdr} package\thanks{This =
+file</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; has =
+version number \fileversion, last</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+revised \filedate.}}</FONT>
+
+<BR><FONT SIZE=3D2>% \author{AB}</FONT>
+
+<BR><FONT SIZE=3D2>% \date{\filedate}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \maketitle</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \tableofcontents</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{abstract}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; Package for head- and footline styles =
+derived from the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \textsf{fancyhdr} package.</FONT>
+
+<BR><FONT SIZE=3D2>% \end{abstract}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \section{Interfaces}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{TemplateInterfaceDescription}{header}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateArgument{1}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Page number =
+(\texttt{\textbackslash thepage})}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateArgument{2}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Left mark =
+(\texttt{\textbackslash leftmark})}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateArgument{3}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {Right mark =
+(\texttt{\textbackslash rightmark})}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateSemantics</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; This template typesets a head- or =
+footline.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \end{TemplateInterfaceDescription}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \begin{TemplateDescription}{header}{std}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{pre-action}{f0}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Action to perform before =
+the header, e.g., \texttt{\textbackslash hss}.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {empty}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{post-action}{f0}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Action to perform after =
+the header, e.g., \texttt{\textbackslash hss}.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {empty}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{left-text}{f3}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Text to appear at the left =
+of the header. The arguments are the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; same as the templates =
+arguments.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {empty}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{center-text}{f3}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Text to appear at the =
+center of the header. The arguments are the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; same as the templates =
+arguments.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {empty}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{right-text}{f3}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Text to appear at the =
+right of the header. The arguments are the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; same as the templates =
+arguments.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {empty}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{valign}{f0}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {\texttt{b} for headlines, =
+\texttt{t} for footlines.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {\texttt{b}}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{width}{l}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Width of the =
+header.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {\texttt{\textbackslash =
+textwidth}}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{above-skip}{l}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Skip above the header. =
+Should be 0 for headlines.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {0.3\texttt{\textbackslash =
+normalbaselineskip}}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{above-rule}{l}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Height of the rule above =
+the header.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {0pt}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateKey{below-rule}{l}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {Height of the rule below =
+the header.}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp; {0pt}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; \TemplateSemantics</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; This implements the \textsf{fancyhdr} =
+layout. Separate instances for</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp; even/odd and head-/footlines are =
+required.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \end{TemplateDescription}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \DescribeMacro\setheader</FONT>
+
+<BR><FONT SIZE=3D2>% The \verb|\setheader| command determines which =
+headers should be used.</FONT>
+
+<BR><FONT SIZE=3D2>% The arguments are the names of instances for odd =
+head, odd foot,</FONT>
+
+<BR><FONT SIZE=3D2>% even head, and even foot headers.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \section{Implementation}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;*package&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{xparse}</FONT>
+
+<BR><FONT SIZE=3D2>\RequirePackage{template}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\IgnoreWhiteSpace</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareTemplateType{header}{3}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newdimen\HL@width</FONT>
+
+<BR><FONT SIZE=3D2>\newdimen\HL@aboverule</FONT>
+
+<BR><FONT SIZE=3D2>\newdimen\HL@belowrule</FONT>
+
+<BR><FONT SIZE=3D2>\newskip\HL@aboveskip</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\DeclareTemplate{header}{std}{3}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3Df0 []&nbsp;&nbsp;&nbsp; =
+\HL@preaction,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3Df0 []&nbsp;&nbsp;&nbsp; =
+\HL@postaction,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; left-text&nbsp;&nbsp; =3Df3 =
+[]&nbsp;&nbsp;&nbsp; \HL@left,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; center-text =3Df3 []&nbsp;&nbsp;&nbsp; =
+\HL@center,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; right-text&nbsp; =3Df3 []&nbsp;&nbsp;&nbsp; =
+\HL@right,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; valign&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3Df0 =
+[b]&nbsp;&nbsp; \HL@align,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; width&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=3Dl&nbsp; [\DelayEvaluation{\textwidth}]</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; \HL@width,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; above-skip&nbsp; =3Dl&nbsp; =
+[\DelayEvaluation{0.3\normalbaselineskip}]</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; \HL@aboveskip,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; above-rule&nbsp; =3Dl&nbsp; [0pt] =
+\HL@aboverule,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; below-rule&nbsp; =3Dl&nbsp; [0pt] =
+\HL@belowrule</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \DoParameterAssignments</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \HL@preaction</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \hbox to\HL@width{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \@normalsize</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \vbox{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip-\HL@aboveskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip-\HL@aboverule</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\hrule\@width\HL@width\@height\HL@aboverule</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip\HL@aboveskip</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \hbox{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\rlap{\parbox[\HL@align]{\HL@width}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\raggedright\HL@left{#1}{#2}{#3}\strut}}\hfill</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\parbox[\HL@align]{\HL@width}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\centering\HL@center{#1}{#2}{#3}\strut}\hfill</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\llap{\parbox[\HL@align]{\HL@width}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\raggedleft\HL@right{#1}{#2}{#3}\strut}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\hrule\@width\HL@width\@height\HL@belowrule</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\vskip-\HL@belowrule</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; }</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \HL@postaction</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>% Two sample styles.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareInstance{header}{head-plain}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; above-skip&nbsp; =3D 0pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\hss\else\relax\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\relax\else\hss\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareInstance{header}{foot-plain}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; center-text =3D {#1},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; valign&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D =
+t,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\hss\else\relax\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\relax\else\hss\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareInstance{header}{head-headings-odd}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; left-text&nbsp;&nbsp; =3D =
+{\small\textsl{#2}},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; right-text&nbsp; =3D {#1},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; above-skip&nbsp; =3D 0pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; below-rule&nbsp; =3D 0.4pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\hss\else\relax\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\relax\else\hss\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareInstance{header}{head-headings-even}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; left-text&nbsp;&nbsp; =3D {#1},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; right-text&nbsp; =3D =
+{\small\textsl{#3}},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; above-skip&nbsp; =3D 0pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; below-rule&nbsp; =3D 0.4pt,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\relax\else\hss\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\hss\else\relax\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareInstance{header}{foot-headings-odd}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; valign&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D =
+t,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\hss\else\relax\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\relax\else\hss\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT =
+SIZE=3D2>\DeclareInstance{header}{foot-headings-even}{std}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; valign&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =3D =
+t,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; pre-action&nbsp; =3D =
+{\if@reversemargin\relax\else\hss\fi},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; post-action =3D =
+{\if@reversemargin\hss\else\relax\fi}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \texttt{\textbackslash setheader} determines which =
+instances are used.</FONT>
+
+<BR><FONT SIZE=3D2>% The arguments consist of instace names for odd =
+head, odd foot, even</FONT>
+
+<BR><FONT SIZE=3D2>% head, and even foot.</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareDocumentCommand{\setheader}{mmmm}</FONT>
+
+<BR><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\@oddhead{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseInstance{header}{#1}{\thepage}{\leftmark}{\rightmark}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\@oddfoot{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseInstance{header}{#2}{\thepage}{\leftmark}{\rightmark}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\@evenhead{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseInstance{header}{#3}{\thepage}{\leftmark}{\rightmark}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\@evenfoot{</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseInstance{header}{#4}{\thepage}{\leftmark}{\rightmark}}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>\endinput</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \begin{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%&lt;/package&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp;&nbsp;&nbsp; \end{macrocode}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% \Finale</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>\endinput</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF6231.3A423400--
+

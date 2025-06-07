@@ -1,0 +1,187 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7101" "Wed" "6" "October" "1999" "19:28:22" "+0200" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "148" "A template for author font selection" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id TAA02755
+	for <schoepf@UNI-MAINZ.DE>; Wed, 6 Oct 1999 19:30:04 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.6EDCCA94@mail.listserv.gmd.de>; Wed, 6 Oct 1999 19:28:29 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445518 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 6 Oct 1999 19:27:00 +0200
+Received: from abel.math.umu.se (abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA02928 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 6 Oct 1999 19:26:59 +0200 (MET
+          DST)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          abel.math.umu.se (8.9.2/8.9.2) with ESMTP id TAA21108 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 6 Oct 1999 19:26:08 +0200 (CEST)
+X-Sender: lars@abel.math.umu.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id TAA02929
+Message-ID:  <l03130300b41a50f6a493@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199909281004.LAA12492@nag.co.uk>
+Date:         Wed, 6 Oct 1999 19:28:22 +0200
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      A template for author font selection
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3349
+
+Here are some thoughts about templates and font selection. Perhaps I
+thought about it a bit too long, because the mail got a bit long-winded,
+but I hope you'll endure it.
+
+There are several levels of font selection in LaTeX. At the bottom there is
+the primitive TeX level, where fonts are specified through TFM file names.
+On top of that, there is the NFSS level where fonts are specified using
+attributes (encoding, family, series, shape, size, and once NFSS3 is
+released case). On top of that, there is what I will call the author level
+(since that is the lowest normal authors are expected to go), where fonts
+are selected using commands such as \textit, \small, and \bfseries. On top
+of that, finally, is the markup level where fonts are indirectly selected
+by the markup commands.
+
+The template.dtx file contains a couple of examples of how some template
+keys can contain the font selections made by the template, so that in a
+sense the markup level to author level mapping of fonts is controlled
+through templates. The point I would like to make is that the author level
+to NFSS level mapping should perhaps also be controlled through templates;
+at least it might solve some problems with the current state of things.
+
+These problems generally stem from that macros that make author level font
+selections are usually unaware (i.e., the one who wrote them were, and they
+make no attempt to examine) of the actual situation at the lower level, so
+one should be prepared to make compromises while mapping the selections to
+the NFSS level. In the current setting however, this mapping stays fixed
+throughout a document and can only be (responsibly) changed by code which
+take complete responsibility for all document fonts. Since there usually
+isn't any such code, except in classes that are specially designed for
+certain fonts, font implementors have taken the only option they
+have---modifying the NFSS to TeX level mapping so that it suits the
+standard settings---since that is under each font implementor's control. I
+think it's the wrong way to go however, and problems certainly do arise
+when a font family has a bx series, but it is the b series which should be
+used for normal boldface.
+
+One way to use templates for getting around this is to define a template
+for "author fonts", something like
+
+\DeclareTemplateType{noparams}{0}
+\DeclareTemplate {noparams}{author-fonts}{0}{
+   medium      =n [m]   \mddefault,
+   boldface    =n [b]   \bfdefault,
+   light       =n [m]   \ltdefault,
+   upright     =n [n]   \urdefault,
+   italic      =n [it]  \itdefault,
+   slanted     =n [sl]  \sldefault,
+   smallcaps   =n [sc]  \scdefault
+}{\DoParameterAssignments}
+
+(Or perhaps author-fonts should be a type and the template should be named
+default or something. I'm not sure, but it seems odd that all templates
+without parameters (i.e., having type noparams in the above setting) should
+always be affected by the same \UseCollection commands.)
+Now if FD files are allowed to declare instances of this template, one
+could use those to specify which values the \XXdefault macros should have
+when the current font family is declared by that file. ot1cmr.fd would for
+example say
+
+\DeclareInstance{noparams}{OT1cmr}{author-fonts}{boldface=bx}
+
+since it (unlike most font families) has bx as its standard boldface
+series. The AvantGarde (pag) family has a weight named "Extra Light" (el)
+but no light weight, and has obliques but no italic or smallcaps. Hence
+t1pag.fd would say
+
+\DeclareInstance{noparams}{T1pag}{author-fonts}%
+   {light=el,italic=sl,smallcaps=n}
+
+And so on. The reason I took m as the default for light above is that I
+suspect most families don't have a light series.
+
+Of course, this requires that this template (or an instance of it) is used
+each time the family is changed. Hence the definition of \rmfamily should
+become something like
+
+   %A (see below about this)
+   \IfExistsInstanceTF{noparams}{\f@encoding\rmdefault}%
+      {\UseInstance{noparams}{\f@encoding\rmdefault}}%
+      {\UseInstance{noparams}{author-fonts}}%
+   \fontfamily{\rmdefault}%
+   %B (see below about this)
+   \selectfont
+
+but I think that is reasonable.
+
+At this point one may think that this turns the power over author to NFSS
+level mapping completely over to font implementors, so that class designers
+are left without a saying in this, but that is not the case. Everything a
+class designer who is creating a class for use with a fixed set of fonts
+has to do to resume control over for example what is the standard boldface
+series, is to create collection instances for the font families in question
+and then \Use that collection throughout the document. A user who tries to
+use the specialized class with fonts it wasn't made for will however see
+the default settings for those fonts. Hence it works out for the best
+either way!
+
+The reasons for the %A and %B in the suggested \rmfamily definition above
+do however add a complication. The problem is that when changing from from
+one family to another using an author level font selection command, you
+expect the author level font selections of series and shape to be
+preserved, not the NFSS level selections, and hence one must (i) remember
+the author level font selections and (ii) map them anew each time the
+family is changed. Supposing that the \XXdefault macro for author level
+series and shape are stored in \author@f@series and \author@f@shape
+respectively, a command like \bfseries would have to be given the definition
+
+   \fontseries{\bfdefault}\selectfont
+   \def\author@f@series{\bfdefault}%
+
+and the %B line above would have to be replaced by
+
+   \fontseries{\author@f@series}%
+   \fontshape{\author@f@shape}%
+
+The %A line is because of another technicality. If the author's last font
+selection was at the NFSS level then it is more reasonable to expect the
+NFSS series or shape to be preserved; this can be done by including
+
+   \expandafter\ifx \author@f@series \f@series \else
+      \def\author@f@series{\f@series}%
+   \fi
+   \expandafter\ifx \author@f@shape \f@shape \else
+      \def\author@f@shape{\f@shape}%
+   \fi
+
+(I suspect there is some better command for doing these tests somewhere in
+the experimental LaTeX3 code) at the %A line above. Finally, one also has
+to make sure that the FD file in question is loaded before the
+\IfExistsInstanceTF test is made (otherwise the fonts might come out wrong
+the first time they are selected). Hence one would also have to do some
+kind of
+
+   \EnsureFDFileLoaded{\f@encoding}{\rmdefault}
+
+(where the hypothetical \EnsureFDFileLoaded would be very similar to the
+existing \try@load@fontshape macro---just add a group and don't use
+\f@encoding and \f@family to pass data) at the end of %A.
+
+A final thought connected to this: I considered having emphasis (default
+value it) and it-emphasis (default value n) keys in the author-fonts
+template as well, but now it seems more like selecting fonts for
+emphasising text is something which belongs in the markup level. In any
+case however, LaTeX2e* shouldn't have these shapes hardwired into the
+command, as they are in LaTeX2e.
+
+Lars Hellström
+

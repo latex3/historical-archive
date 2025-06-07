@@ -1,0 +1,84 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3044" "Sun" "14" "November" "93" "20:16:56" "+0100" "David_Rhead@VME.CCC.NOTTINGHAM.AC.UK" "David_Rhead@VME.CCC.NOTTINGHAM.AC.UK" nil "57" "NF prefix: interface for \"ordinary user\"?" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA16293; Sun, 14 Nov 93 20:17:25 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA27113; Sun, 14 Nov 93 20:17:22 +0100
+Message-Id: <9311141917.AA27113@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3132; Sun, 14 Nov 93 20:15:57 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8785;
+ Sun, 14 Nov 93 20:15:46 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8783;
+ Sun, 14 Nov 93 20:15:44 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Sun, 14 Nov 93 20:16:56 +0100
+From: David_Rhead@VME.CCC.NOTTINGHAM.AC.UK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      NF prefix: interface for "ordinary user"?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1155
+
+
+There's been a lot of discussion about the nf prefix.  E.g., from Donald
+Arseneau:
+     There is no "12pt.sty", but the LaTeX distribution supports the style
+     "12pt".
+     Since LaTeX now supports Postscript fonts, it should support styles
+     "times", "helvetica", etc.  This has *nothing* to do with what the
+     files are named.  In fact, to get the best compatibility between old
+     and new LaTeX, the files should not be named "times.sty" etc.  so that
+     old files with the same names won't get used accidentally.  The names
+     "nftimes.sty" and "nfhelv.sty" sound reasonable.
+
+Might it be better to aspire to getting references to fonts out of
+\document...  commands altogether (in line with the "separate the role of
+the document-designer from that of the author" philosophy)?  I.e.,
+* as far as possible, avoid \document...[12pt]...  and avoid
+  \document..[..times..]..  and avoid \document..[..helv..]...
+* regard font things as document-designer things rather than as
+  "ordinary user" things.
+If this were done, the question of what things were called would matter
+to document-designers, but not to ordinary users.
+
+E.g., I liked the recently-released Elsevier Science Publishers 2.09 stuff.
+The ordinary user goes
+\doumentstyle{espart}
+and gets a preprint design.  Perhaps, farther down the production line
+there's a copy-edit design?  Then there will be a production design for a
+particular journal.
+
+In this "professional publishing" situation it might be natural to have
+style-options for stages (not fonts), e.g.,
+\document...[preprint]...  %  the default
+\document...[copyedit]...
+\document...[final]...
+Quite likely, the preprint design will use 11pt or 12pt Computer Modern,
+and the final design will use Times Roman.  But these are
+"document-designer matters", not "ordinary user" matters.
+
+To some extent, the amateur publisher (e.g., postgraduate doing thesis) is
+aspiring to be "professional" anyway, so the above remarks may still apply.
+In practice, the "maintainer of the University of X thesis-styles" might
+give a choice of designs, from which the "ordinary user" can choose (like
+choosing wallpaper).  The ordinary user might need to know whether the
+design can be previewed by software that just "knows about" Computer
+Modern, or whether software that "knows about" PostScript is needed.
+(E.g., style-file display message saying "Preview this with GhostScript".)
+But all other details can be hidden.  I.e., I think "the maintainer" would
+be better hiding references to [nf]times.sty (if the design needs them)
+from "the ordinary user", rather than telling "the ordinary user" to put
+[nf]times.sty in a \document...  command.
+
+Rather than to spend a lot of time worrying about how font-specifications
+should be named in a \document...  command, mightn't it be better to aspire
+to getting font-specifications out of \document...  commands as far as
+possible (so that their names don't matter to "the ordinary user" anyway)?
+
+                                                                David Rhead
+

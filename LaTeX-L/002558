@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1470" "Sun" "14" "June" "1998" "21:01:20" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "35" "LaTeX3 naming & modules" "^Date:" nil nil "6" nil "LaTeX3 naming & modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id VAA09181;
+	Sun, 14 Jun 1998 21:01:44 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.17EF089D@listserv.gmd.de>; Sun, 14 Jun 1998 21:01:41 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 360264 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 14 Jun 1998 21:01:35 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id VAA23678 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 14 Jun 1998 21:01:33
+          +0200 (MET DST)
+Received: from [130.237.37.61] (sl86.modempool.kth.se [130.237.37.112]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id VAA05462 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 14 Jun 1998 21:01:28
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <199806131643.SAA23491@relay.urz.uni-heidelberg.de>
+            <199806131643.SAA23491@relay.urz.uni-heidelberg.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110702b1a9c7a3f6d6@[130.237.37.61]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806141312.PAA21667@frank.zdv.uni-mainz.de>
+Date:         Sun, 14 Jun 1998 21:01:20 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      LaTeX3 naming & modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2558
+
+  The naming format \<module>_<description>:<arg-spec> is surely right when
+starting to build orthogonal modules:
+
+  In my experimentation, I wrote \<module>/<description>. The thing is that
+once has this kind of names, one can start building new commands that frees
+developer from knowing the developer the details of the expanded name.
+
+  For example, a command \module{module_name}{ ... } which automatically
+add the module_name to code, and provides special definition commands for
+the different argument types. The code the developer then writes could then
+look pretty normal, say
+  \module{tex}{
+    \def:D\let
+    \def:D\def
+    ...
+  }
+instead of the definitions of l3names.dtx file
+  \name_primitive:NN \let
+  \name_primitive:NN \def
+
+  The next step could be submodules of modules. So at least this part looks
+both exciting and to be the right thing to me.
+
+  I can note that allowing <description> to contain _ may be a problem when
+starting to build submodules: Say the name \foo_bar_xxx:w becomes
+ambiguous, if bar is the submodule of foo, which cannot be distinguished
+from the name bar_xxx in the module foo.
+
+  So if submodules should be allowed, then either _ should be an indication
+of a submodule or a space in a name, but not both.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

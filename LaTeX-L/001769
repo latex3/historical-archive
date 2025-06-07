@@ -1,0 +1,130 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2741" "Wed" "6" "November" "1996" "12:27:29" "-0700" "Nelson H. F. Beebe" "beebe@math.utah.edu" nil "92" "Bug fix for mathtime.sty version 2 (1995/03/07)" "^Date:" nil nil "11" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by mail.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id WAA19036; Wed, 6 Nov 1996 22:55:56 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.20DAA34D@listserv.gmd.de>; Wed, 6 Nov 1996 22:55:54 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 254563 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 6 Nov 1996 22:54:50 +0100
+Received: from csc-sun.math.utah.edu (csc-sun.math.utah.edu [128.110.198.2]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id WAA16788 for
+          <latex-l@relay.urz.uni-heidelberg.de>; Wed, 6 Nov 1996 22:54:47 +0100
+          (MET)
+Received: from sunscreen.math.utah.edu (beebe@sunscreen.math.utah.edu
+          [155.99.144.58]) by csc-sun.math.utah.edu (8.7.6/8.7.3) with ESMTP id
+          MAA21209; Wed, 6 Nov 1996 12:27:30 -0700 (MST)
+Received: (from beebe@localhost) by sunscreen.math.utah.edu (8.7.6/8.7.3) id
+          MAA10485; Wed, 6 Nov 1996 12:27:29 -0700 (MST)
+X-US-Mail: "Center for Scientific Computing, University of Utah,
+           Salt Lake City, UT 84112, USA"
+X-Telephone: +1 801 581 5254
+X-FAX: +1 801 581 4148
+X-URL: http://www.math.utah.edu/~beebe
+Message-ID:  <CMM.0.91.0.847308449.beebe@sunscreen.math.utah.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 6 Nov 1996 12:27:29 -0700
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Bug fix for mathtime.sty version 2 (1995/03/07)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1769
+
+We are in the final days of completing the typesetting of a complex
+book, and this morning, I uncovered, and fixed, an error in
+mathtime.sty, version 2 (1995/03/07), which is present in the June
+1996 LaTeX2e distribution as
+
+% ls -l latex2e/unpacked/mathtime.sty
+-rw-rw-r--   1 beebe        8320 Dec 19  1995 latex2e/unpacked/mathtime.sty
+
+The error appears in an earlier version of this file on our system too
+(the one that came with the original version of the MathTime purchased
+from Y&Y in October 1992).
+
+Briefly, a couple of days ago, I switched from times.sty to
+mathtime.sty, and was surprised to see a number of new overfull boxes
+appear.  While fixing them this morning, I noticed that a line that
+was previously correct was now overfull, and the cause appeared to be
+an initial \boldmath $D$.  In the previous printing of the book with
+times.sty, that D began the line; with mathtime.sty, it was preceded
+by a small amount of space, which caused the line to be overfull.
+
+Examination of mathtime.sty revealed the problem:  it says
+
+\def\boldmath{\@nomath\unboldmath
+...
+\mathcode`\+="202B
+  \mathversion{bold}
+}
+
+Notice that there is a missing percent on the last item in the
+definition, which results in \boldmath getting a single space into the
+end of its definition.
+
+I've changed my personal copy of mathtime.sty (known as xmathtime.sty)
+to read
+
+\def\boldmath{\@nomath\unboldmath
+...
+\mathcode`\+="202B
+\mathversion{bold}%
+}
+
+A similar error appears in the definition of \unboldmath:
+
+\def\unboldmath{\@nomath\boldmath
+...
+\mathcode`\+="2243
+  \mathversion{normal}
+}
+
+This should be changed to
+
+\def\unboldmath{\@nomath\boldmath
+...
+\mathcode`\+="2243
+\mathversion{normal}%
+}
+
+Here is a small test file to demonstrate the error:
+
+% -*-latex-*-
+\documentclass[]{article}
+\usepackage{mathtime}
+\def\slug{\vrule width 3pt depth 0pt height 10pt}
+\begin{document}
+\slug\boldmath $D$\slug
+\end{document}
+
+The output of dv2dt on the .dvi file from this file says:
+
+...
+sr 655360 196608
+r3 163840
+fd1 18 10421504624 655360 655360 0 7 'cmmib10'
+,,,
+
+When I change mathtime to xmathtime (my patched version) in this test
+file, and run LaTeX2e again, dv2dt then produces
+
+...
+sr 655360 196608
+fd1 18 10421504624 655360 655360 0 7 'cmmib10'
+...
+
+The unwanted move-right command, r3 163840, has disappeared.
+
+========================================================================
+Nelson H. F. Beebe                  Tel: +1 801 581 5254
+Center for Scientific Computing     FAX: +1 801 581 4148
+Department of Mathematics, 105 JWB  Internet: beebe@math.utah.edu
+University of Utah                  URL: http://www.math.utah.edu/~beebe
+Salt Lake City, UT 84112, USA
+========================================================================
+

@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1378" "Thu" "30" "September" "1999" "11:26:17" "+0200" "Frank Mittelbach" "frank.mittelbach@SMC.EDS.DE" nil "32" "Re: xparse and end-users" "^Date:" nil nil "9" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id LAA16678
+	for <schoepf@UNI-MAINZ.DE>; Thu, 30 Sep 1999 11:26:31 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.1952AA20@mail.listserv.gmd.de>; Thu, 30 Sep 1999 11:26:27 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444628 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 30 Sep 1999 11:25:02 +0200
+Received: from gate.eds.de (gate.eds.de [205.191.194.5]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id LAA27302 for
+          <LATEX-L@urz.uni-heidelberg.de>; Thu, 30 Sep 1999 11:24:59 +0200 (MET
+          DST)
+Received: from n15ux24.nets.de.eds.com by gate.eds.de with SMTP id LAA15584
+          (InterLock SMTP Gateway 4.2 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>);
+          Thu, 30 Sep 1999 11:26:56 +0200
+Received: by n15ux24.nets.de.eds.com (1.37.109.16/16.2) id AA210963578; Thu, 30
+          Sep 1999 11:26:18 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <199909101556.QAA21090@nag.co.uk>
+            <NCBBICJAGILBNMKONAJDGEOJCEAA.hensh@math.msu.edu>
+X-Mailer: VM 6.62 under Emacs 19.34.1
+Message-ID:  <14323.11449.969779.155196@n15ux24.nets.de.eds.com>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <NCBBICJAGILBNMKONAJDGEOJCEAA.hensh@math.msu.edu>
+Date:         Thu, 30 Sep 1999 11:26:17 +0200
+From: Frank Mittelbach <frank.mittelbach@SMC.EDS.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xparse and end-users
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3338
+
+Richard Hensh writes:
+ > What does (or will) xparse offer to the casual end user? How about someone
+ > who is not afraid to write a few macros but is not interested in designing
+ > classes?
+
+well xparse offers the ability to produce macros that have the look
+and feel of standard LaTeX without the need to resort to lowlevel
+programming, e.g., if you want to write a macro which has two optional
+argument (with default values) and one mandatory one you simply write
+
+\DeclareDocumentCommand \foo { O{default1} O{default2} n }
+  { < code for the macro where #1 is first optional #2 is second optional
+      and #3 is mandatory argument > }
+
+doing this in current LaTeX would require several macros using
+\@ifnectchar ... calling each other
+
+if you like this is a generalization of
+\newcommand\foo[2][default]{...}  which allows you to define a new
+command with a single optional argument and one mandatory one (or
+several ones if you replace 2 by a higher number).
+
+does this answer your question?
+
+frank
+
+ps stuff like template.dtx on the other hand is effectively of
+interest only for class file writers or more explicitly for anybody
+who wants to change the layout of a class (once classes are written
+using this mechanism) --- in other words the concept of instances is
+relevant to everybody (hopefully) even though only a few people will
+ever write templates for instances.
+

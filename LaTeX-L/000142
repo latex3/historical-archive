@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 27 Jun 90 15:01:40 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 142
+
+    I have not seen any examples of the last two: ie actions to perform
+    whenever a font is used.  Thus difficult to say anything definite,
+    but the "out-of-math" alternative seems as useful as the "in-math
+    alternative": is it impossible/impractical/useless to combine these
+    two and let the user (of the scheme) make the distinction with
+    \ifmmode  \else  \fi ???
+
+We used the math action to set or reset accent characters
+in certain math alphabets in the amstex option. of course it
+would be possible to use \ifmmode; this is macros names versus
+space and time. I vote for different storrage if I build this.
+
+
+    Will the existence of such an extra slow it down a lot?  Obviously,
+    actually doing a remapping will, but there is no way round that: if
+    remapping is needed then the time has to be taken to do it.
+
+If the action is performed for every \selectfont command it
+will slow down things a lot. But of course one can build a
+scheme where remapping (for example) is done only if something
+has changed. In such a case every \selectfont would only add
+one extra call to a hook which would be normally empty.
+
+
+  ***************
+  Some people like to change the \fontdimen parameters font the same
+  font for different uses or add extra \fontdimen s.  the latter has to
+  be done immediately the font is loaded, and the former is best done
+  then.  Thus these font-scheme implementors could not use your scheme
+  as it is now.  They could, of course, achieve the same by building
+  different copies of the .TFM file with the differnt values, but should
+  they have to??? ie. should you deny them access to some of TeX's
+  adaptability if they use your scheme?
+  ****************
+
+The addition of extra fontdimen parameters could be done via
+first argument of \extra@def provided the font wasn't loaded already.
+But in this case there is no chance at all to add another fontdimen
+(problem in TeX (misfeature)). This would apply to all fonts in a
+family.
+For those who saw the current versions of the macros: there is also
+a (currently) unused #5 argument to \new@fontshape which was added
+to extend the fontselection scheme to carry out this specific to
+every fontshape.
+
+I don't see why changing \fontdimen parameters can't be done with
+the new scheme. On the fly it can be done by defining macros as
+proposed by Sebastian (back to the world?) i.e., by saying
+
+..\selectfont \fontdimen5\font 4pt ...
+
+in a macro. If it is necessary only once it can also be done
+in \extra@def of the corresponding family. (I did this for the euler
+family in concrete.sty to use the fonts in normal text.
+
+
+I see the above opinion as a sign that the new font selection
+isn't explained enough. Maybe we can help by writing a better
+interface description.
+
+Frank
+
+Would be fine to here some more opinions!!!!!
+
+

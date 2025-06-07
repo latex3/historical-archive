@@ -1,0 +1,204 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Mon, 20 Jan 2003 01:17:35 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0K0HX6C030242 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 20 Jan 2003 01:17:33 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0K03xAL017005; Mon, 20 Jan 2003 01:03:59 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C019.54D8B980"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0JN04lJ032261; Mon, 20 Jan 2003 00:56:54 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6421 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 20 Jan 2003 00:56:54 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0JNuskr032585 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 20 Jan 2003 00:56:54 +0100
+Received:  from moutng.kundenserver.de (moutng.kundenserver.de          [212.227.126.183]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with          ESMTP id h0K03vAL016993 for <LATEX-L@listserv.uni-heidelberg.de>;          Mon, 20 Jan 2003 01:03:57 +0100 (MET)
+Received:  from [212.227.126.162] (helo=mrelayng.kundenserver.de) by          moutng.kundenserver.de with esmtp (Exim 3.35 #1) id 18aPPx-0002if-00;          Mon, 20 Jan 2003 01:03:57 +0100
+Received:  from [80.129.1.205] (helo=istrati.mittelbach-online.de) by          mrelayng.kundenserver.de with asmtp (Exim 3.35 #1) id          18aPPw-0000Ko-00; Mon, 20 Jan 2003 01:03:56 +0100
+Received:  (from frank@localhost) by istrati.mittelbach-online.de          (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) id h0K01IB32676; Mon, 20 Jan          2003 01:01:18 +0100
+In-Reply-To:  <200301192343.h0JN04l9032261@listserv.uni-heidelberg.de>
+References: <200301192343.h0JN04l9032261@listserv.uni-heidelberg.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: VM 6.96 under Emacs 20.7.1
+X-OriginalArrivalTime: 20 Jan 2003 00:17:35.0694 (UTC) FILETIME=[55429EE0:01C2C019]
+X-Authentication-Warning: istrati.mittelbach-online.de: frank set sender to                         frank@mittelbach-online.de using -f
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -0.7 () IN_REP_TO,REFERENCES,SPAM_PHRASE_00_01,X_AUTH_WARNING
+Content-class: urn:content-classes:message
+Subject:      Re: inputenc -> text+math
+Date: Mon, 20 Jan 2003 01:01:18 +0100
+Message-ID: A<15915.15438.694489.934913@istrati.mittelbach-online.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: inputenc -> text+math
+Thread-Index: AcLAGVVtQWOXv1tdTWWJ8a3l5A6eXg==
+From: "Frank Mittelbach" <frank.mittelbach@LATEX-PROJECT.ORG>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4439
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C019.54D8B980
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Vladimir,
+
+ >
+ > following up an old email... :) but this is related closely to your =
+recent email
+ > on "LICR objects in math"
+
+i thought i replied to you back then, or not?
+
+ > no, it would not have broken text, because \halign is redefined in =
+the
+ > following way:
+ >
+ > \let\org@halign\halign
+ > \DeclareRobustCommand\halign{\let\if@mmode\if@mmode@\org@halign}
+ >
+ > and \if@mmode@ is defined like this:
+ > \def\if@mmode@{\reset@if@mmode\ifmmode}
+ > \DeclareRobustCommand\reset@if@mmode{\let\if@mmode\ifmmode}
+ >
+ > so when you have \begin{tabular}[t]{..}, then the FIRST character =
+inside the
+ > cell
+ > will execute \if@mmode@ which will reset \if@mmode to just \ifmmode, =
+thus
+ > preserving all ligatures!
+
+that statement is (i think) only partially true, it should read the =
+first LICR
+that makes some \ifmmode test will ...
+
+for Russian language that would be no problem  as all chars are LICR's =
+with
+command names but for other languages it might mean that the resetting =
+happens
+at any time in them middle of some later word.
+
+so yes, the above would avoild the \halign problem (provided it is =
+really safe
+to stop making \halign a primitive (i think i know at least one package =
+that
+would break then: bm.sty) but it would not stop the problem of spurious
+ligature kerning errors (if unlucky long time after the start of the =
+cell).
+
+to late at night to think or read further (hope i haven't said nonsense =
+above)
+
+good night
+frank
+
+------_=_NextPart_001_01C2C019.54D8B980
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: inputenc -&gt; text+math</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Vladimir,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; following up an old email... :) but this =
+is related closely to your recent email</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; on &quot;LICR objects in math&quot;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i thought i replied to you back then, or not?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&gt; no, it would not have broken text, because =
+\halign is redefined in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; following way:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; \let\org@halign\halign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; =
+\DeclareRobustCommand\halign{\let\if@mmode\if@mmode@\org@halign}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; and \if@mmode@ is defined like =
+this:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; =
+\def\if@mmode@{\reset@if@mmode\ifmmode}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; =
+\DeclareRobustCommand\reset@if@mmode{\let\if@mmode\ifmmode}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; so when you have \begin{tabular}[t]{..}, =
+then the FIRST character inside the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; cell</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; will execute \if@mmode@ which will reset =
+\if@mmode to just \ifmmode, thus</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; preserving all ligatures!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>that statement is (i think) only partially true, it =
+should read the first LICR</FONT>
+
+<BR><FONT SIZE=3D2>that makes some \ifmmode test will ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>for Russian language that would be no problem&nbsp; as =
+all chars are LICR's with</FONT>
+
+<BR><FONT SIZE=3D2>command names but for other languages it might mean =
+that the resetting happens</FONT>
+
+<BR><FONT SIZE=3D2>at any time in them middle of some later word.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>so yes, the above would avoild the \halign problem =
+(provided it is really safe</FONT>
+
+<BR><FONT SIZE=3D2>to stop making \halign a primitive (i think i know at =
+least one package that</FONT>
+
+<BR><FONT SIZE=3D2>would break then: bm.sty) but it would not stop the =
+problem of spurious</FONT>
+
+<BR><FONT SIZE=3D2>ligature kerning errors (if unlucky long time after =
+the start of the cell).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>to late at night to think or read further (hope i =
+haven't said nonsense above)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>good night</FONT>
+
+<BR><FONT SIZE=3D2>frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C019.54D8B980--
+

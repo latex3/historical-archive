@@ -1,0 +1,64 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1846" "Thu" "3" "December" "92" "12:22:40" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "35" "accented words in {tabbing} environment" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA10791; Thu, 3 Dec 92 13:24:43 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA26528; Thu, 3 Dec 92 13:24:40 +0100
+Message-Id: <9212031224.AA26528@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0305; Thu, 03 Dec 92 13:25:17 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1193;
+ Thu, 03 Dec 92 13:25:12 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1191;
+ Thu, 03 Dec 92 13:25:09 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Gaulle Bernard's message of Thu,
+              3 Dec 92 12:29:03 NFT <16826.9212031137@m1.cs.man.ac.uk>
+Date:         Thu, 3 Dec 92 12:22:40 GMT
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      accented words in {tabbing} environment
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 882
+
+
+
+> This is nearly easy to do it in LaTeX 2.09. I have coded a bypass via
+> a \tabbingaccents command in french.sty  for french diacritics. Using that
+> feature i require that LaTeX real tabbing commands were followed by a space.
+> This remains a bypass.
+>
+> Do we consider that we need to change a well known environment syntax for
+> an obsolate manner of inputing accented letters? In few years (i hope)
+> nobody will use the old Knuth manner for putting diacritics and everybody
+> will input (at least) 8bits chars and then we will discuss about the 32bits
+> notation...
+
+If \' etc are going to be used for accents, then I think that we
+definitely *should* change the tabbing commands. I see nothing wrong
+with giving these names \tabflushright or something. having to change
+from \'e to \a'e is a real pain for users (given how often this
+appears in c.t.t) it makes it even harder to define macros that
+produce text that may be used inside and outside the tabbing env.
+(The idea of keeping \' for both uses, depending on whether it is
+followed by a space, is a nice trick, and keeps maximum compatability
+with latex2.09, but I do not think this could be the 'standard' in
+latex3, where at least the kernel should have consistency in the
+syntax of commands (and most commands do not check ahead for a space!)
+
+While it is true that the *internal* accent mechanism should move to
+8-bit chars to allow proper hyphenation etc, I think that the current
+syntax is useful. If you have a keyboard with accented characters, or
+at least use them a lot, and so know what key combinations produce
+these symbols, then 8-bit input is fine. Most English speakers only
+use accents very occasionally, and the \'e (or even \'{e}) syntax is
+very memorable. \' can be redefined to call the appropriate 8-bit
+char, rather than using the \accent primitive.
+
+David
+

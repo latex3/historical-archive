@@ -1,0 +1,240 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Tue, 3 Feb 2004 14:47:18 +0100
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i13DlE81001223 for <rainer.schoepf@PROTEOSYS.COM>; Tue, 3 Feb 2004 14:47:15 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i13DeWiv024926; Tue, 3 Feb 2004 14:40:33 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C3EA5C.3D217700"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i12DhTw7005376; Tue, 3 Feb 2004 14:40:09 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 2450 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 3 Feb 2004 14:40:08 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i13DU7In023348 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 3 Feb 2004 14:30:07 +0100
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i13DU2iv021713 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 3 Feb          2004 14:30:03 +0100 (MET)
+Received:  from fencepost.gnu.org ([127.0.0.1] helo=lola.goethe.zz) by          fencepost.gnu.org with esmtp (Exim 4.24) id 1Ao0bS-0004Oa-Vt for          LATEX-L@listserv.uni-heidelberg.de; Tue, 03 Feb 2004 08:28:35 -0500
+In-Reply-To:  <16415.23251.31628.22058@istrati.mittelbach-online.de>
+Lines: 48
+References: <200402030415.i134Fc619226@beryl.math.u-psud.fr>            <16415.23251.31628.22058@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 03 Feb 2004 13:47:20.0803 (UTC) FILETIME=[3ECD2B30:01C3EA5C]
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3.50
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: A job for eTeX.
+Date: Tue, 3 Feb 2004 13:56:35 +0100
+Message-ID: A<x5vfmoianw.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: A job for eTeX.
+Thread-Index: AcPqXD8HnAblX1auTMiGwT9OLgocpQ==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4752
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C3EA5C.3D217700
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> Laurent,
+>
+>  > << currently involved with programming a footnote package, I was =
+trying
+>  > to get a clue about just when to insert \color@begingroup and
+>  > \color@endgroup >>
+>  >
+>  > Some years ago, you discussed misfeatures of the TeX 3
+>  > '\mark'  mechanism and ideas for fixing it.  Are those ideas
+>  > adequate for David Kastrup's present purposes?
+>
+> i'm not sure what you are precisely referring with respect to marks
+> at to be honnest, but i doubt it. the problem wih footnotes is that
+> they split apart boxes without a decent way to interact with the
+> mechanism. that is okay if \mark's are concerned (or specials if
+> they simply mark a point in the stream but fails miserably if the
+> special is trying to implement a stack of regions
+
+I don't know what a stack of regions is.  My implementation by now
+works.  What I do is actually record the complete color stack for the
+footnote with a mark whenever a color command gets executed.  I
+switch off color stack recording with \color@begingroup since I am
+assuming that the concerned box will not be split or land elsewhere
+altogether.
+
+The problem was a bit acerbated by the fact that I am using
+plain-style footnotes that don't mind \verb and its ilk.  That means
+that I catch the end of the footnote with \aftergroup, and the
+color-stack related \aftergroup tokens will only make it afterwards
+and I can't catch them without reliquishing control, or sweeping them
+up with \futurelet or something.  Since I don't like that, I instead
+set up effectively a count that tells how many color stack pops are
+to be expected and then relinquish control.  The various \reset@color
+commands then get executed, do nothing at all, and the last of them
+closes the outer group and switches off color stack tracking.
+
+Whenever I split a footnote, I take the relevant color stack info
+from my mark, unwind the color stack at the end of the first part of
+the footnote, and set it up again at the second part (actually, I do
+the color stack setup within a setbox command for the second part
+that is nested within a setbox for the first part, so all
+\aftergroup\reset@color commands register in the first part).
+
+It's all a bit sick in the head, but tested pretty fine.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C3EA5C.3D217700
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: A job for eTeX.</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach =
+&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Laurent,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &lt;&lt; currently involved with =
+programming a footnote package, I was trying</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; to get a clue about just when to =
+insert \color@begingroup and</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \color@endgroup &gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; Some years ago, you discussed =
+misfeatures of the TeX 3</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; '\mark'&nbsp; mechanism and ideas for =
+fixing it.&nbsp; Are those ideas</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; adequate for David Kastrup's present =
+purposes?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; i'm not sure what you are precisely referring =
+with respect to marks</FONT>
+
+<BR><FONT SIZE=3D2>&gt; at to be honnest, but i doubt it. the problem =
+wih footnotes is that</FONT>
+
+<BR><FONT SIZE=3D2>&gt; they split apart boxes without a decent way to =
+interact with the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; mechanism. that is okay if \mark's are concerned =
+(or specials if</FONT>
+
+<BR><FONT SIZE=3D2>&gt; they simply mark a point in the stream but fails =
+miserably if the</FONT>
+
+<BR><FONT SIZE=3D2>&gt; special is trying to implement a stack of =
+regions</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I don't know what a stack of regions is.&nbsp; My =
+implementation by now</FONT>
+
+<BR><FONT SIZE=3D2>works.&nbsp; What I do is actually record the =
+complete color stack for the</FONT>
+
+<BR><FONT SIZE=3D2>footnote with a mark whenever a color command gets =
+executed.&nbsp; I</FONT>
+
+<BR><FONT SIZE=3D2>switch off color stack recording with =
+\color@begingroup since I am</FONT>
+
+<BR><FONT SIZE=3D2>assuming that the concerned box will not be split or =
+land elsewhere</FONT>
+
+<BR><FONT SIZE=3D2>altogether.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The problem was a bit acerbated by the fact that I am =
+using</FONT>
+
+<BR><FONT SIZE=3D2>plain-style footnotes that don't mind \verb and its =
+ilk.&nbsp; That means</FONT>
+
+<BR><FONT SIZE=3D2>that I catch the end of the footnote with =
+\aftergroup, and the</FONT>
+
+<BR><FONT SIZE=3D2>color-stack related \aftergroup tokens will only make =
+it afterwards</FONT>
+
+<BR><FONT SIZE=3D2>and I can't catch them without reliquishing control, =
+or sweeping them</FONT>
+
+<BR><FONT SIZE=3D2>up with \futurelet or something.&nbsp; Since I don't =
+like that, I instead</FONT>
+
+<BR><FONT SIZE=3D2>set up effectively a count that tells how many color =
+stack pops are</FONT>
+
+<BR><FONT SIZE=3D2>to be expected and then relinquish control.&nbsp; The =
+various \reset@color</FONT>
+
+<BR><FONT SIZE=3D2>commands then get executed, do nothing at all, and =
+the last of them</FONT>
+
+<BR><FONT SIZE=3D2>closes the outer group and switches off color stack =
+tracking.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Whenever I split a footnote, I take the relevant color =
+stack info</FONT>
+
+<BR><FONT SIZE=3D2>from my mark, unwind the color stack at the end of =
+the first part of</FONT>
+
+<BR><FONT SIZE=3D2>the footnote, and set it up again at the second part =
+(actually, I do</FONT>
+
+<BR><FONT SIZE=3D2>the color stack setup within a setbox command for the =
+second part</FONT>
+
+<BR><FONT SIZE=3D2>that is nested within a setbox for the first part, so =
+all</FONT>
+
+<BR><FONT SIZE=3D2>\aftergroup\reset@color commands register in the =
+first part).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It's all a bit sick in the head, but tested pretty =
+fine.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C3EA5C.3D217700--
+

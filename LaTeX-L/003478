@@ -1,0 +1,105 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1922" "Tue" "28" "December" "1999" "21:23:46" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "60" "Re: A couple of TOC templates (1)" "^Date:" nil nil "12" nil nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 28 Dec 1999 21:25:01 +0100 (MET)
+Received: from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56])
+	by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id VAA28015
+	for <schoepf@mail.uni-mainz.de>; Tue, 28 Dec 1999 21:25:00 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id VAA26418
+	for <schoepf@UNI-MAINZ.DE>; Tue, 28 Dec 1999 21:25:00 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.6FC7C885@mail.listserv.gmd.de>; Tue, 28 Dec 1999 21:24:50 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 447308 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 28 Dec 1999 21:23:58 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id VAA04838 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 28 Dec
+          1999 21:23:56 +0100 (MET)
+Received: from ssmtp02.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id VAA20668 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 28 Dec 1999 21:24:54 +0100 (MET)
+Received: from [195.5.72.128] ([195.5.72.128]) by ssmtp02.arrakis.isp (Netscape
+          Messaging Server 4.1 Nov 19 1999 19:47:43) with SMTP id FNGWNO05.JD3
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 28 Dec 1999 21:23:48 +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199912282024.VAA20668@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 28 Dec 1999 21:23:46 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: A couple of TOC templates (1)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3478
+
+>Javier,
+>
+> > >have to study them a bit further but i was wondering about the paragraph
+> > >action
+> > >which seems to be intended to run the whole set of all entries in a
+>single
+> > >paragraph.
+> >
+> > Not necessary. Just define, say, section to be of style JB1, and
+> > subsection of style JB2. That's all. If there are no new bugs, that
+> > should work.
+>
+>I tried that after Xmas but not with much success. would you care to provide
+>us with a (working:-) example? perhaps i'm simply to stupid to get it right.
+
+!Ah! The sychronizations problems which I thought I solved. :-( That's
+closely related to a problem with templates which I explained in a
+previous
+message-- the fact that the parameters are used with an intermediate:
+
+I then said:
+>The template way is (very, very simplified)
+>
+>\def\defineit#1{%
+>  \def\@it{#1}
+>  \def\it{\@it}}
+>
+>This extra level has many implications, because we cannot
+>define \it literally (ie, exactly as given by the argument)
+
+Take the following declarations:
+
+\DeclareInstance{contentsobject}{section}{JB1}{ % the usual way
+ ... irrelevant}
+\DeclareInstance{contentsobject}{subsection}{JB2}{  % grouped
+ ... irrelevant }
+
+The very first subsection after a section begins a group, which is
+not ended until the very first section after a series of sections
+comes--the \endgroup is *in the section code* and the attributes
+for it are deleted! That does not happen in the original
+implementation because parameters are used literally (and hence
+never deleted). In its very, very simplified equivalent:
+
+\def\defineit#1{%
+  \def\@it{#1}
+  \endgroup
+  \def\it{\@it}}
+
+I cannot figure out how to fix that with reworking a lot of code,
+but perhaps redefining all of parameters to itself but globally
+could work. (I mean
+
+  \global\let\COtitle@format\COtitle@format
+  \global\let\COobject@decl\COobject@decl
+
+and so on.) May attributes be assigned globally in templates?
+
+\bye
+Javier
+

@@ -1,0 +1,116 @@
+X-VM-v5-Data: ([nil nil nil nil t nil nil nil nil]
+	["1642" "Tue" "26" "August" "1997" "13:01:40" "+0200" "Norbert Preining" "preining@LOGIC.AT" "<3402B794.15FB@logic.at>" "78" "Problem with LaTeX 6/97 and AMSLaTeX" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id NAA11751;
+	Tue, 26 Aug 1997 13:01:48 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.8E181FF5@listserv.gmd.de>; Tue, 26 Aug 1997 13:00:56 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 189676 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 26 Aug 1997 13:01:11 +0200
+Received: from alpha.logic.tuwien.ac.at (alpha.logic.tuwien.ac.at
+          [128.130.175.20]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id NAA06640 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 26
+          Aug 1997 13:01:10 +0200 (MET DST)
+Received: from alpha.logic.tuwien.ac.at (localhost [127.0.0.1]) by
+          alpha.logic.tuwien.ac.at (8.8.3/8.8.3) with SMTP id NAA26298 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 26 Aug 1997 13:01:41
+          +0200 (MET DST)
+X-Mailer: Mozilla 3.01 (X11; I; OSF1 V4.0 alpha)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <3402B794.15FB@logic.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 26 Aug 1997 13:01:40 +0200
+From: Norbert Preining <preining@LOGIC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Problem with LaTeX 6/97 and AMSLaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2292
+
+Hi!
+I've experienced the following problem with the
+latex/amslatex distribution:
+
+If I use a different ulasy.fd file (for the sauter fonts), the
+amslatex crashes at least with the multline* environment:
+
+The problem happens when the NEW ulasy.fd file is loaded
+after the amsmath-package.
+
+But if I load the ulasy.fd at format time or I use the
+ulasy.fd from the distribution, everything is ok.
+
+Where is the problem?
+
+Following is the new ulasy.fd, a testfile, and the log from
+the run. I use also the latest amslatex dist. from CTAN.
+
+I use a different ulasy.fd file:
+%%
+%% This *was* file `Ulasy.fd',
+%%
+\ProvidesFile{ulasy.fd}
+             [1996/11/20 v2.2d
+              Sauter LaTeX symbol font definitions]
+\providecommand{\sauter@family}[5]{%
+  \DeclareFontShape{#1}{#2}{#4}{#5}
+  { <5> #35 <6> #36 <7> #37 <8> #38 <9> #39 <10> #310 <10.95> #311
+  <12> #312 <14.4> #314 <17.28> #317 <20.74> #320 <24.88> #325
+  }{}%
+}
+\DeclareFontFamily{U}{lasy}{}
+\sauter@family{U}{lasy}{lasy}{m}{n}
+\sauter@family{U}{lasy}{lasyb}{b}{n}
+\endinput
+%%
+%% End of file `Ulasy.fd'.
+
+
+
+%
+% Testfile
+%
+\documentclass{article}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\begin{document}
+\begin{multline*}
+  x
+\end{multline*}
+\end{document}
+% eof
+
+%
+% from the log-file:
+%
+...
+! Improper \halign inside $$'s.
+\next@ ...ce \totwidth@ -\@mathmargin \fi \halign
+                                                  \bgroup \hbox
+to\totwidth@...
+l.15 \end{multline*}
+...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+--
+ciao
+norb
+
+---------------------------------
+- Preining Norbert
+- preining@logic.at
+- University of Technology Vienna
+- Austria
+---------------------------------
+

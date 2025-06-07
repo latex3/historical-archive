@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2301" "Thu" "1" "October" "92" "17:17:30" "CET" "Don Hosek" "DHOSEK@HMCVAX.CLAREMONT.EDU" nil "51" "Re: picture mode in LaTeX3/additional fonts in distribution" "^Date:" nil nil "10"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA06351; Thu, 1 Oct 92 17:17:45 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA23498; Thu, 1 Oct 92 17:17:18 +0100
+Message-Id: <9210011617.AA23498@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1247; Thu, 01 Oct 92 17:18:02 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1237;
+ Thu, 01 Oct 92 17:17:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 1235;
+ Thu, 01 Oct 92 17:17:51 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 1 Oct 92 17:17:30 CET
+From: Don Hosek <DHOSEK@HMCVAX.CLAREMONT.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: picture mode in LaTeX3/additional fonts in distribution
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 813
+
+
+-In the discussion of whether to tie LaTeX3 to Postscript, I haven't
+-seen a discussion of how one might handle one of the most desirable
+-(to me) Postscript features---the ability to rotate boxes, so tables
+-can be printed sideways---outside of Postscript. This cannot be
+-accomplished with the \special s of any other drivers that I am aware
+-of. Perhaps the LaTeX3 folks, along with the DVI standards committee
+-could take up the idea of standardizing a rotation \special.
+
+Little known fact: The DVI driver standards committee has
+proposed a rotation  special which has been "on the books" for
+several years now. The syntax is \special{rotate N} where N is
+the angle in 1/65536 degrees. Rotations are cumulative and are
+scoped by DVI push/pop pairs. The only driver which I know of
+which currently implements this special is TeXrox which rounds
+the angle to the nearest 90 degree. A macro which would use this
+special would be:
+
+% Short form which doesn't adjust box dimensions because I'm
+% coding off the top of my head. #1 is the angle in  degrees,
+% #2 is the text to rotate.
+\def\rotate#1#2{%
+  \dimen0=#1pt
+  \rlap{\special{rotate \number\dimen0}#2}%
+}
+
+Some code could be written to position this in an appropriately
+sized box for space reservation purposes. As anyone who has ever
+looked in rotate.sty/tex knows, this is a far simpler approach.
+
+Incidentally, as an implementation note, rotation by 90's can be
+effected on any printer which allows downloadable fonts, not just
+those which allow one to have multiple orientations on a single
+page. The solution to handling this rotation with non-rotatable
+PDLs (e.g., PCL (I don't know if PCL5 changed this)) is to have
+the driver rotate fonts before downloading. Just because we read
+a font sideways doesn't mean a printer has to be able to print
+sideways.
+
+-On a related topic, why not have LaTeX3 accomplish fancy graphics as
+-Tom Leathrum's mfpic package does: by writing a .mf file, which
+-metafont then processes. This saves wear and tear on the
+-wheel-reinventing shop and avoids reliance on \special s, since
+-metafont is already part of the standard TeX distribution.
+
+Not everyone has MF. MF can't handle some graphics features
+conveniently (e.g., gray shades). etc.
+
+Direct PostScript calls should be avoided at all costs.
+
+-dh
+

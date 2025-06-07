@@ -1,0 +1,71 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 17 Jul 90 07:39:54 bst
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Sebastian Rahtz <spqr@ECS.SOTON.AC.UK>
+Subject:      Re: Another way to do bibliographic entries
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 188
+
+"Nelson H. F. Beebe" writes:
+
+ > masse into the end of the document, and this problem remains
+ > if the alternate method of putting references in footnotes
+ > is done.
+
+I come across this quite often; and it is unfortunate that the
+{nt}roff tools handle this situation much better; as does Tib, but I
+am distinctly unconvinced by Tib - it breaks, and the format is ugly.
+
+I like Don's solution; some comments:
+
+   > \cite would do an unskip to take care of any space preceding it
+   > (typing %\cite{foo} is an ingrained habit in any BibTeXnical
+why is space preceding a \cite supposed to be an error? I do all my
+citations in APA-like style, where a space before (Jones 1989) is what
+I want, surely?
+
+   > execute the command \cite@foo (or some such).
+   >
+   > The bbl file would define \cite@foo such that the first time it
+thats an awful lot of material to have hanging around in memory from
+the first citation in the text; it could get unmanageable quite
+quickly. It is so easy to run LaTeX out of memory anyway, we don't
+want yet another gob of the stuff taken away. Of course, there is no
+other solution, except
+ - a preprocessor like Tib or refer to do textual substitution
+ - system access other than file reading, to kick off a decent
+   database search
+ - reading a .bbl-like file every time one met a cite, and searching
+   for the key (probably not *that* slow, actually, but clumsy)
+
+   > (2) There should be a default bibliography style. Especially
+   > important for, say, an APA style which implies
+   > \bibliographystyle{apalike}.
+agreed!
+
+   > (4) There should be a way for a citation along the lines of
+   > [Hosek, pp. 12-13, Schwartz, p. 14]
+I would also note that whenever I get people to type in LaTeXery for
+me, it is distinctly counter-intuitive for them to type
+ \cite[p.~41]{Jones:1989}
+to get
+ Jones 1989, p. 41
+
+why isn't the syntax \cite{Jones:1989}[p.~41]?
+
+one solution to Don's (4) is to put the stuff currently in [] inside
+the {} seperated by some character
+   \cite{Hosek/pp. 12-13,Schwartz/p. 14}
+
+but that would be a bit of a radical break from current stuff.
+
+does history relate if Patashnik is doing *anything* to the interface
+of BibTeX for 1.0?
+
+sebastian
+
+

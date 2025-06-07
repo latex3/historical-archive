@@ -1,0 +1,81 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 10 Oct 2008 23:56:25 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m9ALuHd9014147
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 10 Oct 2008 23:56:19 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m9ALmxCV006085
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 10 Oct 2008 23:48:59 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m9ADlGZH020391;
+	Fri, 10 Oct 2008 23:48:52 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 62361 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 10 Oct
+          2008 23:48:51 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m9ALmpRN018654 for <latex-l@listserv.uni-heidelberg.de>;
+          Fri, 10 Oct 2008 23:48:51 +0200
+Received: from anchor-post-30.mail.demon.net (anchor-post-30.mail.demon.net
+          [194.217.242.88]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m9ALmgFX018421 for <latex-l@listserv.uni-heidelberg.de>;
+          Fri, 10 Oct 2008 23:48:46 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.2]) by
+          anchor-post-30.mail.demon.net with esmtp (Exim 4.67) id
+          1KoPqf-000Nzm-1N for latex-l@listserv.uni-heidelberg.de; Fri, 10 Oct
+          2008 21:48:37 +0000
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48EFCDB4.3040207@morningstar2.co.uk>
+Date:         Fri, 10 Oct 2008 22:48:36 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Tools for processing numbers
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Oct 2008 21:56:25.0724 (UTC) FILETIME=[0A8703C0:01C92B23]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5397
+
+Hello all,
+
+I've been giving some thought to examining how to re-write siunitx in
+expl3.  I've made some progress on the options side (hence keys3), but
+I'm now thinking a little about the number analysis part.
+
+I wonder if it might be useful to create a lower-level tool package for
+processing numbers.  I was thinking that the following might be useful:
+- Something like \ifinteger, \ifnumber, etc. as in biblatex
+- Ability to parse numbers as in siunitx
+- More structured returning of parsed value
+
+The last point is relevant as siunitx uses a number of hacks to get the
+appropriate data out.  I think it might be better to provide something like:
+
+<sign><pre-decimal><post-decimal><sign-exp><pre-decimal-exp><post-decimal-exp>
+
+or
+
+<sign><mantissa><sign><exponent>
+
+in a structured return format (errors to be thought about).  Does
+something like this sound useful as a more generalised package?
+-- 
+Joseph Wright
+

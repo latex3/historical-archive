@@ -1,0 +1,142 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4173" "Fri" "4" "July" "1997" "09:42:21" "+0100" "Sebastian Rahtz" "s.rahtz@ELSEVIER.CO.UK" nil "98" "Re: Availability of Class files (was: LaTeX3 goals)" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id KAA10454;
+	Fri, 4 Jul 1997 10:42:22 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <14.654F2C36@listserv.gmd.de>; Fri, 4 Jul 1997 10:42:13 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 163127 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 4 Jul 1997 10:42:06 +0200
+Received: from pillar.elsevier.co.uk (root@pillar.elsevier.co.uk
+          [193.131.222.35]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id KAA21729 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 4
+          Jul 1997 10:42:04 +0200 (MET DST)
+Received: from snowdon.elsevier.co.uk (snowdon.elsevier.co.uk
+          [193.131.197.164]) by pillar.elsevier.co.uk (8.8.5/8.8.5) with ESMTP
+          id JAA18829 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 4 Jul
+          1997 09:38:03 +0100 (BST)
+Received: from cadair.elsevier.co.uk by snowdon.elsevier.co.uk with SMTP (PP);
+          Fri, 4 Jul 1997 09:43:31 +0100
+Received: from knott.elsevier.co.uk (knott.elsevier.co.uk [193.131.197.165]) by
+          cadair.elsevier.co.uk (8.8.5/8.8.5) with ESMTP id JAA26943 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 4 Jul 1997 09:43:10 +0100
+          (BST)
+Received: (from srahtz@localhost) by knott.elsevier.co.uk (8.8.3/8.8.5) id
+          JAA16345; Fri, 4 Jul 1997 09:42:21 +0100 (BST)
+References: <199707031746.KAA00247@math.uci.edu>
+Message-ID:  <199707040842.JAA16345@knott.elsevier.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199707031746.KAA00247@math.uci.edu>
+Date:         Fri, 4 Jul 1997 09:42:21 +0100
+From: Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Availability of Class files (was: LaTeX3 goals)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2249
+
+Are you all familar with Graham Williams catalogue? in many ways, he
+has already laid the foundation for what we are talking about, with a
+BiBTeX database looking like this:
+
+@TeXIndex{akletter,
+  texlive       = {latex3},
+  ctan          = {macros/latex/contrib/supported/akletter/},
+  abstract      = {An advanced letter document class which extends \LaTeX{}'s
+                  usual letter class. Provides support for building your own
+                  letterhead; can mark fold points for window envelopes; and
+                  more. Documentation in German, but sample file is
+                  sufficient for a basic understanding.},
+  author        = {Axel Kielhorn},
+  email         = {i0080108@ws.rz.tu-bs.de},
+  modified      = {26 Mar 1997 09:55:33 Graham.Williams@cmis.csiro.au}
+}
+
+
+the `texlive' key (renamed) can be used for what we seem to agree is the useful
+scheme:
+
+   latex1:  a core tool provided by Them (eg graphics); distributions
+      without all of these are incomplete
+   latex2:  a generally agreed important tool package (eg calc)
+   latex3:  a generally agreed important application package (eg tipa)
+   latex4:  a package that works under the current LaTeX, has no known
+             bad behaviour, but is not a `must have' (eg nassflow)
+   latex5:  a package of unknown status, may or may not work, perhaps
+             whose author is not contactable any more
+
+I use 2 and 3 instead of 2a and 2b, because I think we *do* mean that
+distributors should treat this as a priority list when packaging up. the
+goal would be to persuade people to take *all* of 2 and 3, or just all
+of 2, and not make their own arbitrary decisions.
+
+Entry to 5 is the default; entry to 4 is (in my book) when it can pass
+a trivial CTAN to TDS test, ie it processes itself and its
+documentation, and fits into the TDS tree. That does not require any
+decisions, just a volunteer testing it, and reporting to the
+coordinator.
+
+Entry to 2 or 3 is by acclamation and discussion. Inevitably, that
+means Yet Another Mailing List, I think. Sigh. But not
+impossible. That group *must* be strict - we want to keep the number
+of packages in 2 and 3 relatively small. The `best of class' rule must
+apply - if there is already a float-extension package there, a new one
+will not be admitted unless the old one is thrown out.
+
+I fear that the `nyj', `kluwer' and `elsevier' classes must
+remain in 3, as they cannot be called `must have' or `best of class',
+and so they will not end up in the main distributions.....
+
+Then a new key can be added, `class', to select from the following
+list:
+
+ - extensions to normal facilities (tables, floats, cites etc) (eg mdwtab)
+ - class files for publishers and journals (eg kluwer)
+ - class files for theses, resumes etc (eg suthesis)
+ - letters (eg akletter)
+ - font related (eg tipa)
+ - language related (eg french)
+ - graphics (eg xypic)
+ - packages for special applications: Chemistry, Computer Science,
+   Mathematics, Physics etc. (eg xymtex)
+ - hypertext-related (eg hyperref)
+ - tools (eg calc)
+
+and possibly that `compatibility' key (including, `does it have
+\special restrictions')
+
+
+SO, where does that leave us in actions?
+
+ 1. I suggest Graham Williams be asked to act as repository of
+    information in his catalogue, if he agrees to have 2 keys supplied
+    by other people
+ 2. We need one or more coordinators to enter new packages in at
+     level 5 and then 4
+ 3. We need a forum to allow entry to 2 and 3
+ 4. We need to publicize the scheme and ask packagers to adopt it.
+    Frank et al can help with moral pressure (in my book the key is
+    that `put in all of 2 or none of 2'
+
+I am happy to volunteer as a coordinator, and I can reasonably promise
+(since I am still Secretary) the services of the TUG computer for
+mailing list, Web site and repository.
+
+If this takes off, it fulfils one of my aims for TUG and UKTUG (at
+least), which is to provide a more stable basis for the TeX Live CD
+ROM distribution. It doesn't classify the whole CD, but it covers a
+good portion of.
+
+NOTE that I am not proposing a full CTAN classification! Just those
+things which are plainly `LaTeX contributions'
+
+Comments?
+
+Sebastian
+

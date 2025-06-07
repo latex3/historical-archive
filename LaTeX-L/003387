@@ -1,0 +1,91 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2511" "Wed" "3" "November" "1999" "21:15:01" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "56" "Re: on silence" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA06860
+	for <schoepf@UNI-MAINZ.DE>; Wed, 3 Nov 1999 22:23:21 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.7CA65D60@mail.listserv.gmd.de>; Wed, 3 Nov 1999 22:23:15 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445618 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 3 Nov 1999 22:23:11 +0100
+Received: from downtown.oche.de (root@downtown.oche.de [194.94.253.3]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id WAA02662 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Nov 1999 22:22:59 +0100 (MET)
+Received: from corona.oche.de (uucp@localhost) by downtown.oche.de
+          (8.9.3/8.9.3/Debian/GNU) with UUCP id WAA20270 for
+          URZ.UNI-HEIDELBERG.DE!LATEX-L; Wed, 3 Nov 1999 22:20:10 +0100
+Received: by corona.oche.de (wUUCP 1.10) id <1irp@corona.oche.de>; Wed, 3 Nov
+          99 22:20:25 CET
+X-Mailer: AmiGate 1.6 (13.11.95)
+Message-ID:  <eaa92e19@corona.oche.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 3 Nov 1999 21:15:01 CET
+From: Achim Blumensath <blume@CORONA.OCHE.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: on silence
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3387
+
+Frank Mittelbach wrote:
+> but without feedback and even if the feedback is mainly of the type,
+> please explain this better i don't understand, it is awfully hard to
+> write about this. and if i'm not able to finally get this into a shape
+> where most of you on the list do understand it and/or think it is
+> being useful this is doomed, or not?
+
+In my case, I think the general design is ok. So there is no need to
+comment on that. But in order to comment on the details they should be
+published first. You said several times that you couldn't release the
+code of template because it depends on some unfinished other things.
+Perhaps it would be a good idea to just post a list of those templates
+without an actual implementation, just with a description of the
+arguments, attributes, and semantics.
+
+Here are two (random) things I've thought of:
+
+a) General structure.  IMHO LaTeX should be much more modular so you can
+replace parts you don't like with your own implementation. It could be
+divided into the kernel containing just the programming environment
+like xparse, etc., and a lot of modules, one for each aspect of actual
+typesetting (lists, math, fonts, headings, pagestyle,...).
+
+The structure of a class file would be
+
+  preamble
+  including modules
+  declaring instances of templates defined in the modules
+
+The advantage would be that you could
+
+ o make cosmetic changes by writing a new class which uses other
+   values to instantiate the templates, and
+
+ o make fundamental changes by writing a new module with different
+   implementation of templates.
+
+b) Displays.  A basic display template IMHO could have no parameters,
+the following attributes
+
+  above-skip, below-skip, left-indent, right-indent
+  alignment:  left, right, centered, full width
+  mode:       text, math-displaystyle, math-textstyle
+
+and it would define two commands to resp. begin and end the environment.
+Other, more convenient templates could be defined on top of this.
+Unfortunately, I haven't come up with a satisfactory design of high
+level math environments, so far.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ |
+    //  Achim Blumensath       | \  _                        \O/ \___/\ |
+   //   blume@corona.oche.de   |-< /_\                       =o=  \ /\ \|
+ \X/    (p^2 - m^2)\psi = 0    |_/ \_                        /"\   o----|
+____________________________________________________________________\___|
+

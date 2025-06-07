@@ -1,0 +1,828 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.AA5E0124@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:48 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.AA5E0124"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Short form stuff: illustrative documentation, part 1
+Date: Wed, 6 May 1992 16:02:41 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE9B0@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@vme.nott.ac.uk>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 705
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.AA5E0124
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+\documentstyle[11pt,references]{report}
+
+\sloppy
+
+\begin{document}
+
+\title{Short form citations:\\
+how a manual might describe \\
+the suggested user interface}
+\author{David Rhead}
+\date{May 1992}
+\maketitle
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+
+\dots\ improvements \dots\ major differences from \LaTeX\ 2.09 \dots\ =
+(see
+Appendix \ref{old-friends})  \dots\ unless otherwise stated, references =
+to
+``\LaTeX'' mean \LaTeX\ 3 \dots\ \\[20mm]
+
+\dots\ ``maps'' a structure to a design \dots\ \\[20mm]
+
+\dots\ local ``supplementary documentation'' directory \dots\ \\[20mm]
+
+\dots\ local ``examples'' directory \dots\ \\[20mm]
+
+\dots\ \verb+\footnote+ \dots\ .  Similarly, \dots\ \verb+\endnote+ =
+\dots
+
+\setcounter{chapter}{6}
+\chapter{\dots}
+
+\section{Cross-references}
+\label{cross-refs}
+
+\chapter{Bibliographic references}
+\label{bib-refs}
+
+\section{Background and terminology}
+
+You may need to prepare a document that cites other documents.
+
+Most disciplines use citation systems in which the running text gives =
+brief
+references to the sources consulted, and the document's ``end matter''
+contains a detailed list of those sources.  \LaTeX\ supports three of
+these standard citation systems:
+\begin{itemize}
+\item reference by number, in which text references take the form of
+   superscript or bracketed numbers which correspond to numbers
+   shown in the reference-list.
+\item author-date, in which a text reference generally uses the author's
+   surname and the year of publication, and the reference-list is =
+arranged
+   in alphabetical order of surnames.
+\item short form, in which the first text reference to a particular =
+source
+   (or the first reference from a particular chapter) gives fairly full
+   bibliographical details, but subsequent text references use a short =
+form
+   (e.g., the author's surname and an abbreviated title).  This system =
+is
+   often used in the humanities, where references usually appear in =
+footnotes
+   (or endnotes).  The corresponding reference-list may be organized =
+according
+   to the type of reference (for example, with all ``unpublished =
+manuscripts''
+   grouped together).
+\end{itemize}
+
+Although most documents just use one citation system, there are
+circumstances (see section \ref{multiple-systems}) under which two or =
+three
+citation systems may be used in parallel.
+
+\section{Reference-lists}
+
+Most citation systems involve a reference-list, which provides the =
+details
+needed to identify and locate the cited documents.  You may also wish to
+provide a list of documents (for example, as ``further reading'') to =
+which
+you have {\em not\/} referred in your running text.
+
+The {\tt reflist} environment is provided for such purposes.  To use =
+{\tt
+reflist}, you must supply your reference-list entries as ``paragraphs''
+within \verb+\begin{reflist}+ and \verb+\end{reflist}+.  As with other
+aspects of your document, the layout of a {\tt reflist} will depend on =
+the
+\dots\
+%  mapping file?
+you have chosen.  (Most \dots\
+%  mapping files?
+lay reference-list entries out as ``hanging paragraphs''.)
+
+If you wish to use {\tt reflist} for documents that you have {\em not}
+cited in your running text, you can simply supply reference-list entries
+separated by blank lines, thus:
+\begin{verbatim}
+\section{Further reading}
+
+\begin{reflist}
+
+{\sc Crane, D.} {\it Invisible colleges.}
+Chicago: University of Chicago Press, 1972.
+
+{\sc Stieg, M. F.} {\it The information needs of historians.}
+{\it College and Research Libraries}, Nov.\ 1981, {\bf 42}(6),
+p.\ 549--560.
+
+\end{reflist}
+\end{verbatim}
+
+However, if your reference-list is intended as a consolidated list of =
+all
+the works cited from your running text, you will probably find it more
+convenient to put appropriate \verb+\...entry+ commands in a {\tt =
+reflist}
+(see below).
+
+\section{References from running text:  general approach}
+
+\LaTeX's general approach to text references is the same whichever of =
+the
+three standard citation systems you use:
+\begin{itemize}
+\item A \verb+\...entry+ command is available with which you can:
+      \begin{itemize}
+      \item provide the text that is to appear in your reference-list
+      \item if necessary, specify the details needed for
+            text references.  (No such details are needed for the
+            reference by number system.)
+      \item declare a ``key'' that will be used to determine
+            which reference-list entry corresponds to a particular
+            text reference.  A key can consist of any sequence of
+            letters, digits and punctuation characters, with the =
+exception
+            of comma (,).
+      \end{itemize}
+\item One or more \verb+\...cite+ commands are provided with which you =
+can
+      make text references.  For author-date and short form systems, the
+      citation produced will be based on the information you supply in =
+the
+      corresponding \verb+\...entry+.
+\end{itemize}
+(Here \verb+\...entry+ and \verb+\...cite+ are used to indicate various
+commands whose full names are given in sections \ref{ref-by-number},
+\ref{author-date} and \ref{short-form} below.)
+
+Thus, whatever your citation scheme, your \LaTeX\ input will have the
+following structure:
+
+\begin{raggedright}\begin{tt}
+
+\dots \\[\baselineskip]
+
+\dots\ \verb+\...cite{+{\it key\/}\verb+}+ \dots \\[\baselineskip]
+
+\dots \\[\baselineskip]
+
+\verb+\begin{reflist}+ \\[\baselineskip]
+
+\dots \\[\baselineskip]
+
+\verb+\...entry{+{\it key\/}\verb+}{+ \dots\ \verb+}+ \\[\baselineskip]
+
+\dots \\[\baselineskip]
+
+\verb+\end{reflist}+ \\[\baselineskip]
+
+\end{tt}\end{raggedright}
+
+Given such a structure, \LaTeX\ can:
+\begin{itemize}
+\item for the reference by number system, ensure that each text =
+reference
+     has the same number as the corresponding reference-list entry
+\item for the other systems, use details taken from a \verb+\...entry+
+     when a text reference is required.  The details only need
+     supplying once, in the \verb+\...entry+.  All text references to a
+     particular source will be consistent, since the details will be
+     taken from the same \verb+\...entry+.
+\end{itemize}
+\LaTeX\ will also warn you if you make a text reference to a source =
+without
+having supplied a reference-list entry for that source.
+
+The procedure used for passing details between a \verb+\...cite+ command
+and the corresponding \verb+\...entry+ command is a two-pass one, like =
+that
+for resolving cross-references (see section \ref{cross-refs}).  Hence,
+\dots
+
+\section{Reference by number}
+\label{ref-by-number}
+
+\dots\ order of first citation \dots\ \verb+\numcite+ \dots\
+\verb+\numentry+ \dots
+%  knows width, so can set hanging indent?
+
+\section{Author-date}
+\label{author-date}
+
+\dots\ \verb+\aycite+ \dots\ \verb+\ycite+ \dots\ \verb+\ayentry+ \dots
+
+\section{Short form}
+\label{short-form}
+
+\subsection{Basic facilities}
+
+The standard \dots\
+%  mapping files?
+provide the following commands to support the short form scheme:
+\begin{itemize}
+\item  \verb+\sfentry+, with specification\\
+   \verb+\sfentry{+{\it key\/}\verb+}{+{\it =
+first-text-ref\/}\verb+}{+{\it
+   later-text-ref\/}\verb+}{+{\it ref-list-entry\/}\verb+}+\\
+   where:
+   \begin{description}
+   \item[{\it key}] is the key that, when used by text reference =
+commands,
+      identifies the particular \verb+\sfentry+ command which provides =
+the
+      information needed
+   \item[{\it first-text-ref}] is the form of text reference to be used
+      when you first cite the document identified by {\it key} (or for =
+your
+      first citation from a particular chapter)
+   \item[{\it later-text-ref}] is the short form to be used for =
+subsequent
+      citations of the document identified by {\it key}
+   \item[{\it ref-list-entry}] is to be used as the document's =
+reference-list
+      entry.  (Thus, locally, the effect of a sequence of =
+\verb+\sfentry+
+      commands within a {\tt reflist} environment is as if each =
+\verb+\sfentry+
+      command had been replaced by its {\it ref-list-entry\/}.)
+   \end{description}
+\item \verb+\firstcite+, for use when you make your first text
+   reference to a particular source (or your first reference from a
+   particular chapter).  You will refer to the source by means of the =
+{\it key}
+   you chose for its \verb+\sfentry+ command.  In your typeset document, =
+the
+   \verb+\firstcite+ will be replaced by the {\it first-text-ref\/} that =
+you
+   supplied in the corresponding \verb+\sfentry+.
+\item \verb+\latercite+, for use when you make your second or
+   subsequent text reference to a particular source.  In your typeset
+   document, the command will be replaced by the {\it later-text-ref\/}
+   supplied in the corresponding \verb+\sfentry+.
+\end{itemize}
+
+
+------_=_NextPart_001_01C19443.AA5E0124
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Short form stuff: illustrative documentation, part 1</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>\documentstyle[11pt,references]{report}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\sloppy</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{Short form citations:\\</FONT>
+
+<BR><FONT SIZE=3D2>how a manual might describe \\</FONT>
+
+<BR><FONT SIZE=3D2>the suggested user interface}</FONT>
+
+<BR><FONT SIZE=3D2>\author{David Rhead}</FONT>
+
+<BR><FONT SIZE=3D2>\date{May 1992}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\pagenumbering{roman}</FONT>
+
+<BR><FONT SIZE=3D2>\tableofcontents</FONT>
+
+<BR><FONT SIZE=3D2>\clearpage</FONT>
+
+<BR><FONT SIZE=3D2>\pagenumbering{arabic}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\dots\ improvements \dots\ major differences from =
+\LaTeX\ 2.09 \dots\ (see</FONT>
+
+<BR><FONT SIZE=3D2>Appendix \ref{old-friends})&nbsp; \dots\ unless =
+otherwise stated, references to</FONT>
+
+<BR><FONT SIZE=3D2>``\LaTeX'' mean \LaTeX\ 3 \dots\ \\[20mm]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ ``maps'' a structure to a design \dots\ =
+\\[20mm]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ local ``supplementary documentation'' directory =
+\dots\ \\[20mm]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ local ``examples'' directory \dots\ =
+\\[20mm]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ \verb+\footnote+ \dots\ .&nbsp; Similarly, =
+\dots\ \verb+\endnote+ \dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{chapter}{6}</FONT>
+
+<BR><FONT SIZE=3D2>\chapter{\dots}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Cross-references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{cross-refs}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\chapter{Bibliographic references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{bib-refs}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Background and terminology}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>You may need to prepare a document that cites other =
+documents.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Most disciplines use citation systems in which the =
+running text gives brief</FONT>
+
+<BR><FONT SIZE=3D2>references to the sources consulted, and the =
+document's ``end matter''</FONT>
+
+<BR><FONT SIZE=3D2>contains a detailed list of those sources.&nbsp; =
+\LaTeX\ supports three of</FONT>
+
+<BR><FONT SIZE=3D2>these standard citation systems:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item reference by number, in which text references =
+take the form of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; superscript or bracketed numbers which =
+correspond to numbers</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; shown in the reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>\item author-date, in which a text reference =
+generally uses the author's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; surname and the year of publication, and =
+the reference-list is arranged</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; in alphabetical order of =
+surnames.</FONT>
+
+<BR><FONT SIZE=3D2>\item short form, in which the first text reference =
+to a particular source</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (or the first reference from a =
+particular chapter) gives fairly full</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; bibliographical details, but subsequent =
+text references use a short form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (e.g., the author's surname and an =
+abbreviated title).&nbsp; This system is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; often used in the humanities, where =
+references usually appear in footnotes</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (or endnotes).&nbsp; The corresponding =
+reference-list may be organized according</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; to the type of reference (for example, =
+with all ``unpublished manuscripts''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; grouped together).</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although most documents just use one citation system, =
+there are</FONT>
+
+<BR><FONT SIZE=3D2>circumstances (see section \ref{multiple-systems}) =
+under which two or three</FONT>
+
+<BR><FONT SIZE=3D2>citation systems may be used in parallel.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Reference-lists}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Most citation systems involve a reference-list, which =
+provides the details</FONT>
+
+<BR><FONT SIZE=3D2>needed to identify and locate the cited =
+documents.&nbsp; You may also wish to</FONT>
+
+<BR><FONT SIZE=3D2>provide a list of documents (for example, as =
+``further reading'') to which</FONT>
+
+<BR><FONT SIZE=3D2>you have {\em not\/} referred in your running =
+text.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The {\tt reflist} environment is provided for such =
+purposes.&nbsp; To use {\tt</FONT>
+
+<BR><FONT SIZE=3D2>reflist}, you must supply your reference-list entries =
+as ``paragraphs''</FONT>
+
+<BR><FONT SIZE=3D2>within \verb+\begin{reflist}+ and =
+\verb+\end{reflist}+.&nbsp; As with other</FONT>
+
+<BR><FONT SIZE=3D2>aspects of your document, the layout of a {\tt =
+reflist} will depend on the</FONT>
+
+<BR><FONT SIZE=3D2>\dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; mapping file?</FONT>
+
+<BR><FONT SIZE=3D2>you have chosen.&nbsp; (Most \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; mapping files?</FONT>
+
+<BR><FONT SIZE=3D2>lay reference-list entries out as ``hanging =
+paragraphs''.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If you wish to use {\tt reflist} for documents that =
+you have {\em not}</FONT>
+
+<BR><FONT SIZE=3D2>cited in your running text, you can simply supply =
+reference-list entries</FONT>
+
+<BR><FONT SIZE=3D2>separated by blank lines, thus:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\section{Further reading}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{reflist}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{\sc Crane, D.} {\it Invisible colleges.}</FONT>
+
+<BR><FONT SIZE=3D2>Chicago: University of Chicago Press, 1972.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{\sc Stieg, M. F.} {\it The information needs of =
+historians.}</FONT>
+
+<BR><FONT SIZE=3D2>{\it College and Research Libraries}, Nov.\ 1981, =
+{\bf 42}(6),</FONT>
+
+<BR><FONT SIZE=3D2>p.\ 549--560.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{reflist}</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, if your reference-list is intended as a =
+consolidated list of all</FONT>
+
+<BR><FONT SIZE=3D2>the works cited from your running text, you will =
+probably find it more</FONT>
+
+<BR><FONT SIZE=3D2>convenient to put appropriate \verb+\...entry+ =
+commands in a {\tt reflist}</FONT>
+
+<BR><FONT SIZE=3D2>(see below).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{References from running text:&nbsp; general =
+approach}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\LaTeX's general approach to text references is the =
+same whichever of the</FONT>
+
+<BR><FONT SIZE=3D2>three standard citation systems you use:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item A \verb+\...entry+ command is available with =
+which you can:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item provide the text =
+that is to appear in your reference-list</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item if necessary, =
+specify the details needed for</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; text references.&nbsp; (No such details are needed for the</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; reference by number system.)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \item declare a =
+``key'' that will be used to determine</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; which reference-list entry corresponds to a particular</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; text reference.&nbsp; A key can consist of any sequence of</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; letters, digits and punctuation characters, with the exception</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; of comma (,).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item One or more \verb+\...cite+ commands are =
+provided with which you can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make text =
+references.&nbsp; For author-date and short form systems, the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citation produced will =
+be based on the information you supply in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; corresponding =
+\verb+\...entry+.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>(Here \verb+\...entry+ and \verb+\...cite+ are used =
+to indicate various</FONT>
+
+<BR><FONT SIZE=3D2>commands whose full names are given in sections =
+\ref{ref-by-number},</FONT>
+
+<BR><FONT SIZE=3D2>\ref{author-date} and \ref{short-form} below.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus, whatever your citation scheme, your \LaTeX\ =
+input will have the</FONT>
+
+<BR><FONT SIZE=3D2>following structure:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{raggedright}\begin{tt}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ \verb+\...cite{+{\it key\/}\verb+}+ \dots =
+\\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\verb+\begin{reflist}+ \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\verb+\...entry{+{\it key\/}\verb+}{+ \dots\ \verb+}+ =
+\\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\verb+\end{reflist}+ \\[\baselineskip]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{tt}\end{raggedright}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Given such a structure, \LaTeX\ can:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item for the reference by number system, ensure that =
+each text reference</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; has the same number as the =
+corresponding reference-list entry</FONT>
+
+<BR><FONT SIZE=3D2>\item for the other systems, use details taken from a =
+\verb+\...entry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; when a text reference is =
+required.&nbsp; The details only need</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; supplying once, in the =
+\verb+\...entry+.&nbsp; All text references to a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; particular source will be =
+consistent, since the details will be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; taken from the same =
+\verb+\...entry+.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\LaTeX\ will also warn you if you make a text =
+reference to a source without</FONT>
+
+<BR><FONT SIZE=3D2>having supplied a reference-list entry for that =
+source.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The procedure used for passing details between a =
+\verb+\...cite+ command</FONT>
+
+<BR><FONT SIZE=3D2>and the corresponding \verb+\...entry+ command is a =
+two-pass one, like that</FONT>
+
+<BR><FONT SIZE=3D2>for resolving cross-references (see section =
+\ref{cross-refs}).&nbsp; Hence,</FONT>
+
+<BR><FONT SIZE=3D2>\dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Reference by number}</FONT>
+
+<BR><FONT SIZE=3D2>\label{ref-by-number}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ order of first citation \dots\ \verb+\numcite+ =
+\dots\</FONT>
+
+<BR><FONT SIZE=3D2>\verb+\numentry+ \dots</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; knows width, so can set hanging =
+indent?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Author-date}</FONT>
+
+<BR><FONT SIZE=3D2>\label{author-date}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\dots\ \verb+\aycite+ \dots\ \verb+\ycite+ \dots\ =
+\verb+\ayentry+ \dots</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Short form}</FONT>
+
+<BR><FONT SIZE=3D2>\label{short-form}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Basic facilities}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The standard \dots\</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; mapping files?</FONT>
+
+<BR><FONT SIZE=3D2>provide the following commands to support the short =
+form scheme:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item&nbsp; \verb+\sfentry+, with =
+specification\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \verb+\sfentry{+{\it key\/}\verb+}{+{\it =
+first-text-ref\/}\verb+}{+{\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; later-text-ref\/}\verb+}{+{\it =
+ref-list-entry\/}\verb+}+\\</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; where:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item[{\it key}] is the key that, when =
+used by text reference commands,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; identifies the =
+particular \verb+\sfentry+ command which provides the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; information =
+needed</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item[{\it first-text-ref}] is the form =
+of text reference to be used</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; when you first cite =
+the document identified by {\it key} (or for your</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; first citation from a =
+particular chapter)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item[{\it later-text-ref}] is the short =
+form to be used for subsequent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citations of the =
+document identified by {\it key}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \item[{\it ref-list-entry}] is to be =
+used as the document's reference-list</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry.&nbsp; (Thus, =
+locally, the effect of a sequence of \verb+\sfentry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; commands within a {\tt =
+reflist} environment is as if each \verb+\sfentry+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; command had been =
+replaced by its {\it ref-list-entry\/}.)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \end{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\firstcite+, for use when you make your =
+first text</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; reference to a particular source (or =
+your first reference from a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; particular chapter).&nbsp; You will =
+refer to the source by means of the {\it key}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; you chose for its \verb+\sfentry+ =
+command.&nbsp; In your typeset document, the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \verb+\firstcite+ will be replaced by =
+the {\it first-text-ref\/} that you</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; supplied in the corresponding =
+\verb+\sfentry+.</FONT>
+
+<BR><FONT SIZE=3D2>\item \verb+\latercite+, for use when you make your =
+second or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; subsequent text reference to a =
+particular source.&nbsp; In your typeset</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; document, the command will be replaced =
+by the {\it later-text-ref\/}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; supplied in the corresponding =
+\verb+\sfentry+.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.AA5E0124--
+

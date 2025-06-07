@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1625" "Sat" "14" "June" "1997" "14:40:50" "+0100" "Robin Fairbairns" "Robin.Fairbairns@CL.CAM.AC.UK" nil "46" "Re: Document on several files" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id PAA15224; Sat, 14 Jun 1997 15:41:01 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.D2432048@listserv.gmd.de>; Sat, 14 Jun 1997 15:40:59 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153133 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 14 Jun 1997 15:40:56 +0200
+Received: from heaton.cl.cam.ac.uk (exim@heaton.cl.cam.ac.uk [128.232.0.11]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id PAA27287 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Sat, 14 Jun 1997 15:40:54
+          +0200 (MET DST)
+Received: from dorceus.cl.cam.ac.uk [128.232.1.34] (rf) by heaton.cl.cam.ac.uk
+          with esmtp (Exim 1.62 #5) id 0wct4W-0005O0-00; Sat, 14 Jun 1997
+          14:40:52 +0100
+Message-ID:  <E0wct4W-0005O0-00@heaton.cl.cam.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  Your message of "Fri, 13 Jun 1997 12:24:38 +0200." 
+              <v02130502afc6c88f6554@[130.237.37.51]>
+Date:         Sat, 14 Jun 1997 14:40:50 +0100
+From: Robin Fairbairns <Robin.Fairbairns@CL.CAM.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Document on several files
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2036
+
+Hans Aberg writes:
+
+> P.S. Why is \include doing a newpage? I find this inconvenient.
+
+To staticise the .aux file output (as it were).
+
+The sequence is
+
+  \include{foo}
+  \clearpage %gets rid of all outstanding floats, which may write to
+             %\@auxout (=jobname.aux at this stage) for their
+             %captions' labels
+
+  \immediate\write\@auxout{\string\@input{foo.aux}}
+  \immediate\openout\@partaux foo.aux
+  \let\@auxout\@partaux
+
+  <process file> % may write to \@auxout
+
+  \clearpage %to get rid of outstanding floats, again
+  \@writeckpt{foo} %writes checkpoint for the case when \includeonly
+                   %has said this file isn't going to be read
+  \immediate\closeout\@partaux
+
+  \let\@auxout\@mainaux % restore to \jobname.aux
+
+Thus the \clearpage is a consequence of the definition of
+\includeonly: each sub-file has to have its own .aux file, so that the
+important parts of its effects can be recovered in case that
+\includeonly has said that the file isn't to be included.
+
+Matt Swift was (when I last saw him, in 1995) in the process of
+writing code to deal with the requirement for a \clearpage.  I haven't
+heard from him for ages, so it may be that the *very* complicated
+scheme he had has proved not to be satisfactory, or something.
+
+The stuff was all part of his ideas on modularity in LaTeX: you can
+see some of his stuff (which outlines his ideas) on CTAN in
+
+  macros/latex/contrib/supported/monster
+  macros/latex/contrib/other/swift
+
+and he gave a paper at TUG'95, which you can read in TUGboat v16#3 (I
+think it was ... nominally Autumn '95, actually early '96).
+
+Robin Fairbairns
+

@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2186" "Mon" "1" "March" "93" "17:08:25" "CET" "Michael Downes" "MJD@MATH.AMS.ORG" nil "39" "Re: subdocuments" "^Date:" nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA29725; Mon, 1 Mar 93 17:08:24 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA18573; Mon, 1 Mar 93 17:08:18 +0100
+Message-Id: <9303011608.AA18573@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5765; Mon, 01 Mar 93 17:08:42 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4706;
+ Mon, 01 Mar 93 17:08:39 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4704;
+ Mon, 01 Mar 93 17:08:37 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <01GV5N6TML82GW2E6N@MATH.AMS.ORG>
+Date:         Mon, 1 Mar 93 17:08:25 CET
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: subdocuments
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 992
+
+
+> Incidentally, Nelson's example can be done with some clever
+> coding. This would be useful for all sorts of applications and in
+> fact I have a 2.09 solution half-finished (it should be done in a
+> couple of weeks). It can be done almost transparently for any
+> article-class style and a few unintrusive additions to a document
+> style fix many of the deficiencies.
+
+I would be interested to see your solution. How do you handle the
+full-volume subject index? In a similar project in the past I settled
+on a processing method of separate LaTeX runs for each article in the
+proceedings, with \includeonly{articlename} in the driver file for one
+article at a time; it then seemed natural to generate the index in two
+steps through the .aux file, in the same way as the table of contents
+is currently done (if you don't do something, standard LaTeX has each
+article overwriting the .idx data from the previous article, leaving
+you with an .idx containing only the index terms from the last one
+processed).  Other approaches such as appending the .idx file for each
+run to a master .idx file could be done but seemed less attractive.
+Either you have to call a (system-dependent) operating system command
+externally after each LaTeX run (which is maybe OK, because it's
+usually a good idea anyway to have a system-dependent .bat or .com or
+other batch file to make running the entire volume easy; but then for
+consistency the .toc should probably be done the same way), or you
+have to make TeX read and write each line of the .idx files to append
+them.
+
+If articles are not processed in separate LaTeX runs, but instead
+processed together with each article enclosed in a group, then any
+\global assignments in an article are time bombs that can explode
+unexpectedly in some later article in the same run.  There might also
+arise `TeX capacity exceeded' errors for save stack that would not
+occur when running the articles separately.  On the other hand,
+running each article separately requires careful handling of
+\newcounter declarations in individual articles (typically from
+\newtheorem), and of the indexing.
+
+Michael Downes                              mjd@math.ams.org (Internet)
+
+

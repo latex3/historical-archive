@@ -1,0 +1,334 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.997F50F4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:20 +0100
+In-Reply-To:  Your message of Thu, 30 Jan 92 16:29:52 +0100.
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.997F50F4"
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-class: urn:content-classes:message
+Subject:      Re: Validating LaTeX output
+Date: Fri, 31 Jan 1992 09:45:54 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE923@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <lingnau%INFORMATIK.UNI-FRANKFURT.DE@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 565
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.997F50F4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+> Very nice. But how can you check that the .dvi file produced from a
+> tex file and a set of .sty files is the correct one?
+
+Good question. But see below.
+
+> Two points follow:
+
+> 1. LaTeX is too complex to check every feature against every other,
+>    i.e. one has to select certain of them for testing.
+
+That seems to be true for most large software systems these days, at
+least for those of a fairly `interactive' nature. By `interactive' I
+mean that you get to type commands from some input language, so this
+includes word processors, compilers, drafting programs and the like.
+Many of these contain terrible errors that just didn't surface during
+testing because nobody hit the correct input sequence to trigger the =
+bug.
+We're in the fortunate position to deal with input and output *files*
+that, in theory, should produce reproducible and comparable results.
+Just imagine what the people who do WYSIWYG word processors are up
+against :-)
+
+> 2. Given such a set of tests, against what do you compare the output?
+>    I.e. what is the standard, the known-to-be-correct-thing?
+
+This is difficult :-) Apparently the output is `correct', to us, if it
+`looks all right'. And `looking all right' is probably hard to verify on
+the DVI level, because you don't see the forest for the trees. (I liked
+your example about the bibliography labels.)
+
+It occurs to me that we might be talking about two different things at
+once. There are actually two things that one wants to test:
+
+1. Test that a given implementation of LaTeX produces the same result
+   across all platforms. I don't think that this poses much of a
+   problem, actually. After all, you can (mostly) check that TeX itself
+   is all right by TRIPping it. (Two points of note: is the TRIP test
+   being upgraded to trigger the errors that surfaced `recently', and is
+   my assertion above really true?)
+
+2. Test that a new version of LaTeX produces the same, or rather, better
+   output than the one before. That is, test that the changes didn't
+   break things. Your `label' example belongs to this class.
+
+The second task is the one that seems a lot more important to me than
+the first. (I'd rather leave the first to TeX implementors, since it's
+their job to ensure that the same input produces the same output across
+implementations.) So let's concentrate on the second for now.
+
+Maybe there should be a special sort of document that somehow described
+itself in its output. Continuing your `label' examples, there might be
+just a box[%] that's tagged something like `I'm a bibliography label' =
+(e.
+g., in a \special, so it doesn't disturb the typesetting). Maybe it
+could even say `I'm a bibliography label, and I'm supposed to be flush
+left here'. Then you could have a `testing driver' that looked at these
+tags and checked whether the label actually *was* flush left with
+respect to the then-current margins. You'd have to look at the fine
+points of typesetting yourself, of course, but this way you might be
+able to avoid `blunders' that cause things to break in a big way.
+
+[%] And I mean `box'. You wouldn't actually need *fonts* to do that sort
+of testing. Well, maybe one that didn't have too many characters. You
+*would* need fonts, of course, to check out maths. But it's probably
+easier to try and simplify the test cases where possible, in order to
+find out *where* things went wrong.
+
+What we want to do is to put the output `constraints' (`*this* is =
+supposed
+to go *there*') where they can (mostly) be checked automatically.
+
+> I don't know much about the subject of software testing, maybe someone
+> more knowledgeable can tell us more.
+
+That'd be nice.
+
+Anselm.
+--
+Anselm Lingnau, Buchenweg 1, 6239 Eppstein| You see things, and you say =
+`Why?'
+lingnau@informatik.uni-frankfurt.de       | But I dream things that =
+never were,
+University of Frankfurt, CompSci and Maths| and say `Why not?'  --- G. =
+B. Shaw
+
+
+------_=_NextPart_001_01C19443.997F50F4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: Validating LaTeX output</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>&gt; Very nice. But how can you check that the .dvi =
+file produced from a</FONT>
+
+<BR><FONT SIZE=3D2>&gt; tex file and a set of .sty files is the correct =
+one?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Good question. But see below.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; Two points follow:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; 1. LaTeX is too complex to check every feature =
+against every other,</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; i.e. one has to select certain =
+of them for testing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That seems to be true for most large software systems =
+these days, at</FONT>
+
+<BR><FONT SIZE=3D2>least for those of a fairly `interactive' nature. By =
+`interactive' I</FONT>
+
+<BR><FONT SIZE=3D2>mean that you get to type commands from some input =
+language, so this</FONT>
+
+<BR><FONT SIZE=3D2>includes word processors, compilers, drafting =
+programs and the like.</FONT>
+
+<BR><FONT SIZE=3D2>Many of these contain terrible errors that just =
+didn't surface during</FONT>
+
+<BR><FONT SIZE=3D2>testing because nobody hit the correct input sequence =
+to trigger the bug.</FONT>
+
+<BR><FONT SIZE=3D2>We're in the fortunate position to deal with input =
+and output *files*</FONT>
+
+<BR><FONT SIZE=3D2>that, in theory, should produce reproducible and =
+comparable results.</FONT>
+
+<BR><FONT SIZE=3D2>Just imagine what the people who do WYSIWYG word =
+processors are up</FONT>
+
+<BR><FONT SIZE=3D2>against :-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; 2. Given such a set of tests, against what do you =
+compare the output?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; I.e. what is the standard, the =
+known-to-be-correct-thing?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This is difficult :-) Apparently the output is =
+`correct', to us, if it</FONT>
+
+<BR><FONT SIZE=3D2>`looks all right'. And `looking all right' is =
+probably hard to verify on</FONT>
+
+<BR><FONT SIZE=3D2>the DVI level, because you don't see the forest for =
+the trees. (I liked</FONT>
+
+<BR><FONT SIZE=3D2>your example about the bibliography labels.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It occurs to me that we might be talking about two =
+different things at</FONT>
+
+<BR><FONT SIZE=3D2>once. There are actually two things that one wants to =
+test:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1. Test that a given implementation of LaTeX produces =
+the same result</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; across all platforms. I don't think that =
+this poses much of a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; problem, actually. After all, you can =
+(mostly) check that TeX itself</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; is all right by TRIPping it. (Two points =
+of note: is the TRIP test</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; being upgraded to trigger the errors =
+that surfaced `recently', and is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; my assertion above really true?)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2. Test that a new version of LaTeX produces the same, =
+or rather, better</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; output than the one before. That is, =
+test that the changes didn't</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; break things. Your `label' example =
+belongs to this class.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The second task is the one that seems a lot more =
+important to me than</FONT>
+
+<BR><FONT SIZE=3D2>the first. (I'd rather leave the first to TeX =
+implementors, since it's</FONT>
+
+<BR><FONT SIZE=3D2>their job to ensure that the same input produces the =
+same output across</FONT>
+
+<BR><FONT SIZE=3D2>implementations.) So let's concentrate on the second =
+for now.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe there should be a special sort of document that =
+somehow described</FONT>
+
+<BR><FONT SIZE=3D2>itself in its output. Continuing your `label' =
+examples, there might be</FONT>
+
+<BR><FONT SIZE=3D2>just a box[%] that's tagged something like `I'm a =
+bibliography label' (e.</FONT>
+
+<BR><FONT SIZE=3D2>g., in a \special, so it doesn't disturb the =
+typesetting). Maybe it</FONT>
+
+<BR><FONT SIZE=3D2>could even say `I'm a bibliography label, and I'm =
+supposed to be flush</FONT>
+
+<BR><FONT SIZE=3D2>left here'. Then you could have a `testing driver' =
+that looked at these</FONT>
+
+<BR><FONT SIZE=3D2>tags and checked whether the label actually *was* =
+flush left with</FONT>
+
+<BR><FONT SIZE=3D2>respect to the then-current margins. You'd have to =
+look at the fine</FONT>
+
+<BR><FONT SIZE=3D2>points of typesetting yourself, of course, but this =
+way you might be</FONT>
+
+<BR><FONT SIZE=3D2>able to avoid `blunders' that cause things to break =
+in a big way.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[%] And I mean `box'. You wouldn't actually need =
+*fonts* to do that sort</FONT>
+
+<BR><FONT SIZE=3D2>of testing. Well, maybe one that didn't have too many =
+characters. You</FONT>
+
+<BR><FONT SIZE=3D2>*would* need fonts, of course, to check out maths. =
+But it's probably</FONT>
+
+<BR><FONT SIZE=3D2>easier to try and simplify the test cases where =
+possible, in order to</FONT>
+
+<BR><FONT SIZE=3D2>find out *where* things went wrong.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>What we want to do is to put the output `constraints' =
+(`*this* is supposed</FONT>
+
+<BR><FONT SIZE=3D2>to go *there*') where they can (mostly) be checked =
+automatically.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I don't know much about the subject of software =
+testing, maybe someone</FONT>
+
+<BR><FONT SIZE=3D2>&gt; more knowledgeable can tell us more.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That'd be nice.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Anselm.</FONT>
+
+<BR><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>Anselm Lingnau, Buchenweg 1, 6239 Eppstein| You see =
+things, and you say `Why?'</FONT>
+
+<BR><FONT =
+SIZE=3D2>lingnau@informatik.uni-frankfurt.de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; | But I dream things that never were,</FONT>
+
+<BR><FONT SIZE=3D2>University of Frankfurt, CompSci and Maths| and say =
+`Why not?'&nbsp; --- G. B. Shaw</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.997F50F4--
+

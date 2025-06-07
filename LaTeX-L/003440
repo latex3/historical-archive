@@ -1,0 +1,115 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3072" "Fri" "26" "November" "1999" "11:58:02" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "76" "Templates and objects -- modules" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id LAA22993
+	for <schoepf@UNI-MAINZ.DE>; Fri, 26 Nov 1999 11:59:41 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.2BA72E44@mail.listserv.gmd.de>; Fri, 26 Nov 1999 11:59:35 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445403 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 26 Nov 1999 11:59:11 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id LAA25785 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 26 Nov
+          1999 11:59:09 +0100 (MET)
+Received: from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id LAA03484 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 26 Nov 1999 11:59:32 +0100 (MET)
+Received: (qmail 3041 invoked from network); 26 Nov 1999 11:59:25 +0100
+Received: from du134-226.ppp.su-anst.tninet.se (HELO ?195.100.226.134?)
+          (195.100.226.134) by knatte.tninet.se with SMTP; 26 Nov 1999 11:59:25
+          +0100
+X-Sender: haberg@pop.matematik.su.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b461d31a2838@[195.100.226.137]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 26 Nov 1999 11:58:02 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Templates and objects -- modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3440
+
+One might use the idea of modules. I will try to describe it in connection
+with the templates.
+
+One reason to use a module is to collect names of a certain type or
+characteristic into a common namespace, while on the same time providing
+orthogonality between namespaces. It means that the user can pick a
+combination of fragments from different modules, without that the names of
+the different modules clash.
+
+The templates in the http://www.latex-project.org/talks/tug99.pdf document
+seems to provide some such orthogonality (I am not sure yet on what the
+exact semantics is), but I will anyhow try to describe the idea of modules
+in this context.
+
+On p 26-27, there are the following examples:
+
+  Template example (1)
+  Type: hyphenation
+  Args: none
+  Semantics: Sets up hyphenation mechanism
+
+  Name: TeX
+  Keys: uchyph hyphenpenalty exhyphenpenalty ...
+  Name: std
+  Keys: hyphen-disable-boolean hyphen-uppercase-boolean ...
+
+  Template example (2)
+  Type: initial
+  Args: 1,3 (\NoValue or string) 2 (string)
+  Semantics: Sets up an initial character at start of paragraph followed by a
+  number of characters formatted in a special font. Handles quotes to the left
+  of the initial if any.
+
+  Name: std
+  Keys: initial-font initial-format text-font
+  parshape-list v-adjust h-adjust ...
+
+Now note that the templates of type ``hyphenation'' and ``initial'' both
+have the name ``std''. With object thinking, the two objects
+``hyphenation'' and ``initial'' both have the subobject std, somehow these
+objects are created via the template mechanism, and should thus have the
+object names
+    hyphenation/std
+    initial/std
+
+But it seems reasonable to collect together all these standard ``std''
+commands in a specially module named ``std''. Thus one gets a global object
+named ``std'' with the subobjects
+    std/hyphenation
+    std/initial
+Similarly, the TeX module might have the names
+    TeX/hyphenation
+    TeX/initial
+
+One can think of various ways on how the ``std'' module (or object) is used
+to instantiate the commands  hyphenation/std  and  initial/std that finally
+are used.
+
+Note however that it is possible to use the differences between x/y and y/x
+to place the commands in a suitable object.
+
+Also note that if one later wants to mix features from the ``std'' and the
+``TeX'' module, that is now possible. So say that one prefers to use the
+``std'' module, but some math spacing from the ``TeX'' module is preferred,
+then in principle, from the point of view of avoiding name clashes, it is
+possible to do that. A document can even first load the two modules, and
+then locally choose from the features loaded. (There are some other
+technical issues, such as if TeX itself will break by this amass of names
+or how to provide a mechanism to conveniently choose use from the different
+modules, but my intent is not to discuss that here.)
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

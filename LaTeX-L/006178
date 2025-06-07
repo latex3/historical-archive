@@ -1,0 +1,204 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 22 Nov 2009 12:41:17 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nAMBfEjp026470
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 22 Nov 2009 12:41:14 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nAMBasAo000305
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 22 Nov 2009 12:36:55 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nALN19Er015018;
+	Sun, 22 Nov 2009 12:36:45 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 350871 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 22 Nov
+          2009 12:36:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nAMBaifC019046 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 22 Nov 2009 12:36:44 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de [212.227.17.10])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          nAMBafYx020911 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 22 Nov
+          2009 12:36:44 +0100
+Received: from morse.mittelbach-online.de (p54A83FBC.dip.t-dialin.net
+          [84.168.63.188]) by mrelayeu.kundenserver.de (node=mrbap1) with ESMTP
+          (Nemesis) id 0MbrOw-1NVUY226Pm-00Iibn; Sun, 22 Nov 2009 12:36:40 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 7C45F6FABF; Sun, 22 Nov 2009 12:36:37 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+zhHrJCBYmAQUKObjEpoQx1pneD/By7rIUhhf
+              VZxiPTJydFMoWJnr7AE3dAJx+Zxf20e0jcpo5QmrGD0BEHBvLm
+              9BM/Sy7XlQ8IDPUqJ8Z7A==
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <19209.8773.325233.396932@morse.mittelbach-online.de>
+Date:         Sun, 22 Nov 2009 12:36:37 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: object type / instance arguments
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -106.599 () BAYES_00,RCVD_IN_DNSWL_MED,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Nov 2009 11:41:17.0602 (UTC) FILETIME=[B41C8820:01CA6B68]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6178
+
+I thought a bit more about the arguments brought forward by Lars about
+supporting a kind of dictionary to pass arguments to instances.
+
+With more complex object types I clearly can see the advantages of this
+method, with more simpler types I'm not so sure though, partly because of the
+overhead in processing. That makes me leaning towards a dual approach (also
+suggested by Lars at one point if I remember correctly), ie have the most
+important arguments mandatory but allow for an additional dictionary to be
+passed along and queried as needed.
+
+Thinking along those lines brings up a couple of questions:
+
+
+What is the signature of an object type?
+========================================
+
+To recap, the idea of an object type is to describe the implementation level
+interface an semantics of a certain set/type/class of objects with the idea
+that if you have two different realizations/implementations for an object type
+you can (ideally) exchange them with each other without compromising the
+document content. E.g., more explicitly, if you have two different templates
+for A-headings you can use either or in a document class design and with the
+resulting document classes you can format the same set of documents
+successfully.
+
+Now, above I said "ideally" because a description like the above leaves a
+certain gray area, where one can have different opinions on whether the
+document content is changed or not or whether the result can be called
+successful formatting. Examples: if you have written class which is like
+"article.cls except that all headings are unnumbered, does that still fulfill
+the criteria of not modifying the document content? - perhaps not, but it
+certainly fulfills the criteria of being a class that successfully formats any
+document written for the article class - well more or less, at least if your
+class does something about resolving references. Or take a document that
+specifies a "quote" to go with each A-head via such a dictionary. Is it okay
+to use it in one design but ignore it in another and still claim both designs
+implement the same object type?
+
+Coming back to the question: which if the following should be the defined
+behavior?
+
+a) the object type defines the semantic of an object (of that type) including
+   the semantics of its mandatory arguments. The optional dictionary is not
+   considered and can be used in different ways by objects belonging to the
+   same object type.
+
+b) the dictionary is part of the definition of an object type, ie the keys it
+   can contain and their semantics are defined by it, i.e., two objects only
+   belong to the same object type if their semantics are the same on all levels
+
+c) kind of in between: the object type can define the semantics of certain keys
+   in which case all objects of this type have to support exactly that
+   interpretation, however an object is free to accept/interpret additional
+   keys.
+
+Note that with b) and c) we do not rule out that a key is not being used in
+the end, eg if there is a key "quote" to pass a quotation to an A-head
+template that template could completely ignore and it would still be within
+the bounds of interpreting the "quote" key as being a quotation for the
+A-head. It would be out of bounds when it would instead require the key to be
+named "quotation" or if it would use the value of the key for something else,
+eg the running header (not very likely with that name, but ...)
+
+
+How should the dictionary be specified?
+=======================================
+
+Basically I see two ways:
+
+a) passing the dictionary in a mandatory argument, e.g., the first or the last
+one, for example like
+
+  \foo {...} {...}
+       {
+        \ToDictionary{key1}{val1}
+        \ToDictionary{key2}{val2}
+        ...
+        \ToDictionary{keyn}{valn}
+       }
+
+b) setting up the dictionary prior to calling the instance, e.g.
+
+  \ToDictionary{key1}{val1}
+  \ToDictionary{key2}{val2}
+  ...
+  \ToDictionary{keyn}{valn}
+  \foo {...} {...}
+
+I wouldn't want to directly use property lists from the expl3 language at that
+point for two reasons:
+
+ - on the level the instances are used (ie the designer level and above I
+   don't like to mix in expl3 syntax
+
+ - setting up a property list using expl is fairly inefficient as the commands
+   need to deal with updating keys if the already exist and that takes a lot
+   of unnecessary time as we are starting from scratch here
+
+
+last question for now (as this email is already too long):
+
+
+Should there be some inheritance of dictionaries?
+=================================================
+
+If the dictionary is not fully tied to the object type (ie case a) or c) in
+the first question) we have two different possibilities to specify the
+dictionary behavior:
+
+a) the dictionary is build directly before or when an instance is called and
+   it is cleared when one gets to \AssignKeys in the template code
+
+b) the dictionary definitions obey grouping and this way can be passed from
+   one  instance to the next, e.g., the dictionary coming with a heading can
+   be made available to the instance implementing the toc entry (thus author,
+   abstract, what-have-you that came in the dictionary to the heading is also
+   available in the toc for inspection
+
+of course, instead of automatic inheritance one might be better off if it is a
+conscious decision in the template whether or not its dictionary is being made
+available for later.
+
+For example if a) gets implemented that could be done as follows:
+
+  \ToDictionary fills \l_template_dict_prop
+
+  \AssignKeys copies \l_template_dict_prop to \l_template_current_dict_prop
+  and clears \l_template_dict_prop
+
+  The template code could then query \l_template_current_dict_prop for keys it
+  cares about and it could also prefill \l_template_dict_prop with key/val
+  pairs or (with all of \l_template_current_dict_prop) prior to calling some
+  other instance code.
+
+What can't be done this way is something like a template for a list makes its
+dictionary available to all objects in its body, for that one would need an
+implementation that is using a single \l_template_dict_prop variable to
+hold the dictionary for all objects (which obeys grouping and \ToDictionary
+only adds to it and no clearing happens (other by grouping levels))
+
+
+thoughts anyone?
+
+frank
+

@@ -1,0 +1,100 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 15 Sep 2008 08:20:32 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8F6KQJP012750
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 15 Sep 2008 08:20:27 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8F6CcIW008229
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 15 Sep 2008 08:12:39 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8EM1I65006237;
+	Mon, 15 Sep 2008 08:12:22 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 31816 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 15 Sep
+          2008 08:12:22 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8F6CMgp004756 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 15 Sep 2008 08:12:22 +0200
+Received: from anchor-post-37.mail.demon.net (anchor-post-37.mail.demon.net
+          [194.217.242.87]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m8F6CDJa008885 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 15 Sep 2008 08:12:16 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-37.mail.demon.net with esmtp (Exim 4.69) id
+          1Kf7Jk-0001rr-P8 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 15 Sep
+          2008 06:12:12 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48CC30E3.9020308@morningstar2.co.uk>
+            <48CD7104.4000103@residenset.net>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <48CDFCBB.8050509@morningstar2.co.uk>
+Date:         Mon, 15 Sep 2008 07:12:11 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Suggestions sought
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48CD7104.4000103@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Sep 2008 06:20:33.0002 (UTC) FILETIME=[2891DCA0:01C916FB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5319
+
+Lars Hellström wrote:
+> Joseph Wright skrev:
+>>
+>> I wonder if anyone can make a suggestion on how to solve a problem I'm
+>> finding rather tricky with my "keys" efforts.  The issue is adding code
+>> to an existing macro.  There are a number of scenarios, but I control
+>> the initial definition, 
+> 
+> In that case, I would *strongly* suggest designing your macro to be
+> extendable to begin with -- e.g. equip it with a helper macro that acts
+> as hook. 
+
+This was my first idea.  However, I'm struggling with the
+implementation, hence the question.
+
+> There might in rare cases be a need to pass parameters to this
+> hook (although storing them in helper macros is typically easier), but
+> there should never be a need to use delimited arguments.
+
+The idea here is that the user provides three things when creating a key:
+1) Key name
+2) Argument spec.
+3) Code
+
+Obviously, the key name is used in a csname to make things work, while
+initially the arg spec and code are used to create the macro.  The point
+is that when adding code, anything from the arg spec. (which could
+contain any number of parameters) is fair game.  So my attempts to
+create a simple hook:
+
+\def:cpx {<key>} <arg spec.> {\exp_not:N\prehook <code> \exp_not:posthook}
+
+fail when the added code contains #1, #2, ... My current approach at
+least does not give a TeX error under these circumstances (I've added a
+custom one to warn of a problem).
+
+I'm sure I'm mossing something, but my knowledge of TeX's approach to
+doubling # characters, etc., is clearly insufficient to find it.
+
+-- 
+Joseph Wright
+

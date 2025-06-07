@@ -1,0 +1,109 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 15 Sep 2007 19:15:11 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l8FHF1VM010114
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 15 Sep 2007 19:15:01 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l8FH81VD024273
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 15 Sep 2007 19:08:01 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l8EM12cl028131;
+	Sat, 15 Sep 2007 19:07:46 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 122002 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 15 Sep
+          2007 19:07:45 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l8FH7jvR003562 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 15 Sep 2007 19:07:45 +0200
+Received: from mx02.kabsi.at (mx02.kabsi.at [62.40.128.130]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l8FH7aZ5023979
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 15 Sep 2007 19:07:41
+          +0200
+Received: from buckbeak.hogwarts (h081217001071.dyn.cm.kabsi.at [81.217.1.71])
+          by mx02.kabsi.at (8.13.6/8.13.6) with SMTP id l8FH7U48003022 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sat, 15 Sep 2007 19:07:30 +0200
+Received: by buckbeak.hogwarts (Postfix, from userid 1000) id C33E733003C; Sat,
+          15 Sep 2007 19:07:29 +0200 (CEST)
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <87abrn26y6.fsf@buckbeak.hogwarts>
+Date:         Sat, 15 Sep 2007 19:07:29 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Andreas Matthias <amat@KABSI.AT>
+Subject: \tlp_use:N considered harmful?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Sep 2007 17:15:11.0160 (UTC) FILETIME=[F8FCA380:01C7F7BB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5063
+
+Frank Mittelbach wrote:
+
+| > > \prop_new:N \g_foo_prop
+| > > 
+| > > \tlp_set:Nn \l_tmp_tlp {\g_foo_prop}
+| > > 
+| > > \prop_gput:Ooo \l_tmp_tlp ...
+| > 
+| > 
+| > Hmm... But this could be done with \prop_gput:Noo as well.
+|
+| that could only be done if you know that \prop_gput:Noo expand its argument
+| internally due to its implementation and you use this fact. so you use a
+| feature of the implementation which may not be there tomorrow
+
+I see. 
+
+So I skimmed through my code and realised that I was using implementation
+details quite often, e.g. using \my_tlp instead of \tlp_use:N\my_tlp.
+And I tried to change that. 
+
+Here is an example that actually does what I want it to, but might not
+be considered clean code since it depends on implementation details:
+
+  \RequirePackage{l3prop}
+  \ExplSyntaxOn
+
+  \tlp_new:Nn \a_tlp {aaa}
+  \tlp_new:Nn \b_tlp {bbb\a_tlp}
+
+  \prop_new:N \a_plist
+  \prop_gput:Nno \a_plist {key} {\b_tlp}
+  \showthe\a_plist
+
+  \stop
+
+To get rid of implementation details I changed the put command to
+
+  \prop_gput:Nno \a_plist {key} {\tlp_use:N\b_tlp}
+
+But that's worse. Now \b_tlp doesn't get expanded, because -- in
+contrast to \toks_use:N, \int_use:N etc -- \tlp_use:N cannot
+expand to a "\the for macros".
+
+So I wonder if \tlp_use:N should be considered harmful. It seems
+to be equal to \toks_use:N or \int_use:N, but definitely isn't.
+
+And then: What's the error message in \tlp_use:N for? It looks
+so arbitrarily. Probably it's not?
+
+
+Ciao
+Andreas
+

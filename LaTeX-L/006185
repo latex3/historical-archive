@@ -1,0 +1,240 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 25 Nov 2009 00:20:33 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nAONKUhD016165
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 25 Nov 2009 00:20:31 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nAONGixV024852
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 25 Nov 2009 00:16:45 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nAON16c3030806;
+	Wed, 25 Nov 2009 00:16:35 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 349234 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Nov
+          2009 00:16:34 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nAONGYFO001191 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Nov 2009 00:16:34 +0100
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nAONGHlU004391
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 25 Nov 2009 00:16:20
+          +0100
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id 305C6186623 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 25 Nov 2009 00:14:49 +0100
+          (CET)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <19209.8773.325233.396932@morse.mittelbach-online.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id nAONGYFO001192
+Message-ID:  <4B0C694B.1080803@residenset.net>
+Date:         Wed, 25 Nov 2009 00:16:27 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: object type / instance arguments
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <19209.8773.325233.396932@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Nov 2009 23:20:33.0959 (UTC) FILETIME=[B8E00B70:01CA6D5C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6185
+
+Frank Mittelbach skrev:
+> I thought a bit more about the arguments brought forward by Lars about
+> supporting a kind of dictionary to pass arguments to instances.
+> 
+> With more complex object types I clearly can see the advantages of this
+> method, with more simpler types I'm not so sure though, partly because of the
+> overhead in processing. That makes me leaning towards a dual approach (also
+> suggested by Lars at one point if I remember correctly), ie have the most
+> important arguments mandatory but allow for an additional dictionary to be
+> passed along and queried as needed.
+
+Yes, that's the usual approach, in my non-TeX experience: use 
+positional arguments (which in (La)TeX translates to mandatory 
+arguments) for things that anyway have to be specified in (almost) 
+every call, but use named arguments ("options" with values) for things 
+that wouldn't be specified in a typical call. Then the general 
+syntactic capabilities of (La)TeX suggest that the best way to handle 
+the latter type of argument is to wrap all of them (for a specific 
+"command") up as a dictionary.
+
+> Thinking along those lines brings up a couple of questions:
+> 
+> 
+> What is the signature of an object type?
+> ========================================
+> 
+[snip]
+> 
+> Coming back to the question: which if the following should be the defined
+> behavior?
+> 
+> a) the object type defines the semantic of an object (of that type) including
+>    the semantics of its mandatory arguments. The optional dictionary is not
+>    considered and can be used in different ways by objects belonging to the
+>    same object type.
+> 
+> b) the dictionary is part of the definition of an object type, ie the keys it
+>    can contain and their semantics are defined by it, i.e., two objects only
+>    belong to the same object type if their semantics are the same on all levels
+> 
+> c) kind of in between: the object type can define the semantics of certain keys
+>    in which case all objects of this type have to support exactly that
+>    interpretation, however an object is free to accept/interpret additional
+>    keys.
+
+I'd prefer (c), but I'd also like to remark that you seem to presume a 
+rather rigid view of compatibility here; in RFC-speak, I get the 
+impression that you're thinking in terms of MUST and SHALL, even though 
+much of the material covered would perhaps be better suited by SHOULD 
+or MAY.
+
+Some general principles:
+
+1. It's a good thing if the standard heading object type declaration 
+comes with with a comprehensive list of "standard" key names for 
+template authors to make use of when appropriate, but it's no disaster 
+if something rather common should happen to be missing from this list; 
+later releases can always make amendments.
+
+2. If the value associated with a key is not simply supposed to be of 
+type "some piece of text"[*], then it MUST be specified what the type 
+of that data is. E.g., if the "author" key is generally an 
+\and-separated list of author names, then whatever authority is 
+specifying the "author" key MUST be clear about this. For a key as 
+basic as "author", that authority would probably be (the documentation 
+for) the xpackage defining the "heading" object type, but for other 
+keys it could be (the documentation of) the template that makes use of 
+this key, or (ditto) the package/class defining the user level commands 
+that includes it in the dictionary.
+
+[*] I find it an interesting question whether the basic "some piece of 
+text" should allow \par tokens or not---not because of requiring macros 
+to be \long, but because I suspect many objects will want to control 
+the paragraph structure. But maybe objects that need to keep text in 
+restricted horizontal mode should rather use some general mechanism to 
+turn \par (and friends) off?
+
+3. One shouldn't specify something if one doesn't have a good 
+understanding of what that specification should say. It's much easier 
+to add a specification for a key at version .2 or .3 than to admit at 
+version .3 that "the spec we've had for this since version .0 is 
+basically useless, so from now on we'll do it like this instead".
+
+
+> How should the dictionary be specified?
+> =======================================
+> 
+> Basically I see two ways:
+> 
+> a) passing the dictionary in a mandatory argument, e.g., the first or the last
+> one, for example like
+> 
+>   \foo {...} {...}
+>        {
+>         \ToDictionary{key1}{val1}
+>         \ToDictionary{key2}{val2}
+>         ...
+>         \ToDictionary{keyn}{valn}
+>        }
+
+I think this is the way to go. For objects, I furthermore think it 
+should typically be the last argument, since this makes it easier to 
+visually connect the other arguments with the underlying command, i.e., 
+it improves code readability.
+
+> b) setting up the dictionary prior to calling the instance, e.g.
+> 
+>   \ToDictionary{key1}{val1}
+>   \ToDictionary{key2}{val2}
+>   ...
+>   \ToDictionary{keyn}{valn}
+>   \foo {...} {...}
+
+This opens up the gate to side-effect hell, IMO. Keeping this kind of 
+mechanism as "purely functional" as possible should be a goal, because 
+it tends to work better in the end.
+
+> I wouldn't want to directly use property lists from the expl3 language at that
+> point for two reasons:
+> 
+>  - on the level the instances are used (ie the designer level and above I
+>    don't like to mix in expl3 syntax
+> 
+>  - setting up a property list using expl is fairly inefficient as the commands
+>    need to deal with updating keys if the already exist and that takes a lot
+>    of unnecessary time as we are starting from scratch here
+
+OK.
+
+Re: efficiency: My experience is that one can have TeX do quite 
+extensive processing without slowing things down much *provided one 
+does it in the mouth*. (I don't understand quite why that would be, but 
+did some timing to confirm it in particular cases for fontinst v1.913.) 
+A set of workable semantics for a fully expandable
+   \DictionaryGet{<key>}{<dictionary>}{<default>}
+command would be:
+
+1.  \DictionaryGet{#1}{\ToDictionary{#2}{#3}}{#4}
+   fully expands to the full expansion of #3 if the full
+   expansion of #1 is equal to the full expansion of #2,
+   and to the full expansion of #4 otherwise; probably
+   equivalent to
+     \str_if_eq:xxTF{#1}{#2}{#3}{#4}
+   (or would that be \str_if_eq:nnTF?).
+
+2.  \DictionaryGet{#1}{\ToDictionary{#2}{#3}#4}{#5}
+   is after full expansion equivalent to
+     \DictionaryGet{#1}{\ToDictionary{#2}{#3}}{
+       \DictionaryGet{#1}{#4}{#5}
+     }
+
+3.  \DictionaryGet{#1}{}{#2}
+   is after full expansion equivalent to #2.
+
+The trickiest thing to do in TeX3 is the test for key equality, and I 
+believe there has been discussions about newer engines having 
+primitives that simplify this. (Not having to go via 
+\expandafter\string\csname<key-name>\endcsname to sanitize key names is 
+a good first step, although not essential.)
+
+
+> last question for now (as this email is already too long):
+> 
+> 
+> Should there be some inheritance of dictionaries?
+> =================================================
+> 
+> If the dictionary is not fully tied to the object type (ie case a) or c) in
+> the first question) we have two different possibilities to specify the
+> dictionary behavior:
+
+I think dictionary processing should be a generic functionality, rather 
+than tied in with instance invokation.
+
+As for inheritance, the dictionary semantics sketched above make it 
+trivial to override or provide defaults for keys in a parent 
+dictionary: just prepend or append respectively the necessary 
+\ToDictionary items to the base dictionary.
+
+Lars Hellström
+

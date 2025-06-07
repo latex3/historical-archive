@@ -1,0 +1,76 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p03M9CrS013777
+	for <rainer@rainer-schoepf.de>; Mon, 3 Jan 2011 23:09:13 +0100
+Received: (qmail 6718 invoked by alias); 3 Jan 2011 22:09:07 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 03 Jan 2011 22:09:06 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx092) with SMTP; 03 Jan 2011 23:09:06 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p03M6tUH022330
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 3 Jan 2011 23:06:56 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p03ImIHm013754;
+	Mon, 3 Jan 2011 23:06:49 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 818938 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 3 Jan
+          2011 23:06:48 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p03M6mGY029316 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 3 Jan 2011 23:06:48 +0100
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+          [195.173.77.148]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p03M6eJn031921 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 3 Jan 2011 23:06:43 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1PZsY4-0001Ii-We for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 03 Jan
+          2011 22:06:40 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.13)
+            Gecko/20101207 Thunderbird/3.1.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4D22486F.5000506@morningstar2.co.uk>
+Date:         Mon, 3 Jan 2011 22:06:39 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \box_if_empty:N(TF)
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6v/Sb97LojnDtMgfETrECMLUO9erHzOJe+OynZRhvlGqb5A0X
+ bbiCt2rAnnct/NAlbHMvoAL6GY+23tB3khNK7bnSLVW+CwI5D12EFi8O0kjG6WQoWUyJZa/tsAeZ
+ e++4A==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6516
+
+Hello all,
+
+Working on the galley (see the latest SVN checkin), I find that 
+\box_if_empty:NTF is misleading. The test is for a void box, not an 
+empty one:
+
+\box_new:N \l_my_box
+\hbox_set:Nn \l_my_box {}
+\box_if_empty:NTF \l_my_box { NOPE } { OOPS }
+
+I think it should be \box_if_void:NTF - any objections?
+-- 
+Joseph Wright
+

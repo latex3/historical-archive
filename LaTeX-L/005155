@@ -1,0 +1,269 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Feb 2008 00:18:32 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m14NITV5024483
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 5 Feb 2008 00:18:30 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m14NE27O004564
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 5 Feb 2008 00:14:02 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m14N19Nb007816;
+	Tue, 5 Feb 2008 00:14:02 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 207356 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 5 Feb
+          2008 00:13:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m14NDjdA008497 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 5 Feb 2008 00:13:45 +0100
+Received: from mail.umu.se (jazz.umdac.umu.se [130.239.8.31]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m14NDPQa003364
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:13:30
+          +0100
+Received: from [IPv6:::1] (abel.math.umu.se [130.239.119.5]) by mail.umu.se
+          (8.13.6/8.13.1) with ESMTP id m14NDBCK051958 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:13:25 +0100
+          (MET)
+Mime-Version: 1.0 (Apple Message framework v624)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-Mailer: Apple Mail (2.624)
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id m14NDjdA008498
+Message-ID:  <38fc29d10d9794ecec62b243ea061dfb@residenset.net>
+Date:         Tue, 5 Feb 2008 00:13:30 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: xparse and xdoc -- syntax
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Feb 2008 23:18:32.0742 (UTC) FILETIME=[42668C60:01C86784]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5155
+
+I now have a working implementation (for LaTeX2e) of an argspec based 
+\NewDocumentCommand, which seems to work very well. The current code 
+can be found at
+
+   http://abel.math.umu.se/~lars/xdoc/xdoc2l3.dtx
+   http://abel.math.umu.se/~lars/xdoc/xdoc2l3.ins
+
+and an example document demonstrating various argspecs is
+
+   http://abel.math.umu.se/~lars/xdoc/xdoc2l3test.dvi
+
+
+When I started coding this, I though I needed to stick very close to 
+the final xparse (a somewhat difficult task, considering xparse is 
+still experimental) -- hence the use of \NewDocumentCommand as command 
+name -- but as time went on I've drifted more towards the opinion that 
+it will be sufficient to have a path for manual migration to xparse. In 
+other words, I'd like the basic features to be available (in the core 
+or after additional definitions), but it's no big deal if the names and 
+details in syntax are different.
+
+[What could maybe be an issue for you is that I'm considering splitting 
+off generic parts of xdoc2 into separate packages -- like shortvrb is 
+from doc -- and one of these would then be the referenced xdoc2l3: 
+select LaTeX3(ish) features for xdoc2. If for some reason it would 
+become popular, then there could be a corresponding pressure for 
+backward compatibility, regarding for example \IfNoValueTF. ;-) ]
+
+Anyway...
+Since I wanted to stay close to the xparse syntax, I stuck with the 
+idea of having each argument type be denoted by a single character, 
+followed by zero or more arguments. Since the main new argument type I 
+introduced was "composition of processors", I chose the syntax
+
+   @{<processors>}
+
+for this; @ happens to be the function composition operation (\circ) in 
+at least Maple (although you'll probably see that it isn't so much the 
+composition that is going to be characteristic of this specifier type, 
+so I should probably rethink this). Like functions under composition, 
+the processors are going to act on the argument in order right to left; 
+this turned out to simplify the translation of these specifiers into 
+actual code.
+
+For the individual processors, I again chose the "single character 
+followed by zero or more arguments" syntax, with the choice of 
+character being influenced by xparse argument specifiers. Thus there is 
+for example
+
+   O{<default>}     Look ahead for a left bracket. If there is one, grab
+                    the entire optional argument and place it within
+                    braces. Otherwise insert <default> within braces.
+
+   o                Look ahead for a left bracket. If there is one, grab
+                    the entire optional argument and place it within
+                    braces. Otherwise insert \NoValue and skip all 
+following
+                    processors.
+
+   S{<char>}        Look ahead for a <char>. If there is one, gobble it 
+and
+                    insert \BooleanTrue, otherwise insert \BooleanFalse.
+
+   g{<assignments>} Make the specified <assignments> (usually to 
+\catcode or
+                    other parameters relevant for scanning).
+
+With these, I can implement several (existing or proposed) xparse 
+argument specifiers as mere shorthands for @{...} constructions:
+
+   m                is  @{}  (no processors, just grab an argument)
+   o                is  @{o}
+   O{<default>}     is  @{O{<default>}}
+   S{<symbol>}      is  @{S{<symbol>}}
+   s                is  @{S{*}}
+   g{<assignments>} is  @{g{<assignments>}}
+
+where the last was implemented by Morten in his mail of December 13, 
+2007. Listed as above, this doesn't look too impressive, but the fun 
+begins when one can start composing processors. With only the above, 
+there aren't all that many combinations that make sense, but one that 
+can be made is
+
+   @{ o g{\@sanitize} }
+
+---first change catcodes (as in the argument of \index), then look for 
+and grab an optional argument while these catcodes are in effect.
+
+To really see the power of this, it is however necessary to have some 
+processors which do things to mandatory arguments. Those that there are 
+implementations for in the code above are:
+
+   h                         convert argument to a "harmless character
+                             sequence", i.e., any problematic character
+                             is encoded as \PrintChar{<ASCII code>}
+
+   t                         argument is \stringed
+
+   x{<bool>}{<pre>}{<post>}  argument gets expanded; more precisely, if
+                             <bool> is true then
+                                <pre>{<argument>}<post>
+                             gets expanded and otherwise
+                                <pre><argument><post>
+                             gets expanded
+
+   .{intrange}{<min>}{<max>} Argument must be some <number>, at least
+                             <min> and at most <max>.
+
+The . here is syntactic sugar for "multiletter processor name follows"; 
+as with xparse specifiers currently, it would be possible to write 
+{intrange}{<min>}{<max>} instead, but having an unbraced character at 
+the beginning of a processor specifier makes it easier to read.
+
+With the above, Morten's d specifier (grab and \detokenize) would be a 
+shorthand for
+
+   @{ x{\BooleanTrue}{\detokenize}{} }
+
+and it would have the optional counterpart
+
+   @{ x{\BooleanTrue}{\detokenize}{} o }
+
+or it could be combined with catcode changes as
+
+   @{ x{\BooleanTrue}{\detokenize}{} g{\catcode`\%=12} }
+
+and of course combined all three, into
+
+   @{ x{\BooleanTrue}{\detokenize}{} o g{\catcode`\%=12} }
+
+However, \detokenize isn't satisfactory for my needs; the main problem 
+being that detokenized material cannot be written to a file (in 
+particular .idx/.glo file) and then reliably read back. The "h" 
+processor above employs xdoc2's more robust (and powerful) alternative 
+of harmless character sequences. The reason I implemented this x 
+processor in the first place was instead that I had a legacy grabber 
+\XD@grab@harmless@asmacro which can be specified as
+
+   @{
+      x{\BooleanFalse}{\XD@unbackslash}{\@empty}
+      h
+      g{\catcode92=12\MakePrivateLetters}
+   }
+
+using the above; the x part here removes a leading backslash in the 
+argument, and the \@empty is there in case the argument was empty.
+
+Additional examples of grabbers in xdoc2 which can be expressed using 
+this syntax are
+
+   \XD@grab@harmless@oarg  as  @{ho}
+   \XD@grab@harmless@cs    as  @{h t 
+g{\MakePrivateLetters\escapechar=-1}}
+
+(see table in xdoc2l3.dtx).
+
+Finally, I also implemented a argument specifier = which stores the 
+argument into a macro. Its syntax is
+
+   ={<control sequence>}{<processors>}
+
+but since the <processors> part is just as for the @ specifier, the 
+composition turned out to not be what was characteristic for this. I 
+considered renaming @ to #, but decided not to (for now) as that is 
+likely to lead to quoting problems in real life usage. And maybe this 
+list can come up with better names anyway.
+
+
+It probably wouldn't be hard to convert \DeclareArgumentType from 
+defining an argument type specifier to defining an argument processor 
+specifier---concretely one that takes some fancy sort of argument and 
+converts it to a more regular mandatory argument. IMHO defining a 
+processor would be much better, at it allows for independent control of 
+orthogonal aspects of argument processing. I didn't implement anything 
+in that area though, as I don't have any immediate need for exotic 
+argument delimiters.
+
+It may however be even better to construct argument specifiers as 
+defined by \DeclareArgumentType as a composition of two argument 
+processors: one that looks ahead for an optional argument and one which 
+actually grabs it. The reason is demonstrated by \testI in the example 
+document; concretely the problem is that in
+
+   \NewDocumentCommand{\test}{ @{ O{world} g{\catcode`\%=12} } }{%
+      Hello, #1!%
+   }
+   \test % Is this a comment?
+   \relax
+
+the % gets tokenized already when looking for the left bracket 
+delimiter of the optional argument, and it stays a token even after it 
+has been determined that there wasn't such an argument.
+
+If instead Q was a processor that does everything of O short of 
+grabbing the argument, and b was a processor that just grabs a 
+bracket-delimited argument, then the above specifier could have been
+
+   \NewDocumentCommand{\test}{ @{ b g{\catcode`\%=12} Q{world} } }{%
+      Hello, #1!%
+   }
+
+instead, for which things work more as expected:
+
+   \test % This is a comment!
+   \test[% This is not a comment!]
+
+Splitting the two provides higher orthogonality (I find the long 
+argument sequence of \DeclareArgumentType bewildering, and I don't 
+think it is only a matter of lack of documentation), but it could make 
+it harder to produce good error messages.
+
+Lars Hellström
+

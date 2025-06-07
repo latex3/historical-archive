@@ -1,0 +1,160 @@
+Received:  from webgate.proteosys.de (mail.proteosys-ag.com [62.225.9.49]) by lucy.proteosys (8.11.0/8.9.3/SuSE Linux 8.9.3-0.1) with ESMTP id f1DGlTH26903 for <schoepf@proteosys.de>; Tue, 13 Feb 2001 17:47:29 +0100
+Received:  by webgate.proteosys.de (8.11.0/8.11.0) with ESMTP id f1DGlTd02036 . for <schoepf@proteosys.de>; Tue, 13 Feb 2001 17:47:29 +0100
+Received:  from mail.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE [134.93.8.30]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1DGlS718813 for <schoepf@proteosys.de>; Tue, 13 Feb 2001 17:47:28 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C095DC.A6CA6680"
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA24556 for <schoepf@mail.uni-mainz.de>; Tue, 13 Feb 2001 17:47:28 +0100 (MET)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.11.0/8.10.2) with ESMTP id f1DGlP718808 for <schoepf@UNI-MAINZ.DE>; Tue, 13 Feb 2001 17:47:27 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.78D8713F@mail.listserv.gmd.de>; Tue, 13 Feb 2001 17:47:18 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 488657 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 13 Feb 2001 17:47:21 +0100
+Received:  from ix.urz.uni-heidelberg.de (mail.urz.uni-heidelberg.de          [129.206.119.234]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id RAA06017 for <latex-l@relay.urz.uni-heidelberg.de>; Tue, 13          Feb 2001 17:47:20 +0100 (MET)
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by ix.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id RAA36442 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 13 Feb          2001 17:47:21 +0100
+Received:  from ams.org (sun06.ams.org [130.44.1.6]) by relay.uni-heidelberg.de          (8.10.2+Sun/8.10.2) with ESMTP id f1DGlKg11264 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 13 Feb 2001 17:47:20 +0100 (MET)
+Received:  (from mjd@localhost) by ams.org (8.11.1/8.11.1) id f1DGlGZ23151; Tue,          13 Feb 2001 11:47:16 -0500 (EST)
+In-Reply-To:  Hans Aberg's message of "Tue, 13 Feb 2001 15:10:54 +0100"
+Lines: 27
+References: <v03110703b6aeecf8afc6@[195.100.226.136]>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: Gnus v5.7/Emacs 20.7
+Content-class: urn:content-classes:message
+Subject:      Side remarks about TeX input sequence
+Date: Tue, 13 Feb 2001 17:47:16 +0100
+Message-ID:  <r0r912jzsb.fsf@sun06.ams.org>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Michael John Downes" <mjd@AMS.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3880
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C095DC.A6CA6680
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hans Aberg <haberg@MATEMATIK.SU.SE> writes:
+
+> I am not a TeX guru, but I get the impression that the TeX looks like =
+this:
+>   <string of TeX tokens> <not yet gulped up ASCII (or 8-bit)>
+> The string of TeX tokens buffer is normally empty, but sometimes a =
+macro
+> may insert a string of tokens (perhaps a macro expansion can be viewed =
+as
+> though the  body is first inserted in this buffer, before being =
+evaluated).
+
+Yes, that is quite true, but Knuth calls that buffer an input stream,
+and there may be multiple nested input streams open at any given moment.
+This is what one sees in the multiple levels of error context (visible
+when errorcontextlines > 1).
+
+> The <not yet gulped up ASCII (or 8-bit) buffer is read converted into
+> tokens at need.
+
+TeX reads into the buffer one line at a time. In particular, the
+character at the end of the line will be whatever was the value of
+\endlinechar at the point when the read was triggered. But the catcode
+of the endlinechar can be changed at any point until TeX takes it from
+the line buffer and turns it into a token.
+
+> TeX does not back-track.
+
+\futurelet, \uppercase, \lowercase, \expandafter and perhaps one or two
+others do backtracking in the token stream, but yes there is no
+backtracking in the line buffer.
+
+------_=_NextPart_001_01C095DC.A6CA6680
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Side remarks about TeX input sequence</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hans Aberg &lt;haberg@MATEMATIK.SU.SE&gt; =
+writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; I am not a TeX guru, but I get the impression =
+that the TeX looks like this:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; &lt;string of TeX tokens&gt; &lt;not =
+yet gulped up ASCII (or 8-bit)&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; The string of TeX tokens buffer is normally =
+empty, but sometimes a macro</FONT>
+
+<BR><FONT SIZE=3D2>&gt; may insert a string of tokens (perhaps a macro =
+expansion can be viewed as</FONT>
+
+<BR><FONT SIZE=3D2>&gt; though the&nbsp; body is first inserted in this =
+buffer, before being evaluated).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, that is quite true, but Knuth calls that buffer =
+an input stream,</FONT>
+
+<BR><FONT SIZE=3D2>and there may be multiple nested input streams open =
+at any given moment.</FONT>
+
+<BR><FONT SIZE=3D2>This is what one sees in the multiple levels of error =
+context (visible</FONT>
+
+<BR><FONT SIZE=3D2>when errorcontextlines &gt; 1).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; The &lt;not yet gulped up ASCII (or 8-bit) buffer =
+is read converted into</FONT>
+
+<BR><FONT SIZE=3D2>&gt; tokens at need.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>TeX reads into the buffer one line at a time. In =
+particular, the</FONT>
+
+<BR><FONT SIZE=3D2>character at the end of the line will be whatever was =
+the value of</FONT>
+
+<BR><FONT SIZE=3D2>\endlinechar at the point when the read was =
+triggered. But the catcode</FONT>
+
+<BR><FONT SIZE=3D2>of the endlinechar can be changed at any point until =
+TeX takes it from</FONT>
+
+<BR><FONT SIZE=3D2>the line buffer and turns it into a token.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; TeX does not back-track.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\futurelet, \uppercase, \lowercase, \expandafter and =
+perhaps one or two</FONT>
+
+<BR><FONT SIZE=3D2>others do backtracking in the token stream, but yes =
+there is no</FONT>
+
+<BR><FONT SIZE=3D2>backtracking in the line buffer.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C095DC.A6CA6680--
+

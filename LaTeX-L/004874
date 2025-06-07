@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 10 May 2005 13:06:23 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j4AB6K0w016348
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 10 May 2005 13:06:21 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j4AB2lfK004031;
+	Tue, 10 May 2005 13:02:47 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j49M1d6A006207;
+	Tue, 10 May 2005 13:00:07 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 212010 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 10 May 2005 13:00:07 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j4AB07d4025418 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 10 May 2005 13:00:07 +0200
+Received: from mail35.messagelabs.com (mail35.messagelabs.com [62.231.131.195])
+          by relay.uni-heidelberg.de (8.12.10/8.12.10) with SMTP id
+          j4AB2XfK003972 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 10 May
+          2005 13:02:34 +0200 (MET DST)
+X-VirusChecked: Checked
+X-Env-Sender: davidc@nag.co.uk
+X-Msg-Ref: server-11.tower-35.messagelabs.com!1115722819!27227432!1
+X-StarScan-Version: 5.4.11; banners=nag.co.uk,-,-
+X-Originating-IP: [212.125.75.73]
+Received: (qmail 18544 invoked from network); 10 May 2005 11:00:19 -0000
+Received: from smtp-4.star.net.uk (212.125.75.73) by
+          server-11.tower-35.messagelabs.com with SMTP; 10 May 2005 11:00:19
+          -0000
+Received: (qmail 28055 invoked from network); 10 May 2005 11:00:18 -0000
+Received: from unknown (HELO nag.co.uk) (62.231.145.242) by smtp-4.star.net.uk
+          with SMTP; 10 May 2005 11:00:18 -0000
+Received: from penguin.nag.co.uk (IDENT:root@penguin.nag.co.uk
+          [192.156.217.14]) by nag.co.uk (8.9.3/8.9.3) with ESMTP id MAA15288
+          for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 10 May 2005 12:00:09
+          +0100 (BST)
+Received: by penguin.nag.co.uk (8.9.3) id MAA00451; Tue, 10 May 2005 12:00:09
+          +0100
+References: <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <20050427075026.GD10313@mathematik.tu-darmstadt.de>
+            <1c0fbe0520d085d2578bc565ff248163@guerilla.net.au>
+            <l03102814bea5442baf7d@[192.168.0.103]>
+            <20050510081921.GA19993@mathematik.tu-darmstadt.de>
+Message-ID:  <200505101100.MAA00451@penguin.nag.co.uk>
+Date:         Tue, 10 May 2005 12:00:09 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: David Carlisle <davidc@NAG.CO.UK>
+Subject: Re: new^2 font selection scheme
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <20050510081921.GA19993@mathematik.tu-darmstadt.de> (message from
+              Achim Blumensath on Tue, 10 May 2005 10:19:21 +0200)
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 10 May 2005 11:06:23.0324 (UTC) FILETIME=[4D5751C0:01C55550]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4874
+
+   \input{MinionPro-FontDef.sty}
+  \Mn@DeclareLargeFontFamily{T1}{MinionPro-OsF}{osf}{t1}
+
+  But these macros rely on the keyval package
+
+Does that really work in 2e?
+
+fd files can be loaded pretty much anywhere, where the font is first
+used, in particular in a local group. The commands that are designed to
+go there all make global definitions internally.
+
+Package files in general (and certainly keyval) assume that they are
+going to be loaded at the top level and normally make their definitions
+locally.
+
+So either you load the package every time  which is a bit slow and can
+be expensive if the package allocates any registers etc or you arrange
+that the package does not load if it's already been loaded but then
+things go wrong if the first load happened in a local scope, don't they?
+
+David
+
+
+________________________________________________________________________
+This e-mail has been scanned for all viruses by Star. The
+service is powered by MessageLabs. For more information on a proactive
+anti-virus service working around the clock, around the globe, visit:
+http://www.star.net.uk
+________________________________________________________________________
+

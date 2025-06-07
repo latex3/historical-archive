@@ -1,0 +1,767 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.3FD2B8E4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:49 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.3FD2B8E4"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-vheader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+x-vm-bookmark: 1
+Content-class: urn:content-classes:message
+Subject:  Citations and reference-lists
+Date: Thu, 4 Apr 1991 13:16:14 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE554@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@UK.AC.NOTTINGHAM.CCC.VME>
+To: <latex-l%dhdurz1@uk.ac.earn-relay>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 310
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.3FD2B8E4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Here are a few comments on Nico's comments (5th March) about my paper on
+citations and reference-lists.
+
+
+>>  2. The paper on reference lists concentrates too much on layout and =
+not
+>>  enough on structure. For a, in my humble opinion, much more valuable
+>>  discussion of LaTeX 3.0, reference lists and BibTeX I'd like to =
+refer to the
+>>  talk Frank Mittelbach gave at the Cork conference last year.
+
+Frank has sent me a copy of "BibTeX reconsidered", by Reinhard =
+Wonneberger
+and himself.  I think that this is the written version of the talk that
+he gave at Cork.  There seems to be a lot of common ground between my =
+paper
+and "BibTeX reconsidered", although the former is looking at it from the =
+LaTeX
+point-of-view while the latter is looking at it from the BibTeX =
+point-of-view.
+[Both my paper and "BibTeX reconsidered" would like support for multiple
+bibliographies, the short title/form scheme (often in footnotes) and
+commented bibliographies.]
+
+I'd like "document support" (as Reinhard/Frank put it) for =
+reference-by-number,
+author-date and short-form citation schemes.  My paper suggested one =
+possible
+user interface through which this support could be provided.  Of course,
+other interfaces could be defined that would do the job.  I think that =
+the
+main thing is to provide satisfactory support for the 3 schemes.
+
+
+>>  I'm totally opposed to the idea of having different coding schemes =
+for
+>>  different systems of citation. In my opinion, this goes completely =
+against
+>>  the basic idea behind LaTeX and SGML, namely separation of form and =
+contents.
+>>  Consider the amount of re-coding when switching from the number =
+system to the
+>>  name-year system!
+
+There are differences between the schemes that may be so significant =
+that
+they could/should be regarded as "different in form".
+*   For instance, ISO 690 gives the example
+        The notion of an invisible college has been explored in the
+        sciences (24).  Its absence among historians is noted by
+        Steig (13, p. 556).  It may be as Burchard (8) points out ...
+    which, if converted to author-date, would be
+        The notion of an invisible college has been explored in the
+        sciences (Crane, 1972).  Its absence among historians is noted =
+by
+        Steig (1981, p. 556).  It may be as Burchard (1965) points out =
+...
+    where the substitution has to take account of whether the author's =
+name
+    does or does not occur naturally in the sentence.  I.e. the form of
+    citation depends on what else is in the sentence, and conversion
+    cannot easily be automated.  Similarly, I'd be surprised if one can
+    guarantee to be able to change from other schemes to the
+    short-form scheme without some re-writing.
+*   Reference-by-number involves keeping track of one thing (the =
+number),
+    author-date involves keeping track of two (surname and date), =
+short-form
+    involves keeping track of at least two things (form for first =
+citation,
+    form for subsequent citations, perhaps also the full form as the =
+default
+    form for first citation).
+If the schemes are different in form (i.e. involve different logical
+structures), it may be legitimate to consider having different coding
+schemes, while still aiming at separation of form from content (e.g.
+whether reference-by-number uses superscripts or brackets).
+
+However, if someone has sufficient insight to be able to propose a =
+single user
+interface that can cater for all three schemes (plus possible =
+"additional
+references") within one set of commands/environments, I agree that it
+would be very nice.  My own attempts to define a single interface
+that would cater for all three schemes have ended up being =
+unsatisfactory.
+Here's how they end up unsatisfactory.
+                              ------------
+For the purpose of this account I'll use \refentry to mean the successor
+to \bibitem.  Presumably \refentry would have to have 2 or 3 arguments =
+besides
+the cite-key (rather than \bibitem's one extra argument) so that the =
+arguments
+could be used for:
+- nothing, in the reference-by-number scheme (since LaTeX would supply
+  the numbers)
+- author and date, in the author-date scheme
+- first-citation-form and subsequent-citation-form, for the short-form
+  scheme.
+Thus, for reference-by-number, the user (or BibTeX) would supply
+\refentry{cite-key}{}{} ...
+but for author-date they would supply
+\refentry{cite-key}{author}{date} ...
+while for short form they would supply
+\refentry{cite-key}{fairly-full-form}{short-form} ...
+[We're already in trouble.  How do we deal with what appears to be the =
+tendency
+in short form for the "full reference" to be the default "fairly full =
+form"?
+Do we go for \refentry{cite-key}[fairly-full-form]{short-form}{full =
+reference},
+and if so what are the implications for the other 2 schemes?]
+Or should one go for
+\refentry{cite-key}{author}{date}{fairly-full-form}{short-form} ...
+so as to give LaTeX all the information it needs to allow completely
+automatic switching between citation schemes, separating form from =
+content
+but placing a heavy burden on the user (who would have to provide
+at least dummy information for both author-date and short-form
+schemes, even if they are only going to use reference-by-number)?
+
+For citation commands one might have \cite and \shortcite (following
+precedents in the archives) [but see section 6.5 of my paper, about =
+citation
+of a specific devision].  By aiming at author-date, one might be able to
+get a .tex file that also worked for reference-by-number.  For example,
+if \cite and \shortcite both gave a number when a .sty file implemented
+reference-by-number, while \cite gave (author, date) and \shortcite
+gave (date) when a .sty file implemented author-date, the following
+input might work for both schemes:
+    The notion of an invisible college has been explored in the
+    sciences \cite{crane-72}.  Its absence among historians is noted by
+    Steig \shortcite{steig-81[p. 556]}.  It may be as Burchard
+    \shortcite{burchard-65} points out ...
+I don't think that the reverse would work, i.e. if you think in terms
+of reference-by-number while writing, you'll do things like
+    Steig \cite{steig-81[p. 556]}.  It may be as Burchard
+which, if converted automatically to author-date, would give
+    Steig (Steig, 1981; p. 556).  It may be as Burchard
+which gives two occurences of Steig, which isn't right.
+For short-form, you might interpret \cite as meaning "the form of =
+citation
+used at first citation" and \shortcite as meaning "the form to be used
+subsequently".  But if you do this, you'll put your \shortcites in
+places that are different from the places you'd put them for author-date
+For example, you might have (using an ISO 690 example again)
+    ... Steig \cite{steig-81}.  It may be as Burchard
+    \cite{burchard-65} points out ... Steig \shortcite{steig-81}
+    has further noted ...
+for the MLA or
+    ... Steig\footnote{\cite{steig-81}} ... =
+Steig\footnote{\shortcite{steig-81}}
+for most other publications that use short-form.  [This assumes that the =
+first
+of these citations of Steig above is actually the first citation of =
+Steig
+in the whole document (or chapter).]  But this would not give you the =
+right
+input file for author-date, for which you would want
+    ... Steig \shortcite{steig-81}.  It may be as Burchard
+Again, you might be able to convert automatically TO =
+reference-by-number,
+but it seems unlikely that you could convert automatically FROM
+reference-by-number.  The problem might disappear if LaTeX itself could =
+work
+out which citations are "first citations".  Then someone can put \cites =
+and
+\shortcites in the places required for author-date but choose a .sty =
+file
+that gives short-form; the .sty file would ignore the distinction =
+between
+\cite and \shortcite and would use the fairly-full-form for "first =
+citation"
+and the short-form for subsequent citations.  But can LaTeX work out =
+which
+citations are "first citations"?
+                              ------------
+Although one can try (as above) to imagine a single set of
+commands/environments that would support all three schemes, it seems to
+lead to problems, and I worry that, in making things right for one =
+scheme,
+they'll be made wrong for another.  So I gave up on the idea of a single
+set of commands, which was why my paper went for the idea of separate
+commands/environments tailored to the 3 specific citation schemes.
+But, if someone has more success than I did in imagining how a single =
+set of
+commands/environments could be simultaneously compatible with all three =
+schemes,
+I'd be interested to see their proposals.
+
+Or should one be less ambitions, perhaps aiming to satisfy people who
+want reference-by-number and author-date, and not bothering about people
+who want short-form?  Things like \refentry{cite-key}{author}{date},
+\cite and \shortcite might work for both reference-by-number and =
+author-date.
+(People who want reference-by-number would have to supply author and =
+date
+information that they might regard as redundant, unless they go
+\refentry{cite-key}{}{} or the syntax is something like
+\refentry{cite-key}[author][date].)
+
+
+>>  To David's review I'd like to add that \bibitem's have no =
+sub-division, at
+>>  least not one that is indicated by explicit control sequences =
+(`tags').
+>>  Instead, the tagging of \bibitem's is done _outside_ LaTeX, which =
+has always
+>>  struck me as odd.
+
+In theory, it would be nice if the \bibitem's did have subdivisions.  =
+There
+might be subdivisions for the do-it-yourself-er that were analogous to
+the fields used by the BibTeX-er.
+
+In practice, to sub-divide the \bibitems would involve deciding what the
+subdivisions should be, which leads one into questions that cause =
+difficulty
+in BibTeX (e.g., "Should it be address or place-of-publication?",
+"Is it really worth having booklet separate?", "Is it really worth
+having phdthesis separate from mastersthesis?", "Does volume mean
+number-in-series or subdivision-of-book?").  It may not be easy to
+answer these questions.  I don't think that it is worth delaying
+LaTeX 3.0 while answers are sought.  [One could always return to the
+question for LaTeX 4.0, if there was one!]
+
+
+David Rhead
+(JANET: d.rhead@uk.ac.nottingham.ccc.vme)
+--- End of forwarded message
+
+
+
+
+------_=_NextPart_001_01C19443.3FD2B8E4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE> Citations and reference-lists</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Here are a few comments on Nico's comments (5th March) =
+about my paper on</FONT>
+
+<BR><FONT SIZE=3D2>citations and reference-lists.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&gt;&nbsp; 2. The paper on reference lists =
+concentrates too much on layout and not</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; enough on structure. For a, in my =
+humble opinion, much more valuable</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; discussion of LaTeX 3.0, reference =
+lists and BibTeX I'd like to refer to the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; talk Frank Mittelbach gave at the Cork =
+conference last year.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank has sent me a copy of &quot;BibTeX =
+reconsidered&quot;, by Reinhard Wonneberger</FONT>
+
+<BR><FONT SIZE=3D2>and himself.&nbsp; I think that this is the written =
+version of the talk that</FONT>
+
+<BR><FONT SIZE=3D2>he gave at Cork.&nbsp; There seems to be a lot of =
+common ground between my paper</FONT>
+
+<BR><FONT SIZE=3D2>and &quot;BibTeX reconsidered&quot;, although the =
+former is looking at it from the LaTeX</FONT>
+
+<BR><FONT SIZE=3D2>point-of-view while the latter is looking at it from =
+the BibTeX point-of-view.</FONT>
+
+<BR><FONT SIZE=3D2>[Both my paper and &quot;BibTeX reconsidered&quot; =
+would like support for multiple</FONT>
+
+<BR><FONT SIZE=3D2>bibliographies, the short title/form scheme (often in =
+footnotes) and</FONT>
+
+<BR><FONT SIZE=3D2>commented bibliographies.]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'd like &quot;document support&quot; (as =
+Reinhard/Frank put it) for reference-by-number,</FONT>
+
+<BR><FONT SIZE=3D2>author-date and short-form citation schemes.&nbsp; My =
+paper suggested one possible</FONT>
+
+<BR><FONT SIZE=3D2>user interface through which this support could be =
+provided.&nbsp; Of course,</FONT>
+
+<BR><FONT SIZE=3D2>other interfaces could be defined that would do the =
+job.&nbsp; I think that the</FONT>
+
+<BR><FONT SIZE=3D2>main thing is to provide satisfactory support for the =
+3 schemes.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&gt;&nbsp; I'm totally opposed to the idea of =
+having different coding schemes for</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; different systems of citation. In my =
+opinion, this goes completely against</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; the basic idea behind LaTeX and SGML, =
+namely separation of form and contents.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; Consider the amount of re-coding when =
+switching from the number system to the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; name-year system!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There are differences between the schemes that may be =
+so significant that</FONT>
+
+<BR><FONT SIZE=3D2>they could/should be regarded as &quot;different in =
+form&quot;.</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp;&nbsp; For instance, ISO 690 gives the =
+example</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The notion =
+of an invisible college has been explored in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sciences =
+(24).&nbsp; Its absence among historians is noted by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Steig (13, =
+p. 556).&nbsp; It may be as Burchard (8) points out ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; which, if converted to =
+author-date, would be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The notion =
+of an invisible college has been explored in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sciences =
+(Crane, 1972).&nbsp; Its absence among historians is noted by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Steig =
+(1981, p. 556).&nbsp; It may be as Burchard (1965) points out ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; where the substitution has to take =
+account of whether the author's name</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; does or does not occur naturally =
+in the sentence.&nbsp; I.e. the form of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; citation depends on what else is =
+in the sentence, and conversion</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; cannot easily be automated.&nbsp; =
+Similarly, I'd be surprised if one can</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; guarantee to be able to change =
+from other schemes to the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; short-form scheme without some =
+re-writing.</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp;&nbsp; Reference-by-number involves keeping =
+track of one thing (the number),</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; author-date involves keeping track =
+of two (surname and date), short-form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; involves keeping track of at least =
+two things (form for first citation,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; form for subsequent citations, =
+perhaps also the full form as the default</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; form for first citation).</FONT>
+
+<BR><FONT SIZE=3D2>If the schemes are different in form (i.e. involve =
+different logical</FONT>
+
+<BR><FONT SIZE=3D2>structures), it may be legitimate to consider having =
+different coding</FONT>
+
+<BR><FONT SIZE=3D2>schemes, while still aiming at separation of form =
+from content (e.g.</FONT>
+
+<BR><FONT SIZE=3D2>whether reference-by-number uses superscripts or =
+brackets).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, if someone has sufficient insight to be able =
+to propose a single user</FONT>
+
+<BR><FONT SIZE=3D2>interface that can cater for all three schemes (plus =
+possible &quot;additional</FONT>
+
+<BR><FONT SIZE=3D2>references&quot;) within one set of =
+commands/environments, I agree that it</FONT>
+
+<BR><FONT SIZE=3D2>would be very nice.&nbsp; My own attempts to define a =
+single interface</FONT>
+
+<BR><FONT SIZE=3D2>that would cater for all three schemes have ended up =
+being unsatisfactory.</FONT>
+
+<BR><FONT SIZE=3D2>Here's how they end up unsatisfactory.</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------------</FONT>
+
+<BR><FONT SIZE=3D2>For the purpose of this account I'll use \refentry to =
+mean the successor</FONT>
+
+<BR><FONT SIZE=3D2>to \bibitem.&nbsp; Presumably \refentry would have to =
+have 2 or 3 arguments besides</FONT>
+
+<BR><FONT SIZE=3D2>the cite-key (rather than \bibitem's one extra =
+argument) so that the arguments</FONT>
+
+<BR><FONT SIZE=3D2>could be used for:</FONT>
+
+<BR><FONT SIZE=3D2>- nothing, in the reference-by-number scheme (since =
+LaTeX would supply</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the numbers)</FONT>
+
+<BR><FONT SIZE=3D2>- author and date, in the author-date scheme</FONT>
+
+<BR><FONT SIZE=3D2>- first-citation-form and subsequent-citation-form, =
+for the short-form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; scheme.</FONT>
+
+<BR><FONT SIZE=3D2>Thus, for reference-by-number, the user (or BibTeX) =
+would supply</FONT>
+
+<BR><FONT SIZE=3D2>\refentry{cite-key}{}{} ...</FONT>
+
+<BR><FONT SIZE=3D2>but for author-date they would supply</FONT>
+
+<BR><FONT SIZE=3D2>\refentry{cite-key}{author}{date} ...</FONT>
+
+<BR><FONT SIZE=3D2>while for short form they would supply</FONT>
+
+<BR><FONT SIZE=3D2>\refentry{cite-key}{fairly-full-form}{short-form} =
+...</FONT>
+
+<BR><FONT SIZE=3D2>[We're already in trouble.&nbsp; How do we deal with =
+what appears to be the tendency</FONT>
+
+<BR><FONT SIZE=3D2>in short form for the &quot;full reference&quot; to =
+be the default &quot;fairly full form&quot;?</FONT>
+
+<BR><FONT SIZE=3D2>Do we go for =
+\refentry{cite-key}[fairly-full-form]{short-form}{full =
+reference},</FONT>
+
+<BR><FONT SIZE=3D2>and if so what are the implications for the other 2 =
+schemes?]</FONT>
+
+<BR><FONT SIZE=3D2>Or should one go for</FONT>
+
+<BR><FONT =
+SIZE=3D2>\refentry{cite-key}{author}{date}{fairly-full-form}{short-form} =
+...</FONT>
+
+<BR><FONT SIZE=3D2>so as to give LaTeX all the information it needs to =
+allow completely</FONT>
+
+<BR><FONT SIZE=3D2>automatic switching between citation schemes, =
+separating form from content</FONT>
+
+<BR><FONT SIZE=3D2>but placing a heavy burden on the user (who would =
+have to provide</FONT>
+
+<BR><FONT SIZE=3D2>at least dummy information for both author-date and =
+short-form</FONT>
+
+<BR><FONT SIZE=3D2>schemes, even if they are only going to use =
+reference-by-number)?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For citation commands one might have \cite and =
+\shortcite (following</FONT>
+
+<BR><FONT SIZE=3D2>precedents in the archives) [but see section 6.5 of =
+my paper, about citation</FONT>
+
+<BR><FONT SIZE=3D2>of a specific devision].&nbsp; By aiming at =
+author-date, one might be able to</FONT>
+
+<BR><FONT SIZE=3D2>get a .tex file that also worked for =
+reference-by-number.&nbsp; For example,</FONT>
+
+<BR><FONT SIZE=3D2>if \cite and \shortcite both gave a number when a =
+.sty file implemented</FONT>
+
+<BR><FONT SIZE=3D2>reference-by-number, while \cite gave (author, date) =
+and \shortcite</FONT>
+
+<BR><FONT SIZE=3D2>gave (date) when a .sty file implemented author-date, =
+the following</FONT>
+
+<BR><FONT SIZE=3D2>input might work for both schemes:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; The notion of an invisible college =
+has been explored in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; sciences \cite{crane-72}.&nbsp; =
+Its absence among historians is noted by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Steig \shortcite{steig-81[p. =
+556]}.&nbsp; It may be as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \shortcite{burchard-65} points out =
+...</FONT>
+
+<BR><FONT SIZE=3D2>I don't think that the reverse would work, i.e. if =
+you think in terms</FONT>
+
+<BR><FONT SIZE=3D2>of reference-by-number while writing, you'll do =
+things like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Steig \cite{steig-81[p. =
+556]}.&nbsp; It may be as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>which, if converted automatically to author-date, =
+would give</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Steig (Steig, 1981; p. 556).&nbsp; =
+It may be as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>which gives two occurences of Steig, which isn't =
+right.</FONT>
+
+<BR><FONT SIZE=3D2>For short-form, you might interpret \cite as meaning =
+&quot;the form of citation</FONT>
+
+<BR><FONT SIZE=3D2>used at first citation&quot; and \shortcite as =
+meaning &quot;the form to be used</FONT>
+
+<BR><FONT SIZE=3D2>subsequently&quot;.&nbsp; But if you do this, you'll =
+put your \shortcites in</FONT>
+
+<BR><FONT SIZE=3D2>places that are different from the places you'd put =
+them for author-date</FONT>
+
+<BR><FONT SIZE=3D2>For example, you might have (using an ISO 690 example =
+again)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ... Steig \cite{steig-81}.&nbsp; =
+It may be as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \cite{burchard-65} points out ... =
+Steig \shortcite{steig-81}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; has further noted ...</FONT>
+
+<BR><FONT SIZE=3D2>for the MLA or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ... =
+Steig\footnote{\cite{steig-81}} ... =
+Steig\footnote{\shortcite{steig-81}}</FONT>
+
+<BR><FONT SIZE=3D2>for most other publications that use =
+short-form.&nbsp; [This assumes that the first</FONT>
+
+<BR><FONT SIZE=3D2>of these citations of Steig above is actually the =
+first citation of Steig</FONT>
+
+<BR><FONT SIZE=3D2>in the whole document (or chapter).]&nbsp; But this =
+would not give you the right</FONT>
+
+<BR><FONT SIZE=3D2>input file for author-date, for which you would =
+want</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ... Steig =
+\shortcite{steig-81}.&nbsp; It may be as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>Again, you might be able to convert automatically TO =
+reference-by-number,</FONT>
+
+<BR><FONT SIZE=3D2>but it seems unlikely that you could convert =
+automatically FROM</FONT>
+
+<BR><FONT SIZE=3D2>reference-by-number.&nbsp; The problem might =
+disappear if LaTeX itself could work</FONT>
+
+<BR><FONT SIZE=3D2>out which citations are &quot;first =
+citations&quot;.&nbsp; Then someone can put \cites and</FONT>
+
+<BR><FONT SIZE=3D2>\shortcites in the places required for author-date =
+but choose a .sty file</FONT>
+
+<BR><FONT SIZE=3D2>that gives short-form; the .sty file would ignore the =
+distinction between</FONT>
+
+<BR><FONT SIZE=3D2>\cite and \shortcite and would use the =
+fairly-full-form for &quot;first citation&quot;</FONT>
+
+<BR><FONT SIZE=3D2>and the short-form for subsequent citations.&nbsp; =
+But can LaTeX work out which</FONT>
+
+<BR><FONT SIZE=3D2>citations are &quot;first citations&quot;?</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ------------</FONT>
+
+<BR><FONT SIZE=3D2>Although one can try (as above) to imagine a single =
+set of</FONT>
+
+<BR><FONT SIZE=3D2>commands/environments that would support all three =
+schemes, it seems to</FONT>
+
+<BR><FONT SIZE=3D2>lead to problems, and I worry that, in making things =
+right for one scheme,</FONT>
+
+<BR><FONT SIZE=3D2>they'll be made wrong for another.&nbsp; So I gave up =
+on the idea of a single</FONT>
+
+<BR><FONT SIZE=3D2>set of commands, which was why my paper went for the =
+idea of separate</FONT>
+
+<BR><FONT SIZE=3D2>commands/environments tailored to the 3 specific =
+citation schemes.</FONT>
+
+<BR><FONT SIZE=3D2>But, if someone has more success than I did in =
+imagining how a single set of</FONT>
+
+<BR><FONT SIZE=3D2>commands/environments could be simultaneously =
+compatible with all three schemes,</FONT>
+
+<BR><FONT SIZE=3D2>I'd be interested to see their proposals.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Or should one be less ambitions, perhaps aiming to =
+satisfy people who</FONT>
+
+<BR><FONT SIZE=3D2>want reference-by-number and author-date, and not =
+bothering about people</FONT>
+
+<BR><FONT SIZE=3D2>who want short-form?&nbsp; Things like =
+\refentry{cite-key}{author}{date},</FONT>
+
+<BR><FONT SIZE=3D2>\cite and \shortcite might work for both =
+reference-by-number and author-date.</FONT>
+
+<BR><FONT SIZE=3D2>(People who want reference-by-number would have to =
+supply author and date</FONT>
+
+<BR><FONT SIZE=3D2>information that they might regard as redundant, =
+unless they go</FONT>
+
+<BR><FONT SIZE=3D2>\refentry{cite-key}{}{} or the syntax is something =
+like</FONT>
+
+<BR><FONT SIZE=3D2>\refentry{cite-key}[author][date].)</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&gt;&nbsp; To David's review I'd like to add that =
+\bibitem's have no sub-division, at</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; least not one that is indicated by =
+explicit control sequences (`tags').</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; Instead, the tagging of \bibitem's is =
+done _outside_ LaTeX, which has always</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; struck me as odd.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In theory, it would be nice if the \bibitem's did have =
+subdivisions.&nbsp; There</FONT>
+
+<BR><FONT SIZE=3D2>might be subdivisions for the do-it-yourself-er that =
+were analogous to</FONT>
+
+<BR><FONT SIZE=3D2>the fields used by the BibTeX-er.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In practice, to sub-divide the \bibitems would involve =
+deciding what the</FONT>
+
+<BR><FONT SIZE=3D2>subdivisions should be, which leads one into =
+questions that cause difficulty</FONT>
+
+<BR><FONT SIZE=3D2>in BibTeX (e.g., &quot;Should it be address or =
+place-of-publication?&quot;,</FONT>
+
+<BR><FONT SIZE=3D2>&quot;Is it really worth having booklet =
+separate?&quot;, &quot;Is it really worth</FONT>
+
+<BR><FONT SIZE=3D2>having phdthesis separate from mastersthesis?&quot;, =
+&quot;Does volume mean</FONT>
+
+<BR><FONT SIZE=3D2>number-in-series or =
+subdivision-of-book?&quot;).&nbsp; It may not be easy to</FONT>
+
+<BR><FONT SIZE=3D2>answer these questions.&nbsp; I don't think that it =
+is worth delaying</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX 3.0 while answers are sought.&nbsp; [One could =
+always return to the</FONT>
+
+<BR><FONT SIZE=3D2>question for LaTeX 4.0, if there was one!]</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>David Rhead</FONT>
+
+<BR><FONT SIZE=3D2>(JANET: d.rhead@uk.ac.nottingham.ccc.vme)</FONT>
+
+<BR><FONT SIZE=3D2>--- End of forwarded message</FONT>
+</P>
+<BR>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.3FD2B8E4--
+

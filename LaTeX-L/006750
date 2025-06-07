@@ -1,0 +1,92 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p4FLbpAv022472
+	for <rainer@rainer-schoepf.de>; Sun, 15 May 2011 23:37:52 +0200
+Received: (qmail 5433 invoked by alias); 15 May 2011 21:37:46 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 15 May 2011 21:37:46 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx062) with SMTP; 15 May 2011 23:37:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p4FLZjiL003459
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 15 May 2011 23:35:45 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p4EM15kR020093;
+	Sun, 15 May 2011 23:35:44 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1210240 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 15 May
+          2011 23:35:44 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p4FLZikl001191 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 15 May 2011 23:35:44 +0200
+Received: from mail-yw0-f49.google.com (mail-yw0-f49.google.com
+          [209.85.213.49]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p4FLZdmY003440 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 15 May
+          2011 23:35:43 +0200
+Received: by ywf9 with SMTP id 9so2027477ywf.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 15 May 2011 14:35:39 -0700
+          (PDT)
+MIME-Version: 1.0
+Received: by 10.236.181.135 with SMTP id l7mr3456623yhm.118.1305495338993; Sun,
+          15 May 2011 14:35:38 -0700 (PDT)
+Received: by 10.147.41.17 with HTTP; Sun, 15 May 2011 14:35:38 -0700 (PDT)
+References: <4DCA93CC.5020605@morningstar2.co.uk>
+            <19920.15087.714131.100464@morse.mittelbach-online.de>
+            <447088.31292.qm@web24704.mail.ird.yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <BANLkTinwYoQLJzWWfq0E47OJi-V3+8kQTQ@mail.gmail.com>
+Date:         Sun, 15 May 2011 17:35:38 -0400
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Re: xparse and space skipping
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <447088.31292.qm@web24704.mail.ird.yahoo.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (eXpurgate);
+ Detail=5D7Q89H36p4yCuwxJv6KY0FCZRnwZ+13JbbIZZKmQlHe7lFVLeG9HpPufzt4ISRVN8UXs
+ Z5giP6TxrAkQPawbBKrBzsjud32+oseY3uJJPDzc7QuM37IKG1ow9FNv6DrlGiPzT/9RtH6x4cpD
+ gKg7yMCQhzgs6u5Km/Xl5OCBQjghmhY7qra4g95BSrxPifpypoo3n8i/GDeOw2gngJvzg==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6750
+
+> \foo [arg]   has the standard 'argument meaning'
+>
+> \foo
+> [Paranthetical text starts here. ...
+
+The problem is that the two are treated identically by TeX, except if
+catcodes have not yet been assigned, and one changes the catcode of
+eol or space.
+
+\showtokens {\foo [arg]}
+\showtokens {\foo
+[Parenthetical ...}
+
+both show "\foo [". As Frank said, one option would be to disable
+TeX's parser and do it ourselves. For instance we could read the
+document once, "escaping" what has to be escaped (verbatim,
+spaces/newlines which shouldn't be skipped...), and save the result to
+a file, then typeset that file. That seems like a rather daunting
+task, albeit feasible.
+
+Proposal: to ban trailing optional arguments entirely.
+
+Regards,
+Bruno
+

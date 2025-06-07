@@ -1,0 +1,236 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Thu, 23 Jan 2003 11:13:23 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h0NADG6C012083 for <rainer.schoepf@PROTEOSYS.COM>; Thu, 23 Jan 2003 11:13:21 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h0DMxdEV020053; Mon, 13 Jan 2003 23:59:39 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2C2C8.0F8DE380"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h0CN07Gp002967; Mon, 13 Jan 2003 23:52:12 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 10533 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 13 Jan 2003 23:52:12 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h0DMgBr1015977 for          <latex-l@listserv.uni-heidelberg.de>; Mon, 13 Jan 2003 23:42:12 +0100
+Received:  from mailout08.sul.t-online.com (mailout08.sul.t-online.com          [194.25.134.20]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with          ESMTP id h0DMmwwO012196 for <latex-l@listserv.uni-heidelberg.de>;          Mon, 13 Jan 2003 23:48:58 +0100 (MET)
+Received:  from fwd03.sul.t-online.de by mailout08.sul.t-online.com with smtp id          18YDO5-0004EY-05; Mon, 13 Jan 2003 23:48:57 +0100
+Received:  from localhost.localdomain (520018396234-0001@[62.226.11.149]) by          fmrl03.sul.t-online.com with esmtp id 18YDNx-04tr2eC; Mon, 13 Jan          2003 23:48:49 +0100
+Received:  from localhost.localdomain (localhost.localdomain [127.0.0.1]) by          localhost.localdomain (8.12.5/8.12.5) with ESMTP id h0DMmlDp026910          for <latex-l@listserv.uni-heidelberg.de>; Mon, 13 Jan 2003 23:48:47          +0100
+Received:  (from dak@localhost) by localhost.localdomain (8.12.5/8.12.5/Submit)          id h0DMmlt6026906; Mon, 13 Jan 2003 23:48:47 +0100
+Lines: 45
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 23 Jan 2003 10:13:23.0290 (UTC) FILETIME=[0FBA23A0:01C2C2C8]
+X-Sender: 520018396234-0001@t-dialin.net
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3.50
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Face: 2FEFf>]>q>2iw=B6,xrUubRI>pR&Ml9=ao@P@i)L:\urd*t9M~y1^:+Y]'C0~{mAl`oQuAl        \!3KEIp?*w`|bL5qr,H)LFO6Q=qx~iH4DN;i";/yuIsqbLLCh/!U#X[S~(5eZ41to5f%E@'ELIi$t^        Vc\LWP@J5p^rst0+('>Er0=^1{]M9!p?&:\z]|;&=NP3AhB!B_bi^]Pfkw
+X-Spam-Score: -0.7 () SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_GNUS_UA
+posted-to: comp.text.tex
+Content-class: urn:content-classes:message
+Subject:      New primitive \begininput
+Date: Mon, 13 Jan 2003 23:48:46 +0100
+Message-ID: A<x565ssk6nl.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      New primitive \begininput
+Thread-Index: AcLCyA/UqJDeegtzTBuUSIIlKInkfA==
+From: "David Kastrup" <dak@GNU.ORG>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4431
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2C2C8.0F8DE380
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+The following message is a courtesy copy of an article
+that has been posted to comp.text.tex as well.
+
+
+Well, Christmas is over, and is the time to think about what would
+have been nice to have in one's stocking.  Here is one thing I came
+up with:
+
+\begininput is just like \input, except for one thing: it gets no file
+name argument.  Instead it uses the current input file without
+changing the current input position.  When \endinput gets encountered,
+it returns to the location where the current input file was when
+\begininput occured.  Its manner of operation will be an immediate
+switch of input context.  When \endinput is then encountered,
+processing returns to the tokens from the macro and other input
+context after \begininput until that gets exhausted back to the
+original file, which then presumes processing at the position it was
+when \begininput was executed.
+
+What does this buy us?  It buys us a tabularx which can deal with
+verbatim in its intestines and does not need to store its contents in
+a macro.  It buys us an ltxtable that does not need to revert to a
+separate file, yet will not overflow the memory in between.  It buys
+us possibilities of looking over the same contents several times, yet
+get error messages that point to the actual point where the error
+originated (actually, this is the real reason I want it: it makes
+sense in connection with preview-latex.  It would enable me to handle
+tables and stuff in a more perfidious manner, first letting the whole
+table be typeset, then generating  every cell on its own with the
+proper width and shipping it out separately).
+
+If we want to typeset example code including comments and newlines
+and other stuff, say, using a verbatim-like environment or
+listings.sty or whatever, it makes it easy to process this twice, get
+error messages correctly if they occur, get catcodes naturally right
+without having to do special tricks beyond what listings.sty already
+offers and so on.
+
+Disadvantage: won't work on a pipe unless one actually diverts the
+read data somewhere.
+
+But one might be able to live with that restriction.
+
+What do the experts think: the functionality looks near to trivial to
+implement.  Do you think it might be worth the trouble?
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C2C2C8.0F8DE380
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     New primitive \begininput</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>The following message is a courtesy copy of an =
+article</FONT>
+
+<BR><FONT SIZE=3D2>that has been posted to comp.text.tex as well.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Well, Christmas is over, and is the time to think =
+about what would</FONT>
+
+<BR><FONT SIZE=3D2>have been nice to have in one's stocking.&nbsp; Here =
+is one thing I came</FONT>
+
+<BR><FONT SIZE=3D2>up with:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begininput is just like \input, except for one thing: =
+it gets no file</FONT>
+
+<BR><FONT SIZE=3D2>name argument.&nbsp; Instead it uses the current =
+input file without</FONT>
+
+<BR><FONT SIZE=3D2>changing the current input position.&nbsp; When =
+\endinput gets encountered,</FONT>
+
+<BR><FONT SIZE=3D2>it returns to the location where the current input =
+file was when</FONT>
+
+<BR><FONT SIZE=3D2>\begininput occured.&nbsp; Its manner of operation =
+will be an immediate</FONT>
+
+<BR><FONT SIZE=3D2>switch of input context.&nbsp; When \endinput is then =
+encountered,</FONT>
+
+<BR><FONT SIZE=3D2>processing returns to the tokens from the macro and =
+other input</FONT>
+
+<BR><FONT SIZE=3D2>context after \begininput until that gets exhausted =
+back to the</FONT>
+
+<BR><FONT SIZE=3D2>original file, which then presumes processing at the =
+position it was</FONT>
+
+<BR><FONT SIZE=3D2>when \begininput was executed.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>What does this buy us?&nbsp; It buys us a tabularx =
+which can deal with</FONT>
+
+<BR><FONT SIZE=3D2>verbatim in its intestines and does not need to store =
+its contents in</FONT>
+
+<BR><FONT SIZE=3D2>a macro.&nbsp; It buys us an ltxtable that does not =
+need to revert to a</FONT>
+
+<BR><FONT SIZE=3D2>separate file, yet will not overflow the memory in =
+between.&nbsp; It buys</FONT>
+
+<BR><FONT SIZE=3D2>us possibilities of looking over the same contents =
+several times, yet</FONT>
+
+<BR><FONT SIZE=3D2>get error messages that point to the actual point =
+where the error</FONT>
+
+<BR><FONT SIZE=3D2>originated (actually, this is the real reason I want =
+it: it makes</FONT>
+
+<BR><FONT SIZE=3D2>sense in connection with preview-latex.&nbsp; It =
+would enable me to handle</FONT>
+
+<BR><FONT SIZE=3D2>tables and stuff in a more perfidious manner, first =
+letting the whole</FONT>
+
+<BR><FONT SIZE=3D2>table be typeset, then generating&nbsp; every cell on =
+its own with the</FONT>
+
+<BR><FONT SIZE=3D2>proper width and shipping it out separately).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If we want to typeset example code including comments =
+and newlines</FONT>
+
+<BR><FONT SIZE=3D2>and other stuff, say, using a verbatim-like =
+environment or</FONT>
+
+<BR><FONT SIZE=3D2>listings.sty or whatever, it makes it easy to process =
+this twice, get</FONT>
+
+<BR><FONT SIZE=3D2>error messages correctly if they occur, get catcodes =
+naturally right</FONT>
+
+<BR><FONT SIZE=3D2>without having to do special tricks beyond what =
+listings.sty already</FONT>
+
+<BR><FONT SIZE=3D2>offers and so on.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Disadvantage: won't work on a pipe unless one actually =
+diverts the</FONT>
+
+<BR><FONT SIZE=3D2>read data somewhere.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But one might be able to live with that =
+restriction.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>What do the experts think: the functionality looks =
+near to trivial to</FONT>
+
+<BR><FONT SIZE=3D2>implement.&nbsp; Do you think it might be worth the =
+trouble?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2C2C8.0F8DE380--
+

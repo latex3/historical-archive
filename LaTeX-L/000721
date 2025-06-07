@@ -1,0 +1,722 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.ABFA9E34@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:51 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.ABFA9E34"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-vheader: ("Date:" "Resent-Date:" "From:" "Sender:" "Resent-From" "Originally-From:" "Originally-To:" "To:" "Apparently-To:" "Cc:" "Subject:") nil
+x-vm-bookmark: 6
+Content-class: urn:content-classes:message
+Subject:      NFSS version 2 proposal
+Date: Wed, 24 Jun 1992 10:03:57 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE9BF@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Rainer Schoepf" <schoepf@SC>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 721
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.ABFA9E34
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+The last time the discussion about NFSS version 2 was started, it
+quickly trailed off in other directions. I'd like to start it again,
+by sending around a slightly changed version of the notes written down
+by Chris Rowley and myself, followed by some excerpts from the
+discussion in January.
+
+I'd appreciate comments.
+
+Rainer Sch"opf
+
+-------------
+
+% Changes by Chris are marked (approxly) by %%CCC
+% Comments and questions, even answers! are in marginals.
+% We probably need to be more precise about the syntax and about
+%  the implementation, particularly of the "preprocessing" of the
+%  table, and the storing of computed values before sending it out
+%  more generally for comments.
+
+\documentstyle[11pt]{article}
+% draft defs:
+\newcommand{\ccc}[1]{\marginpar{\raggedright{\bf CAR:} #1}}
+\newcommand{\RmS}[1]{\marginpar{\raggedright{\bf RmS:} #1}}
+\author{Chris Rowley \and Rainer Sch\"opf}
+
+\date{Paris, Jardin du Luxembourg, Stardate 1991/09/26 11:00:00:00.00,
+      updated June 1992 by RmS}
+
+\title{How to treat math fonts --- how to specify them}
+
+\begin{document}
+
+\maketitle
+
+\section{Notation}
+
+Just to distinguish these dreaded kinds of text size\ldots
+\begin{description}
+%%CCC
+  \item [text-size] The size used in the text surrounding a math
+        formula, i.e., outside of math mode.
+%%CCC
+  \item [mathsize] Inside a math formula, the size\ccc{Phil T
+suggested `mathsize' for this.}
+        used for \verb|\textstyle|.
+  \item [scriptsize] Inside a math formula, the size
+        used for \verb|\scriptstyle|.
+  \item [scriptscriptsize] Inside a math formula, the size
+        used for \verb|\scriptscriptstyle|.
+\end{description}
+
+\section{Informal specification}
+%%CCC
+The
+mathsize, scriptsize and scriptscriptsize to be used with a given
+text-size can be
+specified by giving a sequence of
+\begin{quote}
+  ``math font size specifications'' (MFS).
+\end{quote}
+%%CCC
+An MFS consists of a range, plus $3$ ``functions'' which, in general,
+take the actual text-size as argument and should be
+defined to return these $3$
+%%CCC
+values in $3$ specified places (see below).
+
+General functions will be supported, but easy specification of certain =
+commonly
+used {\em linear functions\/}
+will be supported, in particular
+\begin{enumerate}
+%%CCC
+  \item the linear function defined by giving its values at the end =
+points
+        of the range,
+%%CCC
+  \item the linear function defined by giving its slope and its
+        value at a given point\ccc{Any given point, or just, say, the =
+beginning
+of the range?},
+  \item the identity function,
+%%CCC
+  \item constant functions,
+  \item dilation functions.\RmS{meaning multiplication by a factor}
+\end{enumerate}
+The idea behind this is the following: the table entries are searched
+%%CCC
+until the first entry is found for which the
+requested ``text-size'' falls within the specified range.
+Then the three functions associated with
+that range are called, with the ``text-size'' as argument. Each of
+these three functions computes a number and leaves it, say, in a macro
+\ccc{I would suggest a macro: isnt this just the existing two macros,
+plus a `mathsize' one?}
+or dimen register. It is then easy to select the math fonts at the sizes
+that have just been computed (loading them if necessary).
+
+%%CCC
+[One\ccc{Cant this be done by just using suitable functions/ ranges?}
+ thing that needs further thought is the question of using `nearby'
+sizes, e.g. 8pt if the computed value is 7.8pt. Even though the =
+surrounding
+text may be set at 7.8pt it may still be worthwhile to use 8pt math, for
+example since one doesn't want to recompute the fonts at 7.8pt.]
+
+\subsection{nomathsizes?}
+
+We are not sure whether the concept of ``nomathsizes'' should remain.
+%%CCC
+If it does, what should its effect be? Simply not switch the math
+fonts, thereby producing surprising results if one uses math---but
+remember that some constructions (eg itemize labels and footnote
+markers) involve ``hidden maths''? Or
+give an error message when math mode is entered---this may also
+cause surprises due to ``hidden maths''?
+\RmS{I think that we have to deal with ``hidden maths'' anyway, so we =
+can allow
+ this.
+I still think that the nomathsizes feature is a useful one.}
+
+\subsection{Short forms}
+
+%%CCC
+``Short forms'' for presently supported cases (i.e.~when the range is
+a single value)
+should be provided, e.g.~for saying: 10pt ``text-size'' uses 10/7/5 for =
+math.
+Perhaps there is a need for
+short forms for other simple cases as well\ccc{Example: $I/0.7I/0.5I$
+where $I$ is the identity.}?
+
+\subsection{Fallback}
+
+We suggest a ``suitable linear function'' as fall-back when the
+requested ``text-size'' matches none of the given ranges. This could be
+done by appending  ``invisible'' extra entries at the end of the table
+(assuming linear search,\ccc{What other search could be used?} for the =
+moment).
+
+
+%%CCC
+\section{Implementation options}
+
+%%CCC
+One could preprocess the table and look for ``simple entries'', i.e.
+single value ranges (SVRs).  The processed
+table would be constructed so that these SVRs are tried first,
+before the ranges. Since this could be done by a simple
+lookup, similar\ccc{See para below.}
+to the mechanism in use in the present NFSS, these
+cases would be comparatively fast.
+
+[But this means that these simple entries have different semantics
+>from ranges, since they are always tried before any range. One might
+want to get special effects by inserting these simple entries between
+range entries. But is this sensible?\ccc{I cannot think of any use for
+this.}]
+
+[{\bf CAR:} Would it be much slower if this were not done by
+just expanding a macro?  If the SVRs were still kept in
+a table, in such a way that their presence could be easily detected
+and the assignments could be quickly made by that table entry, then
+this table could be changed by either addition or deletion, as
+suggested below. A table and look-up like the one used for finding an
+external font-file name would work, thus the overhead would be like
+one extra font to check for each size change: or maybe more due to
+catcode problems?]
+
+%%CCC
+An extension of this idea is to record the result of every calculation
+in the same way as simple entries: i.e. after 11.25pt has been requested
+for the first time, there is a simple entry for 11.25pt---thus, if (as
+is likely) this size is used again, then it can be processed quickly
+next time.
+
+But this needs a switch, to prevent this from happening\ccc{I dont
+understand this, but see my table suggestion above.}.\RmS{The idea I
+had was that one might not want to record it, for e xample because
+this is just one special font in one special size.}
+
+%%CCC
+One needs also to
+consider the possibility of changing the table during processing,
+i.e.~forgetting everything
+that has been calculated so far. We are not sure whether this is needed
+or whether it is even sensible to allow this. But it might happen
+that, when another font family is used, different sizes are needed for =
+math.
+\RmS{I now think that it is needed when switching to other font =
+families,
+with different weight and width.}
+
+\section{An extension}
+
+One could have more than three functions in a ``math font size
+specification''. These extra functions would be used to calculate values
+based on ranges for ``text-size'', e.g., \verb|\jot|, or
+for tweaking the fontdimen parameters\ccc{This could be done by
+allowing optional ``arbitrary functions'' with input the
+``text-size'' supplied, possibly as an argument to these functions.}.
+
+This certainly  needs more thought.
+
+\end{document}
+
+--------
+
+
+------_=_NextPart_001_01C19443.ABFA9E34
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     NFSS version 2 proposal</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>The last time the discussion about NFSS version 2 was =
+started, it</FONT>
+
+<BR><FONT SIZE=3D2>quickly trailed off in other directions. I'd like to =
+start it again,</FONT>
+
+<BR><FONT SIZE=3D2>by sending around a slightly changed version of the =
+notes written down</FONT>
+
+<BR><FONT SIZE=3D2>by Chris Rowley and myself, followed by some excerpts =
+from the</FONT>
+
+<BR><FONT SIZE=3D2>discussion in January.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I'd appreciate comments.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Rainer Sch&quot;opf</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-------------</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% Changes by Chris are marked (approxly) by =
+%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>% Comments and questions, even answers! are in =
+marginals.</FONT>
+
+<BR><FONT SIZE=3D2>% We probably need to be more precise about the =
+syntax and about</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; the implementation, particularly of the =
+&quot;preprocessing&quot; of the</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; table, and the storing of computed values =
+before sending it out</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; more generally for comments.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\documentstyle[11pt]{article}</FONT>
+
+<BR><FONT SIZE=3D2>% draft defs:</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\ccc}[1]{\marginpar{\raggedright{\bf =
+CAR:} #1}}</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\RmS}[1]{\marginpar{\raggedright{\bf =
+RmS:} #1}}</FONT>
+
+<BR><FONT SIZE=3D2>\author{Chris Rowley \and Rainer =
+Sch\&quot;opf}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\date{Paris, Jardin du Luxembourg, Stardate 1991/09/26 =
+11:00:00:00.00,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; updated June 1992 by =
+RmS}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{How to treat math fonts --- how to specify =
+them}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Notation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Just to distinguish these dreaded kinds of text =
+size\ldots</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item [text-size] The size used in the text =
+surrounding a math</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; formula, =
+i.e., outside of math mode.</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item [mathsize] Inside a math formula, the =
+size\ccc{Phil T</FONT>
+
+<BR><FONT SIZE=3D2>suggested `mathsize' for this.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used for =
+\verb|\textstyle|.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item [scriptsize] Inside a math formula, the =
+size</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used for =
+\verb|\scriptstyle|.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item [scriptscriptsize] Inside a math =
+formula, the size</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used for =
+\verb|\scriptscriptstyle|.</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{Informal specification}</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>The</FONT>
+
+<BR><FONT SIZE=3D2>mathsize, scriptsize and scriptscriptsize to be used =
+with a given</FONT>
+
+<BR><FONT SIZE=3D2>text-size can be</FONT>
+
+<BR><FONT SIZE=3D2>specified by giving a sequence of</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quote}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; ``math font size specifications'' =
+(MFS).</FONT>
+
+<BR><FONT SIZE=3D2>\end{quote}</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>An MFS consists of a range, plus $3$ ``functions'' =
+which, in general,</FONT>
+
+<BR><FONT SIZE=3D2>take the actual text-size as argument and should =
+be</FONT>
+
+<BR><FONT SIZE=3D2>defined to return these $3$</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>values in $3$ specified places (see below).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>General functions will be supported, but easy =
+specification of certain commonly</FONT>
+
+<BR><FONT SIZE=3D2>used {\em linear functions\/}</FONT>
+
+<BR><FONT SIZE=3D2>will be supported, in particular</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item the linear function defined by giving =
+its values at the end points</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of the =
+range,</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item the linear function defined by giving =
+its slope and its</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; value at a =
+given point\ccc{Any given point, or just, say, the beginning</FONT>
+
+<BR><FONT SIZE=3D2>of the range?},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item the identity function,</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item constant functions,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \item dilation functions.\RmS{meaning =
+multiplication by a factor}</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>The idea behind this is the following: the table =
+entries are searched</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>until the first entry is found for which the</FONT>
+
+<BR><FONT SIZE=3D2>requested ``text-size'' falls within the specified =
+range.</FONT>
+
+<BR><FONT SIZE=3D2>Then the three functions associated with</FONT>
+
+<BR><FONT SIZE=3D2>that range are called, with the ``text-size'' as =
+argument. Each of</FONT>
+
+<BR><FONT SIZE=3D2>these three functions computes a number and leaves =
+it, say, in a macro</FONT>
+
+<BR><FONT SIZE=3D2>\ccc{I would suggest a macro: isnt this just the =
+existing two macros,</FONT>
+
+<BR><FONT SIZE=3D2>plus a `mathsize' one?}</FONT>
+
+<BR><FONT SIZE=3D2>or dimen register. It is then easy to select the math =
+fonts at the sizes</FONT>
+
+<BR><FONT SIZE=3D2>that have just been computed (loading them if =
+necessary).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>[One\ccc{Cant this be done by just using suitable =
+functions/ ranges?}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;thing that needs further thought is the =
+question of using `nearby'</FONT>
+
+<BR><FONT SIZE=3D2>sizes, e.g. 8pt if the computed value is 7.8pt. Even =
+though the surrounding</FONT>
+
+<BR><FONT SIZE=3D2>text may be set at 7.8pt it may still be worthwhile =
+to use 8pt math, for</FONT>
+
+<BR><FONT SIZE=3D2>example since one doesn't want to recompute the fonts =
+at 7.8pt.]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{nomathsizes?}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>We are not sure whether the concept of ``nomathsizes'' =
+should remain.</FONT>
+
+<BR><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>If it does, what should its effect be? Simply not =
+switch the math</FONT>
+
+<BR><FONT SIZE=3D2>fonts, thereby producing surprising results if one =
+uses math---but</FONT>
+
+<BR><FONT SIZE=3D2>remember that some constructions (eg itemize labels =
+and footnote</FONT>
+
+<BR><FONT SIZE=3D2>markers) involve ``hidden maths''? Or</FONT>
+
+<BR><FONT SIZE=3D2>give an error message when math mode is =
+entered---this may also</FONT>
+
+<BR><FONT SIZE=3D2>cause surprises due to ``hidden maths''?</FONT>
+
+<BR><FONT SIZE=3D2>\RmS{I think that we have to deal with ``hidden =
+maths'' anyway, so we can allow</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;this.</FONT>
+
+<BR><FONT SIZE=3D2>I still think that the nomathsizes feature is a =
+useful one.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Short forms}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>``Short forms'' for presently supported cases =
+(i.e.~when the range is</FONT>
+
+<BR><FONT SIZE=3D2>a single value)</FONT>
+
+<BR><FONT SIZE=3D2>should be provided, e.g.~for saying: 10pt =
+``text-size'' uses 10/7/5 for math.</FONT>
+
+<BR><FONT SIZE=3D2>Perhaps there is a need for</FONT>
+
+<BR><FONT SIZE=3D2>short forms for other simple cases as =
+well\ccc{Example: $I/0.7I/0.5I$</FONT>
+
+<BR><FONT SIZE=3D2>where $I$ is the identity.}?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Fallback}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>We suggest a ``suitable linear function'' as fall-back =
+when the</FONT>
+
+<BR><FONT SIZE=3D2>requested ``text-size'' matches none of the given =
+ranges. This could be</FONT>
+
+<BR><FONT SIZE=3D2>done by appending&nbsp; ``invisible'' extra entries =
+at the end of the table</FONT>
+
+<BR><FONT SIZE=3D2>(assuming linear search,\ccc{What other search could =
+be used?} for the moment).</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>\section{Implementation options}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>One could preprocess the table and look for ``simple =
+entries'', i.e.</FONT>
+
+<BR><FONT SIZE=3D2>single value ranges (SVRs).&nbsp; The =
+processed</FONT>
+
+<BR><FONT SIZE=3D2>table would be constructed so that these SVRs are =
+tried first,</FONT>
+
+<BR><FONT SIZE=3D2>before the ranges. Since this could be done by a =
+simple</FONT>
+
+<BR><FONT SIZE=3D2>lookup, similar\ccc{See para below.}</FONT>
+
+<BR><FONT SIZE=3D2>to the mechanism in use in the present NFSS, =
+these</FONT>
+
+<BR><FONT SIZE=3D2>cases would be comparatively fast.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[But this means that these simple entries have =
+different semantics</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from ranges, since they are always tried before =
+any range. One might</FONT>
+
+<BR><FONT SIZE=3D2>want to get special effects by inserting these simple =
+entries between</FONT>
+
+<BR><FONT SIZE=3D2>range entries. But is this sensible?\ccc{I cannot =
+think of any use for</FONT>
+
+<BR><FONT SIZE=3D2>this.}]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[{\bf CAR:} Would it be much slower if this were not =
+done by</FONT>
+
+<BR><FONT SIZE=3D2>just expanding a macro?&nbsp; If the SVRs were still =
+kept in</FONT>
+
+<BR><FONT SIZE=3D2>a table, in such a way that their presence could be =
+easily detected</FONT>
+
+<BR><FONT SIZE=3D2>and the assignments could be quickly made by that =
+table entry, then</FONT>
+
+<BR><FONT SIZE=3D2>this table could be changed by either addition or =
+deletion, as</FONT>
+
+<BR><FONT SIZE=3D2>suggested below. A table and look-up like the one =
+used for finding an</FONT>
+
+<BR><FONT SIZE=3D2>external font-file name would work, thus the overhead =
+would be like</FONT>
+
+<BR><FONT SIZE=3D2>one extra font to check for each size change: or =
+maybe more due to</FONT>
+
+<BR><FONT SIZE=3D2>catcode problems?]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>An extension of this idea is to record the result of =
+every calculation</FONT>
+
+<BR><FONT SIZE=3D2>in the same way as simple entries: i.e. after 11.25pt =
+has been requested</FONT>
+
+<BR><FONT SIZE=3D2>for the first time, there is a simple entry for =
+11.25pt---thus, if (as</FONT>
+
+<BR><FONT SIZE=3D2>is likely) this size is used again, then it can be =
+processed quickly</FONT>
+
+<BR><FONT SIZE=3D2>next time.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But this needs a switch, to prevent this from =
+happening\ccc{I dont</FONT>
+
+<BR><FONT SIZE=3D2>understand this, but see my table suggestion =
+above.}.\RmS{The idea I</FONT>
+
+<BR><FONT SIZE=3D2>had was that one might not want to record it, for e =
+xample because</FONT>
+
+<BR><FONT SIZE=3D2>this is just one special font in one special =
+size.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%%CCC</FONT>
+
+<BR><FONT SIZE=3D2>One needs also to</FONT>
+
+<BR><FONT SIZE=3D2>consider the possibility of changing the table during =
+processing,</FONT>
+
+<BR><FONT SIZE=3D2>i.e.~forgetting everything</FONT>
+
+<BR><FONT SIZE=3D2>that has been calculated so far. We are not sure =
+whether this is needed</FONT>
+
+<BR><FONT SIZE=3D2>or whether it is even sensible to allow this. But it =
+might happen</FONT>
+
+<BR><FONT SIZE=3D2>that, when another font family is used, different =
+sizes are needed for math.</FONT>
+
+<BR><FONT SIZE=3D2>\RmS{I now think that it is needed when switching to =
+other font families,</FONT>
+
+<BR><FONT SIZE=3D2>with different weight and width.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{An extension}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One could have more than three functions in a ``math =
+font size</FONT>
+
+<BR><FONT SIZE=3D2>specification''. These extra functions would be used =
+to calculate values</FONT>
+
+<BR><FONT SIZE=3D2>based on ranges for ``text-size'', e.g., \verb|\jot|, =
+or</FONT>
+
+<BR><FONT SIZE=3D2>for tweaking the fontdimen parameters\ccc{This could =
+be done by</FONT>
+
+<BR><FONT SIZE=3D2>allowing optional ``arbitrary functions'' with input =
+the</FONT>
+
+<BR><FONT SIZE=3D2>``text-size'' supplied, possibly as an argument to =
+these functions.}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This certainly&nbsp; needs more thought.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--------</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.ABFA9E34--
+

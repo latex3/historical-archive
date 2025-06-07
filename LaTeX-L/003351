@@ -1,0 +1,207 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7623" "Thu" "7" "October" "1999" "11:58:23" "+0200" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "167" "Re: Experimental `template' interface code" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id NAA04031
+	for <schoepf@UNI-MAINZ.DE>; Thu, 7 Oct 1999 13:23:10 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.57CF591C@mail.listserv.gmd.de>; Thu, 7 Oct 1999 13:21:35 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444795 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 7 Oct 1999 13:20:05 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id NAA21334
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 7 Oct 1999 13:20:04 +0200
+          (MET DST)
+Received: from istrati.zdv.uni-mainz.de (root@dialin367.zdv.Uni-Mainz.DE
+          [134.93.175.67]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          NAA23950 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 7 Oct 1999
+          13:21:28 +0200 (MET DST)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          LAA00712; Thu, 7 Oct 1999 11:58:23 +0200
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199910011238.OAA00640@istrati.zdv.uni-mainz.de>
+            <199910041250.NAA27424@mimosa.csv.warwick.ac.uk>
+Message-ID:  <199910070958.LAA00712@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910041250.NAA27424@mimosa.csv.warwick.ac.uk>
+Date:         Thu, 7 Oct 1999 11:58:23 +0200
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Experimental `template' interface code
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3351
+
+James,
+
+i already started to explain my understanding of template types in the
+reply to Lars and perhaps this has already answered your questions,
+but anyway let me elaborate a bit more on mandatory arguments viz
+keyword attributes etc
+
+> About lists, and especially about the what it means for the arguments of
+> a template type to have the same interpretation.
+>
+> Suppose the template type has a width argument.  This could be used for
+> the width of a box to set the list in, or a template which set each item
+> in a cell of a table, the width argument could be used to specify the
+> width of those cells.  Is this within what is understood by type
+> arguments having the same interpretation?  What if the widht was taken
+> as the width of the the label?
+
+as i said, instances with the same template type (whether or not are
+derived from the same template) should be exchangeable without making
+the processing of a document blow up or produce rubbish. With that in
+mind the the above examples should most certainly not be the same
+type. In other words the fact that an argument takes a dimension is
+not the only identifying characteristic for that argument within an
+informal type declaration. In addition the interpretation of this
+dimension is crucial. Thus if one template would interpret that
+argument as the width of the label but another one would interpret it
+as the width of the whole line or the width of the text then you would
+get very strange results if you replace one such instance with
+another, wouldn't you?
+
+So suppose we define the template type list with the following
+characteristics (beside others not listed):
+
+  Expects three arguments with the following semantics:
+  \begin{itemize}
+  \item
+    String to calculate width of left indentation, or |\NoValue|
+  \item
+    Symbol/string to be used as item label, or |\NoValue|
+  \item
+    Boolean to denote whether or not numbering continues
+  \end{itemize}
+
+if so the first argument if not \NoValue would determine the left
+indentation (eg something like the available space for the
+label). Thus the following declaration would be an extended
+description environment
+
+\DeclareDocumentEnvironment{description}
+    { o }
+    { \UseInstance{list}{description} {#1} \NoValue \BooleanFalse }
+    { \EndThisList }
+
+where the user in a document could go like this
+
+ \begin{description}[longlabel]
+ \item[short] ...
+ \item[longlabel] ...
+ \item[other] ...
+ \end{description}
+
+in other words the user overwrites the default left indentation with a
+value calculated from the string "longlabel". Now such an overwrite
+possibility might make sense for vertical oriented lists (like current
+LaTeX description lists) but if the designer decides that all such
+lists are horizontally oriented then that argument suddenly doesn't
+serve any purpose any more as there is no left indentation.
+
+Now one could argue that those two templates are so much different
+that they can't possibly form a replacement for each other (it is
+perhaps a border case indeed). However I think they can and should
+have the same template type and for this reason we allow one
+derivation from that rule that arguments of templates with the same
+type have to have the same interpretation. The exception is that an
+argument value might be ignored completely (if the informal template
+type description says so). That is to say all templates of a given
+type have to parse the same number of arguments but in certain cases
+they are allowed to disregard some of the parsed values
+completely. What they are not allowed is to use the supplied value for
+a different purpose.
+
+==============================================
+
+so when should be something a mandatory argument to a template (and
+thus part of the template type) and when is it better or more correct
+to put something into the keyword attributes of some template itself?
+
+there is no simple answer for this. i tried to give some reasoning on
+these template type arguments when i wrote the documentation for
+template.dtx. here is another look at it.
+
+ - clearly everything that is variable data coming from the document
+ source has to be passed to the template as a mandatory argument, eg
+ if we try to define a template type for say headings we have to pass
+ the heading text as a mandatory argument. i don't think there is much
+ discussion about that. in case of headings same would be true for
+ data going to the toc and data going to a potential running head
+ entry (in current latex those two are combined but this is not really
+ what you necessarily want)
+
+ - sometimes there are some logical facts about the data in the
+ document that you like to pass to the template in which case this has
+ to happen through mandatory arguments as well. for example
+ enumeration lists might logically continue a previous list or start
+ enumeration again --- this one models all kind of lists in a single
+ type (which might be a mistake conceptually) then an information
+ about whether or not the current list continues a previous
+ enumeration should be passed to the template as a flag of some sort
+ (in fact this is just variable document data if one thinks about
+ this, after all it is a logical fact about the document that the
+ current list continues a previous one)
+
+ - any layout decisions should normally go into the keyword attributes
+ of the individual template unless you want for some reason provide
+ user level overwrites. if so you need to pass either user given
+ formatting values or flags down to the template
+
+
+The really difficult one is the last item, ie which (if any) of the
+layout decisions of some template should be modifiable from within the
+document source? A person whose soul is pure would perhaps argue
+"none" :-) but life is short and people like a pragmatic approach
+towards solving of problems.
+
+So my approach is to put in the template types a number of such
+"layout oriented" arguments if it seems that inclusion solves a large
+number of modification requests in a wide variety of different cases
+--- what a nonsense sentence :-) but i hope you get the the essence of
+what i'm trying to say.
+
+problem is to find those essential overwrites (and clearly people will
+have different opinions on what is essential and what not)
+
+for example, the above three arguments are those that i have come up
+in the context of lists but there are probably others which perhaps
+should get added, eg an argument which receives a value like "default"
+"tight" "compact" and does modify the spacing characteristics of the
+list in question.
+
+Maybe - maybe not ... this was what i meant when i said please think
+about what you would consider being an appropriate template type for
+lists / footnotes / ...
+
+so please ... :-)
+
+===========================================================
+
+returning to James post:
+
+> Another thought, lists with one-line items look very widely spaced,
+> especially when used with non-zero parskip and double spacing.  A
+> variant form with tighter spacing, and the item text set in an hbox for
+> such lists might be a good idea.
+
+this might be something which should be controlled from the document
+or alternatively one could think of a template which is internally
+smarter and allows the designer to specify different spacing values
+depending on the number of items in the list.
+
+on the other hand, the current latex list setup is simply wrong in the
+sense that if you change \parskip to a positive value you have to
+adjust all list spacing anyway as parskip is always added to the
+values (something which should not be the case) so perhaps is this not
+really a problem in a properly designed setup
+
+frank
+

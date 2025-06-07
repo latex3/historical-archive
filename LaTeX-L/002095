@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2507" "Wed" "18" "June" "1997" "15:01:58" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "56" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id QAA17683; Wed, 18 Jun 1997 16:53:46 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.A17AB7D1@listserv.gmd.de>; Wed, 18 Jun 1997 16:53:37 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 155353 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 18 Jun 1997 16:53:30 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id QAA27508 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 18 Jun 1997 16:53:23
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id SAA22060 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 18 Jun 1997
+          18:51:04 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id PAA02118 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Wed, 18 Jun 1997 15:01:59 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+References: <Pine.GSO.3.96.970615073312.26008A-100000@uxp1.hrz.uni-dortmund.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A7C026.7D4DBCCA@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 18 Jun 1997 15:01:58 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2095
+
+Hello,
+
+Werner Lemberg wrote:
+
+> 1) you say
+>
+>     \DeclareTextSymbol{\RUSA}{T2}{"0C1}
+>     \DeclareTextSymbol{\rusa}{T2}{"0E1}
+>
+> (repeating this for all other Russian characters); then you add all
+> such-defined characters to \@uclclist so that \MakeUppercase and
+> \MakeLowercase work -- \lowercase and \uppercase should *never* be used
+> directly!
+
+Thank you, I now think that my first approach with changing uccode and lccode
+values foe russian letters in LCY encoding is not as good as I thought of it
+some time ago... I changed Babel LCY support to the `canonical' LaTeX solutions,
+and it works well (although slower than the simple approach; but this approach
+is more general and more stable in a multilingual environment).
+But what about sfcodes (and mathcodes) for russian letters?
+May one safely change 'em (and restore) when doing language switching?
+
+BTW, may be, the approach with \@uclclist could be changed to be more efficient?
+I mean that for each \macros which represents some character (and which will appear
+as an argument of \MakeUppercase or \MakeLowercase), one should define
+two macroses -- \uc@macros and \lc@macros (which should expand to the
+uppercase and lowercase form of \macros, respectively).
+Then in the body of \MakeUppercase we should simply do \let\macros\uc@macros
+(in a local group) for all \macroses which have corresponding \uc@macroses or \ls@macroses?
+(we may provide a command, say, \DeclareUCLC{\macros}{\uc@macros}{\lc@macros},
+which will add `\let\macros\uc@macros' to the body of some control sequence,
+say, \do@uccase, and add `\let\macros\lc@macros' to the body of \do@lccase;
+then it would be sufficient to execute \do@uccase in the body of \MakeUppercase.
+This will do all necessary substitutions effectively).
+
+>     \begingroup
+>       \expandafter\toks@\expandafter{\@uclclist}%
+>       \toks@\expandafter{\the\toks@
+>         \rusa\RUSA\rusb\RUSB...}%
+>       \expandafter\gdef\expandafter\@uclclist\expandafter{\the\toks@}
+>     \endgroup
+
+This could be simplified as follows:
+\expandafter\def\expandafter\@uclclist\expandafter{\@uclclist
+\CYRa\CYRA\CYRb\CYRB...}
+
+> But the need for T2 is definitely here since 0x80-0xFF is not sufficient
+> for all Cyrillic characters, and the characters in the range 0x00-0x7F
+> *must* follow the default \lccode and \uccode values.
+
+Why must they? :-) The above mentioned solutions should work here, too.
+[although, it would be *very* inefficient and slow].
+
+--
+With best regards,
+                   Vladimir.
+

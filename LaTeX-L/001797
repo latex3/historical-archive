@@ -1,0 +1,125 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4601" "Mon" "10" "February" "1997" "04:43:12" "GMT" "Marcel Oliver" "moliver@math.uci.edu" nil "91" "Generic Mark-Up for Tables?" "^Date:" nil nil "2" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id FAA28039; Mon, 10 Feb 1997 05:43:40 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.CB919D75@listserv.gmd.de>; Mon, 10 Feb 1997 5:43:24 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 97568 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 10 Feb 1997 05:43:18 +0100
+Received: from math.uci.edu (root@math.uci.edu [128.200.174.70]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id FAA13589 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Mon, 10 Feb 1997 05:43:16
+          +0100 (MET)
+Received: from rasha.math.uci.edu by math.uci.edu (8.8.4) id UAA22989; Sun, 9
+          Feb 1997 20:43:13 -0800 (PST)
+Received: by rasha.math.uci.edu (8.8.5) id EAA18293; Mon, 10 Feb 1997 04:43:12
+          GMT
+Message-ID:  <199702100443.EAA18293@rasha.math.uci.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 10 Feb 1997 04:43:12 GMT
+From: Marcel Oliver <moliver@MATH.UCI.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Generic Mark-Up for Tables?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1797
+
+I would like to bring another topic up for discussion, namely the fact
+that there are currently virtually no high level, generic mark-up
+commands for the design of tables.
+
+Being a Mathematician, I never worried too much about the typesetting
+of tables, because tables rarely are rarely used in my field, and if
+so, they are rather trivial.  In the last few weeks I was helping a
+Linguist typesetting some paper, and although LaTeX performed
+miraculously well in handling the mixed use of three different
+alphabet (Latin, Greek, and Phonetic), the typesetting of two slightly
+non-trivial tables proved to be a major pain and a main source of
+delay for the whole project.
+
+First I should say that there seem to be some unwritten conventions in
+the field that seem not unrelated to the fact that most people use
+commercial word processors and thus these conventions reflect maybe
+more about the current capabilities of MS Word than anything else.  On
+the other hand they are too important to be ignored if LaTeX wants to
+claim some sort of universality.  To be more concrete, people seem to
+want different line styles for the separator between entries in the
+table (dashed, gray, dotted, double etc.) to indicate certain
+relationships between the entries.
+
+After some hacking, and the use of xfig for one of the tables, I more
+or less managed to produce the required output with LaTeX, but the
+solution was neither efficient nor in line with the LaTeX philosophy
+of providing generic mark up constructs.
+
+Thinking more about the matter, it seems that the whole table
+mechanism in LaTeX (the tabular environment and the various
+patches/replacements to it which exist in the tools distribution and
+on CTAN) are essentially on the level of plain TeX and visual mark-up.
+Even a very reasonable request like "I want my table to stretch to the
+whole width of the page rather than stop 3mm before the right margin"
+requires fiddling with @ expressions in the tabular*
+environment---which is not elegant, to say the least.
+
+So I would like to make a few suggestions.  I haven't done any deep
+research on this matter, but maybe other people have already had
+similar ideas or problems.
+
+1. One should identify logical units of tables (like \section etc.) in
+the body of a LaTeX document.  A (partial) list of these could be
+
+- column/row headers (which would probably be typeset in a different
+style or alignment option than the rest of the column/row.
+
+- 1st level, 2nd level, 3rd level etc. column separators, the same for
+row separators, separately specifiable for every entry in the table.
+
+- Different "data" types of entry (decimal number, integer, paragraph,
+unbreakable line etc.)
+
+2. The possibility to define more of the above entry types.  I am
+thinking in particular of the possibility to say that certain entries
+are of type A, and the table mechanism would automatically balance all
+entries of type A to have the same width.
+
+3. The introduction of a \tableclass command in analogy to
+\documentclass.  The documentclass would select a default table class,
+but the user could issue a new \tableclass commands before each table
+if necessary for the particular material.  The table class and its
+options would define the visual appearance of the generic mark-up
+features.  For example, it may map a 1st level column separator to a
+double line, a 2nd level column separator to a single line etc.
+
+4. I believe that many or all instances in which one currently needs
+to issue a \multicolumn command could be better handled by allowing
+a multilevel table structure, i.e. each entry could be a table by
+itself, and the algorithm would sensibly deal with placing it
+seamlessly into the higher level table.  Very similar to nested lists
+in current LaTeX.
+
+This will require something more sophisticated than merely placing the
+inner table into a box and then building the outer table around the
+box, because this would make alignment between rows or columns between
+different inner tables impossible.  Rather, the algorithm should be
+able to resolve the whole table in units of its finest subgrid, and
+then build the table as one entity.
+
+Maybe it would be still useful to have something like \multicolumn,
+but with a more systematic syntax, e.g. as a "level -1" column
+separator which breaks into the adjacent column, a "level -2" column
+separator which "eats" two column separators, and so on.
+
+
+Does this sound like a reasonable approach?  Does it seem possible to
+program such things in TeX with finite effort? (I have to admit that I
+don't know to much about the deep mysteries of plain TeX.)
+
+  Marcel
+

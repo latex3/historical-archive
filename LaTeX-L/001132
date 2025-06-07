@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2493" "Tue" "9" "November" "93" "18:26:54" "+0000" "Paul Taylor" "pt@DOC.IMPERIAL.AC.UK" nil "45" "all-purpose files & suffixes" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09690; Tue, 9 Nov 93 19:28:48 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA11671; Tue, 9 Nov 93 19:28:45 +0100
+Message-Id: <9311091828.AA11671@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3897; Tue, 09 Nov 93 19:27:21 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2600;
+ Tue, 09 Nov 93 19:27:16 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2598;
+ Tue, 09 Nov 93 19:27:13 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 9 Nov 93 18:26:54 +0000
+From: Paul Taylor <pt@DOC.IMPERIAL.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      all-purpose files & suffixes
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1132
+
+
+I find it curious (I want to leave it open whether that is positive or
+negative) that it should be Sebastian who would take up my challenge
+that user should expect there to be just one times.sty in the archive
+and that that should always work. It's curious partly because Sebastian
+is one of the archive maintainers, but more so because his slitex code
+actually does what I suggest.
+
+For the sake of tidiness, maybe there should be one file (times.sty)
+which tests which situation we're in and calls other approrpiate files.
+These I suppose ought to have prefixed or suffixed names, BUT they
+should all say clearly that (collectively) they supersede all other
+files called times.sty and also what their individual purpose is.
+
+You may not like my principle, but that is what users and local system
+maintainers expect, and rightly so.  As a non-driver I can't expoit this
+analogy very well, but imagine the corresponding situation for spare
+parts for your car, especially those parts which are not actually
+involved in making it go.
+
+Thinking about it a bit, the suggestion of several different suffices
+may well be the solution we're looking for.  In Unix implementations,
+macros, fonts, etc are searched for [sought] using "paths", for example
+        TEXINPUTS=.:$HOME/mymacros:/usr/local/tex/macros:/vol/tex/archive//
+What we need for parallel versions of LaTeX (and other formats) to work
+correctly is a different path for each one, so that the appropriate
+times.sty is picked up (in default of my principle above). Unfortunately
+TEXINPUTS is compiled in to virtex and cannot be switched from the format
+(though it could be from a surrounding shell script).
+
+\documentstyle, \documentclass and \usepackage could implement the same
+kind of thing, with suffixes (or prefixes or both). There would be a
+different "path" (list of affixes) for each of these commands, preferably
+set in a place which is reasonably easy to customise.
+
+While we're here, I suggest it's about time we distinguished between
+"options" (eg A4, Times) and "features" (diagrams, pictex, ...).
+An "option" is something that can be altered without making LaTeX fall
+over on the document.  Rather than worry too much at this stage about
+the philosophical differences between the two, I suggest there should
+simply be two commands, \usepackages and \documentoptions, which are
+coded to do the same thing (maybe with different paths) and let the users
+make the distinction as a matter of documenting their documents.
+
+Paul
+

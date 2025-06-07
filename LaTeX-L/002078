@@ -1,0 +1,70 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1069" "Tue" "17" "June" "1997" "13:59:21" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "34" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id PAA11180; Tue, 17 Jun 1997 15:42:10 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.7A8FC45C@listserv.gmd.de>; Tue, 17 Jun 1997 15:42:08 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 154705 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 17 Jun 1997 15:42:04 +0200
+Received: from punt-1.mail.demon.net (relay-11.mail.demon.net
+          [194.217.242.137]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          SMTP id PAA17006 for <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 17
+          Jun 1997 15:42:02 +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-1.mail.demon.net  id aa1110275; 17 Jun 97 14:05 BST
+Received: by dcarlisle.demon.co.uk id m0wdxqz-000OVoC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 17 Jun 1997 13:59:21 +0100 (BST)
+Message-ID:  <m0wdxqz-000OVoC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A2E4A2.400D81C7@vvv.vsu.ru> (message from Vladimir Volovich on
+              Sat, 14 Jun 1997 22:36:18 +0400)
+Date:         Tue, 17 Jun 1997 13:59:21 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2078
+
+> \def\uppercase#1{\protect\tmpe@uppercase{#1}}
+> \def\tmpe@uppercase#1{\edef\tmpd@uppercase{#1}%
+
+Please don't redefine the \uppercase primitive!!!
+
+\uppercase is fairly useless for making text uppercase. What it's real
+purpose is, is as the low level TeX primitive to change the character
+code of a character token without changing its catcode.
+
+Hence you find
+
+      \uppercase{%
+   \egroup
+      \def~%
+   }%
+
+in inputenc.sty and the rather similar
+
+  \uppercase{\def~}
+
+in dcolumn.sty
+
+Such uses really rely that \uppercase works the way it works.
+Any redefinition is likely to break these packages.
+
+Secondly you have applied \edef to a random user-supplied argument.
+This is the canoncal `moving argument' and so you should set \protect
+so as to give the user some way of preventing commands dying in the
+\edef. So the second line above should use \protected@edef rather than
+\edef. As \protected@edef ... \uppercase .... is essentially the
+definition of \MakeUppercase, you should probably just redefine that
+LaTeX command rather than the TeX primitive.
+
+David
+

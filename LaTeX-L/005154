@@ -1,0 +1,279 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Feb 2008 00:18:37 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m14NIZpg024490
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 5 Feb 2008 00:18:36 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m14NE1Ha004550
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 5 Feb 2008 00:14:02 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m14N19NT007816;
+	Tue, 5 Feb 2008 00:13:41 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 207351 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 5 Feb
+          2008 00:13:41 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m14NDfYM008487 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 5 Feb 2008 00:13:41 +0100
+Received: from mail.umu.se (jazz.umdac.umu.se [130.239.8.31]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m14N9X8R004765
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:09:38
+          +0100
+Received: from [IPv6:::1] (abel.math.umu.se [130.239.119.5]) by mail.umu.se
+          (8.13.6/8.13.1) with ESMTP id m14NDBCJ051958 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 5 Feb 2008 00:13:16 +0100
+          (MET)
+Mime-Version: 1.0 (Apple Message framework v624)
+References: A<a038e4e0eb2e79b6112fd170b3bb85ba@residenset.net>
+            <9343542E664B894484613D106D7D3F5F84AB36@s-yellow.net.silverstroke.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-Mailer: Apple Mail (2.624)
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id m14NDfYM008488
+Message-ID:  <302913a025eb41ce02463368c37d67d3@residenset.net>
+Date:         Tue, 5 Feb 2008 00:13:16 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: xparse and xdoc
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <9343542E664B894484613D106D7D3F5F84AB36@s-yellow.net.silverstroke.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: 0.536 () BAYES_00,FORGED_RCVD_HELO,LOCAL_STRANGE_CHEMICALS
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 04 Feb 2008 23:18:37.0429 (UTC) FILETIME=[4531BA50:01C86784]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5154
+
+I now have a working implementation (for LaTeX2e) of an argspec based 
+"\NewDocumentCommand", which seems to work very well, but could do with 
+a discussion.
+
+What I have to report on the matter is rather long (as mails tend to be 
+if one works at them on and off over a month or so), so I've split it 
+in three parts. This first part is replies to earlier mails in this 
+thread. The second part discusses argspec syntax and contains links to 
+my code, with an example document. The third part is about 
+technological issues with the argument grabber implementation.
+
+14 dec 2007 kl. 08.58 skrev Jonathan Sauer:
+> Hello,
+>
+>> [...]
+>> I can think of at least three advantages of this kind of
+>> postprocessing:
+>
+> 4.	Arguments can be checked (i.e. a numeric argument to be
+> 	in a given range, not empty etc.)
+
+Yes. I've included that as an "extra" item in the example mentioned 
+above.
+
+>> [...]
+>> Implementation-wise, a postprocessor could simply be something which
+>> fits the syntax
+>>
+>>    <postprocessor> <token register> <grabbed argument>
+>
+> I would prefer the approach
+>
+> 	<postprocessor> <continuation> <grabbed argument>
+>
+> where the postprocessor has the task of calling <continuation> (a 
+> macro,
+> possibly with additional parameters) with the <grabbed argument>. That
+> way, postprocessors can be chained (i.e. first check if it is empty and
+> replace with zero, then check that the value is not negative). The
+> final continuation would pass it on to the "real macro" or store it in
+> a token register.
+
+Indeed, this idea of continuations turned out to be very use- and 
+powerful. In particular I found that things such a _grabbing an 
+optional argument_ and _setting catcodes_ could fit into the same 
+pattern, so rather than introducing postprocessors I ended up with a 
+unified concept of argument processors that can be composed to perform 
+more specialised tasks. I'd appreciate some feedback on the matter of 
+syntax for this however, and there are also some technical details that 
+I think could do with critique.
+
+
+13 dec 2007 kl. 21.38 skrev Morten Høgholm:
+
+> The example file attached implements three new argument types:
+>   k = comma (komma in Danish and c was taken ;-)
+>     Takes {aaa,bbb,ccc} and transforms into {{aaa}{bbb}{ccc}}
+>   g {arg} = executes arg first.
+>   d = detokenizes the arguments.
+>
+> Was this what you had in mind?
+
+My idea was rather to have
+
+   k{<prefix>} :
+    Takes {aaa,bbb,ccc} and transforms into
+          {<prefix>{aaa}<prefix>{bbb}<prefix>{ccc}}
+
+---this way, one can have k{\do} transform {aaa,bbb,ccc} into the 
+\do-style list \do{aaa}\do{bbb}\do{ccc}. I don't see how a list with 
+one brace group after another would be much better than the original 
+comma-separated list; both need some special iterator for processing, 
+whereas a \do-style list can often just be executed.
+
+As for detokenization, I'm afraid that's a red herring. While it may 
+seem to do the right thing, there are actually several problems with it 
+in this context (constructing a representation for strings of input 
+characters):
+
+   1. Detokenized strings don't survive being written to file and read 
+back.
+      In the case of doc, this most notably involves .idx, .ind, .glo, 
+and
+      .gls files. Detokenization also leaves characters that are special
+      for external programs (e.g. makeindex) without quoting.
+
+This was enough reason for me to invent "harmless character sequences" 
+in xdoc, but there is more.
+
+   2. Detokenized strings offer no escape mechanism using which one can
+      express characters, such as %, that don't tokenize normally in 
+LaTeX.
+      They may be uncommon in names of things in (La)TeX code, but occur 
+in
+      other languages.
+
+   3. Detokenized strings cannot handle input encodings; they can at best
+      keep track of the octets used to represent characters. This is 
+unlike
+      verbatim-like environments, which off-the-shell actually do treat
+      8-bit and multibyte encodings correctly (LaTeX typesets what the
+      programmer sees in the editor).
+
+The last item is not correct in xdoc2 either at the moment, but it is 
+one of the things I indend to fix.
+
+
+> It's just a first take on this - will continue tomorrow.
+>
+> [snip rest for tonight]
+>
+>> What else? \predicate_p:n caught my attention. On one hand, it is a 
+>> very nice feature, but on the other its syntax feels like begging for 
+>> trouble. || and && for boolean OR and AND in LaTeX?
+>
+> In a mail to Frank I wrote
+>
+> <quote>
+> I know using || and && is begging for trouble... On the other hand && 
+> is easy to guard against and || brings up the question of when to make 
+> characters active.
+
+\begin{oldjoke}
+   Patient: Doctor, it hurts when I do this.\par
+   Doctor: Well, don't do that, then!
+\end{oldjoke}
+
+> Even though there is a long tradition for using \MakeShortVerb in the 
+> preamble, it's the sort of thing I am always worried about and it 
+> raises the question of "proper" catcode defences.
+> </quote>
+
+Actually, that wasn't my primary concern. I'm more troubled by the 
+incorrect expectations it will give rise to.
+
+> I considered using control sequences such as
+>   \def:Npn \c_or: {OO}    \def:Npn\c_and: {AA}
+> and one can do that, no problem. As long as they just expand to 
+> something we know what is.
+>
+>> That's just _so_ out of style, although perhaps comforting for 
+>> programmers coming from mainstream languages. Also, I wonder whether 
+>> (apparently legal) constructions like
+>>
+>>    \predicate_p:n{ \boolA && \boolB || \boolC && \boolD }
+>>
+>> does what anyone would expect.
+>
+> What would you expect from that?
+
+My expectation would be (A and B) or (C and D) -- I don't know any 
+language using && and || as boolean operations that don't assign higher 
+priority  to &&; even docstrip (OK, it's just & and | there) manages 
+that!
+
+> When one knows AND and OR then one also knows that the expressions can 
+> be ambiguous when you mix both operations without delimiting 
+> subexpressions.
+
+No more ambiguous than mixing * and + (not getting the priorities right 
+will simply get people disappointed).
+
+However, when there is no priority then I'd expect a left-associative 
+interpretation of the expressions (it is evaluated left to right, is it 
+not?). This would be ((A and B) or C) and D, but that's not what 
+\predicate_p:n does either. It took me quite some time to figure out 
+that the lazy evaluation has the side-effect of making the operations 
+right-associative, so it's A and (B or (C and D)).
+
+> The documentation doesn't say so explicitly but the example there 
+> shows such a subexpression.
+>
+>> Separate predicates for the AND of a list of predicates and the OR of 
+>> a list of predicates respectively seems preferable.
+>
+> We have had a few different implementations. The one in the December 
+> 2006 release on CTAN provides
+>   \prg_if_predicate_and_p:nn {<test 1>}{<test 2>}
+>   \prg_if_predicate_or_p:nn {<test 1>}{<test 2>}
+>   \prg_if_predicate_not_p:n {<test>}
+> plus some for multiple ANDs and ORs
+>   \prg_if_predicate_ors_p:n {<test 1> <test 2> ... <test n>}
+>   \prg_if_predicate_ands_p:n {<test 1> <test 2> ... <test n>}
+>
+>
+> Two things were wrong with this implementation.
+
+Of which predicates?
+
+> Firstly: it evaluated everything and that doesn't fit with the minimal 
+> evaluation often needed. One place in xor it led to an error because 
+> when a certain switch was false, a <num> register also being tested 
+> had been undefined. Even the \..._or_p:nn function evalutated both 
+> arguments.
+
+I seriously doubt that had anything to do with the syntax.
+
+> Secondly: code written with these functions had a tendency to be 
+> incomprehensible. At first there were only the former three mentioned 
+> above which made it even harder to see what was being tested in 
+> comparison to what when, say, three or four tests where performed, 
+> hence the multiple Ands and Ors versions were added.
+
+I don't find the binary forms that bad, but in that aspect I'm probably 
+damaged from writing fontinst integer expressions (indentation helps, 
+whereas LISP-style grouping with a long sequence of closings at the end 
+of the last line is unenlightening). For the n-ary forms, I suppose you 
+need some delimiter between the arguments (arguments being expanded by 
+looking for a <number>), but there's no need for it to be doubled, so 
+what about a comma?
+
+   \pedicate_or_p:n { <test 1> , <test 2> , ... , <test n> }
+   \pedicate_and_p:n { <test 1> , <test 2> , ... , <test n> }
+
+This is syntax used also elsewhere in the system, not some ad-hoc 
+invention that just happens to look good (we've got enough of those 
+among the TeX primitives as it is!).
+
+Lars Hellström
+

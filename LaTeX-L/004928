@@ -1,0 +1,278 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 5 Mar 2006 16:47:44 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k25FleoE010679
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 5 Mar 2006 16:47:41 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k25Fl2vj019964;
+	Sun, 5 Mar 2006 16:47:02 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k23JSbGi029011;
+	Sun, 5 Mar 2006 16:44:43 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1403170 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 5 Mar
+          2006 16:44:43 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k25Fih6b006492 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 5 Mar 2006 16:44:43 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.171]) by relay.uni-heidelberg.de (8.13.4/8.13.1) with
+          ESMTP id k25FiZjR021432 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 5 Mar 2006 16:44:39 +0100
+Received: from [84.169.143.7] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu3) with ESMTP (Nemesis),
+          id 0MKxQS-1FFvDI3O6A-0005aL; Sun, 05 Mar 2006 16:32:05 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 4762843613; Sun,  5 Mar 2006 16:32:04 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <20060304161541.GA23818@irwin.vpn.uni-freiburg.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: kundenserver.de abuse@kundenserver.de
+              login:923c546e49b26a7485eda6910e23f403
+Message-ID:  <17419.1140.112935.794773@morse.mittelbach-online.de>
+Date:         Sun, 5 Mar 2006 16:32:04 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: LICR objects
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20060304161541.GA23818@irwin.vpn.uni-freiburg.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 05 Mar 2006 15:47:44.0411 (UTC) FILETIME=[24C406B0:01C6406C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4928
+
+Heiko Oberdiek writes:
+
+ > I am interested in a mapping Unicode to LICR, therefore I should
+ > understand what a LICR really is.
+
+wouldn't we all? :-)
+
+ > Literature:
+ > [TLC2] Frank Mittelbach et.al., The LaTeX Companion, 2nd edition.
+ > 
+ > LICR is an abbreviation for "LaTeX internal character representation"
+ > (TLC2, 7.11.1)
+
+up front I guess I should say that in writing TLC2 I wasn't attempting to
+write a computer science paper and so some of the explanations in there
+oversimplify for the sake of presentability. And of course they don't put down
+all of our/my thinking about these things.
+
+"character" in LICR is meant in a similar way as characters are used in
+unicode ie the abstract concept not the visual "glyph" representation (not
+that unicode would be consistent here but that's a different  story)
+
+ > LaTeX is based on TeX, thus is the following assumption correct?
+ > 
+ > (1) LICR consists of a sequence of one or more TeX tokens.
+
+that's true but a fairly trivial conclusion from the fact that TeX is used,
+but not a definition of what an LICR is. (eg not every dog is a pudel)
+
+- the main characteristic of an LICR is that it is transparent to visual
+  representation attributes, ie if X is the/an LICR for the text character foo
+  then this is true in all circumstances, eg regardless of font changes,
+  writing to files, reading back in ...
+
+- there is in fact potentially more than one LICR for the same abstract
+  character
+
+- the model deals with characters for text, it doesn't cover math in
+  TeX as that has completely different underlying  models.
+
+a conclusion from the above and the fact that a lot of TeXs typesetting engine
+is happening without much intervention (eg chars -> glyph is usually handled
+by taking a char number as a slot in the current font table) is that if X is
+an LICR then it needs to automagically adjusts its "meaning" whenever outer
+attributes change.
+
+For the chars A-Z and so on this is trivially true by the LATeX doctrine that
+text fonts have to have those characters in their slot position (which makes
+them them simple LICR objects in table 7.31). For everything else it really
+means that LICRs have to be font encoding specific commands only.
+
+ > Conclusion:
+ > (2) LICR cannot be empty.
+ > That would mean ignoring characters cannot not be handled
+ > by an empty LICR.
+
+I have no idea why that would be a conclusion from the first point.
+
+Anyway, assuming there is an abstract character called "nothing here" then yes
+it could be represented as an empty LICR as that is transparent as required
+(it always does nothing). However,  I wouldn't have thought of it as an LICR
+so far andthe fact that the next encoding has two such slots with {} on the
+right side ... that doesn't prove anything other than nobody is perfect and
+this encoding was never being used or looked at much.
+
+
+ > The variety of TeX tokens is large.
+ > Are there restrictions?
+
+yes see above
+
+ > Starting at the basics:
+ > 
+ > TLC2, table 7.31 "LICR objects represented with single characters"
+ > I am sure about:
+ > 
+ > (3) LICR-letter := A_11, ..., Z_11, a_11, ..., z_11
+ > This means uppercase and lowercase ASCII letters with catcode 11.
+ >
+ > (4) LICR-other := 0_12, ..., 9_12,
+ >                   ._12, ,_12, ;_12, :_12, ?_12, !_12, '_12, `_12,
+ >                   *_12, +_12, -_12, =_12,
+ >                   (_12, )_12, [_12, ]_12, /_12, @_12
+ > 
+ > Regarding catcodes: TeX does not differentiate between
+ > A_11 or A_12, if the letter A is typeset. Thus is
+ > A_12 also a LICR and does "A" has more than one LICR?
+ 
+interesting question of whether it means A_11 or just A, in other words the
+fact that on lowlevel TeX can assign different catcodes does that have to be
+carried through to a higher level LaTeX model? 
+
+is A_12 something that is meaningful in LaTeX, can a LaTeX user generate it to
+a level that it is important? I don't really think so.
+
+so take your pick: either 
+
+  A_11 is the LICR and A_12 something like an LICR alias that largely behaves
+  like A_11 but in certain circumstances will be transformed into A_11 (eg
+  when writing out and reading back in) 
+
+  or they are both LICRs rpresenting the character A 
+
+  or A_12 is not a LaTeX concept and programmers making use of that fact are
+  on their own and have to know how to get from A_12 to A_11
+
+ > I interpret the characters below "Not Represented as Characters"
+ > are not LICRs for all catcodes:
+ > (5) LICR <> $, ^, _, {, }, #, &, %, \, ~,
+ >             <, >, |, "
+
+the wording "for all catcodes" takes you out of LaTeX again (from a model
+perspective). LaTeX doesn't have catcodes or allows users of LaTeX to access
+or change them. underlying technology may use these things but nothing on the
+model level
+
+otherwise yes: none of these are LICRs the first line because they are
+standard LaTeX syntax tokens and not able to represent characters at all in
+the official setup and the second line becase they do not have the property of
+representing the same character in all situations (eg if you change from one
+text font to another)
+
+ > There exist other representations of these characters, e.g.
+ >   $: \textdollar, \$
+ >   {: \textbraceleft, \{
+ >   |: \textbar, \mid, \vert
+ > Are both LICRs or which is? I suspect the \text... vesions.
+
+\text...   as Lars already remarked \mid and \vert are not even close to LICRs
+as they are math commands completely unrelated to text commands and not at all
+having the property of representing a char in all text contexts
+
+\$ \{ are a bit more tricky. they are established input methods and eventually
+resolve into an LICR when used in a text context.
+
+ > 
+ > My guesses in case that a character is mapped to one LICR only:
+ >   $: \textdollar (U+0024 DOLLAR SIGN)
+ >   ^: \textasciicircum (U+005E CIRCUMFLEX ACCENT)
+ >   _: \textunderscore (U+005F LOW LINE)
+ >   {: \textbraceleft (U+007B LEFT CURLY BRACKET)
+ >   }: \textbraceright (U+007D RIGHT CURLY BRACKET)
+ >   #: \# (U+0023 NUMBER SIGN)
+ >   &: \& (U+0026 AMPERSAND)
+ >   %: \% (U+0025 PERCENT SIGN)
+ >   \: \textbackslash (U+005C REVERSE SOLIDUS)
+ >   ~: \textasciitilde (U+007E TILDE)
+ >   <: \textless (U+003C LESS-THAN SIGN)
+ >   >: \textgreater (U+003E GREATER-THAN SIGN)
+ >   |: \textbar (U+007C VERTICAL LINE)
+
+yes and no. ideally yes, but the way the model works it is possible to define
+more than one LICR representing the same character. we have tried to avoid
+this and so far I think in the official set of supported encodings this is not
+the case.
+
+ > Thus the entry for U+02C6 in utf8enc.dfu is not really correct:
+ >   \DeclareUnicodeCharacter{02C6}{\textasciicircum}
+ >   U+02C6 MODIFIER LETTER CIRCUMFLEX ACCENT
+ > "\^" would be more correct, except that grabbing the
+ > argument isn't too trivial in case of utf-8 characters
+ > consisting of several bytes.
+
+modifier letters in unicode are a bunch of very special things and aren't
+really representable at all in the TeX/LaTeX world ... but that is a different
+story.
+
+that particular entry could be indeed wrong
+
+ > Next issue: ligatures, e.g.
+ >   U+2013 EN DASH
+ >   utf8enc.dfu: \DeclareUnicodeCharacter{2013}{\textendash}
+ > What about "--" for the en dash?
+ > Does the en dash has two LICRs, "\textendash" and "--"?
+
+TLC2 is deliberately a bit vague on this. but in some sense they are two LICRs
+representing the same character. the only way to avoid this would be to
+disallow -- on input which seems counterproductive. but it is a boundary case
+eg !` is explicitly mentioned as not being considered a LICR as it isn't
+universally supported.
+
+
+ > What is the LICR of "fi"?
+ >   U+FB01 LATIN SMALL LIGATURE FI
+ > The ligature mechanism depends on the used fonts, "fi" is not
+ > always available. What is better?
+ >   \DeclareUnicodeCharacter{FB01}{\textfi}
+ >   \ProvideTextCommandDefault{\textfi}{fi}
+ > vs.
+ >   \DeclareUnicodeCharacter{FB01}{fi}
+
+difficult to say. in my opinion UC is at fault making those ligatures
+characters and million others not so i would probably go the second
+alternative
+
+ > At last the remaining tokens are:
+ > (a) commands, short form (\^, \ , \., ...)
+ > (b) commands with letter names (\c, \textperiodcentered)
+ > (c) balanced curly braces with standard catcodes 1 and 2 for
+ >     arguments.
+ > Is the list complete?
+
+not sure what this list should signify. what can appear in the second arg of 
+\DeclareUnicodeCharacter?
+
+
+ > Question for (b). All names I found in utf8enc.dfu or the other
+ > input encoding files usually use A-Za-z only. The exception
+ > is \@tabacckludge with "@" in the name. Is this correct for all LICRs?
+
+it is correct for all LICR that they are 7-bit in a way that reading and
+writing under different input encoding names will not make them break or
+change. As LaTeX internally defines @ to be catcode 11 while reading its own
+files @ is allowed as a possibility. However, LICRs are meant to work as save
+input methods for users which is why all the publically declared LICRs do not
+have @ in their name.
+
+And fore anybody asks \@tabacckludge\' isn't anything else than a hack as \'
+isn't technically a proper LICR because of the famous overloading of \' inside
+tabbing. A more correct way would have been to define a \textacc... LICR and
+make \' and the others point to it outside tabbing. However, it happened
+differently and though there was some discussion on normalizing it never came
+to that as the current solution worked well enough
+
+frank
+

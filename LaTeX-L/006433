@@ -1,0 +1,84 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o8LJVQ9t020128
+	for <rainer@rainer-schoepf.de>; Tue, 21 Sep 2010 21:31:27 +0200
+Received: (qmail 21897 invoked by alias); 21 Sep 2010 19:31:21 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 21 Sep 2010 19:31:20 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx106) with SMTP; 21 Sep 2010 21:31:20 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id o8LJTR4c002064
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 21 Sep 2010 21:29:28 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o8LFUaSR018044;
+	Tue, 21 Sep 2010 21:29:26 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 473058 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 21 Sep
+          2010 21:29:26 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o8LJTQDp025408 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 21 Sep 2010 21:29:26 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id o8LJTDMq001824 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 21 Sep 2010 21:29:17 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1Oy8Wf-0000EP-Zq for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 21 Sep
+          2010 19:29:13 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.9)
+            Gecko/20100915 Thunderbird/3.1.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4C990788.7020607@morningstar2.co.uk>
+Date:         Tue, 21 Sep 2010 20:29:12 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: LuaTeX and category code tables
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4WX0t+AtsdW7yLAyG7gjsvbuMBW1+iOcuX20PnIgZYSReJ2t5I3NmC6UiZ5
+ m/C4lwalEbbXLc0SQM9DzJc0PDB2SQR7IUhMTfMVOxsqmn1fI9E19lKlwNg+oc3IiIeD4kYFqcws
+ Cjzmg==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6433
+
+Hello all,
+
+The recent discussion about expl3 updates breaking unicode-math has 
+prompted the team to look again engine-variation in expl3. In 
+particular, the approach of using category code tables for 
+\ExplSyntax..., while attractive, leads to problems as the behaviour of 
+different engines is too different. Thus this idea is being removed from 
+expl3, with the standard method being used to set up the code 
+environment irrespective of the engine in use.
+
+This does not mean that support for category code tables themselves is 
+dropped. When used with LuaTeX, expl3 (as a package or in format mode) 
+provides a mechanism for managing category code tables and associated 
+macros. For the expl3 package, this is done by loading Heiko Oberdiek's 
+luatex package, whereas in format mode the same ideas are implemented 
+directly.
+
+There will be a CTAN update of expl3 soon (by the weekend, I hope). This 
+will include these changes (along with others: see my other e-mails).
+-- 
+Joseph Wright
+

@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3478" "Mon" "8" "November" "93" "14:10:37" "+0000" "Paul Taylor" "pt@DOC.IMPERIAL.AC.UK" nil "70" "NF prefix, LaTeX/NFSS compatibility, etc" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06525; Mon, 8 Nov 93 15:30:03 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA07218; Mon, 8 Nov 93 15:29:58 +0100
+Message-Id: <9311081429.AA07218@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0518; Mon, 08 Nov 93 15:28:33 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2807;
+ Mon, 08 Nov 93 15:28:16 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2804;
+ Mon, 08 Nov 93 15:28:10 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 8 Nov 93 14:10:37 +0000
+From: Paul Taylor <pt@DOC.IMPERIAL.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      NF prefix, LaTeX/NFSS compatibility, etc
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1110
+
+
+I suggest that the discussion of "NF" prefixes on files misses the point.
+I defend the view that
+
+        A LaTeX user is entitled to take *any* file called
+        "times.sty" from the International TeX archive,
+        put it in his macros directory, run his existing
+        LaTeX implementation with \documentstyle[times]
+        and expect to get his document printed in Times.
+
+In other words, rather than creating more new files called times.sty,
+nftimes.sty or whatever, there should be one version which supersedes
+all others, for all purposes.
+
+I do this for my own code (diagrams.tex, QED.sty, etc), as do Kris Rose
+and Alan Jeffery.  It's tricky to catch all the cases, but well within
+the abilities of the LaTeX3 team.
+
+Each of, say, latex.tex, (nf)lfonts.tex, article.sty and amssymb.sty
+should check that the others are up to date and give a clear message
+(saying how to get a new version) if not.
+
+This is particularly urgent for [a]mssymb[ols].{def,tex,sty}, which has
+caused me (as a site maintainer) more headaches than any other single
+component.  This is aggravated by users' habits of copying the damn
+file from the system macros directory on whichever stone age LaTeX
+implementation they first met into their privite directories.
+They do this because they don't trust us (implementers & maintainers),
+and I can't blame them.  Only if one version is published which says
+in BIG LETTERS than it really does supersede all the others (and work)
+will they stop doing this.
+
+Currently we have (from the archive at Aston)
+          aston/fonts/ams/amsfonts/amssym.def                4067  25 Feb 93
+        aston/macros/plain/contrib/amssym.def                4062  31 Aug 92
+ aston/macros/latex/distribs/nfss2/amssymb.sty              16339  05 Aug 93
+aston/macros/latex/contrib/springer/ljour/amssymb.sty        8197  08 Jul 93
+   aston/fonts/ams/amslatex/inputs/amssymb.sty               7935  25 Jun 91
+              aston/macros/foiltex/amssymbl.sty             10635  25 Aug 92
+   aston/macros/latex/contrib/misc/amssymbols.sty            9515  02 Apr 93
+          aston/fonts/ams/amsfonts/amssym.tex                8678  25 Feb 93
+        aston/macros/plain/contrib/mssymb.tex                9194  27 Aug 92
+
+COMPATIBILITY OF MATHS FONTS
+The LaTeXbook says that ${\bf ab}$ produces two bold letters, and similarly
+\it \sf \rm \tt \sl.  For compatibility this has to stay - INDEFINITELY.
+(see below).
+
+However oldlfont.sty is NOT reverse-compatible, because with the AMS symbols
+(implemented by importing a file from amstex) work(ed) the other way:
+${\Bbb AB}$, etc, produce one blackboard bold letter and one maths italic.
+Again this has to stay.
+
+WHY INDEFINITELY?
+I like Frank's solution of \documentclass for new things and \documentstyle
+for old.  However it does not relieve you of the responsibility of still
+supporting ${\bf ab}$ for two bold letters, because of cut-and-paste.
+
+I have old notes of calculations I did some time ago which I intend to
+include in a future book.  I've already spent the time proof-reading the
+subscripts in all of the formulae and see no reason why I should have to
+do it again, even when the surrounding text is completely new.
+
+Paul Taylor
+
+PS
+I'm really looking forward to the new release of LaTeX+NFSS2, but I shall
+believe it when I see it. One of the original Tugboat papers on NFSS promissed
+us LaTeX 2.10 with NFSS, but it never came.
+I would also like to have my confidence in Frank, Rainer et al. restored.
+

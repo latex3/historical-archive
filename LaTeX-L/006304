@@ -1,0 +1,184 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o21JsZci020152
+	for <rainer@rainer-schoepf.de>; Mon, 1 Mar 2010 20:54:36 +0100
+Received: (qmail 5008 invoked by alias); 1 Mar 2010 19:54:30 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 01 Mar 2010 19:54:29 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx099) with SMTP; 01 Mar 2010 20:54:29 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id o21Jr9Nf032364
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 1 Mar 2010 20:53:10 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o21EulfZ018827;
+	Mon, 1 Mar 2010 20:51:03 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 391555 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 1 Mar
+          2010 20:51:03 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o21Jf3H1005669 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 1 Mar 2010 20:41:03 +0100
+Received: from mail-bw0-f212.google.com (mail-bw0-f212.google.com
+          [209.85.218.212]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id o21Jeueo022680 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 1 Mar 2010 20:41:00 +0100
+Received: by bwz4 with SMTP id 4so2154747bwz.8 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 01 Mar 2010 11:40:59 -0800
+          (PST)
+Received: by 10.204.3.207 with SMTP id 15mr3333349bko.91.1267472459146; Mon, 01
+          Mar 2010 11:40:59 -0800 (PST)
+Received: from localhost ([41.238.234.78]) by mx.google.com with ESMTPS id
+          13sm2277968bwz.11.2010.03.01.11.40.57 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Mon, 01 Mar 2010 11:40:58 -0800 (PST)
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="azLHFNyN32YCQGCU"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+X-Spam-Whitelist: <dr.khaled.hosny@gmail.com>
+Message-ID:  <20100301194054.GA4037@khaled-laptop>
+Date:         Mon, 1 Mar 2010 21:40:54 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Khaled Hosny <khaledhosny@EGLUG.ORG>
+Subject: Babel, LuaTeX and hyphenation
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p6i75npGen84eVAEFK/syJmiNoEBJhgjYKpglu1TZLLw7xMZnJMXwBFK0zrU
+ udEInhYyaWAzwtcf5K2pCdD+gZ2/z4PnBLkwiyaJZkG+fYRt0YEoCUqaH0KYYA68MloMlZBqZkvN
+ Xn9gQ==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+X-Scanned-By: MIMEDefang 2.63 on 85.214.41.38
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6304
+
+--azLHFNyN32YCQGCU
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+
+Hello LaTeXers,
+
+As some of you are already ware of, LuaTeX can load hyphenation patterns
+dynamically (i.e. in non-initex mode) and thus hyphenation patterns need
+not to be loaded in the format, actually what gets stored in the format
+is the string representation of the patterns and it gets re-evaluated at
+format load time, so loading many patterns in the format results in too
+much startup delay (3 seconds on my system) for no good reason.
+
+Trying to fix this for Babel, i.e. hyphenation patterns are only loaded
+when requested, I patched hyphen.cfg file to do so when running under
+LuaTeX. It seems to work, as far as my tests go, except that would need
+to explicitly select a language or there will be now hyphenations i.e.
+Bebel don't seem to load any language by default (unlike plain TeX), and
+I'm not sure how to handle this.
+
+Patch is attached for your comments.
+
+Regards,
+ Khaled
+
+-- 
+ Khaled Hosny
+ Arabic localiser and member of Arabeyes.org team
+ Free font developer
+
+--azLHFNyN32YCQGCU
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment; filename="hyphen.cfg.diff"
+
+diff --git a/hyphen.cfg b/hyphen.cfg
+index 0465777..7de67ab 100644
+--- a/hyphen.cfg
++++ b/hyphen.cfg
+@@ -48,7 +48,11 @@
+ \ifx\ProvidesFile\@undefined
+   \def\ProvidesFile#1[#2 #3 #4]{%
+     \wlog{File: #1 #4 #3 <#2>}%
+-    \toks8{Babel <#3> and hyphenation patterns for }%
++    \ifx\directlua\@undefined%
++      \toks8{Babel <#3> and hyphenation patterns for }%
++    \else%
++      \toks8{Babel <#3> }%
++    \fi%
+     \let\ProvidesFile\@undefined
+     }
+   \def\ProvidesLanguage#1[#2 #3 #4]{%
+@@ -57,7 +61,11 @@
+ \else
+   \let\bbl@tempa\ProvidesFile
+   \def\ProvidesFile#1[#2 #3 #4]{%
+-    \toks8{Babel <#3> and hyphenation patterns for }%
++    \ifx\directlua\@undefined%
++      \toks8{Babel <#3> and hyphenation patterns for }%
++    \else%
++      \toks8{Babel <#3> }%
++    \fi%
+     \bbl@tempa#1[#2 #3 #4]%
+     \let\ProvidesFile\bbl@tempa}
+   \def\ProvidesLanguage#1{%
+@@ -153,6 +161,12 @@
+     \expandafter\ifx\csname date#1\endcsname\relax
+       \@noopterr{#1}%
+     \else
++      \ifx\directlua\@undefined\else
++         \input \csname bbl@l@patterns@#1\endcsname\relax
++         \ifcsname bbl@l@exceptions@#1\endcsname
++           \input \csname bbl@l@exceptions@#1\endcsname\relax
++         \fi
++      \fi
+       \bbl@patterns{\languagename}%
+       \originalTeX
+       \expandafter\def\expandafter\originalTeX
+@@ -306,7 +320,9 @@
+   \expandafter\addlanguage\csname l@#1\endcsname
+   \expandafter\language\csname l@#1\endcsname
+   \def\languagename{#1}%
+-  \global\toks8\expandafter{\the\toks8#1, }%
++  \ifx\directlua\@undefined
++    \global\toks8\expandafter{\the\toks8#1, }%
++  \fi
+   \begingroup
+     \bbl@get@enc#1:\@@@
+     \ifx\bbl@hyph@enc\@empty
+@@ -314,7 +330,11 @@
+       \fontencoding{\bbl@hyph@enc}\selectfont
+     \fi
+     \lefthyphenmin\m@ne
+-    \input #2\relax
++    \ifx\directlua\@undefined
++      \input #2\relax
++    \else
++      \expandafter\gdef\csname bbl@l@patterns@#1\endcsname{#2}
++    \fi
+     \ifnum\lefthyphenmin=\m@ne
+     \else
+       \expandafter\xdef\csname #1hyphenmins\endcsname{%
+@@ -336,7 +356,11 @@
+   \else
+     \ifx\bbl@tempa\space
+     \else
+-      \input #3\relax
++      \ifx\directlua\@undefined
++        \input #3\relax
++      \else
++        \expandafter\gdef\csname bbl@l@exceptions@#1\endcsname{#3}
++      \fi
+     \fi
+   \fi
+   }
+
+--azLHFNyN32YCQGCU--
+

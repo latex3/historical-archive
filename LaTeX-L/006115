@@ -1,0 +1,94 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Oct 2009 15:21:54 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n9SELsdX002847
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 28 Oct 2009 15:21:54 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n9SEHMXU023722
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 28 Oct 2009 15:17:22 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n9SCj0go022076;
+	Wed, 28 Oct 2009 15:17:09 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 356929 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 28 Oct
+          2009 15:17:09 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n9SEH80n016035 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 28 Oct 2009 15:17:08 +0100
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n9SEGp7V023052
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <latex-l@listserv.uni-heidelberg.de>; Wed, 28 Oct 2009 15:16:55
+          +0100
+Received: from remote190-220.home.uni-freiburg.de ([132.230.190.220]
+          helo=irwin.vpn.uni-freiburg.de) by atlas.informatik.uni-freiburg.de
+          with esmtpsa (TLSv1:AES256-SHA:256) (Exim 4.68) (envelope-from
+          <oberdiek@uni-freiburg.de>) id 1N39KU-000475-OG; Wed, 28 Oct 2009
+          15:16:50 +0100
+Received: by irwin.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 4537617B69; Wed, 28 Oct 2009 15:16:51 +0100 (CET)
+Mail-Followup-To: latex-l@listserv.uni-heidelberg.de, Boguslaw Jackowski 
+                  <B_Jackowski@GUST.org.pl>,
+                  Marcin Wolinski <wolinski@ipipan.waw.pl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Message-ID:  <20091028141650.GA3488@irwin.vpn.uni-freiburg.de>
+Date:         Wed, 28 Oct 2009 15:16:51 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Encoding subset for lm* and tg*
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 28 Oct 2009 14:21:54.0545 (UTC) FILETIME=[FFD99610:01CA57D9]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6115
+
+Hello,
+
+textcomp.sty contains:
+  \DeclareEncodingSubset{TS1}{cmr}{0}
+  ...
+  \DeclareEncodingSubset{TS1}{ptmj}{4}
+However, I miss entries for the new font families
+of Latin Modern and TeX Gyre.
+
+Both seems to support "0":
+
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tgheros}
+\usepackage{textcomp}
+\DeclareEncodingSubset{TS1}{lmr}{0}
+\DeclareEncodingSubset{TS1}{qhv}{0}
+\begin{document}
+\textrm{\textcircled{a}}
+\textsf{\textcircled{a}}
+\end{document}
+
+Without the subset declarations there is a warning for qhv (tgheros):
+  LaTeX Font Warning: Font shape `OMS/qhv/m/n' undefined
+  (Font)              using `OMS/cmsy/m/n' instead on input line 10.
+
+With the declarations the example runs without errors and
+warnings, but the circle is a little small.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

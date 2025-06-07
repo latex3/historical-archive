@@ -1,0 +1,85 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1803" "Tue" " 1" "February" "1994" "17:21:25" "+0100" "Tim Van Zandt" "tvz@core.ucl.ac.be" "<199402012026.AA25295@mail.cs.tu-berlin.de>" "54" "Taking care when changing catcodes" "^Date:" nil nil "2" "1994020116:21:25" "Taking care when changing catcodes" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA24675; Tue, 1 Feb 94 21:27:10 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA11618; Tue, 1 Feb 94 21:26:13 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA25295
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 1 Feb 1994 21:26:10 +0100
+Message-Id: <199402012026.AA25295@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9806; Tue, 01 Feb 94 21:26:06 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9804; Tue,
+ 1 Feb 1994 21:26:06 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 8992; Tue,
+ 1 Feb 1994 18:40:06 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 1 Feb 1994 17:21:25 +0100
+From: Tim Van Zandt <tvz@core.ucl.ac.be>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Taking care when changing catcodes
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1367
+
+Hello.
+
+Now that fiddling with catcodes is becoming increasingly popular,
+some macros take it upon themselves to guarantee certain catcodes
+before scanning arguments. For examle, from the nfsscode.ltx in
+LaTeX3e:
+
+\def\DeclareFontEncoding{%
+   \begingroup
+   \catcode`\ 9%
+   \catcode`\^^M9%
+   \DeclareFontEncoding@}
+\def\DeclareFontEncoding@#1#2#3{%
+  \endgroup
+  \expandafter
+  \ifx\csname T@#1\endcsname\relax
+     \def\cdp@elt{\noexpand\cdp@elt}%
+     \xdef\cdp@list{\cdp@list\cdp@elt{#1}%
+                    {\default@family}{\default@series}%
+                    {\default@shape}}%
+  \fi
+  \global\@namedef{T@#1}{#2}%
+  \global\@namedef{M@#1}{\default@M#3}%
+  }
+
+The problem with this particular example is that if \DeclareFontEncoding
+does not find its arguments, the \endgroup is never executed. That pretty
+much destroys the rest of the job. Of course, the error in the arguments
+has to be fixed before the file can be printed, but it is always better
+if the user can plow ahead for a while before fixing each error.
+
+\DeclareFontShape does the same kind of thing. This kind of problem is
+more grave when the macro is something users commonly type themselves
+(unlike \DeclareFontEncoding and \DeclareFontShape).
+
+I suggest instead putting the \endgroup in the first part of the macro, so
+that it gets executed no matter what:
+
+\def\DeclareFontEncoding{%
+   \begingroup
+   \catcode`\ 9%
+   \catcode`\^^M9%
+   \expandafter\endgroup\DeclareFontEncoding@}
+\def\DeclareFontEncoding@#1#2#3{%
+  \expandafter
+  \ifx\csname T@#1\endcsname\relax
+     \def\cdp@elt{\noexpand\cdp@elt}%
+     \xdef\cdp@list{\cdp@list\cdp@elt{#1}%
+                    {\default@family}{\default@series}%
+                    {\default@shape}}%
+  \fi
+  \global\@namedef{T@#1}{#2}%
+  \global\@namedef{M@#1}{\default@M#3}%
+  }
+

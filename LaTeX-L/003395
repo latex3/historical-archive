@@ -1,0 +1,237 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6828" "Wed" "10" "November" "1999" "19:18:03" "+0000" "James Kilfiger" "mapdn@CSV.WARWICK.AC.UK" nil "192" "Re: xcontents" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA28060
+	for <schoepf@UNI-MAINZ.DE>; Wed, 10 Nov 1999 20:18:41 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.29D151D6@mail.listserv.gmd.de>; Wed, 10 Nov 1999 20:18:06 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445961 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 10 Nov 1999 20:17:55 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id UAA21955 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 10 Nov
+          1999 20:17:53 +0100 (MET)
+Received: from daffodil.csv.warwick.ac.uk (daffodil.csv.warwick.ac.uk
+          [137.205.192.30]) by relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with
+          ESMTP id UAA03387 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 10 Nov
+          1999 20:18:06 +0100 (MET)
+Received: from mimosa.csv.warwick.ac.uk (mapdn@mimosa [137.205.192.34]) by
+          daffodil.csv.warwick.ac.uk (8.9.3/8.9.3) with ESMTP id TAA16666 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 10 Nov 1999 19:18:04 GMT
+Received: (from mapdn@localhost) by mimosa.csv.warwick.ac.uk (8.9.3/8.9.3) id
+          TAA11009 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Wed, 10 Nov 1999 19:18:03
+          GMT
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <199911101918.TAA11009@mimosa.csv.warwick.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <14375.58629.679692.883454@n15ux24.nets.de.eds.com> from Frank
+              Mittelbach at "Nov 9, 99 10:10:29 am"
+Date:         Wed, 10 Nov 1999 19:18:03 +0000
+From: James Kilfiger <mapdn@CSV.WARWICK.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3395
+
+>  > I've been filling in the gaps in xcontents.dtx, and have a working
+>  > package that more or less matches the documentation.  The main thing I
+> sounds great. i guess you are going to share that with us at some point, yes?
+I'll append it below. It is almost entirely copied from latex.ltx
+I'm not sure what you mean by the collection-id key of processcontents
+I don't think I've done the right thing with it.
+
+> error catching is an important aspect in its own right; i agree. but
+> for prototype implementations i don't mind much if errors aren't
+> caught.
+
+True, provided you will give error-catching the priority it deserves I'm
+happy. I know it is always too easy to treat error handling as `second-
+class coding'.  (but I don't suggest the latex3 team is guilty of this)
+>
+> But one needs to think about how to struture that "help info" so that
+> external programs (like emacs or whatever) can make good use of the
+> information. for LaTeX itself the information is not likely to be
+> usable (i think)
+
+There could be a \ShowCommand which would access that help, but I guess
+that would not be of much use to the majority of users.  The most
+useful thing might be for the help texts of commands to be able to
+hyper-reference other commands.  But I think such help texts must be
+fairly short.  They can't replace good general documentation.
+
+> effectively all i think commands like \DeclareUserCommand or
+> \DeclareTemplateType etc. should do is to provide an extra argument in
+> which this information goes but not to use it themselves.
+
+\DeclareUserCommand?  is this \DeclareDocumentCommand -- The Next
+Generation? Help for commands used could be saved and written to a
+file \jobname.help (or whatever) which then could be parsed by emacs,
+a person or whatever. Or the help text for user commands could be
+displayed when an error occurs while processing that command.
+
+> by the way, was this mail sent before it was finished? my copy ends with
+>
+>  > there any more thoughts on how that could be done?  It would be
+Probably I was going to end `It would be a Good Thing'.
+
+Below is xcontents.sty.
+
+\RequirePackage{xparse}
+\RequirePackage{template}
+\IgnoreWhiteSpace
+\DeclareTemplateType{contentsobject}{6}
+\DeclareTemplateType{processcontents}{0}
+\def\comma{,}
+\DeclareTemplate{contentsobject}{JK}{6}{
+  pre-v-action     =f0 [\endgraf] \COpre@action,
+  object-decls     =f0 [\relax]   \COobject@decl,
+  object-indent    =l  [0pt]      \leftskip,
+  number-width     =l  [0pt]      \@tempdima,
+  right-margin-sep =l  [25pt]     \rightskip,
+  pnum-width       =l  [15pt]     \@tempdimb,
+  number-format    =f1 [#1\hfil]  \COnumber@format,
+  title-format     =f1 [#1]       \COtitle@format,
+  pnum-format      =f1 [\hfil#1]  \COpnum@format,
+  leaders-action   =f0 [.]        \COleaders@action,
+  leaders-sep      =l  [4pt]      \@tempdimc
+ }
+ {
+  \ifnum #2>\c@tocdepth \else
+   {
+   \DoParameterAssignments
+   \COpre@action
+   \COobject@decl
+   \parfillskip=-\rightskip
+   \parindent=0pt
+   \@afterindenttrue
+   \interlinepenalty\@M
+   \leavevmode
+   \IfNoValueT{#3}{\def\COnumber@format##1{\hfil}}
+   \hbox to \@tempdima {\COnumber@format{#3}}
+   \nobreak
+   \COtitle@format{#4}
+   \nobreak
+   \leaders\hbox{
+      \kern\@tempdimc
+      \hbox{\COleaders@action}
+      \kern\@tempdimc
+   }\hfill
+   \nobreak
+   \hbox to \@tempdimb {\COpnum@format{#6}}
+    \endgraf
+ }
+ \fi
+}
+
+\DeclareTemplate{contentsobject}{JKpnumfirst}{6}{
+  pre-v-action     =f0 [\endgraf] \COpre@action,
+  object-decls     =f0 [\relax]   \COobject@decl,
+  object-indent    =l  [0pt]      \leftskip,
+  object-width     =L  [\DelayEvaluation{\linewidth}]
+                                  \COobject@width,
+  pnum-width       =l  [30pt]     \@tempdimb,
+  title-format     =f1 [#1]       \COtitle@format,
+  pnum-format      =f1 [#1]       \COpnum@format,
+  pnum-title-sep   =l  [5pt]      \@tempskipa}
+{
+  \IfNoValueF{#3}
+     {\PackageWarning{xcontents}{Number~of~contents~object~was~ignored.}{}}
+  \ifnum #2>\c@tocdepth \else {
+    \DoParameterAssignments
+    \parindent=0pt
+    \COpre@action
+    \COobject@decl
+    \leavevmode
+    \hbox to \COobject@width {
+        \hbox to \@tempdimb{\COpnum@format{#6}\hfil}
+        \hspace{\@tempskipa}
+        \COtitle@format{#4}\hfil}}
+}
+
+\DeclareTemplate{processcontents}{JK}{0}{
+  start-action   =f0 [\relax]   \COstart@action,
+  end-action     =f0 [\relax]   \COend@action,
+  file-name      =n  [\jobname] \COfile@name,
+  file-extension =n             \COextension,
+  contents-depth =c  [2]        \c@tocdepth,
+  collection-id  =n  []         \COcollection@id,
+  heading        =f0 [\section*]\COheading,   %actully use some instance
+  name           =n  [\contentsname] \COname,
+  header-format  =f0 [\MakeUpperCase] \COheader@format
+}
+{
+ \DoParameterAssignments
+ \COheading{\COname
+      \@mkboth{\CO@header@format\COname}{\CO@header@format\COname}}
+ \begingroup
+ \UseCollection{contentsobject}{\COcollection@id}  %Is this wrong?
+ \makeatletter
+ \COstart@action
+ \@input{\COfile@name.\COextension}
+ \if@filesw
+   \expandafter\newwrite\csname tf@\COextension\endcsname
+   \immediate\openout \csname tf@\COextension\endcsname
+                            \COfile@name.\COextension\relax
+ \fi
+ \@nobreakfalse
+ \endgroup
+}
+
+\DeclareInstance{contentsobject}{section}{JK}{
+  pre-v-action     = \DelayEvaluation{\addpenalty \@M
+                     \addvspace{1em \@plus \p@}},
+  right-margin-sep = 15pt,
+  title-format     = \textbf{#1},
+  number-format    = \textbf{#1\hfil},
+  pnum-format      = \textbf{\hfil#1},
+  leaders-action   = ~,
+  number-width     = \DelayEvaluation{1.5em}}
+
+\DeclareInstance{contentsobject}{subsection}{JK}{
+  object-indent = \DelayEvaluation{1.5em},
+  number-width  = \DelayEvaluation{2.3em}}
+
+\DeclareInstance{contentsobject}{subsubsection}{JK}{
+  object-indent = \DelayEvaluation{3.8em},
+  number-width  = \DelayEvaluation{3.2em}}
+
+\DeclareInstance{contentsobject}{paragraph}{JK}{
+  object-indent = \DelayEvaluation{7.0em},
+  number-width  = \DelayEvaluation{4.1em}}
+
+\DeclareInstance{contentsobject}{subparagraph}{JK}{
+  object-indent = \DelayEvaluation{10em},
+  number-width  = \DelayEvaluation{5em}}
+
+\DeclareInstance{contentsobject}{pnumsubsection}{JKpnumfirst}
+{object-width=4cm}
+\DeclareInstance{contentsobject}{pnumsection}{JKpnumfirst}
+{object-width=4cm}
+
+\DeclareInstance{processcontents}{tableofcontents}{JK}{
+   file-extension = toc
+  }
+
+\DeclareDocumentCommand{\contentsobject}{mmmmmmm}
+  {\UseInstance{contentsobject}{#3}{#1}{#2}{#4}{#5}{#6}{#7}}
+
+\DeclareDocumentCommand{\JKtableofcontents}{}{
+  \UseInstance{processcontents}{tableofcontents}
+  }
+
+\newcounter{contentscounter}
+\DeclareDocumentCommand{\addcontentsobject}{mmmm}{
+\stepcounter{contentscounter} %or refstep?
+\addtocontents{toc}{
+    \contentsobject{\number\c@contentscounter}{#1}{#2}{#3}{#4}{}{\thepage}}}
+

@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1608" "Fri" "26" "June" "1998" "18:15:51" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "38" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id SAA10089;
+	Fri, 26 Jun 1998 18:41:53 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.7655F91B@listserv.gmd.de>; Fri, 26 Jun 1998 18:41:15 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372037 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 26 Jun 1998 18:41:03 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA16768
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 26 Jun 1998 18:41:01
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          SAA09671 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 26 Jun 1998
+          18:41:02 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          SAA14583; Fri, 26 Jun 1998 18:15:51 +0200
+References: <980624151914.48d9@vms.rhbnc.ac.uk>
+Message-ID:  <199806261615.SAA14583@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <980624151914.48d9@vms.rhbnc.ac.uk>
+Date:         Fri, 26 Jun 1998 18:15:51 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2600
+
+Philip Taylor writes:
+ > >> Of course one way to do that is if the format has \let\def\@undefined
+ >
+ > How can that work?  Assuming that (e.g.) "\newcommand" is
+ > macro -> {... \def ...}, then without a LaTeX equivalent of PostScript's "bind",
+ > you still need access to "\def"; and if "\newcommand" is
+ > macro -> {... \someconcealedversionofdef ...}, then the user can
+ > use "\someconcealedversionofdef" :-(
+
+Phil,
+
+this is not the question. we all agree that there is no way to hide a
+primitive from a use of a clever programmer if you want use it
+yourself. of course if you don't you can really delete it :-)
+
+point is that if you try to provide a programming style but keep
+alternate names around then you will get a mess of code using both or
+either or ...
+
+so it works in the sense that people don't accidentially mix stuff or
+use dangerous commands --- they do it only if they have enough
+"criminal" energy.
+
+simple example from current latex: if you use \hbox instead of \mbox
+then a user typically runs into one of two problems at some point:
+missing \leavevmode or strange effects if color is used (as \hbox in
+constrast to \mbox is not color-save)
+
+if Leslie had moved all such primitives that where never intended to
+be used on document level to \@@... as he did with those he had to
+redefine many user problems (solved and resolved over and over again
+on ctt) would have never happened.
+
+of course that would'nt have hindered their use in package files or
+even in the document via \makeatletter but it would have produced a
+clear distinction between user-level and programmer level.
+
+frank
+

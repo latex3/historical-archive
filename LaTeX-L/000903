@@ -1,0 +1,197 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["8424" "Tue" "8" "December" "92" "15:06:27" "+0100" "David_Rhead@VME.CCC.NOTTINGHAM.AC.UK" "David_Rhead@VME.CCC.NOTTINGHAM.AC.UK" nil "170" "Papyrus: copy of mail I've sent to Dave Goldman" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA04292; Tue, 8 Dec 92 15:08:39 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA06684; Tue, 8 Dec 92 15:08:36 +0100
+Message-Id: <9212081408.AA06684@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4564; Tue, 08 Dec 92 15:08:57 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0546;
+ Tue, 08 Dec 92 15:08:53 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0544;
+ Tue, 08 Dec 92 15:08:49 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 8 Dec 92 15:06:27 +0100
+From: David_Rhead@VME.CCC.NOTTINGHAM.AC.UK
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Papyrus: copy of mail I've sent to Dave Goldman
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 903
+
+
+Here's a copy of the mail I've sent to Dave Goldman (the Papyrus chap).
+---------------------------------------------------------------------------
+Thanks for your mail, which I have forwarded to LATEX-L.
+
+As regards listservers, the Heidelberg one is OK. Thus, send a message
+either to
+   LISTSERV@DHDURZ1.EARN
+or to
+   LISTSERV@vm.urz.uni-heidelberg.de
+saying
+   SUB LATEX-L Dave Goldman
+[LATEX-L is a general discussion list for LaTeX 3.  There may be a case for
+hiving discussion of bibliographic issues off onto some other list.  But in
+the meantime, LATEX-L will give you the flavour of the project.]
+
+Traditionally, LaTeX has inter-worked with the public-domain BibTeX, and I
+suppose that would set a precedent for how LaTeX might inter-work with
+other things.  Ideally, therefore, you really need a reply from someone who
+* is familiar with the sordid details of how LaTeX and BibTeX inter-work
+  now
+* is familiar with how LateX/BibTeX may inter-work in the future
+* can see how the details might be adapted/generalized so that LaTeX might
+  inter-work with bibliographic software other than BibTeX.
+I don't think that I'm the "someone", but I'll answer as best I can so that
+at least some of your points get dealt with promptly.  (I'll forward a copy
+of this to LATEX-L so that the project-managers get an opportunity to
+correct any wrong impressions that I may have.)
+
+>    It sounds like the major area of concern that you've identified so far
+>    is that of included subfiles.
+
+Yes, I mean situations like when a book is made up of chapters.  E.g.,
+someone doing a thesis might have a root file root.tex
+  \documentstyle...
+  \begin{document}
+     \include{intro}
+     \include{my-work}
+     \include{concs}
+     \include{back}
+  \end{document}
+and supply 3 chapter files intro.tex, my-work.tex, concs.tex and a file of
+back-matter back.tex.  The command the end-user issues is [probably]
+   latex root
+In current LaTeX, there are auxiliary files root.aux, intro.aux,
+my-work.aux, concs.aux, back.aux, and between them they take care of
+bibliographic citations, typically from the chapters to the back-matter.
+If BibTeX is being used, the end-user goes
+   bibtex root
+   latex root
+   latex root
+to get references taken from the user's database file and put in the back
+matter, and citations inserted in the text.  In essence it may be similar
+to "the Papyrus workaround" you mentioned, but the "running through the
+chapters" is done automatically, since root.aux "knows about" the chapters.
+My understanding is that this process is under review for LaTeX 3 (e.g.,
+there might be just one .aux file).  E.g., if one way of doing it makes it
+easier for co-working with proprietary bibliographic software than another,
+my impression is that, other things being equal, the "easier with bib
+software" option could be chosen.  Perhaps it could be done so that it
+doesn't look like "a workaround" to the end-user.
+
+>     Tracing down included file trees would not be difficult for us to do,
+>     in principle, if it would actually be of significant utility.  In
+>     practice it could get a bit snarly, though, so I'd rather be convinced
+>     of its usefulness before offering you any promises!
+
+In LaTeX jargon, perhaps it's \input files that would be snarly.  As I said
+above, the root file "knows about" \include files.
+
+>     My understanding of LaTeX is that it is a "mark-up" specification
+>     independent of the actual text editing software in use.
+
+Yes.  For LaTeX 2.09, see "LaTeX: A Document Preparation System" by Leslie
+Lamport, Addison-Wesley, 1986.
+
+>     Unless this has changed, and there is now a *program* named LaTeX or
+>     something, then there are limits to how you could design an
+>     "interface" that would work to connect all text editors to all
+>     bibliographic programs.  When you say "Perhaps a command xxxx could be
+>     defined such that...", I don't understand who is the recipient of this
+>     command: the text editor?  the bibliographic program?  the operating
+>     system?
+
+>     If you are simply talking about a shell command, then you might as
+>     well just launch the bibliographic program and point it at the LaTeX
+>     file.  You'll have to provide additional parameters anyway
+>     (bibliographic style, mainly), and for now these are very specific for
+>     each bibliographic program.
+
+I suffer from not yet having had "hands on" experience of proprietary
+bibliographic software, and so guessing at what may be possible.  (I hope
+to get some in the next few months, but I don't have it yet.) I'm guessing
+at:
+* a shell command that the user would issue instead of the bibtex command
+* rather than "pointing it at" the .tex file, there may be advantages in
+  pointing it the .aux file (since the .aux file is shorter, and will
+  contain things like \citation{smith-92} that say what references are
+  required)
+* from the end-user's point of view, then, instead of going
+     bibtex root
+  I wonder if they could go
+     xxxx root
+  for some xxxx, where (in the Papyrus case), xxxx invokes Papyrus in such
+  a way that it "points at" root.aux and the user ends up with a bibliography,
+  in the style they desire, in root.bbl (as they would have done from BibTeX).
+To do better than guesswork, I think it needs someone who does have "hands
+on" experience of Papyrus talking to someone who knows the range of
+possibilities of how LaTeX 3 might be organised to interact with bib
+software.
+
+>    PAPYRUS can be instructed to spit out a pretty good imitation of a
+>    BibTeX file.  So right now you can use PAPYRUS to suck in references
+>    from a CD-ROM and turn them into BibTeX.  (PAPYRUS can also import
+>    BibTeX files.)
+
+Such considerations may have implications for BibTeX 1.0 (or, to be more
+precise, for the associated .bst files).  E.g., if people such as yourself
+had a common analysis of structure (analogous to the fields/entries in
+Appendix B of the LaTeX manual), one could imagine .bst files that
+implemented the same analysis [probably a little different from that in
+Appendix B], thus making conversion better than "pretty good").  ["Imagine"
+may be the operative word.  I'm not sure how agreement could ever be
+reached about what this structure should be!]
+
+>     At the moment, all of us proprietary guys are running on DOS and/or
+>     Macintosh platforms.  (A couple of us also do VAX-VMS.) I'm not aware
+>     of any notable proprietary bibliographic software for UNIX (though
+>     some of my colleagues may be working on that).  My impression is that
+>     TeX systems, though available for DOS and Macs, mainly exist on UNIX
+>     platforms.
+
+(La)TeX runs on a wide variety of computers.  There are good public-domain
+implementations for DOS and Macs.  My impression is that (La)TeX users are
+following the "downsizing" trend.  Thus, although there is certainly
+(La)TeX on Unix boxes, (La)TeX on DOS and Mac has a sizeable (and increasing)
+following.
+
+Indeed, if you want to get a TeX with which to experiment on co-working
+with Papyrus, you'd probably find it convenient to get
+either emTeX for DOS
+or     ozTeX for Macintosh.
+(Both public domain.)
+
+>     So although I am eager to get on with this discussion, how relevant
+>     will it be?  Are UNIX folks going to be willing to pay money for
+>     software?  Are PC and Mac owners going to switch to LaTeX-based word
+>     processors?
+
+I guess that the LaTeX niche will be:
+*  scientific work
+*  top quality typesetting, e.g., for books, journals,
+   conference-proceedings.
+I don't imagine that Wordperfect and MS-Word will go away.  But for "proper
+publishing", people may use a PC or Mac wordprocessor/editor to create
+files for input to (La)TeX.  So I'd guess at a continuing niche, and that
+(since LaTeX 3 will be more tuned to what publishers want than LaTeX 2.09),
+the niche may be more substantial than the current niche.
+
+I can't really speak for the world's "Unix folks"!  I'd guess that some
+would stick to public-domain stuff, e.g.  BibTeX.  Others might want common
+software on all their organisation's platforms, hence:
+* choose a proprietary system for their PCs (so they get the interface to
+  databases, and get something that works with wordprocessors for things
+  outside the LaTeX niche)
+* then go for the same thing on their Unix boxes so that they can interchange
+  databases.
+
+
+                                                                David Rhead
+

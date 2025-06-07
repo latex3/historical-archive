@@ -1,0 +1,109 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o8MIquih026231
+	for <rainer@rainer-schoepf.de>; Wed, 22 Sep 2010 20:52:57 +0200
+Received: (qmail 1180 invoked by alias); 22 Sep 2010 18:52:51 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 22 Sep 2010 18:52:50 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx023) with SMTP; 22 Sep 2010 20:52:50 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id o8MIpCA5017259
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 22 Sep 2010 20:51:12 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o8MIHZdL010542;
+	Wed, 22 Sep 2010 20:51:07 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 466781 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 22 Sep
+          2010 20:51:07 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o8MIp6av013110 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 22 Sep 2010 20:51:06 +0200
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+          [195.173.77.148]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id o8MIqX7X005342 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 22 Sep 2010 20:52:37 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1OyUP9-000779-YV; Wed, 22 Sep 2010 18:50:55 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.9)
+            Gecko/20100915 Thunderbird/3.1.4
+MIME-Version: 1.0
+References: <4C9905B4.2080802@morningstar2.co.uk>
+            <4C99F36F.5010106@residenset.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4C9A500F.3080308@morningstar2.co.uk>
+Date:         Wed, 22 Sep 2010 19:50:55 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Quarks: revisions of use in expl3
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4C99F36F.5010106@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p77e5KAPs1l6v/Sb97LojnDtMgfETrECMLUO9erHzOJe+OynZRhvlGqb5A0X
+ bbiCt2rAnnct/NAlbHMvoAL6GY+23tB3khNK7avqRsgMMVBwlWgrgcyEiCy6eQ7DbfhonniFyqTI
+ PpJNA==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6439
+
+On 22/09/2010 13:15, Lars Hellström wrote:
+> The idea I have proposed is to change the definition of quarks from
+> effectively
+>
+> \def\q_nil{\q_nil}
+> to
+> \def\q_nil{\string\q_nil}
+
+This breaks \quark_if_<name-here>:NTF. For example, \q_no_value is used 
+as a return value for functions such as
+
+   \prop_get:NnN \l_some_prop { key } \l_return_tl
+
+So \quark_if_no_value:NTF needs to be true for both
+
+   \quark_if_no_value:NTF \q_no_value
+
+and
+
+   \quark_if_no_value:NTF \l_return_tl
+
+That then requires two separate tests, something like:
+
+   \tex_ifx:D \q_no_value #1
+     \prg_return_true:
+   \tex_else:D
+     \tex_ifx:D \q_novalue_tl #1 % set to { \q_no_value }
+       \prg_return_true:
+     \tex_else:D
+       \prg_return_false:
+     \tex_fi:D
+   \tex_fi:D
+
+I'd also point out that currently an 'o' expansion of a quark gives the 
+quark, whereas in the scheme suggested things do change.
+
+(At a higher level, \NoValue in xparse is implemented as
+
+   \cs_new_protected:Npn \NoValue { -NoValue- }
+
+so that it _can_ be typeset without a loop occurring. However, this is 
+used in 'document level' functions, so the requirements are different.)
+-- 
+Joseph Wright
+

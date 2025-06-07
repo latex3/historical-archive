@@ -1,0 +1,88 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2089" "Thu" "6" "January" "1994" "20:13:26" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" "<199401071106.AA21338@mail.cs.tu-berlin.de>" "57" "Re: clearpage and AtEndDocument hooks" "^Date:" nil nil "1" "1994010619:13:26" "clearpage and AtEndDocument hooks" (number " " mark "     Frank Mittelbach  Jan  6   57/2089  " thread-indent "\"Re: clearpage and AtEndDocument hooks\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06712; Fri, 7 Jan 94 12:06:31 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA17110; Fri, 7 Jan 94 12:06:35 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA21338
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 7 Jan 1994 12:06:27 +0100
+Message-Id: <199401071106.AA21338@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9259; Fri, 07 Jan 94 11:54:11 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9257; Fri,
+ 7 Jan 1994 11:54:11 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 8443; Thu,
+ 6 Jan 1994 20:26:28 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Thu, 6 Jan 1994 20:13:26 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: clearpage and AtEndDocument hooks
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1251
+
+> Subj: \clearpage and \AtEndDocument hooks
+
+Happy new year everybody.
+
+I will probably answer a lot of mails out of order or even miss
+several, but i do have good excuses for it :-) they killed my account
+and then shuffled my mail folders as a new year present
+
+> There is commented-out code in latex.dtx that would issue a \clearpage
+> before executing end-document hooks if there are dangling floats.  The
+> text says that such clearing is controversial.
+
+one should never argue in documentation it seems. No, the position
+isn't any longer controversial, but see below.
+
+> If this is the case, and if executing \clearpage in latex itself is indeed
+> controversial (i.e., there are cases when you _don't_ want the \clearpage
+> before executing the hook), it seems to me that there's an argument for
+> two sets of end document hook, one executed before and one after the final
+> \clearpage.
+
+this is certainly one possibility but it would lead to a lot of hooks
+because you can think of so many places to ``hook code in''. the
+problem is where do we stop?
+
+> As things stand at present, a hook that requires to be executed before the
+> final \clearpage needs to guarantee that it's in the correct place in the
+> hook, which leads us back to <= 2.09 hackery, imho...
+
+this may be the case, but: can you think of concurring applications
+that do not know about the other both needing the hook? I thought that
+such a hook will be used only for special layouts.
+
+>
+> So what's wrong with my reasoning?  What _is_ the controversy about the
+> \clearpage?
+
+As long as there is only a limited use of the hook the current
+position is correct since it is trivial to issue a \clearpage within
+the hook (disabling the "official" one) and thus move the code after
+the clear page.
+
+However, if we really think that there are a lot of independent usages
+both before and after the \clearpage we might be better off by
+actually adding a
+
+\AfterEndDocument or something hook
+
+in addition.
+
+comments?
+
+I won't promise anything since this is the type of enhancement you can
+make forever but ...
+
+cheers
+Frank
+

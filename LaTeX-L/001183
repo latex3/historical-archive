@@ -1,0 +1,187 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6039" "Wed" "24" "November" "93" "06:24:32" "PST" "Donald Arseneau" "asnd@ERICH.TRIUMF.CA" nil "160" "Re: \\em and italic correction" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA10352; Wed, 24 Nov 93 15:27:32 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA26466; Wed, 24 Nov 93 15:27:28 +0100
+Message-Id: <9311241427.AA26466@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2076; Wed, 24 Nov 93 15:25:45 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4073;
+ Wed, 24 Nov 93 15:25:28 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 4070;
+ Wed, 24 Nov 93 15:25:21 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 24 Nov 93 06:24:32 PST
+From: Donald Arseneau <asnd@ERICH.TRIUMF.CA>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: \em and italic correction
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1183
+
+
+I made automatic italic correction macros a while ago; but nothing
+can work automatically all the time.
+
+The following explanation should appear sometime in TTN `hey it works'.
+
+Donald Arseneau                         asnd@reg.triumf.ca
+
+\documentstyle{article}
+\begin{document}
+%\showboxdepth999 \showboxbreadth999 \tracingoutput1
+\begingroup
+
+\def\optional#1{} % ignore optional text
+% \def\optional{}  % do include optional text
+
+\makeatletter
+
+% Copy definition of \frac out of the TeXbook; call it \Frac because
+% LaTeX has \frac
+\newcommand\Frac[2]{\leavevmode\nobreak\hskip.1em
+  \raise.5ex\hbox{\the\scriptfont0 #1}\kern-.15em
+  /\kern-.15em\lower.25ex\hbox{\the\scriptfont0 #2}}
+
+
+\let\@tempb\relax % strange bug in *Old* LaTeX
+
+%===============================================================
+% When get \em starting italic text, launch an italic correction aimed at
+% the end of the group. When \em ends the italic, do a smart italic correction.
+
+\@ifundefined{normalshape}{%
+  \def\pem{\ifdim \fontdimen\@ne\font>\z@ \rm
+    \else \it \expandafter\aftergroup \fi \smartitcor}%
+}{%
+  \def\pem{\@nomath\em \ifdim \fontdimen\@ne\font >\z@ \normalshape
+    \else \it \expandafter\aftergroup \fi \smartitcor}%
+}
+
+\def\smartitcor{\ifhmode \expandafter \itpunclook \fi}
+\def\itpunclook{\begingroup \futurelet \@tempa \itcortest}
+
+\def\itcortest{\def\@tempb{\@tempa}%
+\ifcat\noexpand\@tempa,% if next character could be punctuation,
+   \setbox\z@\hbox{\@tempb}% check its size...
+   \ifdim\ht\z@<.3ex % and if it is short,...
+      \let\itcordo\endgroup % suppress italic correction
+\fi\fi
+\itcordo}
+
+\def\itcordo{% Put \/ before any preceding space.
+  \skip@\lastskip
+  \ifdim\skip@=\z@skip \/\else\unskip \/\hskip\skip@ \fi
+  \endgroup}
+
+
+\noindent Many people are not aware of, or simply ignore, the ``italic
+correction'' command (\verb"\/") that should be inserted after slanted
+text for proper spacing (see The \TeX\-book, p.~14).
+\optional{Compare d{\em d\hskip0pt}d % suppress automatic \/
+with d{\em d}d. }% gets automatic \/ inserted
+It is a tedious
+and thankless task inserting such corrections in collaborators' flawed
+\LaTeX\ input. Instead, it would be nice to have \LaTeX\ insert the
+corrections automatically.  A problem that arises is that the \verb"\/"
+should be omitted when followed by low punctuation (period or comma).
+Furthermore, when the surrounding text is italic, \verb"\em"\,phasis
+produces {\em roman} text, and the italic correction should be placed
+{\em before}~it.  This is a particular problem for macros like
+\verb"\newcommand{\abi}{{\em ab~initio\/}}" that do not know their
+context.  Here is a replacement for \LaTeX's \verb"\em" command that
+correctly inserts its own italic correction in these cases so you can
+avoid typing \verb"\/" altogether.
+
+First, modify the \verb"\pem" command slightly so that it inserts a
+`smart' italic correction; either immediately if the text switches to
+roman, or launching it towards the end of the group if the text
+switches to italics.
+\begin{verbatim}
+  \def\pem{\ifdim \fontdimen 1\font>0pt \rm
+    \else \it \expandafter\aftergroup \fi \smartitcor}
+\end{verbatim}
+\optional{or, for {\small NFSS}
+\begin{verbatim}
+  \def\pem{\@nomath\em \ifdim\fontdimen\@ne\font>\z@ \normalshape
+    \else \it \expandafter\aftergroup \fi \smartitcor}
+\end{verbatim}}
+
+The smart italic correction is only executed in horizontal (\,rl\,)
+mode.  When it is executed, it first looks at the next character
+(token) to see if it is a comma or period (or something else that
+is short).
+\begin{verbatim}
+  \def\smartitcor{\ifhmode \expandafter \itpunclook \fi}
+  \def\itpunclook{\begingroup \futurelet \ITCtempa \itcortest}
+
+  \def\itcortest{%           test next character (\ITCtempa)
+   \def\ITCtempb{\ITCtempa}%     hide next when skipping
+   \ifcat\noexpand\ITCtempa ,%   if it could be punctuation,...
+      \setbox0\hbox{\ITCtempb}%  check its size...
+      \ifdim\ht0<.3ex %          and if it is short,...
+         \let\itcordo\endgroup % suppress italic correction
+   \fi\fi \itcordo}%             otherwise, do it
+\end{verbatim}
+The \verb"\noexpand\ITCtempa" is used in case the next token is a
+macro, which should not be expanded out of context. The extra level
+of definition, \verb"\ITCtempb", is used in case the next token is a
+conditional command like \verb"\if" or \verb"\fi" which could not be
+skipped over properly when the \verb"\ifcat" is false.
+
+Finally, the italic correction must {\em precede}
+any spaces or it is useless.
+\begin{verbatim}
+\def\itcordo{% Put \/ before any preceding space.
+  \skip0=\lastskip
+  \ifdim\skip0=0pt\/\else\unskip \/\hskip\skip0 \fi
+  \endgroup}
+\end{verbatim}
+Here we check for preceding space (glue or skip) by
+comparing the length of \verb"\lastskip" with \verb"0pt".
+If the previous glue was \verb"\hfil" there will be no
+italic correction, but it is probably unnecessary in
+that case anyway.
+
+\optional{%
+These definitions can be streamlined by using internal commands
+such as \verb"\z@".  If you look at the source for the electronic
+version of this newsletter, you will see that the macros {\em
+really are} written that way.
+}
+
+These macros are intended for \verb"\em"
+delimited by grouping, such as
+\begin{verbatim}
+ My book is called {\em You named the baby {\em what?!}}\\
+ \begin{em}
+ Sam Spade had {\em never} seen that {\em modus operandi} before.
+ \end{em}
+\end{verbatim}
+\begin{center}
+My book is called {\em You named the baby {\em what?!}}
+
+\begin{em}
+Sam Spade had {\em never} seen that {\em modus operandi} before.
+\end{em}
+
+\end{center}
+There might be problems if you use \verb"\em" improperly as an on/off
+switch or if you rely on implicit grouping; {\em e.g.},
+if you use it in a save-box (\verb"\setbox") or in a primitive
+\verb"\halign" without extra braces (although a tabular environment
+works fine).  Even when it fails, the italic correction usually just
+disappears harmlessly.  And hey, it works for the 99\Frac{44}{100}\%
+of the time that you emphasize \verb"{\em this way}".
+
+
+\endgroup
+\end{document}
+
+
+

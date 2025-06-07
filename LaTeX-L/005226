@@ -1,0 +1,93 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 7 Sep 2008 22:36:36 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m87KaVx5016834
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 7 Sep 2008 22:36:32 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m87KWRpR027573
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 7 Sep 2008 22:32:27 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m86M1Rk4025539;
+	Sun, 7 Sep 2008 22:32:18 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 21022 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 7 Sep
+          2008 22:32:18 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m87KWHpu030336 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Sep 2008 22:32:17 +0200
+Received: from anchor-post-37.mail.demon.net (anchor-post-37.mail.demon.net
+          [194.217.242.87]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m87KW7p7027425 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 7 Sep 2008 22:32:10 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-37.mail.demon.net with esmtp (Exim 4.69) id
+          1KcQvU-00069H-Oh for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 07 Sep
+          2008 20:32:04 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+References: <48C38EC1.9040807@morningstar2.co.uk>           
+            <E8E9A43D-3D11-469C-A988-49CA19CA0519@gmail.com>
+            <18628.7468.77437.963030@morse.mittelbach-online.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48C43A42.9000906@morningstar2.co.uk>
+Date:         Sun, 7 Sep 2008 21:32:02 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Spaces
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18628.7468.77437.963030@morse.mittelbach-online.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Sep 2008 20:36:36.0555 (UTC) FILETIME=[6C5411B0:01C91129]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5226
+
+Frank Mittelbach wrote:
+> Will Robertson writes:
+>  > This is weird:
+>  > 
+>  >    \err_warn:nn{\temp~stuff~stuff}{}
+>  > 
+>  > Only the second tilde causes a space.
+> 
+> why would that be weird?
+> 
+> in plain TeX
+> 
+>   \errwarn{\temp stuff stuff} 
+> 
+> and only
+> 
+>   \errwarn{\temp\space stuff stuff}
+> 
+> in expl3 ~ is a space token and not an active char expanding to \space.
+
+It took me a little while to realise this, but of course you are right.
+ So that was not what confused me.
+
+> It is a bitof a pity that space tokens are so deep down within the TeX engine
+> behavior and that sometimes they get gobbled if explicit.
+> 
+> Interesting question if it would be possible to do ~ -> \space instead but my
+> guess is that this would break a lot of the current code
+
+I was rather expecting \c_space_token to save the day, but it didn't.
+Hence my confusion: \space isn't a LaTeX3 name.
+-- 
+Joseph Wright
+

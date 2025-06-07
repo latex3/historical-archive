@@ -1,0 +1,489 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4A2E256C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:07 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4A2E256C"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: Re: LaTeX 2.09 <Oct 91> beta-test
+Date: Wed, 23 Oct 1991 01:00:00 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5BD@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Don Hosek" <DHOSEK@HMCVAX.CLAREMONT.edu>
+Sender: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 416
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4A2E256C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+-"Don Hosek" <DHOSEK@HMCVAX.CLAREMONT.edu> writes:
+
+I like that, it makes it seem as if "Don Hosek" is my alibi :-)
+
+-   Regarding loading additional hyphenation patterns: don't change
+-   hyphen.tex--not even to rename it. Instead, just load in a file
+-   which loads all your extra patterns after TeX has completed its
+-   basic loads. This file could look something like:
+
+-   <TeX code>
+
+-Unfortunately, this works only if your base language (i.e. language
+-#0) is US english. Since \patterns are cumulative in TeX 3, you have
+-no chance to change this afterwards.
+
+True, but unimportant. I know of no TeX format which loads a
+language other than English as language 0 which is not also
+predicated on the assumption that TeX is monolingual. Language 0
+has no special status other than that the \language register
+defaults to 0 on the startup of IniTeX/VirTeX. If one doesn't
+change the distributed files, the suggestion works fine. Unless
+one is really cramped for pattern memory, I can think of no good
+reason why US English should *not* be language 0.
+
+-   Now as regards modifying TeX to handle various different
+-   encodings, let me just say NO, DON'T DO IT! The sort of change
+-   which occurs in emTeX makes it non-TeX.
+
+-I challenge that, on the simple grounds that you have to do it for ANY
+-character set. So what is the difference between doing it for one of
+-the EBCDIC encodings to doing it for the Cork table?
+
+The difference is that the encodings which appear in
+TEX.CMS-CHANGES are such that when transferring a (7-bit) file
+>from an EBCIDC system to an ASCII system, it runs identically.
+Now, if I decide to map the characters _as they appear on my
+display_ to be stored internally as the Cork coding system, and I
+write a paper which happens to use, say, u-umlaut (equals
+character 129 on my PC) in my typing, then I transfer that file
+to the local VAX, it does not get translated into character 252
+on the VAX. So suddenly my paper doesn't work. If, however, I
+have included the definitions
+
+\catcode129=3D\active
+\def^^81{\"{u}}
+
+in a TeX file read by my paper, the file is transportable again.
+What's more, the paper that I type may include sections typed in
+more than one code page (e.g., if I'm typing a paper on a
+mulitlingual terminal supporting the various 8859 pages and I
+need to access characters for both Slovene and Italian (requiring
+8859/2 and 8859/1 respectively), I may have different meanings
+for the same character code in the same document. EM's
+enhancement doesn't allow that.
+
+-                                           (Incidentally, probably
+-   the most thought-out extension of this sort is the new mlTeX with
+-   its \charsubdef).
+
+-Not true, since MLTeX adds a new primitive, and hence a new feature.
+
+I didn't say that MLTeX was still TeX; I just said that it was
+the most thought-out implementation of this sort of feature.
+
+-                     Modifying xchar/xord so that say, the PC
+-   e-acute maps internally to the Cork e-acute causes the difficulty
+-   that TeX files created under this assumption are non-portable.
+
+-But they are non-portable anyway, even if you make these characters
+-active, so what?
+
+Just because character 240 displays as lowercase thorn on my
+VAXstation and as an equivalence sign on my PC does not mean that
+the files are nonportable. TeX should not care what a character
+looks like on the screen. I can transfer 8-bit text files between
+ASCII systems very easily, I would like to assume that they will
+run identically on those systems regardless of what character 147
+is supposed to represent to TeX or look like on the monitor.
+
+-   The purpose of xchar/xord was not for this sort of remapping, but
+-   rather to handle the differences between ASCII and EBCDIC.
+
+-The Cork table is just another character set. Again, what's the
+-difference?
+
+The Cork table is meant for font coding. It has nothing to do
+with internal representation or the user's coding scheme. I think
+even Michael Ferguson with whom I frequently disagree on
+multilingual TeX issues will agree that of the various options
+for handling 8-bit characters, modifying xchar/xord to map the
+displayed character set to cork internally is the worst possible
+option.
+
+-                                                              The
+-   best pure TeX way to handle code pages is to make chars over 127
+-   active, but as was mentioned this disallows their use in cs
+-   names.
+
+-NONONO!!! Remember that we are in Europe where character sets have
+-more than 127 characters. ASCII is simply out of date for us; and
+-EBCDIC did never work anyway (as our problems with various EARN
+-gateways show).
+
+I know that. All my computers have 255 character character sets
+too. I typeset text in 9 languages on a regular basis. Forget
+about EBCDIC (I'm trying to). The fact remains that depending on
+what language one is writing in, there are many 8-bit
+ASCII-extensions. Character 224 can mean any of Aleph, alpha,
+a-grave, r-acute, a-macron, o-circumflex,
+upsilon-diaresis-accent, or tatwil, depending on what application
+I'm working on. I'm willing to forgo having accented characters
+in csnames if it means that I can run a TeX file without
+modification on my PC, VAX or a Sun workstation. Only the active
+character approach allows me to do this without modifying TeX.
+Furthermore if I should need to access multiple character sets in
+a single document (e.g., Hebrew and Greek for a columnar
+comparison of the MT and LXX), active characters are the only way
+to accomplish this without making a change to TeX which makes it
+unequivocally not-TeX.
+
+-dh
+
+
+
+------_=_NextPart_001_01C19443.4A2E256C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: LaTeX 2.09 &lt;Oct 91&gt; beta-test</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>-&quot;Don Hosek&quot; =
+&lt;DHOSEK@HMCVAX.CLAREMONT.edu&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I like that, it makes it seem as if &quot;Don =
+Hosek&quot; is my alibi :-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; Regarding loading additional hyphenation =
+patterns: don't change</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; hyphen.tex--not even to rename it. =
+Instead, just load in a file</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; which loads all your extra patterns =
+after TeX has completed its</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; basic loads. This file could look =
+something like:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; &lt;TeX code&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Unfortunately, this works only if your base language =
+(i.e. language</FONT>
+
+<BR><FONT SIZE=3D2>-#0) is US english. Since \patterns are cumulative in =
+TeX 3, you have</FONT>
+
+<BR><FONT SIZE=3D2>-no chance to change this afterwards.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>True, but unimportant. I know of no TeX format which =
+loads a</FONT>
+
+<BR><FONT SIZE=3D2>language other than English as language 0 which is =
+not also</FONT>
+
+<BR><FONT SIZE=3D2>predicated on the assumption that TeX is monolingual. =
+Language 0</FONT>
+
+<BR><FONT SIZE=3D2>has no special status other than that the \language =
+register</FONT>
+
+<BR><FONT SIZE=3D2>defaults to 0 on the startup of IniTeX/VirTeX. If one =
+doesn't</FONT>
+
+<BR><FONT SIZE=3D2>change the distributed files, the suggestion works =
+fine. Unless</FONT>
+
+<BR><FONT SIZE=3D2>one is really cramped for pattern memory, I can think =
+of no good</FONT>
+
+<BR><FONT SIZE=3D2>reason why US English should *not* be language =
+0.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; Now as regards modifying TeX to handle =
+various different</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; encodings, let me just say NO, DON'T DO =
+IT! The sort of change</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; which occurs in emTeX makes it =
+non-TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-I challenge that, on the simple grounds that you have =
+to do it for ANY</FONT>
+
+<BR><FONT SIZE=3D2>-character set. So what is the difference between =
+doing it for one of</FONT>
+
+<BR><FONT SIZE=3D2>-the EBCDIC encodings to doing it for the Cork =
+table?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The difference is that the encodings which appear =
+in</FONT>
+
+<BR><FONT SIZE=3D2>TEX.CMS-CHANGES are such that when transferring a =
+(7-bit) file</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from an EBCIDC system to an ASCII system, it runs =
+identically.</FONT>
+
+<BR><FONT SIZE=3D2>Now, if I decide to map the characters _as they =
+appear on my</FONT>
+
+<BR><FONT SIZE=3D2>display_ to be stored internally as the Cork coding =
+system, and I</FONT>
+
+<BR><FONT SIZE=3D2>write a paper which happens to use, say, u-umlaut =
+(equals</FONT>
+
+<BR><FONT SIZE=3D2>character 129 on my PC) in my typing, then I transfer =
+that file</FONT>
+
+<BR><FONT SIZE=3D2>to the local VAX, it does not get translated into =
+character 252</FONT>
+
+<BR><FONT SIZE=3D2>on the VAX. So suddenly my paper doesn't work. If, =
+however, I</FONT>
+
+<BR><FONT SIZE=3D2>have included the definitions</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\catcode129=3D\active</FONT>
+
+<BR><FONT SIZE=3D2>\def^^81{\&quot;{u}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in a TeX file read by my paper, the file is =
+transportable again.</FONT>
+
+<BR><FONT SIZE=3D2>What's more, the paper that I type may include =
+sections typed in</FONT>
+
+<BR><FONT SIZE=3D2>more than one code page (e.g., if I'm typing a paper =
+on a</FONT>
+
+<BR><FONT SIZE=3D2>mulitlingual terminal supporting the various 8859 =
+pages and I</FONT>
+
+<BR><FONT SIZE=3D2>need to access characters for both Slovene and =
+Italian (requiring</FONT>
+
+<BR><FONT SIZE=3D2>8859/2 and 8859/1 respectively), I may have different =
+meanings</FONT>
+
+<BR><FONT SIZE=3D2>for the same character code in the same document. =
+EM's</FONT>
+
+<BR><FONT SIZE=3D2>enhancement doesn't allow that.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Incidentally, =
+probably</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; the most thought-out extension of this =
+sort is the new mlTeX with</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; its \charsubdef).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-Not true, since MLTeX adds a new primitive, and hence =
+a new feature.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I didn't say that MLTeX was still TeX; I just said =
+that it was</FONT>
+
+<BR><FONT SIZE=3D2>the most thought-out implementation of this sort of =
+feature.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modifying =
+xchar/xord so that say, the PC</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; e-acute maps internally to the Cork =
+e-acute causes the difficulty</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; that TeX files created under this =
+assumption are non-portable.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-But they are non-portable anyway, even if you make =
+these characters</FONT>
+
+<BR><FONT SIZE=3D2>-active, so what?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Just because character 240 displays as lowercase thorn =
+on my</FONT>
+
+<BR><FONT SIZE=3D2>VAXstation and as an equivalence sign on my PC does =
+not mean that</FONT>
+
+<BR><FONT SIZE=3D2>the files are nonportable. TeX should not care what a =
+character</FONT>
+
+<BR><FONT SIZE=3D2>looks like on the screen. I can transfer 8-bit text =
+files between</FONT>
+
+<BR><FONT SIZE=3D2>ASCII systems very easily, I would like to assume =
+that they will</FONT>
+
+<BR><FONT SIZE=3D2>run identically on those systems regardless of what =
+character 147</FONT>
+
+<BR><FONT SIZE=3D2>is supposed to represent to TeX or look like on the =
+monitor.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-&nbsp;&nbsp; The purpose of xchar/xord was not for =
+this sort of remapping, but</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; rather to handle the differences =
+between ASCII and EBCDIC.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-The Cork table is just another character set. Again, =
+what's the</FONT>
+
+<BR><FONT SIZE=3D2>-difference?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The Cork table is meant for font coding. It has =
+nothing to do</FONT>
+
+<BR><FONT SIZE=3D2>with internal representation or the user's coding =
+scheme. I think</FONT>
+
+<BR><FONT SIZE=3D2>even Michael Ferguson with whom I frequently disagree =
+on</FONT>
+
+<BR><FONT SIZE=3D2>multilingual TeX issues will agree that of the =
+various options</FONT>
+
+<BR><FONT SIZE=3D2>for handling 8-bit characters, modifying xchar/xord =
+to map the</FONT>
+
+<BR><FONT SIZE=3D2>displayed character set to cork internally is the =
+worst possible</FONT>
+
+<BR><FONT SIZE=3D2>option.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; best pure TeX way to handle code pages =
+is to make chars over 127</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; active, but as was mentioned this =
+disallows their use in cs</FONT>
+
+<BR><FONT SIZE=3D2>-&nbsp;&nbsp; names.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-NONONO!!! Remember that we are in Europe where =
+character sets have</FONT>
+
+<BR><FONT SIZE=3D2>-more than 127 characters. ASCII is simply out of =
+date for us; and</FONT>
+
+<BR><FONT SIZE=3D2>-EBCDIC did never work anyway (as our problems with =
+various EARN</FONT>
+
+<BR><FONT SIZE=3D2>-gateways show).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I know that. All my computers have 255 character =
+character sets</FONT>
+
+<BR><FONT SIZE=3D2>too. I typeset text in 9 languages on a regular =
+basis. Forget</FONT>
+
+<BR><FONT SIZE=3D2>about EBCDIC (I'm trying to). The fact remains that =
+depending on</FONT>
+
+<BR><FONT SIZE=3D2>what language one is writing in, there are many =
+8-bit</FONT>
+
+<BR><FONT SIZE=3D2>ASCII-extensions. Character 224 can mean any of =
+Aleph, alpha,</FONT>
+
+<BR><FONT SIZE=3D2>a-grave, r-acute, a-macron, o-circumflex,</FONT>
+
+<BR><FONT SIZE=3D2>upsilon-diaresis-accent, or tatwil, depending on what =
+application</FONT>
+
+<BR><FONT SIZE=3D2>I'm working on. I'm willing to forgo having accented =
+characters</FONT>
+
+<BR><FONT SIZE=3D2>in csnames if it means that I can run a TeX file =
+without</FONT>
+
+<BR><FONT SIZE=3D2>modification on my PC, VAX or a Sun workstation. Only =
+the active</FONT>
+
+<BR><FONT SIZE=3D2>character approach allows me to do this without =
+modifying TeX.</FONT>
+
+<BR><FONT SIZE=3D2>Furthermore if I should need to access multiple =
+character sets in</FONT>
+
+<BR><FONT SIZE=3D2>a single document (e.g., Hebrew and Greek for a =
+columnar</FONT>
+
+<BR><FONT SIZE=3D2>comparison of the MT and LXX), active characters are =
+the only way</FONT>
+
+<BR><FONT SIZE=3D2>to accomplish this without making a change to TeX =
+which makes it</FONT>
+
+<BR><FONT SIZE=3D2>unequivocally not-TeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-dh</FONT>
+</P>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4A2E256C--
+

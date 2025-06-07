@@ -1,0 +1,416 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Sun, 5 Jan 2003 15:21:28 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h05ELP6C009573 for <rainer.schoepf@PROTEOSYS.COM>; Sun, 5 Jan 2003 15:21:26 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h05EEKwO023391; Sun, 5 Jan 2003 15:14:20 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2B4C5.BC452400"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h054VCWc004347; Sun, 5 Jan 2003 15:07:00 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 5207 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 5 Jan 2003 15:06:59 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h05DuxTk005902 for          <latex-l@listserv.uni-heidelberg.de>; Sun, 5 Jan 2003 14:56:59 +0100
+Received:  from mailout02.sul.t-online.com (mailout02.sul.t-online.com          [194.25.134.17]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with          ESMTP id h05E3OwO022333 for <latex-l@listserv.uni-heidelberg.de>;          Sun, 5 Jan 2003 15:03:24 +0100 (MET)
+Received:  from fwd03.sul.t-online.de by mailout02.sul.t-online.com with smtp id          18VBN5-0003n7-08; Sun, 05 Jan 2003 15:03:23 +0100
+Received:  from localhost.localdomain (520018396234-0001@[217.80.160.81]) by          fmrl03.sul.t-online.com with esmtp id 18VBMx-1uNHKyC; Sun, 5 Jan 2003          15:03:15 +0100
+Received:  from localhost.localdomain (localhost.localdomain [127.0.0.1]) by          localhost.localdomain (8.12.5/8.12.5) with ESMTP id h05E3DT7005306          for <latex-l@listserv.uni-heidelberg.de>; Sun, 5 Jan 2003 15:03:14          +0100
+Received:  (from dak@localhost) by localhost.localdomain (8.12.5/8.12.5/Submit)          id h05E3DR1005302; Sun, 5 Jan 2003 15:03:13 +0100
+Lines: 100
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 05 Jan 2003 14:21:28.0246 (UTC) FILETIME=[BC6AAD60:01C2B4C5]
+X-Sender: 520018396234-0001@t-dialin.net
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 0.5 () SPAM_PHRASE_01_02
+Content-class: urn:content-classes:message
+Subject:      xor opinions
+Date: Sun, 5 Jan 2003 15:03:11 +0100
+Message-ID: A<x5lm1zofs0.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      xor opinions
+Thread-Index: AcK0xbyHbq03NEdqRv+PY8vpSf+pfg==
+From: "David Kastrup" <dak@GNU.ORG>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4389
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2B4C5.BC452400
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Ok, I digged through quite a bit and pondered things and stuff, and
+here are my opinions:
+
+a) it is obvious that this is very much proof-of-concept quality
+stuff.  A lot of serious work remains: one can't claim that for a
+reasonably complete release of a LaTeX3 core (and I am just talking
+about the core here, not even the base classes) more than maybe 30% of
+the work are done.
+
+b) much too much hardwired to be of general use.  The output routine
+is focused on providing the functionality needed by the base classes,
+and is very much limited to that.  One would have to patch around in
+order to accommodate different needs.
+
+For example, take a look at how magic penalties are allocated and
+used: hardwired.  Similar for a lot of other stuff: hardwired.  The
+output routine is supposed to cater for more uses than the old one,
+but it does all of that hardwired.
+
+Now suppose I don't need multicolumn support in a document class of
+mine, but I need several columns of margin notes (inner column, and
+two outer columns, one for verse numbers, one for marginal notes used
+for references).  And I want margin notes in my footnotes as well.
+Boom.
+
+Now the attachment of marginal notes does not necessarily need to go
+via the output routine: one can also pass a box containing
+prospective magic penalties through a pass of \vsplit to \maxdimen,
+reinstating all magic penalties that have no handler defined for that
+pass, so that the material might still be treated in a later pass.
+For example, if one split material into multiple columns, one might
+place some marginal markers to the left of every column, but one might
+also just place optical markers/comments for rare stuff in a single
+column.  The former magic penalties would have to be treated before
+the column split, the latter afterwards.  So how to go about this?
+And we might have some margin note types where we would prefer if
+they were broken across pages, some where we would prefer to have
+them moved, and some where we would want them moved including the
+referrer line.  All in one document.  So we want to have something
+like
+
+\newmagicpenalty\marginparApenalty
+
+And then our footnote routine (and again, we want to be able to
+allocate several different classes of footnotes) can just, before
+inserting the material on the page, call
+
+\treatmagicpenaltiesinbox{\footnoteAbox}%
+  {footnoteApreparation}
+
+And we would have had declared at some earlier time
+
+\callmagic\marginparApenalty{footnoteApreparation}
+  {\AttachMarginPar{\outputtempAbox}}
+
+That way, the \treatmagicpenaltiesinbox call would prepare margin
+pars in \outputtempAbox.  Actually, \outputtempAbox is too little
+info: what kind of margin par and the width of the box available for it =
+would also have to be declared at some time.
+
+Anyhow, when the output routine finishes calling through all defined
+hooks, all material will have been distributed along all the declared
+boxes according to the algorithms associated with the various
+penalties.
+
+It becomes apparent that LaTeX would be split into two components: one
+core part that can generally cater for all sorts of documents, and one
+base part that will use the provided hooks in order to cater for the
+need of the standard classes.  Whether a typical installation should
+have one dumped format for the core, or one for core+base, or one
+each, is a different question.
+
+c) non-eTeX should not be supported.  Things like repeated \vsplit
+and various uses of markers to synchronize matters simply become too
+awkward and inefficient when one tries doing them with standard TeX.
+You can bet that the necessary extensions will make it into stuff
+like NTS and Omega, fast, when it turns out that LaTeX3 relies on
+them in an early enough stage.  The sooner one turns on the thumb
+screws, the less pain and hectic for people to adapt.
+
+I see a lot of work cut out, and quite a bit of how to best tackle it.
+Question: if people decide that it would make sense to do that in the
+outlined manner, I don't see any reasonable time frame unless somebody
+is going to spend quite a bit of work as his main occupation for a
+while.  I know that there are funds for the LaTeX3 project, and I
+would be interested in working on that matter, though I am not
+planning on starving myself during that (I am already doing that sort
+of stuff on other projects, and I can't keep it up forever.  My
+savings are not unlimited).  What would be the channels where one
+would propose work in that line and apply for a payment that will
+support a person spending full-time on it?  Or would the only feasible
+manner of getting to work on this imply having to get a separate job
+paying the rent, and trying to manage the rest in spare time?  Of
+course, much of the LaTeX work _is_ being done in that manner, and it
+will certainly remain so, but I fear that at least for cooking up a
+new LaTeX3 core, this model will fall short.  Good ideas for other
+funding?
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C2B4C5.BC452400
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     xor opinions</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Ok, I digged through quite a bit and pondered things =
+and stuff, and</FONT>
+
+<BR><FONT SIZE=3D2>here are my opinions:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>a) it is obvious that this is very much =
+proof-of-concept quality</FONT>
+
+<BR><FONT SIZE=3D2>stuff.&nbsp; A lot of serious work remains: one can't =
+claim that for a</FONT>
+
+<BR><FONT SIZE=3D2>reasonably complete release of a LaTeX3 core (and I =
+am just talking</FONT>
+
+<BR><FONT SIZE=3D2>about the core here, not even the base classes) more =
+than maybe 30% of</FONT>
+
+<BR><FONT SIZE=3D2>the work are done.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>b) much too much hardwired to be of general use.&nbsp; =
+The output routine</FONT>
+
+<BR><FONT SIZE=3D2>is focused on providing the functionality needed by =
+the base classes,</FONT>
+
+<BR><FONT SIZE=3D2>and is very much limited to that.&nbsp; One would =
+have to patch around in</FONT>
+
+<BR><FONT SIZE=3D2>order to accommodate different needs.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For example, take a look at how magic penalties are =
+allocated and</FONT>
+
+<BR><FONT SIZE=3D2>used: hardwired.&nbsp; Similar for a lot of other =
+stuff: hardwired.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>output routine is supposed to cater for more uses =
+than the old one,</FONT>
+
+<BR><FONT SIZE=3D2>but it does all of that hardwired.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now suppose I don't need multicolumn support in a =
+document class of</FONT>
+
+<BR><FONT SIZE=3D2>mine, but I need several columns of margin notes =
+(inner column, and</FONT>
+
+<BR><FONT SIZE=3D2>two outer columns, one for verse numbers, one for =
+marginal notes used</FONT>
+
+<BR><FONT SIZE=3D2>for references).&nbsp; And I want margin notes in my =
+footnotes as well.</FONT>
+
+<BR><FONT SIZE=3D2>Boom.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Now the attachment of marginal notes does not =
+necessarily need to go</FONT>
+
+<BR><FONT SIZE=3D2>via the output routine: one can also pass a box =
+containing</FONT>
+
+<BR><FONT SIZE=3D2>prospective magic penalties through a pass of \vsplit =
+to \maxdimen,</FONT>
+
+<BR><FONT SIZE=3D2>reinstating all magic penalties that have no handler =
+defined for that</FONT>
+
+<BR><FONT SIZE=3D2>pass, so that the material might still be treated in =
+a later pass.</FONT>
+
+<BR><FONT SIZE=3D2>For example, if one split material into multiple =
+columns, one might</FONT>
+
+<BR><FONT SIZE=3D2>place some marginal markers to the left of every =
+column, but one might</FONT>
+
+<BR><FONT SIZE=3D2>also just place optical markers/comments for rare =
+stuff in a single</FONT>
+
+<BR><FONT SIZE=3D2>column.&nbsp; The former magic penalties would have =
+to be treated before</FONT>
+
+<BR><FONT SIZE=3D2>the column split, the latter afterwards.&nbsp; So how =
+to go about this?</FONT>
+
+<BR><FONT SIZE=3D2>And we might have some margin note types where we =
+would prefer if</FONT>
+
+<BR><FONT SIZE=3D2>they were broken across pages, some where we would =
+prefer to have</FONT>
+
+<BR><FONT SIZE=3D2>them moved, and some where we would want them moved =
+including the</FONT>
+
+<BR><FONT SIZE=3D2>referrer line.&nbsp; All in one document.&nbsp; So we =
+want to have something</FONT>
+
+<BR><FONT SIZE=3D2>like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newmagicpenalty\marginparApenalty</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And then our footnote routine (and again, we want to =
+be able to</FONT>
+
+<BR><FONT SIZE=3D2>allocate several different classes of footnotes) can =
+just, before</FONT>
+
+<BR><FONT SIZE=3D2>inserting the material on the page, call</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\treatmagicpenaltiesinbox{\footnoteAbox}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {footnoteApreparation}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And we would have had declared at some earlier =
+time</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\callmagic\marginparApenalty{footnoteApreparation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; {\AttachMarginPar{\outputtempAbox}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That way, the \treatmagicpenaltiesinbox call would =
+prepare margin</FONT>
+
+<BR><FONT SIZE=3D2>pars in \outputtempAbox.&nbsp; Actually, =
+\outputtempAbox is too little</FONT>
+
+<BR><FONT SIZE=3D2>info: what kind of margin par and the width of the =
+box available for it would also have to be declared at some time.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Anyhow, when the output routine finishes calling =
+through all defined</FONT>
+
+<BR><FONT SIZE=3D2>hooks, all material will have been distributed along =
+all the declared</FONT>
+
+<BR><FONT SIZE=3D2>boxes according to the algorithms associated with the =
+various</FONT>
+
+<BR><FONT SIZE=3D2>penalties.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It becomes apparent that LaTeX would be split into two =
+components: one</FONT>
+
+<BR><FONT SIZE=3D2>core part that can generally cater for all sorts of =
+documents, and one</FONT>
+
+<BR><FONT SIZE=3D2>base part that will use the provided hooks in order =
+to cater for the</FONT>
+
+<BR><FONT SIZE=3D2>need of the standard classes.&nbsp; Whether a typical =
+installation should</FONT>
+
+<BR><FONT SIZE=3D2>have one dumped format for the core, or one for =
+core+base, or one</FONT>
+
+<BR><FONT SIZE=3D2>each, is a different question.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>c) non-eTeX should not be supported.&nbsp; Things like =
+repeated \vsplit</FONT>
+
+<BR><FONT SIZE=3D2>and various uses of markers to synchronize matters =
+simply become too</FONT>
+
+<BR><FONT SIZE=3D2>awkward and inefficient when one tries doing them =
+with standard TeX.</FONT>
+
+<BR><FONT SIZE=3D2>You can bet that the necessary extensions will make =
+it into stuff</FONT>
+
+<BR><FONT SIZE=3D2>like NTS and Omega, fast, when it turns out that =
+LaTeX3 relies on</FONT>
+
+<BR><FONT SIZE=3D2>them in an early enough stage.&nbsp; The sooner one =
+turns on the thumb</FONT>
+
+<BR><FONT SIZE=3D2>screws, the less pain and hectic for people to =
+adapt.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I see a lot of work cut out, and quite a bit of how to =
+best tackle it.</FONT>
+
+<BR><FONT SIZE=3D2>Question: if people decide that it would make sense =
+to do that in the</FONT>
+
+<BR><FONT SIZE=3D2>outlined manner, I don't see any reasonable time =
+frame unless somebody</FONT>
+
+<BR><FONT SIZE=3D2>is going to spend quite a bit of work as his main =
+occupation for a</FONT>
+
+<BR><FONT SIZE=3D2>while.&nbsp; I know that there are funds for the =
+LaTeX3 project, and I</FONT>
+
+<BR><FONT SIZE=3D2>would be interested in working on that matter, though =
+I am not</FONT>
+
+<BR><FONT SIZE=3D2>planning on starving myself during that (I am already =
+doing that sort</FONT>
+
+<BR><FONT SIZE=3D2>of stuff on other projects, and I can't keep it up =
+forever.&nbsp; My</FONT>
+
+<BR><FONT SIZE=3D2>savings are not unlimited).&nbsp; What would be the =
+channels where one</FONT>
+
+<BR><FONT SIZE=3D2>would propose work in that line and apply for a =
+payment that will</FONT>
+
+<BR><FONT SIZE=3D2>support a person spending full-time on it?&nbsp; Or =
+would the only feasible</FONT>
+
+<BR><FONT SIZE=3D2>manner of getting to work on this imply having to get =
+a separate job</FONT>
+
+<BR><FONT SIZE=3D2>paying the rent, and trying to manage the rest in =
+spare time?&nbsp; Of</FONT>
+
+<BR><FONT SIZE=3D2>course, much of the LaTeX work _is_ being done in =
+that manner, and it</FONT>
+
+<BR><FONT SIZE=3D2>will certainly remain so, but I fear that at least =
+for cooking up a</FONT>
+
+<BR><FONT SIZE=3D2>new LaTeX3 core, this model will fall short.&nbsp; =
+Good ideas for other</FONT>
+
+<BR><FONT SIZE=3D2>funding?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2B4C5.BC452400--
+

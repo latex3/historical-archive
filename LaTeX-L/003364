@@ -1,0 +1,113 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2420" "Wed" "27" "October" "1999" "12:07:32" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "77" "Re: Robustness (more)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id MAA28918
+	for <schoepf@UNI-MAINZ.DE>; Wed, 27 Oct 1999 12:08:00 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.5E5C509E@mail.listserv.gmd.de>; Wed, 27 Oct 1999 12:07:57 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444934 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 27 Oct 1999 12:07:57 +0200
+Received: from ssmtp01.arrakis.isp ([212.59.199.83]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA22952 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 27 Oct 1999 12:07:49 +0200 (MET
+          DST)
+Received: from [195.5.76.210] ([195.5.76.210]) by ssmtp01.arrakis.isp (Netscape
+          Messaging Server 4.1) with SMTP id FK9AS206.41K for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 27 Oct 1999 12:07:14 +0200
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199910271007.MAA22952@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 27 Oct 1999 12:07:32 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Robustness (more)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3364
+
+Frank,
+
+ > Example:
+ >
+ > \documentclass{minimal}
+ >
+ > \edef\agrave{\`a}  % Doesn't work
+ > \setbox0\hbox{\`a} % We use an accent
+ > \edef\agrave{\`a}  % Now it does work (but \agrave looks horrible! :-)
+)
+
+My apologies -- there is a missing line. It should read:
+
+\documentclass{minimal}
+
+\normalsize
+
+\edef\agrave{\`a}  % Doesn't work
+\setbox0\hbox{\`a} % We use an accent
+\edef\agrave{\`a}  % Now it does work (but \agrave looks horrible! :-) )
+
+since minimal, unlike other classes, doesn't use \normalsize (it just
+defines it). Of course, without \normalsize \cf@encoding remains empty
+and \OT1-cmd calls \?\`. Anyway, I didn't intend to make a point
+against \protect, but just to note that there was a bug in the LaTeX
+kernel.
+
+As far as \protect is concerned, I wonder if bad designed packages
+should be fixed from the LaTeX core.
+
+My main trouble with \protect is of a different nature. I think that
+the expansion of a protected command should be the command itself
+without the preceding \protect. Sometimes it is necessary to fetch
+the next token (that's not the LaTeX way, but sometimes is the only
+solution) and the \protect can be obtrusive. Of course, we may say
+something like:
+
+get next token
+if it is \protect
+  go to beginning
+else
+  do something
+fi
+
+but that's a bit annoying, and sometimes doesn't work because the
+fragile variant--that preceded by \protect--has a different name.
+In other words, if we make robust a command, we might make fail
+another command.
+
+This problem led me sometime ago to investigate an alternative to
+\protect, with no success. But a small (perhaps not so small)
+change perhaps could increase the robustness at this respect. Instead
+of protecting the fragile command, we could protect the command itself.
+I mean something similar to:
+
+\def\protected{%
+  \ifcase\protect@status   % a label depending on the context
+    \expandafter\noexpand  % case protected
+  \or
+    \expandafter\string    % case output
+  \or
+    \expandafter\doitnow   % case typeset
+  \fi}
+
+\def\doitnow#1{\csname fragile\string#1\endcsname}
+
+\def\foo{\protected\foo}
+\@namedef{fragile\string\foo}{... the actual definition of foo ...}
+
+This is the basic idea, which must be improved. This is conceptually
+the current procedure implemented in a different way, which means,
+of course, that it doesn't make \protected@edef unnecessary. (That's
+just a digression on the main topic.)
+
+Regards
+Javier bezos
+

@@ -1,0 +1,149 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5188" "Sat" "12" "December" "1998" "18:32:46" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "114" "notational examples" "^Date:" nil nil "12" nil "notational examples" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id AAA11959;
+	Sun, 13 Dec 1998 00:33:01 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.99E51361@listserv.gmd.de>; Sun, 13 Dec 1998 0:33:00 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 412342 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 13 Dec 1998 00:32:56 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id AAA03496 for
+          <LATEX-L@urz.uni-heidelberg.de>; Sun, 13 Dec 1998 00:32:50 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          SAA12409 for <LATEX-L@urz.uni-heidelberg.de>; Sat, 12 Dec 1998
+          18:32:49 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          SAA29204 for LATEX-L@urz.uni-heidelberg.de; Sat, 12 Dec 1998 18:32:46
+          -0500 (EST)
+Message-ID:  <199812122332.SAA29204@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 12 Dec 1998 18:32:46 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      notational examples
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3081
+
+This is a text/plain rendition (with some human intervention) of
+http://math.albany.edu/~hammond/gellmu/authordtd/mathbench.html .
+
+                 What is a Reasonable Authoring DTD
+                   under SGML or XML for MathML?
+
+                         William F. Hammond
+
+                         1. A Few Examples
+
+1. Compound fractions:
+                   {{a}/{b}}/{{c}/{d}} = {a d}/{b c}.
+2. The formula for solving the quadratic equation a x^2 + b x + c = 0
+   (in a field of characteristic <> 2):
+                x = {-b {+/-} SQRT{b^2 - 4 a c}}/{2 a} .
+3. Mixed function application and multiplication:
+                           sin a x cos b x .
+4. Newton's binomial series:
+(1 + t)^r = SUM[_{k=0}^{INFTY} {r(r - 1)(r - 2)...(r - k + 1)}/{k!} t^k] .
+
+5. Stokes's Theorem in space:
+    INT[INT[_S (curl F . N) d sigma]] = INT[_{\partial S}(F . T)d s] .
+
+6. The continued fraction for the golden mean:
+        {1 + SQRT{5}}/{2} = {1}/{1+{1}/{1+{1}/{1+{1}/{1+...}}}}.
+
+7. The inline math representation
+
+                           Gal(\bar{ Q }/Q)
+
+   for a centrally important object that one might choose to declare
+   as the symbol "galQ", once a command \mathsym has been
+   implemented for use in a GELLMU document preamble (not to be
+   confused with an SGML preamble).
+
+                        2. Generating MathML
+
+There is an issue for authoring related to MathML [1], the rather
+verbose XML language developed by the World Wide Web Consortium (W3C)
+HTML Math Working Group during the period 1996-1998.
+
+How can we set all of the above mathematics examples in a succinct
+SGML authoring language that admits robust processing to MathML and
+that uses reasonably succinct mathematical notation based on the long
+tradition of Western mathematical notation?
+
+The purpose of my draft on notation at the URL
+http://www.albany.edu/~hammond/gellmu/notation [2] is to explain what
+additional information is needed in this document to eliminate the
+need for guessing in automated rendering of the examples above, as
+marked up in the XML version of this document, into MathML in a fully
+automated way. Note that no guessing is needed to render this document
+in either HTML, with mathematics set crudely but reasonably, nor to
+render it in LaTeX. (Perhaps one may not fully appreciate this latter
+point without examining the XML version [3] of this document.)
+
+Note that under the unrealized part of my design a math symbol may be
+declared in a GELLMU document preamble with the usage:
+
+        \mathsym{symbol-name}{symbol-type}[symbol-rendering] .
+
+In this symbol-name is an alphanumeric string (case-sensitive)
+beginning with a letter. The second argument symbol-type is an
+alpha-numeric string that may also include possibly a few other string
+characters such as `/', `-', `>', `<', `,', `.', `*', etc. (Under the
+didactic GELLMU document type definition a command name for each
+non-alphanumeric keyboard character is provided in order to provide
+flexible handling of such characters in various possible output
+formats.) It is intended that the type information be
+context-specific, possibly under a general framework that is not yet
+specified. The optional third argument is a generic instruction, in an
+unspecified format that will eventually need to be specified, for
+generic rendering as would be used if there were no symbol declaration
+for the symbol. Absent a third argument the rendering of the symbol
+should simply be
+
+                     <space>symbol-name<space> .
+
+(In LaTeX the ``space'' might be a small space.) Note further that
+when my GNU Emacs Lisp processor transliterates the GELLMU markup for
+mathsym to SGML, it will simply convert the argument markup to tagged
+format.
+
+The command name mathsym will be one of very few names that acquires a
+meaning in my design for GELLMU outside of the SGML document type
+definition (as well as therein) that is a legal name in GELLMU source.
+Most other such names generated by the transliterator violate the
+naming rule: a name must be alpha-numeric with the first character a
+letter and the first digit, if any, not the digit zero. These names do
+appear in the document type definition.
+
+A processor for the target LaTeX should remember any symbol
+declarations in the GELLMU preamble and set each occurrence inside one
+of the math modes without a generic rendering-instruction using the
+LaTeX command \mbox on the default generic rendering. If one is
+processing both for LaTeX and for MathML, then it would be sensible to
+use an early SGML-to-SGML processor to mark all declared symbols
+inside math modes. Such a declared symbol name, e.g. galQ, should not
+be confused with a corresponding command name \galQ; the latter must
+be in the DTD but not the former. (The two need not be related in any
+way.)
+
+The reader is invited to do one or more of the following:
+  * point out inadequacies in my draft on notation.
+  * improve my draft on notation.
+  * provide code to render the above examples:
+  _________________________________________________________________
+
+References
+
+   1. http://www.w3.org/Math/
+   2. http://www.albany.edu/~hammond/gellmu/notation
+   3. http://www.albany.edu/~hammond/gellmu/authordtd/
+

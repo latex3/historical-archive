@@ -1,0 +1,112 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4382" "Tue" "1" "December" "92" "11:54:29" "GMT" "Adrian F Clark" "alien@SX.AC.UK" nil "83" "Re: LaTeX 3 floating strategy: plates" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA06643; Tue, 1 Dec 92 14:48:01 +0100
+Received: from dagobert by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AB17008; Tue, 1 Dec 92 14:46:43 +0100
+Message-Id: <9212011346.AB17008@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 7655; Tue, 01 Dec 92 13:36:37 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6166;
+ Tue, 01 Dec 92 13:36:34 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 6164;
+ Tue, 01 Dec 92 13:36:30 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  David_Rhead%vme.nott.ac.uk@uk.ac.essex.mailhost's message of Wed,
+              25 Nov 92 12:46:49 +0100
+Date:         Tue, 1 Dec 92 11:54:29 GMT
+From: Adrian F Clark <alien@SX.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: LaTeX 3 floating strategy: plates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 877
+
+
+I haven't seen any discussion of David Rhead's interesting message of
+25th November regarding plates.  Since most of my `real' work is
+concerned with pictures, this is a subject close to my heart; so here
+are some comments and suggestions concerned with floating inserts in
+general and pictures (images, not line-drawings) in particular.
+
+WHERE PLATES APPEAR.  As far as I can tell, having just looked closely
+   at a few books, plates are typically inserted between signatures in
+   older (dare I say more carefully prepared?) books, or in a separate
+   signature at the end.  I only have two books in which colour plates
+   appear as floating inserts on `normal' pages -- both these books
+   were very expensive (and produced by Springer-Verlag).
+
+WHAT PLATES CONTAIN.  The tendency is to produce grey-scale pictures
+   (halftones) as `conventional' floats, with only colour plates pushed
+   into strange places in the document.  The use of PostScript for
+   rendering grey-scale pictures means that the tedious messing around
+   with process cameras is no longer needed.  (Having said that, the
+   quality from PostScript halftones doesn't match that from a process
+   camera; but that's another matter.)
+
+DIFFERENT TYPES OF FLOATS.  David's message implies that plates
+   require a separate numbering sequence from figures and tables.  I
+   can think of several other cases in which things that one might
+   wish to have float would also require separate numbering: for
+   example, sections of code ("Listing 4.2: The radix-2 Cooley-Tukey
+   fast Fourier transform"), grey-scale images ("Image 4.2: Result of
+   applying the program of Listing 4.2 to out test image"), colour
+   images, and `pictures' of a user's screen ("...after running this
+   command, your terminal screen should look like that in Screen
+   4.2").  I have seen separate floats of all these kinds in books.
+
+A SUGGESTION.  Just as there are \newcommand and friends, surely it is
+   possible to produce a \newfloat command?  I'm thinking along the
+   lines of
+
+      \newfloat[\placement]{listing}{chapter}
+
+   As well as the name of the floating entity, this would require
+   indication of when the associated counter has to be reset
+   (`chapter' in the above example).  Of course, \newfloat would also
+   have to define an appropriate \listoflistings command.  Since I
+   recall Frank saying that he is moving towards a single auxiliary
+   file to hold all cross-referencing and contents information, this
+   shouldn't result in an explosion of new files!  Perhaps, as the
+   example shows, it would also be possible to present a macro to
+   determine the placement of the class of float --- if this is
+   feasible, it would allow a different placement policy to be used
+   for colour plates from other floats...and allow for special
+   requirements, as in David Rogers' memorable (but plain) floating
+   challenge.
+
+   Of course, LaTeX could pre-define floats called `plate'
+   `colorplate' (yes, with American spelling), and `listing' in
+   addition to the current `figure' and `table' in terms of the more
+   primitive macros in a manner analogous to \section.
+
+
+CHANGE OF BEHAVIOUR FOR [h].  Might I also suggest that a change of
+   behaviour of the [h] option for figure placement is also worthy of
+   consideration?  On a number of occasions, I have been writing
+   documents that use explicit placement of a figure or table to come out
+   between paragraphs.  When there is insufficient room for the unfloated
+   float to appear on the current page, it is retained until the end of
+   the chapter, dragging all other floats with it.  Could I suggest that,
+   if feasible, a new page is started and the [h] float rendered at the
+   top of it?  This is similar in concept to the `.ne' directive in olde
+   worlde text formatters.
+
+   Oh, and one last thing regarding tables, or more precisely
+   tabulars.  When preparing overheads with \raggedright in effect,
+   shouldn't p{<size>} cause paragraphs to be produced ragged-right
+   too?
+
+I hope this is  of interest/help.
+
+..Adrian
+
+ Dr Adrian F. Clark                                   JANET: alien@uk.ac.essex
+ INTERNET: alien%uk.ac.essex@nsfnet-relay.ac.uk          FAX: (+44) 206-872900
+ BITNET: alien%uk.ac.essex@ac.uk              PHONE: (+44) 206-872432 (direct)
+ Dept ESE, University of Essex, Wivenhoe Park, Colchester, Essex, C04 3SQ, UK.
+

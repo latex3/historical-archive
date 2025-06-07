@@ -1,0 +1,66 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1136" "Mon" "3" "March" "1997" "22:31:40" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "26" "Re: Shortref mechanism" "^Date:" nil nil "3" nil "Shortref mechanism" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA18983 for <schoepf@UNI-MAINZ.DE>; Mon, 3 Mar 1997 22:54:54 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.5E1CE836@listserv.gmd.de>; Mon, 3 Mar 1997 22:54:52 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108187 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 22:54:46 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id WAA26350
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 22:54:45
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id WAA23813 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 22:53:51 +0100
+          (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA05481; Mon, 3 Mar 1997 22:31:40 +0100
+References: <v02130504af40cbfa7fba@[130.237.37.145]>
+Message-ID:  <199703032131.WAA05481@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v02130504af40cbfa7fba@[130.237.37.145]>
+Date:         Mon, 3 Mar 1997 22:31:40 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1859
+
+Hans Aberg writes:
+ >   But, continuing this theme of non-deterministic parsing, have you tried
+ > picking up say a whole word in advance, then doing some parsing of it
+ > (expanding all macros in it, and replacing it with a word where TeX might
+ > regonize it.
+ >   More explicitly, one would type say
+ >     <foo\a bar>
+ > Then the "<" would pick up the whole "foo\a bar>", expanding the \a,
+ > finally returning "foobar". Would it be possible to recognize a ligature
+ > "ob" by this method? (The example is otherwise entirely hypothetical.)
+
+it would but on the other hand it would not help as you
+
+ a) need that > character there is not anything you could choose, eg
+scanning up to the next space or so is no answer as you would run into
+problems inside arguments etc
+
+ b) there is this nasty case of \verb which modifies TeXs parsing and
+you would kill that case as well
+
+so again, unless you make everything "letter" and "other" except for
+"\" and the start of shortref strings and essentially build your own
+parser for all of the text (with the problem of handling nested groups
+etc etc) there is no way to make this work
+
+frank
+

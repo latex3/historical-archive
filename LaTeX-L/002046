@@ -1,0 +1,146 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5008" "Sun" "15" "June" "1997" "14:20:01" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "109" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id OAA04811; Sun, 15 Jun 1997 14:15:53 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.185EFED5@listserv.gmd.de>; Sun, 15 Jun 1997 14:15:52 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153468 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 14:15:48 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id OAA07734 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15
+          Jun 1997 14:15:47 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Sun, 15 Jun 1997 14:15:44 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          OAA26233; Sun, 15 Jun 1997 14:20:02 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970615140407.26200B-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A3B7E6.3C31A9D1@vvv.vsu.ru>
+Date:         Sun, 15 Jun 1997 14:20:01 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2046
+
+On Sun, 15 Jun 1997, Vladimir Volovich wrote:
+
+> I meant the following: if somebody uses _only_ russian as a language
+> with letters with codes > 0x80, then _why_ should he have in mind
+> some `default' lccode+uccode settings for charactets > 0x80,
+> especially if these settings conflict with the common russian encodings?
+> IMHO in this case it is not too bad to allow to change lccodes+uccodes.
+
+Have a look into my CJK package. Besides support for Chinese etc. you will
+find an interface for Mule which allows the use of various latin encodings
+(and Vietnamese) at the same time. My goal is to extend this---there are
+so many language specific solutions which can't be made more general (e.g.
+Japanese TeX). I don't like this, and I will always try to find a
+multilingual solution. For example, you can embed Babel seamlessly into
+the CJK package (provided you have only 7bit input encoding for non-CJK
+languages: this will be done by the Mule-CJK interface).
+
+> At least, I think that LCY encoding which is currently used in LH
+> fonts should be defined in Babel (among other cyrillic encodings encluding T2).
+> And in this LCY encoding it is very useful to have russian letters
+> to stay _real_ letters (not active chars). And therefore one needs
+> to change lccode and uccode before switching to LCY (and restore
+> the defaults before switching to another language).
+> I'm finishing this work now.
+
+I will take a look how you've solved it.
+
+> Moreover, do the _one_ default lccode+uccode settings conform to _all_
+> languages (which are already TeXized)?
+
+Of course not. But it is better to try to follow this standard if
+possible. And it *is* possible for Russian to use these settings.
+
+> > > Next, when somebody uses Russian language in his TeX document,
+> > > very offten the other language(s) used in the same document
+> > > will have the codes of it's letters below 128. So,
+> > > why not to allow Babel to change lccodes for Russian
+> > > in this case?
+
+Well, think of multilingualism. The next one will mix Russian with old
+Greek (where the same problems are) in one paragraph. What then?
+
+> If we will have the TeX's internal encoding for _letters_ of some language
+> different from the _native_ encoding(s) used in this language
+> (i.e. encoding, which is used to typeset the documents in text editors,
+> and which is built into screen fonts, etc.), then we will have to
+> perform a translation from the language-native encoding into TeX's internal
+> encoding. This can be done in different ways:
+> 1) do this transliteration `on the fly' by means of external tools
+>    before sending text to TeX (and also before examiming TeX's logs).
+>    This approach is not ideal, but it can be used.
+
+bad.
+
+> 2) use TeX Code Pages (TCP). This has advantage because it is universal,
+>    and lets us preserve catcodes of translated characters.
+>    But TCP are not supported by all TeX implementations.
+
+only emTeX, AFAIK. Non-portable.
+
+> 3) declare all _letters_ of this language to be non-letters (!)
+>    from the TeX's point of view -- i.e. declare them active characters.
+>    But this approach has some disadvattages:
+
+only for the input encoding!
+
+>    * letters are now `not letters' -- so it becomes impossible
+>      to define and use macroses with names consisting of letters of this language.
+
+this is bad anyway, since TeX does not have a mechanism for separating
+control characters from normal TeX (Omega can do this...)
+
+>    * TeX log files become unreadable (because our fonts have encoding different
+>      from TeX's internal encoding). So it becobes very tricky to work with TeX.
+>      This, again, can be avoided by translating TeX log files `manually',
+>      but this approach is not applicable to all users...
+
+Have you ever seen a log file of my CJK package for Chinese? :-)
+
+> BTW, how one can make virtex (I use NTeX under Linux) or teTeX to
+> show characters with codes above 0x80 as normal characters?
+> In the case of emtex, it is possible to use options like `-o' and `-8'.
+> But I didn't find the way to do this with virtex.
+
+send a change file to Karl Berry, the author of web2c. It's not
+implemented.
+
+> > this third language must of course also follow the default \lccode and
+> > \uccode values in the ASCII range. As long you don't have more than 256
+> > characters in your alphabet (including punctuation marks) this IS
+> > POSSIBLE!
+>
+> I did not catch what you meant. Do you mean that all cyrillic characters
+> will not fit into T2 table, so there will be two tables?
+
+not really, since you can't have correct hyphenation between two distinct
+fonts. I just have meant that (theretically) you will find for most
+character based languages (which need hyphenation) a solution (probably
+with a new font encoding) using the default lccodes and uccodes (together
+with macros in \@uclclist).
+
+> > I want to change my own code to T2.
+>
+> BTW, do you have the new alpha version of LH fonts (with T2 encoding)?
+
+Oh! This is good news! Where can I get them?
+
+
+    Werner
+

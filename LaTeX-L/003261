@@ -1,0 +1,138 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3810" "Wed" "3" "March" "1999" "23:15:57" "+0100" "Frank Mittelbach" "frank.mittelbach@UNI-MAINZ.DE" nil "96" "some thoughts on glyph collections" "^Date:" nil nil "3" nil "some thoughts on glyph collections" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id AAA00671;
+	Thu, 4 Mar 1999 00:27:37 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.390DD4F9@listserv.gmd.de>; Thu, 4 Mar 1999 0:27:17 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 426679 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 4 Mar 1999 00:27:16 +0100
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id AAA18272
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 4 Mar 1999 00:26:28 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (dialin409.zdv.Uni-Mainz.DE
+          [134.93.175.109]) by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id
+          AAA30396 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 4 Mar 1999
+          00:26:26 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.8.8/8.8.8) id
+          XAA01431; Wed, 3 Mar 1999 23:15:57 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199902281535.QAA14126@mozart.ujf-grenoble.fr>
+            <l03102800b301c74fc00f@[130.239.20.144]>
+            <199903021825.TAA13628@mozart.ujf-grenoble.fr>
+Message-ID:  <199903032215.XAA01431@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199903021825.TAA13628@mozart.ujf-grenoble.fr>
+Date:         Wed, 3 Mar 1999 23:15:57 +0100
+From: Frank Mittelbach <frank.mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      some thoughts on glyph collections
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3261
+
+the sketch below was written on New Years Eve or somewhere about that time,
+triggered by the interesting and good work by Lars on extending the NFSS2 idea
+of a font encoding --- i don't know if that work is available yet, if not i
+hope he will provide it some time soon at least through interested parties.
+
+(that is i think some of his ideas are wrong or say could be better
+represented differently but that is natural if you come up with new ideas,
+right?)
+
+there have been earlier ideas on these issues but i can't find them right now
+and anyway, i think this stuff below (which is hopefully not too terse (being
+the result of several evening/night discussions) should give some food for
+thought (and perhaps better ideas)
+
+stuff like this (or Lars work) is thinking about new concepts (which might
+result in eventually in something like NFSS3 if tried and played with) it is
+not really about extending NFSS2 at all even if prototype implementations
+would work this way.
+
+frank
+
+-------------------------------------------------------------------------
+
+Glyph Collections and Font Encodings
+
+\copyright\ 1999 Frank Mittelbach  Chris Rowley
+
+A glyph collection is a collection of glyphs.
+
+In \LaTeX{}, the useful glyph collections, which thus get \LaTeX{}
+names, are ones such that every glyph in the collection can be
+represented by using a single 8-bit (virtual) font and preferably by a
+font that is typically widely available in a large range of
+typographic forms.
+
+In \LaTeX{}, \emph{representing a glyph} means that any \LaTeX{}
+internal token sequence that is advertised as producing that glyph
+will do so (reasonably well).  A font represents a glyph collection if
+it represents every glyph in the collection.
+
+In \LaTeX{}, \emph{reasonably well} should mean, for letters and
+standard punctuation only, that the expected kerning is produced.
+
+How a particular font represents a \LaTeX{} internal token sequence
+is defined as and by the \LaTeX{} \emph{encoding} of that font.
+
+There may therefore be more than one encoding used by fonts that
+represent the same glyph collection (some of which may do a better job
+than others); but a glyph collection will usually have a major
+encoding associated with it.
+
+For example (approx), there is a glyph collection that is everything
+that can be represented in a T1 font except thorn, eth and dotlessj:
+call this EL (Euro-Latin).  This glyph collection can also be defined
+as `a subset of what one expects to be able to produce with a random
+PS standard font'.  It is (we think) represented by all fonts that
+really do have the following font encodings: LY1, T1 and OT1 (suitably
+precisely defined).
+
+This is therefore an excellent candidate as a \LaTeX{} glyph collection.
+
+[??? Glyph collections and/or encodings may need to state which glyphs are
+kernable.]
+
+Typesetting text with glyph collections.
+
+IMPORTANT CHANGES
+
+When typesetting a document, the font status of the \LaTeX{} document
+now has an extra attribute: \emph{current glyph collection}.  This
+must be explicitly changed, \ie the system will never change it
+internally (except maybe for a single glyph).
+
+The encoding status is now determined by the other aspects of the
+current font status (except size??).  The .fd files are now labeled
+by glyph-collection and family and specify for each shape/series which
+encoding to use and also (as now) which actual \TeX{} font to load and
+use.
+
+
+There are two types of glyphs (\ie of \LaTeX{} internals):
+
+letters and punctuation;
+
+text symbols.
+
+Typesetting the former never (we hope:-) changes the font.
+
+Typesetting the latter may do so (for this symbol only), by either:
+
+changing the glyph collection and hence the font (via the .fd file
+info);
+
+explicitly choosing a particular font.
+
+------------------------------------------------------------
+

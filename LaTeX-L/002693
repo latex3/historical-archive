@@ -1,0 +1,112 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2062" "Wed" "21" "October" "1998" "21:08:28" "+0000" "Hubert Gaesslein" "Gaesslein@BNED.COM" nil "72" "Re: Users dropping into TeX" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA22232;
+	Wed, 21 Oct 1998 23:08:42 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.34AD8365@listserv.gmd.de>; Wed, 21 Oct 1998 23:08:40 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 402999 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 21 Oct 1998 23:08:34 +0200
+Received: from bnedgate.vossnet.de (root@bnedgate.vossnet.de [212.53.203.130])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA10819
+          for <LATEX-L@urz.uni-heidelberg.de>; Wed, 21 Oct 1998 23:08:31 +0200
+          (MET DST)
+Received: from BNeD.com (hubertjg@bned-s1.intra.bned.com [192.168.2.2]) by
+          bnedgate.vossnet.de (8.8.7/8.8.7) with ESMTP id XAA03071 for
+          <LATEX-L@urz.uni-heidelberg.de>; Wed, 21 Oct 1998 23:08:37 +0200
+X-Mailer: Mozilla 4.04 [en] (X11; I; Linux 2.0.32 i686)
+MIME-Version: 1.0
+References: <199810211301.JAA11121@hilbert.math.albany.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <362E4D4C.A089A8B2@BNeD.com>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Organization: Broadband Network Design
+Date:         Wed, 21 Oct 1998 21:08:28 +0000
+From: Hubert Gaesslein <Gaesslein@BNED.COM>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Users dropping into TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2693
+
+William F. Hammond <hammond@CSC.ALBANY.EDU>
+on Wed, 21 Oct 1998 09:01:47 -0400 wrote:
+
+> But my original question was motivated by several lines from
+> "ltx3info.tex" and my wondering whether these lines were durable
+> for the LaTeX-3 future.
+>
+> Here are clips of a "newenvironment" and a "newcommand":
+>
+> %%%%% clip
+> \newenvironment{citations}{%
+>    \list{}{%
+>       \renewcommand{\makelabel}[1]{\normalfont\itshape ##1}%
+>    }%
+> }{%
+>    \endlist
+> }
+> %%%%% clip
+> \newcommand{\AmSLaTeX}{$\mathcal A$\lower.4ex\hbox{$\!\mathcal
+>                                               M\!$}$\mathcal S$-\LaTeX}
+> %%%%% endclips
+>
+> (I do not see why "citations" could not have been done entirely in
+> Lamport LaTeX.  (I am unclear what "list" and "endlist" are.))
+
+A LaTeX environment "foo" is basically implemented as a pair of
+commands "\foo" and "\endfoo".
+The construct
+
+        \begin{foo}
+        ...
+        \end{foo}
+
+will be translated to something like
+
+        \begingroup
+            \foo
+                ...
+            \endfoo
+        \endgroup
+
+plus some extra code to check whether such an environment is defined
+at all and whether the names given as arguments to \begin and \end
+match each other.
+
+Many of LaTeX's environments (e.g., enumerate, quotation, description,
+verse) are based on the "list" environment (or its cousin "trivlist");
+i.e., in the above definition
+
+        \begin{list} ... \end{list}
+
+could've been used as well---the only differences would have been
+an extra (redundant) level of grouping and some performance overhead.
+
+> In the "AmSLaTeX" macro I believe that "lower" and "hbox" are
+> ordinary TeX.
+
+Yupp. These are TeX primitives (built-in, not macros) --- unless
+somebody comes along and redefines them, of course.
+
+> Will this usage survive?
+
+Probably not. According to the demos/preview of LaTeX3 published
+last spring (1), *lots* of things are going to change. (The TeXbook
+may well become useless for us humble package writers ...)
+
+(1) CTAN:macros/latex/packages/expl3/
+
+
+Hubert Gaesslein
+<Gaesslein@BNeD.com>
+
+

@@ -1,0 +1,118 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 19 Dec 2007 13:38:42 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id lBJCcaXi018301
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 19 Dec 2007 13:38:38 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lBJCWWRe001674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 19 Dec 2007 13:32:33 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lBIN1YiE012966;
+	Wed, 19 Dec 2007 13:32:20 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 237920 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 19 Dec
+          2007 13:32:20 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de
+          [129.206.100.94]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lBIN1Yi8012966 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 19 Dec 2007 13:32:19 +0100
+Mime-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id lBJCWK4i008667
+Message-ID:  <LISTSERV%200712191332198625.02FE@LISTSERV.UNI-HEIDELBERG.DE>
+Date:         Wed, 19 Dec 2007 13:32:19 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Javier Mugica <javier@DIGI21.NET>
+Subject: Re: Misleading cs names?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 19 Dec 2007 12:38:42.0562 (UTC) FILETIME=[16A7B620:01C8423C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5134
+
+I am revewing the messages form December (you see, I don't review the messages very 
+often), and what follows is may point about argument specifiers.
+
+It seems clear that the problem is what do we want the arg-spec to specify. Two things 
+were proposed:
+
+1. The original and current one. (Explanation following is form Frank)
+
+>>\foo:abc  % abc are placeholders for real arg specifiers
+
+>>is intended to be a short form for saying
+
+>>- do "a" with the first argument do "b" with the second and do "c" with the
+   third argument prior to passing the argument values to the base function
+   \foo:nnn
+
+2. Let the specifiers tell what we can pass to the function according to how it will be 
+handled.
+
+While the last one is quite appealing, when analysed I see a *BIG* trouble. The way the 
+argument is treated my change if the implementation of the function is changed (for 
+example, by pdfTeXing the kernel, as it was said). One may always update de doc, but 
+one cannot keep changing the names of kernel commands.
+I see another trouble too. The casuistic (about manipulating arguments inside a macro) is 
+very wide. Too many arg-specs would be needed, and even then they the thefinition of 
+many of then could not be rigorous (or if they are, there will be macros that do not 
+exactly stick to what their arg-spec tells). This does not happen if the arf-specs are what 
+Frank's dewscripstion above tells.
+
+<<do "a" with the first argument do "b" with the second and do "c" with the
+   third argument prior to passing the argument values to the base function
+   \foo:nnn>>
+
+is a very precise definition. One of the things I like more about TeX (seen as a 
+programing language) and TeX primitives is, that with all its oddities, the rules are 
+precisely documented and each primitive behaves exactly according to precese rules, 
+even if they are weird at some points.
+
+So, my point is that I like few arg-specs with their current meaning and have well 
+documented in de doc the other part, i,e., what happens to the argument in the function 
+and hence what can be passed to it.
+
+
+Andreas Matthias wrote:
+
+>>When I first used these functions I added a lot of \exp_args:... and
+>>\exp_after:NN just to realize afterwards that they are not necessary
+>>at all. An x arg-spec would have helped me a lot to get things right
+>>from the beginning.
+
+Yes, but missinterpreting the specifications, or simply forgotting the precise rules, is 
+something that from time to time happens to everyone. I, for instansce, was continually 
+writing:
+
+\expandafter\toks@a\csname toks@ #1\endcsname
+
+(or something similar, now I can't remember) tilll I realized that the \expandafter was not 
+necesary.
+
+But I agree that many people will be confused as you were. To avoid this, the 
+documentations that explains what arg-spec mean should also explain what they don't 
+mean, for example, saying that an n secifier that _not_ mean that the argument will not 
+get expanded inside the function.
+
+p.s.: I defend the original model but I was _not_ one of the people coming up with it.
+
+p.s. II: I also want the T and F specifiers to remain in existence.
+
+Cheers,
+Javier A.
+

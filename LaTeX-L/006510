@@ -1,0 +1,88 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p030sKi0029940
+	for <rainer@rainer-schoepf.de>; Mon, 3 Jan 2011 01:54:22 +0100
+Received: (qmail 15896 invoked by alias); 3 Jan 2011 00:54:15 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 03 Jan 2011 00:54:15 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx022) with SMTP; 03 Jan 2011 01:54:15 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p030qgeA002574
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 3 Jan 2011 01:52:42 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p02N14wH023033;
+	Mon, 3 Jan 2011 01:52:34 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 769895 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 3 Jan
+          2011 01:52:33 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p030qXqZ030009 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 3 Jan 2011 01:52:33 +0100
+Received: from freefriends.org (b0.f7.net [66.148.120.132]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p030qH7p020039
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Mon, 3 Jan 2011 01:52:22
+          +0100
+X-Envelope-From: karl@freefriends.org
+X-Envelope-To: <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Received: from freefriends.org (sls-af11p1 [127.0.0.1]) by freefriends.org
+          (8.14.4/8.14.4) with ESMTP id p030qE5f014653 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 2 Jan 2011 19:52:17 -0500
+Received: (from nobody@localhost) by freefriends.org (8.14.4/8.14.4/submit) id
+          p030qEUM014652; Mon, 3 Jan 2011 00:52:14 GMT
+X-Authentication-Warning: localhost.localdomain: nobody set sender to
+                         karl@freefriends.org using -f
+Message-ID:  <201101030052.p030qEUM014652@freefriends.org>
+Date:         Mon, 3 Jan 2011 00:52:14 GMT
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Karl Berry <karl@FREEFRIENDS.ORG>
+Subject: Re: xparse: read arg until EOL
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <4D204F18.2060705@gmx.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p6i75npGen84eVAEFK/syJmAVhAT3mu30VXXBXVubWw5QTKyWVvBu5v+7fbk
+ 2WURP2W/wkmw19y9Ejp5Znp38PV00hlwJxZB/ig130NWiZ37CATwM/wL8F8pqDqlDaBYO79O0tQH
+ bq4FA==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6510
+
+    I just thought it might be good to have an argument type that reads an
+    argument until the end of line. That would be a special version of the u
+    type, I think, but the normal user will not be able to specify it that
+    way. 
+    Any comments?
+
+Based on my experience with Texinfo, my comment is that robust parsing
+of arguments delimited by end-of-line is essentially impossible.  I
+fully agree with Joseph: I wouldn't go there. 
+
+    (Also I'm not sure about different line endings in *nix and Windows.)
+
+That isn't the problem.  The engines have always unified the various
+platform-specific line endings to \endlinechar (otherwise TeX
+portability would be a nonstarter).  The problem is distinguishing eol
+from space (gets converted very early in processing), handling the
+contexts of active eol vs. normal eol, doing all this inside other
+macros, etc. ... it's a steep and slippery slope.
+
+If you want to convert from TeX to OOo, my suggestion is to use an
+external program.  An eol-delimited macro will hardly be a panacea for
+that job, as you yourself pointed out.
+
+k
+

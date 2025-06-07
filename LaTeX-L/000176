@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Wed, 11 Jul 90 13:03:20 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: document structure; table of contents
+To: POPPELIE@HUTRUU53.uucp
+In-Reply-To:  Your message of Tue, 10 Jul 90 10:35 N
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 176
+
+Nico,
+
+your last message is very interesting.  For the moment I have only a
+few comments, but I will think further about it.
+
+Visual vs. structual information: what I have in mind for the processing
+of the sectional commands is the following:
+
+1. The source file (i.e. the user) specifies the begin of a sectional
+   unit providing
+   a) the level
+   b) the text for the heading
+   c) some attributes, such as numbered/unnumbered, toc/notoc, and
+      possibly a number of its own (I think we have to account for
+      this case, e.g., a subsection 2.2.1a between 2.2.1 and 2.2.2.)
+
+2. This information is then passed to the kernel that processes it in
+   the following way:
+   a) Generate the structural representation of the number (if
+      necessary).  Here I mean the sequence (1)(1)(1) for subsection.
+      This may be a bit tricky for user-supplied numbers.
+   b) If toc is specified generate a toc entry in a form that is
+      independent of the style.
+
+3. This information (number and heading text) is passed in turn to
+   the style that
+   a) generates the textual representation of the number (`Chapitre 1'),
+   b) typesets (or specifies how to typeset) number and text.  Probably
+      the style would return a box or so containing the header.
+
+4. This is then passed back to the kernel (maybe this step is not
+   necessary when typesetting is done in step 3).
+
+These user-specified numbers make it impossible to fully construct
+the document tree from the structure alone, you need to know the
+numbers. Apart from this, it is probably simpler to record the numbers
+in the .aux or .toc file than to construct them from the information
+that is available.  Sometimes redundancy makes life easier!
+
+For the formatting of the table of contents (and other tables as well)
+I propose a similar approach, except that tables are a bit more
+complicated due to the presence of page numbers.  This is more than
+a trivial extension, I think, since we need to handle things like
+leaders.  For example, page numbers may be absent, but then the leaders
+must be omitted, too.  I.e. leaders are logically a part (or property)
+of the page number part which may give rise to problems when it comes
+down to typesetting.  Another problem is that you might want to omit
+leaders for certain levels of sectioning commands.  If we think a bit
+bit about it we can certainly come up with other difficulties.
+
+I like your ideas with \new@level and friends, it is only that the
+replacement of \setcounter{tocdepth} by \tocdepth{subsection} touches
+the compatibility issue.  But wait: one could simply implement
+\tocdepth{subsection} to do a \setcounter{tocdepth}{subsection@level}.
+
+Recently I talked to Frank about his startsection macros.  He told me
+that he isn't very happy with these since he found a lot of designs
+that are not covered by them.  For example: the heading text is typeset
+as a sort of marginal note next to the first lines of the section.
+We have to think about this further; maybe I have an idea, but it has
+still to ripen.
+
+Rainer
+
+

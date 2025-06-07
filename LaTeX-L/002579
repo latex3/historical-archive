@@ -1,0 +1,123 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3770" "Mon" "22" "June" "1998" "16:31:11" "+1000" "Richard Walker" "Richard.Walker@CS.ANU.EDU.AU" nil "85" "Re: Modules" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id IAA03327;
+	Mon, 22 Jun 1998 08:32:27 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.BFD1D40D@listserv.gmd.de>; Mon, 22 Jun 1998 8:32:26 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 366622 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 22 Jun 1998 08:32:20 +0200
+Received: from ricetub.anu.edu.au (richard@ricetub.anu.edu.au [150.203.166.61])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id IAA14695
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 22 Jun 1998 08:32:07
+          +0200 (MET DST)
+Received: (from richard@localhost) by ricetub.anu.edu.au (8.8.2/8.8.2) id
+          QAA11602; Mon, 22 Jun 1998 16:31:11 +1000 (EST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <m0ynSs5-000DLbC@bilbo.yavuz.de>
+X-Mailer: VM 6.29 under Emacs 19.34.1
+Message-ID:  <199806220631.QAA11602@ricetub.anu.edu.au>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <m0ynSs5-000DLbC@bilbo.yavuz.de>
+Date:         Mon, 22 Jun 1998 16:31:11 +1000
+From: Richard Walker <Richard.Walker@CS.ANU.EDU.AU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2579
+
+Volkan Yavuz writes:
+ > A package author identifies not just the package name but also gives
+ > it's location within a hierarchy (modules, submodule). This hierarchy
+ > may also correspond to some extent to the directory structure on
+ > CTAN.... :-) It may be feasible to use a deeper module hierarchy than
+ > the current directory structure on CTAN to be able to categorize
+ > packages more exactly.
+ >
+ >         \ProvidesPackage{latex3/contrib/math}
+
+This is what I was hinting at when I referred to \base/ltbibl/@citex
+and \contrib/supported/splat/somethinguseful.
+
+(May I suggest not including `latex3', since it is superfluous, and we
+want upward compatibility with LaTeX4 . . . .)
+
+Some of us are talking at cross-purposes, so allow me to clarify what
+I was getting at before.
+
+There are some conflicting concerns:
+
+1.  Macro/symbol names should follow a consistent scheme, be easy to
+remember and use.  Hence `long' names.
+
+2.  I was addressing the problem of keeping format file size and
+control sequence space requirements to a minimum.  This has been one
+of the stated aims of the project.  Hence `short' names.  Is this no
+longer a concern?  Is it OK if all macro names are thirty or more
+characters long?  If so, dump the short names altogether, and stick
+with the long names.  We use smart editors.
+
+Hans Aberg writes:
+ >   So a command like this could be useful to load all macros in
+ > latex3/contrib/math, but it would not abbreviate the names. Instead an user
+ > would define a special environment which abbreviates the names. Inventing
+ > something:
+ >     \module{short}{latex3/contrib/math}{m}
+ > and as long as the locality is valid, names \m/foo would expand to
+ > \latex3/contrib/math/foo.
+ >
+ >   One reason for doing it this way is that it is difficult know in advance
+ > what kind of blends of modules users may make use of.
+ >
+ >   Then one could of course think of more complicated things (like search
+ > paths etc), but I think this would suffice quite far.
+
+My `gut' feeling is that this is a Very Bad Idea, but I'm not sure
+why.  Perhaps because it doesn't lend itself to portable code.  LaTeX
+`code' tends to be reused in much smaller chunks than is normal with
+other programming languages.  If you copy some code from within some
+`module' construct, you have to be very careful where you put it.  It
+might find itself being called inside some other `module', possibly
+with bizarre results.
+
+PS Nice photo!
+
+Javier Bezos writes:
+ > Renaming commands
+ > ~~~~~~~~~~~~~~~~~
+ > Suppose someone is determined to study the internal latex code with the
+ > new naming scheme. He take the TeXbook and... surprise! The latex code is
+ > absolutely unintelligible.
+
+This was my reaction too.  And the new names are often not transparent
+renamings of the original - as you point out, some are subtly
+different.  You need to know not only the new names but you need to
+keep the implementations in mind too.
+
+ > I thing the primitive (and maybe plain)
+ > command names should be preserved with perhaps some minute changes; eg.
+ > \_box instead of \box (you may think of that as "no module").
+
+Interesting idea.  But I think we are looking at an `all-or-nothing'
+solution.  I don't recall seeing LaTeX listed in those `shoot yourself
+in the foot' jokes; let's keep it that way.
+
+ > However, I think it's not a good idea to change at all the meaning of
+ > those well established names. If \box has another meaning it could
+ > lead to confusion.
+
+A couple of days ago I needed a macro for typesetting program code
+within math mode.  We have \mathrm, \mathtt, etc. so I thought: why
+not \mathcode?  Oops, that's a TeX primitive.  Ben L. User would
+probably be annoyed about that.  I must admit that I'm slowly coming
+around to the [removeoldnames] option.
+

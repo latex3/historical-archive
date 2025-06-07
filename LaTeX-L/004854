@@ -1,0 +1,298 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Tue, 5 Apr 2005 01:08:40 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j34N8Lqc023241 for <rainer.schoepf@PROTEOSYS.COM>; Tue, 5 Apr 2005 01:08:34 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j34N3JtL000700; Tue, 5 Apr 2005 01:03:19 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_001_01C5396B.3D244C00"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j34M1QdC024469; Tue, 5 Apr 2005 01:00:29 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 187962 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 5 Apr 2005 01:00:27 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id j34N0Qaq004589 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 5 Apr 2005 01:00:26 +0200
+Received:  from smtp07.web.de (smtp07.web.de [217.72.192.225]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          j34N2QtL000559 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 5 Apr          2005 01:02:26 +0200 (MET DST)
+Received:  from [212.144.146.63] by smtp07.web.de with smtp (WEB.DE 4.104 #268)          id 1DIaZE-0002jv-00; Tue, 05 Apr 2005 01:01:12 +0200
+In-Reply-To:  <x5r7huclm3.fsf@lola.goethe.zz>
+References: <5.1.0.14.0.20050401192426.024909a0@pop3.web.de>            <5.1.0.14.0.20050401192426.024909a0@pop3.web.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+X-OriginalArrivalTime: 04 Apr 2005 23:08:42.0551 (UTC) FILETIME=[3EA98C70:01C5396B]
+X-Sender: uwe.lueck@web.de
+X-Scanned-By: MIMEDefang at proteosys.com
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: \output trick (\@reinserts / \holdinginserts)
+Date: Mon, 4 Apr 2005 23:50:16 +0100
+Message-ID: A<5.1.0.14.0.20050405002635.02492ad0@pop3.web.de>
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+Thread-Topic: \output trick (\@reinserts / \holdinginserts)
+Thread-Index: AcU5az7GBISWdCc3SXG0+gZLmEKZjg==
+From: =?iso-8859-1?Q?Uwe_L=FCck?= <uwe.lueck@WEB.DE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4854
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C5396B.3D244C00
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_002_01C5396B.3D244C00"
+
+
+------_=_NextPart_002_01C5396B.3D244C00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 22:01 01.04.05, David Kastrup wrote:
+
+>Standard mistake.  When redefining hook token registers, you need
+>_two_ extra control sequences, not one.  Something like
+>
+>\let\my@@output\output
+>\newtoks\output
+>\let\my@output\output
+>\output\expandafter{\the\my@@output}
+>
+>\my@@output{whatever stuff I want and need
+>   \the\my@output for recursing to the original}
+>
+>If you use \the\output for recursing instead of \the\my@output, then
+>multiple packages doing the same trick will conflict, and not properly
+>daisy-chain.
+
+"mistake" depends on intentions -- lineno.sty just aimed at
+compatibility with multicol.sty or with packages just filling
+\output in their own way. But, thanks, I adopt the proposal,
+it fits *my* intentions. Indeed, the "conflict" with a package
+loaded later would be: the second package would fill its own
+output routine into a token register that would never be read,
+so it couldn't change the output routine at all. (I needed
+some days to understand this.)
+
+The new version v0.2 (attached), however, replaces
+\my@@output with \@tempa -- discussed in noreins.sty.
+So there is hardly an additional control sequence.
+
+v0.1 had further flaws, two of them producing error
+messages (sorry). I had no test file -- now I have (attached),
+so news: noreins.sty v0.2 has been tested.
+
+-- Uwe Lueck.
+
+------_=_NextPart_002_01C5396B.3D244C00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: \output trick (\@reinserts / \holdinginserts)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 22:01 01.04.05, David Kastrup wrote:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;Standard mistake.&nbsp; When redefining hook token =
+registers, you need</FONT>
+
+<BR><FONT SIZE=3D2>&gt;_two_ extra control sequences, not one.&nbsp; =
+Something like</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\let\my@@output\output</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\newtoks\output</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\let\my@output\output</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\output\expandafter{\the\my@@output}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\my@@output{whatever stuff I want and need</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp; \the\my@output for recursing to the =
+original}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;If you use \the\output for recursing instead of =
+\the\my@output, then</FONT>
+
+<BR><FONT SIZE=3D2>&gt;multiple packages doing the same trick will =
+conflict, and not properly</FONT>
+
+<BR><FONT SIZE=3D2>&gt;daisy-chain.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&quot;mistake&quot; depends on intentions -- =
+lineno.sty just aimed at</FONT>
+
+<BR><FONT SIZE=3D2>compatibility with multicol.sty or with packages just =
+filling</FONT>
+
+<BR><FONT SIZE=3D2>\output in their own way. But, thanks, I adopt the =
+proposal,</FONT>
+
+<BR><FONT SIZE=3D2>it fits *my* intentions. Indeed, the =
+&quot;conflict&quot; with a package</FONT>
+
+<BR><FONT SIZE=3D2>loaded later would be: the second package would fill =
+its own</FONT>
+
+<BR><FONT SIZE=3D2>output routine into a token register that would never =
+be read,</FONT>
+
+<BR><FONT SIZE=3D2>so it couldn't change the output routine at all. (I =
+needed</FONT>
+
+<BR><FONT SIZE=3D2>some days to understand this.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The new version v0.2 (attached), however, =
+replaces</FONT>
+
+<BR><FONT SIZE=3D2>\my@@output with \@tempa -- discussed in =
+noreins.sty.</FONT>
+
+<BR><FONT SIZE=3D2>So there is hardly an additional control =
+sequence.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>v0.1 had further flaws, two of them producing =
+error</FONT>
+
+<BR><FONT SIZE=3D2>messages (sorry). I had no test file -- now I have =
+(attached),</FONT>
+
+<BR><FONT SIZE=3D2>so news: noreins.sty v0.2 has been tested.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-- Uwe Lueck.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_002_01C5396B.3D244C00--
+
+------_=_NextPart_001_01C5396B.3D244C00
+Content-Type: application/zip;
+	x-mac-type=705A4950;
+	x-mac-creator=705A4950;
+	name="noreins.zip"
+Content-Transfer-Encoding: base64
+Content-Description: noreins.zip
+Content-Disposition: attachment;
+	filename="noreins.zip"
+
+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
+AOMAAAA5FAAAAAA=
+
+------_=_NextPart_001_01C5396B.3D244C00--
+

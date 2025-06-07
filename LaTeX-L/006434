@@ -1,0 +1,138 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o8LK2e7g026565
+	for <rainer@rainer-schoepf.de>; Tue, 21 Sep 2010 22:02:42 +0200
+Received: (qmail 27073 invoked by alias); 21 Sep 2010 20:02:36 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 21 Sep 2010 20:02:35 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx079) with SMTP; 21 Sep 2010 22:02:35 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id o8LK2G0A004924
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 21 Sep 2010 22:02:16 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o8LFUaTf018044;
+	Tue, 21 Sep 2010 22:00:54 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 473174 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 21 Sep
+          2010 22:00:54 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o8LK0saD027399 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 21 Sep 2010 22:00:54 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id o8LK21nJ004745 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 21 Sep 2010 22:02:05 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1Oy917-0002h7-bW for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 21 Sep
+          2010 20:00:41 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.9)
+            Gecko/20100915 Thunderbird/3.1.4
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4C990EE9.9050905@morningstar2.co.uk>
+Date:         Tue, 21 Sep 2010 21:00:41 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: LaTeX3 engine requirements and \tl_if_eq:nn(TF)
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4U4jfdfC5HDevlx1X2sAZg1MkugZcpwIdDb8z5l6KEaP+LdZ7QLw+5CKzyp
+ k5HTLZ1v8wPRqFdQdQapWq9qz59Rr52fCiljKsM85i3sbXAJVBjnzZkoSL42zBmmwDa5vja6zT3o
+ 7boow==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6434
+
+Hello all,
+
+Prompted in part by the issues raised by category code tables in LuaTeX, 
+the team have been considering engine variations in LaTeX3/expl3.  While 
+expl3 is 'stable', it is important that problems continue to be 
+addressed when they are identified. This includes revising existing 
+ideas, functions and implementations when issues arise.
+
+\pdfstrcmp
+----------
+
+In particular, the code provided a family of functions \tl_if_eq:nn(TF). 
+With a sufficiently new engine, this family was implemented using the 
+\pdfstrcmp primitive in pdfTeX, the equivalent \strcmp primitive in 
+XeTeX, or using Lua when loaded with LuaTeX. Under these conditions, 
+\tl_if_eq:nn(TF) was expandable. However, with older pdfTeX and XeTeX 
+versions the code instead used a different implementation which was not 
+expandable.
+
+The danger with this approach was that other functions are also built on 
+top of the basic comparison, for example \IfNoValueTF from xparse. The 
+possibility of unexpected errors when moving from an expandable to 
+non-expandable version is clear, particularly in the context of the 
+category code table issue already mentioned.
+
+Engine requirements
+-------------------
+
+The team has therefore looked again at what is desirable here. The 
+\pdfstrcmp primitive was introduced in pdfTeX 1.30 in 2005. It is 
+therefore very likely that users who want to use expl3 will have 
+\pdfstrcmp available when using pdfTeX. XeTeX has only had the primitive 
+since version 0.9994, meaning from TeX Live 2009 onward. For LuaTeX, the 
+very active development means that there are many reasons to expect 
+users to make use of a recent release.
+
+Based on the above, the team have decided to require the availability of 
+\pdfstrcmp (or equivalent) for loading expl3. This is clearly a 
+significant change sense, although hopefully will not cause issues for 
+most expl3 users. As a result, it will only work with engines:
+
+  - pdfTeX 1.30 or later
+  - XeTeX 0.9994 or later
+  - LuaTeX 0.40 or later (due to the syntax of \directlua), although
+    only v0.60 or later is used for testing.
+
+String versus token list comparisons
+------------------------------------
+
+There is a second issue with \tl_if_eq:nn(TF) as previously provided. 
+The function is '\tl...', and so should compare on a token by token 
+basis. However, the implement compared as strings (i.e. considering 
+character codes only). This was clearly misleading. As part of the 
+update in this area, the following have now been implemented:
+
+  - \str_if_eq:nn(TF), a family of expandable comparisons which
+    work on a purely character basis. These are implemented using
+    \pdfstrcmp internally. This includes \str_if_eq:xx(TF), which
+    remains expandable as \pdfstrcmp performs full expansion while
+    itself being expandable.
+
+  - \tl_if_eq:nn(TF), a family of unexpandable comparison which
+    work on a token basis. These are implemented by storing the input
+    and using an \ifx comparison internally.
+
+The result is that the behaviour of \tl_if_eq:nn(TF) is altered, and 
+that the expansion variants provided will change. In many cases 
+programmers will want to alter existing uses of \tl_if_eq:nn(TF) to use 
+the new \str_if_eq:nn(TF) functions.
+
+There will be a CTAN update of expl3 and xpackages soon (by the weekend, 
+I hope). This will include these changes (along with others: see my 
+other e-mails).
+-- 
+Joseph Wright
+

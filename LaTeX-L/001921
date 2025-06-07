@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1986" "Thu" "10" "April" "1997" "22:34:16" "-0400" "Michael Downes" "mjd@MATH.AMS.ORG" nil "38" "Re: Letterspacing (again)" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id EAA09712; Fri, 11 Apr 1997 04:34:26 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.1950771B@listserv.gmd.de>; Fri, 11 Apr 1997 4:34:25 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123444 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 11 Apr 1997 04:34:21 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id EAA03573 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Fri, 11 Apr 1997 04:34:19
+          +0200 (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 11 Apr 1997
+          02:34:18 UT
+Received: from epsilon.ams.org by AXP14.AMS.ORG (PMDF V5.1-8 #16534) with SMTP
+          id <01IHK1X5H7HC0006LH@AXP14.AMS.ORG> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 22:34:17 EST
+Received: from localhost by epsilon.ams.org; (5.65/1.1.8.2/12Oct95-1155AM) id
+          AA25815; Thu, 10 Apr 1997 22:34:16 -0400
+X-MTS: smtp
+Message-ID:  <9704110234.AA25815@epsilon.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  "Your message of Thu, 10 Apr 97 17:06:05 PDT." 
+              <334D806D.167E@math.uci.edu>
+Date:         Thu, 10 Apr 1997 22:34:16 -0400
+From: Michael Downes <mjd@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Letterspacing (again)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1921
+
+> ... it seems
+> that there should be an algorithmic solution which
+> extrapolates the available kerning information which
+> comes very (and for some fonts maybe even indistiguishably)
+> close to the optimum?  Something like a poor man's
+> letterspace that's not so poor after all?
+
+The crucial limiting factor is this: in TeX it is very difficult to
+write *fully general* macros that pick up tokens one at a time and test
+them before execution. Your intuition has some merit, if you are willing
+that the letterspaced text should be subject to some strong
+restrictions: no { } characters, no accent commands, no conditional
+commands (\if... \else \fi), no macros that take arguments (such as
+\ref, \index, \cite, or further font changes ...).
+
+Then
+
+(a) If you are willing to accept those restrictions, suitable macros can
+be written without a great deal of work. But who will want to actually
+use the macros then? I would certainly not use them in a documentclass
+or package because they would be nothing but a minefield, waiting to
+explode with mysterious error messages in the face of any user who
+inadvertently uses one of the forbidden elements.
+
+(b) For each class of problem element, it is generally possible to make
+the macros handle that class, but only by multiplying the complexity and
+macro-writing time tenfold for each class, and dividing the runtime
+speed by ten, too. (OK, that might be an over-exaggeration, but not by
+much---and it will seem even less if you are the macro writer actually
+facing such a task :-) It doesn't do much good to handle two classes
+and leave two others unhandled: then the macros are still a minefield
+for unwary users, only the error messages turn up less often (e.g., Joe
+User spent 900 hours writing his thesis without any error messages and
+then the night before it's due he happens to add an accent command in a
+section title which happens to be subjected to letter-spacing by the
+documentclass. Surprise!).
+
+Michael Downes, mjd@ams.org
+

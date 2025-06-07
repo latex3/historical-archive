@@ -1,0 +1,413 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o2ED93Cv012054
+	for <rainer@rainer-schoepf.de>; Sun, 14 Mar 2010 14:09:05 +0100
+Received: (qmail 13322 invoked by alias); 14 Mar 2010 13:08:58 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 14 Mar 2010 13:08:57 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx057) with SMTP; 14 Mar 2010 14:08:57 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id o2ED6kTd024897
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 14 Mar 2010 14:06:46 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o2DN143B018284;
+	Sun, 14 Mar 2010 14:06:36 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 386782 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 14 Mar
+          2010 14:06:35 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o2ED6ZAo032112 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 14 Mar 2010 14:06:35 +0100
+Received: from mail-yx0-f187.google.com (mail-yx0-f187.google.com
+          [209.85.210.187]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id o2ED6RLL024680 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 14 Mar 2010 14:06:30 +0100
+Received: by yxe17 with SMTP id 17so1196159yxe.25 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 14 Mar 2010 06:06:30 -0700
+          (PDT)
+Received: by 10.101.167.27 with SMTP id u27mr1221369ano.195.1268571989675; Sun,
+          14 Mar 2010 06:06:29 -0700 (PDT)
+Received: from [10.0.1.103] (219-90-219-30.ip.adam.com.au [219.90.219.30]) by
+          mx.google.com with ESMTPS id 21sm3107037iwn.7.2010.03.14.06.06.26
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Sun, 14 Mar 2010 06:06:28 -0700
+          (PDT)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Apple Message framework v1077)
+X-Mailer: Apple Mail (2.1077)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id o2ED6ZAo032113
+Message-ID:  <DFD2243D-9F4C-406A-9218-FA648D7E675A@gmail.com>
+Date:         Sun, 14 Mar 2010 23:36:22 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: expl3 global vs local assignments
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4U4jfdfC5HDevlx1X2sAZg1MkugZcpwIdDb8z5l6KEaP+LdZ7QLw+5sysRz
+ EoIbFTUOx049vUvSLKqRfVGtbHLFCnndXAb+bIg+4DRXezc4KnW+PamVwRH0Zqy+YwmOKUZHsxgS
+ wnZ2Q==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6321
+
+Dear all,
+
+Following from the discussion on whether expl3 registers should be able to be created locally (as opposed to LaTeX2e's approach of having \newcount, etc., always global), I've been playing around tonight with some code to actually get this working on top of LaTeX2e.
+
+Up until now, expl3 has had code only when built as a format to enable such assignment commands as \int_new_l:N, etc., which would allow such use as 
+
+\begingroup
+  \int_new_local:N \scratch
+  ... anything involving \scratch ...
+\endgroup
+
+which I personally find quite appealing. The problem with doing this in LaTeX2e is that \newcount and so on use their allocation methods (using \alloc@) which clash with expl3's own.
+
+My theory was that with an appropriate redefinition of \newcount, \newdimen, \newinsert, and so on in terms of their expl3 replacements it would be possible to load expl3 and both 
+
+  (a) have \newcount etc. still work, and 
+  (b) allow local allocation for expl3 registers.
+
+The complexity arises with \newinsert, which takes its numbers from the top and requires equal allocation numbers for one count, dimen, skip, and box each. As far as I can see, however, this problem isn't insurmountable; please find attached some code that (I hope!) replaces LaTeX2e's allocations with expl3's.
+
+The code is somewhat tentative but I think it shows this approach is valid. Any comments or suggestions? (Have I even got things right?)
+
+If this works, this raises the subsequent question "should expl3 support local register allocation?". My preference is yes, but that's just my view of course.
+
+-- Will
+
+
+
+%%% cut here %%%
+
+\documentclass{article}
+\usepackage{expl3}
+\begin{document}
+\ExplSyntaxOn
+\makeatletter
+
+\def\somealloc#1{
+  \typeout{A~ new~ global~ count:}
+  \exp_args:Nc \newcount {count#1}
+  \exp_args:Nc \show {count#1}
+  \cs_gundefine:c {count#1}
+  
+  \typeout{A~ new~ insert:}
+  \exp_args:Nc \newinsert {insert#1}
+  \exp_args:Nc \show {insert#1}
+  \cs_gundefine:c {insert#1}
+  \typeout{(In~ decimal~ that's):}
+  \showthe\allocationnumber  
+  
+}
+\def\tryalloc{
+  \somealloc{foo}
+}
+
+\typeout{===================}
+\typeout{Some~ assignments~ with~ 2e:}
+\typeout{===================}
+\tryalloc
+
+\AtEndDocument{
+  \typeout{===================}
+  \typeout{Some~ assignments~ with~ expl3:}
+  \typeout{===================}
+  \int_new_local:N \l_locala_int
+  \int_new_local:N \l_localb_int
+  \int_new_local:N \l_localc_int
+  \int_new_local:N \l_locald_int
+  \int_new_local:N \l_locale_int
+  \int_new_local:N \l_localf_int
+  \typeout{Lots~ of~ local~ ints~ to~ push~ the~ insertion~ alloc~ number~ down:}
+  \show \l_localf_int
+  \tryalloc
+  \typeout{Lots~ of~ local~ dims~ to~ check~ the~ insertion~ alloc~ number~ prior~ is~ skipped:}
+  \dim_new_local:N \l_locala_dim
+  \dim_new_local:N \l_localb_dim
+  \dim_new_local:N \l_localc_dim
+  \dim_new_local:N \l_locald_dim
+  \show \l_locald_dim
+  \dim_new_local:N \l_locale_dim
+  \show \l_locale_dim
+  \dim_new_local:N \l_localf_dim
+  \show \l_localf_dim
+  \dim_new_local:N \l_localg_dim
+  \show \l_localg_dim
+}
+
+
+\cs_gundefine:N \box_new:N
+\cs_gundefine:N \int_new:N
+\cs_gundefine:N \dim_new:N
+\cs_gundefine:N \skip_new:N
+\cs_gundefine:N \muskip_new:N
+\cs_gundefine:N \toks_new:N
+
+%  \begin{macro}{\alloc_setup_type:nnn}
+%    For each type of register we need to `counters' that hold the
+%    last allocated global or local register. We also need a sequence
+%    to store the `exceptions'.
+%    \begin{macrocode}
+\cs_new_nopar:Npn \alloc_setup_type:nnn #1 #2 #3{
+  \seq_new:c  {g_ #1 _allocation_seq}
+  \tl_new:cn {g_ #1 _allocation_tl}{#2}
+  \tl_new:cn {l_ #1 _allocation_tl}{#3}
+}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\alloc_next_g:n}
+%  \begin{macro}{\alloc_next_l:n}
+%    These routines find the next free register. For globally allocated
+%    registers we first increment the counter that keeps track of them. 
+%    \begin{macrocode}
+\cs_new_nopar:Npn \alloc_next_g:n #1 {
+  \tl_gset:cx { g_ #1 _allocation_tl }
+    { 
+      \tex_number:D \intexpr_eval:n  
+        { \tl_use:c {g_ #1 _allocation_tl } + 1 } 
+    }
+%    \end{macrocode}
+%    Then we need to check whether we have run out of registers.
+%    \begin{macrocode}
+  \intexpr_compare:nTF  { 
+    \tl_use:c {g_ #1 _allocation_tl} = \tl_use:c{l_ #1 _allocation_tl}
+  }
+  {\iow_term:x{We~ ran~ out~ of~ registers~ of~ type~ g_#1!}}
+  {
+%    \end{macrocode}
+%    We also need to check whether the value of the counter already
+%    occurs in the list of already allocated registers.
+%    \begin{macrocode}
+    \seq_if_in:cxT {g_ #1 _allocation_seq}
+                   {\tl_use:c{g_ #1 _allocation_tl}}
+%    \end{macrocode}
+%    If it does, we find the next value.
+%    \begin{macrocode}
+        { \iow_term:x{\tl_use:c{g_ #1 _allocation_tl}~already~allocated!}
+          \alloc_next_g:n {#1} }
+    }
+%    \end{macrocode}
+%    By now the |.._allocation_tl| counter will contain the number of
+%    the register we will assign a control sequence for.
+%    \begin{macrocode}
+  }
+%    \end{macrocode}
+%    For the locally allocated registers we have a similar function.
+%    \begin{macrocode}
+\cs_new_nopar:Npn \alloc_next_l:n #1 {
+  \tl_set:cx {l_ #1 _allocation_tl}
+    { 
+      \tex_number:D \intexpr_eval:n  
+        { \tl_use:c {l_ #1 _allocation_tl } - 1 } 
+    }
+  \intexpr_compare:nTF  {
+    \tl_use:c{g_ #1 _allocation_tl} = \tl_use:c{l_ #1 _allocation_tl}
+  }
+    {\iow_term:x{We~ ran~ out~ of~ registers~ of~ type~ l_#1!}}
+    {
+      \seq_if_in:cxTF {g_ #1 _allocation_seq}
+                      {\tl_use:c{l_ #1 _allocation_tl}}
+        { \iow_log:x{\tl_use:c{l_ #1 _allocation_tl}~already~allocated!}
+          \alloc_next_l:n {#1} }
+        { \iow_log:x{\tl_use:c{l_ #1 _allocation_tl}~free!} }
+    }
+  }
+%    \end{macrocode}
+%  \end{macro}
+%  \end{macro}
+%
+%  \begin{macro}{\alloc_reg:NnNN}
+%    This internal macro performs the actual allocation. Its first
+%    argument is either 'g' for a globally allocated register or `l'
+%    for a locally allocated register. The second argument is the
+%    type of register to allocate, the third argument is the command
+%    to use and the fourth argument is the control sequence that is to
+%    be defined to point to the register.
+%
+%    It first checks that the control sequence that is to denote the
+%    register does not already exist.
+%    Next, it decides whether a prefix is needed for the allocation
+%    command; 
+%    And finally the actual allocation takes place.
+%    All that's left to do is write a message in the log file.
+%    Finally, it calls |\alloc_next_|\meta{\texttt{\textup g}/\texttt{\textup l}}
+%    to find the next free register number.
+%    \begin{macrocode}
+\cs_new_nopar:Npn \alloc_reg:NnNN #1 #2 #3 #4{
+  \chk_if_free_cs:N #4
+  \if:w #1 g
+    \exp_after:wN \pref_global:D
+  \fi:
+  #3 #4 \tl_use:c{#1_ #2 _allocation_tl}
+  %%\cs_record_meaning:N#1
+  \iow_log:x{
+    \token_to_str:N#4~=~#2~register~\tl_use:c{#1_#2_allocation_tl}
+  }
+%<*!initex>
+  \int_set:Nn\allocationnumber{ \tl_use:c{#1_#2_allocation_tl} }
+%</initex>
+  \use:c{alloc_next_#1:n} {#2}
+ }
+%    \end{macrocode}
+%  \end{macro}
+%
+
+
+% shorthand for defining new register types and their allocators:
+\cs_new:Npn \alloc_new:nnnN #1#2#3#4 {
+  \alloc_setup_type:nnn {#1} {#2} {#3}
+  \cs_new_nopar:cpn {#1_new:N} ##1 {
+    \alloc_reg:NnNN g {#1} #4 ##1
+  }
+  \cs_new_nopar:cpn {#1_new_local:N} ##1 {
+    \alloc_reg:NnNN l {#1} #4 ##1
+  }
+}
+
+% Re-create the register allocators for expl3 on 2e:
+\alloc_new:nnnN {int} {\tex_count:D 10} \insc@unt \tex_countdef:D
+
+\alloc_new:nnnN {dim} {\tex_count:D 11} \insc@unt \tex_dimendef:D
+
+\alloc_new:nnnN {skip} {\tex_count:D 12} \insc@unt \tex_skipdef:D
+
+\alloc_new:nnnN {muskip} {\tex_count:D 13} \insc@unt \tex_muskipdef:D
+
+\alloc_new:nnnN {box} {\tex_count:D 14} \insc@unt \tex_mathchardef:D
+\seq_put_right:Nn \g_box_allocation_seq {255}
+
+\alloc_new:nnnN {toks} {\tex_count:D 15} \insc@unt \tex_toksdef:D
+
+\alloc_setup_type:nnn { ior } {\tex_count:D 16} \c_sixteen
+\cs_new_nopar:Npn \ior_raw_new:N #1 {
+  \alloc_reg:NnNN g { ior } \tex_chardef:D #1
+}
+
+\alloc_setup_type:nnn { iow } {\tex_count:D 17} \c_sixteen
+\cs_new_nopar:Npn \iow_raw_new:N #1 {
+  \alloc_reg:NnNN g { iow } \tex_chardef:D #1
+}
+
+%%%%
+% Insertion management
+%%%%
+
+% Algorithm for finding a new \insert allocation:
+% Must have same alloc number for int/dim/skip/box.
+% Find lowest "l" alloc number for all these, use that one,
+% add that to the exceptions list for all four.
+
+\cs_new:Npn \intexpr_min:nnnn #1#2#3#4 {
+  \intexpr_min:nn {
+    \intexpr_min:nn {#1} {#2}
+  }{
+    \intexpr_min:nn {#3} {#4}
+  }
+}
+\cs_new:Npn \intexpr_max:nnnn #1#2#3#4 {
+  \intexpr_max:nn {
+    \intexpr_max:nn {#1} {#2}
+  }{
+    \intexpr_max:nn {#3} {#4}
+  }
+}
+
+\int_new:N \g_insert_alloc_int
+\def\newinsert#1{
+  \int_set:Nn \g_insert_alloc_int {
+    \intexpr_min:nnnn
+      \l_int_allocation_tl \l_dim_allocation_tl 
+      \l_skip_allocation_tl \l_box_allocation_tl
+  }
+  \alloc_insert_check:
+  \int_gset:Nn \allocationnumber \g_insert_alloc_int
+  \seq_put_right:NV \g_int_allocation_seq {\g_insert_alloc_int}
+  \seq_put_right:NV \g_dim_allocation_seq {\g_insert_alloc_int}
+  \seq_put_right:NV \g_skip_allocation_seq {\g_insert_alloc_int}
+  \seq_put_right:NV \g_box_allocation_seq {\g_insert_alloc_int}
+  \global\chardef#1\allocationnumber
+  \wlog{\string#1=\string\insert\the\allocationnumber}
+}
+
+\cs_set:Npn \alloc_insert_check: {
+  \intexpr_compare:nTF  {
+    \g_insert_alloc_int <=
+    \intexpr_max:nnnn
+      \g_int_allocation_tl \g_dim_allocation_tl 
+      \g_skip_allocation_tl \g_box_allocation_tl
+  }
+    { \iow_term:x{We~ ran~ out~ of~ registers~ for~ new~ insertions!} }
+    {
+       \seq_if_in:cxTF {g_int_allocation_seq}{\g_insert_alloc_int}
+        {
+          \iow_log:x{\int_use:N \g_insert_alloc_int~already~allocated!}
+          \int_decr:N \g_insert_alloc_int
+          \alloc_insert_check:
+        }
+        {
+       \seq_if_in:cxTF {g_dim_allocation_seq}{\g_insert_alloc_int}
+        {
+          \iow_log:x{\int_use:N \g_insert_alloc_int~already~allocated!}
+          \int_decr:N \g_insert_alloc_int
+          \alloc_insert_check:
+        }
+        {
+       \seq_if_in:cxTF {g_skip_allocation_seq}{\g_insert_alloc_int}
+        {
+          \iow_log:x{\int_use:N \g_insert_alloc_int~already~allocated!}
+          \int_decr:N \g_insert_alloc_int
+          \alloc_insert_check:
+        }
+        {
+       \seq_if_in:cxTF {g_box_allocation_seq}{\g_insert_alloc_int}
+        {
+          \iow_log:x{\int_use:N \g_insert_alloc_int~already~allocated!}
+          \int_decr:N \g_insert_alloc_int
+          \alloc_insert_check:
+        }
+        { \iow_log:x{\int_use:N \g_insert_alloc_int\space~free!} }
+        }        
+        }
+        }
+    }
+}
+
+%%%%%%%%
+
+% These are missing:
+% \def\newfam{\alloc@8\fam\chardef\sixt@@n}
+% \def\newlanguage{\alloc@9\language\chardef\@cclvi}
+
+%%%%%%%%
+
+% Recreate the 2e allocators:
+\cs_set_eq:NN \newcount \int_new:N
+\cs_set_eq:NN \newdimen \dim_new:N
+\cs_set_eq:NN \newskip \skip_new:N
+\cs_set_eq:NN \newmuskip \muskip_new:N
+\cs_set_eq:NN \newbox \box_new:N
+\cs_set_eq:NN \newtoks \toks_new:N
+\cs_set_eq:NN \newread \ior_raw_new:N
+\cs_set_eq:NN \newwrite \iow_raw_new:N
+
+\end{document}
+

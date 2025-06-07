@@ -1,0 +1,263 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["11085" "Tue" "7" "July" "1998" "22:51:08" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "220" "Re: First experience with xr under L3PL" "^Date:" nil nil "7" nil "First experience with xr under L3PL" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id XAA16720;
+	Tue, 7 Jul 1998 23:22:38 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.971589AF@listserv.gmd.de>; Tue, 7 Jul 1998 23:22:36 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 381893 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Jul 1998 23:22:28 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id XAA22203
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Jul 1998 23:22:26
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          XAA29000 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Jul 1998
+          23:22:27 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA04726; Tue, 7 Jul 1998 22:51:08 +0200
+References: <199807020724.RAA19706@ricetub.anu.edu.au>
+            <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+            <199807060810.SAA24960@ricetub.anu.edu.au>
+            <199807062020.WAA19898@frank.zdv.uni-mainz.de>
+            <199807070755.RAA26108@ricetub.anu.edu.au>
+Message-ID:  <199807072051.WAA04726@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199807070755.RAA26108@ricetub.anu.edu.au>
+Date:         Tue, 7 Jul 1998 22:51:08 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: First experience with xr under L3PL
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2659
+
+sometime ago i think Javier Bezos remarked that typing with a baby on
+your lap is probably more difficult than with a cat. i'd say there is
+no comparison: just had one of my sons there (and was only trying to
+read this message (or rather reread it more carefully) not to type
+anything) and he managed with ease to put his hand on the keyboard and
+guess what key he managed to press? d ... an omen? :-)
+
+the times when working with them on my lap seem to be over
+
+Richard  writes:
+
+ > On closer inpsection you also need this somewhere:
+ > \tlp_new:Nn \l_xr_line_tlp {}
+
+true at least it would be consistent
+
+ > So as we have seen there is a Fortran-style implicit declaration of
+ > tlp's in certain circumstances, e.g. when used as the second argument
+ > of \ior_to:NN.  I'd like to suggest that the `check' option used in
+ > the dtx files be changed into a package option, say `checkdef' (you
+ > can think of a better name).  At the moment the decision of whether or
+ > not to check arguments is made once for all time when docstrip is
+ > invoked.
+
+good idea, anybody willing to do this?
+
+ > Clearly we are still used to using \def in the same way as Lisp's
+ > setq, i.e. as a general definition mechanism that doesn't care about
+ > what you are defining (i.e. whether it has a previous definition).
+ > The new version of xr now has three `declarations' that are evaluated
+ > when the package is loaded.  I can live with that; I (we) just need to
+ > remember that a new discipline is required.  I expect that a syntax
+ > checker for L3PL will find uses of seq's, tlp's, etc. without
+ > corresponding declarations.
+
+right now it is mainly there as a help against unforseen later
+errors. having such a checker would certainly be a help.
+
+ > Your algorithm is also subtly different.  The original version is
+ > careful to process \@input's in the order in which they are
+ > encountered, but your version uses a stack.  If there are no label
+ > conflicts, the net effect is the same.  But if there are multiple
+ > conflicts, the original version stops at the first conflict, whereas
+ > yours might even stop at the last first and the first last!
+
+i don't deny that. i simply used this as an example to spawn further
+discussion especially as you had taken the trouble to go through it i
+thought i could add my share. actually i could have also produced
+essentially the same algorithm by not using the stack commands but
+instead using those other sequence commands.
+
+ >  >  > Tim's questions are really quite important for the `average' package
+ >  >  > writer, because they will be programing `in-the-small', and the xr
+ >  >  > example is quite a good one for that.  Even such a small package has
+ >  >  > needed a total re-think and re-writing.
+ >  >
+ >  > true but is it so much different from having to hunt through the LaTeX
+ >  > source to find you way in providing packages?
+ >
+ > Well . . . it's yet another layer of knowledge that has to be mastered
+ > before you can start doing non-trivial things.  Those of us who have
+ > been using TeX for ten years or more will shrug our shoulders and
+ > learn it anyway, but it might well serve as a deterrent to those who
+ > come to LaTeX3 as beginners.
+
+i think i disagree here. what i meant is that you do need to learn
+some layer whether it'll be current latex internal commands (by looking
+at the latex source or other packages) or be something like the L3PL
+language is not much different (except for those who already mastered
+most of the mess of the current latex)
+
+ > If you are happy to release out-of-date and inconsistent documentation
+ > for incomplete packages then in fairness to us - your guinea pigs -
+ > _everything_ must be up for grabs.
+
+i already said that this was a remark concerning latex2e --- and if
+people are willing to help updating the documentation of the .dtx
+files for 2e we are too willing to accept such help!!! just drop us a
+note and we provide you with the file of your choice (latest version
+-- sometimes fixes for the next release are already in) lock it in rcs
+and put the updated documentation with your name on back in. certainly
+we can make these sources better and it is still worth doing even
+though we are talking about a sort of paradigm change here.
+
+ > Frank wrote elsewhere:
+ >  > just to change all the files to some new convention takes some effort
+ >  > which can be better spend. at the moment at least!
+ >
+ > Perhaps (the fewer inconsistencies in the original, the easier it will
+ > be), and I am not suggesting doing it on a whim; but if you try to
+ > close doors at this stage I - and I suspect others - will stubbornly
+ > stick in our arms and legs.  Even if you have already written five
+ > chapters of your next book :-)
+
+we don't have the intention of closing doors at this stage. but at the
+other hand we believe that there is not much gained if X suggests to
+change the syntax slightly in this direction, then we have a long
+discussion on whether or not this is how other people see this, then Y
+suggest some other twist, ... and all of this gets implemented
+straight away (by us) and changed over and over again instead of
+providing new functionality within the framework as is and change it
+completely on the surface later.
+
+let's go back to this module stuff once more: i firmly believe that
+the ideas brought forward would not be reasonably implementable at the
+level we talked about (most of us do think that some of these ideas
+are very helpful for a different level) and for that reason i'm not
+really eager to change the syntax now just because Hans claimed he
+needs this before he could seriously talk about these ideas
+again. instead i proposed a way to try his ideas even within the
+current syntax. *and i'm willing to listen to reason* which means if
+he or somebody else would come forward with a practical trial
+implementation that shows that i'm wrong i would be the first one to
+admit this. in fact if the current syntax would indeed prevent doing
+this trial i would be prepared to do that change (or any change that
+would take away such a restriction) but as i explained there is no
+such restriction technically with the current syntax so, saying that
+one can only test or try things after one of us has change the surface
+look of the language to somebody's liking is something that i can only
+interpret as a refusal to take up my challenge (whatever the real
+reason)
+
+i also have nothing whatsoever against the idea that somebody sits
+down and takes apart all the packages we have put together and does
+some global replace and produces a version more to his or her liking.
+we can certainly put such a version on CTAN as well.
+
+but what i'm not going to do (me personally) is to do that type of
+work just because some people think that _ are bad or the colon should
+be a . or Modula2 type of syntax is better. that would drag on forever
+without anything gained because there are probably as many opinions on
+this subject as we had emails on it. if somebody wants to, please do
+so, but don't ask us to do it for you now.
+
+
+let me also say that i *DON'T* like the language as it is on many
+special points (not the last are the many _) but just like here on the
+list with perhaps 4-6 people commenting on the look of it we had
+internally also very different opinions what looks best or works
+best. and at one point we decided to stop and just pick one to
+actually get functionality provided.
+
+what i like about the language and this is what for me counts is its
+support for the very important things of TeX namely expansion by the
+general mechanism of the arg spec and that alone already proved to be
+a big step forward when working in it. it also brought some better
+orthogonality.
+
+and yes i like programming in TeX as weird as it is some times :-)
+
+ >  > what i mean is, you need to have got a feeling for it but that it true
+ >  > right now as well except that right now because of nearly no
+ >  > conventions people are forced to reinvent the wheel over and over just
+ >  > because they don't know that some command or datatype or whatever
+ >  > already exist somewhere.
+ >
+ > Agreed.  A good example from the internals of LaTeX is the \@for and
+ > \@tfor constructs.  Unless you read the old lplain.tex or the new
+ > ltcntrl.dtx you would probably have no idea that these constructs
+ > existed.  The problem here is not one of consistency, but rather (a)
+ > these constructs have never really been `official' and advertised, and
+ > (b) there is still no proper documentation.  \@for, \@tfor, and many
+ > other internal macros of LaTeX deserve `promotion' to L3PL.  Much
+ > of this reinvention will then be avoided.
+
+yes things like this should be part of the language and what we have
+put out is not meant to be L3PL it is meant to be a start for
+commenting and for those people interested helping us to provide
+additional basic modules that would finally form a base kernel.
+
+btw (a) above: those commands have never been really official because
+in many cases they where originally only onetime hooks; \@for and
+friends being an exception here and one of the main reasons for
+something like L3PL is to provide exactly this: a consistent official
+low-level interface that is described and advertised.
+
+you also need a higher-level interface (or set of interfaces) which
+are also official to avoid all the situations that people because of
+nothing being put into such a status hooked into any layer with
+disastrous effects when something was reprogrammed (or just fixed or
+optimized :-)
+
+
+ >  > so yes you need a re-think, you probably don't need much of a
+ >  > rewriting for an existing package if you just mainly do a manual
+ >  > translation but you can gain a lot once you start replacing all you
+ >  > low-level private code by already provided solutions for many of the
+ >  > basic functionality which right now is often repeated over and over
+ >  > again in packages.
+ >
+ > It sounds as though it must be true, but let's see.  As I said
+ > earlier, we will go anywhere you take us, but let's enjoy the journey
+ > and learn from it.
+
+i hope so. a good way would be to think about additionally needed
+functionality and perhaps doing some suggested implementation.
+
+loops would be such a slightly higher level thing and that was in fact
+never properly written so far. we could those then put on ctan
+
+ > Frank also writes:
+ >  > . . . the
+ >  > solution is that you provide a replacement book for the TeX book.
+ >
+ > So this is your next book . . . my hand is creeping up . . . pick me!
+ > :-) I would be happy to contribute a chapter or two or proof-read or
+ > . . . Eine deutsche Uebersetzung waere auch moeglich . . . :-)
+
+well it will not be the next one i guess :-)
+
+in fact i've once have written roughly a 100 page manual on some
+earlier version of the L3PL language which we then discarded---some of
+the documentation you now got in an updated form (as far as convention
+and code is concerned) in the current set of experimental stuff.
+
+
+frank
+
+ps don't be too surprised if i drop out of this discussion for a while
+i might be offline a few days
+

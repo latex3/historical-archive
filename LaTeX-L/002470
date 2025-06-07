@@ -1,0 +1,96 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1897" "Tue" "14" "October" "1997" "16:41:29" "+0200" "Ulrik Vieth" "vieth@THPHY.UNI-DUESSELDORF.DE" nil "56" "Re: frontmatter 98" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id QAA12530;
+	Tue, 14 Oct 1997 16:42:32 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.A062757F@listserv.gmd.de>; Tue, 14 Oct 1997 16:42:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 214980 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 16:42:22 +0200
+Received: from thphy.uni-duesseldorf.de (xerxes.thphy.uni-duesseldorf.de
+          [134.99.64.10]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          SMTP id QAA08047 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14
+          Oct 1997 16:42:16 +0200 (MET DST)
+Received: from macbeth.uni-duesseldorf.de (macbeth.thphy.uni-duesseldorf.de) by
+          thphy.uni-duesseldorf.de (4.1/SMI-4.1) id AA00686; Tue, 14 Oct 97
+          15:42:56 +0100
+Received: by macbeth.uni-duesseldorf.de (SMI-8.6/SMI-SVR4) id QAA09578; Tue, 14
+          Oct 1997 16:41:29 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199710141441.QAA09578@macbeth.uni-duesseldorf.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <1622-Tue14Oct1997113530+0100-s.rahtz@elsevier.co.uk> (message
+              from Sebastian Rahtz on Tue, 14 Oct 1997 11:35:30 +0100)
+Date:         Tue, 14 Oct 1997 16:41:29 +0200
+From: Ulrik Vieth <vieth@THPHY.UNI-DUESSELDORF.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: frontmatter 98
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2470
+
+Sebastian writes:
+
+> \author{surname=Rahtz, inits=S.,
+>     mainauthor=true,
+>     forename=Sebastian Patrick,
+>     qual=AJFL,
+>     title={},
+>     address=add1, affiliation=aff1}
+
+Nice idea, but what about journals that print initials withouth dots?
+In the IOP physics journal, they print author names like "T T C Jones",
+so if you say \author{surname=Jones, inits=T.T.C.}, your're already
+encoding some part of the presentation, not just the information.
+
+
+Some other \frontmatter problems that haven't been mentioned so far:
+
+* What about papers representing a team effort?  In the proceedings
+  issues of plasma physics journals you often find something like
+
+      <author list> and the ITER Joint Central Team and Home Teams
+
+  or even
+
+      ITER Joint Central Team, presented by A. U. Thor
+
+  Such papers, especially the latter kind, always cause headaches
+  if you want to encode them in a BibTeX database, especially if
+  some other journals prefer to cite such paper as
+
+      A. U. Thor and ITER Joint Central Team
+
+  to put the presenting author first regardless of the ordering
+  in the original paper.
+
+
+* What about address records containing some sort of common element
+  that should be placed as a footnote to several address blocks.
+  For instance, given authors from three labs working in cooperation,
+
+     \address{id=lab1,address=Forschungszentrum Juelich, Germany}
+     \address{id=lab2,address=Ecole Royale Militaire, Belgium}
+     \address{id=lab3,address=FOM Institut voor Plasmafysica, Netherlands}
+
+  the official policy may ask for a footnote such as
+
+     \note{id={lab1,lab2,lab3},
+       text={partners in the Trilaterial Euregio Cluster}}
+
+  (This is indeed a real life example, not something that I've made up.)
+
+
+Just a reminder that there a still a number of extra complications waiting
+to be resolved in an all-encompassing fronmatter spec.
+
+Cheers, Ulrik.
+

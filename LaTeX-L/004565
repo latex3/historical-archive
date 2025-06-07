@@ -1,0 +1,325 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Tue, 4 Mar 2003 12:58:34 +0100
+Received:  by mail.proteosys.com (8.12.3/8.12.2) with ESMTP id h24BwUa9031092 for <rainer.schoepf@PROTEOSYS.COM>; Tue, 4 Mar 2003 12:58:33 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h24Beftt015632; Tue, 4 Mar 2003 12:40:41 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2E245.61BA1100"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h23N04Bi010458; Tue, 4 Mar 2003 12:31:03 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6960 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 4 Mar 2003 12:31:03 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h24BV32k014149 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 4 Mar 2003 12:31:03 +0100
+Received:  from nic.lth.se (nic.lth.se [130.235.20.3]) by          relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h24BdsXM013082          for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 4 Mar 2003 12:39:58          +0100 (MET)
+Received:  from [130.235.3.161] (mathcent81.maths.lth.se [130.235.3.161]) by          nic.lth.se (8.12.3/8.12.3) with ESMTP id h24BdmHq008013 for          <LATEX-L@listserv.uni-heidelberg.de>; Tue, 4 Mar 2003 12:39:49 +0100          (MET)
+In-Reply-To:  <15971.33990.991092.993962@fell.open.ac.uk>
+References: <l03102800ba891a184d86@[130.235.3.161]>            <630BE70C8320D6118D240002A589ABB204A95102@DERUM201>            <l03102800ba891a184d86@[130.235.3.161]>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 04 Mar 2003 11:58:34.0943 (UTC) FILETIME=[6249F4F0:01C2E245]
+X-Sender: lars@abel.math.umu.se
+x-mime-autoconverted: from quoted-printable to 8bit by                      listserv.uni-heidelberg.de id h24BV32k014150
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: -1.3 () IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01
+Content-class: urn:content-classes:message
+Subject:      Re: Problem with baseline grid and multicol
+Date: Tue, 4 Mar 2003 12:40:20 +0100
+Message-ID: A<l03102807ba8a35d913b4@[130.235.3.161]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: Problem with baseline grid and multicol
+Thread-Index: AcLiRWJl1d8mrONGTD+9pwAJAIxpbw==
+From: =?iso-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4565
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2E245.61BA1100
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 17.37 +0100 2003-03-03, Chris Rowley wrote:
+>>
+>> This needs not be related, but it sometimes leads to similar =
+problems, and
+>> I haven't seen an explanation anywhere: why is \addvspace =
+discontinuous?
+[snip]
+>
+>I never found any explanation of this algorithm, which comes from
+>pre-2.09 LaTeX.  The documentation in ltspaces.dtx contains some
+>relevant comments on this and related problems with vertical spacing.
+
+Some comments, but apparently not the whole story.
+
+>For SKIP < 0, the discontinuity wrt \lastskip (at \lastkip =3D 0) =
+always
+>worried me but no one else has noticed it in 15 years, or so it seems.
+
+I've noticed it. If I remember it correctly I was trying to adjust some
+list environment vertical spacing parameters at the time and found that
+this dicontinuity meant there was no parameter value giving the result I
+wanted, but it was a while ago and I'm not sure that I can reproduce the
+circumstances.
+
+>Note that when it is discontninuous it is, (IMO) worse, not even =
+monotone!
+>
+>It is clear from the original code and documentation that \addvspace
+>is only intended to be used with itself (and \addpenalty); thus it was
+>never designed to work with spaces resulting from low-level TeX
+>commands or processes.
+>
+>Thus any non-zero value of \lastskip is assumed to have come from an
+>\addvspace command (not a very wise assumtion, I agree).
+
+I think a lot of this needs to be written down in the source. Right now =
+the
+impression one gets (from the observation that \addvspace is heavily =
+used
+in the list environment stuff, and to some extent for the sectioning
+commands) is that \addvspace is somehow an improved version of \vspace =
+that
+it is probably better to use. Copying and modifying the standard classes =
+is
+how most people write customized classes. If the pros and cons of
+\addvspace (and in particular the strong need of the core to follow
+tradition even when it doesn't necessarily make sense) was made more
+explicit then people would have a better chance of forming their own
+opinions about whether it is the right thing to use.
+
+>Also, it does say (note the first word):
+>
+>  Extra vertical space is added by the command \addvspace{<skip>}.
+>
+>This implies that the PRE-CONDITION is perhaps that the argument (ie
+>SKIP) is always positive.  But then why put in the bizarre code at all?
+
+In the pseudocode for \@item one finds the line
+
+                     \addvspace{-\parskip}   %% added 4 Sep 85
+
+which has a fair chance of violating this "pre-condition".
+
+>Isn't history fun?
+
+Oh yes, and very enlightning!
+
+However, if there is no known reason for this code and also an =
+impression
+that it usually isn't noticed, then maybe one should add a simplified =
+form
+(that really takes the maximum and nothing else) to fixltx2e.sty? (I =
+notice
+it already has a redefinition of \addpenalty.)
+
+Also, it seems to me as if there could be a need for two commands here: =
+one
+which does what (the simplified) \addvspace does (guarantees that there =
+is
+at least a certain amount of vertical space in the last mix of penalties
+and glue), and one which actually makes the vertical space a certain =
+amount
+larger (without messing it up for any subsequent \addvspace or
+\addvpenalty).
+
+Lars Hellstr=F6m
+
+------_=_NextPart_001_01C2E245.61BA1100
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: Problem with baseline grid and multicol</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 17.37 +0100 2003-03-03, Chris Rowley wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; This needs not be related, but it sometimes =
+leads to similar problems, and</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; I haven't seen an explanation anywhere: why =
+is \addvspace discontinuous?</FONT>
+
+<BR><FONT SIZE=3D2>[snip]</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;I never found any explanation of this algorithm, =
+which comes from</FONT>
+
+<BR><FONT SIZE=3D2>&gt;pre-2.09 LaTeX.&nbsp; The documentation in =
+ltspaces.dtx contains some</FONT>
+
+<BR><FONT SIZE=3D2>&gt;relevant comments on this and related problems =
+with vertical spacing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Some comments, but apparently not the whole =
+story.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;For SKIP &lt; 0, the discontinuity wrt \lastskip =
+(at \lastkip =3D 0) always</FONT>
+
+<BR><FONT SIZE=3D2>&gt;worried me but no one else has noticed it in 15 =
+years, or so it seems.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I've noticed it. If I remember it correctly I was =
+trying to adjust some</FONT>
+
+<BR><FONT SIZE=3D2>list environment vertical spacing parameters at the =
+time and found that</FONT>
+
+<BR><FONT SIZE=3D2>this dicontinuity meant there was no parameter value =
+giving the result I</FONT>
+
+<BR><FONT SIZE=3D2>wanted, but it was a while ago and I'm not sure that =
+I can reproduce the</FONT>
+
+<BR><FONT SIZE=3D2>circumstances.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;Note that when it is discontninuous it is, (IMO) =
+worse, not even monotone!</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;It is clear from the original code and =
+documentation that \addvspace</FONT>
+
+<BR><FONT SIZE=3D2>&gt;is only intended to be used with itself (and =
+\addpenalty); thus it was</FONT>
+
+<BR><FONT SIZE=3D2>&gt;never designed to work with spaces resulting from =
+low-level TeX</FONT>
+
+<BR><FONT SIZE=3D2>&gt;commands or processes.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;Thus any non-zero value of \lastskip is assumed =
+to have come from an</FONT>
+
+<BR><FONT SIZE=3D2>&gt;\addvspace command (not a very wise assumtion, I =
+agree).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think a lot of this needs to be written down in the =
+source. Right now the</FONT>
+
+<BR><FONT SIZE=3D2>impression one gets (from the observation that =
+\addvspace is heavily used</FONT>
+
+<BR><FONT SIZE=3D2>in the list environment stuff, and to some extent for =
+the sectioning</FONT>
+
+<BR><FONT SIZE=3D2>commands) is that \addvspace is somehow an improved =
+version of \vspace that</FONT>
+
+<BR><FONT SIZE=3D2>it is probably better to use. Copying and modifying =
+the standard classes is</FONT>
+
+<BR><FONT SIZE=3D2>how most people write customized classes. If the pros =
+and cons of</FONT>
+
+<BR><FONT SIZE=3D2>\addvspace (and in particular the strong need of the =
+core to follow</FONT>
+
+<BR><FONT SIZE=3D2>tradition even when it doesn't necessarily make =
+sense) was made more</FONT>
+
+<BR><FONT SIZE=3D2>explicit then people would have a better chance of =
+forming their own</FONT>
+
+<BR><FONT SIZE=3D2>opinions about whether it is the right thing to =
+use.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;Also, it does say (note the first word):</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; Extra vertical space is added by the =
+command \addvspace{&lt;skip&gt;}.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;This implies that the PRE-CONDITION is perhaps =
+that the argument (ie</FONT>
+
+<BR><FONT SIZE=3D2>&gt;SKIP) is always positive.&nbsp; But then why put =
+in the bizarre code at all?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the pseudocode for \@item one finds the line</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\addvspace{-\parskip}&nbsp;&nbsp; %% added 4 Sep 85</FONT>
+</P>
+
+<P><FONT SIZE=3D2>which has a fair chance of violating this =
+&quot;pre-condition&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;Isn't history fun?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Oh yes, and very enlightning!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, if there is no known reason for this code and =
+also an impression</FONT>
+
+<BR><FONT SIZE=3D2>that it usually isn't noticed, then maybe one should =
+add a simplified form</FONT>
+
+<BR><FONT SIZE=3D2>(that really takes the maximum and nothing else) to =
+fixltx2e.sty? (I notice</FONT>
+
+<BR><FONT SIZE=3D2>it already has a redefinition of \addpenalty.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Also, it seems to me as if there could be a need for =
+two commands here: one</FONT>
+
+<BR><FONT SIZE=3D2>which does what (the simplified) \addvspace does =
+(guarantees that there is</FONT>
+
+<BR><FONT SIZE=3D2>at least a certain amount of vertical space in the =
+last mix of penalties</FONT>
+
+<BR><FONT SIZE=3D2>and glue), and one which actually makes the vertical =
+space a certain amount</FONT>
+
+<BR><FONT SIZE=3D2>larger (without messing it up for any subsequent =
+\addvspace or</FONT>
+
+<BR><FONT SIZE=3D2>\addvpenalty).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Lars Hellstr=F6m</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2E245.61BA1100--
+

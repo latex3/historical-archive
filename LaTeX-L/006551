@@ -1,0 +1,95 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p08KktYb021618
+	for <rainer@rainer-schoepf.de>; Sat, 8 Jan 2011 21:46:56 +0100
+Received: (qmail 19025 invoked by alias); 8 Jan 2011 20:46:49 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 08 Jan 2011 20:46:49 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx080) with SMTP; 08 Jan 2011 21:46:49 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id p08Kj7Ug016591
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 8 Jan 2011 21:45:07 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p07N16vO015485;
+	Sat, 8 Jan 2011 21:45:00 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 804403 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 8 Jan
+          2011 21:45:00 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p08KixNO006209 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 8 Jan 2011 21:44:59 +0100
+Received: from anchor-post-2.mail.demon.net (anchor-post-2.mail.demon.net
+          [195.173.77.133]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id p08Kinj3016510 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sat, 8 Jan 2011 21:44:53 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by anchor-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1Pbfeb-00046G-lM; Sat, 08 Jan 2011 20:44:49 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.2.13)
+            Gecko/20101207 Thunderbird/3.1.7
+MIME-Version: 1.0
+References: <7255173980814043.WA.blflatexgmail.com@listserv.uni-heidelberg.de>
+X-Enigmail-Version: 1.1.1
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4D28CCC1.3010701@morningstar2.co.uk>
+Date:         Sat, 8 Jan 2011 20:44:49 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Verbatim and xparse (yet again :)
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <7255173980814043.WA.blflatexgmail.com@listserv.uni-heidelberg.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p6i75npGen84eVAEFK/syJmiNoEBJhgjYKpglu1TZLLw7xMZnJMXwBFy+Sxe
+ D/AUQGQOurK3ezVJqUBFH0uN5pjmWoMfpyHp50EZ60/Y6hM43eiKLTaE/W0dI7nIn8+pr4SzneyH
+ Jeytg==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6551
+
+On 08/01/2011 07:25, Bruno Le Floch wrote:
+> PS: Also, a small crazy idea (I see no practical application for that):
+> In LaTeX3, we can generate variants of macros with different types 
+> of arguments (using \cs_generate_variant:Nn). Could/should the 
+> same thing be done at the layer above? In other words, should it be 
+> possible to take a DocumentCommand, and change the delimiters, or 
+> change an argument from being optional to being mandatory, or from 
+> being mandatory to being  optional with default, ...?
+
+Not really. While the concept is still very much 'a work in progress',
+in general it seems clear that as far as possible you should have
+
+\NewDocumentCommand \foo { ... } {
+  \internal_function:nnn ....
+}
+
+i.e. document commands should really not do much themselves, but should
+pass data on to internal functions. Thus document commands define the
+user syntax for some particular implementation, but for variants you'd do
+
+\NewDocumentCommand \fooa { ... } {
+  \internal_function:nnn ....
+}
+\NewDocumentCommand \foob { ... } {
+  \internal_function:nnn +++
+}
+
+with different argument mappings.
+-- 
+Joseph Wright
+

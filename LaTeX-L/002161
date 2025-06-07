@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1512" "Sat" "21" "June" "1997" "23:29:15" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "43" "Re: another problem with Russian typesetting" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA24968; Sat, 21 Jun 1997 23:24:44 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.C3372550@listserv.gmd.de>; Sat, 21 Jun 1997 23:24:43 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 157615 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 21 Jun 1997 23:24:39 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id XAA05722 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sat, 21
+          Jun 1997 23:24:37 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Sat, 21 Jun 1997 23:24:35 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          XAA00690; Sat, 21 Jun 1997 23:29:16 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970621232052.683B-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33AC0952.2B54A32E@vvv.vsu.ru>
+Date:         Sat, 21 Jun 1997 23:29:15 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: another problem with Russian typesetting
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2161
+
+On Sat, 21 Jun 1997, Vladimir Volovich wrote:
+
+> > Inputenc currently enforces all characters to be declared as text or
+> > math, but not both. (Allowing use of both in general is very expensive
+> > as normally in text mode it uses \chardef, but \chardef'ed tokens
+> > don't work in math mode, so it would require twice as many csnames, so
+> > that some math-mode version could be declared as well (cf
+> > \textsterling and \mathsterling, and \pounds which uses one or the other)
+> > However it may be possible to do something in this case.
+>
+> \chardef\newCYRA=128
+> \chardef\newCYRB=129
+> \chardef\newCYRV=130
+>
+> $\cyrmathit{\newCYRA\newCYRB\newCYRV}$  % this works well
+>
+> $\cyrmathit{\CYRA\CYRB\CYRV}$           % this produces warnings
+>                                         % and does not work
+>
+> Probably, either the definition of \DeclareTextSymbol should be changed,
+> or the new \Declare* command should be added to avoid this `bug'.
+
+I second this. What about the following:
+
+  \DeclareMathTextSymbol{<name>}
+                        {<encoding>}
+                        {<math character class>}
+                        {<slot>}
+
+e.g.
+
+  \DeclareMathTextSymbol{\CYRA}{T2}{cyrletters}{"0C0}
+
+the math category would always be \mathalpha (is this reasonable?)
+
+\CYRA should then work in text and math mode...this is more like an alias
+for a letter than a symbolic name IMHO.
+
+LaTeX does this implicitly: you have a \DeclareMathSymbol{a}... but no
+corresponding sequence for text mode!
+
+
+    Werner
+

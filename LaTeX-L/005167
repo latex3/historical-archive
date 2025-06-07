@@ -1,0 +1,207 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 12 Feb 2008 19:16:55 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m1CIGrHw009543
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 12 Feb 2008 19:16:54 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m1CIBxDU022761
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 12 Feb 2008 19:11:59 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m1CFiv3c001608;
+	Tue, 12 Feb 2008 19:11:42 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 223242 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 12 Feb
+          2008 19:11:41 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m1CIBfJU027025 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 12 Feb 2008 19:11:41 +0100
+Received: from web82006.mail.mud.yahoo.com (web82006.mail.mud.yahoo.com
+          [66.163.178.250]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          SMTP id m1CIBVdq021880 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue,
+          12 Feb 2008 19:11:32 +0100
+Received: (qmail 58222 invoked by uid 60001); 12 Feb 2008 18:11:31 -0000
+X-YMail-OSG: K8N1jfEVM1n2vs.tqABdGrjd52JWymax.yys630vCGE02omQ
+Received: from [128.252.117.249] by web82006.mail.mud.yahoo.com via HTTP; Tue,
+          12 Feb 2008 10:11:31 PST
+X-Mailer: YahooMailRC/818.31 YahooMailWebService/0.7.160
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-1519317223-1202839891=:50032"
+Message-ID:  <306593.50032.qm@web82006.mail.mud.yahoo.com>
+Date:         Tue, 12 Feb 2008 10:11:31 -0800
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Paul Thompson <patjah@SBCGLOBAL.NET>
+Subject: Re: Internal and external page setup control
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -1.247 () BAYES_00,HTML_10_20,HTML_MESSAGE
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 12 Feb 2008 18:16:56.0044 (UTC) FILETIME=[733B92C0:01C86DA3]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5167
+
+--0-1519317223-1202839891=:50032
+Content-Type: text/plain; charset=us-ascii
+
+What about a simplistic solution, in which you have a flag to 1) change regardless of floats - it's your problem or 2) not change if floats are present?  After all, you, the writer are putting out floats.  They don't come from the Land of Floats.  If you want to change dimensions, you either set the flag to force dimensional change or you don't put out the floats.  As I say, simplistic.
+ 
+Paul Thompson
+25 Signal Hill Blvd
+Belleville, IL   62223-1650
+
+----- Original Message ----
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Sent: Friday, February 8, 2008 2:58:10 PM
+Subject: Re: Internal and external page setup control
+
+
+Hi Paul,
+
+ > Ha! I do this in newlfm.  What I do is specify page dimensions in a
+ > register.  During shipout, after shipping out the old page, I bring
+ the new
+ > dimensions in and substitute for the old. 
+
+so far so good. clearly one has to store changes somewhere and then use
+ them
+in the OR to change things for the next page. But I fear that your code
+exhibits precisely the problems that I was talking about. You see, for
+ the
+application you mention (e.g., changing the first page on a letter or
+ article)
+that will work out fine, but the problems come when you are in the
+ middle of
+the document and you have many waiting floats to take up space.
+
+so how do you specify the values for your registers inside the
+ document?
+
+assuming you have some command do do this, this command will be seen by
+ LaTeX
+somewhere in the document and at this point your registers for the
+ "next" page
+will change. but effectively the text surrounding this command may be
+ typeset
+on a later page (potentially more than one page ahead). so in the end
+ you will
+have the effect that some code that you placed on page 5 (in the final
+document) changes the page setting on page 3 or 4.
+
+if everything is tied to explicit page breaks then things are not too
+ bad but
+if not then you are in trouble especially if you page make up is a
+ little more
+complicated than just cutting columns, ie if it involves floats, and
+ possibly
+changes to the vertical dimensions of the columns.
+
+just thing about a command that allows me to specify how floats can be
+ layed
+out on a particular page (like on this page i don't want to have bottom
+ floats
+or on this page I don't want any floats, to use some simple ones. so if
+ such a
+command is placed directly into the input stream a user would expect to
+ see it
+acting on the page where the surrounding text finally falls. and there
+ is the
+catch: you can even envision kind of "impossible documents" ie those
+ the never
+finish compiling: one iteration you get this command on page 4 say but
+ you
+already use a float on that page when you encounter it. so you iterate
+ and on
+the next run you use this specific layout with no floats on page 4 but
+ doing
+so you put more (or less depending on the style) text onto this page
+ therefore
+you command moves to another page. which is then wrong, so you iterate
+ and by
+doing so you move the command again to ...
+
+in current LaTeX the algorithms are simple enough to prevent this from
+happening as something like \thispagestyle{foo} will not change the
+ textual
+page content. The only way to get this behavior right now is by using
+ roman
+numerals as page number and do reference to pages inside the text. if
+ you
+carefully construct such a document you can get this behavior because
+ the
+length of the number sequence in roman numerals is not steadily
+increasing. but this is so rare and difficult to do that nearly nobody
+ ever
+saw that in real life. with more complicated placement algorithms for
+ floats
+and vertical column sizes this danger becomes a reality if you allow to
+ change
+the algorithm midway from within the document. 
+
+So I'm still wondering about how to best specify such changes. If only
+ allowed
+from the outside things are easy but if from the inside it is tricky as
+ you
+can't explain to somebody. "well, just place your command between the
+ words
+shown on page 5 to change the look and feel on page 4"
+
+cheers
+frank
+
+
+
+
+--0-1519317223-1202839891=:50032
+Content-Type: text/html; charset=us-ascii
+
+<html><head><style type="text/css"><!-- DIV {margin:0px;} --></style></head><body><div style="font-family:times new roman,new york,times,serif;font-size:12pt">What about a simplistic solution, in which you have a flag to 1) change regardless of floats - it's your problem or 2) not change if floats are present?&nbsp; After all, you, the writer are putting out floats.&nbsp; They don't come from the Land of Floats.&nbsp; If you want to change dimensions, you either set the flag to force dimensional change or you don't put out the floats.&nbsp; As I say, simplistic.<br><div>&nbsp;</div>Paul Thompson<br>25 Signal Hill Blvd<br>Belleville, IL   62223-1650<div style="font-family: times new roman,new york,times,serif; font-size: 12pt;"><br><br><div style="font-family: times new roman,new york,times,serif; font-size: 12pt;">----- Original Message ----<br>From: Frank Mittelbach &lt;frank.mittelbach@LATEX-PROJECT.ORG&gt;<br>To:
+ LATEX-L@LISTSERV.UNI-HEIDELBERG.DE<br>Sent: Friday, February 8, 2008 2:58:10 PM<br>Subject: Re: Internal and external page setup control<br><br>
+Hi Paul,<br><br> &gt; Ha! I do this in newlfm.&nbsp; What I do is specify page dimensions in a<br> &gt; register.&nbsp; During shipout, after shipping out the old page, I bring
+ the new<br> &gt; dimensions in and substitute for the old. <br><br>so far so good. clearly one has to store changes somewhere and then use
+ them<br>in the OR to change things for the next page. But I fear that your code<br>exhibits precisely the problems that I was talking about. You see, for
+ the<br>application you mention (e.g., changing the first page on a letter or
+ article)<br>that will work out fine, but the problems come when you are in the
+ middle of<br>the document and you have many waiting floats to take up space.<br><br>so how do you specify the values for your registers inside the
+ document?<br><br>assuming you have some command do do this, this command will be seen by
+ LaTeX<br>somewhere in the document and at this point your registers for the
+ "next" page<br>will change. but effectively the text surrounding this command may be
+ typeset<br>on a later page (potentially more than one page ahead). so in the end
+ you will<br>have the effect that some code that you placed on page 5 (in the final<br>document) changes the page setting on page 3 or 4.<br><br>if everything is tied to explicit page breaks then things are not too
+ bad but<br>if not then you are in trouble especially if you page make up is a
+ little more<br>complicated than just cutting columns, ie if it involves floats, and
+ possibly<br>changes to the vertical dimensions of the columns.<br><br>just thing about a command that allows me to specify how floats can be
+ layed<br>out on a particular page (like on this page i don't want to have bottom
+ floats<br>or on this page I don't want any floats, to use some simple ones. so if
+ such a<br>command is placed directly into the input stream a user would expect to
+ see it<br>acting on the page where the surrounding text finally falls. and there
+ is the<br>catch: you can even envision kind of "impossible documents" ie those
+ the never<br>finish compiling: one iteration you get this command on page 4 say but
+ you<br>already use a float on that page when you encounter it. so you iterate
+ and on<br>the next run you use this specific layout with no floats on page 4 but
+ doing<br>so you put more (or less depending on the style) text onto this page
+ therefore<br>you command moves to another page. which is then wrong, so you iterate
+ and by<br>doing so you move the command again to ...<br><br>in current LaTeX the algorithms are simple enough to prevent this from<br>happening as something like \thispagestyle{foo} will not change the
+ textual<br>page content. The only way to get this behavior right now is by using
+ roman<br>numerals as page number and do reference to pages inside the text. if
+ you<br>carefully construct such a document you can get this behavior because
+ the<br>length of the number sequence in roman numerals is not steadily<br>increasing. but this is so rare and difficult to do that nearly nobody
+ ever<br>saw that in real life. with more complicated placement algorithms for
+ floats<br>and vertical column sizes this danger becomes a reality if you allow to
+ change<br>the algorithm midway from within the document. <br><br>So I'm still wondering about how to best specify such changes. If only
+ allowed<br>from the outside things are easy but if from the inside it is tricky as
+ you<br>can't explain to somebody. "well, just place your command between the
+ words<br>shown on page 5 to change the look and feel on page 4"<br><br>cheers<br>frank<br></div><br></div></div></body></html>
+--0-1519317223-1202839891=:50032--
+

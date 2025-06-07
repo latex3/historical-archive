@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 8 Sep 2008 15:02:48 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m88D2gVO026802
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 8 Sep 2008 15:02:43 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m88CuhxX024294
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 8 Sep 2008 14:56:43 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m87M1D0s004931;
+	Mon, 8 Sep 2008 14:56:38 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 21563 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 8 Sep
+          2008 14:56:38 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m88CucIm006828 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Mon, 8 Sep 2008 14:56:38 +0200
+Received: from nf-out-0910.google.com (nf-out-0910.google.com [64.233.182.187])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m88CuN8Z029712 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 8 Sep
+          2008 14:56:26 +0200
+Received: by nf-out-0910.google.com with SMTP id e27so456123nfd.30 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 08 Sep 2008 05:56:23 -0700
+          (PDT)
+Received: by 10.210.48.14 with SMTP id v14mr18763848ebv.71.1220878583156; Mon,
+          08 Sep 2008 05:56:23 -0700 (PDT)
+Received: by 10.210.74.19 with HTTP; Mon, 8 Sep 2008 05:56:23 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <48C2348C.908@morningstar2.co.uk>
+Message-ID:  <859ec5630809080556g36259d1fnd01204c84a3a8adf@mail.gmail.com>
+Date:         Mon, 8 Sep 2008 14:56:23 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Morten_H=F8gholm?= <morten.hoegholm@GMAIL.COM>
+Subject: Re: keyval
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48C2348C.908@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 08 Sep 2008 13:02:48.0299 (UTC) FILETIME=[316FABB0:01C911B3]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5239
+
+On Sat, Sep 6, 2008 at 9:43 AM, Joseph Wright
+<joseph.wright@morningstar2.co.uk> wrote:
+
+> I've been looking at the current expl3 work, and I'm wondering about the
+> planned direction with keyval stuff.  The current l3keyval only covers
+> some very basic functions, and it's not clear to me whether this will be
+> extended to higher-level commands.
+
+It will. So far only data extraction was done because a) it was needed
+and b) I need to sit down, preferably with someone, and take a good
+look at how to tackle this. Judging from the hacks we see in pstricks
+and many other packages, the current approach as implemented in keyval
+is insufficient. The model used in pgf looks interesting.
+
+How the keyvals are used depends on the circumstances. If you take a
+look at template, it both runs traditional "turn key into csname, then
+assign it a value" but also contains a more complex run when declaring
+the template. In the latter instance, the value in fact consists of
+individual values, each requiring different action.
+
+
+> My current method is to hack kvoptions to do the right sort of thing
+> (for example, modifying \DeclareStringoption to add both a pre- and
+> postfix to the string macro name).  However, if no-one else is likely to
+> work on this in the near future I can perhaps see whether I can produce
+> some basic macros in this area (for preference I'd probably adopt the
+> pgfopts model, which I find quite accessible).
+
+Please do go ahead.
+
+-- 
+Morten
+

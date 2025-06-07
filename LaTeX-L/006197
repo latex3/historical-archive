@@ -1,0 +1,112 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 7 Dec 2009 13:52:33 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nB7CqWQV023270
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 7 Dec 2009 13:52:33 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id nB7CmC0r014248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 7 Dec 2009 13:48:13 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nB7CWigm008997;
+	Mon, 7 Dec 2009 13:48:03 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 361312 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 7 Dec
+          2009 13:48:03 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nB7Cm3WA024357 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 7 Dec 2009 13:48:03 +0100
+Received: from anchor-post-3.mail.demon.net (anchor-post-3.mail.demon.net
+          [195.173.77.134]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id nB7CluUJ018220 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 7 Dec 2009 13:48:00 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by anchor-post-3.mail.demon.net with esmtp (Exim 4.69) id
+          1NHa2T-0000pO-na for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 07 Dec
+          2009 09:37:53 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.1.5)
+            Gecko/20091130 Thunderbird/3.0
+MIME-Version: 1.0
+References: <E1NGF7g-0001eB-Dp@pr-webmail-1.mail.demon.net>
+            <4B17FD3C.4050303@free.fr>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4B1CCCF1.7080302@morningstar2.co.uk>
+Date:         Mon, 7 Dec 2009 09:37:53 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Rescanning an argument with a special catcode for the colon
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4B17FD3C.4050303@free.fr>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.555 () BAYES_00,DATE_IN_PAST_03_06,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Dec 2009 12:52:33.0503 (UTC) FILETIME=[24F17EF0:01CA773C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6197
+
+On 03/12/2009 18:02, Julien RIVAUD (_FrnchFrgg_) wrote:
+> Note that those characters would be set active only in the call of the
+> function; outside of it the catcode is preserved (or so I think). In
+> fact, in my first version of the \chemin macro, I did some kind of
+> replace, but without expl3 that meant an ugly thing with a lot of ad-hoc
+> looping code. Won't search/replace be slower than setting . and : to
+> macros ? Anyway, the question here is more to play with expl3 than
+> anything else, getting rid of chemin as it is now isn't a priority at
+> all... :)
+
+As Will said, there will be a speed hit but not hopefully too much. 
+\tl_replace_all_in does not loop over every token in the input, so it's 
+not actually too bad. More importantly, I found with siunitx that it is 
+still possible to get a "race" condition even under the circumstances 
+you describe. If you try siunitx v1 with htlatex, things go wrong with 
+superscripts. This is fixed in v2 by not using active characters.
+
+> I think I have tried such solutions, wouldn't TeX complain about
+> nonexistent \char_make_active because a colon cannot anymore be in the
+> name of a macro ?
+
+Was forgetting about category code of ":". Fixed examples:
+
+\group_begin:
+   \char_set_lccode:nn { `\@ } { `\: }
+\tl_to_lowercase:n {
+   \group_end:
+   \cs_set:Nn \my_int_function:n #1 {
+     \tl_set:Nn \l_my_tmp_tl {#1}
+     \tl_replace_all_in:Nnn \l_my_tmp_tl { . } { \cheminsommet }
+     \tl_replace_all_in:Nnn \l_my_tmp_tl { @ } { \cheminface   }
+    % Do more stuff with the input
+   }
+
+\group_begin:
+   \char_set_lccode:nn { `\@ } { `\: }
+   \char_make_active:N \@
+   \char_make_active:N \.
+\tl_to_lowercase:n {
+   \group_end:
+   \cs_set:Npn \my_int_function:n #1 {
+     \tl_set_rescan:Nnx \l_my_tmp_tl
+       {
+         \char_make_active:N \@
+         \char_make_active:N \.
+         \cs_set_eq:NN . \cheminsommet
+         \cs_set_eq:NN @ \cheminface
+       }
+       {#1}
+     % Stuff with \l_my_tmp_tl
+   }
+--
+Joseph Wright
+

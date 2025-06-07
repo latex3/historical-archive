@@ -1,0 +1,450 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.993D9A8C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:19 +0100
+In-Reply-To:  <01GFX9HI6BWWA23BGU@MATH.AMS.COM>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.993D9A8C"
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-class: urn:content-classes:message
+Subject:      Re:  Validating LaTeX output
+Date: Fri, 31 Jan 1992 00:11:04 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE91F@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Michael Downes" <MJD%MATH.AMS.COM@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 561
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.993D9A8C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+> With the trip and trap tests Don Knuth has given us a tool to validate
+> TeX and Metafont. But up to now there is no similar tool to validate
+> LaTeX (nor any other macro package).
+
+Identical output from a given document can be reliably expected if
+
+---The same version of TeX is used. However, for most documents,
+versions 2.9 (2.8? 2.7?) and later are functionally identical.
+
+---The macro files that are loaded are identical. (Including
+any that are preloaded in a format file.)
+
+---The TFM files used are identical.
+
+---The document file itself is not changed (for example, garbled
+characters caused by e-mail transfer).
+
+If a document does not need to be edited, then discrepancies can be
+avoided by sending the DVI file instead of the .tex file as Bernard
+said. But you may still have to worry about TFM checksum discrepancies
+when you print it. And it is sometimes inconvenient to deal with
+encoding and decoding a DVI file for e-mail transfer. (On the other
+hand, it is more convenient in that the recipient doesn't need to
+re-typeset the document.)
+
+Comparing DVI files is the most reliable way of validating the output
+of a document. But other methods of validation that could be carried
+out during the typesetting of a document could be more helpful in
+locating the exact whereabouts of a discrepancy. If, for example, the
+version number and date for each loaded macro file were written into
+the log file, then a simple 'diff' of log files could be used to check
+for discrepancies ... except for the directory name problem, of
+course, and some upper/lowercase discrepancies between different
+operating systems.
+
+In the AMS in-house TeX-based system, I am in the process of writing
+macro file management macros, where each file records its version
+number and date in a unique control sequence (=3D the file name itself).
+Using this idea, latex.tex would create the control sequence
+
+  \csname latex.tex\endcsname
+
+whose replacement text would be
+
+  2.09 <1 December 1991>
+
+and all other macro files must do the same. LaTeX would then be able
+to check all version numbers at the same time by maintaining a list of
+all loaded files (this involves preventing use of the primitive \input
+except through an intermediate function that adds the file name to the
+list):
+
+\@elt{lplain.tex}\@elt{lhyphen.tex}\@elt{lfonts.tex}\@elt{latex.tex}...
+
+and then a version consistency check can be made by including
+the statement
+
+  \versioncheck{(lplain.tex 2.09 <1 December 1991)(lhyphen.tex ...}
+
+in the preamble of the document, with \versioncheck defined as
+
+\def\versioncheck#1{\def\@tempa{#1}%
+  \def\@elt##1{(##1 \csname##1\endcsname)}%
+  \edef\@tempb{\filelist}%
+  \ifx\@tempa\@tempb % Then OK
+  \else \errmessage{File version discrepancy: ...}%
+  \fi
+  \let\@elt\relax }
+
+This relies on conscientious updating of version numbers and dates in
+all macro files, and each file must define its own control sequence
+name to hold the version number and date. Therefore we can probably
+expect this method of checking to fail fairly often. But when it does
+work it will quickly give an accurate picture of where the
+discrepancies lie.
+
+Defining \csname filename\endcsname for each file also makes it easy
+to tell whether a file has already been loaded by using
+\@ifundefined{filename}.
+
+Frank's CheckSum produced by the 'doc' option would be useful for
+detecting file transmission errors or failure to update file version
+numbers and dates, but requires all files to be processed with the doc
+option. If this can be achieved in the future it should be very
+helpful.
+
+As for TFM files, it would be nice if their checksums were available
+to TeX via \fontdimen0, which is currently noexistent/inaccessible
+(even if you try to create it immediately after loading the font).
+Then a similar sort of check could be made by LaTeX for TFM
+consistency (lfonts.tex has already for many years used \fontdimen's
+to check consistency between the line and circle fonts, as you all
+probably know). But would a TFM checksum in sp units exceed \maxdimen?
+I haven't checked.
+
+Similarly, it might be useful if TeX made available control sequences
+like \texversion and \formatname and \formatdate that would hold,
+respectively, the strings "C Version 3.1", "plain", and "91.1.4"
+>from the following representative startup message:
+
+  This is TeX, C Version 3.1 (format=3Dplain 91.1.4)  6 JAN 1992 08:49
+
+The question of what to do when a discrepancy is detected and you
+still want to typeset the document remains open. Whoever has the
+more recent copy of the file(s) in question should send it
+to the other person? If it's a file that was preloaded in
+the format file then maybe you'll have to rebuild the format file.
+
+Garbled characters caused by file transfers: Here's an interesting TeX
+challenge: Can you define a macro to be used at the beginning of a
+document to check whether such a problem has occurred? Offhand, I
+think it shouldn't be too hard. (Probably it is safe to assume
+that the backslash character has passed through unchanged, but
+better if you don't assume curly braces { } are unchanged.)
+
+Michael Downes                              mjd@math.ams.com (Internet)
+
+
+------_=_NextPart_001_01C19443.993D9A8C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re:  Validating LaTeX output</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>&gt; With the trip and trap tests Don Knuth has given =
+us a tool to validate</FONT>
+
+<BR><FONT SIZE=3D2>&gt; TeX and Metafont. But up to now there is no =
+similar tool to validate</FONT>
+
+<BR><FONT SIZE=3D2>&gt; LaTeX (nor any other macro package).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Identical output from a given document can be reliably =
+expected if</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---The same version of TeX is used. However, for most =
+documents,</FONT>
+
+<BR><FONT SIZE=3D2>versions 2.9 (2.8? 2.7?) and later are functionally =
+identical.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---The macro files that are loaded are identical. =
+(Including</FONT>
+
+<BR><FONT SIZE=3D2>any that are preloaded in a format file.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---The TFM files used are identical.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>---The document file itself is not changed (for =
+example, garbled</FONT>
+
+<BR><FONT SIZE=3D2>characters caused by e-mail transfer).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If a document does not need to be edited, then =
+discrepancies can be</FONT>
+
+<BR><FONT SIZE=3D2>avoided by sending the DVI file instead of the .tex =
+file as Bernard</FONT>
+
+<BR><FONT SIZE=3D2>said. But you may still have to worry about TFM =
+checksum discrepancies</FONT>
+
+<BR><FONT SIZE=3D2>when you print it. And it is sometimes inconvenient =
+to deal with</FONT>
+
+<BR><FONT SIZE=3D2>encoding and decoding a DVI file for e-mail transfer. =
+(On the other</FONT>
+
+<BR><FONT SIZE=3D2>hand, it is more convenient in that the recipient =
+doesn't need to</FONT>
+
+<BR><FONT SIZE=3D2>re-typeset the document.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Comparing DVI files is the most reliable way of =
+validating the output</FONT>
+
+<BR><FONT SIZE=3D2>of a document. But other methods of validation that =
+could be carried</FONT>
+
+<BR><FONT SIZE=3D2>out during the typesetting of a document could be =
+more helpful in</FONT>
+
+<BR><FONT SIZE=3D2>locating the exact whereabouts of a discrepancy. If, =
+for example, the</FONT>
+
+<BR><FONT SIZE=3D2>version number and date for each loaded macro file =
+were written into</FONT>
+
+<BR><FONT SIZE=3D2>the log file, then a simple 'diff' of log files could =
+be used to check</FONT>
+
+<BR><FONT SIZE=3D2>for discrepancies ... except for the directory name =
+problem, of</FONT>
+
+<BR><FONT SIZE=3D2>course, and some upper/lowercase discrepancies =
+between different</FONT>
+
+<BR><FONT SIZE=3D2>operating systems.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In the AMS in-house TeX-based system, I am in the =
+process of writing</FONT>
+
+<BR><FONT SIZE=3D2>macro file management macros, where each file records =
+its version</FONT>
+
+<BR><FONT SIZE=3D2>number and date in a unique control sequence (=3D the =
+file name itself).</FONT>
+
+<BR><FONT SIZE=3D2>Using this idea, latex.tex would create the control =
+sequence</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \csname latex.tex\endcsname</FONT>
+</P>
+
+<P><FONT SIZE=3D2>whose replacement text would be</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; 2.09 &lt;1 December 1991&gt;</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and all other macro files must do the same. LaTeX =
+would then be able</FONT>
+
+<BR><FONT SIZE=3D2>to check all version numbers at the same time by =
+maintaining a list of</FONT>
+
+<BR><FONT SIZE=3D2>all loaded files (this involves preventing use of the =
+primitive \input</FONT>
+
+<BR><FONT SIZE=3D2>except through an intermediate function that adds the =
+file name to the</FONT>
+
+<BR><FONT SIZE=3D2>list):</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>\@elt{lplain.tex}\@elt{lhyphen.tex}\@elt{lfonts.tex}\@elt{latex.=
+tex}...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and then a version consistency check can be made by =
+including</FONT>
+
+<BR><FONT SIZE=3D2>the statement</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \versioncheck{(lplain.tex 2.09 &lt;1 December =
+1991)(lhyphen.tex ...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in the preamble of the document, with \versioncheck =
+defined as</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\versioncheck#1{\def\@tempa{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \def\@elt##1{(##1 =
+\csname##1\endcsname)}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \edef\@tempb{\filelist}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \ifx\@tempa\@tempb % Then OK</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \else \errmessage{File version discrepancy: =
+...}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \let\@elt\relax }</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This relies on conscientious updating of version =
+numbers and dates in</FONT>
+
+<BR><FONT SIZE=3D2>all macro files, and each file must define its own =
+control sequence</FONT>
+
+<BR><FONT SIZE=3D2>name to hold the version number and date. Therefore =
+we can probably</FONT>
+
+<BR><FONT SIZE=3D2>expect this method of checking to fail fairly often. =
+But when it does</FONT>
+
+<BR><FONT SIZE=3D2>work it will quickly give an accurate picture of =
+where the</FONT>
+
+<BR><FONT SIZE=3D2>discrepancies lie.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Defining \csname filename\endcsname for each file also =
+makes it easy</FONT>
+
+<BR><FONT SIZE=3D2>to tell whether a file has already been loaded by =
+using</FONT>
+
+<BR><FONT SIZE=3D2>\@ifundefined{filename}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank's CheckSum produced by the 'doc' option would be =
+useful for</FONT>
+
+<BR><FONT SIZE=3D2>detecting file transmission errors or failure to =
+update file version</FONT>
+
+<BR><FONT SIZE=3D2>numbers and dates, but requires all files to be =
+processed with the doc</FONT>
+
+<BR><FONT SIZE=3D2>option. If this can be achieved in the future it =
+should be very</FONT>
+
+<BR><FONT SIZE=3D2>helpful.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As for TFM files, it would be nice if their checksums =
+were available</FONT>
+
+<BR><FONT SIZE=3D2>to TeX via \fontdimen0, which is currently =
+noexistent/inaccessible</FONT>
+
+<BR><FONT SIZE=3D2>(even if you try to create it immediately after =
+loading the font).</FONT>
+
+<BR><FONT SIZE=3D2>Then a similar sort of check could be made by LaTeX =
+for TFM</FONT>
+
+<BR><FONT SIZE=3D2>consistency (lfonts.tex has already for many years =
+used \fontdimen's</FONT>
+
+<BR><FONT SIZE=3D2>to check consistency between the line and circle =
+fonts, as you all</FONT>
+
+<BR><FONT SIZE=3D2>probably know). But would a TFM checksum in sp units =
+exceed \maxdimen?</FONT>
+
+<BR><FONT SIZE=3D2>I haven't checked.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Similarly, it might be useful if TeX made available =
+control sequences</FONT>
+
+<BR><FONT SIZE=3D2>like \texversion and \formatname and \formatdate that =
+would hold,</FONT>
+
+<BR><FONT SIZE=3D2>respectively, the strings &quot;C Version 3.1&quot;, =
+&quot;plain&quot;, and &quot;91.1.4&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;from the following representative startup =
+message:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; This is TeX, C Version 3.1 (format=3Dplain =
+91.1.4)&nbsp; 6 JAN 1992 08:49</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The question of what to do when a discrepancy is =
+detected and you</FONT>
+
+<BR><FONT SIZE=3D2>still want to typeset the document remains open. =
+Whoever has the</FONT>
+
+<BR><FONT SIZE=3D2>more recent copy of the file(s) in question should =
+send it</FONT>
+
+<BR><FONT SIZE=3D2>to the other person? If it's a file that was =
+preloaded in</FONT>
+
+<BR><FONT SIZE=3D2>the format file then maybe you'll have to rebuild the =
+format file.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Garbled characters caused by file transfers: Here's an =
+interesting TeX</FONT>
+
+<BR><FONT SIZE=3D2>challenge: Can you define a macro to be used at the =
+beginning of a</FONT>
+
+<BR><FONT SIZE=3D2>document to check whether such a problem has =
+occurred? Offhand, I</FONT>
+
+<BR><FONT SIZE=3D2>think it shouldn't be too hard. (Probably it is safe =
+to assume</FONT>
+
+<BR><FONT SIZE=3D2>that the backslash character has passed through =
+unchanged, but</FONT>
+
+<BR><FONT SIZE=3D2>better if you don't assume curly braces { } are =
+unchanged.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Michael =
+Downes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mjd@math.ams.com (Internet)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.993D9A8C--
+

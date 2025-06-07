@@ -1,0 +1,69 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1015" "Fri" "20" "June" "1997" "12:30:38" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "33" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id RAA02412; Fri, 20 Jun 1997 17:25:11 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.47B49CD9@listserv.gmd.de>; Fri, 20 Jun 1997 17:24:32 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 156838 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 20 Jun 1997 17:24:26 +0200
+Received: from punt-2.mail.demon.net (relay-13.mail.demon.net [194.217.242.21])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id RAA13485
+          for <latex-l@urz.uni-heidelberg.de>; Fri, 20 Jun 1997 17:24:24 +0200
+          (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id aa1313087; 20 Jun 97 14:46 BST
+Received: by dcarlisle.demon.co.uk id m0wf1tm-000OVtC (Debian Smail-3.2
+          1996-Jul-4 #2); Fri, 20 Jun 1997 12:30:38 +0100 (BST)
+Message-ID:  <m0wf1tm-000OVtC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A9BF2D.3DA04AAB@vvv.vsu.ru> (message from Vladimir Volovich on
+              Fri, 20 Jun 1997 03:22:21 +0400)
+Date:         Fri, 20 Jun 1997 12:30:38 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2126
+
+Vladimir sent me a log file (I do so love reading \tracingall
+output:-) to see why my example preserved kerning but his lost it.
+it turns out to be a `feature' of inputenc.sty, so perhaps this
+is the wrong mailing list after all, but it does not seem worth moving
+this to latexbugs@.. now.
+
+\MakeUppercase works by making some local definitions, then putting
+its argument in an \edef (with \uppercase), then executing the token
+just defined.
+
+However \tracingall reveals that the definition of the edefed token in
+this case is:
+
+\reserved@a ->
+              \uppercase {\protect \IeC {\CYRG }\protect \IeC {\CYRD }}
+
+\IeC is harmless, \CYRG and \CYRD are the required uppercase letters,
+and...
+      ...\protect is \relax which breaks the inter-letter kerns.
+
+so I think that the definition in inputenc should be
+
+\def\IeC{%
+  \ifx\protect\@typeset@protect
+    \expandafter\@firstofone
+  \else
+%    \protect\IeC
+    \noexpand\IeC
+  \fi}
+
+but I'd need to think about it more before changing the distribution.
+
+David
+

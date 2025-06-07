@@ -1,0 +1,474 @@
+Return-Path: <rainer.schoepf@gmx.net>
+Delivered-To: rainer
+Received: from h2774747.stratoserver.net
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by h2774747.stratoserver.net (Dovecot) with LMTP id wXaGBiL/xmTFTgAA4+3H6A
+	for <rainer>; Mon, 31 Jul 2023 02:24:03 +0200
+Return-Path: <rainer.schoepf@gmx.net>
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	by h2774747.stratoserver.net (8.15.2/8.15.2/Debian-3) with ESMTP id 36V0NxF4020163
+	for <rainer@rainer-schoepf.de>; Mon, 31 Jul 2023 02:24:00 +0200
+Authentication-Results:  gmx.net; dkim=none
+Received: from relay2.uni-heidelberg.de ([129.206.119.212]) by mx-ha.gmx.net
+ (mxgmx108 [212.227.17.5]) with ESMTP (Nemesis) id 1MZRqo-1qK5mx1oRi-00L0KF
+ for <rainer.schoepf@gmx.net>; Mon, 31 Jul 2023 02:23:53 +0200
+Received: from listserv.uni-heidelberg.de ([129.206.100.94])
+  by relay2.uni-heidelberg.de with ESMTP; 31 Jul 2023 02:23:53 +0200
+Received: from listserv (localhost [127.0.0.1])
+	by listserv.uni-heidelberg.de (Postfix) with ESMTP id 5F6D7128FD9;
+	Mon, 31 Jul 2023 02:23:40 +0200 (CEST)
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 17.0) with
+          spool id 55629603 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Jul
+          2023 02:23:40 +0200
+Delivered-To: LATEX-L@listserv.uni-heidelberg.de
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (Postfix) with ESMTP
+          id 223901256F4 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 31 Jul
+          2023 02:23:40 +0200 (CEST)
+X-IronPort-MID: 209110276
+X-IronPort-RemoteIP: 216.40.44.13
+X-IronPort-SenderGroup: UNKNOWNLIST
+X-IronPort-MailFlowPolicy: $ACCEPTED
+X-IronPort-Reputation: 5.2
+X-IPAS-Result: =?us-ascii?q?A0ATAAA1/sZkmA0sKNhaHAEBAQEBAQcBARIBAQQEAQGBe?=
+               =?us-ascii?q?wcBAQsBgS+BA4FKLgMHCEeEUYgdX4hihDiScIZPgX4PAQEBAQEBAQEBCS4BF?=
+               =?us-ascii?q?QQBAYUGAoZEHwYBBDAJDgECBAEBAQEDAgMBAQEBAQEDAQEFAQEBAgEDBAQUA?=
+               =?us-ascii?q?QEBAQEBAQEeGQUQDieFdYYEAQEBAQIBAQEhWwsLGCoCAlcFAROCfoI6IwMFr?=
+               =?us-ascii?q?CB6gTKBAbMngWiBQgGHfwGBSQGILUKCDYE8HIJoPogfOYIuBIcSDYJkgymCJ?=
+               =?us-ascii?q?wcygRcMCYEKiT8rgQgIX4FvPQINVAsLY4EYgkkCAhEnExQETFoZGwMHA4EFE?=
+               =?us-ascii?q?C8HBC8bCQYJGBgXJQZRBxcWJAkTFUAEgXqBVgqBBT8VDhGCUCs2OBtMgSiBQ?=
+               =?us-ascii?q?gkVBjtQehAuBBQYgQwIBE4mIRoePRESGw0FCIEBAxoDBgIJAgIEBgkCJkMDB?=
+               =?us-ascii?q?QMEMgMJAwcFLB1AAwsYDUsRLDUUGwZCKEsHnEMLg0EGgQ+BcUhto2yLWpRkh?=
+               =?us-ascii?q?BWBXZ8+BC+BSZVakjeYKKNoAYRXAYFiOoFbTSwMZQGCPD8TGQ+OKRAJk1s0M?=
+               =?us-ascii?q?jsCBwEKAQEDCYtIAQE?=
+IronPort-PHdr: A9a23:oaMY8BI1hbn9n/b08dmcuIBjWUAX0o4cXyYP554umvRTdKXm/5njM
+               EHb7/h3gxnFUNaT8OpK3szRta2oQmkc+dCZqnlXb51IUzcakt0M2Q0nU4aeEUOuFPfxdGQhG
+               dhaElps/nW1K09QTdn/Y1n6vWaq93gTHUa3LhJ7c9z8AZWalMGrz6ay9pnUNh1Pnya4aKhuI
+               Q+etwjVv9hQgYx5Nqs9xx7Ao38OcONTrY9xDXSUmRu0pt29+JdytTlWurch+s9MXKHwcr43C
+               7BVXnwgNCgu6cvnuAOmL0PH72YAUmgQjhtDAhTUpBD8UJDrtyLmt+17kCCENMzyRLowVHys9
+               aBuABPvjS4GMXY+/gS1woRvjaZfiA26vwY5womVKICZOfxif7/MKMsATDkJVcJQWipdR4KkO
+               tFWUaxdZaAE88+k/Ahrz1P2HwSnCeLxxyUdnHLy1Lx8zuIgVAHL3QAtG9gDqnuSoNimUcVaG
+               e2z0qTMyi3OKv1M3jKoopfJdhQJvuqUR/RxdoCCgVlqDA7DgliK/Mb6PjeR/vsWq3Ld7u0qB
+               ofNwyY37gp2pDao3MIljILE05kUxl7z/iJ82I8pJNe8RSaXePacGYBL/2GAOo9/U4U/RWAtu
+               Cs7xrACs5Ohc24GxcZvyxnaYv2BO4+Gh3CrHPmQJTNQm2l9YvS+gF6+/FOhxev1SsSvmAwT8
+               GwZyp+Q6jZUjFTa8YCfR+F4/1u91DrHzA3V5uxeYCVW3eLaJ5Mn3r8sh88WuEXHEDXxnRa+h
+               6uXe0M4v+mwvr6+PPO6/tnAa8kt0VKbUOxmgMG0DOUmPxJbRWWf8PX6ybviuE30QblHivc7i
+               KafvJ2JQKZT7qO/HQJR1Z4urhilCDLzmssZmX0vM0ldYlSGiMK6c0GLO/3+Afql1h6zkTNv7
+               +/dJqenA5KHfR2h2P/xOL167UBb0g86y9tSsolVBr82K/X2QkbttdbcA0xxI0muzu3gEtk4y
+               pIGVDfFHPqCKK2L+wzthKpnM6yWaYQSojq4N/U1+6ukkyoigVFENaixgclNMS7+QqwgfxnfO
+               T223p8ACTtY5FNgCrCyzgHYF2cMAhT6F6MkumNhUdzgUd+FGtrr2e3J3T/nTMcPOCYaUhbQS
+               zGyKM2FQ6teMnvMZJM51GBeE+LxDNR4sHPm/A7il+g5cqyFqmtE79S7k4Ipr+zLyUNsqXolX
+               4LGjSfUECl1hj9aGWNwjfA5+hI7kwbms+AwguQER4IPoaIZFFxkc8SDh+1iV4KsBkSQLpHSF
+               hD8EpL9WHkwVo5jnYNIMhY7R4rk1leZg0/IS/cUj+DZWsByo/KahCa3fJ41ym6ahvN40R96G
+               o0UaSv3zrh28wyZb2LQu32QjL3iNb4R2CfcsnqFzC+OsUBUXQp6XL/KG3wSNAPaqtHw50WKS
+               LHLa/xvKgxa1cuLMbdHcPXzgFFPVbHjP8/Cbm68nm6xAVCDwbbEYIfxemob1TnQEwBeyl5Vo
+               S7AaVR4X3zpqnm7bnQmDV/1ZkLw7eRy4Gi2SEM51UDCbkFs0aa05g9AhfGYTKBb1bYFtSE97
+               jRsSQzkgZSKU5zc+0w4J/Y5A5t1+lpM2GPHuhYoJJGkJrEkm1gfNgR6vk/j0x96EIoGncV5y
+               RFihAd0N6+c10tMMj2C2pWlcKLWLm3a4wu3cejX3RuNtbTesrdK8/k+p1j56UuxEVE+9nx8z
+               9RP+2GR4pzbSgoVSo78Xksy/hl+4brdZ2NuguGcnW0pOq6yvDjY3tsvD+Zw0ResceBUN6acH
+               RPzGckXVIC+bfYnkF+zYlcYLfhfoeQqati+eaLMi8vJdK5w2SirhmNd7MVh31KQomBiH/XQ0
+               c9NwunEjFHeCXGg1BH97oav3toYLTAKQjjlkHaiWNYXOvc0JNluay/mItXrlI8n2dixAzgEr
+               hj6VhsHwJP7I0PMKQClm1EKkx5I6X2/xXnilmIyz2lv8vDZhnyJmL2HFlJPO3YXFjc+ywa8Z
+               9TuyYhdBhTgbhB1xkX5oxeqgfMF4v0gZ2jLHRUWI26nfyc5DO3p59/gK4ZO8M9673kRAbT6O
+               g7cEOG1ogNGgX2/WToOgmtlMWv6/c6g1x1i1DDDcDAi/DyFJocogk2Dgb6UDf9JgmhYGG8p2
+               X+MWB7nZ5Go5YnGzc6d9LzmETn9EMwbZyDvycnoXM6T+nZyG1u+mKLr8jUGORI31SbqkdltT
+               jnFoBv5a4jvka+9NLA+FqGHLEDn89A8G4Ysy+MN
+IronPort-Data: A9a23:rIwZqqnwRSp/lVIrhuvcCA3o5gwtJkRdPkR7XQ2eYbSJt1+Wr1Gzt
+               xIdUWqBPKuNYDSkctt/a461ph8GvJ+DndE2TVZuq38yF1tH+JHPbTi7Bh6tYHnCcJGroGGLT
+               Sk6QoOdRCzhZiaE/n9BCpC48T8mk/vgqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvV0
+               T/Ji5OZYAbNNwJcaDpOsPrc80s35pwehRtB1rAATaET1LPhvyRNZH4vDfnZB2f1RIBSAtm7S
+               47rpF1u1jqEl/uFIorNfofTKiXmcJaLVeS9oiI+t5yZv/R3jndaPpDXlBYrQRw/Zz2hx7idw
+               TjW3HC6YV9B0qbkwIzxX/TEes1zFfUuxVPJHZSwme66ykvtY33z+PtRUgZoOYZGoMRRIkgbo
+               JT0KBhVBvyCr/i7xLuqDOlrndguIMTuNYIb/HpnyFk1D958GM6FH/2MuYMehWxYasNmRZ4yY
+               +IGaD5rRAvbewcJO1B/5JcWxr/53yCnKWIGwL6TjYs350rDlFNw7IXOaNfHPeeFRuxkr0nN8
+               woq+EyiW0xFbY3DodafyVqIr9PirWbfcIYTD6Gj++R0xkCVxykTBRwaWF+xrOO2zEKzM++zM
+               GQP/zY2t6U2/V3zFoCmGR2/u2KJshMZUttUVeY97Wlh15Y4/S67L20CZS5Hd+coi5FxGzghi
+               AWrufDAUGkHXKKudVqR8bKdrDWXMCcTLHMfaSJscefjy4e7yG3UpkyXJuuPAJJZnfWpQm+rk
+               mHiQDwWwupC0ZVRhs1X6Hie22r0zqUlWDLZ8S38dwpJBCtFY5SiYZCvgbQwxdMeD+51orRL1
+               UXoduCF6fwWF5yJnT3VGLxWWrGu/OqIPDDZiF9rWZIm8lxBGkJPn6gPvlmSx28zaa7onAMFh
+               meP5Wu9A7cPYxOXgVdfOd7ZNijT5fGI+S7Zfv7VdMFSRZN6aRWK+ipjDWbJgTG1zxR1wfpiY
+               s/CGSpJMZr8Ifo+pNZRb7lEuYLHOghgrY8ubcmnn0j3idJymlbKF+9t3KSyghARt/rZ/1yEr
+               76zxuOWyhNQGOP/aCTNmbP/3nhURUXX8ave8pQNHsbae1IOMDh4W5f5n+h7E6Q7xPs9qws91
+               iznMqOu4ACh1SSvxMTjQi0LVY4Dqr4k8i9kYHNyZg/xs5XhCK72hJoim1IMVeFP3IReITRcF
+               pHpp+3o7jVzpjX7F/A1d5T5pZ0kdBOwmQ+CMi+sYTx5dJllL+AM0sGxZRPhrUHiEQLu3fbSY
+               ZX5vu8YfXbHbxt5FNyQafXHI5aZoy0GgOwrN6fXCoA7RagvmbSG7wTulectZcALQfkGKv12y
+               C7OaSolSTHxnrII
+IronPort-HdrOrdr: A9a23:LhDDDqvzcGV8yyoHbuxd/d0L7skD9tV00zEX/kB9WHVpm62j+/
+                  xG88576faZslsssTQb6LK90de7MBbhHO9OjrX5VI3KNGKNhILrFuFfBODZrQEIdReOldJ15O
+                  NAX+xbBMD5ZGIK8frS0U2YP5IcyNfvytHUuQ6n9QYIcShaL5p79g98B0KiDkFrSE1nCPMCZe
+                  Ohz/sCnCC4cXAbKv62HWYIRIH41rv2vaOjWxIdHR4g702voFqTmcTHOind5BsFSTNIxvMH+X
+                  PGnxeR3NTZjxik8G6l60bjq65KkMak8NtMA8SQltMYQw+c7TqVWA==
+X-Talos-CUID: 9a23:DVoWVGG+JdKYTAx9qmJF3UsSMdAjbUbT8ymXfUuzVzxLbp68HAo=
+X-Talos-MUID: 9a23:PBB7CAQckX2mx48GRXTNhDVAJJ834piTKxgAg9I9tMqtBB1/bmI=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.01,243,1684792800";  d="scan'208,217";a="209110276"
+X-MGA-submission: =?us-ascii?q?MDELgCy0J0kXkLe4NzxhxAfV8NF4umwukJ0qVA?=
+                  =?us-ascii?q?laen5jDjxWBwmD9dydOfnJiYPDOkrf/3QYzdk46NuxHDZq9vPGNJ2+O6?=
+                  =?us-ascii?q?nJLIXI+X+S9RLcuDeswj7jNhPR9RHGWLFUfENlUfmnDcj2m4IFMg+uKz?=
+                  =?us-ascii?q?LC/VFmS/YhWMnxze07C3kfRg=3D=3D?=
+Received: from smtprelay0013.hostedemail.com (HELO relay.hostedemail.com)
+          ([216.40.44.13]) by relay.uni-heidelberg.de with
+          ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 31 Jul 2023 02:23:39 +0200
+Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1]) by
+          unirelay01.hostedemail.com (Postfix) with ESMTP id 05D181C9528 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 31 Jul 2023 00:23:36 +0000
+          (UTC)
+Received: from [HIDDEN] (Authenticated sender: will@wspr.io) by
+          omf15.hostedemail.com (Postfix) with ESMTPA id 4C5C91A for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 31 Jul 2023 00:23:34 +0000
+          (UTC)
+Content-Type: multipart/alternative; boundary="Apple-Mail=_824CA16A-0BD0-4BB7-8406-9D40CD8A6852"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+References: <ZMU8yMoiJwyO4sd4@polynum.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-Stat-Signature: so9u4xtpfe5upn35syfnadncajjf3dyz
+X-Rspamd-Server: rspamout05
+X-Rspamd-Queue-Id: 4C5C91A
+X-Spam-Status: No, score=0.23
+X-Session-Marker: 77696C6C40777370722E696F
+X-Session-ID: U2FsdGVkX18G4OWVIRm2wJSfWnpKVqBBYs5K3pTjNNI=
+X-HE-Tag: 1690763014-344577
+X-HE-Meta: U2FsdGVkX1//H+mi9CEI7aqMobMAH/N7J0+uzNfTmSV8N02hRbxuT2Wj774Wvy616ZhepMA0hKCekptH9fw2OQg/iwWz+BnCchQgjFsgnghvFEAcShIVfOxZZuPV8/R8+ZHBM/+RFgorj0qVZzMWplJ5mZAvZjuODqZ02NQ+g9usLuWj8fZLLAHLPLyT264Y9X542RrU9IcAojQNaG95qqpbkYZ+6ao5Z14/t/2+DQmjT9/1o+sirfvei6ZFm50FM/91gWvDMD8S3kTXDO2qB2a3Wro9kHIkq4rumqBUBN4HlKLj4OqL8GkOugvB1JL1f1HRoSz+VwimyOtebj5kWwq6eFB3Bs9CbB7WGAZpIF/97vKzetq/FQLR7Tf8pOEV+zYzgYRx5u74GbafODRDTXdSY7nE9yI5NDk/Tw148oQHUO6iXowonw0EV4u0HU+bdRJGABziQKSjbPJ7zlm2LrsQ+dAGuSSBxD3oEybf0/A=
+Message-ID:  <C4F54A8C-3C42-4F15-BB39-C7B8CE84168C@wspr.io>
+Date:         Mon, 31 Jul 2023 09:53:20 +0930
+Reply-To:     Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender:       Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From:         Will Robertson <will@WSPR.IO>
+Subject: Re: "new" \input vs. primitive behavior
+To:           LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <ZMU8yMoiJwyO4sd4@polynum.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+Envelope-To: <rainer.schoepf@gmx.net>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-Spam-Flag: NO
+UI-InboundReport: notjunk:1;M01:P0:GXNgXancviw=;TxokDm5xukEYd7XXUzKN3uum4Cjz
+ 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
+X-UI-Loop:V01:yyJvFsJLD2U=:LTJ+9KVYH1H7emdGPXBanQJZvhA6+A8kKm8qabRO8Lk=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:fbAX6eEgF/s=;kYWFzrqBhA9733tFiwZK7NNi9qJ
+ Y7fNY/EW9WeoAMljDDIrBewbzLprMx4xxujKSYNziKgpLNtcNmQZAV3CcHGoo/lKV7b5wbwK3
+ 3jVQRbxjHhAjjFHATyq1z8phKvCt6VrfjEZ5W/It9va0M6gN7S2hQChX+cw46KidWWcK3SnQR
+ 495BEg24OZFtA8xTn9668oFI1BxNlTlX0P3vw9dgWVPye54m449J5wyCi1SUHlYLdq5NDMgX0
+ UBO9SFg/XkEBZtvuSd3eZQyC5dgv2MhhU9Qev0hPji3IWZoxy7zmmJqez08p3ltpc3YnsB742
+ K7vCjA62ayNksB6W+QV0PPf/2IpZ3U9RFBPFtSMnWLVn7o7Q+65JAmfe0xqUlgE6e+9g8zT5/
+ CndxIK5xOyVuzJ/Kxvjs2zlZVnQCIF+COKfazw8EkwCgbfjF0XuWh2QAIiy/i5qmIShLeNk07
+ R/TGaE3FS+qZQLN4tUm1E3xFhhhs2+2xRI8Zojt34PXG5cQhBDycs4+2Q8mhtNEJ2LuZdozPD
+ 9UvQFpaCYobJliO20Eqr8b094kDEbhS9CSuisdM8bXkau8i6PdLrq/3O2Gju4hUAuDxlO+it3
+ IqQ14Yy3nCNRVeQd1so7aDZKKpC2dxuVLAxSUZp/3kMLk249Geyl9R8XKXOYxcgo/EtHbtTar
+ UUCKLUvHDGlP0yZAOLOcMpdJl4B+WZrgIVQKKOhWfDrEvDgMVA2IuUsePTwW1l9jeUfkYzzPo
+ Mgh5vBkyLvx
+X-Scanned-By: MIMEDefang 2.78 on 81.169.212.23
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 8340
+
+--Apple-Mail=_824CA16A-0BD0-4BB7-8406-9D40CD8A6852
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi Thierry,
+
+> On 30 Jul 2023, at 01:55, LARONDE Thierry <tlaronde@polynum.com> =
+wrote:
+>=20
+> So, as far as I'm concerned, I will make the file primitives behave =
+like
+> \input, state it in the documentation (so if someone wants to write
+> another engine LaTeX compliant, it can at least start with that if he
+> doesn't want my change file), with the TeX behavior (ignoring =
+kpathsea),
+> that is: one can not input or size etc. a file without an extension
+> ---and this should not cause any problem for LaTeX per se because, if =
+it
+> was the case with the present state of core LaTeX, the problem would
+> have been seen before in kerTeX.
+
+Apologies if I=E2=80=99m misinterpreting there -- TeX *does* \input a =
+file without an extension on TeX Live if there is one to be found:
+
+echo "\write0{this is a file without an extension}" > TMP && tex "\input =
+TMP\relax\bye"
+This is TeX, Version 3.141592653 (TeX Live 2021) (preloaded format=3Dtex)
+(./TMP) [1
+this is a file without an extension
+]
+Output written on TMP.dvi (1 page, 196 bytes).
+Transcript written on TMP.log.
+
+Similarly in LaTeX (albeit I=E2=80=99m not up-to-date here...) with
+
+echo "\typeout{this is a file without an extension}" > TMP && latex =
+"\input{TMP}\csname @@end\endcsname"
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) =
+(preloaded format=3Dlatex)
+ restricted \write18 enabled.
+entering extended mode
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2021-11-22> (./TMP
+this is a file without an extension
+)
+No pages of output.
+Transcript written on TMP.log.
+
+It is only LaTeX commands such as \include which cannot include a file =
+without an extension.=20
+
+Regards,
+Will
+(=46rom phone)=20=
+
+--Apple-Mail=_824CA16A-0BD0-4BB7-8406-9D40CD8A6852
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;"><meta =
+http-equiv=3D"content-type" content=3D"text/html; charset=3Dutf-8"><div =
+dir=3D"auto"><div dir=3D"ltr"></div><div dir=3D"ltr">Hi =
+Thierry,</div><div dir=3D"ltr"><br><blockquote type=3D"cite">On 30 Jul =
+2023, at 01:55, LARONDE Thierry &lt;tlaronde@polynum.com&gt; =
+wrote:<br><br></blockquote></div><blockquote type=3D"cite"><div =
+dir=3D"ltr"><span>So, as far as I'm concerned, I will make the file =
+primitives behave like</span><br><span>\input, state it in the =
+documentation (so if someone wants to write</span><br><span>another =
+engine LaTeX compliant, it can at least start with that if =
+he</span><br><span>doesn't want my change file), with the TeX behavior =
+(ignoring kpathsea),</span><br><span>that is: one can not input or size =
+etc. a file without an extension</span><br><span>---and this should not =
+cause any problem for LaTeX per se because, if it</span><br><span>was =
+the case with the present state of core LaTeX, the problem =
+would</span><br><span>have been seen before in =
+kerTeX.</span><br></div></blockquote><br><div>Apologies if I=E2=80=99m =
+misinterpreting there -- TeX *does* \input a file without an extension =
+on TeX Live if there is one to be found:</div><div><br></div><div><p =
+style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">echo "\write0{this =
+is a file without an extension}" &gt; TMP &amp;&amp; tex "\input =
+TMP\relax\bye"</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">This is TeX, =
+Version 3.141592653 (TeX Live 2021) (preloaded format=3Dtex)</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">(./TMP) =
+[1</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">this is a file =
+without an extension</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">]</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">Output written on =
+TMP.dvi (1 page, 196 bytes).</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">Transcript written =
+on TMP.log.</span></p></div><div><br></div><div>Similarly in LaTeX =
+(albeit I=E2=80=99m not up-to-date here...) =
+with</div><div><br></div><div><p style=3D"margin: 0px; font-style: =
+normal; font-variant-caps: normal; font-stretch: normal; font-size: =
+18px; line-height: normal; font-family: Menlo; font-size-adjust: none; =
+font-kerning: auto; font-variant-alternates: normal; =
+font-variant-ligatures: normal; font-variant-numeric: normal; =
+font-variant-east-asian: normal; font-variant-position: normal; =
+font-feature-settings: normal; font-optical-sizing: auto; =
+font-variation-settings: normal;"><span style=3D"font-variant-ligatures: =
+no-common-ligatures">echo "\typeout{this is a file without an =
+extension}" &gt; TMP &amp;&amp; latex "\input{TMP}\csname =
+@@end\endcsname"</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">This is pdfTeX, =
+Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded =
+format=3Dlatex)</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">&nbsp;restricted =
+\write18 enabled.</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">entering extended =
+mode</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">LaTeX2e =
+&lt;2021-11-15&gt; patch level 1</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">L3 programming =
+layer &lt;2021-11-22&gt; (./TMP</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">this is a file =
+without an extension</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">)</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">No pages of =
+output.</span></p>
+<p style=3D"margin: 0px; font-style: normal; font-variant-caps: normal; =
+font-stretch: normal; font-size: 18px; line-height: normal; font-family: =
+Menlo; font-size-adjust: none; font-kerning: auto; =
+font-variant-alternates: normal; font-variant-ligatures: normal; =
+font-variant-numeric: normal; font-variant-east-asian: normal; =
+font-variant-position: normal; font-feature-settings: normal; =
+font-optical-sizing: auto; font-variation-settings: normal;"><span =
+style=3D"font-variant-ligatures: no-common-ligatures">Transcript written =
+on TMP.log.</span></p></div><div><br></div><div>It is only LaTeX =
+commands such as \include which cannot include a file without an =
+extension.&nbsp;</div><div><br></div><div>Regards,</div><div>Will</div><di=
+v>(=46rom phone)&nbsp;</div></div></body></html>=
+
+--Apple-Mail=_824CA16A-0BD0-4BB7-8406-9D40CD8A6852--
+

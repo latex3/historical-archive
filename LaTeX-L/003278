@@ -1,0 +1,97 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2874" "Tue" "18" "May" "1999" "18:01:01" "+0200" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "57" "The bugs in the doc package" "^Date:" nil nil "5" nil "The bugs in the doc package" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id SAA32531;
+	Tue, 18 May 1999 18:01:14 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.E0425598@listserv.gmd.de>; Tue, 18 May 1999 18:01:11 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 431756 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 18 May 1999 18:01:08 +0200
+Received: from mail.math.umu.se (root@abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA25429 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 18 May 1999 18:01:06 +0200 (MET
+          DST)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          mail.math.umu.se (8.8.5/8.8.5) with ESMTP id SAA12273 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 18 May 1999 18:01:05 +0200 (MET
+          DST)
+X-Sender: lars@abel.math.umu.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id SAA25437
+Message-ID:  <l03130301b36727e6cf0f@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 18 May 1999 18:01:01 +0200
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      The bugs in the doc package
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3278
+
+I write this because I find it rather remarkable that the bugs in doc.dtx
+of the last LaTeX release still hasn't been corrected (or at least not the
+corrections being put on CTAN) a good month and a half after the reports
+started to arrive. Had it been some other package then maybe it would have
+been understandable (understaffed as the LaTeX3 project is often claimed to
+be), but the doc package is so central for code development in the TeX
+world that I think the negligence tends to being gross.
+
+For those of you who hasn't encountered any of these bugs yet, here are the
+ones I know about (in some cases thanks to the LaTeX bugs database, my
+acknowledgements to those who reported them):
+
+1. The syntax of \DescribeMacro has been changed; it now reads its argument
+while having \catcode`\\=12. Primarily this means that the name of the
+macro described must now be surrounded by { and }, but this has also had
+the ironic side effect that the doc package documentation is no longer
+compatible with the doc package!
+
+There have been some claims that this is really a feature, and I agree it's
+not a bad idea per se (even if it makes it a lot harder to write a
+\DescribeMacro for \{ and \}), but isn't this exactly the kind of feature
+which should have been added as a new command, instead of through changing
+an old, especially since it appearently breaks tons of code?
+
+2. There's a typo on code line 395. It reads
+     |gdef|gtempa{#2}%
+(| has catcode 0 at that point), but should most likely be
+     |gdef|@gtempa{#2}%
+
+3. If a control sequence with an empty name (like \csname\endcsname
+generates; bug 1 unfortunately makes almost everything become such a
+control sequence since only the backslash is read) is to go into the index,
+it causes an error on line 420:
+     \expandafter\@tempb\@gtempa\relax
+because what is stored in \@gtempa is precisely the macro name and \@tempb
+is at this point
+macro: #1#2\relax ->  <etcetera>
+Taking the intended delimiting \relax as #1, \@tempb scans ahead for
+another and fails miserably. The direct error can be avoided by appending
+an extra \relax to line 420, but the index entries generated will still
+become rather weird.
+
+4. Last, and indeed least, the checksum is wrong.
+
+BTW, has ever a case in which the doc checksum facility correctly detected
+that code was missing been recorded? It seems to me that by putting the
+\Finale in the end of the .dtx file, as is the recommended (by doc.dtx)
+practice, the very macro which checks the checksum will itself be missing
+whenever there actually is something missing (due to truncation) which
+would be noticed on the checksum! Somehow, I don't think that the expected
+form of a checksum error report is to mention nothing at all about the
+checksum.
+
+Still, I hope it all will be fixed with some speed, now that it has been
+dragged into the public (?) and all. :-)
+
+Lars Hellström
+

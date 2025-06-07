@@ -1,0 +1,64 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1347" "Thu" "16" "September" "1999" "18:09:47" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "29" "Re: specials and vertical space" "^Date:" nil nil "9" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA21335
+	for <schoepf@UNI-MAINZ.DE>; Thu, 16 Sep 1999 19:12:35 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <15.E35B8DDE@mail.listserv.gmd.de>; Thu, 16 Sep 1999 19:12:31 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445948 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 16 Sep 1999 19:12:31 +0200
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA19218 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 16 Sep 1999 19:12:29 +0200 (MET
+          DST)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          SAA10930; Thu, 16 Sep 1999 18:09:47 +0100 (BST)
+References:  <199909161658.MAA11481@fenris.math.albany.edu>
+Message-ID:  <199909161709.SAA10930@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199909161658.MAA11481@fenris.math.albany.edu> (message from Mark
+              Steinberger on Thu, 16 Sep 1999 12:58:35 -0400)
+Date:         Thu, 16 Sep 1999 18:09:47 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: specials and vertical space
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3332
+
+> I've been using the raw \specials in my own macro packages, so I'd
+> be interested in the details of the potential fixes.
+
+Basically one has to ensure that in any vertical list things are only
+added once. So rather than some macro adding a space, some macro adding
+a special, then a second macro not seeing the 1st space because it can't
+look past the special, you instead have to trap all such commands that
+make vertical skips, penalties, marks specials etc and instead store the
+information in a private datatype that you construct.
+
+then when you next come to horizontal material you look at all the
+space, penalties and \specials you have collected, decide what penalty
+and space you want to emit and output them in a suitable order along
+with any specials writes and marks collected.
+
+Doing this without breaking everything else is more than an evening's
+work:-)
+
+
+Of course if consistent output (even if bad) is better than inconsistent
+output you can take the simpler option used by the color package
+monochrome option. this turns off specials but makes them into a non
+immediate \write, which has the same effect on vertical space as a
+special. So you can proof the document in a non colour context, and not
+get a surprise when you suddenly turn on colour support.
+There is some discssion of this in grfguide.tex and color.dtx.
+
+
+David
+

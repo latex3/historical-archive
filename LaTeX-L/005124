@@ -1,0 +1,299 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 13 Dec 2007 15:11:38 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id lBDEBV5V028715
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 13 Dec 2007 15:11:31 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id lBDDxZWW000749
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 13 Dec 2007 14:59:36 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lBD7kMeQ013882;
+	Thu, 13 Dec 2007 15:01:30 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 232665 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 13 Dec
+          2007 15:01:30 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lBDE1UVM020657 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 13 Dec 2007 15:01:30 +0100
+Received: from mail.umu.se (jazz.umdac.umu.se [130.239.8.31]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id lBDDx4Hg032566
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 13 Dec 2007 14:59:09
+          +0100
+Received: from [IPv6:::1] (matematikmaskinen.math.umu.se [130.239.119.8]) by
+          mail.umu.se (8.13.6/8.13.1) with ESMTP id lBDE17cq002931 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 13 Dec 2007 15:01:11 +0100
+          (MET)
+Mime-Version: 1.0 (Apple Message framework v624)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-Mailer: Apple Mail (2.624)
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id lBDE1UVM020658
+Message-ID:  <a038e4e0eb2e79b6112fd170b3bb85ba@residenset.net>
+Date:         Thu, 13 Dec 2007 15:01:13 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: xparse and xdoc
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Dec 2007 14:11:38.0304 (UTC) FILETIME=[1393EC00:01C83D92]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5124
+
+For various reasons,[1] I've decided it is time to start on a new 
+version[2] of my xdoc package. Since this was in some parts written 
+with LaTeX3 in mind, this meant I for the first time in several years 
+had to take a closer look at the codebase.
+
+Some things I like, other things I don't like.
+
+To start off on a positive note, I now appreciate \IfBooleanTF and will 
+probably use it quite a lot in the rewrite. That \BooleanTrue and 
+\BooleanFalse are no longer available with user catcodes is a bit of a 
+pity (since I suspect they'll occationally be needed), but perhaps 
+they'll resurface.
+
+Less nice is that the documentation doesn't say whether \IfBooleanTF is 
+expandable. Examining the implementation, I can see that it is (good), 
+but that the companion \IfNoValueTF is not. I really need something 
+_expandable_ that can test whether #1 is \NoValue, because when 
+formatting text to put in a \write or \mark, one really needs to know 
+whether that #1 can be included or not, and those are expand-only 
+times. OTOH, I don't need to test for those 
+well-maybe-it's-\NoValue-in-a-macro situations that \IfNoValueTF 
+currently aim to handle, so I'd prefer it if you provided a simple 
+expandable \IfNoValueTF conditional (perhaps preserving the current one 
+as \IfLeadingNoValueTF or something if you really think it will be 
+useful). In want of this, I'm been using the incantation 
+\ifx\NoValue#1\@empty which could probably serve as a definition.
+
+A more important goal for the xdoc update is however to start using 
+\DeclareDocumentCommand style argument specifiers. xdoc2 has (ever 
+since the beginning, now seven years ago) a mechanism for argument 
+grabbing of its own which is quite similar to the xparse mechanism, but 
+without the specifier parsing part -- thus it's necessary to write
+   {\XD@grab@sarg{*}\XD@grab@oarg\XD@grab@marg}{3}
+instead of the xparse counterpart
+   {S{*}om}
+which is a bit of an eyesore, especially since I now often find myself 
+entering such definitions in preambles and have to \makeatletter just 
+for this argument. However, if I am to implement a user level argument 
+specifier syntax then I'd like it to be compatible with the LaTeX3 
+counterpart. As it stands, there are two things (some of) my argument 
+grabbers do which xparse doesn't provide.
+
+The first thing is (not surprisingly) \catcode changes. xparse.dtx 
+lists this as an open issue and suggests the format specifier
+   g{<prepare-parsing>}
+for this, but also deems it problematic because g is envisioned as 
+signaling an \url-style argument which can be delimited both by braces 
+and by some arbitrary character. I think the latter is overkill and 
+anyway fairly rare, but fiddling with catcodes and the like is common 
+(e.g. \index, \glossary) enough to warrant support, even though such 
+fiddling is not unproblematic. However, the catcode trickeries I do, I 
+do mostly for compatibility with doc, so it would not be a total 
+disaster if this was lost, but several existing documents would need 
+editing.
+
+The second thing is more important (I'm actually a bit surprised to not 
+see it mentioned in xparse.dtx, because I both find it very natural and 
+am pretty sure that I've mentioned it on this list in a previous 
+discussion of xparse): postprocessing of a grabbed argument before 
+making it available to the command body. I use this to turn arbitrary 
+token sequences (e.g. macro names) into "harmless character sequences" 
+that can be passed around (even written to file and read back) without 
+problem, but I think the basic possibility would be useful also for 
+other kinds of postprocessing.
+
+One point of comparison can be with macros in MetaFont. Their 
+parameters can be of three different types: expr, suffix, and text. 
+Text parameters are like TeX parameters: just any old sequence of 
+tokens. Suffix parameters are needed because of other syntactic 
+peculiarities of MetaFont and is of no concern here. Expr parameters 
+are roughly the feature that I want; in MetaFont these get evaluated 
+when the macro is expanded, and the expand-time value of the expression 
+provided as argument is what gets inserted into the replacement text of 
+the macro; the LaTeX counterpart should be obvious. While there are 
+many rather than one distinguished sense in which an argument can be 
+evaluated, only one should be relevant for each particular command 
+parameter.
+
+I can think of at least three advantages of this kind of postprocessing:
+  1. A possibly expensive computation is carried out once, rather than
+     each time the parameter is used.
+  2. Syntax errors can be reported early, thus giving a better position
+     indication.
+  3. Scratch registers can be used in command arguments without worry
+     that the command might use them too.
+
+Some kinds of postprocessing that I imagine might be useful are:
+  * calc expression evaluation,
+  * converting comma-separated lists to \do-style lists,
+  * parsing key=value lists into property lists.
+Also, it occurs to me that postprocessing might be used to provide 
+command arguments in other ways than as macro parameters; this could be 
+a way to sometimes get around the nine arguments limit.
+
+Implementation-wise, a postprocessor could simply be something which 
+fits the syntax
+
+   <postprocessor> <token register> <grabbed argument>
+
+and has the task of appending the <grabbed argument> to the <token 
+register>. \toks_put_right:Nn is almost right here, but it has to wrap 
+the <grabbed argument> in braces, so I suppose it would rather have to 
+be defined as
+
+   \def_long_new:NNn \xparse_identity_postprocessor:Nn 2 {
+      \toks_put_right:Nn #1 {{#2}}
+   }
+
+How such things should be integrated into the specifier syntax is 
+another matter. I suspect inline definitions are unrealistic, and 
+probably also undesirable as a postprocessor used in one case is likely 
+to be more generally useful, so the most likely syntax would be as a 
+modifier like P or W.
+
+This brings me to \DeclareArgumentType and friends, which I think are 
+problematic because they create things inside a very small space; 
+clashes between different packages are quite probable. A way around 
+this would be to introduce namespaces for argument types and design 
+\DeclareArgumentType and friends so that they always declare the 
+specifier in a namespace that the user has to specify explicitly. 
+\DeclareDocumentCommand could get an optional argument with the 
+argument type namespace(s) that should be searched for the types used, 
+so that one in the foobar package typically would go
+
+  \DeclareArgumentTypeShorthand{foobar}{p}{S{+}}
+
+  \DeclareDocumentCommand[foobar]{\foo}{spmm}{ ... }
+
+to declare a p argument type and make use of it in a command 
+definition. This way, one doesn't have to worry about someone else 
+using "p" for e.g. a parenthesis-delimited argument.
+
+
+What else? \predicate_p:n caught my attention. On one hand, it is a 
+very nice feature, but on the other its syntax feels like begging for 
+trouble. || and && for boolean OR and AND in LaTeX? That's just _so_ 
+out of style, although perhaps comforting for programmers coming from 
+mainstream languages. Also, I wonder whether (apparently legal) 
+constructions like
+
+   \predicate_p:n{ \boolA && \boolB || \boolC && \boolD }
+
+does what anyone would expect. Separate predicates for the AND of a 
+list of predicates and the OR of a list of predicates respectively 
+seems preferable.
+
+
+OTOH, "Ask not what Them can do for you, ask what you can do for Them!" 
+I promised an implementation of a function environment called as
+
+  \begin{function}{clist_map_inline}{Nn,cn,nn}
+
+and here it is:
+
+\RequirePackage{xdoc2}
+\NewMacroEnvironment*{function}{\XD@grab@harmless@cs\XD@grab@marg}{2}{%
+    % Margin material:
+    \@for\@tempa:=#2\do{%
+       \XDToMargin{\MacroFont\Bslash#1:\@tempa}
+    }%
+}{% Index entries:
+    \@for\@tempa:=#2\do{%
+       
+\XDMainIndex{\LevelSorted{#1:\@tempa}{\texttt{\Bslash#1:\@tempa}}}%
+    }%
+}{% \changes info:
+   {#1}{\texttt{#1} function}%
+}{}
+
+However, it wasn't until I copied some text from l3num.dtx to construct 
+the test case
+
+% \begin{function}{num_compare}{nNnTF,nNnT,nNnF}
+% Simple comparison tests.
+%    \begin{macrocode}
+\def_test_function_new:npn {num_compare:nNn}#1#2#3{
+   \if_num:w \num_eval:n {#1}#2\num_eval:n {#3}
+}
+\def_new:Npn \num_compare:cNcTF { \exp_args:NcNc\num_compare:nNnTF }
+%    \end{macrocode}
+% \end{function}
+
+that I realised this wasn't a macro environment replacement, but rather 
+a usage section command. In that case, you'd probably rather want
+
+\NewMacroEnvironment*{function}{\XD@grab@harmless@cs\XD@grab@marg}{2}{%
+    % Margin material:
+    \@for\@tempa:=#2\do{%
+       \XDToMargin{\MacroFont\Bslash#1:\@tempa}
+    }%
+}{% Index entries:
+    \@for\@tempa:=#2\do{%
+       \IndexEntry{%
+          \LevelSorted{#1:\@tempa}{\texttt{\Bslash#1:\@tempa}}%
+       }{usage}{\thepage}%
+    }%
+}{% \changes info (perhaps less relevant here):
+    {#1}{\texttt{#1} function}%
+}{% Other assignments for environment body, from l3doc.cls \function:
+    \catcode`\<=\active
+    \def<##1>{\meta{##1}}%
+}
+
+unless for some reason you're fond of that "control sequences in a box" 
+layout. The above will instead do like \DescribeMacro and put the 
+control sequence names in the margin (the _outer_ margin, when in 
+twoside layout), although (as in the case of the macro environment) not 
+by way of \marginpar.
+
+A point to note is that harmless character sequences allows 
+constructions such as
+
+\begin{function}{xref_get_value_\meta{xyz}_aux}{w}
+
+where the \meta{xyz} is treated as a unit and passed through without 
+detokenization; this is very handy for documenting families of control 
+sequences. It's not clear from l3doc.cls whether the current function 
+environment should be able to handle that (there are some expansion 
+trickeries concerning < and > going on, but no explanations, and that 
+code is 10 years old), but in case something to that effect really 
+worked I might as well point out that the feature isn't lost. Also, I 
+used \XD@grab@harmless@cs in the definition rather than 
+\XD@grab@harmless because this is tolerant of writing
+
+   \begin{function}{\num_set_eq}{NN,cN,Nc,cc}
+
+rather than
+
+   \begin{function}{num_set_eq}{NN,cN,Nc,cc}
+
+Well, there's more that could be said, but this is already a very long 
+mail.
+
+Lars Hellström
+
+Endnotes:
+
+[1] In particular work on new features for the tclldoc package, and 
+then discovering things in xdoc that aren't quite right.
+
+[2] It'll probably still be backwards-compatible and thus stay as xdoc2 
+rather than being bumped to xdoc3, but one never knows...
+

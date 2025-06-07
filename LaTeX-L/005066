@@ -1,0 +1,124 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 16 Sep 2007 19:24:40 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.4) with ESMTP id l8GHOT5u026981
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 16 Sep 2007 19:24:30 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id l8GHHvVf012378
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 16 Sep 2007 19:17:57 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id l8FM1NqB007395;
+	Sun, 16 Sep 2007 19:17:42 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 116119 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 16 Sep
+          2007 19:17:42 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id l8GHHgrC009941 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Sun, 16 Sep 2007 19:17:42 +0200
+Received: from mx05.kabsi.at (mx05.kabsi.at [195.202.128.131]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id l8GHHLsS010005
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 16 Sep 2007 19:17:27
+          +0200
+Received: from buckbeak.hogwarts (h081217001071.dyn.cm.kabsi.at [81.217.1.71])
+          by mx05.kabsi.at (8.13.8/8.13.8) with SMTP id l8GHHSrY014247 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Sun, 16 Sep 2007 19:17:28 +0200
+Received: by buckbeak.hogwarts (Postfix, from userid 1000) id 43A1D33003A; Sun,
+          16 Sep 2007 19:17:20 +0200 (CEST)
+References: <87abrn26y6.fsf@buckbeak.hogwarts>
+            <18156.17180.930651.165216@morse.mittelbach-online.de>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.1.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-ID:  <87tzpucyxr.fsf@buckbeak.hogwarts>
+Date:         Sun, 16 Sep 2007 19:17:20 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Andreas Matthias <amat@KABSI.AT>
+Subject: Re: \tlp_use:N considered harmful?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <18156.17180.930651.165216@morse.mittelbach-online.de> (Frank
+              Mittelbach's message of "Sat\, 15 Sep 2007 22\:39\:56 +0200")
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.464 () BAYES_00,FORGED_RCVD_HELO
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 16 Sep 2007 17:24:40.0552 (UTC) FILETIME=[76C8B680:01C7F886]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5066
+
+Hello Frank,
+
+thanks for your explanatory notes.
+
+
+Frank Mittelbach wrote:
+
+> I think you got the subject quite right when you wrote that \tlp_use:N is
+> harmful. When we experimented with the various data types it seemed logical at
+> first glance to include a "use" for tlps but personally I always was kind of
+> sceptical (and usually didn't use it) and your example gives a good reason why
+> it isn't really workable.
+> 
+> So I think the spec here should be that tlps hold tokens and their "use" is to
+> put the tlp into the input stream directly. after all TeX's model of execution
+> is to simply go through the input token list and expand and execute them one
+> by one and a tlp is simply a storage bin for such a sequence of input tokens.
+
+I see.
+
+>  > Here is an example that actually does what I want it to, but might not
+>  > be considered clean code since it depends on implementation details:
+>  > 
+>  >   \RequirePackage{l3prop}
+>  >   \ExplSyntaxOn
+>  > 
+>  >   \tlp_new:Nn \a_tlp {aaa}
+>  >   \tlp_new:Nn \b_tlp {bbb\a_tlp}
+>  > 
+>  >   \prop_new:N \a_plist
+>  >   \prop_gput:Nno \a_plist {key} {\b_tlp}
+>  >   \showthe\a_plist
+> 
+> the above gives you
+> 
+>    bbb\a_tlp  and not bbbaaa
+> 
+> as value.
+
+Yes. Otherwise one would have to use \prop_gput:Nnx.
+
+> if that is what you wanted then I would say with the spec that the
+> "use" of tlps is to simply put them into the input stream the above wouldn't
+> use implementation details but specification details.
+
+That's good.
+
+
+>  > And then: What's the error message in \tlp_use:N for? It looks
+>  > so arbitrarily. Probably it's not?
+> 
+> well I don't know when that was added, but i can see some logic behind it (not
+> that i think it is worth having really (as i think one should get rid of the
+> whole cmd). I think the idea was that a tlp is a storage bin so could never be
+> "\scan_stop:", but either "empty" or contains a list of tokens. So
+> "\scan_stop:" means something like \tlp_use:c tried to use a tlp that simply
+> doesn't exist
+
+Oh, of course. I couldn't figure out where the \scan_stop: should
+come from. But then I didn't thought about \tlp_use:c.
+
+
+Ciao
+Andreas
+

@@ -1,0 +1,130 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4214" "Sat" "7" "November" "1998" "11:16:45" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "96" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil "Quotes and punctuation" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA06919;
+	Sat, 7 Nov 1998 17:17:12 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.EAFB70A0@listserv.gmd.de>; Sat, 7 Nov 1998 17:17:10 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407144 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 7 Nov 1998 17:17:04 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id RAA17048 for
+          <LATEX-L@urz.uni-heidelberg.de>; Sat, 7 Nov 1998 17:17:01 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.8.8/8.8.8) with ESMTP id
+          LAA12844; Sat, 7 Nov 1998 11:16:46 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.8.4/8.8.3) id
+          LAA15872; Sat, 7 Nov 1998 11:16:45 -0500 (EST)
+Message-ID:  <199811071616.LAA15872@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 7 Nov 1998 11:16:45 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2762
+
+On Sat, 7 Nov 1998 15:42:05 +0100
+Chris Rowley <C.A.Rowley@open.ac.uk> wrote to LATEX-L
+
+: William F. Hammond wrote --
+:
+: >
+: > SGML is all about fast staged processing.  It is not very much about
+: > getting on to paper.
+:
+: That sounds like a reasonable summary of reality, if not theoretically
+: true.
+
+Well, maybe.  But consider the fussy stuff about "look-ahead"
+involved in DTD construction.  (That slur aside, it's mainly a pain
+for DTD construction, not for the use of SGML languages.)
+
+Qualification: Each individual SGML-to-SGML should be fast.  Of course,
+if you compose them, the times add (or worse, depending on swapping).
+
+Parser output is a nice linear stream.  My impression is that
+processors are NOT expected to seek but just to make one pass through it.
+(Then I believe that some processors construct the whole thing in
+memory as a tree.)
+
+I've been using Megginson's sgmlspl/sgmlspm (stabilized Dec. '95),
+which is event driven and, moreover, linear except for things that I
+choose to remember along the way (global variables for subsequent
+branching) and pieces of document (whole SGML elements) that I may
+push into temporary abeyance while descending subtrees.  The biggest
+thing that I think sensible to so push is a paragraph.
+
+Of course, SGMLSPM has a cross-reference facility just as LaTeX does
+and if that is exercised by a document, then a complete second pass
+using an auxiliary file, as with LaTeX, is required.
+
+All one needs to do is write little functions in Perl.  You don't need
+to be lisp-enabled.  And some of those functions are very easy.
+
+When I'm ready to write an XML DTD that is nearly isomorphic to my
+SGML DTD for "article", the SGML-to-XML transformation that I use to
+make the type of *archival* document that I think the LANL preprint
+site should use is going to be *very* linear.
+
+: > There is a very lucrative and apparently profitable industry out there
+: > lurking behind closed doors.
+:
+: ????? Doing what exactly?  Or are the doors too firmly closed to see?
+
+If you listen to the UseNet newsgroup "comp.text.sgml" long enough,
+you will see it.  Yes, the doors are locked.  In fact, just to get
+a copy of the definition of SGML from the ISO costs a substantial sum.
+(Better to buy Charles Goldfarb's _SGML Handbook_.)
+
+(But I expect that some young Ph.D.'s in math, rather than in computer
+science, will turn out to be leaders in this growing industry, and I
+find that pleasing to contemplate.)
+
+: > I suggest that individuals should think in terms of multiple SGML
+: > transformations as pre-processing for LaTeX.  Some industrial strength
+: > publishers *may* want to think in terms of multiple SGML transformations
+: > as pre-processing to TeX directly.
+:
+: That is certainly an interesting question in general: staright to TeX
+: vs via LaTeX.
+:
+: Limited expereince suggests that some mixture may be needed; but
+: a lot depends on how and where the formatting is specified.
+
+Comments:
+
+1.  Megginson's sgmlspl/sgmlspm comes with docs that may be used to
+test the package.  The two enclosed demo processors are:
+
+   (a) DocBook to LaTeX
+   (b) DocBook to HTML
+
+2.  I think that for most individuals and most academic departments
+processing to LaTeX to get to paper is the most sensible choice.
+
+3.  I am preparing demo processors from my DTD to (a) LaTeX and
+(b) HTML and eventually maybe to other things but I am much too lazy
+to code for straight TeX myself.  It might be pleasant for those who
+have been accustomed to writing papers in plain TeX.
+
+4.  I would like to see someone who is fluent in Texinfo volunteer to
+code from my "article" dtd -- or something close to it -- to Texinfo.
+Along the way it should then become obvious how to give math full
+implementation there.  Note in this regard, that GNU-emacs window
+displays are becoming progressively more useful in this regard.  And
+as most vt100's are not actual hardware, those windows, which are
+fixed font displays with algorithmic "styling", could begin to admit a
+public standard for change of cursor position and more inter-line
+space in order to accommodate superscripts and subscripts, maybe also
+reasonable but crude fractions in displays.
+
+                                     -- Bill
+

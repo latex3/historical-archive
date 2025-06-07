@@ -1,0 +1,119 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3738" "Mon" "13" "October" "1997" "21:45:37" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "80" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id XAA17514
+	for <schoepf@UNI-MAINZ.DE>; Mon, 13 Oct 1997 23:19:44 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.9D251020@listserv.gmd.de>; Mon, 13 Oct 1997 22:48:40 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 214549 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 13 Oct 1997 22:44:33 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id WAA24189
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 13 Oct 1997 22:44:09
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) id
+          WAA22220 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 13 Oct 1997
+          22:44:10 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          VAA09228; Mon, 13 Oct 1997 21:45:37 +0100
+References: <97100911582847@multivac.jb.man.ac.uk>
+Message-ID:  <199710132045.VAA09228@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <97100911582847@multivac.jb.man.ac.uk>
+Date:         Mon, 13 Oct 1997 21:45:37 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2451
+
+Phillip Helbig writes:
+ > >  > Should one break the author's name up into initials and surnames, so
+ > >  > that the order could be different in the main title and the running head
+ > >  > and/or different than the order in which the author would have put them
+ > > you mean the running head might say "Einstein, A"? all i can say is
+ > > that i have not been ever asked  to do it...
+ >
+ > What about just the last names (no initials) in the running head?
+ > Or should there be ONE command for the running head?  This might prove
+ > to inflexible, since some will want all author names, some et al. and so
+ > on.
+
+it is most definitely to restrictive as there are styles that want to
+construct their running head names from author info in special ways.
+
+but the interface might have a specification possibility that allows
+to give a suggestion for running head.
+
+the specification could either say that it is up to the class
+implementation to use it (if present) or ignore it always
+
+or one could specify that it will always overwrite constructed running
+heads
+
+both would have advantages and disadvantages
+
+
+ > > by the way, i think that using multiple parameters in this, and other,
+ > > macros is not very friendly. why not adopt the keyval syntax, ie
+ > >
+ > >  \date{communicated=xxxx,revised=xxxx}
+ > >
+ > > which allows a more elegant way to omit arguments, and identify what
+ > > you are doing. i know its just sugar, but it would make bits of what
+ > > you suggest easier to read
+ >
+ > Two problems here (perhaps some graphics/graphicx comments are
+ > appropriate here:).  The keyword syntax is different from the normal
+ > LaTeX style; by FORCING the author to include everything, compatibility
+ > is assured.  If optional arguments (either in [] or via omitted
+ > keywords) are used then each individual .cls should complain if keywords
+ > are missing.  One must also avoid individual packages adding their own
+ > keywords etc without coordination with others.
+
+i would not rule out keyword value syntax just because it isn't
+standard LaTeX behavior right now. on the contrary, within the LaTeX
+project we think that keyword value is the way to go for several
+reasons.
+
+That does not mean that the current keyval implementation as used for
+graphix can or should be used as a general model in implementation,
+but we are talking about specification not implementation here.
+
+as to whether extensibility is a feature advantage or disadvantage:
+again this is partly something that can be best evaluated once we do
+have a full spec.
+
+If such a spec includes a number of mandatory keywords, a number of
+optional ones but allows classes to add additional keywords that are
+supposed to be ignored by classes not implementing them then this can
+be a big improved. Of course it might also produce chaos if class A
+defines foo to mean X and class B defines foo to mean Y then we are
+back at incompatible classes.
+
+However i don't really think this is a very likely case. I do see such
+extensibility more for inhouse stuff, eg suppose that the AMS has some
+class amsA.cls and the paper is accepted for journal A. Now in
+production inhouse they use amsA-prod.cls adding additional keywords
+as needed. Now if this file goes back to the user for proofing he
+still uses amsA as the -prod version is not distributed. here the
+additional keywords are then simply ignored.
+
+what i do think is that we need to come up with a syntax (and
+keywords) that cover most of the current standard and special cases
+and then this extra extensibility will most likely prove beneficial.
+its probably then similar to something like bibtex where people have
+added fields to their bst styles and private bib files without really
+causing incompatibilities.
+
+frank
+

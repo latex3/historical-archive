@@ -1,0 +1,63 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["920" "Mon" "2" "November" "1998" "21:57:36" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "23" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id HAA31486;
+	Tue, 3 Nov 1998 07:26:34 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.BD665893@listserv.gmd.de>; Tue, 3 Nov 1998 7:26:30 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 406895 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 3 Nov 1998 07:24:03 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (Ufrank@kralle.zdv.Uni-Mainz.DE
+          [134.93.8.158]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id HAA01309 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 3 Nov
+          1998 07:22:54 +0100 (MET)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.8/8.8.8) id
+          HAA27517 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Tue, 3 Nov 1998 07:22:47
+          +0100 (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          VAA08581; Mon, 2 Nov 1998 21:57:36 +0100
+References: <98102213123551@man.ac.uk>
+Message-ID:  <199811022057.VAA08581@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <98102213123551@man.ac.uk>
+Date:         Mon, 2 Nov 1998 21:57:36 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2713
+
+Phillip Helbig writes:
+ > >     He said \quote{foo}, she replied \quote{bar}, and so on.
+ > > Then LaTeX uses a lookup in the current typesetting style (logical,
+ > > illogical, UK English, US English, etc) to determine if the quotes should
+ > > be single or double and the preferred style of nesting and so on.
+ >
+ > I think this is a great idea.
+
+but only for the simple cases and even there TeX's limitation in
+parsing will easily screw you up. Change the above to:
+
+  He said \quote{She said to me \quote{bar}}, and so on
+
+what is going to happen? parsing a character and syntax stream of that
+type using \futurelet is just not good enough.
+
+as Chris said, this is really an area where some successor of TeX
+providing additional functionality could help but within the current
+TeX is is at best possible to provide hacks that work half of the time
+if you try to get generically down to this level of detail.
+
+frank
+
+

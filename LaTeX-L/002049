@@ -1,0 +1,151 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5087" "Sun" "15" "June" "1997" "23:32:32" "+0200" "Werner Lemberg" "xlwy01@UXP1.HRZ.UNI-DORTMUND.DE" nil "114" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA01835; Sun, 15 Jun 1997 23:28:28 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.49D95186@listserv.gmd.de>; Sun, 15 Jun 1997 23:28:26 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 153560 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 15 Jun 1997 23:28:19 +0200
+Received: from nx1.HRZ.Uni-Dortmund.DE (nx1.HRZ.Uni-Dortmund.DE
+          [129.217.131.3]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          ESMTP id XAA13570 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 15
+          Jun 1997 23:28:17 +0200 (MET DST)
+Received: from uxp1.hrz.uni-dortmund.de by nx1.hrz.uni-dortmund.de with SMTP
+          (PP); Sun, 15 Jun 1997 23:28:15 +0200
+Received: from localhost by uxp1.hrz.uni-dortmund.de (SMI-8.6/SMI-SVR4) id
+          XAA26588; Sun, 15 Jun 1997 23:32:33 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.GSO.3.96.970615230705.26579A-100000@uxp1.hrz.uni-dortmund.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A44C42.4A2F4772@vvv.vsu.ru>
+Date:         Sun, 15 Jun 1997 23:32:32 +0200
+From: Werner Lemberg <xlwy01@UXP1.HRZ.UNI-DORTMUND.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2049
+
+On Mon, 16 Jun 1997, Vladimir Volovich wrote:
+
+> > My goal is to extend this---there are
+> > so many language specific solutions which can't be made more general (e.g.
+> > Japanese TeX). I don't like this, and I will always try to find a
+> > multilingual solution. For example, you can embed Babel seamlessly into
+> > the CJK package (provided you have only 7bit input encoding for non-CJK
+> > languages: this will be done by the Mule-CJK interface).
+>
+> I did not see MULE yet (I have only xemacs-19.14).
+
+AFAIK the latest version of xemacs has Mule built in. You can also get the
+(original) GNU emacs 20 beta versions from
+etlport.etl.go.jp/pub/mule/.notready or a mirror site (e.g.
+ftp.lrz-muenchen.de/pub/culture/east-asia) which have also Mule.
+
+> > > Moreover, do the _one_ default lccode+uccode settings conform to _all_
+> > > languages (which are already TeXized)?
+> >
+> > Of course not. But it is better to try to follow this standard if
+> > possible. And it *is* possible for Russian to use these settings.
+>
+> Well, I agree. But
+>  * Until new T2-based LH fonts will not be widely available,
+>    LCY will be the main encoding.
+
+Sigh. Using the old encodings will always be provisional.  Of course, you
+have a vital interest that Russian works, but I want to see a general
+solution as soon as possible to avoid (presumably already existing)
+de-facto standards.
+
+>  * Again, when we will use T2-based fonts, we'll have to have
+>    russian letters to be active chars (to translate from input encoding
+>    into TeX's internal encoding---T2), and this has some disadvantages.
+
+You can't get all :-)
+
+>  * Because of `strange' (non-monomorphic ;-)) settings of lccode and uccode values for
+>    characters "19, "1a, "9d and "9e in T1 encoding (this fact is mentioned in
+>    T2 home page), these positions will not probably used in T2 encoding :-(
+>    May be, it would possible to change the lccode and uccode values for these
+>    characters in T1?
+
+T1 does not define any lccode or uccode values. This does the latex team
+in the latex core.  We should ask them what they think about that.
+
+-> mixing Turkish and English within T1 in the same paragraph seems
+impossible to me (due to the dotted and undotted I and i). One language
+will always lose the battle on hyphenation.
+
+> > > 2) use TeX Code Pages (TCP). This has advantage because it is universal,
+> > >    and lets us preserve catcodes of translated characters.
+> > >    But TCP are not supported by all TeX implementations.
+> >
+> > only emTeX, AFAIK. Non-portable.
+>
+> And is e-TeX or Omega having in plans to implement this?
+> Why other TeX implementation did not implemented this? It seems to
+> be not too hard. :-(
+
+Do it! Contribute a change file to web2c! Omega does not need this---it
+uses a completely different approach: it use so-called Omega Translation
+Processes (OTPs) which are final automata to translate input encodings,
+apply correct casification etc.
+
+> > >    * letters are now `not letters' -- so it becomes impossible
+> > >      to define and use macroses with names consisting of letters of this language.
+> >
+> > this is bad anyway, since TeX does not have a mechanism for separating
+> > control characters from normal TeX (Omega can do this...)
+>
+> Could you explain what you mean?
+> I mean that when russian letters have the same input encoding and internal TeX incoding
+> (the case of LCY), then these characters will have catcodes equal to 11 (letter).
+> So it will be possible to use macroses with russian names.
+> It is impossible if russian characters are active.
+
+Again, think of multilingualism! Your approach will not work if one input
+encoding is not sufficient. Using only ASCII seems to be the best
+compromise.
+
+> > Have you ever seen a log file of my CJK package for Chinese? :-)
+>
+> No. The only thing from CJK package I tried to play with, was a ttf2pk package,
+> which faied to work on my computer. ;-(
+
+Failed? I assume that you've tried to use non-CJK fonts... This will work
+soon after I've changed the font engine to FreeType. Expect something in
+the next few months (I hope that I can show something at TUG 97).
+
+> I can explain, why log files become unreadable.
+> To be readable, the encoding of russian characters in log files
+> must be the same as the input encoding (8 bit!).
+> But when TeX reads russian character (with code >= 0x80) in some
+> external encoding (say, koi-8) and translates this character to
+> the corresponding place in T2 table (therefore the character should be active),
+> then all russian letters which will go to log files (and to the screen)
+> in case of TeX errors, will have TeX internal encoding (T2), but *not*
+> the external encoding (koi-8). Am I right?
+> So, the log (and the screen) will be unreadable.
+
+You are absolutely right. Log messages will always be cryptic :-)
+
+> > > BTW, do you have the new alpha version of LH fonts (with T2 encoding)?
+> >
+> > Oh! This is good news! Where can I get them?
+>
+> They are not yet widely available. I hope that I'll get them soon,
+> and I'll inform you about this.
+
+Thanks in advance.
+
+
+    Werner
+

@@ -1,0 +1,81 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1768" "Thu" "13" "July" "1995" "18:21:31" "-0300" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "41" "Re: [Q] modguide.tex policy" "^Date:" nil nil "7" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzj.zdv.Uni-Mainz.DE [134.93.8.16]) by trudi.zdv.Uni-Mainz.DE (8.6.12/8.6.12) with ESMTP id TAA27114 for <schoepf@goofy.zdv.uni-mainz.de>; Thu, 13 Jul 1995 19:23:56 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-12 #4432)
+ id <01HSTZMOT19S90MWGE@MZDMZA.ZDV.UNI-MAINZ.DE>; Thu,
+ 13 Jul 1995 19:23:35 +0100
+Received: from listserv.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-12 #4432)
+ id <01HSTZMLMR8G8WW4C2@MZDMZA.ZDV.UNI-MAINZ.DE>; Thu,
+ 13 Jul 1995 19:23:32 +0100
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v0.1a)
+ with SMTP id 9A79637C ; Thu, 13 Jul 1995 19:23:31 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE by VM.URZ.UNI-HEIDELBERG.DE
+ (LISTSERV release 1.8b) with NJE id 4109 for LATEX-L@VM.URZ.UNI-HEIDELBERG.DE;
+ Thu, 13 Jul 1995 19:20:34 +0000
+Received: from DHDURZ1 (NJE origin SMTP@DHDURZ1) by VM.URZ.UNI-HEIDELBERG.DE
+ (LMail V1.2a/1.8a) with BSMTP id 9553; Thu, 13 Jul 1995 19:19:08 +0000
+Received: from m1.cs.man.ac.uk by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+ with TCP; Thu, 13 Jul 95 19:19:06 CET
+Received: from r8.cs.man.ac.uk by m1.cs.man.ac.uk (4.1/SMI-4.1:AL5l)
+ id AA15525; Thu, 13 Jul 95 18:21:36 BST
+In-reply-to: <m0sWSGx-0006GoC@rumple.soas.ac.uk> (message from Frank Bennett on
+ Thu, 13 Jul 1995 17:42:00 GMT)
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Message-id: <9507131721.AA18212@r8.cs.man.ac.uk>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Thu, 13 Jul 1995 18:21:31 -0300 (BST)
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Subject: Re: [Q] modguide.tex policy
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1686
+
+> I've just read again through the latest modguide.tex file, and I
+> have a question.  In the camel.dtx package, there is an entry
+> that starts off:
+
+>    \long\def\@footnotetext#1{ [...]
+
+> This is a command of the same name as one of the internals of the
+> LaTeX2e kernel.  It is redefined with the same content as the
+> kernel command, plus the following:
+
+...
+
+> Now here's my puzzle for the team.  Does this breach the terms
+> set down in modguide.tex: is this `modification of the contents
+> of a file'?  As I read it, it is not, technically, a breach.
+
+It is (unfortunately) often necessary for a package to redefine LaTeX
+commands. Of course package authors know that if they rely on stuff
+that is too low level the package is `fragile' with respect to any
+LaTeX updates but sometimes....
+
+The main thrust of the conditions in modguide (and legal.txt) is that
+any modified *file* should have a different name and any \Provides...
+typeout banners should *not* claim to be Standard LaTeX.
+
+So to be specific, if you come up with a better multi-page table
+package (Shouldn't be too hard:-) I dont mind how much of the code from
+longtable you copy as long as the file is not called longtable.sty
+(So end users' documents must use a distinct call to get your version)
+and the \ProvidesPackage string in your file doesn't have my initials.
+
+So if you put changes in a camel package then document portability is
+not an issue. Either documents \usepackage{camel} to get your stuff or
+they dont, in which case they dont get your code.
+
+So the restrictions are on modifying *files* without changing names.
+Changing commands is OK. In fact I would be surprised if a citation
+package did *not* need to redefine some of the standard citation and
+footnote commands.
+
+David
+

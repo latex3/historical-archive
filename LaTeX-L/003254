@@ -1,0 +1,136 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4229" "Tue" "2" "March" "1999" "18:38:13" "+0100" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "97" "Re: Axis in nfss" "^Date:" nil nil "3" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id SAA15847;
+	Tue, 2 Mar 1999 18:38:25 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.4F78E931@listserv.gmd.de>; Tue, 2 Mar 1999 18:38:21 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 428031 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 2 Mar 1999 18:38:19 +0100
+Received: from mail.math.umu.se (root@abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA15667 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 2 Mar 1999 18:38:17 +0100 (MET)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          mail.math.umu.se (8.8.5/8.8.5) with ESMTP id SAA04386 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 2 Mar 1999 18:38:13 +0100 (MET)
+X-Sender: lars@abel.math.umu.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id SAA15669
+Message-ID:  <l03102800b301c74fc00f@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199902281535.QAA14126@mozart.ujf-grenoble.fr>
+Date:         Tue, 2 Mar 1999 18:38:13 +0100
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Axis in nfss
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3254
+
+Thierry Bouche wrote:
+>It seems obvious to me that current nfss misses 2 axis, namely _width_
+>("series" should be broken into weight and width, this bx as
+>\bfdefault reflects TeX + CM history but has the notoriously bad
+>consequence of seeing bold extended used inside text, not restricted
+>to titling material) and _case_.
+
+An alternative approach towards handling the \bfdefault problem you
+describe could be to make the expansion of \bfdefault depend on the family,
+so that CM has it to be bx and most other families have it to be b. (This
+is just a thought, I'm not sure it is a good one.)
+
+>the "case" axis is really needed, and will be ever, since unicode
+>ignores small caps, and multiple digits shapes. (It's a unicode flaw,
+>imho, to enforce the capital/small letter distinction [two glyphs for
+>the same charachter, no?] and reject small caps,
+>lining/hanging/tabular figures).
+
+I disagree to the parenthesis. The distinction between upper and lower case
+letter is usually prescribed by spelling rules etc., whereas the further
+distinction of small caps is not.  The distinction of upper and lower case
+is thus more fundamental.
+
+>I think that adding the cases axis would be rather harmless, since
+>people could simply ignore it (not the same for series vs
+>weight&width) _and_ very usefull, since many have been temptated to
+>turn some variant classes into families to have access to small caps
+>in italic or slanted e.g.).
+
+Why are people so stuck with the four standard shapes? It ought to be much
+cleaner to simply define a few new shapes and to play around with the
+...default macros a little.
+
+>Moreover, creating the few missing fonts
+>with EC would be trivial, and maybe cleaner (accents for caps should
+>be in an all-cap font rather than in TS1?),
+
+That's a point. Isn't TS1 to some extent simply the "expert" encoding for
+the EC fonts?
+
+>fontinst could similarly
+>create a bunch more of VFs for supporting PS fonts as well.
+>
+>I'm thinking at least at:
+>
+>all caps (cap digits)
+>c&sc (sc digits--almost inexistant in practice: cf Bell expert)
+>all sc
+>c&lc (lc or old style digits)
+>all lc
+
+Shouldn't c&sc have the same digits as c&lc? (I know foundries like to have
+c&lc with upper case digits and c&sc with lower case, but there's no
+typographical reason for that, it's just how they package their product.)
+If you by sc digits mean digits with depth=0 and height=x-height then I
+think those should be used with the all sc, but not with any of the other.
+
+One thing which I miss in your list above is all caps for use in lines
+mainly c&lc, for acronyms and the like. I know some people prefer to set
+these in sc, but they are intrinsically upper case, so I (any many others)
+would rather have them in this special all-caps. In practice this special
+all caps would probably be realised either using medium glyphs or as the
+all caps at a slightly smaller point size (DEK does this in the WEB user
+manual).
+
+
+Roozbeh Pournader wrote:
+>Thierry Bouche suggests using anothe font for \MakeUpperCase.
+
+Well, so does the LaTeX2e fontguide (fntguide.tex).
+
+
+Yannis Haralambous wrote:
+>I don't think this is the good way, as a matter of fact it cannot
+>work: uppercase/lowercase/smallcaps is language dependent, and as far
+>as I know there is no language axis yet in NFSS.
+
+Aren't you sort of confusing cause and effect here? By writing in a
+specific language the author determines which frame of typographical
+conventions should be used when typesetting the text (or in our case rather
+marking it up). You can't require that NFSS should not offer a specific
+font because it isn't used in the specific frame of typographic conventions
+that applies to your text, it is your responsibility to not choose that
+font.
+
+Language-dependent macros, in the extent that there are any around, exist
+on a much higher level than the NFSS macros.
+
+
+I think I like the idea of a case axis. I don't like having c&sc on it,
+since I think that rather belongs on the current shape (n-sl-it) axis, but
+I realise its appearence on a case axis is inevitable. I am however
+satisfied if sc will remain to exist on the shape axis. Removing it is
+(luckily) probably not possible since that would break lots of old
+documents.
+
+Lars Hellström
+

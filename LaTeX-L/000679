@@ -1,0 +1,444 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.A7881C3C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:43 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.A7881C3C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Ignoring spaces before \index{}
+Date: Thu, 23 Apr 1992 15:12:37 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE995@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 679
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.A7881C3C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+[I'm away at a workshop this week, so I've had little time to respond
+to mail; thus the delay in responding].
+
+Rainer Sch\"opf asks about my observation that multiple \index{}
+commands separated by newline could give different output, depending
+on whether they were written
+
+foo%
+\index{...}
+\index{...}
+
+or
+
+foo%
+\index{...}%
+\index{...}
+
+The only difference here is the addition of a single % following the
+first \index{}.
+
+In my comments, I was not thinking particularly of the case where a
+page break happens to fall between a word and its index entry, as in
+"foo \index{...}".  That is a known problem that Leslie Lamport
+documented on p. 78 of the LaTeX User Guide and Reference Manual.  The
+spacing problem that I was commenting on is more subtle.  You can
+perhaps predict it from the discussion on p. 153 (particularly the
+footnote) of LUGRM.
+
+It has proved difficult to come up with an example that you'll be able
+to reproduce locally.  I took a 57-page document with a 7-page index
+containing 1079 index entries, and prepared two versions: one with
+trailing percent on multiple \index entries (the second case above),
+and one without (the first case above).
+
+Comparing the PostScript output by dvialw for these two documents
+revealed 13 places where there are differences in vertical spacing.
+Most are hard to see in the output, with differences of 2 to 5 dots
+(at 300dpi) between successive lines; I never noticed them in numerous
+proofreadings of the document.   However, one stands out glaringly; it
+arises from the LaTeX input
+
+  \item Explicit representation of undefined
+        values, called NaNs (Not A Number); they
+        can be quiet (non-interrupting), or
+        signalling (interrupting).%
+\index{floating-point!NaN}%
+\index{NaN|see{floating-point}}
+
+Without the percent following the first \index{}, there is an
+additional blank line in the output (40 vertical dots at 300dpi =3D=3D
+9.6pt).  The output is formatted something like this (from dvitty):
+
+
+>>...
+>>  The most important features of IEEE 754 arithmetic are:
+>>
+>>  o Explicit representation of signed and unsigned infinity.
+>>
+>>  o Explicit representation of undefined values, called NaNs (Not A =
+Num-
+>>    ber); they can be quiet (non-interrupting), or signalling =
+(interrupting).
+>>
+>>
+>>
+>>  o Gradual underflow, so that below the normal underflow limit, =
+preci-
+>>    sion is allowed to decrease to widen the floating-point range.
+>>...
+
+Notice the extra blank lines following the second bulleted item.
+
+With the addition of the single percent, the output looks like this
+(again from dvitty):
+
+>>...
+>>  The most important features of IEEE 754 arithmetic are:
+>>
+>>  o Explicit representation of signed and unsigned infinity.
+>>
+>>  o Explicit representation of undefined values, called NaNs (Not A =
+Num-
+>>    ber); they can be quiet (non-interrupting), or signalling =
+(interrupting).
+>>
+>>  o Gradual underflow, so that below the normal underflow limit, =
+preci-
+>>    sion is allowed to decrease to widen the floating-point range.
+>>...
+
+I tried to extract the LaTeX input fragment to incorporate as an
+example for you to run locally.  Unfortunately, when I switch back to
+Computer Modern from the AP-TeX New Century Schoolbook font, which few
+of you are likely to have, the difference disappears.  The sentence in
+the second bulleted item ends at the right margin with New Century
+Schoolbook, and a few points to the left of the right margin with
+Computer Modern, and the additional vertical space disappears in the
+Computer Modern output.
+
+With some more work, I could probably come up with an example that
+would show the difference in Computer Modern, but I think the point is
+clear: the typeset output from multiple adjacent \index{} entries may
+NOT be insensitive to intervening whitespace.  I believe that this is
+an undesirable feature that should be fixed if it is possible to do
+so.
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Nelson H.F. Beebe
+Center for Scientific Computing
+Department of Mathematics
+220 South Physics Building
+University of Utah
+Salt Lake City, UT 84112
+USA
+ Tel: (801) 581-5254
+ FAX: (801) 581-4148
+ Internet: beebe@math.utah.edu
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+
+------_=_NextPart_001_01C19443.A7881C3C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Ignoring spaces before \index{}</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>[I'm away at a workshop this week, so I've had little =
+time to respond</FONT>
+
+<BR><FONT SIZE=3D2>to mail; thus the delay in responding].</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Rainer Sch\&quot;opf asks about my observation that =
+multiple \index{}</FONT>
+
+<BR><FONT SIZE=3D2>commands separated by newline could give different =
+output, depending</FONT>
+
+<BR><FONT SIZE=3D2>on whether they were written</FONT>
+</P>
+
+<P><FONT SIZE=3D2>foo%</FONT>
+
+<BR><FONT SIZE=3D2>\index{...}</FONT>
+
+<BR><FONT SIZE=3D2>\index{...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>or</FONT>
+</P>
+
+<P><FONT SIZE=3D2>foo%</FONT>
+
+<BR><FONT SIZE=3D2>\index{...}%</FONT>
+
+<BR><FONT SIZE=3D2>\index{...}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The only difference here is the addition of a single % =
+following the</FONT>
+
+<BR><FONT SIZE=3D2>first \index{}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In my comments, I was not thinking particularly of the =
+case where a</FONT>
+
+<BR><FONT SIZE=3D2>page break happens to fall between a word and its =
+index entry, as in</FONT>
+
+<BR><FONT SIZE=3D2>&quot;foo \index{...}&quot;.&nbsp; That is a known =
+problem that Leslie Lamport</FONT>
+
+<BR><FONT SIZE=3D2>documented on p. 78 of the LaTeX User Guide and =
+Reference Manual.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>spacing problem that I was commenting on is more =
+subtle.&nbsp; You can</FONT>
+
+<BR><FONT SIZE=3D2>perhaps predict it from the discussion on p. 153 =
+(particularly the</FONT>
+
+<BR><FONT SIZE=3D2>footnote) of LUGRM.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It has proved difficult to come up with an example =
+that you'll be able</FONT>
+
+<BR><FONT SIZE=3D2>to reproduce locally.&nbsp; I took a 57-page document =
+with a 7-page index</FONT>
+
+<BR><FONT SIZE=3D2>containing 1079 index entries, and prepared two =
+versions: one with</FONT>
+
+<BR><FONT SIZE=3D2>trailing percent on multiple \index entries (the =
+second case above),</FONT>
+
+<BR><FONT SIZE=3D2>and one without (the first case above).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Comparing the PostScript output by dvialw for these =
+two documents</FONT>
+
+<BR><FONT SIZE=3D2>revealed 13 places where there are differences in =
+vertical spacing.</FONT>
+
+<BR><FONT SIZE=3D2>Most are hard to see in the output, with differences =
+of 2 to 5 dots</FONT>
+
+<BR><FONT SIZE=3D2>(at 300dpi) between successive lines; I never noticed =
+them in numerous</FONT>
+
+<BR><FONT SIZE=3D2>proofreadings of the document.&nbsp;&nbsp; However, =
+one stands out glaringly; it</FONT>
+
+<BR><FONT SIZE=3D2>arises from the LaTeX input</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \item Explicit representation of =
+undefined</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; values, =
+called NaNs (Not A Number); they</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; can be =
+quiet (non-interrupting), or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; signalling =
+(interrupting).%</FONT>
+
+<BR><FONT SIZE=3D2>\index{floating-point!NaN}%</FONT>
+
+<BR><FONT SIZE=3D2>\index{NaN|see{floating-point}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Without the percent following the first \index{}, =
+there is an</FONT>
+
+<BR><FONT SIZE=3D2>additional blank line in the output (40 vertical dots =
+at 300dpi =3D=3D</FONT>
+
+<BR><FONT SIZE=3D2>9.6pt).&nbsp; The output is formatted something like =
+this (from dvitty):</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>&gt;&gt;...</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; The most important features of IEEE =
+754 arithmetic are:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Explicit representation of signed =
+and unsigned infinity.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Explicit representation of undefined =
+values, called NaNs (Not A Num-</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp;&nbsp;&nbsp; ber); they can be quiet =
+(non-interrupting), or signalling (interrupting).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Gradual underflow, so that below the =
+normal underflow limit, preci-</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp;&nbsp;&nbsp; sion is allowed to =
+decrease to widen the floating-point range.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Notice the extra blank lines following the second =
+bulleted item.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>With the addition of the single percent, the output =
+looks like this</FONT>
+
+<BR><FONT SIZE=3D2>(again from dvitty):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&gt;...</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; The most important features of IEEE =
+754 arithmetic are:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Explicit representation of signed =
+and unsigned infinity.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Explicit representation of undefined =
+values, called NaNs (Not A Num-</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp;&nbsp;&nbsp; ber); they can be quiet =
+(non-interrupting), or signalling (interrupting).</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp; o Gradual underflow, so that below the =
+normal underflow limit, preci-</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;&nbsp;&nbsp;&nbsp; sion is allowed to =
+decrease to widen the floating-point range.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I tried to extract the LaTeX input fragment to =
+incorporate as an</FONT>
+
+<BR><FONT SIZE=3D2>example for you to run locally.&nbsp; Unfortunately, =
+when I switch back to</FONT>
+
+<BR><FONT SIZE=3D2>Computer Modern from the AP-TeX New Century =
+Schoolbook font, which few</FONT>
+
+<BR><FONT SIZE=3D2>of you are likely to have, the difference =
+disappears.&nbsp; The sentence in</FONT>
+
+<BR><FONT SIZE=3D2>the second bulleted item ends at the right margin =
+with New Century</FONT>
+
+<BR><FONT SIZE=3D2>Schoolbook, and a few points to the left of the right =
+margin with</FONT>
+
+<BR><FONT SIZE=3D2>Computer Modern, and the additional vertical space =
+disappears in the</FONT>
+
+<BR><FONT SIZE=3D2>Computer Modern output.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>With some more work, I could probably come up with an =
+example that</FONT>
+
+<BR><FONT SIZE=3D2>would show the difference in Computer Modern, but I =
+think the point is</FONT>
+
+<BR><FONT SIZE=3D2>clear: the typeset output from multiple adjacent =
+\index{} entries may</FONT>
+
+<BR><FONT SIZE=3D2>NOT be insensitive to intervening whitespace.&nbsp; I =
+believe that this is</FONT>
+
+<BR><FONT SIZE=3D2>an undesirable feature that should be fixed if it is =
+possible to do</FONT>
+
+<BR><FONT SIZE=3D2>so.</FONT>
+</P>
+<BR>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+
+<BR><FONT SIZE=3D2>Nelson H.F. Beebe</FONT>
+
+<BR><FONT SIZE=3D2>Center for Scientific Computing</FONT>
+
+<BR><FONT SIZE=3D2>Department of Mathematics</FONT>
+
+<BR><FONT SIZE=3D2>220 South Physics Building</FONT>
+
+<BR><FONT SIZE=3D2>University of Utah</FONT>
+
+<BR><FONT SIZE=3D2>Salt Lake City, UT 84112</FONT>
+
+<BR><FONT SIZE=3D2>USA</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Tel: (801) 581-5254</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;FAX: (801) 581-4148</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Internet: beebe@math.utah.edu</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.A7881C3C--
+

@@ -1,0 +1,1195 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id t62CsucM008174
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Thu, 2 Jul 2015 14:54:57 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62Crscc013281;
+	Thu, 2 Jul 2015 14:53:54 +0200
+Received: from nov-007-i570.relay.mailchannels.net
+ (nov-007-i570.relay.mailchannels.net [46.232.183.124])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62Crk1H013253
+ for <latex-team@latex-project.org>; Thu, 2 Jul 2015 14:53:49 +0200
+X-Sender-Id: netnames|x-authuser|joseph.wright@morningstar2.co.uk
+Received: from smtp3.easily.co.uk (ip-10-204-4-183.us-west-2.compute.internal
+ [10.204.4.183])
+ by relay.mailchannels.net (Postfix) with ESMTPA id 87008A0383;
+ Thu,  2 Jul 2015 12:53:41 +0000 (UTC)
+X-Sender-Id: netnames|x-authuser|joseph.wright@morningstar2.co.uk
+Received: from smtp3.easily.co.uk (smtp3.easily.co.uk [10.21.145.197])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA)
+ by 0.0.0.0:2500 (trex/5.5.1); Thu, 02 Jul 2015 12:53:44 +0000
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: netnames|x-authuser|joseph.wright@morningstar2.co.uk
+X-MailChannels-Auth-Id: netnames
+X-MC-Loop-Signature: 1435841623559:2353930471
+X-MC-Ingress-Time: 1435841623559
+Received: from [139.222.114.154] (port=57024 helo=[139.222.114.154])
+ by smtp3.easily.co.uk with esmtpa (Exim 4.43)
+ id 1ZAdzn-0005eN-Cu; Thu, 02 Jul 2015 13:53:39 +0100
+Message-ID: <55953453.3060203@morningstar2.co.uk>
+Date: Thu, 02 Jul 2015 13:53:39 +0100
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64;
+ rv:31.0) Gecko/20100101 Thunderbird/31.7.0
+MIME-Version: 1.0
+To: heiko.oberdiek@googlemail.com, mpg@elzevir.fr,
+        Philipp Maximilian Stephani <p.stephani2@gmail.com>,
+        elie.roux@telecom-bretagne.eu
+Subject: LuaTeX support in the LaTeX kernel
+Content-Type: multipart/mixed; boundary="------------020809000606090501000901"
+X-AuthUser: joseph.wright@morningstar2.co.uk
+X-DANTE-Spam-Score: -1.9 () BAYES_00
+X-Scanned-By: MIMEDefang 2.71 on 85.214.41.38
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+Cc: "latex-team@latex-project.org" <latex-team@latex-project.org>,
+        Lars Madsen <daleif@imf.au.dk>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7733
+
+This is a multi-part message in MIME format.
+--------------020809000606090501000901
+Content-Type: text/plain; name="warning1.txt"
+Content-Disposition: inline; filename="warning1.txt"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Mailer: MIME-tools 5.502 (Entity 5.502)
+
+WARNING: This e-mail has been altered by MIMEDefang.  Following this
+paragraph are indications of the actual changes made.  For more
+information about your site's MIMEDefang policy, contact
+MIMEDefang Administrator's Full Name <postmaster@rainer-schoepf.de>.  For more information about MIMEDefang, see:
+
+            http://www.roaringpenguin.com/mimedefang/enduser.php3
+
+An attachment named ltluatex.ins was removed from this document as it
+constituted a security hazard.  If you require this document, please contact
+the sender and arrange an alternate means of receiving it.
+
+
+An attachment named luaregisternames.ins was removed from this document as it
+constituted a security hazard.  If you require this document, please contact
+the sender and arrange an alternate means of receiving it.
+
+
+--------------020809000606090501000901
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Hello all,
+
+Long e-mail coming up. Executive summary: the LaTeX team are looking for
+some input into aspects of support for LuaTeX in the LaTeX kernel.
+
+As you'll be aware, the LaTeX team have recently taken steps to add core
+support for modern TeX to the LaTeX2e kernel, replacing a rather awkward
+arrangement where material was added by the format-building process.
+Most importantly here, that means that the kernel now provides
+allocators for \marks and \XeTeXintercharclass registers, and enables
+the additional LuaTeX primitives 'out of the box'.
+
+For LuaTeX there are other new register types that need allocation but
+that has not to date been covered at all by any pre-built formats. As
+such, support for this area has been left to package authors, with both
+the "luatex" and "luatexbase" packages available. This situation is not
+ideal as it means that something which can really only be done once
+(setting up an allocation scheme) is potentially done multiple times
+with conflicting implementations. Moreover, it means that any code
+targeting LuaTeX has to pull in quite a bit of material, which has
+implications for work within the team on for example proper inputenc
+support for LuaTeX.
+
+As the TL'15 changes to the kernel went (relatively) smoothly, we are
+now hoping to address the LuaTeX-specific side of things in a similar
+way. What we are hoping to do is to extend the kernel to cover the
+*essentials* in this area while leaving more 'optional' stuff to
+packages. The latter may be some modified version of what exists already
+or may (perhaps more likely) be a new package provided by the team or
+one or more members (David and me, most probably). (The latter might
+include providing a version of the LaTeX kernel code for plain TeX such
+that a new package could cover both cases.)
+
+What we are looking for at this stage is feedback on our minimisation of
+the features provided. Much of what we have is more-or-less direct
+copies of the luatexbase material, but there are modifications. Below
+I'll list what we have included and any notable changes or omissions.
+
+Attached is a proposed addition to the kernel (ltluatex) along with
+various tests/demos. The demos are potentially the basis for the package
+level support I mention.
+
+*Allocators in general*
+
+As this code is kernel-level it can make assumptions packages cannot. In
+particular, from TL'15 we've reserved a set of \count registers in the
+extended pool for team use. The allocators here therefore use hard-coded
+positions, as is done for the TeX90 allocation routine.
+
+We have provided the basic allocators but not \set... commands: these
+seem to be comfortably handled in package code.
+
+*Attribute allocation*
+
+This seems straight forward: note that we've done it from the TeX end.
+David has written luaregisternames to demonstrate that Lua access to the
+allocated number is straight-forward (and this could be covered by a
+package).
+
+*Catcode allocation*
+
+We have just covered the core idea of allocation. In contrast to
+luatex/luatexbase we have gone for a simple allocator as for other
+registers. We think that a stack mechanism belongs at the package level
+(catcode tables seem more useful from Lua than from TeX in any case).
+David has sketched out a pool-based approach to a stack in the attached
+catcodestack document.
+
+We have not at this stage pre-defined any tables. We suspect a core set
+(IniTeX/string/document) may well be useful: thoughts welcome.
+
+*Lua functions*
+
+These are not currently covered by package code but seem trivial to
+handle and so are included.
+
+*Callbacks*
+
+We have significantly minimised the callback allocator from luatexbase
+to cover just the idea of registering multiple callbacks but not
+resetting/removing/... We are also not currently convinced by the
+'priority' idea: it seems to be only partly solving a problem.
+
+We have kept a public interface to the built-in callback.register
+function with the idea being that a more sophisticated package interface
+could be introduced and replace the kernel version.
+
+*Module management*
+
+We have not added this: arguments for inclusion at the kernel level are
+welcome.
+
+----
+
+Whilst not linked to adding the above, it is also worth raising here
+that we are considering the position on LuaTeX primitive naming. The
+current approach adds \luatex... to all names, but this leads to some
+rather awkward naming (\luatexluafunction, \luatexluaescapestring, ...)
+and means that anyone reading the LuaTeX manual has to know that the
+'base' names do not apply. The situation with \Umath... (used to be
+\XeTeX...) and the the \pdf... primitives not related to PDF output also
+suggests adding the engine name here is not ideal.
+
+We are therefore considering switching the kernel approach to use the
+'raw' names, retaining the prefixed ones at least at present when using
+the latexrelease mechanism. Obviously this would have an impact on
+package authors but the number directly using LuaTeX primitives is
+small. Moreover, we will adjust expl3 in the next release to provide all
+XeTeX and LuaTeX primitives in the \<engine>_<name>:D namespace. Whilst
+that is normally meant for 'team use only' we recognise that the 'new'
+primitives are not covered yet by any team code so this is a reasonable
+compromise.  As most of the code for font support uses expl3 anyway,
+this should ease a transition.
+
+We know of one package that uses a name currently set up by LuaTeX
+(breqn: \mathstyle) but this is fixable: team members look after that
+code and the use sense is the same so change required is small.
+
+This is as I say a separate area but does impact on the allocators at
+least in as far as the naming of the new commands.
+
+----
+
+The key aim here to address long-term maintainablity whilst aiming to
+keep things stable and usable for end-users. Thus it's important to get
+agreement on what is and is not appropriate. Feedback/thoughts/... on
+any or all of the above most welcome.
+
+Joseph
+
+--------------020809000606090501000901
+Content-Type: text/x-tex;
+ name="luaregisternames.dtx"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="luaregisternames.dtx"
+
+% \iffalse
+%% Source File: textcase.dtx
+%% Copyright 2015 David Carlisle
+%%
+%% This file may be distributed under the terms of the LPPL.
+%% See README for details.
+%
+%<*dtx>
+          \ProvidesFile{luaregisternames.dtx}
+%</dtx>
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{luaregisternames}
+%<driver> \ProvidesFile{luaregisternames.drv}
+% \fi
+%         \ProvidesFile{luaregisternames.dtx}
+       [2015/06/24 v0.01 luaregisternames for luaLaTeX  (DPC)]
+%
+% \iffalse
+%<*driver>
+\documentclass{ltxdoc}
+\ifx\directlua\undefined\else
+\usepackage{luaregisternames}
+\fi
+\begin{document}
+\DocInput{luaregisternames.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \GetFileInfo{luaregisternames.dtx}
+%
+% \title{The \textsf{luaregisternames} Package\thanks{This file
+%        has version number \fileversion, last
+%        revised \filedate.
+% Please report any issues at https://github.com/davidcarlisle/dpctex/issues}}
+% \author{David Carlisle}
+% \maketitle
+%
+% \section{Introduction}
+% Sometimes (notably in the case of lua attributes) it is necessary to
+% access a register \emph{by number} that has been allocated by \TeX.
+% This package provides a function to look up the relevant number
+% using luatex's internal tables.
+% 
+% so after |\newluatexattribute\myattrib|
+%
+% If |\myattrib| has been defined by (say)
+% |luatexattributedef\myattrib=15| then the lua function call
+% |registernumber("myattrib")| will return 15. If the string passed as
+% argument does not correspond to a token defined by
+% |luatexattributedef|, |\countdef| or similar commands, the lua value
+% |false| is returned.
+%
+%
+% \section{Example}
+%
+%\begin{verbatim}
+% \newcommand\test[1]{%
+% \typeout{#1: \expandafter\meaning\csname#1\endcsname^^J
+% \space\space\space\space
+% \directlua{tex.write(registernumber("#1") or "bad input")}%
+% }}
+% 
+% \test{undefinedrubbish}
+% 
+% \test{space}
+% 
+% \test{hbox}
+% 
+% \test{@MM}
+% 
+% \test{@tempdima}
+% \test{@tempdimb}
+% 
+% \test{strutbox}
+%
+% \test{sixt@@n}
+%
+% \attrbutedef\myattr=12
+% \myattr=200
+% \test{myattr}
+%
+%\end{verbatim}
+%
+%\ifx\directlua\undefined\else
+% \newcommand\test[1]{%
+% \typeout{#1: \expandafter\meaning\csname#1\endcsname^^J
+% \space\space\space\space
+% \directlua{tex.write(registernumber("#1") or "bad input")}%
+% }}
+% 
+% \test{undefinedrubbish}
+% 
+% \test{space}
+% 
+% \test{hbox}
+% 
+% \test{@MM}
+% 
+% \test{@tempdima}
+% \test{@tempdimb}
+% 
+% \test{strutbox}
+%
+% \test{sixt@@n}
+%
+% \luatexattributedef\myattr=12
+% \myattr=200
+% \test{myattr}
+%
+%\fi
+%
+% If this document has been processed with lualatex then the above
+% code would have produced the following in the log and terminal
+% output.
+%\begin{verbatim}
+% undefinedrubbish: \relax
+%      bad input 
+% space: macro:-> 
+%      bad input 
+% hbox: \hbox
+%      bad input 
+% @MM: \mathchar"4E20
+%      20000 
+% @tempdima: \dimen14
+%      14 
+% @tempdimb: \dimen15
+%      15 
+% strutbox: \char"B
+%      11 
+% sixt@@n: \char"10
+%      16 
+% myattr: \attribute12
+%      12 
+%\end{verbatim}
+%
+% Notice how undefined commands, or commands unreleated to registers
+% do not produce an error, just return |false| and so print
+% |bad input| here. Note also that commands defined by |\newbox| work and
+% return the number of the box register even though the actual command
+% holding this number is a |\chardef| defined token (there is no
+% |\boxdef|).
+%
+% \section{Implementation}
+%
+% Note that the current implementation uses |\directlua| and a
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+% Stop if not lua\TeX.
+%    \begin{macrocode}
+\ifx\directlua\@undefined
+\PackageError{luaregisternames}
+{\luaregisternames may only be used with luatex}
+{skipping package}
+\expandafter\endinput
+\fi
+%    \end{macrocode}
+%
+%
+% We need a declared register of each type, preferably 0.
+% the \LaTeX\ format has predeclared registers for everything except
+% lua attributes and muskip.
+%    \begin{macrocode}
+\luatexattributedef\reserved@a=0
+\muskipdef\reserved@b=0
+%    \end{macrocode}
+%
+% Test  the luatex version 0.80 is the texlive 2015 release.
+%    \begin{macrocode}
+\ifnum\luatexversion>79
+%    \end{macrocode}
+%
+% This package only defines lua functions, no TeX code.
+% (it might be better to distribute it as a lua file to be used with
+% |require|. We'll see\ldots.
+%    \begin{macrocode}
+\directlua {
+%    \end{macrocode}
+%
+% The |.mode| field in |newtoken| isn't currently documented but Hans
+% Hagen pointed it out this possibility to me on the luatex list as a
+% better alternative to the |hashtokens| below.
+%
+% First store the starting value of each register type in the internal
+% command tables.
+%    \begin{macrocode}
+luaregisterbasetable={}
+luaregisterbasetable["assign_glue"]=
+  newtoken.create("skip@").mode
+luaregisterbasetable["assign_mu_glue"]=
+  newtoken.create("reserved@b").mode
+luaregisterbasetable["assign_dimen"]=
+  newtoken.create("dimen@").mode
+luaregisterbasetable["assign_toks"]=
+  newtoken.create("toks@").mode
+luaregisterbasetable["assign_int"]=
+  newtoken.create("c@page").mode
+luaregisterbasetable["assign_attr"]=
+  newtoken.create("reserved@a").mode
+luaregisterbasetable["math_given"]=
+  newtoken.create("@m").mode - 1000
+luaregisterbasetable["char_given"]=
+  newtoken.create("@inputcheck").mode
+%    \end{macrocode}
+%
+% Now a function that determines the command type of a supplies csname
+% and if it is one of the above types, return the relevant number,
+% otherwise return |false|.
+%    \begin{macrocode}
+function registernumber (name) 
+  local nt = newtoken.create(name)
+  if(luaregisterbasetable[nt.cmdname]) then
+    return nt.mode - luaregisterbasetable[nt.cmdname]
+  else
+    return false
+  end
+end
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+\else
+%    \end{macrocode}
+%
+% Prior to 0.80 lua\TeX\ did not have athe |newtoken| class, however
+% equivalent information could be obtained by peeking into the table
+% returned by |hashtokens|.
+% 
+%    \begin{macrocode}
+\directlua {
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+luaregisterbasetable={}
+luaregisterbasetable[tex.hashtokens()
+  ["skip@"][1]]=tex.hashtokens()["skip@"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["reserved@b"][1]]=tex.hashtokens()["reserved@b"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["dimen@"][1]]=tex.hashtokens()["dimen@"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["toks@"][1]]=tex.hashtokens()["toks@"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["c@page"][1]]=tex.hashtokens()["c@page"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["reserved@a"][1]]=tex.hashtokens()["reserved@a"][2]
+luaregisterbasetable[tex.hashtokens()
+  ["@m"][1]]=tex.hashtokens()["@m"][2] - 1000
+luaregisterbasetable[tex.hashtokens()
+  ["@inputcheck"][1]]=tex.hashtokens()["@inputcheck"][2]
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+function registernumber (name) 
+  local nt = tex.hashtokens()[name]
+  if(nt and luaregisterbasetable[nt[1]]) then
+    return nt[2] - luaregisterbasetable[nt[1]]
+  else
+    return false
+  end
+end
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+\fi
+%    \end{macrocode}
+% 
+% Just undo the two temporary definitions made at the start.
+%    \begin{macrocode}
+\let\reserved@a\relax
+\let\reserved@b\relax
+%    \end{macrocode}
+% 
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+% \Finale
+%
+
+--------------020809000606090501000901
+Content-Type: text/plain; charset=windows-1252;
+ name="catcodestack.tex"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="catcodestack.tex"
+
+XGRvY3VtZW50Y2xhc3N7YXJ0aWNsZX0KCgpcdXNlcGFja2FnZXtsdGx1YXRl
+eCxsdWFyZWdpc3Rlcm5hbWVzfQpcZGlyZWN0bHVhe3JlcXVpcmUoImxhdGV4
+MmUubHVhIil9CgoKXGJlZ2lue2RvY3VtZW50fQoKXG1ha2VhdGxldHRlcgoK
+JSBzZXR1cCBjb3BpZWQgbW9yZSBvciBsZXNzIGZyb20gbHVhdGV4YmFzZQpc
+ZGVmXHNldGx1YXRleGNhdGNvZGV0YWJsZSMxIzJ7JQogIFxiZWdpbmdyb3Vw
+CiAgIzIlCiAgXGx1YXRleHNhdmVjYXRjb2RldGFibGUjMSUKICBcZW5kZ3Jv
+dXB9CgoKXGRlZlxTZXRDYXRjb2RlUmFuZ2UjMSMyIzN7JQogIFxAdGVtcGNu
+dGE9IzFccmVsYXgKICBcQHRlbXBjbnRiPSMyXHJlbGF4CiAgXGNvdW50QD0j
+M1xyZWxheAogIFxsb29wXHVubGVzc1xpZm51bVxAdGVtcGNudGE+XEB0ZW1w
+Y250YgogICAgXGNhdGNvZGVcQHRlbXBjbnRhPVxjb3VudEAKICAgIFxhZHZh
+bmNlXEB0ZW1wY250YVxAbmUKICBccmVwZWF0fQoKClxuZXdsdWF0ZXhjYXRj
+b2RldGFibGVcQ2F0Y29kZVRhYmxlSW5pVGVYCgpcbmV3bHVhdGV4Y2F0Y29k
+ZXRhYmxlXENhdGNvZGVUYWJsZVN0cmluZwpcc2V0bHVhdGV4Y2F0Y29kZXRh
+YmxlXENhdGNvZGVUYWJsZVN0cmluZ3slCiAgXGx1YXRleGNhdGNvZGV0YWJs
+ZVxDYXRjb2RlVGFibGVJbmlUZVgKICBcY2F0Y29kZTAgICAxMiAlIG51bAog
+IFxjYXRjb2RlMTMgIDEyICUgY2FycmlhZ2UgcmV0dXJuCiAgXGNhdGNvZGUz
+NyAgMTIgJSBwZXJjZW50CiAgXFNldENhdGNvZGVSYW5nZXs2NX17OTB9ezEy
+fSUgQS1aCiAgXFNldENhdGNvZGVSYW5nZXs5N317MTIyfXsxMn0lIGEtegog
+IFxjYXRjb2RlOTIgIDEyICUgYmFja3NsYXNoCiAgXGNhdGNvZGUxMjcgMTIg
+fQoKXG5ld2x1YXRleGNhdGNvZGV0YWJsZVxDYXRjb2RlVGFibGVPdGhlcgpc
+c2V0bHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZU90aGVyeyUKICBc
+bHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZVN0cmluZwogIFxjYXRj
+b2RlMzIgMTIgfQoKXG5ld2x1YXRleGNhdGNvZGV0YWJsZVxDYXRjb2RlVGFi
+bGVMYVRlWApcc2V0bHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZUxh
+VGVYeyUKICBcbHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZUluaVRl
+WAogIFxTZXRDYXRjb2RlUmFuZ2V7MH17MzF9ezE1fSUKICBcY2F0Y29kZTkg
+ICAxMCAlIHRhYgogIFxjYXRjb2RlMTAgIDEyICUgbmV3bGluZQogIFxjYXRj
+b2RlMTIgIDEzICUgZm9ybSBmZWVkCiAgXGNhdGNvZGUxMyAgNSAgJSBjYXJy
+aWFnZSByZXR1cm4KICBcY2F0Y29kZTM1ICA2ICAlIGhhc2gKICBcY2F0Y29k
+ZTM2ICAzICAlIGRvbGxhcgogIFxjYXRjb2RlMzggIDQgICUgYW1wZXJzYW5k
+CiAgXGNhdGNvZGU5NCAgNyAgJSBjaXJjdW1mbGV4CiAgXGNhdGNvZGU5NSAg
+OCAgJSB1bmRlcnNjb3JlCiAgXGNhdGNvZGUxMjMgMSAgJSBicmFjZSBsZWZ0
+CiAgXGNhdGNvZGUxMjUgMiAgJSBicmFjZSByaWdodAogIFxjYXRjb2RlMTI2
+IDEzICUgdGlsZGUKICBcY2F0Y29kZTEyNyAxNSB9CgpcbmV3bHVhdGV4Y2F0
+Y29kZXRhYmxlXENhdGNvZGVUYWJsZUxhVGVYQXRMZXR0ZXIKXHNldGx1YXRl
+eGNhdGNvZGV0YWJsZVxDYXRjb2RlVGFibGVMYVRlWEF0TGV0dGVyeyUKICBc
+bHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZUxhVGVYCiAgXGNhdGNv
+ZGU2ND0xMSB9CgpcbmV3bHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJs
+ZUV4cGwKXHNldGx1YXRleGNhdGNvZGV0YWJsZVxDYXRjb2RlVGFibGVFeHBs
+eyUKICBcbHVhdGV4Y2F0Y29kZXRhYmxlXENhdGNvZGVUYWJsZUxhVGVYCiAg
+XGNhdGNvZGUxMjYgMTAgJSB0aWxkZSBpcyBhIHNwYWNlIGNoYXIKICBcY2F0
+Y29kZTMyICA5ICAlIHNwYWNlIGlzIGlnbm9yZWQKICBcY2F0Y29kZTkgICA5
+ICAlIHRhYiBhbHNvIGlnbm9yZWQKICBcY2F0Y29kZTk1ICAxMSAlIHVuZGVy
+c2NvcmUgbGV0dGVyCiAgXGNhdGNvZGU1OCAgMTEgJSBjb2xvbiBsZXR0ZXIK
+ICB9CgoKJSBuZXcgc2ltcGxlIHN0YWNrIGNvZGUKCiUgbGlzdCBvZiBmcmVl
+IHRhYmxlcyB0byB1c2UgaW4gc3RhY2sgKGV4dGVuZGVkIG9uIGRlbWFuZCkK
+XGRlZlxAY2F0Y29kZXRhYmxlbGlzdHt9CgolIGN1cnJlbnRseSBhY3RpdmUg
+c3RhY2sgb2YgdGFibGVzIChwZXJoYXBzIHNob3VsZCBpbml0aWxzZSBhcyB7
+MH0pClxkZWZcQGNhdGNvZGV0YWJsZXN0YWNre30KCiUgdGFrZSBhIGZyZWUg
+dGFibGUgKGFsbG9jYXRlIGlmIG5lZWRlZCkKJSAgYW5kIHNhdmUgY3VycmVu
+dCBzZXR0aW5ncyBpbiBpdAolIHB1c2ggb24gdG8gc3RhY2suClxkZWZccHVz
+aGN1cnJlbnRjYXRjb2Rlc3slClxpZnhcQGNhdGNvZGV0YWJsZWxpc3RcQGVt
+cHR5CiAgXGVkZWZccmVzZXJ2ZWRAYXtcY3NuYW1lIGN0QFx0aGVcY291bnQy
+NThcZW5kY3NuYW1lfSUKICBcZXhwYW5kYWZ0ZXJcbmV3bHVhdGV4Y2F0Y29k
+ZXRhYmxlXHJlc2VydmVkQGEKICBceGRlZlxAY2F0Y29kZXRhYmxlbGlzdHtc
+cmVzZXJ2ZWRAYX0lClxmaQpcZXhwYW5kYWZ0ZXJcQHB1c2hjdGJsXEBjYXRj
+b2RldGFibGVsaXN0XEBuaWx9CgpcZGVmXEBwdXNoY3RibCMxIzJcQG5pbHsl
+ClxnZGVmXEBjYXRjb2RldGFibGVsaXN0eyMyfSUKXHhkZWZcQGNhdGNvZGV0
+YWJsZXN0YWNreyMxXEBjYXRjb2RldGFibGVzdGFja30lClxsdWF0ZXhzYXZl
+Y2F0Y29kZXRhYmxlIzF9CgolIHBvcCBhIHRhYmxlIG9mZiB0aGUgc3RhY2sg
+YW5kIHVzZSB0byBzZXQgY3VycmVudAolIHNldHRpbmdzClxkZWZccG9wY3Vy
+cmVudGNhdGNvZGVzeyUKXGlmeFxAY2F0Y29kZXRhYmxlc3RhY2tcQGVtcHR5
+ClxFUlJPUgpcZmkKIFxleHBhbmRhZnRlclxAcG9wY3RibFxAY2F0Y29kZXRh
+Ymxlc3RhY2tcQG5pbH0KClxkZWZcQHBvcGN0YmwjMSMyXEBuaWx7JQogIFxn
+ZGVmXEBjYXRjb2RldGFibGVzdGFja3sjMn0lCiAgXGdkZWZcQGNhdGNvZGV0
+YWJsZWxpc3R7XEBjYXRjb2RldGFibGVzdGFjayMxfSUKICBcbHVhdGV4Y2F0
+Y29kZXRhYmxlIzF9CgoKCiUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUl
+JSUlJSUlCgolIHRlc3RzLi4uCgpcZGVmXHNob3djcyMxe1x0eXBlb3V0eyMx
+OgpAPVx0aGVcY2F0Y29kZWBcQCwgCnNwYWNlPVx0aGVcY2F0Y29kZTMyLApa
+PVx0aGVcY2F0Y29kZWBcWn19Cgpcc2hvd2Nze0ExfQoKXHB1c2hjdXJyZW50
+Y2F0Y29kZXMKClxjYXRjb2RlYFxaPTEzCgpcc2hvd2Nze0IxfQoKXHB1c2hj
+dXJyZW50Y2F0Y29kZXMKClxsdWF0ZXhjYXRjb2RldGFibGVcQ2F0Y29kZVRh
+YmxlRXhwbAoKXHNob3djc3tDMX0KClxjYXRjb2RlYFxaPTQKClxzaG93Y3N7
+QzJ9CgoKXHBvcGN1cnJlbnRjYXRjb2RlcwoKXHNob3djc3tCM30KClxwb3Bj
+dXJyZW50Y2F0Y29kZXMKClxzaG93Y3N7QTR9CgoKClxlbmR7ZG9jdW1lbnR9
+Cg==
+
+--------------020809000606090501000901
+Content-Type: text/plain; charset=windows-1252;
+ name="regalloctest.tex"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="regalloctest.tex"
+
+XGRvY3VtZW50Y2xhc3N7YXJ0aWNsZX0KCgpcdXNlcGFja2FnZXtsdGx1YXRl
+eCxsdWFyZWdpc3Rlcm5hbWVzfQpcZGlyZWN0bHVhe3JlcXVpcmUoImxhdGV4
+MmUubHVhIil9CgpcbmV3bHVhdGV4Y2F0Y29kZXRhYmxlXGN0YmwKXG5ld2x1
+YXRleGF0dHJpYnV0ZVxsYXR0cgoKXGJlZ2lue2RvY3VtZW50fQoKXGRpcmVj
+dGx1YXtwcmludCgiXHN0cmluZ1xuY3RibCIgLi4gIiBpcyByZWdpc3Rlcjog
+ICIgCi4uIHJlZ2lzdGVybnVtYmVyKCJjdGJsIikgKX0KXGRpcmVjdGx1YXtw
+cmludCgiXHN0cmluZ1xubGF0dHIiIC4uICIgaXMgcmVnaXN0ZXI6IgouLiBy
+ZWdpc3Rlcm51bWJlcigibGF0dHIiKSApfQoKXG5ld2JveFxteWJveAp7Clxz
+ZXRib3gyXGhib3h7eHl6fQpcbGF0dHI9NQpcc2V0Ym94MFxoYm94e2FiY30K
+XGxhdHRyPTYKXHNldGJveFxteWJveFxoYm94ezEyM30KClxkaXJlY3RsdWF7
+CmxvY2FsIG4wPXRleC5nZXRib3goMCkKbG9jYWwgbjI9dGV4LmdldGJveCgy
+KQpsb2NhbCBubXlib3g9dGV4LmdldGJveChyZWdpc3Rlcm51bWJlcigibXli
+b3giKSkKbG9jYWwgYSA9IHJlZ2lzdGVybnVtYmVyKCJsYXR0ciIpCnByaW50
+KCJcc3RyaW5nXG4gdGVzdCBsYXR0ciBvbiBib3ggMDogIiAKLi4gKG5vZGUu
+aGFzX2F0dHJpYnV0ZShuMCxhKSBvciAidW5zZXQiKSkKcHJpbnQoIlxzdHJp
+bmdcbiB0ZXN0IGxhdHRyIG9uIGJveCAyOiAiCiAuLiAobm9kZS5oYXNfYXR0
+cmlidXRlKG4yLGEpIG9yICJ1bnNldCIpKQpwcmludCgiXHN0cmluZ1xuIHRl
+c3QgbGF0dHIgb24gYm94IG15Ym94OiAiIAouLiAobm9kZS5oYXNfYXR0cmli
+dXRlKG5teWJveCxhKSBvciAidW5zZXQiKSkKfQp9CgpcZGlyZWN0bHVhewpm
+dW5jdGlvbiB6enpYIChzKQpyZXR1cm4gc3RyaW5nLmdzdWIocywiWCIsICJb
+Q2FwaXRhbCB4IHdhcyBoZXJlXSIpCmVuZApmdW5jdGlvbiB6enpDIChzKQpy
+ZXR1cm4gc3RyaW5nLmdzdWIocywiQyIsICJbQ2FwaXRhbCBjIHdhcyBoZXJl
+XSIpCmVuZApsYXRleC5hZGRfdG9fY2FsbGJhY2soJ3Byb2Nlc3NfaW5wdXRf
+YnVmZmVyJyx6enpYLCJ0ZXN0aW5nIFgiKQpsYXRleC5hZGRfdG9fY2FsbGJh
+Y2soJ3Byb2Nlc3NfaW5wdXRfYnVmZmVyJyx6enpDLCJ0ZXN0aW5nIEMiKQp9
+CgpcdHlwZW91dHsxMjNYWVo0NTZBQkN9CgoKCgoKXGVuZHtkb2N1bWVudH0K
+
+--------------020809000606090501000901
+Content-Type: text/x-tex;
+ name="ltluatex.dtx"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="ltluatex.dtx"
+
+% \iffalse meta-comment
+%
+% Copyright 2015
+% The LaTeX3 Project and any individual authors listed elsewhere
+% in this file.
+%
+% This file is part of the LaTeX base system.
+% -------------------------------------------
+%
+% It may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This file has the LPPL maintenance status "maintained".
+%
+% The list of all files belonging to the LaTeX base distribution is
+% given in the file `manifest.txt'. See also `legal.txt' for additional
+% information.
+%
+% The list of derived (unpacked) files belonging to the distribution
+% and covered by LPPL is defined by the unpacking scripts (with
+% extension .ins) which are part of the distribution.
+%
+% \fi
+% \iffalse
+%
+%<*driver>
+% \fi
+\ProvidesFile{ltluatex.dtx}
+  [2015/07/02 v1.0a LaTeX Kernel (LuaTeX support)]
+% \iffalse
+\documentclass{ltxdoc}
+\AtBeginDocument{%
+  \begingroup\lccode`~=`_%
+  \lowercase{\endgroup\let~}_%
+  \catcode`_=12
+}
+\GetFileInfo{ltluatex.dtx}
+\begin{document}
+\title{\filename\\(Lua\TeX{}-specific support)}
+\author{David Carlisle and Joseph Wright\footnote{Significant portions
+  of the code here are adapted/simplified from the packages \textsf{luatex} and
+  \textsf{luatexbase} written by Heiko Oberdiek, \'{E}lie Roux,
+  Manuel P\'{e}gouri\'{e}-Gonnar and Philipp Gesang.}}
+\date{\filedate}
+\MaintainedByLaTeXTeam{latex}
+\maketitle
+\DocInput{\filename}
+\end{document}
+%</driver>
+% \fi
+% 
+% \CheckSum{0}
+%
+%    \begin{macrocode}
+%<*2ekernel>
+%    \end{macrocode}
+%
+% Lua\TeX{} adds a number of engine-specific functions to \TeX{}. Several of
+% these require set up that is best done in the kernel or need related support
+% functions. This file provides \emph{basic} support for Lua\TeX{} at the
+% \LaTeXe{} kernel level.
+% 
+% This file contains code for both \TeX{} (to be stored as part of the format)
+% and Lua (to be loaded at the start of each job). In the Lua code, the kernel
+% uses the namespace |latex| which is \emph{reserved for use by the team}.
+% 
+% The following |\count| registers are used here for register allocation:
+% \begin{itemize}
+%  \item[\texttt{258}] Attributes
+%  \item[\texttt{259}] Category code tables
+%  \item[\texttt{260}] Lua functions
+% \end{itemize}
+% (|\count256| is used for |\newmarks| allocation and |\count257|
+% is used for |\newXeTeXintercharclass| with Xe\TeX{}, with code defined in
+% \texttt{ltfinal.dtx}).
+% With any \LaTeXe{} kernel from 2015 onward these registers are part of
+% the block in the extended area reserved by the kernel (prior to 2015 the
+% \LaTeXe{} kernel did not provide any functionality for the extended
+% allocation area).
+% 
+% \DescribeMacro{\newattribute}
+% |\newluatexattribute{|\meta{attribute}|}|
+% Defines a named \cs{attribute}, indexed from~$1$
+% (\emph{i.e.}~|\luatexattribue0| is never defined). The attribute will be
+% initialised with the marker value |-"7FFFFFFF| (`unset').
+% 
+% \DescribeMacro{\newcatcodetable}
+% |\newluatexcatcodetable{|\meta{catcodetable}|}|
+% Defines a named \cs{catcodetable}, indexed from~$1$
+% (|\luatexcatcodetable0| never assigned). A new catcode table will be
+% populated with exactly those values assigned by Ini\TeX{} (as described
+% in the Lua\TeX{} manual).
+% 
+% \DescribeMacro{\newluafunction}
+% |\newluafunction{|\meta{function}|}|
+% Defines a named \cs{luafunction}, indexed from~$1$ (Lua indexes from
+% $1$ so |\luafunction0| is not available).
+% 
+% \DescribeMacro{latex.add_to_callback}
+% |latex.add_to_callback(|\meta{callback}, \meta{function}, \meta{description}|)|
+% Registers the \meta{function} into the \meta{callback} with a textual
+% \meta{description} of the function. Functions are inserted into the callback
+% in the order loaded.
+% 
+% \DescribeMacro{latex.original_callback_register}
+% A copy of the built-in function |callback.register| as direct use of the
+% latter is disabled. This copy is available such that more sophisticated
+% callback management may be provided at a package level.
+% 
+% \StopEventually{}
+%
+% \section{Minimum Lua\TeX{} version}
+%
+% Lua\TeX{} has changed a lot over time. In the kernel support for ancient
+% versions is not provided: trying to build a format with a very old binary
+% therefore gives some information in the log and loading stops.
+%    \begin{macrocode}
+\ifnum\luatexversion<37 %
+  \wlog{***************************************************}
+  \wlog{* LuaTeX version too old for kernel-level support *}
+  \wlog{***************************************************}
+  \expandafter\endinput
+\fi
+%    \end{macrocode}
+%
+% \section{Attributes}
+%
+% \begin{macro}{\newattribute}
+% \changes{v1.0a}{2015/07/02}{Macro added}
+%   Note that unlike other \TeX{} registers these
+%   need to be `unset'  to be initialised correctly. Unlike other allocators we
+%   start from $1$ here: some code assumes that |\attribute0| is never used!
+%    \begin{macrocode}
+\def\newattribute#1{%
+  \e@alloc\attribute\luatexattributedef
+    {\count258}\m@ne\e@alloc@top#1%
+  #1=-"7FFFFFFF\relax
+}
+\count258=\z@
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Category code tables}
+%
+% Category code table management normally requires a stack: that is not covered
+% here but rather is left to a higher-level package.
+%
+% \begin{macro}{\newcatcodetable}
+% \changes{v1.0a}{2015/07/02}{Macro added}
+%   Category code tables are allocated with a limit half of that used by Lua\TeX{}
+%   for everything else. At the end of allocation there needs to be an
+%   initialisation step. Table $0$ is already taken (it's the global one for
+%   current use) so the allocation starts at~$1$.
+%    \begin{macrocode}
+\def\newcatcodetable#1{%
+  \e@alloc\catcodetable\chardef
+    {\count259}\m@ne\ctabletop#1%
+  \luatexinitcatcodetable\allocationnumber
+}
+\chardef\ctabletop"8000 % TEMP
+\count259=\z@
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Named Lua functions}
+%
+% \begin{macro}{\newluafunction}
+% \changes{v1.0a}{2015/07/02}{Macro added}
+%   Much the same story for allocating Lua\TeX{} functions except here they are
+%   just numbers. No previous approaches exist for this allocator, so there is
+%   less to worry about. Lua indexes from $1$ so the allocator starts from zero.
+%    \begin{macrocode}
+\def\newluafunction{%
+  \e@alloc\luafunction\e@alloc@chardef
+    {\count260}\m@ne\e@alloc@top
+}
+\count260=\z@
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Lua loader}
+%
+% Load the Lua code at the start of every job
+%
+%    \begin{macrocode}
+\everyjob\expandafter{%
+  \the\everyjob
+  \directlua{require(latex2e.lua)}%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</2ekernel>
+%    \end{macrocode}
+%
+% \section{Lua callback management}
+%
+% The native mechanism for callbacks in Lua allows only one per function.
+% That is extremely restrictive and so a mechanism is needed to add and
+% remove callbacks from the appropriate hooks.
+%
+%    \begin{macrocode}
+%<*2elua>
+%    \end{macrocode}
+%
+% \subsubsection{Basics and support}
+%
+% \begin{macro}{latex}
+% \changes{v1.0a}{2015/07/02}{Table added}
+%   Set up the table for the returned functions. This is used to expose
+%   all of the public functions.
+%    \begin{macrocode}
+latex       = latex or { }
+local latex = latex
+%    \end{macrocode}
+% \end{macro}
+% 
+% Some Lua best practice: use local versions of functions where possible.
+%    \begin{macrocode}
+local string_gsub = string.gsub
+local write_nl = texio.write_nl
+%    \end{macrocode}
+%
+% There are various warnings and errors that need to be given. For warnings
+% we can get exactly the same formatting as from \TeX{}. For errors we have to
+% make some changes. Here we give the text of the error in the \LaTeX{} format
+% then force an error from Lua to halt the run. Splitting the message text is
+% done using |\n| which takes the place of |\MessageBreak|.
+%    \begin{macrocode}
+local function msg_format(text, leader)
+  local cont = string_gsub(leader, ".", " ")
+  return leader .. " " .. string_gsub(text, "\n", "\n" .. cont .. " ") .. "\n"
+end
+local function latex_warning(text)
+  local i
+  for _,i in ipairs(msg_format(text, "LaTeX Warning:"):explode("\n")) do
+    write_nl("term and log", i)
+  end
+end
+local function latex_error(text)
+  local i
+  for _,i in ipairs(msg_format(text, "! LaTeX Error:"):explode("\n")) do
+    write_nl("term and log", i)
+  end
+  write_nl("term and log", "\n")
+  error("See LaTeX Error")
+end
+%    \end{macrocode}
+%
+% \subsubsection{Housekeeping}
+%
+%   The main table: keys are callback names, and values are the associated lists
+%   of functions. More precisely, the entries in the list are tables holding the
+%   actual function as |func| and the identifying description as |description|.
+%   Only callbacks with a non-empty list of functions have an entry in this
+%   list.
+%    \begin{macrocode}
+local callbacklist = callbacklist or { }
+%    \end{macrocode}
+%
+%   Numerical codes for callback types, and name-to-value association (the
+%   table keys are strings, the values are numbers).
+%    \begin{macrocode}
+local list, data, exclusive, simple = 1, 2, 3, 4
+local types = {
+  list      = list,
+  data      = data,
+  exclusive = exclusive,
+  simple    = simple,
+}
+%    \end{macrocode}
+% 
+%  Now, list all predefined callbacks with their current type, based on the
+%  Lua\TeX{} manual version 0.80. A full list of the currently-available
+%  callbacks can be obtained using
+%  \begin{verbatim}
+%    \directlua{
+%      for i,_ in pairs(callback.list()) do
+%        texio.write_nl("- " .. i)
+%      end
+%    }
+%    \bye
+%  \end{verbatim}
+%  in plain Lua\TeX{}. (Some undocumented callbacks are omitted as they are
+%  to be removed.)
+%    \begin{macrocode}
+local callbacktypes = callbacktypes or {
+%    \end{macrocode}
+%   Section 4.1.1: file discovery callbacks.
+%    \begin{macrocode}
+  find_read_file     = exclusive,
+  find_write_file    = exclusive,
+  find_font_file     = data,
+  find_output_file   = data,
+  find_format_file   = data,
+  find_vf_file       = data,
+  find_map_file      = data,
+  find_enc_file      = data,
+  find_sfd_file      = data,
+  find_pk_file       = data,
+  find_data_file     = data,
+  find_opentype_file = data,
+  find_truetype_file = data,
+  find_type1_file    = data,
+  find_image_file    = data,
+%    \end{macrocode}
+%   Section 4.1.2: file reading callbacks.
+%    \begin{macrocode}
+  open_read_file     = exclusive,
+  read_font_file     = exclusive,
+  read_vf_file       = exclusive,
+  read_map_file      = exclusive,
+  read_enc_file      = exclusive,
+  read_sfd_file      = exclusive,
+  read_pk_file       = exclusive,
+  read_data_file     = exclusive,
+  read_truetype_file = exclusive,
+  read_type1_file    = exclusive,
+  read_opentype_file = exclusive,
+%    \end{macrocode}
+%   Section 4.1.3: data processing callbacks.
+%    \begin{macrocode}
+  process_input_buffer  = data,
+  process_output_buffer = data,
+  process_jobname       = data,
+  token_filter          = exclusive,
+%    \end{macrocode}
+%   Section 4.1.4: node list processing callbacks.
+%    \begin{macrocode}
+  buildpage_filter      = simple,
+  pre_linebreak_filter  = list,
+  linebreak_filter      = list,
+  post_linebreak_filter = list,
+  hpack_filter          = list,
+  vpack_filter          = list,
+  pre_output_filter     = list,
+  hyphenate             = simple,
+  ligaturing            = simple,
+  kerning               = simple,
+  mlist_to_hlist        = list,
+%    \end{macrocode}
+%   Section 4.1.5: information reporting callbacks.
+%    \begin{macrocode}
+  pre_dump            = simple,
+  start_run           = simple,
+  stop_run            = simple,
+  start_page_number   = simple,
+  stop_page_number    = simple,
+  show_error_hook     = simple,
+  show_error_message  = simple,
+  show_lua_error_hook = simple,
+  start_file          = simple,
+  stop_file           = simple,
+%    \end{macrocode}
+%   Section 4.1.6: PDF-related callbacks.
+%    \begin{macrocode}
+  finish_pdffile = data,
+  finish_pdfpage = data,
+%    \end{macrocode}
+%   Section 4.1.7: font-related callbacks.
+%    \begin{macrocode}
+  define_font = first,
+%    \end{macrocode}
+%   Undocumented callbacks which are likely to get documented.
+%    \begin{macrocode}
+  find_cidmap_file           = data,
+  pdf_stream_filter_callback = data,
+}
+%    \end{macrocode}
+%
+% \begin{macro}{original_callback_register}
+% \changes{v1.0a}{2015/07/02}{Function modified}
+% \begin{macro}{callback.register}
+% \changes{v1.0a}{2015/07/02}{Function modified}
+%   Save the original function for registering callbacks and prevent the
+%   original being used. The original is saved in a place that remains
+%   available so other more sophisticated code can override the approach
+%   taken by the kernel is desired.
+%    \begin{macrocode}
+original_callback_register = original_callback_register or callback.register
+latex.original_callback_register = original_callback_register
+function callback.register()
+  latex_error("Attempt to use callback.register() directly.")
+end
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Handlers}
+%
+% The handler function is registered into the callback when the
+% first function is added to this callback's list. Then, when the callback
+% is called, then handler takes care of running all functions in the list.
+% When the last function is removed from the callback's list, the handler
+% is unregistered.
+%
+% More precisely, the functions below are used to generate a specialized
+% function (closure) for a given callback, which is the actual handler.
+%
+% Handler for |data| callbacks.
+%    \begin{macrocode}
+local function data_handler(name)
+  return function(data, ...)
+    local i
+    for _,i in ipairs(callbacklist[name]) do
+      data = i.func(data)
+    end
+    return data
+  end
+end
+%    \end{macrocode}
+% Handler for |exclusive| callbacks. We can assume |callbacklist[name]| is not
+% empty: otherwise, the function wouldn't be registered in the callback any
+% more.
+%    \begin{macrocode}
+local function exclusive_handler(name)
+  return function(...)
+    return callbacklist[name][1].func(...)
+  end
+end
+%    \end{macrocode}
+% Handler for |list| callbacks.
+%    \begin{macrocode}
+local function list_handler(name)
+  return function(head, ...)
+    local ret
+    local alltrue = true
+    local i
+    for _i in ipairs(callbacklist[name]) do
+      ret = i.func(head, ...)
+      if ret == false then
+        latex_warning(
+          "Function `i.description' returned false\n"
+            .. "in callback `name'"
+         )
+         break
+      end
+      if ret ~= true then
+        alltrue = false
+        head = ret
+      end
+    end
+    return alltrue and true or head
+  end
+end
+%    \end{macrocode}
+% Handler for |simple| callbacks.
+%    \begin{macrocode}
+local function simple_handler(name)
+  return function(...)
+    local i
+    for _,i in ipairs(callbacklist[name]) do
+      i.func(...)
+    end
+  end
+end
+%    \end{macrocode}
+%    
+% Keep a handlers table for indexed access.
+%    \begin{macrocode}
+local handlers = {
+  [data]      = data_handler,
+  [exclusive] = exclusive_handler,
+  [list]      = list_handler,
+  [simple]    = simple_handler,
+}
+%    \end{macrocode}
+%
+% \subsubsection{Public functions for callback management}
+%
+% \begin{macro}{latex.add_to_callback}
+% \changes{v1.0a}{2015/07/02}{Function added}
+%   Add a function to a callback. First check arguments.
+%    \begin{macrocode}
+function add_to_callback(name, func, description)
+  if
+    not name or
+    name == "" or
+    not callbacktypes[name] or
+    type(func) ~= "function" or
+    not description or 
+    description == "" then
+    latex_error(
+      "Unable to register callback.\n\n"
+        .. "Correct usage:\n"
+        .. "add_to_callback(<callback>, <function>, <description>)"
+    )
+  end
+%    \end{macrocode}
+%   Then test if this callback is already in use. If not, initialise its list
+%   and register the proper handler.
+%    \begin{macrocode}
+  local l = callbacklist[name]
+  if not l then
+    l = { }
+    callbacklist[name] = l
+    original_callback_register(name, handlers[callbacktypes[name]](name))
+  end
+%    \end{macrocode}
+%  Actually register the function and give an error if more than one
+%  |exclusive| one is registered.
+%    \begin{macrocode}
+  local f = {
+    func        = func,
+    description = description,
+  }
+  local priority = #l + 1
+  if callbacktypes[name] == exclusive then
+    if #l == 1 then
+      latex_error(
+        "Cannot add second callback to exclusive function `" .. name .. "'."
+      )
+    end
+  end
+  table.insert(l, priority, f)
+%    \end{macrocode}
+%  Keep user informed.
+%    \begin{macrocode}
+  write_nl(
+    "Inserting callback `" .. description .. "' at position "
+      .. priority .. " in `" .. name .. "'."
+  )
+end
+latex.add_to_callback = add_to_callback
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</2elua>
+%    \end{macrocode}
+%
+% \Finale
+--------------020809000606090501000901
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+
+--------------020809000606090501000901--
+

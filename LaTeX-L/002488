@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1487" "Mon" "20" "October" "1997" "20:09:58" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "28" "Re: Extended include" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id UAA10497
+	for <schoepf@UNI-MAINZ.DE>; Mon, 20 Oct 1997 20:26:03 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.D87268F4@listserv.gmd.de>; Mon, 20 Oct 1997 20:26:01 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 218776 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Oct 1997 20:25:52 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id UAA02286
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 20 Oct 1997 20:25:45
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) id
+          UAA15416 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 20 Oct 1997
+          20:25:47 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          UAA17653; Mon, 20 Oct 1997 20:09:58 +0100
+References: <971020150418.a6ec@vms.rhbnc.ac.uk>
+Message-ID:  <199710201909.UAA17653@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <971020150418.a6ec@vms.rhbnc.ac.uk>
+Date:         Mon, 20 Oct 1997 20:09:58 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2488
+
+Philip Taylor writes:
+ > >> If your two aux filenames are A and B, during the first run you read
+ > >> From A and write to B.  Presuming no errors, during your next run
+ > >> however you need to read from B and write to A.  How do you keep
+ > >> track?
+ >
+ > No idea how Frank does it, but at successful completion I close A and B,
+ > open B for input and A for output, and copy B to A in a robust environment
+ > (sorry, not the LaTeX sense of "robust" but then I don't speak LaTeX!).
+ >
+ > It _can_ go wrong during the copy, but only in the event of a machine failure
+ > or running out of disc space, provided that the environment is sufficiently
+ > robust.  Since the final record copied can be (e.g.) "%! TeX copy complete",
+ > one can always search for this on re-opening to ensure that the file is valid.
+
+that is more or less what i did implement as well if i remember
+correctly. my idea was to provide for doing the copying within LaTeX
+(the slow but portable variant) but also allow to set things up that
+the copying is done by some OS script wrapper outside LaTeX instead.
+
+i don't really think it is worth checking for diskfull problems as you
+get some "can't rwrite on file xyz" error at the end of your previous
+run anyway, but yes you could test for this. but if you do i would set
+a tex executable flag at the end rather than trying to match some
+string (also you would need to allow for the case when there is no
+previous aux file at all, but this is all solvable)
+
+frank
+

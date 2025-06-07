@@ -1,0 +1,242 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date: 13 Dec 89 15:06:19 UT
+From: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.BITNET.DBP.sc>
+Sender: PZF5HZ@RUIPC1E.BITNET.DBP.sc
+To: "Rainer Schoepf" <BK4@DHDURZ1.BITNET.DBP.sc.ZIB-Berlin.DE>
+Subject: LaTeX 2.10
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4
+
+Nico isn't able to find his original message to me, so I'm
+resubmitting it in his name.
+
+By the way, it seems that my last message produced some
+missunderstandings: We want to make the FROM field the sender
+and not the list because this will cut down the the amount of mail
+which is of no interest to others. It should not mean that you
+shouldn't send your contributions, meanings etc. to the list but
+often it might be better to discuss specific points first in direct
+correspondence and then send agreements or disagreements to the list.
+I'm not sure that this is the right way --- time will tell ---
+but reading mail on this machine is a time consuming business
+(I have to receive every file by hand) and I don't think it will help
+if there is to much traffic. But you're welcome to express a
+different opinion.
+
+Greetings Frank
+
+---------------------------------------------------------------------
+Date: Mon, 13 Nov 89 20:47 MET
+From: "Nico (Poppelier@Hutruu51.Bitnet)" <POPPELIER@HUTRUU51.BITNET>
+Subject: With LaTeX into the nineties ... (and some champagne of course)
+To: pzf5hz@DRUEDS2.BITNET
+X-VMS-To: IN%"pzf5hz@drueds2"
+Comments: This mail was sent from cluster RUUNSC using PMDF V3.0
+
+Date: 13 November
+
+
+Frank,
+
+I'm glad you give me the opportunity to write down some of my thoughts
+on LaTeX in the future, and to respond to your article `With LaTeX into
+the Nineties'. The text of the update section shows out that my version
+of your article is indeed the most recent one.
+
+I'll tell you something about myself first.
+
+- assisted with/taught LaTeX to secretaries, students and scientific staff
+  in the physics department of the University of Utrecht.
+- taught document style design course at first meeting of NTG.
+- wrote Ph.D. thesis with document style of own design
+- member of NTG workgroup 13, with main task: create document styles for
+  and solve problems with (La)TeX used for Dutch documents
+- Spring 1989: worked at Elsevier Science Publishers' on project centered
+  around SGML in the journal publishing business.
+  Main idea: accept compuscripts, convert these to and edit them in SGML,
+  and produce output for proof reading and, eventually, for real
+  publishing.
+  Allowed compuscript types: just LaTeX at the moment.
+  Output back end for SGML: LaTeX.
+  My part:
+  - think about the conversion process;
+  - persuade them not to use plain TeX, with their own macro package or
+    one of the many packages from USA institutes, but LaTeX (this took
+    some time, but I succeeded);
+  - create document styles for two of their journals.
+
+Because of my work at Elsevier I'm convinced that SGML will become very
+important, and I think SGML should have some influence on LaTeX
+developments.
+
+
+1. Making LaTeX 3.0 smaller is logical: it still has to run on Atari ST's
+and PC's. Adding AMSTeX functionality could unite two different groups
+of LaTeX users: (a) mathematicians and (b) all others. LaTeX is a bit
+weak on the mathematical environments.
+I've read your articles in TUGboat: I agree with your suggestions for a
+new font scheme.
+
+2. Added functionality for \@startsection. All requests are taken from
+problems Victor or I ran into while creating document styles.
+I know this is nothing more than `I want LaTeX to do this  and I want it
+to do that ...' but it's on my list nevertheless.
+
+2a. add white space between section number and section title as
+parameter; now 1em, hardwired into latex.tex. A better scheme would be:
+IF parameter >0: white space between section number and section title
+ELSE |parameter| = total space of section number and white
+     with section number flush left
+FI
+The Dutch document styles feature
+
+        1.______Section title
+        1.1_____Subsection title
+        1.1.1___Subsubsection title
+
+instead of
+
+        1.__Section title
+        1.1__Subsection title
+        1.1.1__Subsubsection title
+
+2b. add extra parameter that indicates text/symbol before section
+number: say you want section titles to look like `\S 1. SECTION TITLE'.
+
+2c. in the beginning, it is not quite clear how to get centered,
+flush-left or flush-right headings. If you add the appropriate
+declarations after the font specification in one of the \@startsection
+parameters, you see that it works, amazingly. This is a documentation
+matter.
+
+2d. the possibility to gobble the title. In some Elsevier journals
+
+        \appendix
+        \section{First appendix}
+
+should yield
+
+        Appendix A.
+
+centered on the page and nothing more.
+
+2e. \chapter and \part are not part of the sectional-unit hierarchy
+created with \@startsection calls, and are rather messy parts of the
+document styles, I find.
+
+3. Referencing.
+In the SGML DTD created by the Association of American Publishers, which
+acts as basis for DTD's of various European publishers, references to
+numbered items are not just one tag like in LaTeX -- \label and \ref,
+plus \bibitem[...] and \cite -- but separate for every part: \figref,
+\tabref, \eqref, ...
+LaTeX also lacks a footnote reference \fnref.
+
+4. Logical concepts in, e.g., `article' style. If you try to convert
+LaTeX to SGML you run into trouble with the front matter: just \title -
+\author - \date is not enough.
+You should at least have
+
+        \title{...}
+        \author{...}        \address{...} \and
+        \author{...}        \address{...} \and
+        \collaboration{...} \address{...}
+
+i.e. separate addresses and multi-author groups, and
+
+        \title{...}
+        \author{... list of authors with references
+                    \addref[KEY] to list of addresses}
+        \begin{addresses}
+          \item[KEY-1] address-1
+          \item[KEY-2] address-2
+                ...
+        \end{addresses}
+
+For some journals a document-style designer has to add commands for
+various dates (received, accepted, ...), and things like a keyword
+environment (scientific journals).
+
+5. In SGML commands, `tags', can have attributes, i.e. parameters that
+can be optional or compulsory, that can appear in any order, and for
+which a default value or list of possible values can be specified. I'm
+not going to say that LaTeX must have the same, but this matter is worth
+looking into.
+
+6. Page-style definition is not quite clear to the user -- that's why
+people make things like `fancyheadings.sty' -- but I wonder if the user
+SHOULD understand it. It seems to me that LaTeX users on the average
+want to deal with the layout details themselves, quite contrary to
+Leslie's whole idea.
+On the other hand: if you allow page dimensions to be altered with simle
+LaTeX commands, then why not the page headers?
+
+7. Meta styles. Just of list of meta styles -- an incomplete one maybe.
+
+7a. Article: independent articles to be published.
+7b. Proceedings, Journal: many article put together, with an author
+    index, a title index and a table of contents.
+7c. Book: something with -- numbered and un-numbered -- chapters, a
+    table of contents and one bibliography; variations for house-style
+    or theses.
+7d. Report: something with chapters, an abstract, and one bibliography
+    for the whole report or maybe one bibliography per chapter.
+7e. Letter
+7f. Memo: small documents like written report of a meeting.
+
+8.Output routine. Since you are writing an article for TUGboat on
+multi-column layout, I can mention some extra requirements for
+formatting journals with LaTeX that I ran into:
+
+8a. n-column layout with n>2
+8b. a new kind of break instruction, for n=2, that allows you to do
+
+          ---------------------            ---------------------
+          | aaaaaaa | aaaaaaa |            | aaaaaaa | bbbbbbb |
+          | aaaaaaa | aaaaaaa |            | aaaaaaa | bbbbbbb |
+          | aaaaaaa | aaaaaaa |            | aaaaaaa | bbbbbbb |
+          ---------------------            | aaaaaaa | bbbbbbb
+          |     HHHHHHHHH     | instead of | aaaaaaa   bbbbbbb |
+          ---------------------            | aaaaaaa | bbbbbbb |
+          | bbbbbbb | bbbbbbb |            |         | bbbbbbb |
+          | bbbbbbb | bbbbbbb |            |   HHH   | bbbbbbb |
+          | bbbbbbb | bbbbbbb |            |  HHHHH  | bbbbbbb |
+          | bbbbbbb | bbbbbbb |            | bbbbbbb | bbbbbbb |
+          ---------------------            ---------------------
+
+where `aaaaaaa' is the last part of an article, `bbbbbbb' the start of a
+new one, and `HHHHHHH' the header.
+
+9. One- and two-column floats in two-column formatting.
+One-column floats and two-column floats are separate classes and only
+the order within one class is respected by the output routine. Simply
+put: you can get figure 3 BEFORE figure 2, if one of them is one-column
+and the other two-column.
+
+10. Bibliography. Include tools for some of the useful things in, e.g.,
+AIP.sty, such as collapsing citations into ranges.
+
+11. Parametrization of words like `Figure' and 'Chapter' in document
+styles. Extremely logical to Europeans -- think about the multi-lingual
+EG!. Leslie refused to implement this when he was asked in TeXhax.
+WG 13 is working on a BABEL.sty, a pan-European version of Hubert
+Partl's (HP knows and agrees) GERMAN.sty, that solves this. Our own
+Dutch document styles parametrize these terms.
+
+12. More than just the American convention for quoting: ` ... ' and ``
+... '' is not enough.
+
+
+Guess I had more to say than I thought! It's a mixture of all kinds of
+things, but maybe you can find some useful things in it.
+
+        Nico
+---------------------------------------------------------------------
+P.S. Nodename to be used DRUEDS2 (EARN/Bitnet nodename)
+.... Do not use nodename RUIPC1E (internal use only)
+
+
+

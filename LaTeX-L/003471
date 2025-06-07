@@ -1,0 +1,395 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["10201" "Mon" "20" "December" "1999" "13:49:56" "+0100" "Javier Bezos" "jbezos@ARRAKIS.ES" nil "349" "A couple of TOC templates (2)" "^Date:" nil nil "12" nil nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+Received: via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 21 Dec 1999 02:54:23 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+	by mailserver2.zdv.Uni-Mainz.DE (8.9.1b+Sun/8.9.1) with ESMTP id CAA07666
+	for <schoepf@mailserver.zdv.uni-mainz.de>; Tue, 21 Dec 1999 02:54:22 +0100 (MET)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id CAA21968
+	for <schoepf@UNI-MAINZ.DE>; Tue, 21 Dec 1999 02:54:18 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.1FA516A0@mail.listserv.gmd.de>; Tue, 21 Dec 1999 2:54:12 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445381 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 21 Dec 1999 02:53:24 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id CAA02658 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Tue, 21
+          Dec 1999 02:53:22 +0100 (MET)
+Received: from ssmtp01.arrakis.isp ([212.59.199.83]) by relay.uni-heidelberg.de
+          (8.9.1b+Sun/8.9.1) with ESMTP id CAA19197 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Tue, 21 Dec 1999 02:54:02
+          +0100 (MET)
+Received: from [195.5.78.82] ([195.5.78.82]) by ssmtp01.arrakis.isp (Netscape
+          Messaging Server 4.1 Nov 19 1999 19:47:43) with SMTP id FN1IB701.Y2T
+          for <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 20 Dec 1999 13:49:55
+          +0100
+x-sender: jbezos@pop.arrakis.es
+x-mailer: Claris Emailer 2.0, March 15, 1997
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199912210154.CAA19197@relay.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 20 Dec 1999 13:49:56 +0100
+From: Javier Bezos <jbezos@ARRAKIS.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      A couple of TOC templates (2)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3471
+
+% General commands
+% A level register. Explicit numbers because they are
+% used in csnames.
+
+\let\ttl@prefix\@empty
+
+\def\ttl@setlevels#1#2{%
+  \count@=#1
+  \@for\ttl@a:=#2\do{%
+    \expandafter\edef\csname ttll@\ttl@prefix\ttl@a\endcsname
+           {\the\count@}%
+    \advance\count@\@ne}}
+
+\def\ttl@levels{{-1}{part,chapter,section,subsection,subsubsection,%
+      paragraph,subparagraph}}
+
+\@ifundefined{chapter}
+ {\def\ttl@levels{{\z@}{part,section,subsection,%
+      subsubsection,paragraph,subparagraph}}}
+ {\def\ttl@levels{{\m@ne}{part,chapter,section,subsection,
+      subsubsection,paragraph,subparagraph}}}
+
+\expandafter\ttl@setlevels\ttl@levels
+
+% We make sure that a series of * entries are finished and
+% that a \titlecontents in the middle of a document is
+% written to the right file.
+
+\newcommand\contentsuse[2]{%
+  \expandafter\def\csname ttlx@#1\endcsname{#2}%
+  \expandafter\def\csname ttll@#1\endcsname{-1000}%
+  \AtEndDocument{\addtocontents{#2}{\protect\ttl@finish}}}
+
+\contentsuse{figure}{lof}
+\contentsuse{table}{lot}
+\AtEndDocument{\addtocontents{toc}{\protect\ttl@finish}}
+
+\def\ttl@finish{%
+  \ifttl@fromblock
+    \csname ttle@\ttl@lasttoc\endcsname
+    \@@par
+    \endgroup
+    \global\ttl@fromblockfalse
+  \fi}
+
+% There is a further tag
+% ttle@:  ending punctuacion
+%
+% The two basic commands:
+
+\newcommand\contentsmargin[1][\z@]{%
+  \def\ttl@corr{#1}\def\@pnumwidth}
+
+\newcommand\ttl@margin[2][\z@]{%
+  \def\ttl@corr{#1}%
+  \advance\rightskip-\@pnumwidth\relax
+  \advance\rightskip#1\relax
+  \def\@pnumwidth{#2}}
+
+%% titlecontents deals with concepts, not commands; hence no escape
+
+\newcommand\titlecontents{%
+  \@ifstar{\ttl@contents{\z@}}
+          {\ttl@contents{\@ne}}}
+
+\def\ttl@contents#1#2{%
+  \@ifnextchar[{\ttl@contents@x{#1}{#2}}
+               {\PackageError{titletoc}{Unimplemented}%
+                {The optional argument is currently mandatory}}}%
+
+\def\ttl@contents@x#1#2[#3]#4#5#6#7{%
+  \@ifnextchar[{\ttl@contents@i{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+               {\ttl@contents@i{#1}{#2}{#3}{#4}{#5}{#6}{#7}[]}}
+
+\def\ttl@contents@i#1#2#3#4#5#6#7[#8]{%
+  \ifcase#1
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+  {\@ifnextchar[{\ttl@contents@ii{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}}
+                {\ttl@contents@ii{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}[]}}
+  {\ttl@contents@ii{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}[]}}
+
+\def\ttl@contents@ii#1#2#3#4#5#6#7#8[#9]{%
+  \expandafter\def\csname l@#2\endcsname
+    {\ttl@tocentry{#1}{#2}{#3}{#4}{{#5}{#6}}{#7}{#8}}
+  \expandafter\def\csname ttle@#2\endcsname{#9}}
+
+\begingroup
+\catcode`\-=12\catcode`\>=12
+\gdef\ttl@strip#1->#2\@@#3{\def#3{#2}}
+\endgroup
+
+\AtBeginDocument{%
+  \let\ttl@change\ttl@contents@ii
+  \def\ttl@contents@ii#1#2#3#4#5#6#7#8[#9]{%
+    \def\ttl@a{\ttl@change{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}[#9]}
+    \expandafter\ttl@strip\meaning\ttl@a\@@\ttl@a
+    \addtocontents
+     {\expandafter\ifx\csname ttlx@#2\endcsname\relax
+        toc%
+      \else
+        \csname ttlx@#2\endcsname
+      \fi}%
+     {\ttl@a}}}
+
+% Printing the toc entry
+% ~~~~~~~~~~~~~~~~~~~~~~
+
+\def\ttl@lasttoc{figure} % An inital dummy assignment
+
+% When \contentsafter is called \ttl@b is the current level and
+% \ttl@a the previous level.
+
+\newcommand\contentsafter[4]{%
+  \count@\ttl@a
+  \advance\count@-\ttl@b
+  \advance\count@\@ne
+  \ifcase\count@#1\or#2\or#3\or#4\else
+    \PackageError{titletoc}{Unknown separation punctuation}
+      {Punctuation for separating levels in blocked\MessageBreak
+      toc entries are defined for the most important\MessageBreak
+      cases only. See manual for further information}%
+  \fi}
+
+% 1 ifblock, 2 sect name, 3 left, 4 before,
+% 5 {with}{without}, 6 filler/page, 7 after 8 title 9 pageno
+
+\def\ttl@tocentry#1#2#3#4#5#6#7#8#9{%
+  \edef\ttl@b{\csname ttll@#2\endcsname}%
+  \ifnum\ttl@b>\c@tocdepth\else
+    \ifnum\ttl@b<\ttl@toctop\else
+      \edef\ttl@a{\csname ttll@\ttl@lasttoc\endcsname}%
+%      \gdef\thecontentspage{#9}%    Moved to templates
+%      \global\let\thecontentslabel\@empty
+%      \ttl@numsecfalse
+%       \sbox\z@{%  Unused box. It just catch the numberline
+%
+\def\numberline##1{\global\ttl@numsectrue\gdef\thecontentslabel{##1}}%
+%         #8}%
+      \ifttl@fromblock
+        \ifcase#1\relax
+          {\ttl@lastafter}%
+        \else
+          {\csname ttle@\ttl@lasttoc\endcsname}%
+          \@@par
+          \endgroup
+          \@firstoftwo
+        \fi
+      \else
+        \begingroup
+        \ifnum\ttl@b>\ttl@a
+          \nobreak
+        \else\ifnum\ttl@b<\ttl@a
+        \addpenalty{\@secpenalty}%
+        \else
+          \addpenalty{\z@}%
+        \fi\fi
+        \ifcase#1\relax\else\interlinepenalty\@M\fi
+        \parindent\z@
+        \setlength\leftskip{#3}%
+        \let\contentsmargin\ttl@margin
+        \def\ttl@makeline##1{##1}%
+        #4%
+        \setlength\rightskip{\@pnumwidth}%
+        \addtolength{\parfillskip}{-\ttl@corr}%
+        \addtolength{\rightskip}{\ttl@corr}%
+        \vskip \z@ \@plus .1\p@
+        \nobreak
+        \let\ttl@leaders\leaders
+      \fi
+      \def\numberline##1{\ignorespaces}%
+      \ifttl@numsec
+        {\leavevmode\strut\@firstoftwo#5{#8}\strut\kern\z@}%
+      \else
+        {\leavevmode\strut\@secondoftwo#5{#8}\strut\kern\z@}%
+      \fi
+      {#6}%
+      \ifcase#1\relax
+        \global\ttl@fromblocktrue
+        \protected@xdef\ttl@lastafter{#7}%
+      \else
+        \@@par
+        \nobreak
+        #7%
+        \endgroup
+        \global\ttl@fromblockfalse
+      \fi
+      \xdef\ttl@lasttoc{#2}%
+    \fi
+  \fi
+  \ignorespaces}
+
+\ExecuteOptions{leftlabels,nodotinlabels}
+
+\ProcessOptions
+
+% [...]
+
+\def\ttl@toctop{-1000}
+
+%[...]
+
+\@tempskipa\@pnumwidth
+\edef\@pnumwidth{\the\@tempskipa}
+\advance\@tempskipa-\@tocrmarg
+\edef\ttl@corr{-\the\@tempskipa}
+
+% Now the templates:
+\IgnoreWhiteSpace
+
+\newdimen\@tempdimd
+\newdimen\@tempdime
+\DeclareTemplateType{contentsobject}{7}
+\DeclareTemplateType{processcontents}{0}
+\def\comma{,}
+\DeclareTemplate{contentsobject}{JB1}{7}{
+  pre-action       =f0 []         \COpre@action,
+  post-action      =f0 []         \COpost@action,
+  decls            =f0 []         \COobject@decl,
+  left-margin      =l  [15pt]     \@tempdimd,
+  right-margin     =l  [\@pnumwidth]  \@tempdime,
+  right-adjust     =l  [\ttl@corr]    \@tempdimb,
+  label-format     =f0 [\thecontentslabel]  \COnumber@format,
+  label-width      =l  [15pt]     \@tempdima,
+  title-format     =f1 [#1]       \COtitle@format,
+  title-format-nolabel =f1 [\COtitle@format{#1}]  \COtitle@format@nolbl,
+  page-format      =f1 [#1]       \COpnum@format,
+  leaders-text     =f0 [.]        \COleaders@action,
+  leaders-width    =l  [1pc]      \@tempdimc
+ }
+ {\IfNoValueTF{#4}
+   {\let\thecontentslabel\@empty
+    \ttl@numsecfalse}
+   {\gdef\thecontentslabel{#4}
+    \ttl@numsectrue}
+  \gdef\thecontentspage{#7}
+  \DoParameterAssignments
+  \ttl@tocentry
+   {\@ne}
+   {#3}
+   {\@tempdimd}
+   {\contentsmargin[\@tempdimb]{\@tempdime}
+    \COpre@action
+    \COobject@decl}
+   {
+     {\contentslabel[\COnumber@format]{\@tempdima}\COtitle@format}
+     {\hspace*{-\@tempdima}\COtitle@format@nolbl}
+   }
+   {\titlerule*[\@tempdimc]{\COleaders@action}
+    \contentspage[\COpnum@format{\thecontentspage}]}
+   {\COpost@action}
+   {#5}
+   {}}
+
+
+\DeclareTemplate{contentsobject}{JB2}{7}{
+  pre-action       =f0 []         \COpre@action,
+  post-action      =f0 []         \COpost@action,
+  decls            =f0 []         \COobject@decl,
+  left-margin      =l  [15pt]     \@tempdimd,
+  right-margin     =l  [\@pnumwidth]    \@tempdime,
+  label-format     =f0 [\thecontentslabel.\ ]  \COnumber@format,
+  title-format     =f1 [#1]       \COtitle@format,
+  title-format-nolabel =f1 [\COtitle@format{#1}]  \COtitle@format@nolbl,
+  page-format      =f1 [{,~#1}]     \COpnum@format,
+  punct-sep        =f0 [;\ ]        \COpunct@sep,
+  punct-end        =f0 [.]        \COpunct@end,
+  punct-sup        =f0 [;\ ]        \COpunct@sup,
+  punct-sup-sup    =f0 [;\ ]        \COpunct@supsup,
+  punct-sub        =f0 [;\ ]        \COpunct@sub
+ }
+ {\IfNoValueTF{#4}
+   {\let\thecontentslabel\@empty
+    \ttl@numsecfalse}
+   {\gdef\thecontentslabel{#4}
+    \ttl@numsectrue}
+  \gdef\thecontentspage{#7}
+  \DoParameterAssignments
+  \expandafter\protected@xdef\csname ttle@#3\endcsname{\COpunct@end}
+  \ttl@tocentry
+   {\z@}
+   {#3}
+   {\@tempdimd}
+   {\contentsmargin[\@tempdimb]{\@tempdime}
+    \COpre@action
+    \COobject@decl}
+   {
+     {\COnumber@format\COtitle@format}
+     {\COtitle@format@nolbl}
+   }
+   {\COpnum@format{\thecontentspage}}
+   {\protect\contentsafter{\COpunct@sub}{\COpunct@sep}
+                          {\COpunct@sup}{\COpunct@supsup}}
+   {#5}
+   {}}
+
+\DeclareTemplate{processcontents}{JK}{0}{
+  start-action   =f0 [\relax]   \COstart@action,
+  end-action     =f0 [\relax]   \COend@action,
+  file-name      =n  [\jobname] \COfile@name,
+  file-extension =n             \COextension,
+  contents-depth =c  [2]        \c@tocdepth,
+  collection-id  =n  []         \COcollection@id,
+  heading        =f0 [\section*]\COheading,   %actully use some instance
+  name           =n  [\contentsname] \COname,
+  header-format  =f0 [\MakeUpperCase] \COheader@format
+}
+{
+ \DoParameterAssignments
+ \COheading{\COname
+      \@mkboth{\CO@header@format\COname}{\CO@header@format\COname}}
+ \begingroup
+ \UseCollection{contentsobject}{\COcollection@id}  %Is this wrong?
+ \makeatletter
+ \COstart@action
+ \@input{\COfile@name.\COextension}
+ \if@filesw
+   \expandafter\newwrite\csname tf@\COextension\endcsname
+   \immediate\openout \csname tf@\COextension\endcsname
+                            \COfile@name.\COextension\relax
+ \fi
+ \@nobreakfalse
+ \endgroup
+}
+
+
+\DeclareInstance{processcontents}{tableofcontents}{JK}{
+   file-extension = toc
+  }
+
+\DeclareDocumentCommand{\contentsobject}{mmmmmmm}
+  {\UseInstance{contentsobject}{#3}{#1}{#2}{#3}{#4}{#5}{#6}{#7}}
+
+\DeclareDocumentCommand{\JKtableofcontents}{}{
+  \UseInstance{processcontents}{tableofcontents}
+  }
+
+\newcounter{contentscounter}
+\DeclareDocumentCommand{\addcontentsobject}{mmmm}{
+\stepcounter{contentscounter} %or refstep?
+\addtocontents{toc}{
+
+\contentsobject{\number\c@contentscounter}{#1}{#2}{#3}{#4}{}{\thepage}}}
+
+\endinput
+============================== xtitletoc.sty ends
+

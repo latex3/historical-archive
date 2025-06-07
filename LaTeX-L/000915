@@ -1,0 +1,81 @@
+X-VM-VHeader: ("Date:" "Resent-Date:" "From:" "Sender:" "Resent-From" "Originally-From:" "Originally-To:" "To:" "Apparently-To:" "Cc:" "Subject:") nil
+X-VM-Bookmark: 66
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2341" "Tue" "2" "February" "93" "21:02:47" "CET" "Michael Downes" "MJD@MATH.AMS.ORG" nil "52" "document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA14299; Tue, 2 Feb 93 21:10:38 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA20589; Tue, 2 Feb 93 21:10:35 +0100
+Message-Id: <9302022010.AA20589@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3658; Tue, 02 Feb 93 21:11:38 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7768;
+ Tue, 02 Feb 93 21:11:36 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 7766;
+ Tue, 02 Feb 93 21:11:34 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 2 Feb 93 21:02:47 CET
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 915
+
+
+There has been some past discussion about the organization of
+documentstyles into classes: all members of a class should be
+interchangeable in the argument of \documentstyle without requiring
+any changes in the document.
+
+Which leads to my question: Suppose one book-class documentstyle has
+
+  \def\thechapter{\Roman{chapter}}
+
+and another has
+
+  \def\thechapter{\arabic{chapter}}
+
+Are these documentstyles interchangeable? Theoretically---supposing
+that the author has carefully used labels and refs---a document will
+produce `equivalent' output under each documentstyle, with only 1 and I,
+2 and II, 3 and III, ... interchanged. But I hesitate to consider
+this true equivalence; the number forms used in a document are, I
+would argue, part of the logical structure of the document, rather
+than part of the superficial presentation details. If so, then
+documents of the same class are interchangeable only if:
+
+(1) All documentstyles in a given class conform to a single numbering
+system for all predefined environments, sectioning commands, and other
+numbered elements.
+
+(2) Any numbering changes are done in the individual documents.
+
+On the other hand, it seems wrong to forbid a documentstyle from ever
+changing the default numbering of any element. Or at least, current
+practice among publishers fairly often includes specifying a
+normal numbering style for numbered lists and other numbered elements.
+What should a LaTeX documentstyle writer do if faced with this
+dilemma? Change the numbering and say that the document is a different
+class? Or put all the numbering changes into a documentstyle option
+and require that option to be specified in the individual documents?
+Or?
+
+Although it may not have theoretical significance, there seems to be a
+fairly important practical problem for publishers, if they receive an
+electronic document containing the declaration \documentstyle{xxxbook}
+and they want to change the documentstyle to their own book-class
+style `yyybook'. If there are any numbering differences, then it's
+quite likely that the entire book will have to be proofread word by
+word to catch any instances where the author neglected to use \ref
+properly, e.g. by writing "in item~(iii)" instead of "in
+item~\ref{abc}".
+
+Comments? Counterarguments?
+
+Michael Downes                              mjd@math.ams.org (Internet)
+

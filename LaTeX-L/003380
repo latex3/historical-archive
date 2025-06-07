@@ -1,0 +1,117 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2554" "Mon" "1" "November" "1999" "09:09:14" "-0500" "Michael J. Downes" "mjd@AMS.ORG" nil "77" "Combining sequences of identical elements" "^Date:" nil nil "11" nil "Combining sequences of identical elements" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id PAA15612
+	for <schoepf@UNI-MAINZ.DE>; Mon, 1 Nov 1999 15:08:58 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.8DBF5D7E@mail.listserv.gmd.de>; Mon, 1 Nov 1999 15:09:27 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445183 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 1 Nov 1999 15:09:23 +0100
+Received: from sun06.ams.org (sun06.ams.org [130.44.1.6]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id PAA16801 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 1 Nov 1999 15:09:16 +0100 (MET)
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0FKI00A02VBEPX@sun06.ams.org> for LATEX-L@URZ.UNI-HEIDELBERG.DE;
+          Mon, 1 Nov 1999 09:09:14 -0500 (EST)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 77
+References: <199910311329.OAA00567@istrati.zdv.uni-mainz.de>
+Message-ID:  <199911011409.PAA16801@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  Frank Mittelbach's message of Sun, 31 Oct 1999 14:29:20 +0100
+Date:         Mon, 1 Nov 1999 09:09:14 -0500
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Combining sequences of identical elements
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3380
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+>  > >  text text\footnote{first}\footnote{second}
+>  > >
+>  > >in most case this would be supposed to come out as
+>  > >
+>  > >            1, 2
+>  > >  text text
+
+> okay, i've convinced myself too that this boolean would be useful whether or
+> not it is passed onto the user syntax level (instead one could think, for
+> example, of extending xparse to be able to check for a certain command
+> following and if so setting such a boolean)
+
+I would just like to give some more examples where the idea of combined
+formatting for consecutive elements of the same type might be
+applicable:
+
+  \cite{foo}\cite{bar}  -> [19,35] instead of [19] [35]
+
+The above usage would allow each \cite to have its own optional arg,
+something that is not possible with current syntax.
+
+  \newcommand{\secref}[1]{Section~\ref{#1}}
+  ...
+  \secref{foo}\secref{bar}
+
+Here one might like to have the pair of refs expand to
+
+  Sections~\ref{foo} and \ref{bar}
+
+or for three or more
+
+  Sections~\ref{foo}\textendash\ref{baz}
+
+A similar idea: author names in a bibitem (if bibitems were done with
+logical markup instead of preprocessed by BibTeX):
+
+  \bibitem{foo} \author{First Author} \author{Second Author} ...
+
+where one might like to have consecutive author names automatically
+combined into a list form "A, B, and C" or whatever. Such a reformatting
+is already done by amsart.cls for the author names printed in
+\maketitle but that is a different mechanism because accumulating the
+data and printing happen in two different steps and there is a
+definite stopping point (\maketitle) where it is known that the list
+of author elements is complete.
+
+Then consider
+
+  \[...\]
+  \[...\]
+  etc
+
+which an author might reasonably expect to be combined into a group of
+equations (with differences in the vertical spacing and page-break
+penalties). One might even say that the equations in a consecutive group
+should by default get aligned on the relation symbols---but then it
+becomes clear that in some cases the author will want to override the
+default whichever way it goes: i.e., need to specify an option for the
+whole group. This suggests I think that group markup would be a good
+idea after all:
+
+  \begin{eqngroup}[align=false]
+  \[...\]
+  \[...\]
+  ...
+  \end{eqngroup}
+
+\citegroup[maybe-some-options]{\cite{...}\cite{...}...}
+
+\footnotegroup{\footnote{...}\footnote{...}...}
+
+(One might like to have a smart editor that automatically adds the group
+markup when you put in the second footnote :-)
+
+Michael Downes
+

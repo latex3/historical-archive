@@ -1,0 +1,320 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Fri, 6 Dec 2002 00:22:07 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id gB5NM4Tp003490 for <rainer.schoepf@PROTEOSYS.COM>; Fri, 6 Dec 2002 00:22:05 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay2.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id gB5NGUc3004723; Fri, 6 Dec 2002 00:16:30 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C29CB5.209D7980"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id gB5N0ABY016189; Fri, 6 Dec 2002 00:10:53 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 6335 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 6 Dec 2002 00:10:53 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id gB5Mq8Ao016118 for          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 5 Dec 2002 23:52:08 +0100
+Received:  from mailgate.rz.uni-karlsruhe.de (exim@mailgate.rz.uni-karlsruhe.de          [129.13.64.97]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP          id gB5MvExK029359 for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 5          Dec 2002 23:57:14 +0100 (MET)
+Received:  from g113.hadiko.de (root@hadig113.hadiko.uni-karlsruhe.de          [172.20.43.13]) by mailgate.rz.uni-karlsruhe.de with esmtp (Exim 3.36          #1) id 18K4vh-0004py-00; Thu, 05 Dec 2002 23:57:13 +0100
+Received:  (from nil@localhost) by g113.hadiko.de (8.11.1/8.11.1/Debian          8.11.0-6) id gB5MvDv09214; Thu, 5 Dec 2002 23:57:13 +0100
+In-Reply-To:  <15853.10032.823833.338602@istrati.mittelbach-online.de>
+References: <200212031641.gB3Gf27K009771@sun.dante.de>            <15853.10032.823833.338602@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 05 Dec 2002 23:22:08.0005 (UTC) FILETIME=[2136D350:01C29CB5]
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.11 (www dot roaringpenguin dot com slash mimedefang)
+X-Spam-Score: -2.7 () CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT
+Content-class: urn:content-classes:message
+Subject:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Date: Thu, 5 Dec 2002 23:57:12 +0100
+Message-ID: A<20021205225712.GA9171@g113.hadiko.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: latex/3480: Support for UTF-8 missing in inputenc.sty
+Thread-Index: AcKctSFptP2aI1DbR8K8gLwhwA6qsQ==
+From: "Dominique Unruh" <dominique@UNRUH.DE>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4375
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C29CB5.209D7980
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Short info on what this discussion is about:
+
+We were discussing the possibility of adding UTF-8 inputenc support to
+LaTeX. The existing package ucs.sty is deemed to big/resource
+consuming for inclusion into the kernel. This discussion is now moved
+onto LATEX-L.
+
+Frank wrote:
+> it seems important to me to follow up the question Chris has posted
+> about what are input and what are output (font) encodings.
+
+Yes, I do understand this difference. But when adding UTF-8 support,
+it is probably even unwise to load all supported UTF
+sequences. Therefore I proposed to add to the fontenc an information,
+which Unicode range is to be loaded for this fontencoding. To clarify
+this, here an example:
+
+if we have code like the following:
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+
+the file t2aenc.def could contain a line like:
+
+\FontencUnicodeRange{"400-"4FF}
+
+and \AtBeginDocument UTF-8 sequences would only be loaded for the
+ranges given by the fontencodings, thus taking the need from the user
+to decide by himself, which sequences to load. In case no UTF-8 is
+needed, the \FontencUnicodeRange's are ignored.
+
+Of course, the fontencoding->Unicode-Range mappings could also be in
+some extra file, thus removing the need to change the existing
+fontencodings.
+
+> commands, eg instead of
+> \DeclareInputText{164}{\textcurrency}
+> we probably need something like
+> [...]
+> =
+\DeclareUTFeightInputText{<whatever-number-or-identification>}{\textcurre=
+ncy}
+
+Code for this can be extracted from utf8.def as with
+ucs.sty. Interested people could have a look at the following macros
+in this file (unfortunately mostly undocumented (yet)):
+
+\utf@viii@map{number} constructs the UTF-8 sequence formed \u8-n-BCD
+where n is the first character of the sequence (as decimal number),
+and BCD are the (one, two or three) further characters (as
+characters). Here the macros content gets just number, but the macros
+can easily be changes to define it to anything give
+(e.g. \textcurrency).
+
+\utf@viii@undef{number}{char}{char}{char} calculates the Unicode
+number for some UTF-8 sequence (given again as number, char, char,
+char, with \@nil instead of the chars for shorter sequences.)
+
+A UTF-8 sequence starter would then have to be defined approximately
+as (here the example for the sequence starter "E3 =3D 227)
+
+\def\^^E3#1#2{\ifx\csname u8-227-#1#2\endcsname\relax
+  \utf@viii@undef{227}#1#2\@nil\else
+  \csname u8-227-#1#2\endcsname\fi}
+
+\utf@viii@make does the job of defining such macros (containing some
+additional code)
+
+Chris wrote:
+> I tried to understand Dominique's approach and to compare it with
+> David's but both, as on CTAN, consist of undocumented code ... so
+> I gave up.  Have you looked at David's code?
+
+My code is documented (though only partly). The comments can be found
+in utf8.dtx, or in the files in the CVS archive (see
+http://www.unruh.de/DniQ/latex/unicode/). I don't know David's code,
+could you give me a CTAN location?
+
+DniQ.
+
+------_=_NextPart_001_01C29CB5.209D7980
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: latex/3480: Support for UTF-8 missing in =
+inputenc.sty</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Short info on what this discussion is about:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>We were discussing the possibility of adding UTF-8 =
+inputenc support to</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX. The existing package ucs.sty is deemed to =
+big/resource</FONT>
+
+<BR><FONT SIZE=3D2>consuming for inclusion into the kernel. This =
+discussion is now moved</FONT>
+
+<BR><FONT SIZE=3D2>onto LATEX-L.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; it seems important to me to follow up the =
+question Chris has posted</FONT>
+
+<BR><FONT SIZE=3D2>&gt; about what are input and what are output (font) =
+encodings.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, I do understand this difference. But when adding =
+UTF-8 support,</FONT>
+
+<BR><FONT SIZE=3D2>it is probably even unwise to load all supported =
+UTF</FONT>
+
+<BR><FONT SIZE=3D2>sequences. Therefore I proposed to add to the fontenc =
+an information,</FONT>
+
+<BR><FONT SIZE=3D2>which Unicode range is to be loaded for this =
+fontencoding. To clarify</FONT>
+
+<BR><FONT SIZE=3D2>this, here an example:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>if we have code like the following:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\usepackage[utf8]{inputenc}</FONT>
+
+<BR><FONT SIZE=3D2>\usepackage[T2A]{fontenc}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>the file t2aenc.def could contain a line like:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\FontencUnicodeRange{&quot;400-&quot;4FF}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>and \AtBeginDocument UTF-8 sequences would only be =
+loaded for the</FONT>
+
+<BR><FONT SIZE=3D2>ranges given by the fontencodings, thus taking the =
+need from the user</FONT>
+
+<BR><FONT SIZE=3D2>to decide by himself, which sequences to load. In =
+case no UTF-8 is</FONT>
+
+<BR><FONT SIZE=3D2>needed, the \FontencUnicodeRange's are =
+ignored.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Of course, the fontencoding-&gt;Unicode-Range mappings =
+could also be in</FONT>
+
+<BR><FONT SIZE=3D2>some extra file, thus removing the need to change the =
+existing</FONT>
+
+<BR><FONT SIZE=3D2>fontencodings.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; commands, eg instead of</FONT>
+
+<BR><FONT SIZE=3D2>&gt; \DeclareInputText{164}{\textcurrency}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; we probably need something like</FONT>
+
+<BR><FONT SIZE=3D2>&gt; [...]</FONT>
+
+<BR><FONT SIZE=3D2>&gt; =
+\DeclareUTFeightInputText{&lt;whatever-number-or-identification&gt;}{\tex=
+tcurrency}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Code for this can be extracted from utf8.def as =
+with</FONT>
+
+<BR><FONT SIZE=3D2>ucs.sty. Interested people could have a look at the =
+following macros</FONT>
+
+<BR><FONT SIZE=3D2>in this file (unfortunately mostly undocumented =
+(yet)):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\utf@viii@map{number} constructs the UTF-8 sequence =
+formed \u8-n-BCD</FONT>
+
+<BR><FONT SIZE=3D2>where n is the first character of the sequence (as =
+decimal number),</FONT>
+
+<BR><FONT SIZE=3D2>and BCD are the (one, two or three) further =
+characters (as</FONT>
+
+<BR><FONT SIZE=3D2>characters). Here the macros content gets just =
+number, but the macros</FONT>
+
+<BR><FONT SIZE=3D2>can easily be changes to define it to anything =
+give</FONT>
+
+<BR><FONT SIZE=3D2>(e.g. \textcurrency).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\utf@viii@undef{number}{char}{char}{char} calculates =
+the Unicode</FONT>
+
+<BR><FONT SIZE=3D2>number for some UTF-8 sequence (given again as =
+number, char, char,</FONT>
+
+<BR><FONT SIZE=3D2>char, with \@nil instead of the chars for shorter =
+sequences.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A UTF-8 sequence starter would then have to be defined =
+approximately</FONT>
+
+<BR><FONT SIZE=3D2>as (here the example for the sequence starter =
+&quot;E3 =3D 227)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\^^E3#1#2{\ifx\csname =
+u8-227-#1#2\endcsname\relax</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \utf@viii@undef{227}#1#2\@nil\else</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \csname u8-227-#1#2\endcsname\fi}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\utf@viii@make does the job of defining such macros =
+(containing some</FONT>
+
+<BR><FONT SIZE=3D2>additional code)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Chris wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I tried to understand Dominique's approach and =
+to compare it with</FONT>
+
+<BR><FONT SIZE=3D2>&gt; David's but both, as on CTAN, consist of =
+undocumented code ... so</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I gave up.&nbsp; Have you looked at David's =
+code?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>My code is documented (though only partly). The =
+comments can be found</FONT>
+
+<BR><FONT SIZE=3D2>in utf8.dtx, or in the files in the CVS archive =
+(see</FONT>
+
+<BR><FONT SIZE=3D2><A =
+HREF=3D"http://www.unruh.de/DniQ/latex/unicode/">http://www.unruh.de/DniQ=
+/latex/unicode/</A>). I don't know David's code,</FONT>
+
+<BR><FONT SIZE=3D2>could you give me a CTAN location?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>DniQ.</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C29CB5.209D7980--
+

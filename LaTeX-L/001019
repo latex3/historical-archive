@@ -1,0 +1,120 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2980" "Mon" "29" "March" "93" "08:31:46" "BST" "Mike Piff" "M.Piff@SHEFFIELD.AC.UK" nil "93" "Re: Bug in LaTeX." "^Date:" nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA11828; Mon, 29 Mar 93 10:44:30 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA13246; Mon, 29 Mar 93 10:44:25 +0200
+Message-Id: <9303290844.AA13246@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0110; Mon, 29 Mar 93 10:44:22 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0705;
+ Mon, 29 Mar 93 10:44:19 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 0703;
+ Mon, 29 Mar 93 10:44:15 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Mon, 29 Mar 93 08:31:46 BST
+From: Mike Piff <M.Piff@SHEFFIELD.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: Bug in LaTeX.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1019
+
+
+> Date: Thu, 25 Mar 93 14:40:47 GMT
+> Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.EARN>
+> Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.EARN>
+> From: CHAA006@vax.rhbnc.ac.uk
+> Subject: Bug in LaTeX.
+> To: Multiple Recipients of <LATEX-L@DHDURZ1.EARN>
+>
+>
+> The following short LaTeX-2.09 file appears to demonstrate a bug in LaTeX,
+> which goes into an infinite loop; the significant part of the log file is
+> appended.  The problem was reported by Adrian Johnstone of the Department of
+> Computer Science at RHBNC.
+>
+> 					Philip Taylor, RHBNC
+> --------
+> \tracingall
+> \documentstyle {article}
+> \begin {document}
+> \tracingall
+> \begin {enumerate}
+> \section {foo}
+> \end {enumerate}
+> \end {document}
+> --------
+> This is TeX, Version 3.141 [PD VMS 3.4] (preloaded format=lplain 92.7.10)  25
+ MA
+>  R 1993 14:01
+> [...]
+> \@xsect #1->\@tempskipa #1\relax \ifdim \@tempskipa >\z@ \par \nobreak \vskip
+ \
+> @tempskipa \@afterheading \else \global \@nobreakfalse \global \@noskipsectrue
+> \everypar {\if@noskipsec \global \@noskipsecfalse \clubpenalty \@M \hskip -\pa
+ r
+> indent \begingroup \@svsechd \endgroup \unskip \hskip -#1\relax \else \clubpen
+ a
+> lty \@clubpenalty \everypar {}\fi }\fi \ignorespaces
+> #1<-2.3ex plus .2ex
+> {\skip19}
+> {\relax}
+> {\ifdim}
+> {true}
+>
+> \par ->\if@newlist \else {\@@par }\fi
+> {\iftrue}
+> {true}
+> {\else}
+>
+> \nobreak ->\penalty \@M
+> {\penalty}
+> {\vskip}
+>
+> \par ->\if@newlist \else {\@@par }\fi
+> {\iftrue}
+> {true}
+> {\else}
+> {\vskip}
+>
+> \par ->\if@newlist \else {\@@par }\fi
+> {\iftrue}
+> {true}
+> {\else}
+> {\vskip}
+>
+> [etc...]
+
+Sorry, your message has taken this long to arrive.
+
+This is a well-known one, which I believe manifests itself whenever
+a \begin{enumerate} is followed bt text rather than an \item.
+Chris Rowley put me on to the solution some time ago. Somewhere in the
+TeXbook---p286 in my copy, explanation of commands incompatible with
+horizontal mode---it says that \vskip in horizontal mode causes TeX to
+output a \par token. But in this case \par is clobbered.
+
+I cured the problem locally by a bodge which caused \@donoparitem (??)
+or wherever this bug originated from to output a real \par---ie, \@@par---
+under certain circumstances, after I discovered that not putting in \item
+was one of the commonest mistakes novices made.
+
+As with all such bugs in LaTeX, they will all be solved in LaTeX-3...
+
+
+Mike
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff                      %%  e-mail:
+%% Department of Pure Mathematics   %%
+%% University of Sheffield          %%  M.Piff@sheffield.ac.uk
+%% Hicks Building                   %%  PM1MJP@derwent.shef.ac.uk
+%% Hounsfield Road                  %%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SHEFFIELD S3 7RH                 %%  Telephone: (0742) 824431
+%% England                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

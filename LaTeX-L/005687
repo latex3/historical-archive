@@ -1,0 +1,98 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 25 Feb 2009 21:49:14 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1PKpTkL026796
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 25 Feb 2009 21:51:29 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n1PKjUpm010315
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 25 Feb 2009 21:45:31 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1PI8OL3015915;
+	Wed, 25 Feb 2009 21:45:30 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 200842 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 21:45:29 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1PKjTO3022875 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:45:29 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.186]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n1PKjPim024644 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 21:45:29 +0100
+Received: from morse.mittelbach-online.de (p54A8502A.dip.t-dialin.net
+          [84.168.80.42]) by mrelayeu.kundenserver.de (node=mreu1) with ESMTP
+          (Nemesis) id 0MKv1o-1LcQdB2pHd-000Da5; Wed, 25 Feb 2009 21:45:25 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id D238360DF2; Wed, 25 Feb 2009 21:45:22 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <49A453A1.9040000@morningstar2.co.uk>
+            <18853.41885.687824.539619@morse.mittelbach-online.de>
+            <49A5A7FA.5050505@morningstar2.co.uk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1/HVzIGzYiSoba4caNKF7YXdITvDA3tY9ybYYe
+              Yg2VJmThppjUXzGPm6U7pdr5FV7pbsISZTHFWvUdFZQUArpebe
+              Z+xQyOxJEGbt0Li7d5cqA==
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18853.44514.749671.858889@morse.mittelbach-online.de>
+Date:         Wed, 25 Feb 2009 21:45:22 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Missing expl3 primitives
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <49A5A7FA.5050505@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -104 () RCVD_IN_DNSWL_MED,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Feb 2009 20:49:14.0262 (UTC) FILETIME=[84983B60:01C9978A]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5687
+
+Joseph Wright writes:
+ > The reason I'm interested in \everyeof as well is for using \scantokens
+ > in a context such as:
+ > 
+ > \def\tempa#1{%
+ >   \begingroup
+ >     % Some catcode changes
+ >     \everyeof{\noexpand}%
+ >     \endlinechar-1\relax
+ >     \edef\tempb{\scantokens{#1}}%
+ >   \expandafter\endgroup
+ >   \expandafter\def\expandafter\tempc\expandafter{\tempb}%
+ > }
+ > 
+ > which fails without the \everyeof setting. That I know of there is no
+ > way to "bundle up" the various components, so without access to
+ > \everyeof, \scantokens is not much use (at least to me).
+
+sure. well for now I would suggest to use \tex_every_eof:D knowing quite well
+you do something you shouldn't (not that you could help it at this point in
+time:-) and with the knowledge that once we come up with an interface in
+l3file or else you may have to redo that bit of code.
+
+My point is that I don't want to saction the use of the primitive by giving it
+a name
+
+but what this also tells me is that we have to perhaps even retract on
+providing \scantokens as a primitive, but instead provide a scantokens
+interface which sets up its environment carefully (by, for example, copying
+a specific toks (e.g., \l_every_rescan_end_toks to \tex_every_eof:D prior to
+calling \etex_scantokens:D) rather than providing the primitive for direct
+use.
+
+frank
+

@@ -1,0 +1,215 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4528" "Sat" "27" "November" "1999" "21:12:14" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "177" "theorem templates" "^Date:" nil nil "11" nil "theorem templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id XAA08766
+	for <schoepf@UNI-MAINZ.DE>; Sat, 27 Nov 1999 23:21:05 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.8663F388@mail.listserv.gmd.de>; Sat, 27 Nov 1999 23:20:58 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445745 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Nov 1999 23:20:33 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id XAA05102 for <latex-l@urz.uni-heidelberg.de>; Sat, 27 Nov
+          1999 23:20:31 +0100 (MET)
+Received: from downtown.oche.de (downtown.oche.de [194.94.253.3]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id XAA13050 for
+          <latex-l@urz.uni-heidelberg.de>; Sat, 27 Nov 1999 23:21:00 +0100 (MET)
+Received: from corona.oche.de (uucp@localhost) by downtown.oche.de
+          (8.9.3/8.9.3/Debian/GNU) with UUCP id XAA15267 for
+          urz.uni-heidelberg.de!latex-l; Sat, 27 Nov 1999 23:20:01 +0100
+Received: by corona.oche.de (wUUCP 1.10) id <1ja9@corona.oche.de>; Sat, 27 Nov
+          99 21:19:21 CET
+X-Mailer: AmiGate 1.6 (13.11.95)
+Message-ID:  <ddd6f38c@corona.oche.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 27 Nov 1999 21:12:14 CET
+From: Achim Blumensath <blume@CORONA.OCHE.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      theorem templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3443
+
+Hello,
+
+I've converted the amsthm style to the template system. The whole
+process was extremely painless (except for reading the AMS code),
+and the resulting code is much more readable than the original.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ |
+    //  Achim Blumensath       | \  _                        \O/ \___/\ |
+   //   blume@corona.oche.de   |-< /_\                       =o=  \ /\ \|
+ \X/    (p^2 - m^2)\psi = 0    |_/ \_                        /"\   o----|
+____________________________________________________________________\___|
+
+=== xthm.sty ===
+
+\RequirePackage{xparse}
+\RequirePackage{template}
+\IgnoreWhiteSpace
+
+\DeclareTemplateType{theoremstyle}{3}
+
+\newdimen\TSpre@skip
+\newdimen\TSpost@skip
+\newdimen\TShead@indent
+
+\DeclareTemplate{theoremstyle}{AB}{3}
+{
+  pre-skip    =l  [\DelayEvaluation{\topsep}]  \TSpre@skip,
+  post-skip   =l  [\DelayEvaluation{\topsep}]  \TSpost@skip,
+  body-style  =f0 [\itshape]                   \TSbody@style,
+  head-style  =f0 [\bfseries]                  \TShead@style,
+  note-style  =f0 [\normalfont]                \TSnote@style,
+  head-punct  =f0 [.]                          \TShead@punct,
+  head-format =f3 [\IfNoValueF{#1}{#1\space}
+                   \IfNoValueF{#2}{#2}
+                   \IfNoValueF{#3}{\space{\TSnote@style(#3)}}]
+                                        \TShead@format,
+  head-indent      =l  [0pt]            \TShead@indent,
+  post-head-action =f0 []               \TSpost@head@action
+}
+{
+  \DoParameterAssignments
+  \normalfont
+  \trivlist
+  \edef\@restorelabelsep{\labelsep\the\labelsep}
+  \labelsep.5em\relax
+  \let\thmheadnl\relax
+  \@topsep\TSpre@skip
+  \@topsepadd\TSpost@skip
+  \IfNoValueF{#1}
+    {\refstepcounter{#1}}
+  \item[
+    \normalfont
+    \hskip\labelsep
+    \TShead@style
+    \hskip\TShead@indent
+    \IfNoValueTF{#1}
+      {\TShead@format{#1}{#2}{#3}}
+      {\TShead@format{\csname the#1\endcsname}{#2}{#3}}
+    \TShead@punct]
+  \@restorelabelsep
+  \TSpost@head@action
+  \TSbody@style
+  \ignorespaces
+}
+
+\DeclareInstance{theoremstyle}{plain}{AB}{}
+
+\DeclareInstance{theoremstyle}{definition}{AB}
+{
+  body-style = \normalfont
+}
+
+\DeclareInstance{theoremstyle}{remark}{AB}
+{
+  pre-skip   = \DelayEvaluation{0.5\topsep},
+  post-skip  = \DelayEvaluation{0.5\topsep},
+  body-style = \normalfont,
+  head-style = \itshape
+}
+
+\def\@endtheorem{\endtrivlist\@endpefalse }
+
+% arguments: numbered, style, name, share counter with, label,
+%            counter relative to
+
+\DeclareDocumentCommand{\newtheorem}{smmomo}
+{
+  \expandafter\@ifdefinable\csname #3\endcsname
+  {
+    \global\expandafter\let\csname end#3\endcsname\@endtheorem
+    \IfBooleanTF{#1}
+    {
+      \expandafter\DeclareDocumentCommand\csname #3\endcsname{o}
+        {\UseInstance{theoremstyle}{#2}{\NoValue}{#5}{##1}}
+    }
+    {
+      \IfNoValueTF{#4}
+      {
+        \IfNoValueTF{#6}
+        {
+          \newcounter{#3}
+        }
+        {
+          \newcounter{#3}[#6]
+          \expandafter\xdef\csname the#3\endcsname{
+            \expandafter\noexpand\csname the#6\endcsname
+            \@thmcountersep\@thmcounter{#3}}
+        }
+        \expandafter\DeclareDocumentCommand\csname #3\endcsname{o}
+          {\UseInstance{theoremstyle}{#2}{#3}{#5}{##1}}
+      }
+      {
+        \@ifundefined{c@#4}
+        {
+          \@nocounterr{#4}
+        }
+        {
+          \expandafter\xdef\csname the#3\endcsname
+            {\expandafter\noexpand\csname the#4\endcsname}
+          \expandafter\DeclareDocumentCommand\csname #3\endcsname{o}
+            {\UseInstance{theoremstyle}{#2}{#4}{#5}{##1}}
+        }
+      }
+    }
+  }
+}
+
+=== test-xthm.tex ===
+
+\documentclass{article}
+
+\usepackage{xthm}
+
+\newtheorem{plain}{Thm}{Theorem}[section]
+\newtheorem{plain}{Prop}[Thm]{Proposition}
+\newtheorem{plain}{Lem}[Thm]{Lemma}
+\newtheorem{plain}{Cor}[Thm]{Corollary}
+\newtheorem{definition}{Def}[Thm]{Definition}
+\newtheorem*{remark}{Rem}{Remark}
+\newtheorem*{remark}{Exam}{Example}
+
+\begin{document}
+
+\section{First Section}
+
+\begin{Def}
+\emph{My package} is the \textsf{xthm} package.
+\end{Def}
+\begin{Thm}
+My package works as advertised.
+\end{Thm}
+\begin{Cor}[Achim]
+It can be used.
+\end{Cor}
+\begin{Rem}
+This is good.
+\end{Rem}
+
+\section{Second Section}
+
+\begin{Def}
+\emph{My package} is the \textsf{xthm} package.
+\end{Def}
+\begin{Thm}
+My package works as advertised.
+\end{Thm}
+\begin{Cor}[Achim]
+It can be used.
+\end{Cor}
+\begin{Rem}
+This is good.
+\end{Rem}
+
+\stop
+

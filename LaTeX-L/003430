@@ -1,0 +1,261 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["7586" "Thu" "18" "November" "1999" "21:24:51" "CET" "Achim Blumensath" "blume@CORONA.OCHE.DE" nil "222" "Re: xcontents" "^Date:" nil nil "11" nil "xcontents" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id XAA30336
+	for <schoepf@UNI-MAINZ.DE>; Thu, 18 Nov 1999 23:33:16 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.B4B90581@mail.listserv.gmd.de>; Thu, 18 Nov 1999 23:32:56 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 446033 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 18 Nov 1999 23:32:36 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id XAA16907 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 18 Nov
+          1999 23:32:35 +0100 (MET)
+Received: from downtown.oche.de (downtown.oche.de [194.94.253.3]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id XAA10593 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 18 Nov 1999 23:32:51 +0100 (MET)
+Received: from corona.oche.de (uucp@localhost) by downtown.oche.de
+          (8.9.3/8.9.3/Debian/GNU) with UUCP id XAA03812 for
+          URZ.UNI-HEIDELBERG.DE!LATEX-L; Thu, 18 Nov 1999 23:20:04 +0100
+Received: by corona.oche.de (wUUCP 1.10) id <1j3q@corona.oche.de>; Thu, 18 Nov
+          99 21:40:33 CET
+X-Mailer: AmiGate 1.6 (13.11.95)
+Message-ID:  <071c107f@corona.oche.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Thu, 18 Nov 1999 21:24:51 CET
+From: Achim Blumensath <blume@CORONA.OCHE.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: xcontents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3430
+
+Frank Mittelbach wrote:
+> thanks for enlarging the test samples this is really helping a lot
+
+Well, here is another sample. I tried to implement per chatper TOCs.
+The main problems I encountered were
+
+ o The old version of `processcontents' deletes the TOC file after
+   reading it. (So the second TOC is empty.)
+
+ o In order to have a clean interface between `processcontents' and
+   `contentsobject' I moved the test (depth > tocdepth) out of
+   the latter. Instead, `processcontents' defines a function
+   \IfPrintTOCEntry which takes the serial number, depth, and some
+   code, and decides whether the entry should be printed or not.
+
+PS: The implementation below is rather quick and ugly.
+
+Achim
+________________________________________________________________________
+                                _                             | \_____/ |
+    //  Achim Blumensath       | \  _                        \O/ \___/\ |
+   //   blume@corona.oche.de   |-< /_\                       =o=  \ /\ \|
+ \X/    (p^2 - m^2)\psi = 0    |_/ \_                        /"\   o----|
+____________________________________________________________________\___|
+
+=== test.tex ===
+
+\documentclass{article}
+\RequirePackage{xparse}
+\RequirePackage{template}
+\IgnoreWhiteSpace
+\DeclareTemplateType{contentsobject}{6}
+\DeclareTemplateType{processcontents}{1}
+\def\comma{,}
+
+\newdimen\COpnum@width
+
+\DeclareTemplate{contentsobject}{AB}{6}{
+  pre-v-action     =f0 [\endgraf] \COpre@action,
+  object-decls     =f0 [\relax]   \COobject@decl,
+  object-indent    =l  [0pt]      \leftskip,
+  number-width     =l  [0pt]      \@tempdima,
+  right-margin-sep =l  [25pt]     \rightskip,
+  pnum-width       =l  [15pt]     \COpnum@width,
+  number-indent    =l  [0pt]      \parindent,
+  number-format    =f1 [#1\hfil]  \COnumber@format,
+  title-format     =f2 [#1]       \COtitle@format,
+  pnum-format      =f1 [\hfil#1]  \COpnum@format,
+  leaders-action   =f0 [.]        \COleaders@action,
+  leaders-sep      =l  [4pt]      \@tempdimc
+}
+{
+  \IfPrintTOCEntry{#1}{#2}
+  {
+    \DoParameterAssignments
+    \COpre@action
+    \COobject@decl
+    \parfillskip=-\rightskip
+    \parindent=0pt
+    \@afterindenttrue
+    \interlinepenalty\@M
+    \leavevmode
+    \IfNoValueT{#3}{\def\COnumber@format##1{\hfil}}
+    \hbox to \@tempdima {\COnumber@format{#3}}
+    \nobreak
+    \COtitle@format{#4}{#5}
+    \nobreak
+    \leaders\hbox{
+      \kern\@tempdimc
+      \hbox{\COleaders@action}
+      \kern\@tempdimc
+    }\hfill
+    \nobreak
+    \hbox to \COpnum@width {\COpnum@format{#6}}
+    \endgraf
+  }
+}
+
+\newif\if@TOC@ChapterFound
+
+\newcounter{tocstart}
+\newcounter{tocmindepth}
+
+\def\IfPTE@main#1#2#3{\ifnum #2>\c@tocdepth\else#3\fi}
+\def\IfPTE@chapter#1#2#3{
+  \ifnum #1<\c@tocstart                  % skip entries, until the chapter is
+found
+  \else
+    \ifnum #1=\c@tocstart
+      \c@tocmindepth=#2                  % chapter is found, next entries will
+be printed
+    \else
+      \ifnum #2>\c@tocdepth
+      \else
+        \ifnum #2>\c@tocmindepth         % if end of chapter isn't reached,
+print entry
+          #3
+        \else
+          \c@tocmindepth=\c@tocdepth     % if end is reached, don't print any
+entries
+          \advance\c@tocmindepth by 1
+        \fi
+      \fi
+    \fi
+  \fi
+}
+
+\DeclareTemplate{processcontents}{AB}{1}{
+  start-action   =f0 [\relax]   \COstart@action,
+  end-action     =f0 [\relax]   \COend@action,
+  file-name      =n  [\jobname] \COfile@name,
+  file-extension =n             \COextension,
+  contents-depth =c  [2]        \c@tocdepth,
+  contents-start =c  [0]        \c@tocstart,
+  collection-id  =n  []         \COcollection@id,
+  heading        =f0 [\section*]\COheading,   %actully use some instance
+  name           =n  [\contentsname] \COname,
+  header-format  =f0 [\MakeUpperCase] \COheader@format
+}
+{
+ \DoParameterAssignments
+ \COheading{\COname
+      \@mkboth{\CO@header@format\COname}{\CO@header@format\COname}}
+ \begingroup
+ \UseCollection{contentsobject}{\COcollection@id}
+ \makeatletter
+ \IfNoValueTF{#1}
+   {\global\let\IfPrintTOCEntry\IfPTE@main}
+   {\global\let\IfPrintTOCEntry\IfPTE@chapter
+    \global\c@tocstart=#1}
+ \@TOC@ChapterFoundfalse
+ \COstart@action
+ \@input{\COfile@name.\COextension}
+ \@nobreakfalse
+ \endgroup
+}
+
+\DeclareDocumentCommand{\contentsobject}{mmmmmmm}
+  {\UseInstance{contentsobject}{#3}{#1}{#2}{#4}{#5}{#6}{#7}}
+
+\DeclareDocumentCommand{\ABtableofcontents}{o}
+  {\IfNoValueTF{#1}
+      {\UseInstance{processcontents}{maintoc}{\NoValue}}
+      {\UseInstance{processcontents}{chaptertoc}{#1}}
+  }
+
+\DeclareInstance{processcontents}{maintoc}{AB}
+  {file-extension = toc,
+   contents-depth = 2}
+
+\DeclareInstance{processcontents}{chaptertoc}{AB}
+  {file-extension = toc,
+   contents-depth = 3,
+   heading        = \subsection*}
+
+\DeclareInstance{contentsobject}{part}{AB}
+ {pre-v-action     = \DelayEvaluation{\endgraf\addvspace{4ex plus 4pt}},
+  title-format     = \textsc{#1},
+  number-format    = \textsc{Part~#1:\hfil},
+  pnum-format      = {},
+  leaders-action   = ~,
+  number-width     = \DelayEvaluation{4.5em}}
+
+\DeclareInstance{contentsobject}{chapter}{AB}
+ {pre-v-action     = \DelayEvaluation{\endgraf\addvspace{1.5ex plus 1pt}},
+  title-format     = #1\IfNoValueF{#2}{\comma\space\textit{#2}},
+  number-format    = #1.\hfil,
+  pnum-format      = \hfil#1,
+  leaders-action   = .,
+  leaders-sep      = \DelayEvaluation{0.5em},
+  number-width     = \DelayEvaluation{2.5em}}
+
+\DeclareInstance{contentsobject}{section}{AB}
+ {object-decls     = \small,
+  title-format     = #1,
+  number-format    = #1.\hfil,
+  pnum-format      = \hfil#1,
+  leaders-action   = .,
+  leaders-sep      = \DelayEvaluation{0.5em},
+  number-width     = \DelayEvaluation{1em}}
+
+\begin{document}
+
+\ABtableofcontents
+
+\ABtableofcontents[3]
+
+\stop
+
+=== test.toc ===
+
+\contentsobject {1}{1}{part}{A}{Model Theory}{\NoValue}{1}
+\contentsobject {2}{2}{chapter}{\NoValue}{Guide to Part A}{\NoValue}{3}
+\contentsobject {3}{2}{chapter}{A.1}{An introduction to first-order logic}{Jon
+Barwise}{5}
+\contentsobject {4}{3}{section}{1}{Foreword}{\NoValue}{6}
+\contentsobject {5}{3}{section}{2}{How to tell if you are in the realm of
+first-order logic}{\NoValue}{6}
+\contentsobject {6}{3}{section}{3}{The formalisation of first-order
+logic}{\NoValue}{17}
+\contentsobject {7}{3}{section}{4}{The Completeness Theorem}{\NoValue}{22}
+\contentsobject {8}{3}{section}{5}{Beyond first-order logic}{\NoValue}{41}
+\contentsobject {9}{3}{section}{\NoValue}{References}{\NoValue}{45}
+\contentsobject {10}{2}{chapter}{A.2}{Fundamentals of model theory}{H.\ Jerome
+Keisler}{47}
+\contentsobject {4}{3}{section}{1}{Introduction}{\NoValue}{48}
+\contentsobject {4}{3}{section}{2}{Theories}{\NoValue}{49}
+\contentsobject {4}{3}{section}{3}{Digrams and compactness}{\NoValue}{57}
+\contentsobject {4}{3}{section}{4}{L\"owenheim-Skolem theorems}{\NoValue}{63}
+\contentsobject {4}{3}{section}{5}{Recursively saturated models}{\NoValue}{69}
+\contentsobject {4}{3}{section}{6}{Large and small models}{\NoValue}{73}
+\contentsobject {4}{3}{section}{7}{Stable theories}{\NoValue}{82}
+\contentsobject {4}{3}{section}{8}{Model-theoretic forcing}{\NoValue}{89}
+\contentsobject {4}{3}{section}{9}{Infinite formulas and extra
+quantifiers}{\NoValue}{95}
+\contentsobject {9}{3}{section}{\NoValue}{References}{\NoValue}{101}
+\contentsobject {11}{2}{chapter}{A.3}{Ultraproducts for algebraists}{Paul C.\
+Eklof}{105}
+\contentsobject {12}{1}{part}{B}{Set Theory}{\NoValue}{315}
+\contentsobject {13}{2}{chapter}{\NoValue}{Guide to Part B}{\NoValue}{317}
+\contentsobject {14}{2}{chapter}{B.1}{Axioms of set theory}{J.\ R.\
+Schoenfield}{321}
+

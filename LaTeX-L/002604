@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2950" "Sun" "28" "June" "1998" "13:20:13" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "55" "Re: Modules" "^Date:" nil nil "6" nil "Modules" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id NAA19629;
+	Sun, 28 Jun 1998 13:21:03 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.12A67DB7@listserv.gmd.de>; Sun, 28 Jun 1998 13:21:07 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372855 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 28 Jun 1998 13:21:03 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id NAA01202 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 13:20:59
+          +0200 (MET DST)
+Received: from [130.237.37.112] (sl99.modempool.kth.se [130.237.37.125]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id NAA20608 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 13:20:55
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <199806230127.LAA12452@ricetub.anu.edu.au>
+            <m0ynSs5-000DLbC@bilbo.yavuz.de>
+            <199806220631.QAA11602@ricetub.anu.edu.au>
+            <v03110703b1b3df3f0cc6@[130.237.37.30]>
+            <199806230127.LAA12452@ricetub.anu.edu.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110701b1bbd09a78ca@[130.237.37.112]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806271853.UAA29351@frank.zdv.uni-mainz.de>
+Date:         Sun, 28 Jun 1998 13:20:13 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Modules
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2604
+
+At 20:53 +0200 98/06/27, Frank Mittelbach wrote:
+>a) because TeX in its current incarnations (ie TeX3, eTeX, Omega) is a
+>token based interpreter which works only at an acceptable speed if its
+>internal coding is based on tokens which can directly be looked up in
+>a hash table either resulting in a primitive action or into a macro
+>which consist of tokens. the recursion here has to be coming to an end
+>pretty fast and in current TeX code it reasonably does but there are a
+>number of recursions. if you change that to implement a manual lookup
+>functionality on all levels then you will find yourself slowing down
+>the system by i would guess a factor of 50 or more --- and even if
+>these days we are having bigger machines than the one i had when i
+>first saw LaTeX this is still far outside of what is usable.
+
+  I just want to point out that the way I worded the modules, it does not
+exclude Frank's idea of a low level naming convention:
+
+  A module would itself define how it uses its names. So a module like \tex
+could define that all its names should be interpreted directly, that is,
+\tex/foo is executed directly.
+
+  Further, modules with long names could be allowed to use short names for
+their commands. For example, the module "environment" could decide to use
+names \envir/foo, or \@env/foo or something. One would then add a
+high-level command \environment/ which knows how to expand to the short
+names. Such a high level command is useful for those who do not use the
+names much, because it is easier to remember. One can then go in and
+optimize, using the short names directly.
+
+
+>b) will be drastic: a current LaTeX format (without any packages
+>loaded) uses about 51088 words of memory before begin document; if the
+>average word length in commands is 10 (which is far too low with a
+>consequent implemented module concept) then this gets basically blown
+>to 500000 which is twice the amount of main mem that i have available
+>on this machine for everything. i just looked: when we compiled the
+>Companion the log file showed 208957 words of memory out of 262141
+>try to imagine to what size this would grow.
+
+  I worried about this: What kind of old computer is Frank using? I have
+32MB RAM on my, and with the computers sold today, I do not think that is
+considered to be much. Further, the figure doubles ever 18 months or so
+(and so does the speed) or even faster. The average lifetime of a computer
+is a few years.
+
+  So by the time LaTeX3 is out, and is starting to become accepted, which I
+will gather will take a few years, those memory concerns will no longer be
+relevant.
+
+  Speed perhaps: If a document can be processed in less than one second
+instead of ten, that will always be a great advantage.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

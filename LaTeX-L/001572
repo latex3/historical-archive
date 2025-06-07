@@ -1,0 +1,87 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2624" "Thu" "17" "February" "1994" "11:31:41" "LCL" "Mike Piff" "M.Piff@SHEFFIELD.AC.UK" nil "56" "Re: Query about \\textheight computation" "^Date:" nil nil "2" nil nil nil nil])
+Return-Path: <owner-latex-2e@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA03792; Thu, 17 Feb 94 14:50:54 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA08154; Thu, 17 Feb 94 14:48:53 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA07240
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 17 Feb 1994 14:48:51 +0100
+Message-Id: <199402171348.AA07240@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9684; Thu, 17 Feb 94 14:48:34 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9683; Thu,
+ 17 Feb 1994 14:48:34 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9512; Thu,
+ 17 Feb 1994 12:35:05 +0000
+Reply-To: Mailing list for the LaTeX2e Betatest <LATEX-2E@DHDURZ1.BITNET>
+Date:         Thu, 17 Feb 1994 11:31:41 LCL
+From: Mike Piff <M.Piff@SHEFFIELD.AC.UK>
+Sender: Mailing list for the LaTeX2e Betatest <LATEX-2E@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-2E <LATEX-2E@DHDURZ1.BITNET>
+Subject:      Re: Query about \textheight computation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1572
+
+From:          "Johannes L. Braams" <J.L.Braams@RESEARCH.PTT.NL>
+
+%>    Let me say this about this subject: the layout parameters are not
+%>    finalised yet, we still have plans to change some of them. The
+%>    value of 1.5 inch is a left over from the time when I was working
+%>    on it and needed a quick solution to get something halfway decent.
+%>    That may most certainly be changed.
+%>
+%>    We still want to compute the textheight such that a whole number
+%>    of baselineskips fits in the the textheight area.
+
+Johannes,
+
+I am puzzled by this. Why is it necessary for the textheight to be a whole
+number of baseline skips?
+
+(a) Maths in any line(s) distorts the layout of lines so much that you don't
+get the same number of lines from page to page.
+
+(b) Changing to a smaller font with \small has the same effect. There is also
+the problem of what happens on title pages, pages with section headings, etc,
+in fact on *most* pages, where different sizes of text appear on the same
+page.
+
+(c) Even given that everything should be determined by the base font
+size, changing to a different font family, where the heights of the letters
+are different, and so presumably the baselineskips are different, would force
+a change of text area. Thus the document class file would have to know in
+advance what *font family* was to be used.
+
+%>    We also want to
+%>    compute those values to support several papersizes. W
+
+I definitely agree with this one, but under what assumptions? One has to
+specify which are the independent and which are the dependent variables. I
+take it that you would specify paper width, paper height and font size as
+independent variables, ie, options for size of paper and size of base font.
+But is it em, ex or baseline skip that determines vertical spacing to do with
+the gap between headers and text, etc? If we limit the width according to the
+dimensions of the base font family, then this has to be known in advance.
+
+But even if we want a book to look perfectly proportioned when it finally
+appears, most of the time we are going to be looking at drafts with as much
+as possible on an A4 sheet (or whatever).
+
+And also, later use of the multicolumn package with say three columns might
+completely negate any calculations made earlier about width of lines being
+no more than 70 or so characters.
+
+
+Mike
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

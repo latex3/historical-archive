@@ -1,0 +1,64 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["914" "Tue" "30" "June" "1998" "11:53:44" "-0400" "Michael J. Downes" "mjd@AMS.ORG" nil "19" "Re: Optimizing LaTeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id RAA31120;
+	Tue, 30 Jun 1998 17:55:43 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.94E26CAD@listserv.gmd.de>; Tue, 30 Jun 1998 17:54:24 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 375443 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 30 Jun 1998 17:54:18 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id RAA15723 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 30 Jun 1998 17:54:13
+          +0200 (MET DST)
+Received: from sun06.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 30 Jun 1998
+          15:53:57 UT
+Received: from sun06.ams.org by sun06.ams.org (PMDF V5.1-10 #27147) id
+          <0EVD00G01G5KX2@sun06.ams.org> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 30 Jun 1998 11:53:44 -0400
+          (EDT)
+MIME-version: 1.0
+X-Mailer: Gnus v5.5/Emacs 20.2
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 19
+References: <v03110704b1be96789cd4@[130.237.37.151]>
+Message-ID:  <199806301554.RAA15723@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Comments:     Resent-From: mjd@ams.org
+Comments:     Originally-From: Michael John Downes <mjd@ams.org>
+In-Reply-To:  Hans Aberg's message of Tue, 30 Jun 1998 15:31:28 +0200
+Date:         Tue, 30 Jun 1998 11:53:44 -0400
+From: "Michael J. Downes" <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Optimizing LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2620
+
+Hans Aberg <haberg@MATEMATIK.SU.SE> writes:
+
+>   I do not know if folks are doing profiling on TeX/LaTeX, but an easy way
+> would be to set \tracingcommands = 1, and then count the frequency in the
+> log file of the different commands executed.
+
+Did you mean \tracingmacros? In a high-level format macro expansions
+take up more than half of the processing. One would normally want
+
+  \tracingmacros=2 \tracingcommands=2
+
+It is perhaps of interest to note that unless the tex.pool file is
+changed, \tex_global:D will be reported in the log file as
+"{\global}", \scan_stop: will be reported as "{\relax}", and so
+on. Perhaps e-TeX can provide something useful here for making name
+changes in some way easier than retangling tex.web. (You can just edit
+the .pool file, of course---I have done it myself in the past---but
+then you have to go to some nontrivial extra trouble if you want to
+synchronize the checksums.)
+

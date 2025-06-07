@@ -1,0 +1,110 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 1 Oct 2008 21:22:48 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m91JMejt001409
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 1 Oct 2008 21:22:41 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m91JFI2g005125
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 1 Oct 2008 21:15:18 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m91EgnqG022807;
+	Wed, 1 Oct 2008 21:15:13 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 51974 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 1 Oct
+          2008 21:15:13 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+          by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id
+          m91EgnqA022807 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 1 Oct
+          2008 21:15:13 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id m91JFDZO028035
+Message-ID:  <LISTSERV%200810012115133110.042A@LISTSERV.UNI-HEIDELBERG.DE>
+Date:         Wed, 1 Oct 2008 21:15:13 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Something like \@removeelement
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 01 Oct 2008 19:22:48.0343 (UTC) FILETIME=[16D28A70:01C923FB]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5396
+
+Frank Mittelbach wrote:
+> Joseph Wright writes:
+>  > Hi all,
+>  > 
+>  > On my latest LaTeX3 excursion, I'm looking achieve the effect of
+>  > \@removeelement. I'd expect this to be a clist function, but there is
+>  > nothing like "\clist_remove_elt:nnN" (#1 = elt, #2 = clist, #3 = new
+>  > clist name) or "\clist_remove_elt:nN" (#1 = elt, #2 = clist to be edited).
+> 
+> what are the precise semantics that you have in mind (with respect to element
+> not there, element there more than once etc ...) ?
+
+Good questions.  In my case, I've already checked that the element is
+present and I can use \clist_remove_duplicates:N, so I'm not too fussed. 
+However, in general this needs to be addressed.
+
+I'd imagine that, in the main, any removal function should tolerate the
+element not being there at all.  \clist_if_in:NnTF is already available, and
+so can be used for checks by programmers.  I'd imagine that most uses where
+an element is to be removed will either have a check before removal or will
+not need to know if the element is not there.  
+
+On the repeated-item question, I think that in general you can't rely on
+\clist_remove_duplicates:N.  So perhaps two versions are needed:
+
+\clist_remove_elt_first:Nn (or perhaps _left:)
+\clist_remove_elt_all:Nn   (or perhaps _total: or _complete:)
+
+I'm thinking of usage along the lines:
+
+\clist_set:Nn \l_example_clist {a,b,c,d,d,e,e}
+
+\clist_remove_elt_first:Nn \l_example_clist {a}
+% \l_example_clist now {b,c,d,d,e,e}
+\clist_remove_elt_first:Nn \l_example_clist {d}
+% \l_example_clist now {b,c,d,e,e}
+\clist_remove_elt_all:Nn \l_example_clist {e}
+% \l_example_clist now {b,c,d}
+
+Here, I'm assuming that the clist is supplied by name and is returned into
+the same list. \@removeelement actually works slightly differently,  but I
+think that the syntax above is clearer.  I'm not sure a pre-expanded clist
+is very helpful, so I'd probably avoid:
+
+\clist_remove_elt:nnN {a,b,c} {b} \l_new_clist
+
+(which is actually similar to \@removeelement}.  On the other hand, it might
+be useful to store the new clist in a separate place to the initial one:
+
+\clist_set:Nn \l_example_clist {a,b,c,d,d,e,e}
+\clist_set:Nn \l_new_clist {}
+
+\clist_remove_elt_first:NnN \l_example_clist {a} \l_new_clist
+% \l_new_clist now {b,c,d,d,e,e}
+\clist_remove_elt_first:NnN \l_example_clist {d} \l_new_clist
+% \l_new_clist now {a,b,c,d,e,e}
+\clist_remove_elt_all:NnN \l_example_clist {e} \l_new_clist
+% \l_new_clist now {a,b,c,d,d}
+
+How does all of this sound?
+--
+Joseph Wright
+

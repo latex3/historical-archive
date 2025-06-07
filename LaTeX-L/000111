@@ -1,0 +1,60 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 24 May 90 16:23:54 -0700
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Leslie Lamport <lamport@SRC.DEC.COM>
+Subject:      Re: Parameters/attributes
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 111
+
+
+A few more thoughts on parameters.  First, the implementation isn't as
+trivial as I had thought.  The definition of environment foo should
+include an explicit \parameters command to insert the parameter
+definitions at that point.  For example, if
+
+     \begin{result}[\set{\name}{Zorn's Lemma}]
+
+is to work right, one must have
+
+    \def\result{\let\name=\relax\parameters
+       \ifx\name\relax...
+
+So \begin{foo} must push parameters on a stack before calling \foo, and
+\parameters must pop them from the stack and execute the commands.
+However, what about the naive user who doesn't want to know about
+\parameters?  Perhaps there should be two versions of
+\newenvironment--one that requires a \parameter and another that
+automatically inserts a \parameter.
+
+I agree that it is dangerous to let the user put arbitrary commands
+into a parameter declaration.  So, it would be nice to use a syntax
+that simply allows setting parameters--something like
+
+    \begin{itemize|topsep=12pt|tick=---}
+
+But, despite Chris Rowley's assertion, I am dubious about it being
+possible to implement that in a reasonable fashion in TeX, given that:
+
+* It should be legal to reset any reseasonable parameter in this
+way--e.g., line width, font size, and user-defined parameters
+that are unknown to the \begin command.
+
+* It should work in all reasonable circumstances, and not break
+if it happens to appear inside a tabbing environment inside
+a minipage inside a \marginpar.
+
+Yes, lots of people implement things like this in TeX 20 times before
+breakfast.  Users of their macros discover 20 cases in which it doesn't
+work before lunch.  I just don't know any better syntax then
+
+   \begin{itemize}[\setlength{\topsep}{12pt}\setparam{\tick}{---}]
+
+that I would know how to implement.
+
+Leslie
+
+

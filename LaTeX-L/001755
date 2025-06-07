@@ -1,0 +1,636 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["9493" "Mon" "10" "June" "1996" "07:46:24" "-0200" "Lemberg Werner" "k3079e3@C210.EDVZ.UNI-LINZ.AC.AT" nil "280" "New draft of Vietnamese encoding (now called ET5 :-)" "^Date:" nil nil "6" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id KAA13756; Fri, 14 Jun 1996 10:22:01 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.C0AA2E40@listserv.gmd.de>; Fri, 14 Jun 1996 10:21:45 +0200
+Received: from URZINFO.URZ.UNI-HEIDELBERG.DE by URZINFO.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 84060 for
+          LATEX-L@URZINFO.URZ.UNI-HEIDELBERG.DE; Fri, 14 Jun 1996 10:20:56 +0200
+Received: from c210.edvz.uni-linz.ac.at (c210.edvz.uni-linz.ac.at
+          [140.78.199.21]) by relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with
+          SMTP id HAA06519 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 10
+          Jun 1996 07:52:13 +0200 (MET DST)
+Received: from localhost by c210.edvz.uni-linz.ac.at (8.6.4.2/11.0.1) id
+          HAA26633; Mon, 10 Jun 1996 07:46:24 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-ID:  <199606100546.HAA26633@c210.edvz.uni-linz.ac.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Date:         Mon, 10 Jun 1996 07:46:24 -0200
+From: Lemberg Werner <k3079e3@C210.EDVZ.UNI-LINZ.AC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Subject:      New draft of Vietnamese encoding (now called ET5 :-)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1755
+
+Dear friends,
+
+I've just uploaded a new version (2.1) of the vncmr package. Here are the
+relevant changes for a proposed OT5 encoding scheme:
+
+o   I'm now following the rule that an acute accent is always an acute
+    accent even if its position above the character is non-standard. The
+    same holds for the other characters. Thus I made the following changes:
+
+        \vnacute -> \'
+        \vngrave -> \`
+        \vntilde -> \~
+        \vndot   -> \d
+        \vnhook  -> \h   (this is the only remaining fake accent).
+
+o   The encoding is now called ET5 (on a suggestion by Frank), which stands
+    for Experimental OT5.
+
+
+There are still symbolic names for `a circumflex' etc. since the problem of
+having two diacritics above one character can't be solved with the current
+(and probably the next) release of LaTeX2e.
+
+Below you find ET5enc.def .
+
+
+    Werner
+
+==========================================================================
+
+% ET5enc.def
+%
+% This file is part of the vncmr package ver 2.1 (10-Jun-1996)
+
+\ProvidesFile{ET5enc.def}[1996/06/10 v1.1 Vietnamese encoding]
+
+\DeclareFontEncoding{ET5}{}{}
+
+
+\DeclareTextAccent{\"}{ET5}{127}
+\DeclareTextAccent{\'}{ET5}{19}
+\DeclareTextAccent{\.}{ET5}{95}
+\DeclareTextAccent{\=}{ET5}{22}
+\DeclareTextAccent{\^}{ET5}{94}
+\DeclareTextAccent{\`}{ET5}{18}
+\DeclareTextAccent{\~}{ET5}{126}
+\DeclareTextAccent{\H}{ET5}{125}
+\DeclareTextAccent{\u}{ET5}{21}
+\DeclareTextAccent{\v}{ET5}{20}
+\DeclareTextAccent{\r}{ET5}{23}
+
+\DeclareTextCommand{\b}{ET5}[1]
+  {{\o@lign{\relax #1\crcr\hidewidth\sh@ft{29}%
+    \vbox to .2ex{\hbox{\char22}\vss}\hidewidth}}}
+\DeclareTextCommand{\c}{ET5}[1]
+  {\leavevmode\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent24 #1%
+   \else{\ooalign{\unhbox\z@\crcr\hidewidth\char24\hidewidth}}\fi}
+\DeclareTextCommand{\d}{ET5}[1]
+  {{\o@lign{\relax#1\crcr\hidewidth\sh@ft{10}.\hidewidth}}}
+
+\DeclareTextSymbol{\AE}{ET5}{29}
+\DeclareTextSymbol{\OE}{ET5}{30}
+\DeclareTextSymbol{\O}{ET5}{31}
+\DeclareTextSymbol{\ae}{ET5}{26}
+\DeclareTextSymbol{\i}{ET5}{16}
+\DeclareTextSymbol{\j}{ET5}{17}
+\DeclareTextSymbol{\oe}{ET5}{27}
+\DeclareTextSymbol{\o}{ET5}{28}
+\DeclareTextSymbol{\ss}{ET5}{25}
+
+\DeclareTextSymbol{\textemdash}{ET5}{124}
+\DeclareTextSymbol{\textendash}{ET5}{123}
+\DeclareTextSymbol{\textexclamdown}{ET5}{60}
+\DeclareTextSymbol{\textquestiondown}{ET5}{62}
+\DeclareTextSymbol{\textquotedblleft}{ET5}{92}
+\DeclareTextSymbol{\textquotedblright}{ET5}{`\"}
+\DeclareTextSymbol{\textquoteleft}{ET5}{`\`}
+\DeclareTextSymbol{\textquoteright}{ET5}{`\'}
+
+\DeclareTextCommand{\aa}{ET5}
+  {{\accent23a}}
+\DeclareTextCommand{\L}{ET5}
+  {\leavevmode\setbox\z@\hbox{L}\hb@xt@\wd\z@{\hss\@xxxii L}}
+\DeclareTextCommand{\l}{ET5}
+  {{\@xxxii l}}
+\DeclareTextCommand{\AA}{ET5}
+  {\leavevmode\setbox\z@\hbox{h}\dimen@\ht\z@\advance\dimen@-1ex%
+   \rlap{\raise.67\dimen@\hbox{\char23}}A}
+\DeclareTextCommand{\textdollar}{ET5}{{%
+  \ifdim \fontdimen\@ne\font >\z@
+    \slshape
+  \else
+    \upshape
+  \fi
+  \char`\$}}
+\DeclareTextCommand{\textsterling}{ET5}{{%
+  \ifdim \fontdimen\@ne\font >\z@
+    \itshape
+  \else
+    \fontshape{ui}\selectfont
+  \fi
+  \char`\$}}
+
+
+% to access the Vietnamese characters in a standard fashion we first define
+% a fake accent for the hook above.
+
+\DeclareTextCommand{\h}{ET5}[1]{\relax}
+
+% unaccented characters
+
+\DeclareTextSymbol{\ABREVE}{ET5}{197}
+\DeclareTextSymbol{\ACIRCUMFLEX}{ET5}{194}
+\DeclareTextSymbol{\DJ}{ET5}{208}           % D bar
+\DeclareTextSymbol{\ECIRCUMFLEX}{ET5}{202}
+\DeclareTextSymbol{\OCIRCUMFLEX}{ET5}{212}
+\DeclareTextSymbol{\OHORN}{ET5}{180}
+\DeclareTextSymbol{\UHORN}{ET5}{191}
+
+\DeclareTextSymbol{\abreve}{ET5}{229}
+\DeclareTextSymbol{\acircumflex}{ET5}{226}
+\DeclareTextSymbol{\dj}{ET5}{240}           % d bar
+\DeclareTextSymbol{\ecircumflex}{ET5}{234}
+\DeclareTextSymbol{\ocircumflex}{ET5}{244}
+\DeclareTextSymbol{\ohorn}{ET5}{189}
+\DeclareTextSymbol{\uhorn}{ET5}{223}
+
+% accented characters
+
+\DeclareTextComposite{\'}{ET5}{A}{193}
+\DeclareTextComposite{\d}{ET5}{A}{128}
+\DeclareTextComposite{\`}{ET5}{A}{192}
+\DeclareTextComposite{\h}{ET5}{A}{196}
+\DeclareTextComposite{\~}{ET5}{A}{195}
+\DeclareTextComposite{\'}{ET5}{\ABREVE}{129}
+\DeclareTextComposite{\d}{ET5}{\ABREVE}{131}
+\DeclareTextComposite{\`}{ET5}{\ABREVE}{130}
+\DeclareTextComposite{\h}{ET5}{\ABREVE}{0}
+\DeclareTextComposite{\~}{ET5}{\ABREVE}{1}
+\DeclareTextComposite{\'}{ET5}{\ACIRCUMFLEX}{132}
+\DeclareTextComposite{\d}{ET5}{\ACIRCUMFLEX}{135}
+\DeclareTextComposite{\`}{ET5}{\ACIRCUMFLEX}{133}
+\DeclareTextComposite{\h}{ET5}{\ACIRCUMFLEX}{134}
+\DeclareTextComposite{\~}{ET5}{\ACIRCUMFLEX}{2}
+
+\DeclareTextComposite{\'}{ET5}{E}{201}
+\DeclareTextComposite{\d}{ET5}{E}{137}
+\DeclareTextComposite{\`}{ET5}{E}{200}
+\DeclareTextComposite{\h}{ET5}{E}{203}
+\DeclareTextComposite{\~}{ET5}{E}{136}
+\DeclareTextComposite{\'}{ET5}{\ECIRCUMFLEX}{138}
+\DeclareTextComposite{\d}{ET5}{\ECIRCUMFLEX}{142}
+\DeclareTextComposite{\`}{ET5}{\ECIRCUMFLEX}{139}
+\DeclareTextComposite{\h}{ET5}{\ECIRCUMFLEX}{140}
+\DeclareTextComposite{\~}{ET5}{\ECIRCUMFLEX}{141}
+
+\DeclareTextComposite{\'}{ET5}{I}{205}
+\DeclareTextComposite{\d}{ET5}{I}{152}
+\DeclareTextComposite{\`}{ET5}{I}{204}
+\DeclareTextComposite{\h}{ET5}{I}{155}
+\DeclareTextComposite{\~}{ET5}{I}{206}
+
+\DeclareTextComposite{\'}{ET5}{O}{211}
+\DeclareTextComposite{\d}{ET5}{O}{154}
+\DeclareTextComposite{\`}{ET5}{O}{210}
+\DeclareTextComposite{\h}{ET5}{O}{153}
+\DeclareTextComposite{\~}{ET5}{O}{160}
+\DeclareTextComposite{\'}{ET5}{\OCIRCUMFLEX}{143}
+\DeclareTextComposite{\d}{ET5}{\OCIRCUMFLEX}{147}
+\DeclareTextComposite{\`}{ET5}{\OCIRCUMFLEX}{144}
+\DeclareTextComposite{\h}{ET5}{\OCIRCUMFLEX}{145}
+\DeclareTextComposite{\~}{ET5}{\OCIRCUMFLEX}{146}
+\DeclareTextComposite{\'}{ET5}{\OHORN}{149}
+\DeclareTextComposite{\d}{ET5}{\OHORN}{148}
+\DeclareTextComposite{\`}{ET5}{\OHORN}{150}
+\DeclareTextComposite{\h}{ET5}{\OHORN}{151}
+\DeclareTextComposite{\~}{ET5}{\OHORN}{179}
+
+\DeclareTextComposite{\'}{ET5}{U}{218}
+\DeclareTextComposite{\d}{ET5}{U}{158}
+\DeclareTextComposite{\`}{ET5}{U}{217}
+\DeclareTextComposite{\h}{ET5}{U}{156}
+\DeclareTextComposite{\~}{ET5}{U}{157}
+\DeclareTextComposite{\'}{ET5}{\UHORN}{186}
+\DeclareTextComposite{\d}{ET5}{\UHORN}{185}
+\DeclareTextComposite{\`}{ET5}{\UHORN}{187}
+\DeclareTextComposite{\h}{ET5}{\UHORN}{188}
+\DeclareTextComposite{\~}{ET5}{\UHORN}{255}
+
+\DeclareTextComposite{\'}{ET5}{Y}{221}
+\DeclareTextComposite{\d}{ET5}{Y}{5}
+\DeclareTextComposite{\`}{ET5}{Y}{159}
+\DeclareTextComposite{\h}{ET5}{Y}{3}
+\DeclareTextComposite{\~}{ET5}{Y}{4}
+
+
+\DeclareTextComposite{\'}{ET5}{a}{225}
+\DeclareTextComposite{\d}{ET5}{a}{213}
+\DeclareTextComposite{\`}{ET5}{a}{224}
+\DeclareTextComposite{\h}{ET5}{a}{228}
+\DeclareTextComposite{\~}{ET5}{a}{227}
+\DeclareTextComposite{\'}{ET5}{\abreve}{161}
+\DeclareTextComposite{\d}{ET5}{\abreve}{163}
+\DeclareTextComposite{\`}{ET5}{\abreve}{162}
+\DeclareTextComposite{\h}{ET5}{\abreve}{198}
+\DeclareTextComposite{\~}{ET5}{\abreve}{199}
+\DeclareTextComposite{\'}{ET5}{\acircumflex}{164}
+\DeclareTextComposite{\d}{ET5}{\acircumflex}{167}
+\DeclareTextComposite{\`}{ET5}{\acircumflex}{165}
+\DeclareTextComposite{\h}{ET5}{\acircumflex}{166}
+\DeclareTextComposite{\~}{ET5}{\acircumflex}{231}
+
+\DeclareTextComposite{\'}{ET5}{e}{233}
+\DeclareTextComposite{\d}{ET5}{e}{169}
+\DeclareTextComposite{\`}{ET5}{e}{232}
+\DeclareTextComposite{\h}{ET5}{e}{235}
+\DeclareTextComposite{\~}{ET5}{e}{168}
+\DeclareTextComposite{\'}{ET5}{\ecircumflex}{170}
+\DeclareTextComposite{\d}{ET5}{\ecircumflex}{174}
+\DeclareTextComposite{\`}{ET5}{\ecircumflex}{171}
+\DeclareTextComposite{\h}{ET5}{\ecircumflex}{172}
+\DeclareTextComposite{\~}{ET5}{\ecircumflex}{173}
+
+\DeclareTextComposite{\'}{ET5}{i}{237}
+\DeclareTextComposite{\d}{ET5}{i}{184}
+\DeclareTextComposite{\`}{ET5}{i}{236}
+\DeclareTextComposite{\h}{ET5}{i}{239}
+\DeclareTextComposite{\~}{ET5}{i}{238}
+
+\DeclareTextComposite{\'}{ET5}{o}{243}
+\DeclareTextComposite{\d}{ET5}{o}{247}
+\DeclareTextComposite{\`}{ET5}{o}{242}
+\DeclareTextComposite{\h}{ET5}{o}{246}
+\DeclareTextComposite{\~}{ET5}{o}{245}
+\DeclareTextComposite{\'}{ET5}{\ocircumflex}{175}
+\DeclareTextComposite{\d}{ET5}{\ocircumflex}{181}
+\DeclareTextComposite{\`}{ET5}{\ocircumflex}{176}
+\DeclareTextComposite{\h}{ET5}{\ocircumflex}{177}
+\DeclareTextComposite{\~}{ET5}{\ocircumflex}{178}
+\DeclareTextComposite{\'}{ET5}{\ohorn}{190}
+\DeclareTextComposite{\d}{ET5}{\ohorn}{254}
+\DeclareTextComposite{\`}{ET5}{\ohorn}{182}
+\DeclareTextComposite{\h}{ET5}{\ohorn}{183}
+\DeclareTextComposite{\~}{ET5}{\ohorn}{222}
+
+\DeclareTextComposite{\'}{ET5}{u}{250}
+\DeclareTextComposite{\d}{ET5}{u}{248}
+\DeclareTextComposite{\`}{ET5}{u}{249}
+\DeclareTextComposite{\h}{ET5}{u}{252}
+\DeclareTextComposite{\~}{ET5}{u}{251}
+\DeclareTextComposite{\'}{ET5}{\uhorn}{209}
+\DeclareTextComposite{\d}{ET5}{\uhorn}{241}
+\DeclareTextComposite{\`}{ET5}{\uhorn}{215}
+\DeclareTextComposite{\h}{ET5}{\uhorn}{216}
+\DeclareTextComposite{\~}{ET5}{\uhorn}{230}
+
+\DeclareTextComposite{\'}{ET5}{y}{253}
+\DeclareTextComposite{\d}{ET5}{y}{220}
+\DeclareTextComposite{\`}{ET5}{y}{207}
+\DeclareTextComposite{\h}{ET5}{y}{214}
+\DeclareTextComposite{\~}{ET5}{y}{219}
+
+
+% to assure that \MakeUppercase and \MakeLowercase work correctly we must
+% extend \@uclclist.
+
+\begingroup
+  \expandafter\toks@\expandafter{\@uclclist}
+  \toks@\expandafter{\the\toks@
+    \abreve\ABREVE\acircumflex\ACIRCUMFLEX\dj\DJ
+    \ecircumflex\ECIRCUMFLEX\ocircumflex\OCIRCUMFLEX\ohorn\OHORN
+    \uhorn\UHORN}
+  \expandafter\gdef\expandafter\@uclclist\expandafter{\the\toks@}
+\endgroup
+
+\endinput
+
+%
+% EOF
+%
+
+From owner-latex-l@relay.urz.uni-heidelberg.de
+Status: RO
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["9494" "Mon" "10" "June" "1996" "07:46:24" "-0200" "Lemberg Werner" "k3079e3@C210.EDVZ.UNI-LINZ.AC.AT" nil "281" "New draft of Vietnamese encoding (now called ET5 :-)" "^Date:" nil nil "6" nil nil nil nil]
+	nil)
+X-Envelope-From: owner-latex-l@relay.urz.uni-heidelberg.de
+Received: from bubba.NMSU.Edu by west.thomson.com with SMTP id AA12135
+  (5.65c/IDA-1.4.4 for <jon_stenerson@tcisoft.com>); Fri, 14 Jun 1996 05:40:13
+  -0400
+Received: from NMSU.Edu by bubba.NMSU.Edu (8.6.10/NMSU)
+	id DAA16679; Fri, 14 Jun 1996 03:43:06 -0600
+Received: from emmy  by NMSU.Edu (8.6.10/NMSU-1.18)
+	id DAA19487; Fri, 14 Jun 1996 03:40:11 -0600
+Received: from NMSU.Edu (dns1) by emmy  (4.1/NMSU)
+	id AA28036; Fri, 14 Jun 96 03:40:09 MDT
+Received: from relay.urz.uni-heidelberg.de by NMSU.Edu (8.6.10/NMSU-1.18)
+	id DAA19484; Fri, 14 Jun 1996 03:40:05 -0600
+Received: from relay (relay.urz.uni-heidelberg.de [129.206.100.201]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id KAA23475; Fri,
+          14 Jun 1996 10:21:01 +0200 (MET DST)
+Received: from URZINFO.URZ.UNI-HEIDELBERG.DE by URZINFO.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 84060 for
+          LATEX-L@URZINFO.URZ.UNI-HEIDELBERG.DE; Fri, 14 Jun 1996 10:20:56 +0200
+Received: from c210.edvz.uni-linz.ac.at (c210.edvz.uni-linz.ac.at
+          [140.78.199.21]) by relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with
+          SMTP id HAA06519 for <latex-l@relay.urz.uni-heidelberg.de>; Mon, 10
+          Jun 1996 07:52:13 +0200 (MET DST)
+Received: from localhost by c210.edvz.uni-linz.ac.at (8.6.4.2/11.0.1) id
+          HAA26633; Mon, 10 Jun 1996 07:46:24 +0200
+X-Mailer: ELM [version 2.4 PL23]
+Content-Type: text
+Message-Id:  <199606100546.HAA26633@c210.edvz.uni-linz.ac.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Date:         Mon, 10 Jun 1996 07:46:24 -0200
+From: Lemberg Werner <k3079e3@C210.EDVZ.UNI-LINZ.AC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@relay.urz.uni-heidelberg.de>
+Subject:      New draft of Vietnamese encoding (now called ET5 :-)
+
+Dear friends,
+
+I've just uploaded a new version (2.1) of the vncmr package. Here are the
+relevant changes for a proposed OT5 encoding scheme:
+
+o   I'm now following the rule that an acute accent is always an acute
+    accent even if its position above the character is non-standard. The
+    same holds for the other characters. Thus I made the following changes:
+
+        \vnacute -> \'
+        \vngrave -> \`
+        \vntilde -> \~
+        \vndot   -> \d
+        \vnhook  -> \h   (this is the only remaining fake accent).
+
+o   The encoding is now called ET5 (on a suggestion by Frank), which stands
+    for Experimental OT5.
+
+
+There are still symbolic names for `a circumflex' etc. since the problem of
+having two diacritics above one character can't be solved with the current
+(and probably the next) release of LaTeX2e.
+
+Below you find ET5enc.def .
+
+
+    Werner
+
+==========================================================================
+
+% ET5enc.def
+%
+% This file is part of the vncmr package ver 2.1 (10-Jun-1996)
+
+\ProvidesFile{ET5enc.def}[1996/06/10 v1.1 Vietnamese encoding]
+
+\DeclareFontEncoding{ET5}{}{}
+
+
+\DeclareTextAccent{\"}{ET5}{127}
+\DeclareTextAccent{\'}{ET5}{19}
+\DeclareTextAccent{\.}{ET5}{95}
+\DeclareTextAccent{\=}{ET5}{22}
+\DeclareTextAccent{\^}{ET5}{94}
+\DeclareTextAccent{\`}{ET5}{18}
+\DeclareTextAccent{\~}{ET5}{126}
+\DeclareTextAccent{\H}{ET5}{125}
+\DeclareTextAccent{\u}{ET5}{21}
+\DeclareTextAccent{\v}{ET5}{20}
+\DeclareTextAccent{\r}{ET5}{23}
+
+\DeclareTextCommand{\b}{ET5}[1]
+  {{\o@lign{\relax #1\crcr\hidewidth\sh@ft{29}%
+    \vbox to .2ex{\hbox{\char22}\vss}\hidewidth}}}
+\DeclareTextCommand{\c}{ET5}[1]
+  {\leavevmode\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent24 #1%
+   \else{\ooalign{\unhbox\z@\crcr\hidewidth\char24\hidewidth}}\fi}
+\DeclareTextCommand{\d}{ET5}[1]
+  {{\o@lign{\relax#1\crcr\hidewidth\sh@ft{10}.\hidewidth}}}
+
+\DeclareTextSymbol{\AE}{ET5}{29}
+\DeclareTextSymbol{\OE}{ET5}{30}
+\DeclareTextSymbol{\O}{ET5}{31}
+\DeclareTextSymbol{\ae}{ET5}{26}
+\DeclareTextSymbol{\i}{ET5}{16}
+\DeclareTextSymbol{\j}{ET5}{17}
+\DeclareTextSymbol{\oe}{ET5}{27}
+\DeclareTextSymbol{\o}{ET5}{28}
+\DeclareTextSymbol{\ss}{ET5}{25}
+
+\DeclareTextSymbol{\textemdash}{ET5}{124}
+\DeclareTextSymbol{\textendash}{ET5}{123}
+\DeclareTextSymbol{\textexclamdown}{ET5}{60}
+\DeclareTextSymbol{\textquestiondown}{ET5}{62}
+\DeclareTextSymbol{\textquotedblleft}{ET5}{92}
+\DeclareTextSymbol{\textquotedblright}{ET5}{`\"}
+\DeclareTextSymbol{\textquoteleft}{ET5}{`\`}
+\DeclareTextSymbol{\textquoteright}{ET5}{`\'}
+
+\DeclareTextCommand{\aa}{ET5}
+  {{\accent23a}}
+\DeclareTextCommand{\L}{ET5}
+  {\leavevmode\setbox\z@\hbox{L}\hb@xt@\wd\z@{\hss\@xxxii L}}
+\DeclareTextCommand{\l}{ET5}
+  {{\@xxxii l}}
+\DeclareTextCommand{\AA}{ET5}
+  {\leavevmode\setbox\z@\hbox{h}\dimen@\ht\z@\advance\dimen@-1ex%
+   \rlap{\raise.67\dimen@\hbox{\char23}}A}
+\DeclareTextCommand{\textdollar}{ET5}{{%
+  \ifdim \fontdimen\@ne\font >\z@
+    \slshape
+  \else
+    \upshape
+  \fi
+  \char`\$}}
+\DeclareTextCommand{\textsterling}{ET5}{{%
+  \ifdim \fontdimen\@ne\font >\z@
+    \itshape
+  \else
+    \fontshape{ui}\selectfont
+  \fi
+  \char`\$}}
+
+
+% to access the Vietnamese characters in a standard fashion we first define
+% a fake accent for the hook above.
+
+\DeclareTextCommand{\h}{ET5}[1]{\relax}
+
+% unaccented characters
+
+\DeclareTextSymbol{\ABREVE}{ET5}{197}
+\DeclareTextSymbol{\ACIRCUMFLEX}{ET5}{194}
+\DeclareTextSymbol{\DJ}{ET5}{208}           % D bar
+\DeclareTextSymbol{\ECIRCUMFLEX}{ET5}{202}
+\DeclareTextSymbol{\OCIRCUMFLEX}{ET5}{212}
+\DeclareTextSymbol{\OHORN}{ET5}{180}
+\DeclareTextSymbol{\UHORN}{ET5}{191}
+
+\DeclareTextSymbol{\abreve}{ET5}{229}
+\DeclareTextSymbol{\acircumflex}{ET5}{226}
+\DeclareTextSymbol{\dj}{ET5}{240}           % d bar
+\DeclareTextSymbol{\ecircumflex}{ET5}{234}
+\DeclareTextSymbol{\ocircumflex}{ET5}{244}
+\DeclareTextSymbol{\ohorn}{ET5}{189}
+\DeclareTextSymbol{\uhorn}{ET5}{223}
+
+% accented characters
+
+\DeclareTextComposite{\'}{ET5}{A}{193}
+\DeclareTextComposite{\d}{ET5}{A}{128}
+\DeclareTextComposite{\`}{ET5}{A}{192}
+\DeclareTextComposite{\h}{ET5}{A}{196}
+\DeclareTextComposite{\~}{ET5}{A}{195}
+\DeclareTextComposite{\'}{ET5}{\ABREVE}{129}
+\DeclareTextComposite{\d}{ET5}{\ABREVE}{131}
+\DeclareTextComposite{\`}{ET5}{\ABREVE}{130}
+\DeclareTextComposite{\h}{ET5}{\ABREVE}{0}
+\DeclareTextComposite{\~}{ET5}{\ABREVE}{1}
+\DeclareTextComposite{\'}{ET5}{\ACIRCUMFLEX}{132}
+\DeclareTextComposite{\d}{ET5}{\ACIRCUMFLEX}{135}
+\DeclareTextComposite{\`}{ET5}{\ACIRCUMFLEX}{133}
+\DeclareTextComposite{\h}{ET5}{\ACIRCUMFLEX}{134}
+\DeclareTextComposite{\~}{ET5}{\ACIRCUMFLEX}{2}
+
+\DeclareTextComposite{\'}{ET5}{E}{201}
+\DeclareTextComposite{\d}{ET5}{E}{137}
+\DeclareTextComposite{\`}{ET5}{E}{200}
+\DeclareTextComposite{\h}{ET5}{E}{203}
+\DeclareTextComposite{\~}{ET5}{E}{136}
+\DeclareTextComposite{\'}{ET5}{\ECIRCUMFLEX}{138}
+\DeclareTextComposite{\d}{ET5}{\ECIRCUMFLEX}{142}
+\DeclareTextComposite{\`}{ET5}{\ECIRCUMFLEX}{139}
+\DeclareTextComposite{\h}{ET5}{\ECIRCUMFLEX}{140}
+\DeclareTextComposite{\~}{ET5}{\ECIRCUMFLEX}{141}
+
+\DeclareTextComposite{\'}{ET5}{I}{205}
+\DeclareTextComposite{\d}{ET5}{I}{152}
+\DeclareTextComposite{\`}{ET5}{I}{204}
+\DeclareTextComposite{\h}{ET5}{I}{155}
+\DeclareTextComposite{\~}{ET5}{I}{206}
+
+\DeclareTextComposite{\'}{ET5}{O}{211}
+\DeclareTextComposite{\d}{ET5}{O}{154}
+\DeclareTextComposite{\`}{ET5}{O}{210}
+\DeclareTextComposite{\h}{ET5}{O}{153}
+\DeclareTextComposite{\~}{ET5}{O}{160}
+\DeclareTextComposite{\'}{ET5}{\OCIRCUMFLEX}{143}
+\DeclareTextComposite{\d}{ET5}{\OCIRCUMFLEX}{147}
+\DeclareTextComposite{\`}{ET5}{\OCIRCUMFLEX}{144}
+\DeclareTextComposite{\h}{ET5}{\OCIRCUMFLEX}{145}
+\DeclareTextComposite{\~}{ET5}{\OCIRCUMFLEX}{146}
+\DeclareTextComposite{\'}{ET5}{\OHORN}{149}
+\DeclareTextComposite{\d}{ET5}{\OHORN}{148}
+\DeclareTextComposite{\`}{ET5}{\OHORN}{150}
+\DeclareTextComposite{\h}{ET5}{\OHORN}{151}
+\DeclareTextComposite{\~}{ET5}{\OHORN}{179}
+
+\DeclareTextComposite{\'}{ET5}{U}{218}
+\DeclareTextComposite{\d}{ET5}{U}{158}
+\DeclareTextComposite{\`}{ET5}{U}{217}
+\DeclareTextComposite{\h}{ET5}{U}{156}
+\DeclareTextComposite{\~}{ET5}{U}{157}
+\DeclareTextComposite{\'}{ET5}{\UHORN}{186}
+\DeclareTextComposite{\d}{ET5}{\UHORN}{185}
+\DeclareTextComposite{\`}{ET5}{\UHORN}{187}
+\DeclareTextComposite{\h}{ET5}{\UHORN}{188}
+\DeclareTextComposite{\~}{ET5}{\UHORN}{255}
+
+\DeclareTextComposite{\'}{ET5}{Y}{221}
+\DeclareTextComposite{\d}{ET5}{Y}{5}
+\DeclareTextComposite{\`}{ET5}{Y}{159}
+\DeclareTextComposite{\h}{ET5}{Y}{3}
+\DeclareTextComposite{\~}{ET5}{Y}{4}
+
+
+\DeclareTextComposite{\'}{ET5}{a}{225}
+\DeclareTextComposite{\d}{ET5}{a}{213}
+\DeclareTextComposite{\`}{ET5}{a}{224}
+\DeclareTextComposite{\h}{ET5}{a}{228}
+\DeclareTextComposite{\~}{ET5}{a}{227}
+\DeclareTextComposite{\'}{ET5}{\abreve}{161}
+\DeclareTextComposite{\d}{ET5}{\abreve}{163}
+\DeclareTextComposite{\`}{ET5}{\abreve}{162}
+\DeclareTextComposite{\h}{ET5}{\abreve}{198}
+\DeclareTextComposite{\~}{ET5}{\abreve}{199}
+\DeclareTextComposite{\'}{ET5}{\acircumflex}{164}
+\DeclareTextComposite{\d}{ET5}{\acircumflex}{167}
+\DeclareTextComposite{\`}{ET5}{\acircumflex}{165}
+\DeclareTextComposite{\h}{ET5}{\acircumflex}{166}
+\DeclareTextComposite{\~}{ET5}{\acircumflex}{231}
+
+\DeclareTextComposite{\'}{ET5}{e}{233}
+\DeclareTextComposite{\d}{ET5}{e}{169}
+\DeclareTextComposite{\`}{ET5}{e}{232}
+\DeclareTextComposite{\h}{ET5}{e}{235}
+\DeclareTextComposite{\~}{ET5}{e}{168}
+\DeclareTextComposite{\'}{ET5}{\ecircumflex}{170}
+\DeclareTextComposite{\d}{ET5}{\ecircumflex}{174}
+\DeclareTextComposite{\`}{ET5}{\ecircumflex}{171}
+\DeclareTextComposite{\h}{ET5}{\ecircumflex}{172}
+\DeclareTextComposite{\~}{ET5}{\ecircumflex}{173}
+
+\DeclareTextComposite{\'}{ET5}{i}{237}
+\DeclareTextComposite{\d}{ET5}{i}{184}
+\DeclareTextComposite{\`}{ET5}{i}{236}
+\DeclareTextComposite{\h}{ET5}{i}{239}
+\DeclareTextComposite{\~}{ET5}{i}{238}
+
+\DeclareTextComposite{\'}{ET5}{o}{243}
+\DeclareTextComposite{\d}{ET5}{o}{247}
+\DeclareTextComposite{\`}{ET5}{o}{242}
+\DeclareTextComposite{\h}{ET5}{o}{246}
+\DeclareTextComposite{\~}{ET5}{o}{245}
+\DeclareTextComposite{\'}{ET5}{\ocircumflex}{175}
+\DeclareTextComposite{\d}{ET5}{\ocircumflex}{181}
+\DeclareTextComposite{\`}{ET5}{\ocircumflex}{176}
+\DeclareTextComposite{\h}{ET5}{\ocircumflex}{177}
+\DeclareTextComposite{\~}{ET5}{\ocircumflex}{178}
+\DeclareTextComposite{\'}{ET5}{\ohorn}{190}
+\DeclareTextComposite{\d}{ET5}{\ohorn}{254}
+\DeclareTextComposite{\`}{ET5}{\ohorn}{182}
+\DeclareTextComposite{\h}{ET5}{\ohorn}{183}
+\DeclareTextComposite{\~}{ET5}{\ohorn}{222}
+
+\DeclareTextComposite{\'}{ET5}{u}{250}
+\DeclareTextComposite{\d}{ET5}{u}{248}
+\DeclareTextComposite{\`}{ET5}{u}{249}
+\DeclareTextComposite{\h}{ET5}{u}{252}
+\DeclareTextComposite{\~}{ET5}{u}{251}
+\DeclareTextComposite{\'}{ET5}{\uhorn}{209}
+\DeclareTextComposite{\d}{ET5}{\uhorn}{241}
+\DeclareTextComposite{\`}{ET5}{\uhorn}{215}
+\DeclareTextComposite{\h}{ET5}{\uhorn}{216}
+\DeclareTextComposite{\~}{ET5}{\uhorn}{230}
+
+\DeclareTextComposite{\'}{ET5}{y}{253}
+\DeclareTextComposite{\d}{ET5}{y}{220}
+\DeclareTextComposite{\`}{ET5}{y}{207}
+\DeclareTextComposite{\h}{ET5}{y}{214}
+\DeclareTextComposite{\~}{ET5}{y}{219}
+
+
+% to assure that \MakeUppercase and \MakeLowercase work correctly we must
+% extend \@uclclist.
+
+\begingroup
+  \expandafter\toks@\expandafter{\@uclclist}
+  \toks@\expandafter{\the\toks@
+    \abreve\ABREVE\acircumflex\ACIRCUMFLEX\dj\DJ
+    \ecircumflex\ECIRCUMFLEX\ocircumflex\OCIRCUMFLEX\ohorn\OHORN
+    \uhorn\UHORN}
+  \expandafter\gdef\expandafter\@uclclist\expandafter{\the\toks@}
+\endgroup
+
+\endinput
+
+%
+% EOF
+%
+
+

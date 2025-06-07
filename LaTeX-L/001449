@@ -1,0 +1,65 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1796" "Mon" " 7" "February" "1994" "16:17:48" "LCL" "Mike Piff" "M.Piff@sheffield.ac.uk" "<199402071712.AA17030@mail.cs.tu-berlin.de>" "34" "Re: register usage" "^Date:" nil nil "2" "1994020716:17:48" "register usage" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06875; Mon, 7 Feb 94 18:14:06 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA13648; Mon, 7 Feb 94 18:12:35 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA17030
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Mon, 7 Feb 1994 18:12:32 +0100
+Message-Id: <199402071712.AA17030@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9586; Mon, 07 Feb 94 18:11:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9585; Mon,
+ 7 Feb 1994 18:11:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 9572; Mon,
+ 7 Feb 1994 18:11:19 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Mon, 7 Feb 1994 16:17:48 LCL
+From: Mike Piff <M.Piff@sheffield.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: register usage
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1449
+
+From:          Philip TAYLOR <CHAA006@vax.rhbnc.ac.uk>
+
+%>and this caused me to look further at the LaTeX-2e source.  I was surprised
+%>to find that the original TeX/LaTeX register allocation code appears virtually
+%>unchanged: that is, each of \new{count|dimen|skip|muskip|box|toks|read|write|
+%>fam|language} is defined in terms of a unique global count register.  If
+%>registers are in such short supply (and here I confess I am generalising
+%>from David's specific argument, which referred solely to <dimen> registers),
+%>then should LaTeX-2e be so profligate with their use for an activity which
+%>even the most hardened hacker would surely agree is an occasional or even rare
+%>event?  Would it not be better to use pseudo-registers for the register
+%>allocation mechanism, rather than real count registers?
+%>
+
+I think I understand what you mean. You keep the fact that \dimen88 is the
+next to be allocated in a macro defined to expand to 88. You then get
+\newdimen to use this 88, which is assigned to \count5, say, incremented, and
+then put back instead of 88 ready for next time. Is this right?
+
+But I think that maybe many of the \newdimens etc aren't necessary anyway.
+Their values could be stored in macros and used by macro
+expansion? Even things like
+\headheight=12pt
+could be done using \afterassignment, although getting
+\xxx=\headheight
+to work too might be tricky, although all the counters that use \newcounter,
+\setcounter, \addtocounter, would not have any problems. (grits teeth;-!
+
+
+Mike
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff, School of Mathematics and Statistics, University of %%
+%% Sheffield, UK.                    e-mail: M.Piff@sheffield.ac.uk %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

@@ -1,0 +1,90 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2321" "Wed" "6" "November" "1996" "16:33:49" "-0500" "Berthold K. P. Horn" "bkph@ai.mit.edu" nil "59" "Re: Bug fix for mathtime.sty version 2 (1995/03/07)" "^Date:" nil nil "11" nil nil nil nil]
+	nil)
+Received: from axp14.ams.org (AXP14.AMS.ORG [130.44.1.14]) by mail.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id WAA30241; Wed, 6 Nov 1996 22:51:19 +0100 (MET)
+Received: from math.ams.org by AXP14.AMS.ORG (PMDF V5.0-6 #16534)
+ id <01IBJ677VASW0018KU@AXP14.AMS.ORG> for tex-implementors@AXP14.AMS.ORG; Wed,
+ 06 Nov 1996 16:34:16 -0500 (EST)
+Received: from life.ai.mit.edu by math.ams.org;
+ (5.65v3.2/1.1.8.2/24Jul96-0733AM) id AA31573; Wed, 06 Nov 1996 16:39:07 -0500
+Received: from kauai.ai.mit.edu (kauai.ai.mit.edu [128.52.54.48])
+ by life.ai.mit.edu (8.8.2/8.8.2AI/life.ai.mit.edu:1.9)
+ with SMTP id QAA10058; Wed, 06 Nov 1996 16:33:50 -0500 (EST)
+Received: by kauai.ai.mit.edu (8.6.12/AI-4.10) id QAA06747; Wed,
+ 06 Nov 1996 16:33:49 -0500
+In-reply-to: <CMM.0.91.0.847308449.beebe@sunscreen.math.utah.edu>
+Errors-to: tex-implementors-request@MATH.AMS.ORG
+Reply-to: bkph@ai.mit.edu
+Message-id: <199611062133.QAA06747@kauai.ai.mit.edu>
+Content-transfer-encoding: 7BIT
+Date: Wed, 06 Nov 1996 16:33:49 -0500
+From: "Berthold K.P. Horn" <bkph@ai.mit.edu>
+To: beebe@math.utah.edu
+Cc: tex-fonts@math.utah.edu, tex-implementors@MATH.AMS.ORG,
+        latex-l@relay.urz.uni-heidelberg.de, beebe@math.utah.edu
+Subject: Re: Bug fix for mathtime.sty version 2 (1995/03/07)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1770
+
+
+From: "Nelson H. F. Beebe" <beebe@math.utah.edu>
+
+   We are in the final days of completing the typesetting of a complex
+   book, and this morning, I uncovered, and fixed, an error in
+   mathtime.sty, version 2 (1995/03/07), which is present in the June
+   1996 LaTeX2e distribution as
+
+   % ls -l latex2e/unpacked/mathtime.sty
+   -rw-rw-r--   1 beebe        8320 Dec 19  1995 latex2e/unpacked/mathtime.sty
+
+   The error appears in an earlier version of this file on our system too
+   (the one that came with the original version of the MathTime purchased
+   from Y&Y in October 1992).
+
+By the way, mathtime.dtx/mathtime.ins is obsolete and unsupported, 
+as it says on CTAN.  It is pretty bad stuff, way below the quality of
+support for MathTime available by using \input lcdlatex under LaTeX 2.09!
+
+Use instead mathtimy.dtx/mathtimy.ins, downloadable from
+http://www.YandY.com under `Downloadables'.  It is a bit better.
+Although the bug you described may very well be in there also, 
+I'll have to check...
+
+Also, \boldmath is problematic because it switches back to CM for bold 
+math, which means the glyphs don't match in style, but worse, since CM
+is so thin, the *bold* CM math doesn't look much heavier than the
+*regular* MathTime math - it just looks different...
+
+MathTime Plus is the way to fix this (see http://www.YandY.com/mathplus.pdf).
+But right now on the TeX side, this is only supported under plain TeX
+and AMS TeX.  LaTeX 2e support is expected towards the end of the year.
+
+   Examination of mathtime.sty revealed the problem:  it says
+
+   \def\boldmath{\@nomath\unboldmath
+   ...
+   \mathcode`\+="202B
+     \mathversion{bold}
+   }
+
+   Notice that there is a missing percent on the last item in the
+   definition, which results in \boldmath getting a single space into the
+   end of its definition.
+
+...
+
+Thanks for pointing out the fix.
+
+Berthold.
+
+   ========================================================================
+   Nelson H. F. Beebe                  Tel: +1 801 581 5254
+   Center for Scientific Computing     FAX: +1 801 581 4148
+   Department of Mathematics, 105 JWB  Internet: beebe@math.utah.edu
+   University of Utah                  URL: http://www.math.utah.edu/~beebe
+   Salt Lake City, UT 84112, USA
+   ========================================================================
+
+

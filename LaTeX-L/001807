@@ -1,0 +1,134 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4177" "Sun" "16" "February" "1997" "21:07:29" "+0100" "Frank Mittelbach" "Frank.Mittelbach@uni-mainz.de" nil "94" "Re: International documents" "^Date:" nil nil "2" nil "International documents" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA30131 for <schoepf@UNI-MAINZ.DE>; Sun, 16 Feb 1997 22:48:16 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.F54C94E2@listserv.gmd.de>; Sun, 16 Feb 1997 22:48:15 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 102393 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 16 Feb 1997 22:48:09 +0100
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id WAA29357
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 16 Feb 1997 22:48:08
+          +0100 (MET)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id WAA18589; Sun, 16
+          Feb 1997 22:38:41 +0100 (MET)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          VAA28509; Sun, 16 Feb 1997 21:07:29 +0100
+References: <199702132041.VAA24041@frank.zdv.uni-mainz.de>
+            <97Feb13.150056-0700_mst.13496-16485+236@scapa.cs.ualberta.ca>
+Message-ID:  <199702162007.VAA28509@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <97Feb13.150056-0700_mst.13496-16485+236@scapa.cs.ualberta.ca>
+Date:         Sun, 16 Feb 1997 21:07:29 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: International documents
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1807
+
+Narendra Ravi writes:
+ > > but before going into interface questions, what are the items related
+ > > to language? what are the answers to the above questions?
+ > >
+ > > good night
+ > > frank
+ >
+ > I have been following this discussion and agree with Frank. I have one
+ > request/suggestion. There must already exist a list of language dependent
+ > items under consideration. It will help a lot if this list is posted to
+ > this mailing list. This will give us an idea of what Frank is talking
+ > about.
+
+i don't know if there is a compiled list for babel or whether one has
+to get this out of the babel language files. perhaps Johannes can tell
+us if he has such a list (otherwise i might compile that list myself
+but that would take some time)
+
+Johannes?
+
+ > Judging from the discussion so far, the only issue of concern across
+ > different languages seems to be hyphenation. I'm sure several people will
+ > correct me :-).
+
+well, there is certainly more, although perhaps not discussed so
+openly. For example, the quotation characters differ in different
+languages traditionally. Unfortunately LaTeX in its current usage
+doesn't offer explicit markup for this, eg we neither have
+
+ Within an English sentence one could say \quotedphrase{Dies ist
+ ein deutscher Satz} or even ...
+
+nor \begin{...} ... \end{...} or even something like
+
+ Within an English sentence one could say \leftquote Dies ist
+ ein deutscher Satz\rightquote{} or even ...
+
+Instead we only have `` .... '' as explicit markup (suitable for
+english) so that language support usually added explict support as
+well, eg the EC fonts do have << >> as ligatures for french quotes
+(also used by other countries) or the german package or the german
+option for babel offers "`..."' (and also explicit command names) and
+so on
+
+there are many other examples and those mentioned already, eg the
+usual way of displaying chapter numbers and and and, all can be viewed
+as having to do with a language interface.
+
+however, the boundaries are vague, ie while it is kind of necessary to
+select the right hyphenation patterns for the current language (and
+even if there is not a single right choice but several there are
+clearly wrong choices, eg hyphenating english text using german
+hyphenation patterns is not that good even though you might want to
+use different patterns than those provided by knuth :-) the
+presentation of numbers is certainly something that allows are large
+variety applicable to many languages even though there might be rules
+or suggestions for certain languages.
+
+ > Dates are not really an issue, because, I consider dates to have a meaning,
+ > and authors are responsible for all content related issues. In my opinion
+ > both  "Dec 10, 1996" and  "9 Jan 1997" are OK. If authors choose to write
+ > the date in a different form, then they are risking misinterpretation.
+
+dates in itself might not be an issue although even this could be
+challenged in certain situations, that for certain type of documents
+(eg to avoid misinterpretation and to produce informtiy if for example
+some dates are generated automatically and others are manually entered
+by the users).
+
+but LaTeX offers a command called \today and in fact it probably
+should provide a command like \formatdate{}{}{} as well (which is not
+the case). Now this command \today is an abstract thingie, eg you
+might want to write something like
+
+  Printed \today
+
+in a document. thus in a line like that \today should not reply with a
+date spelled out in German, should it?
+
+In other words any textual string that it produced by LaTeX as part of
+the formatting of abstract contents, eg the word "Bibliography"
+produced by \begin{thebibliography} should match the language of the
+document. Of course there might be more than one possible solution for
+this and that is why one might need a flexible interface but clearly
+something needs to be there for such entities.
+
+ > LaTeX can and must only handle aspects of presentation and not interpret
+ > the content of documents.
+
+right, but that is an aspect of presentation of logical data at least
+for the \today case, for the others, as i said one cane argue
+depending on the application.
+
+frank
+

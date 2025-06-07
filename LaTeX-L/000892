@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1989" "Thu" "3" "December" "92" "19:28:52" "CET" "Michael Downes" "MJD@MATH.AMS.ORG" nil "51" "Re:  structured comments (was: accents)" "^Date:" nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA13041; Thu, 3 Dec 92 19:28:43 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA28091; Thu, 3 Dec 92 19:28:40 +0100
+Message-Id: <9212031828.AA28091@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 0752; Thu, 03 Dec 92 19:29:12 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3367;
+ Thu, 03 Dec 92 19:29:06 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3365;
+ Thu, 03 Dec 92 19:29:03 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <01GRVK3LZWZ6EHWU0K@MATH.AMS.ORG>
+Date:         Thu, 3 Dec 92 19:28:52 CET
+From: Michael Downes <MJD@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re:  structured comments (was: accents)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 892
+
+
+David Carlisle wrote:
+> It *may* be reasonable to switch character sets from within (a
+> successor to) TeX, rather than from the command line, or having
+> different sets built into different executables, but such extra
+> functionality should *not* be a comment, rather it should be a new
+> primitive
+> \characterset=
+
+Agreed. I favor having every format define some standard basic
+declarations that could be used before a documentstyle is loaded, for
+example
+
+  \TeXformat{latex}{3.1}{1994-3-14}
+  \documentname{myarticle}
+  \encoding{iso8859-1}
+
+  ...
+
+Then if a documentstyle is used with an unsupported format it could
+give an immediate, precise warning explaining the problem, rather than
+blowing up with an arcane primitive TeX error at the first unexpected
+incompatibility. The \encoding declaration would provide a
+higher-level interface to the \characterset primitive, to translate
+meaningful names into numbers (as with language declarations). The
+\documentname declaration could perhaps be just as well defined in the
+documentstyle, but then it can be used only after the \documentstyle,
+which seems backwards.
+
+The motivation for *not* putting this information into comments is
+that it would be useful to have it directly accessible for macro
+programming, as the format file checking example shows; one can also
+imagine writing something like
+
+  \ifcase\characterset
+    \usefonts{xxx}
+  \or
+    \usefonts{yyy}
+  \or
+  ...
+
+The \documentname declaration is used in-house at the American
+Mathematical Society as a way of doublechecking that the external file
+name matches the intended document name; externally we can make
+duplicate file names generate an error, and do other file management,
+but there are some kinds of problems that cannot be caught unless
+TeX is used to do the catching. Without a \documentname declaration
+there is no way for TeX to know if \jobname is not what it is supposed
+to be.
+
+Michael Downes                              mjd@math.ams.org (Internet)
+

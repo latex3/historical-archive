@@ -1,0 +1,108 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3281" "Sat" "27" "November" "1999" "15:24:08" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "68" "Re: Classes -- a generalization of templates" "^Date:" nil nil "11" nil "Classes -- a generalization of templates" nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id PAA05779
+	for <schoepf@UNI-MAINZ.DE>; Sat, 27 Nov 1999 15:25:55 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.23F68851@mail.listserv.gmd.de>; Sat, 27 Nov 1999 15:25:46 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445432 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 27 Nov 1999 15:25:21 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id PAA09925 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 27 Nov
+          1999 15:25:18 +0100 (MET)
+Received: from musse.tninet.se (musse.tninet.se [195.100.94.12]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id PAA05903 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sat, 27 Nov 1999 15:25:48 +0100 (MET)
+Received: (qmail 17199 invoked from network); 27 Nov 1999 15:25:41 +0100
+Received: from du140-226.ppp.su-anst.tninet.se (HELO ?195.100.226.140?)
+          (195.100.226.140) by musse.tninet.se with SMTP; 27 Nov 1999 15:25:41
+          +0100
+X-Sender: haberg@pop.matematik.su.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b46590c5ddf1@[195.100.226.138]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110700b464c47986e9@[195.100.226.134]>
+Date:         Sat, 27 Nov 1999 15:24:08 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Classes -- a generalization of templates
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3442
+
+Some additions to my last post:
+
+I forgot to indicate the object syntax for instantiations. So if one has
+created the derived-class ``enumerate'', which would normally be directly
+used as
+  \use{enumerate} \NoValue \NoValue \BooleanFalse
+but instead want to create an instance ``plain-enumerate'' which is later
+used, then a syntax could be
+  \new{enumerate}{plain-enumerate}
+which would later be used as
+  \use{plain-enumerate}
+This is not so difficult to implement, because when the enumerate command
+is created by
+  \new{derived-class}{enumerate} \NoValue \NoValue \BooleanFalse
+one makes sure to create a command \enumerate/new which is called by
+\new{enumerate}.
+
+This illustrates the object principle that it is always the object which
+knows what it can do. Users of the object thus only need to worry about the
+interface of the object, and not about global commands by which it should
+be manipulated with from the outside.
+
+One can also note that there is a question of where to put the arguments in
+instantiations. We could have decided for a mechanism that when we derive
+``enumerate'' from the ``list'' class, only say the two first arguments
+should have been used, the last reserved for the instantiation. The syntax
+would thus be (say)
+  \new{class}{list}{3}...
+  \new{derived-class}{enumerate}{0} \NoValue \NoValue
+  \new{enumerate}{plain-enumerate} \BooleanFalse
+Such constructions are possible in C++, and are convenient. (It leave it to
+the reader to figure out the details of a suitable syntax.)
+
+One can also introduce typing of objects if it is considered sufficiently
+important or useful. The principle I see underneath it is that an object
+should normally have as type its creator. So the type of
+``plain-enumerate'' above is ``enumerate'', and the type of ``enumerate''
+is ``class'' or ``derived-class''. One then has a command
+  \type{enumerate}        % class
+  \type{plain-enumerate}  % enumerate
+or if one should bother to create a ``type'' object
+  \use{type}{enumerate}        % class
+  \use{type}{plain-enumerate}  % enumerate
+
+Again, I do not know if typing is useful in LaTeX, I only note that it
+seems possible to add such a feature. In C++, typing becomes necessary when
+handling dynamic information. So if it becomes common in LaTeX with macros
+that do a selection based on type, then it might prove useful with typing.
+Then a simple version of the \type command would be to add a type command
+to the objects which expands to its creator. So for example
+\type{plain-enumerate} would expand to
+  plain-enumerate/type
+which in its turn would expand to ``enumerate''.
+
+Note however that it is not necessary to add typing to all objects with
+this method: Only those that need it. So the behavior of objects is pretty
+local; they need not be more complicated than is useful.
+
+I can also note that the command names do not become very long with the
+approach above, because they lengthen only when one explicitly calls for
+the creation of a subobject (like when creating a module or something). So
+it is still a pretty flat structure.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

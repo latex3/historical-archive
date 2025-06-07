@@ -1,0 +1,409 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4A89D68C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:07 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4A89D68C"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      marks
+Date: Sat, 26 Oct 1991 00:13:43 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5C1@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <eijkhout%CSRD.UIUC.EDU@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Multiple recipients of" <LATEX-L@DHDURZ1.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 418
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4A89D68C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+The other day I had to solve another cute problem (and this one
+cost me a full day, because all problems of unwanted expansion
+were coming back full blast), concerning marks. I think this is
+relevant for the development of LaTeX.
+
+The user macro \section is defined in terms of \@sect,
+which executes for a section the command \sectionmark.
+However, that command has no generality: it has a different
+definition for every \ps@...
+Furthermore, it explicitly determines what information to set
+in the mark. If there are many people who can potentially
+set marks, this is dangerous.
+
+If the next LaTeX is going to be serious about it's meta-ness
+(so the basic format doesn't know that there will be a \section
+macro, just that there will be headings), then a more general
+approach is necessary.
+
+Here's what I did.
+
+- There is a list \mark@items of everything that can wind up
+ in a mark.
+
+- The macro \DefineHeading executes statements (\xp=3D=3D\expandafter)
+ \xp\add@mark@item\xp{\naam Counter}
+ \xp\add@mark@item\xp{\naam Title}
+ where \naam expands to the name of whatever is being defined
+ at the moment.
+
+- Adding a mark item is
+    \csarg\newtoks{mark@toks@#1}%
+    \mark@items\xp{\the\mark@items{#1}}\fi}
+ which allocates a private token list \mark@toks@sectionTitle for =
+instance.
+
+- A \section command then executes (\nxp=3D=3D\noexpand)
+            \edef\cs@e{\nxp\refresh@mark@item
+                         {\naam Title}{\the\title@toks}}%
+            \cs@e
+ where
+ \def\refresh@mark@item#1#2{\csarg\global{mark@toks@#1}{#2}}
+ which refreshes the token list corresponding to a \mark'able item.
+
+- Furthermore it calls \place@mark, where
+ \def\place@mark{\mark{\xp\get@mark@items\the\mark@items{SM}}}
+ \def\get@mark@items#1{\if\ifEqualStringX{#1}{SM}%
+    \else{#1}{\csarg\the{mark@toks@#1}}\xp\get@mark@items
+    \fi}
+ Note that because I stored everything in a token list this means
+ that I won't get any unwanted expansion.
+ !!!!! Also note (and this is a big one!) that because this occurs in =
+\mark
+ everything, including the string test (!!) has to be done by expansion =
+!!!!
+
+- You access a mark by requesting (for instance for the \botmark)
+ \LastPlaced:sectionTitle
+ Example: here is the running head for my book:
+    \subjectCounter
+        \if\TestCounter:point >0
+            \ifrighthandpage .\LastPlaced:pointCounter \fi
+        \fi
+         \Spaces:2 \BigSlash \Spaces:2
+    \iflefthandpage \subjectTitle
+    \else           \if\TestCounter:point >0 \LastPlaced:pointTitle
+                    \else \subjectTitle \fi
+    \fi}
+ Design: put \subjectTitle in the left head, and \pointTitle in the
+ right head, (\point \approx \section)
+ except when a chapter has no sections (for instance the index).
+
+ This uses the mark mechanism to retrieve the \pointCounter and =
+\pointTitle;
+ the \subjectTitle/Counter exist in a more
+ global manner, so marks weren't necessary there.
+
+- The macro \LastPlaced does a stringtest to see which of the markitems
+ is needed.
+ \def\LastPlaced:#1 {\xp\get@placed\xp{\botmark}{#1}}
+ \def\get@placed#1#2{\get@@placed{#2}#1{SM}{}$}% SM: StopMarker
+ \def\get@@placed#1#2#3{\if\ifEqualStringX{#2}{SM}\xp\take@to@dollar
+    \else\if\ifEqualStringX{#1}{#2}%
+              \maybe@uppercase{#3}\xp\xp\xp\take@to@dollar
+         \else\xp\xp\xp\get@@placed\fi
+    \fi{#1}}
+
+And that's it. The style designer has only one command: \LastPlaced
+(or \FirstPlaced) to place whatever in a running head.
+The rest is automatic.
+
+Any comments? Questions? Class dismissed. Ite missa est.
+(which the Dutch translate by 'Go, it is wrong' :-)
+
+Victor Eijkhout
+ Center for Supercomputing Research and Development
+ University of Illinois at Urbana-Champaign
+ 305 Talbot Laboratory                 phone: +1 217 244-0047 (office)
+ 104 South Wright Street                      +1 217 356-0876 (home)
+ Urbana, Illinois 61801-2932, USA        fax: +1 217 244-1351
+
+home: 2503 W. Springfield Av, Apt. K-4, Champaign 61821, USA
+
+------_=_NextPart_001_01C19443.4A89D68C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     marks</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>The other day I had to solve another cute problem (and =
+this one</FONT>
+
+<BR><FONT SIZE=3D2>cost me a full day, because all problems of unwanted =
+expansion</FONT>
+
+<BR><FONT SIZE=3D2>were coming back full blast), concerning marks. I =
+think this is</FONT>
+
+<BR><FONT SIZE=3D2>relevant for the development of LaTeX.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The user macro \section is defined in terms of =
+\@sect,</FONT>
+
+<BR><FONT SIZE=3D2>which executes for a section the command =
+\sectionmark.</FONT>
+
+<BR><FONT SIZE=3D2>However, that command has no generality: it has a =
+different</FONT>
+
+<BR><FONT SIZE=3D2>definition for every \ps@...</FONT>
+
+<BR><FONT SIZE=3D2>Furthermore, it explicitly determines what =
+information to set</FONT>
+
+<BR><FONT SIZE=3D2>in the mark. If there are many people who can =
+potentially</FONT>
+
+<BR><FONT SIZE=3D2>set marks, this is dangerous.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If the next LaTeX is going to be serious about it's =
+meta-ness</FONT>
+
+<BR><FONT SIZE=3D2>(so the basic format doesn't know that there will be =
+a \section</FONT>
+
+<BR><FONT SIZE=3D2>macro, just that there will be headings), then a more =
+general</FONT>
+
+<BR><FONT SIZE=3D2>approach is necessary.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here's what I did.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- There is a list \mark@items of everything that can =
+wind up</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;in a mark.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- The macro \DefineHeading executes statements =
+(\xp=3D=3D\expandafter)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\xp\add@mark@item\xp{\naam Counter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\xp\add@mark@item\xp{\naam Title}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;where \naam expands to the name of whatever is =
+being defined</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;at the moment.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- Adding a mark item is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\csarg\newtoks{mark@toks@#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\mark@items\xp{\the\mark@items{#1}}\fi}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;which allocates a private token list =
+\mark@toks@sectionTitle for instance.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- A \section command then executes =
+(\nxp=3D=3D\noexpand)</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \edef\cs@e{\nxp\refresh@mark@item</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; {\naam Title}{\the\title@toks}}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \cs@e</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;where</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;\def\refresh@mark@item#1#2{\csarg\global{mark@toks@#1}{#2}=
+}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;which refreshes the token list corresponding to =
+a \mark'able item.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- Furthermore it calls \place@mark, where</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;\def\place@mark{\mark{\xp\get@mark@items\the\mark@items{SM=
+}}}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;\def\get@mark@items#1{\if\ifEqualStringX{#1}{SM}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\else{#1}{\csarg\the{mark@toks@#1}}\xp\get@mark@items</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Note that because I stored everything in a =
+token list this means</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;that I won't get any unwanted expansion.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;!!!!! Also note (and this is a big one!) that =
+because this occurs in \mark</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;everything, including the string test (!!) has =
+to be done by expansion !!!!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- You access a mark by requesting (for instance for =
+the \botmark)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\LastPlaced:sectionTitle</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Example: here is the running head for my =
+book:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \subjectCounter</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\if\TestCounter:point &gt;0</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; \ifrighthandpage .\LastPlaced:pointCounter \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\Spaces:2 \BigSlash \Spaces:2</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \iflefthandpage =
+\subjectTitle</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\else&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\if\TestCounter:point &gt;0 \LastPlaced:pointTitle</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \else \subjectTitle =
+\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Design: put \subjectTitle in the left head, and =
+\pointTitle in the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;right head, (\point \approx \section)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;except when a chapter has no sections (for =
+instance the index).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;This uses the mark mechanism to retrieve the =
+\pointCounter and \pointTitle;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;the \subjectTitle/Counter exist in a =
+more</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;global manner, so marks weren't necessary =
+there.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- The macro \LastPlaced does a stringtest to see which =
+of the markitems</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;is needed.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\def\LastPlaced:#1 =
+{\xp\get@placed\xp{\botmark}{#1}}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;\def\get@placed#1#2{\get@@placed{#2}#1{SM}{}$}% =
+SM: StopMarker</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;\def\get@@placed#1#2#3{\if\ifEqualStringX{#2}{SM}\xp\take@=
+to@dollar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\else\if\ifEqualStringX{#1}{#2}%</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; \maybe@uppercase{#3}\xp\xp\xp\take@to@dollar</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\else\xp\xp\xp\get@@placed\fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi{#1}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>And that's it. The style designer has only one =
+command: \LastPlaced</FONT>
+
+<BR><FONT SIZE=3D2>(or \FirstPlaced) to place whatever in a running =
+head.</FONT>
+
+<BR><FONT SIZE=3D2>The rest is automatic.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Any comments? Questions? Class dismissed. Ite missa =
+est.</FONT>
+
+<BR><FONT SIZE=3D2>(which the Dutch translate by 'Go, it is wrong' =
+:-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Victor Eijkhout</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Center for Supercomputing Research and =
+Development</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;University of Illinois at =
+Urbana-Champaign</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;305 Talbot =
+Laboratory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; phone: +1 217 244-0047 (office)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;104 South Wright =
+Street&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +1 217 =
+356-0876 (home)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Urbana, Illinois 61801-2932, =
+USA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fax: +1 217 =
+244-1351</FONT>
+</P>
+
+<P><FONT SIZE=3D2>home: 2503 W. Springfield Av, Apt. K-4, Champaign =
+61821, USA</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4A89D68C--
+

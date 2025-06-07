@@ -1,0 +1,106 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2529" "Wed" "10" "November" "1999" "13:23:38" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "62" "Authoring language" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id NAA00018
+	for <schoepf@UNI-MAINZ.DE>; Wed, 10 Nov 1999 13:24:55 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.6524AA16@mail.listserv.gmd.de>; Wed, 10 Nov 1999 13:24:35 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445429 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 10 Nov 1999 13:24:24 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id NAA06634 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 10 Nov
+          1999 13:24:20 +0100 (MET)
+Received: from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with SMTP id NAA06126 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 10 Nov 1999 13:24:32 +0100 (MET)
+Received: (qmail 29531 invoked from network); 10 Nov 1999 13:24:29 +0100
+Received: from du128-226.ppp.su-anst.tninet.se (HELO ?195.100.226.128?)
+          (195.100.226.128) by knatte.tninet.se with SMTP; 10 Nov 1999 13:24:29
+          +0100
+X-Sender: haberg@pop.matematik.su.se (Unverified)
+References: <199911081958.TAA20332@mimosa.csv.warwick.ac.uk>
+            <199911061944.OAA03745@hilbert.math.albany.edu>
+            <199911081958.TAA20332@mimosa.csv.warwick.ac.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b44f0c484881@[195.100.226.132]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <14375.58629.679692.883454@n15ux24.nets.de.eds.com>
+Date:         Wed, 10 Nov 1999 13:23:38 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Authoring language
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3394
+
+Here is an example, explaining an idea for an authoring language I got.
+Instead of building on macro expansion, it builds on the lambda calculus,
+using some principles of computer semantics I have developed (and is still
+developing).
+
+Perhaps the sample can be used as an input for LaTeX or somebody else
+reading this list and is developing an authoring language.
+
+The sample is this:
+
+parse_rule command '<' [symbol] '|' [any_text] '|>':
+    #1(#2).
+
+define chess -->
+    \x |-> format{PGN, date 1995/05/06, version 2}(\x)
+
+<chess|game>
+
+
+The line
+    parse_rule command '<' [symbol] '|' [any_text] '|>':
+        #1(#2).
+means that a syntactic variable named "command" has been created. It relies
+on the formerly defined syntactic variables "symbol" and "any_text" to pick
+up text. The brackets [symbol] and [any_text] make the parsed text segments
+(or rather their parsed objects, in case they are parse rules) get the
+symbols #1 and #2. The last statement #1(#2) is a rule telling how the
+semantics should be produced (like in Yacc). This rule makes use of the
+computer semantics I developed, where objects have a single input (I skip
+the details). Thus #1(#2) means "hand over a reference of object #2 to
+object #1 for evaluation". Strictly speaking, it refers to the underlying
+created (binary, runtime) objects and not the parsed text itself. This
+becomes easier to understand when several parsing rules are hooked
+together, each producing a semantic object; there will always be such
+semantic objects at hand to combine.
+
+In the line
+    define chess -->
+        \x |-> format{PGN, date 1995/05/06, version 2}(\x)
+the "-->" is pronounced "evaluates to". This defines a lambda rule which
+expands to a format called PGN which is used to denote chess games.
+
+Let's see what happens with the line
+    <chess|game>
+According to the parse rule "command", this evaluates to
+     chess(game)
+and according to the "chess" lamnda expression, this evaluates to
+     format{PGN, date 1995/05/06, version 2}(game)
+This could also be written
+  <chess|game>
+    --> chess(game)
+    --> format{PGN, date 1995/05/06, version 2}(game)
+
+Thus, what it says is that the text "game" should be processed according to
+the spec's of the PGN format.
+
+I think one could develop a rather general authoring language using this idea.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

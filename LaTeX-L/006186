@@ -1,0 +1,331 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 26 Nov 2009 14:47:59 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id nAQDltlL030865
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 26 Nov 2009 14:47:56 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nAQDhkXS003199
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 26 Nov 2009 14:43:47 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id nAQCMEps027628;
+	Thu, 26 Nov 2009 14:43:36 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 354804 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 26 Nov
+          2009 14:43:35 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id nAQDhZ3M014518 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 26 Nov 2009 14:43:35 +0100
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id nAQDhDeg002731
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 26 Nov 2009 14:43:17
+          +0100
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id 9B97A1865F1 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 26 Nov 2009 14:41:42 +0100
+          (CET)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <19209.8773.325233.396932@morse.mittelbach-online.de>
+            <4B0C694B.1080803@residenset.net>
+Content-Type: multipart/mixed; boundary="------------060708030603040509010109"
+Message-ID:  <4B0E8600.6000003@residenset.net>
+Date:         Thu, 26 Nov 2009 14:43:28 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: object type / instance arguments
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4B0C694B.1080803@residenset.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 26 Nov 2009 13:47:59.0146 (UTC) FILETIME=[10A318A0:01CA6E9F]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6186
+
+This is a multi-part message in MIME format.
+--------------060708030603040509010109
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
+
+I wrote:
+> Re: efficiency: My experience is that one can have TeX do quite=20
+> extensive processing without slowing things down much *provided one doe=
+s=20
+> it in the mouth*. (I don't understand quite why that would be, but did =
+
+> some timing to confirm it in particular cases for fontinst v1.913.) A=20
+> set of workable semantics for a fully expandable
+>   \DictionaryGet{<key>}{<dictionary>}{<default>}
+> command would be:
+>=20
+> 1.  \DictionaryGet{#1}{\ToDictionary{#2}{#3}}{#4}
+>   fully expands to the full expansion of #3 if the full
+>   expansion of #1 is equal to the full expansion of #2,
+>   and to the full expansion of #4 otherwise; probably
+>   equivalent to
+>     \str_if_eq:xxTF{#1}{#2}{#3}{#4}
+>   (or would that be \str_if_eq:nnTF?).
+>=20
+> 2.  \DictionaryGet{#1}{\ToDictionary{#2}{#3}#4}{#5}
+>   is after full expansion equivalent to
+>     \DictionaryGet{#1}{\ToDictionary{#2}{#3}}{
+>       \DictionaryGet{#1}{#4}{#5}
+>     }
+>=20
+> 3.  \DictionaryGet{#1}{}{#2}
+>   is after full expansion equivalent to #2.
+>=20
+> The trickiest thing to do in TeX3 is the test for key equality, and I=20
+> believe there has been discussions about newer engines having primitive=
+s=20
+> that simplify this. (Not having to go via=20
+> \expandafter\string\csname<key-name>\endcsname to sanitize key names is=
+=20
+> a good first step, although not essential.)
+
+Following up on that: As a proof of concept, I implemented (for=20
+TeX3/LaTeX2e) such a \DictGet command last night; see attached files=20
+(<6K with source documentation and tests). Complexity is linear in the=20
+size of dictionary values, but worst-case quadratic in the average size=20
+of a key.
+
+10000 look-ups (9988 of which won't find anything) in a dictionary of=20
+12 elements took 12.114s on a fairly old (500MHz) iBook. Seems=20
+acceptable to me.
+
+Lars Hellstr=F6m
+
+--------------060708030603040509010109
+Content-Type: text/plain; x-mac-type="54455854"; x-mac-creator="414C4641";
+ name="dict.dtx"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="dict.dtx"
+
+
+
+% \begin{macro}{\str@if@eq}
+%   This macro has the syntax
+%   \begin{quote}
+%     |\str@if@eq|\marg{str1}\marg{str2}\marg{then}\marg{else}
+%   \end{quote}
+%   It expands to \meta{then} if \meta{str1} and \meta{str2} are 
+%   equal, and to \meta{else} otherwise. The first two arguments 
+%   should consist entirely of tokens of categories 11~(letter), 
+%   12~(other), |&|, |^|, |_|, |$| (possibly |#|), but not 
+%   1~(beginning of group), 2~(end of group), or 13~(active). 
+%   Category 10~(space) tokens are ignored.
+%    \begin{macrocode}
+%<*pkg>
+\def\str@if@eq#1#2{%
+   \str@if@eq@ #1\relax\str@if@eq@ #2\relax\str@if@eq@
+}
+\def\str@if@eq@#1#2\str@if@eq@#3#4\str@if@eq@{%
+   \if #1#3%
+      \expandafter\@firstoftwo
+   \else
+      \expandafter\@secondoftwo
+   \fi{%
+      \ifx #1\relax
+         \expandafter\@secondoftwo
+      \else
+         \expandafter\@firstoftwo
+      \fi{%
+         \str@if@eq@#2\str@if@eq@#4\str@if@eq@
+      }\@firstoftwo
+   }\@secondoftwo
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\q@dict@end}
+% \begin{macro}{\gobble@dict}
+%   A quark (though less dangerous than the \LaTeX3 ones) to 
+%   delimit dictionaries, and a macro that gobbles everything up to 
+%   and including that quark.
+%    \begin{macrocode}
+\def\q@dict@end{\string\q@dict@end}
+\long\def\gobble@dict#1\q@dict@end{}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\DictEntry}
+%   The |\DictEntry| command is used to construct dictionary entries. 
+%   It has the syntax
+%   \begin{quote}
+%     |\DictEntry|\marg{key}\marg{value}
+%   \end{quote}
+%   Code processing dictionaries will test tokens for being 
+%   |\DictEntry|, so its definition has no relevance for such 
+%   processing beyond serving as a ``unique'' identifier. However, 
+%   the definition should be such that it survives full expansion, as 
+%   dictionaries will often occur in moving contexts. Therefore it is 
+%   made unexpandable.
+%    \begin{macrocode}
+\chardef\DictEntry=`/
+%    \end{macrocode}
+%   In $\varepsilon$-\TeX, it would be more practical to make 
+%   |\DictEntry| a |\protected| macro.
+% \end{macro}
+% 
+% \begin{macro}{\DictGet}
+%   This command has the syntax
+%   \begin{quote}
+%     |\DictGet|\marg{key}\marg{dictionary}\marg{default}
+%   \end{quote}
+%   It expands to \meta{default} if there is no \meta{key} entry in 
+%   the \meta{dictionary}, but to the value of that \meta{key} entry 
+%   otherwise.
+%   
+%    \begin{macrocode}
+\long\def\DictGet#1#2{%
+   \expandafter\expandafter\expandafter\dict@get@entry 
+     \expandafter\expandafter\expandafter{\expandafter\string 
+     \csname#1\endcsname}#2\q@dict@end\@firstofone
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\dict@get@entry}
+%   This is the main iterate of |\DictGet|. It should occur either as
+%   \begin{quote}
+%     |\dict@get@entry|\marg{key1}^^A
+%     |\DictEntry|\marg{key2}\marg{value}\dots
+%   \end{quote}
+%   or as
+%   \begin{quote}
+%     |\dict@get@entry|\marg{key1}|\q@dict@end|
+%   \end{quote}
+%   In the second case, there are no more entries in the dictionary 
+%   and it should expand to nothing. In the first case, it should 
+%   prepare for a test of whether \meta{key1} and \meta{key2} are 
+%   equal. It must however also be prepared to handle the error 
+%   situation that neither case is at hand.
+%    \begin{macrocode}
+\long\def\dict@get@entry#1#2{%
+   \ifx \DictEntry#2%
+      \expandafter\dict@get@entry@
+   \else
+      \dict@verify@end#2\@empty\q@dict@end
+      \expandafter\@gobble
+   \fi{#1}%
+}
+\long\def\dict@verify@end#1#2\q@dict@end{%
+   \ifx \q@dict@end#1\else
+      \PackageError{dict}{Malformed dictionary}{Ignoring entries}%
+      \csname fi\endcsname
+      \expandafter\gobble@dict
+   \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% 
+% \begin{macro}{\dict@get@entry@}
+%   This macro performs the second step of looking at a dictionary 
+%   entry: santizing the entry key. It occurs in the context
+%   \begin{quote}
+%     |\dict@get@entry@|\marg{key1}\marg{key2}\marg{value}\dots
+%   \end{quote}
+%   where \meta{key1} already is sanitized but \meta{key2} may need 
+%   processing.
+%   
+%   After having sanitized \meta{key2}, the above will have expanded to
+%   \begin{quote}
+%     |\str@if@eq|\marg{key2-sanitized}\marg{key1}\\
+%     |{|\meta{value}\meta{gobble-code}|}|\\
+%     |{\dict@get@entry{|\meta{key1}|}}|
+%   \end{quote}
+%   which either continues with the next entry (when not equal) or 
+%   expands to \meta{value} followed by code to gobble the rest of 
+%   the |\DictGet|.
+%    \begin{macrocode}
+\long\def\dict@get@entry@#1#2#3{%
+   \expandafter\expandafter\expandafter\str@if@eq 
+     \expandafter\expandafter\expandafter{%
+     \expandafter\string \csname#2\endcsname}{#1}
+   {#3\expandafter\@gobbletwo\gobble@dict}%
+   {\dict@get@entry{#1}}%
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+%    \begin{macrocode}
+%</pkg>
+%    \end{macrocode}
+% 
+%    \begin{macrocode}
+%<*test>
+Expect `bar': \DictGet{foo}{}{bar}
+
+Expect `bar': \DictGet{foo}{\DictEntry{bar}{baz}}{bar}
+
+Expect `baz': \DictGet{foo}{\DictEntry{foo}{baz}}{bar}
+
+Expect `bar': \DictGet{fo}{\DictEntry{foo}{baz}}{bar}
+
+Expect `bar': \DictGet{foo}{\DictEntry{fo}{baz}}{bar}
+
+Expect `baz1': 
+\DictGet{foo}{\DictEntry{foo}{baz1}\DictEntry{fo}{baz2}}{bar}
+
+Expect `baz2': 
+\DictGet{foo}{\DictEntry{fo}{baz1}\DictEntry{foo}{baz2}}{bar}
+
+Expect `baz1': 
+\DictGet{foo}{\DictEntry{foo}{baz1}\DictEntry{foo}{baz2}}{bar}
+
+Expect `foo': 
+\DictGet{}{\DictEntry{foo}{baz}\DictEntry{}{foo}}{bar}
+
+Expect `bar': 
+\DictGet{}{\DictEntry{foo}{baz}\DictEntry{foo}{}}{bar}
+
+\message{Expect error...}
+\nonstopmode
+Expect `bar': \DictGet{foo}{{fo}{baz}}{bar}
+\errorstopmode
+\message{After expected error.}
+
+\protected@write{16}{}{Expect `\string\DictEntry\space{foo}{bar}': 
+  \DictEntry{foo}{bar}}
+
+Expect something: \DictEntry{foo}{bar}
+%</test>
+%    \end{macrocode}
+% 
+
+
+\endinput
+
+--------------060708030603040509010109
+Content-Type: application/x-tex;
+ name="dict-test.tex"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="dict-test.tex"
+
+\documentclass{article}
+
+\begin{document}
+
+\makeatletter\input dict.dtx \makeatother
+
+\end{document}
+
+
+--------------060708030603040509010109--
+

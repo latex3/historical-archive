@@ -1,0 +1,93 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 21:06:57 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mAOK6qfV032428
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 24 Nov 2008 21:06:53 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mAOK1YHH007312
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 24 Nov 2008 21:01:34 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mAOIYfMt001634;
+	Mon, 24 Nov 2008 21:01:30 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 174454 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 24 Nov
+          2008 21:01:30 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mAOK1UWp007486 for <latex-l@listserv.uni-heidelberg.de>;
+          Mon, 24 Nov 2008 21:01:30 +0100
+Received: from lon1-post-3.mail.demon.net (lon1-post-3.mail.demon.net
+          [195.173.77.150]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id mAOK1CT8021350 for <latex-l@listserv.uni-heidelberg.de>;
+          Mon, 24 Nov 2008 21:01:16 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          lon1-post-3.mail.demon.net with esmtp (Exim 4.69) id 1L4hcO-0004ff-ea
+          for latex-l@listserv.uni-heidelberg.de; Mon, 24 Nov 2008 20:01:12
+          +0000
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <492B080C.8020607@morningstar2.co.uk>
+Date:         Mon, 24 Nov 2008 20:01:16 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: New experimental package: numparse3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Nov 2008 20:06:57.0224 (UTC) FILETIME=[33FC3480:01C94E70]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5462
+
+Hello all,
+
+As part of a wider plan to examine implementing siunitx in LaTeX3, I
+have just uploaded a generic number parser (numparse3) to CTAN. It is
+also available via SVN at http://numparse3.berlios.de
+
+I've tried to examine how a general module can return information to a
+module higher up the chain.  At present, I've implemented this using a
+plist (for data) and an integer (for error codes).  I'd be interested to
+hear how people see this approach.
+
+I'm hoping to move on to a generalised formatting system for numbers, to
+take output of numparse3 and format it. First, I've got a few new ideas
+for keys3 to implement, though.  Once all of that is done, I'm hoping to
+look at the unit engine of siunitx in LaTeX3, and also consider numbers
+in tables.  The later still hinges on what is going to happen about
+handling tables in LaTeX3.
+
+I'm happy to examine porting the array package, but before I sit down to
+do that I'd be keen to know how people see this.  I imagine that for the
+user, the current \begin{tabular}{<letters>} approach is likely to be
+maintained. Speaking from the siunitx experience, I'd certainly like to
+make this a bit more robust (for example, I have issues because I want
+optional arguments to work with the <letter>).  The alternative approach
+is to have something like:
+
+\begin{tabular}{
+  {<keyval list>}
+  {<keyval list>} ...
+
+with one list of options for each column generated.  Personally, I
+suspect that it a bit clumsy.
+
+Any feedback on numparse3 (or indeed my other LaTeX3 experiments) is
+always welcome.
+-- 
+Joseph Wright
+

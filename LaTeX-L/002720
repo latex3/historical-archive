@@ -1,0 +1,68 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1242" "Tue" "3" "November" "1998" "13:13:44" "GMT" "David Carlisle" "davidc@NAG.CO.UK" nil "30" "Re: Quotes and punctuation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id OAA30794;
+	Tue, 3 Nov 1998 14:14:11 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.B055055A@listserv.gmd.de>; Tue, 3 Nov 1998 14:14:10 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 407389 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 3 Nov 1998 14:14:04 +0100
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id OAA04140 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 3 Nov 1998 14:14:01 +0100 (MET)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          NAA12382; Tue, 3 Nov 1998 13:13:44 GMT
+References: <v03110700b2647e640c40@[130.237.37.81]> (message from Hans Aberg on
+            Tue, 3 Nov 1998 10:36:19 +0100) <98102213123551@man.ac.uk> 
+            <98102213123551@man.ac.uk> <v03110700b2647e640c40@[130.237.37.81]>
+            <v03110701b26491718673@[130.237.37.128]>
+Message-ID:  <199811031313.NAA12382@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v03110701b26491718673@[130.237.37.128]> (message from Hans Aberg
+              on Tue, 3 Nov 1998 12:11:48 +0100)
+Date:         Tue, 3 Nov 1998 13:13:44 GMT
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Quotes and punctuation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2720
+
+> that makes it possible. I have no idea why it works; TeX seemed to accept it.
+
+yes of course you can detect {} with \futurelet (you'll see similar code
+in xspace.sty) the point is that you can't reliably do anything with the
+information once you have it. For your quote lookahead you need to see
+past the } but the role of } is rather different in \mbox{..} or
+\section{...} or \sbox{...} and you don't know what sort of thing you
+have, and the group may not end with } it may be & or .....
+
+and then the question is do you expand before or after testing.
+
+in \quote{this}\foo
+
+do you expand \foo first in case it is defined to start with a , ?
+
+If you decide no then sometimes your quote command will sometimes make
+the wrong decision (this is what xspace does)
+
+If you expand once (by inserting some \expandafter s at suitable places
+then your quote command will make the wrong decision at slightly
+different set of times.
+
+If you try to fully expand the token to see if it ultimately produces a
+, then effectively you make your entire document a `moving argument'
+so all sorts of fragile commands will blow up, and commands made robust
+using \protect still won't expand and so quote will still sometimes make
+the wrong decision.
+
+David
+
+

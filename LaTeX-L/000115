@@ -1,0 +1,102 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 25 May 90 09:33:39 -0700
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Leslie Lamport <lamport@SRC.DEC.COM>
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 115
+
+On the question of attributes...
+
+
+Frank has expressed some concern about conflicts between the proposed
+parameter mechanisms and existing optional arguments.  The time has
+come to face the issue of compatability squarely.
+
+A parameter mechanism represents a major change to LaTeX. It can handle
+just about all the functionality provided by existing optional
+arguments.  It is a mistake to have two mechanisms when one will do.
+Therefore, we have two choices:
+
+   * Defer any parameter mechanisms until a later version.
+
+   * Abandon compatability.
+
+Trying to combine the new mechanism with existing ones will produce a
+kludge.  I believe that the current sentiment is that we abandon
+compatability--someone who wants to use the new LaTeX will have to
+modify his files.  Version 2.09 can be kept on the distribution tape
+for people who want to be able to produce output from old source files.
+
+So, let's design a parameter mechanism that will subsume all existing
+optional arguments.  This suggests the uniform syntax
+
+    \begin{environment}[parameters]{argument}
+    \command[parameters]{argument}
+
+(With existing optional arguments gone, I see no advantage to
+\begin{environment|parameters} over \begin{environment}[parameters].)
+
+This still leaves two questions
+
+  1. The format of "parameters"
+  2. How they are handled--especially in user-defined commands and
+     environments.
+
+Let's talk about the second item first, since I think it's the
+simplest.  I proposed that the parameters are put on a stack, and that
+a \parameters command takes them from the stack and makes the
+appropriate declarations.  Here are some more details to my proposal:
+
+* Only some commands and environments can have parameters.
+
+* There will be separate versions of \{re}newcommand and
+\{re}newenvironment for ones that can and cannot have parameters.
+
+* For a command \foo, the environment \begin{foo} has a parameter
+  if and only if the command \foo does.
+
+Anyone have any better ideas?
+
+Now, for the format of "parameters".  I think there have been three
+proposals:
+
+(1) parameters ==  param1=...| ... | param2==...
+    where the param's are from a small set specific to the command or
+    environment. (Thus, topsep might be a param for a list environment,
+    but not for a minpage environment.)
+
+(2) paramters == an arbitrary string of declarations
+
+(3) Like (1), except one of the param's might be an arbitrary string
+    of declarations.
+
+I don't like any of them.  As I indicated earlier, I think the best
+one would be:
+
+(4) Like (1), except the param's can include any parameter one might
+    reasonably want to set.
+
+It would be all right if unreasonable param's could be set as well as
+reasonable ones (e.g., \linewidth in an array environment).
+The user can now set parameters with \setlength and \renewcommand
+that can cause bad things to happen.  He can write
+
+  \begin{itemize} \setlength{\textheight}{10pt}
+
+now, so there's nothing wrong with letting him write
+
+   \begin{itemize}[textheight=10pt]
+
+However, that shouldn't cause a "type" error--e.g., causing LaTeX to do
+a \def\textheight{10pt} instead of a \textheight=10pt.
+
+If proposal (4) is feasible, I'd say we should do it.  If not, I would
+like to see a new proposal.
+
+Leslie Lamport
+
+

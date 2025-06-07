@@ -1,0 +1,387 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Sat, 29 Jan 2000 17:57:32 +0100 (MET)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE [134.93.8.56]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA19609 for <schoepf@mail.uni-mainz.de>; Sat, 29 Jan 2000 17:57:32 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF6A79.EED22600"
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id RAA06337 for <schoepf@UNI-MAINZ.DE>; Sat, 29 Jan 2000 17:57:32 +0100 (MET)
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.BE86761A@mail.listserv.gmd.de>; Sat, 29 Jan 2000 17:57:17 +0100
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 448779 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 29 Jan 2000 17:56:02 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id RAA29953 for <LATEX-L@urz.uni-heidelberg.de>; Sat, 29 Jan          2000 17:56:01 +0100 (MET)
+Received:  from smtp2.hetnet.nl (smtp2.hetnet.nl [145.7.226.1]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with ESMTP id RAA08638 for          <LATEX-L@urz.uni-heidelberg.de>; Sat, 29 Jan 2000 17:56:02 +0100 (MET)
+Received:  from hetnet.nl ([194.151.104.153]) by smtp2.hetnet.nl  with Microsoft          SMTPSVC(5.5.1875.185.18); Sat, 29 Jan 2000 17:44:07 +0100
+Received:  from ergst ([195.121.218.11]) by hetnet.nl  with Microsoft          SMTPSVC(5.5.1877.327.32); Sat, 29 Jan 2000 17:57:26 +0100
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["3250" "Sat" "29" "January" "2000" "17:58:33" "+0100" "Ruben Prins" "sunu@HETNET.NL" nil "102" "Comments on templates and xinitials" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+Content-class: urn:content-classes:message
+Subject:      Comments on templates and xinitials
+Date: Sat, 29 Jan 2000 17:58:33 +0100
+Message-ID:  <001101bf6a7a$145173e0$0bda79c3@ergst>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Ruben Prins" <sunu@HETNET.NL>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3525
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF6A79.EED22600
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Well, I'm new to this list, so my comments on templates might already =
+have
+been discussed, but anyway, here goes
+
+* Templates
+
+How about reusability of templates? That is, if I have a couple of =
+instances
+x and y of a template t, and a command
+
+    \DeclareDocumentCommand{\foo}{}{\UseInstance{t}{x}}
+
+where x is the default instance; then how can this instance be =
+`upgraded'
+to, say, y? Shouldn't there be a command like
+
+    \LetInstance{<template>}{<old_instance>}{<new_instance>}
+
+This could be very useful when you're using existing document classes, =
+and
+extra (read: other's) template/instance files:
+
+    \RequireClass{xbook}
+    \RequireInstances{captions} % \input{captions.<nice_suffix>} ?
+    \LetInstance{caption}{default}{odd-left}
+    \LetCollectionInstance{figure}{caption}{default}{odd-bottom}
+    \LetCollectionInstance{table} {caption}{default}{odd-top}
+
+Well, something like that. (Suggestions for \RequireInstances/Templates:
+    <nice_suffix> =3D td  - template definitions (\RequireTemplates),
+    <nice_suffix> =3D tid - template instance definitions,
+ like fd for font files.)
+
+PS
+
+How far do collections go? Nesting is probably okay (just taking the top
+collection -- couldn't think of any real problems here :-( But how about
+combinations of collections:
+
+    \frontmatter  % \UseCollections{frontmatter}
+    ...
+    \begin{table} % \UseCollections{table}
+      ...
+      \caption{This table}
+    \end{table}
+    ...
+    \mainmatter   % \UseCollections{mainmatter}
+    ...
+
+So,
+
+    \UseCollections{table}
+
+Rather than consecutive
+
+    \UseCollection{caption}{table}
+    \UseCollection{footnote}{table}
+    ...
+
+Maybe I'm wrong here, but it could be possible that some (class) author
+wanted to add a
+
+    \UseCollection{hj}{table}
+
+to tables so that they automatically center stuff after
+
+    \LetCollectionInstance{table}{hj}{default}{centering}
+
+But later (s)he could redesign his/her class to say
+
+    \LetCollectionInstance{table}{hj}{default}{inch-from-left}
+
+This only affects the class, and not the plain LaTeX input. And now that =
+I'm
+typing:
+
+    \RemoveCollectionInstance{frontmatter}{head}{*}
+
+Ah, well...
+
+
+* xinitials
+
+1) You should use `totalheight', not `height' --- just try Palatino J, =
+or
+just about any Q. (BTW, this mistake is also made by the dropping =
+package).
+
+2) Accented characters can be used for initial if you just use
+\meaning/\@onelevel@sanitize or a plain \string (compare the code the
+accents use to check for existing `template instances'  =
+[=3Dcomposites]).
+
+Neither English nor Dutch use accented initials/caps, but languages like
+German, Danish, Swedish, French, Portuguese, etc. do (well, I think so =
+;-)
+So I think support SHOULD be part of a standard template. Don't force =
+people
+to constantly work around such idiosyncracies when salvation is so nigh!
+
+Maybe another hint could be to add a feature to the accent commands of
+\DeclareTextAccent/\DeclareTextCommand, that they can revert to =
+unaccented
+behaviour under certain circumstances, i.e.,
+    \"a -> \@firstofone a  (thus practically a mere `a')
+There could be several uses for this behaviour (initials being one of =
+them).
+
+
+Well, that's all for my input today; as for more positive comments: I =
+think
+those should be obvious.
+
+Ruben Prins
+
+------_=_NextPart_001_01BF6A79.EED22600
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Comments on templates and xinitials</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Well, I'm new to this list, so my comments on =
+templates might already have</FONT>
+
+<BR><FONT SIZE=3D2>been discussed, but anyway, here goes</FONT>
+</P>
+
+<P><FONT SIZE=3D2>* Templates</FONT>
+</P>
+
+<P><FONT SIZE=3D2>How about reusability of templates? That is, if I have =
+a couple of instances</FONT>
+
+<BR><FONT SIZE=3D2>x and y of a template t, and a command</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\DeclareDocumentCommand{\foo}{}{\UseInstance{t}{x}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>where x is the default instance; then how can this =
+instance be `upgraded'</FONT>
+
+<BR><FONT SIZE=3D2>to, say, y? Shouldn't there be a command like</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\LetInstance{&lt;template&gt;}{&lt;old_instance&gt;}{&lt;new_instance&gt;=
+}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This could be very useful when you're using existing =
+document classes, and</FONT>
+
+<BR><FONT SIZE=3D2>extra (read: other's) template/instance files:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \RequireClass{xbook}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \RequireInstances{captions} % =
+\input{captions.&lt;nice_suffix&gt;} ?</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\LetInstance{caption}{default}{odd-left}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\LetCollectionInstance{figure}{caption}{default}{odd-bottom}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \LetCollectionInstance{table} =
+{caption}{default}{odd-top}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Well, something like that. (Suggestions for =
+\RequireInstances/Templates:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;nice_suffix&gt; =3D td&nbsp; - =
+template definitions (\RequireTemplates),</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;nice_suffix&gt; =3D tid - =
+template instance definitions,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;like fd for font files.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>PS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>How far do collections go? Nesting is probably okay =
+(just taking the top</FONT>
+
+<BR><FONT SIZE=3D2>collection -- couldn't think of any real problems =
+here :-( But how about</FONT>
+
+<BR><FONT SIZE=3D2>combinations of collections:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \frontmatter&nbsp; % =
+\UseCollections{frontmatter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \begin{table} % =
+\UseCollections{table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \caption{This =
+table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \end{table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \mainmatter&nbsp;&nbsp; % =
+\UseCollections{mainmatter}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>So,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \UseCollections{table}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Rather than consecutive</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseCollection{caption}{table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\UseCollection{footnote}{table}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe I'm wrong here, but it could be possible that =
+some (class) author</FONT>
+
+<BR><FONT SIZE=3D2>wanted to add a</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \UseCollection{hj}{table}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>to tables so that they automatically center stuff =
+after</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\LetCollectionInstance{table}{hj}{default}{centering}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>But later (s)he could redesign his/her class to =
+say</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\LetCollectionInstance{table}{hj}{default}{inch-from-left}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This only affects the class, and not the plain LaTeX =
+input. And now that I'm</FONT>
+
+<BR><FONT SIZE=3D2>typing:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\RemoveCollectionInstance{frontmatter}{head}{*}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ah, well...</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>* xinitials</FONT>
+</P>
+
+<P><FONT SIZE=3D2>1) You should use `totalheight', not `height' --- just =
+try Palatino J, or</FONT>
+
+<BR><FONT SIZE=3D2>just about any Q. (BTW, this mistake is also made by =
+the dropping package).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>2) Accented characters can be used for initial if you =
+just use</FONT>
+
+<BR><FONT SIZE=3D2>\meaning/\@onelevel@sanitize or a plain \string =
+(compare the code the</FONT>
+
+<BR><FONT SIZE=3D2>accents use to check for existing `template =
+instances'&nbsp; [=3Dcomposites]).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Neither English nor Dutch use accented initials/caps, =
+but languages like</FONT>
+
+<BR><FONT SIZE=3D2>German, Danish, Swedish, French, Portuguese, etc. do =
+(well, I think so ;-)</FONT>
+
+<BR><FONT SIZE=3D2>So I think support SHOULD be part of a standard =
+template. Don't force people</FONT>
+
+<BR><FONT SIZE=3D2>to constantly work around such idiosyncracies when =
+salvation is so nigh!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Maybe another hint could be to add a feature to the =
+accent commands of</FONT>
+
+<BR><FONT SIZE=3D2>\DeclareTextAccent/\DeclareTextCommand, that they can =
+revert to unaccented</FONT>
+
+<BR><FONT SIZE=3D2>behaviour under certain circumstances, i.e.,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \&quot;a -&gt; \@firstofone =
+a&nbsp; (thus practically a mere `a')</FONT>
+
+<BR><FONT SIZE=3D2>There could be several uses for this behaviour =
+(initials being one of them).</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>Well, that's all for my input today; as for more =
+positive comments: I think</FONT>
+
+<BR><FONT SIZE=3D2>those should be obvious.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ruben Prins</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF6A79.EED22600--
+

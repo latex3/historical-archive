@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["1567" "Thu" "10" "December" "92" "18:04:40" "GMT" "David Carlisle" "carlisle@CS.MAN.AC.UK" nil "38" "BNF.DOC -- how about this??" nil nil nil "12"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA09951; Fri, 11 Dec 92 12:27:07 +0100
+Received: from dagobert by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AB20534; Fri, 11 Dec 92 12:27:04 +0100
+Message-Id: <9212111127.AB20534@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 1979; Thu, 10 Dec 92 21:34:37 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8810;
+ Thu, 10 Dec 92 21:34:34 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 8808;
+ Thu, 10 Dec 92 21:34:32 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  Mike Piff's message of Thu,
+              10 Dec 92 16:58:52 GMT <14409.9212101712@m1.cs.man.ac.uk>
+Date:         Thu, 10 Dec 92 18:04:40 GMT
+From: David Carlisle <carlisle@CS.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      BNF.DOC -- how about this??
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 906
+
+
+
+>
+> I am mystified by this. As far as I can see, none of M&S' stuff contains
+> such a file header---indeed, it seems to be incompatible with the .DOC
+> style. I should have thought that the header has to be
+> the FIRST thing in the file, yet it has to be surrounded by \iffalse...\fi
+> doesn't it?
+>
+> The other difficulty appears to be that the usefulness of
+> "\filedate" evaporates
+> if one then has to explicitly insert the date in the header.
+>
+> Perhaps I am missing something, but it seems to need some thought.
+
+I do not think that the file header has to be first, Nelson's code
+supports languages that that have comment syntax's like (* ... *)
+\iffalse ... \fi can be thought of as a comment bracket, instead of a
+line based comment.
+
+%^^A
+%^^A Alternatively you can use %^^A as the comment prefix for the
+%^^A header, this is a comment whatever mode of doc.sty you are in.
+%^^A
+
+There is some code of mine in the vol-task paper which fishes things
+out of the header, I think Nelson and George are adding an ISO-Date
+field for a 1992.12.10 style date,  TeX could easily turn this
+into Frank's 92/12/10 style (It has been suggested that the Mainz
+style might be changed to yyyy.mm.dd to make this even easier!)
+
+You could then just have the date set in the header, and have the
+\filedate macro defined by magic. Not sure what to do about \docdate,
+perhaps add another field to the header? I think all my files have
+docdate=filedate anyway as I always document changes (grin), but I
+dont bother fixing typos in the docs until the code needs changing.
+
+David
+

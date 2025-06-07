@@ -1,0 +1,59 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["801" "Mon" "3" "March" "1997" "17:56:38" "GMT" "David Carlisle" "carlisle@MA.MAN.AC.UK" nil "25" "Re: Shortref mechanism" "^Date:" nil nil "3" nil "Shortref mechanism" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id SAA09555; Mon, 3 Mar 1997 18:58:30 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.283EE7FF@listserv.gmd.de>; Mon, 3 Mar 1997 18:57:08 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108064 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Mar 1997 18:56:45 +0100
+Received: from vummath.ma.man.ac.uk (vummath.ma.man.ac.uk [130.88.16.53]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id SAA16580 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 3 Mar 1997 18:56:42 +0100
+          (MET)
+Received: by vummath.ma.man.ac.uk (SMI-8.6/SMI-SVR4) id RAA26159; Mon, 3 Mar
+          1997 17:56:38 GMT
+Message-ID:  <199703031756.RAA26159@vummath.ma.man.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <v02130504af3f1549422d@[130.237.37.139]> (message from Hans Aberg
+              on Sun, 2 Mar 1997 13:48:57 +0100)
+Date:         Mon, 3 Mar 1997 17:56:38 GMT
+From: David Carlisle <carlisle@MA.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1854
+
+> I just made a definition command that can produce commands
+> having optional arguments
+
+You can not do this for commands that are to appear `mid word' without
+breaking TeX's ligatures. You can not have *any* non expandable
+command there. Even \relax which does `nothing' is too much. Compare
+
+ff with f\relax f
+
+So as Frank mentioned, `shortref' definitions are very constrained in
+what they can have in their definition. They can not use \def or \let
+or \futurelet or pretty much anything else that you normally would use
+for parsing. they are more or less restricted to using
+\if\noexpand#1?
+...
+
+or
+\expandafter\ifx\csname #1-xxx\endcsname\?
+...
+
+
+Well you can have optional arguments, perhaps by looking for [ with
+these methods, but you could not use the normal \@ifnextchar mechanisms.
+
+David
+

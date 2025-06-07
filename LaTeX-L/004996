@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 27 Nov 2006 23:23:49 +0100
+Received: by mail.proteosys.com (8.13.6/8.13.4) with ESMTP id kARMNhiC031537
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 27 Nov 2006 23:23:44 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id kARMGdwo025965;
+	Mon, 27 Nov 2006 23:16:39 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id kAQN208H000448;
+	Mon, 27 Nov 2006 23:16:25 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1292860 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 27 Nov
+          2006 23:16:25 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id kARMGPnq029578 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 27 Nov 2006 23:16:25 +0100
+Received: from mail.momentuminternet.com.au (mail.momentuminternet.com.au
+          [202.6.158.132]) by relay2.uni-heidelberg.de (8.12.10/8.12.10) with
+          ESMTP id kARMGFwo025882 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 27 Nov 2006 23:16:18 +0100 (MET)
+Received: from [10.0.1.3] (190-156-90-219.dyn.adsl.momentuminternet.com.au
+          [219.90.156.190]) by mail.momentuminternet.com.au (8.13.1/8.13.1)
+          with ESMTP id kARMGKuZ004292 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 28 Nov 2006 08:46:20 +1030
+Mime-Version: 1.0 (Apple Message framework v752.2)
+References: <0A807AAD-06E1-47CA-BB88-619F7452D75B@frycomm.com>
+            <E081489C-5183-48A4-945B-C0B932E907CD@guerilla.net.au>
+            <17770.61617.791402.285029@morse.mittelbach-online.de>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.752.2)
+X-Greylist: Sender IP whitelisted,
+            not delayed by milter-greylist-3.0rc7 (mail.momentuminternet.com.au
+            [202.6.158.132]); Tue, 28 Nov 2006 08:46:20 +1030 (CST)
+X-MomentumInternet-MailScanner-Information: Please contact the ISP for more
+                         information
+X-MomentumInternet-MailScanner: Found to be clean
+X-MomentumInternet-MailScanner-From: will@guerilla.net.au
+Message-ID:  <7A31D2B4-4D4B-4A5B-8926-66D1AF7CA3C6@guerilla.net.au>
+Date:         Tue, 28 Nov 2006 08:46:06 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <will@GUERILLA.NET.AU>
+Subject: Re: The Next Font Selection Scheme
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17770.61617.791402.285029@morse.mittelbach-online.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 27 Nov 2006 22:23:49.0960 (UTC) FILETIME=[B66E4480:01C71272]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4996
+
+On 28/11/2006, at 0:35 , Frank Mittelbach wrote:
+
+> why do you want to have an intermediate layer? basically to allow  
+> for easy
+> configuration changes and flexibility. it is the old story: unless  
+> you build a
+> common exchange layer modification is more than painful.
+
+Good thinking, as always, Frank.
+I guess my feeling about the whole thing is that fontspec  
+incorporates the "user level" functionality of the NFSS fairly well.  
+As long as people are using it properly (and I admit more should have  
+been done to enforce this) in the first place then font definitions  
+can be swapped out in the preamble, and intermediate commands  
+\bfseries, \itshape are used in the document to ensure consistency.
+
+It's a bit of a mix between your choices 1 and 2. Font features are  
+specified through the consistent fontspec interface, (not that the  
+OpenType feature interface isn't consistent of itself; just ugly) but  
+font names must be used explicitly, and bold/italic fonts aren't  
+always auto-detected.
+
+For example,
+
+\newfontfamily\secfont[
+   Numbers = OldStyle,
+   BoldFont = Hoefler Text Bold,
+     ]{Hoefler Text}
+
+The Numbers feature will work for any font that supports that  
+feature, but it can never be completely automatic to set up an entire  
+font family -- the user needs to know what the font names are, and  
+what features it supports. This is true whether or not the interface  
+is provided through an intermediate stage or directly.
+
+Will
+

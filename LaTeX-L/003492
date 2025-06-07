@@ -1,0 +1,246 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Mon, 3 Jan 2000 22:46:14 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1) with ESMTP id WAA19410 for <schoepf@mail.uni-mainz.de>; Mon, 3 Jan 2000 22:46:14 +0100 (MET)
+MIME-Version: 1.0
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id WAA12509 for <schoepf@UNI-MAINZ.DE>; Mon, 3 Jan 2000 22:46:12 +0100 (MET)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF5633.F4CC1700"
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.C6ED372D@mail.listserv.gmd.de>; Mon, 3 Jan 2000 22:46:03 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 447445 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 3 Jan 2000 22:45:03 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id WAA14702 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 3 Jan          2000 22:44:03 +0100 (MET)
+Received:  from mailgate1.zdv.Uni-Mainz.DE (mailgate1.zdv.Uni-Mainz.DE          [134.93.8.56]) by relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with          ESMTP id WAA26322 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 3 Jan          2000 22:44:58 +0100 (MET)
+Received:  from mailserver1.zdv.Uni-Mainz.DE (mailserver1.zdv.Uni-Mainz.DE          [134.93.8.30]) by mailgate1.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP          id WAA11825 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 3 Jan 2000          22:45:02 +0100 (MET)
+Received:  from istrati.zdv.uni-mainz.de (dialin407.zdv.Uni-Mainz.DE          [134.93.175.107]) by mailserver1.zdv.Uni-Mainz.DE (8.9.3+Sun/8.9.1)          with ESMTP id WAA19145 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Mon, 3          Jan 2000 22:45:01 +0100 (MET)
+Received:  (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id          WAA00547; Mon, 3 Jan 2000 22:45:50 +0100
+In-Reply-To:  <87a2301a@corona.oche.de>
+References: <87a2301a@corona.oche.de>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["2377" "Mon" "3" "January" "2000" "22:45:50" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "48" "Re: theorem templates" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to                         design@istrati.zdv.uni-mainz.de using -f
+Content-class: urn:content-classes:message
+Subject:      Re: theorem templates
+Date: Mon, 3 Jan 2000 22:45:50 +0100
+Message-ID:  <200001032145.WAA00547@istrati.zdv.uni-mainz.de>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Frank Mittelbach" <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3492
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF5633.F4CC1700
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+A few comments on Achim nice piece of work:
+
+ > %   This template starts a new environment, typesets the head of a
+ > %   theorem, and sets fonts for the body of the theorem. The
+ > %   environment is ended by an \verb|\@endtheorem| command.
+
+in my implementation for lists (not ready yet) I used something like
+\EndThisList to denote the reference to the code. The idea is that that
+pointer should appear in places used class designers building document
+commands from templates and xparse. Now that should in my opinion be
+distinguisable from coding actions (eg stuff that needs @ in names) but =
+at the
+same time should clearly also be distinguishable from stuff which is =
+part of a
+document. Syntaxwise our idea was to give those class commands =
+mixed-case
+names (not all people like that idea but so far we found that it gives a =
+nice
+middle layer)
+
+for the theoremstyle template type a good name could then be something =
+like
+\EndThisTheorem.
+
+what is perhaps more important is that such a command is actually =
+dependent on
+the template chosen. For this reason it can't be defined globally as =
+done by
+Achim. After all, somebody else might define a template for this type =
+which
+does not use trivlist at all (okay, okay, one could have a default =
+definition
+and overwrite it only in templates which can't make use of this but =
+while this
+might work in this case it will produce havoc with templates that could =
+be
+nested as you will imagine). So I think a safer approach is to =
+explicitly
+define the meaning of this command as part of the template definition.
+
+ > % \paragraph{Problem.}
+ > % The current solution for `head-format' is very clumsy. Perhaps it =
+would
+ > % be better to pass just the name of a template which does the layout
+ > % instead of the actual code.
+
+i guess this observation is correct and we should provide some sort of =
+heading
+templates that could be used in that place. This will get easier onces =
+my long
+promised galley stuff will be ready. For the moment i think it is enough =
+to
+get what you want even though it might be more complicated than =
+necessary.
+
+more interesting at the moment seems to me the question i've already =
+posed
+with regards to toc entries:
+
+ - what kind of layouts are desirable which cannot be produced by this
+   template
+
+ - are the keys adequate (should they be named differently, should there =
+be
+   additional ones, others ...)
+
+frank
+
+------_=_NextPart_001_01BF5633.F4CC1700
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: theorem templates</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>A few comments on Achim nice piece of work:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&gt; %&nbsp;&nbsp; This template starts a new =
+environment, typesets the head of a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; %&nbsp;&nbsp; theorem, and sets fonts for =
+the body of the theorem. The</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; %&nbsp;&nbsp; environment is ended by an =
+\verb|\@endtheorem| command.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>in my implementation for lists (not ready yet) I used =
+something like</FONT>
+
+<BR><FONT SIZE=3D2>\EndThisList to denote the reference to the code. The =
+idea is that that</FONT>
+
+<BR><FONT SIZE=3D2>pointer should appear in places used class designers =
+building document</FONT>
+
+<BR><FONT SIZE=3D2>commands from templates and xparse. Now that should =
+in my opinion be</FONT>
+
+<BR><FONT SIZE=3D2>distinguisable from coding actions (eg stuff that =
+needs @ in names) but at the</FONT>
+
+<BR><FONT SIZE=3D2>same time should clearly also be distinguishable from =
+stuff which is part of a</FONT>
+
+<BR><FONT SIZE=3D2>document. Syntaxwise our idea was to give those class =
+commands mixed-case</FONT>
+
+<BR><FONT SIZE=3D2>names (not all people like that idea but so far we =
+found that it gives a nice</FONT>
+
+<BR><FONT SIZE=3D2>middle layer)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>for the theoremstyle template type a good name could =
+then be something like</FONT>
+
+<BR><FONT SIZE=3D2>\EndThisTheorem.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>what is perhaps more important is that such a command =
+is actually dependent on</FONT>
+
+<BR><FONT SIZE=3D2>the template chosen. For this reason it can't be =
+defined globally as done by</FONT>
+
+<BR><FONT SIZE=3D2>Achim. After all, somebody else might define a =
+template for this type which</FONT>
+
+<BR><FONT SIZE=3D2>does not use trivlist at all (okay, okay, one could =
+have a default definition</FONT>
+
+<BR><FONT SIZE=3D2>and overwrite it only in templates which can't make =
+use of this but while this</FONT>
+
+<BR><FONT SIZE=3D2>might work in this case it will produce havoc with =
+templates that could be</FONT>
+
+<BR><FONT SIZE=3D2>nested as you will imagine). So I think a safer =
+approach is to explicitly</FONT>
+
+<BR><FONT SIZE=3D2>define the meaning of this command as part of the =
+template definition.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&gt; % \paragraph{Problem.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; % The current solution for `head-format' =
+is very clumsy. Perhaps it would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; % be better to pass just the name of a =
+template which does the layout</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&gt; % instead of the actual code.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i guess this observation is correct and we should =
+provide some sort of heading</FONT>
+
+<BR><FONT SIZE=3D2>templates that could be used in that place. This will =
+get easier onces my long</FONT>
+
+<BR><FONT SIZE=3D2>promised galley stuff will be ready. For the moment i =
+think it is enough to</FONT>
+
+<BR><FONT SIZE=3D2>get what you want even though it might be more =
+complicated than necessary.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>more interesting at the moment seems to me the =
+question i've already posed</FONT>
+
+<BR><FONT SIZE=3D2>with regards to toc entries:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- what kind of layouts are desirable which =
+cannot be produced by this</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; template</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;- are the keys adequate (should they be named =
+differently, should there be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; additional ones, others ...)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF5633.F4CC1700--
+

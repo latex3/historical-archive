@@ -1,0 +1,96 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2301" "Sun" "14" "November" "1999" "11:01:17" "+0100" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "53" "Re: Table of contents structures" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA05667
+	for <schoepf@UNI-MAINZ.DE>; Sun, 14 Nov 1999 14:16:25 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.49EB0BB6@mail.listserv.gmd.de>; Sun, 14 Nov 1999 14:16:21 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445259 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 14 Nov 1999 14:16:03 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id OAA00123 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov
+          1999 14:16:02 +0100 (MET)
+Received: from mail.Uni-Mainz.DE (trudi.zdv.Uni-Mainz.DE [134.93.8.159]) by
+          relay.uni-heidelberg.de (8.9.1b+Sun/8.9.1) with ESMTP id OAA19400 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999 14:16:18 +0100 (MET)
+Received: from istrati.zdv.uni-mainz.de (root@dialin418.zdv.Uni-Mainz.DE
+          [134.93.175.118]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          OAA06718 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Sun, 14 Nov 1999
+          14:16:15 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          LAA00576; Sun, 14 Nov 1999 11:01:17 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <add1a4c0@corona.oche.de>
+Message-ID:  <199911141001.LAA00576@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <add1a4c0@corona.oche.de>
+Date:         Sun, 14 Nov 1999 11:01:17 +0100
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Table of contents structures
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3403
+
+Achim Blumensath writes:
+
+ > Something I think is difficult to archive with your templates are per
+ > chapter TOCs. If each chapter has its own table of contents there has to
+ > be some method to tell `processcontents' which part it should print.
+
+fully correct; the way processcontents is defined this isn't working
+properly. when i wrote the spec for the new contentsobject data structure i
+did have `per chapter' tocs etc very much in mind --- one of the reasons for
+providing sequence numbers (for fast finding the relevant starting point) and
+providing level information (to easily determine when to stop)
+
+so yes, the data structure is set up to more or less provide what is
+necessary, but the interface for formatting doesn't actually makes use of it.
+
+ > Either one could add an argument to `processcontents' containing, say,
+ > the serial number of the chapter in question, or `processcontents' has
+ > to get this information from some global variable. The disadvantage of
+ > the first solution is that one has to modify the definitions for some
+ > minor special case, whereas the second case destroys the clean
+ > separation between various parts of the system.
+
+
+i fully agree that using global variables to tell the processcontents
+templates what to do would make a messy interface and is not the way to do it.
+
+i had the first solution in mind originally, no idea why it got lost later on.
+why do you think it would do so much harm to have such an argument?, e.g.
+
+\DeclareTemplate{processcontents}{std}{1}
+  { ... }
+  {
+    \IfNoValueTF{#1}
+      { <make main contents> }
+      { <make partial contents> }
+  }
+
+Alternatively one could think of having a special template type just for the
+partial contents production, eg
+
+\DeclareTemplate{processpartcontents}{std}{1}
+ ...
+
+this would duplicate a bit of code (eg stuff like handling the start and the
+ned of a contents list) but makes processing of the main cases (ie full toc)
+slightly faster. on the other hand, does it matter? how many tocs do you
+really typeset per document, does some extra \IfNoValueTF ... really hurt?
+
+i guess, the next step is to code some templates for partial tocs (perhaps as
+processpartcontents types as a first solution) and later decide if merging
+into a single template type looks like a good idea
+
+frank
+

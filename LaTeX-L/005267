@@ -1,0 +1,131 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Sep 2008 12:00:37 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8AA0Uo6026051
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Sep 2008 12:00:31 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8A9sao4015206
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Sep 2008 11:54:36 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m89M1P0g032197;
+	Wed, 10 Sep 2008 11:54:29 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 30731 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 11:54:28 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8A9sS1E023646 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 11:54:28 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.187]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m8A9sOGk029125 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 11:54:27 +0200
+Received: from morse.mittelbach-online.de (p4FD4416E.dip.t-dialin.net
+          [79.212.65.110]) by mrelayeu.kundenserver.de (node=mrelayeu7) with
+          ESMTP (Nemesis) id 0ML2xA-1KdMP20h73-0002af; Wed, 10 Sep 2008
+          11:54:24 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 9A53A653CF; Wed, 10 Sep 2008 11:54:20 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <48C3DAD1.6030004@morningstar2.co.uk>
+            <4B6A6CEE-A06F-4EAC-B618-3B637A5902E4@gmail.com>
+            <18630.50165.621679.420173@morse.mittelbach-online.de>
+            <20080910071805.GH11109@gracvn.ikra.med.uni-muenchen.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX1+8odHehQMo0+p6lVs+dzQHL6tR17/DNvUaNem
+              X0+DCMuwjR4EBzTB3T7O19gAXKi5JEKbG7/QfJRyDSLaa915rC
+              ttXRxuodU/tOUsR8XEzAU0fE/9iYtIT
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18631.39243.851035.135331@morse.mittelbach-online.de>
+Date:         Wed, 10 Sep 2008 11:54:19 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: expl3 variant expansion forms
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <20080910071805.GH11109@gracvn.ikra.med.uni-muenchen.de>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Sep 2008 10:00:37.0424 (UTC) FILETIME=[12F40300:01C9132C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5267
+
+somebody just mailed me a suggestion privately about interpreting the arg spec
+at runtime and this way resolving the variant problem (I suggest you use the
+list next time it is easier for all people involved ... there aren't stupid
+questions or if, then why is it better if only I read them? :-)
+
+Something like this is certainly possible, here is a simple approach
+that one could implement fairly easily (i think):
+
+
+Provide:
+=======
+
+ \DefineBaseCommand \foo 3 { <do something with args> }
+
+defining
+ 
+ \def \foo ! #1#2#3 { \csname exp_args:N#1#2#3 \endcsname \foo__base }
+
+or
+
+ \def \foo ! #1#2#3 { \csname ::#1 \expandafter \endcsname
+                      \csname ::#2 \expandafter \endcsname
+                      \csname ::#3 \endcsname
+                      \::: \foo__base }
+
+and
+
+ \def \foo__base #1#2#3 { <do something with args> }
+
+
+then
+
+ \foo!noo  etc
+
+would all work. With some changes to the expand module and by making : catcode
+12 again you would have a self-extending system that would understand \foo:noo
+
+
+
+my initial thoughts on this:
+
+
+Pros
+====
+
+  - no need to define variants explictly
+
+Cons
+====
+
+  - all execution will be slower because of additional processing
+
+  - use of base function would be very inefficient or inconsistent to the
+    rest, eg \foo:nnn would do all kind of unnecessary things to eventually
+    call \foo__base instead of just "being" \foo__base.
+
+  - using wrong number of arguments would give really strange errors
+
+  - one need to understand the base function argument spec which may have args
+    that expect no braces. E.g., doing :oo on a function which expects NN as a
+    base would lead again to very strange and doiffiult to understand errors.
+
+
+cheers
+frank
+

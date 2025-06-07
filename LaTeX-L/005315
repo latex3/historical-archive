@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sun, 14 Sep 2008 10:16:47 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8E8Ggq0015915
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 14 Sep 2008 10:16:43 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id m8E8Bkok028648
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 14 Sep 2008 10:11:46 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8DM1Aw2031290;
+	Sun, 14 Sep 2008 10:11:45 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 29278 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 14 Sep
+          2008 10:11:45 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8E8BjVj019645 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Sun, 14 Sep 2008 10:11:45 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.243])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          m8E8Bdpe015251 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 14 Sep
+          2008 10:11:43 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so1601466rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 14 Sep 2008 01:11:39 -0700
+          (PDT)
+Received: by 10.141.79.12 with SMTP id g12mr3881296rvl.87.1221379899490; Sun,
+          14 Sep 2008 01:11:39 -0700 (PDT)
+Received: from ?10.0.1.102? ( [219.90.148.36]) by mx.google.com with ESMTPS id
+          f21sm19743099rvb.5.2008.09.14.01.11.37 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Sun, 14 Sep 2008 01:11:38 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v928.1)
+References: <48CCBAEE.60703@morningstar2.co.uk>
+X-Mailer: Apple Mail (2.928.1)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <97AFAC39-1BDF-4EEB-8498-011976315F19@gmail.com>
+Date:         Sun, 14 Sep 2008 17:41:34 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Generic quark test
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48CCBAEE.60703@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 14 Sep 2008 08:16:47.0617 (UTC) FILETIME=[3B59E710:01C91642]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5315
+
+On 14/09/2008, at 4:49 PM, Joseph Wright wrote:
+
+> It might be handy to have a check to see if a value is any quark, for
+> "make safe" code. So far, I've ended up with:
+>
+> \def_new:Npn \if_quark:NT #1 {
+>  \exp_after:NN \exp_after:NN \exp_after:NN \if_quark:w
+>    \exp_after:NN \token_to_string:N #1 \q_stop
+> }
+>
+> \def_new:Npn \if_quark:wT #1#2#3\q_stop {
+> \int_compare:nNnT {\char_value_uccode:n{#2}} = {`Q}
+> }
+>
+> which seems to work but I'm worried may not be suitable more  
+> generally.
+> Any ideas?
+
+
+Hmmm. What about if quarks contained an additional parameter to make  
+this check more robust?
+
+Let's say
+
+   \def_new:Npn \quark_new:N #1{\tlp_new:Nn #1{\q_quark#1}}
+
+Oh.
+But I guess you don't want to be doing any expansion in the \if_quark  
+function so you wouldn't be able to see if \q_quark was there or not.
+
+Never mind, I suppose.
+
+W
+

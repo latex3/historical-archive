@@ -1,0 +1,948 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.ABECDD3C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:51 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.ABECDD3C"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      LaTeX twocolumn mode and \firstmark: a problem and its solution
+Date: Sat, 23 May 1992 03:40:56 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE9BE@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 720
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.ABECDD3C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+I've spent the day trying to convert a glossary file from one-column
+mode to two-column mode.  I want to have running headers that show the
+first and last word on each page, like a dictionary does.
+
+In one-column mode, I can easily do this.
+
+In two-column mode, \firstmark always is set to the first word in the
+{\em second} column, rather than the first, and \topmark is set to the
+last word in the {\em first} column.
+
+After many hours of failure, while composing a letter to this list
+about the problem, the exercise of semiliterate programming provided
+the solution.  Because that solution needs a (simple, and useful)
+change to LaTeX's output routine, it seems worthwhile to request that
+LaTeX 3.0 provide the facility I need, unless the problem has already
+been seen and solved in another way.
+
+The experiments suggested that \box255 is created twice per page, but
+the LaTeX output routine only invokes the page header and footer
+macros on the second column.  This in turn suggested that a trap in
+the LaTeX output routine might be able to save \firstmark and \topmark
+in the first column.
+
+That was the vital clue.  A study of the output routine code in
+latex.tex revealed that \@outputdblcol was the place where the trap
+was needed, and when I installed it, my problem was solved.
+
+A more general solution would be to have \@outputdblcol call a
+user-defined hook; for this example, I've just written the hook code
+inline.
+
+Leslie Lamport has previously remarked that the LaTeX output routine
+is an exceedingly delicate piece of code, so I'd like to ask this list
+if they see a flaw in my solution.  The perturbation on the output
+routine seems quite innocuous, but perhaps I'm overlooking something
+that sharper eyes will spot.
+
+To illustate, the following file with an extract of the UNIX spelling
+dictionary is provided, together with a preamble of necessary macros.
+
+% -*-latex-*-
+% Document name: /usr/local/plot79/tex/foo3.ltx
+% Creator: Nelson H. F. Beebe [beebe@solitude.math.utah.edu]
+% Creation Date: Fri May 22 19:23:19 1992
+\documentstyle[twocolumn]{article}
+
+\makeatletter
+
+\let\firstcolumnfirstmark=3D\relax
+
+%% Modify function from LaTeX output routine to preserve
+%% \firstmark in first column in \firstcolumnfirstmark
+
+\def\@outputdblcol{\if@firstcolumn \global\@firstcolumnfalse
+    \global\setbox\@leftcolumn\box\@outputbox
+
+    \xdef\firstcolumnfirstmark{\firstmark}% [22-May-1992] NEW CODE HERE
+    \message{[FIRST =3D \firstmark; TOP =3D \topmark; BOT =3D =
+\botmark]}%
+
+  \else \global\@firstcolumntrue
+    \setbox\@outputbox\vbox{\hbox to\textwidth{\hbox to\columnwidth
+      {\box\@leftcolumn \hss}\hfil \vrule width\columnseprule\hfil
+       \hbox to\columnwidth{\box\@outputbox \hss}}}\@combinedblfloats
+       \@outputpage \begingroup \@dblfloatplacement \@startdblcolumn
+       \@whilesw\if@fcolmade \fi{\@outputpage\@startdblcolumn}\endgroup
+    \fi}
+
+\newcommand{\wordentry}[1]%
+{%
+    \subsection*{#1}%
+    \ifx\firstcolumnfirstmark\relax% Capture and save very first mark;
+      \xdef\firstcolumnfirstmark{#1}% TeX doesn't set it on first page
+    \fi
+    \mark{#1}%
+    \index{#1}%
+}
+
+\renewcommand{\@evenhead}{%
+    \hss
+    \underline{\makebox[\textwidth]{{\large\firstcolumnfirstmark} \hfill =
+{\large
+   \botmark}}}%
+    \hss
+}
+
+\renewcommand{\@oddhead}{%
+    \hss
+    =
+\underline{\makebox[\textwidth]{{\large\firstcolumnfirstmark}\hfill{\larg=
+e\b
+   otmark}}}%
+    \hss
+}
+
+\renewcommand{\@evenfoot}{\hfill \rm \thepage \hfill}
+
+\renewcommand{\@oddfoot}{\hfill \rm \thepage \hfill}
+
+\makeatother
+
+\begin{document}
+
+Title page goes here
+
+\cleardoublepage
+
+\wordentry{AAA}
+\wordentry{AAAS}
+\wordentry{Aarhus}
+\wordentry{Aaron}
+\wordentry{AAU}
+\wordentry{ABA}
+\wordentry{Ababa}
+\wordentry{aback}
+\wordentry{abacus}
+\wordentry{abalone}
+\wordentry{abandon}
+\wordentry{abase}
+\wordentry{abash}
+\wordentry{abate}
+\wordentry{abater}
+\wordentry{abbas}
+\wordentry{abbe}
+\wordentry{abbey}
+\wordentry{abbot}
+\wordentry{Abbott}
+\wordentry{abbreviate}
+\wordentry{abc}
+\wordentry{abdicate}
+\wordentry{abdomen}
+\wordentry{abdominal}
+\wordentry{abduct}
+\wordentry{Abe}
+\wordentry{abed}
+\wordentry{Abel}
+\wordentry{Abelian}
+\wordentry{Abelson}
+\wordentry{Aberdeen}
+\wordentry{Abernathy}
+\wordentry{aberrant}
+\wordentry{aberrate}
+\wordentry{abet}
+\wordentry{abetted}
+\wordentry{abetting}
+\wordentry{abeyance}
+\wordentry{abeyant}
+\wordentry{abhorred}
+\wordentry{abhorrent}
+\wordentry{abide}
+\wordentry{Abidjan}
+\wordentry{Abigail}
+\wordentry{abject}
+\wordentry{ablate}
+\wordentry{ablaze}
+\wordentry{able}
+\wordentry{ablution}
+\wordentry{Abner}
+\wordentry{abnormal}
+\wordentry{Abo}
+\wordentry{aboard}
+\wordentry{abode}
+\wordentry{abolish}
+\wordentry{abolition}
+\wordentry{abominable}
+\wordentry{abominate}
+\wordentry{aboriginal}
+\wordentry{aborigine}
+\wordentry{aborning}
+\wordentry{abort}
+\wordentry{abound}
+\wordentry{about}
+\wordentry{above}
+\wordentry{aboveboard}
+\wordentry{aboveground}
+\wordentry{abovementioned}
+\wordentry{abrade}
+\wordentry{Abraham}
+\wordentry{Abram}
+\wordentry{Abramson}
+\wordentry{abrasion}
+\wordentry{abrasive}
+\wordentry{abreact}
+\wordentry{abreast}
+\wordentry{abridge}
+\wordentry{abridgment}
+\wordentry{abroad}
+\wordentry{abrogate}
+\wordentry{abrupt}
+\wordentry{abscess}
+\wordentry{abscissa}
+\wordentry{abscissae}
+\wordentry{absence}
+\wordentry{absent}
+\wordentry{absentee}
+\wordentry{absenteeism}
+\wordentry{absentia}
+\wordentry{absentminded}
+\wordentry{absinthe}
+\wordentry{absolute}
+\wordentry{absolution}
+\wordentry{absolve}
+\wordentry{absorb}
+\wordentry{absorbent}
+\wordentry{absorption}
+\wordentry{absorptive}
+\wordentry{abstain}
+\wordentry{abstention}
+\wordentry{abstinent}
+\wordentry{abstract}
+\wordentry{abstracter}
+\wordentry{abstractor}
+\wordentry{abstruse}
+\wordentry{absurd}
+\wordentry{abuilding}
+\wordentry{abundant}
+\wordentry{abusable}
+\wordentry{abuse}
+\wordentry{abusive}
+\wordentry{abut}
+\wordentry{abutted}
+\wordentry{abutting}
+\wordentry{abysmal}
+\wordentry{abyss}
+\wordentry{Abyssinia}
+\wordentry{AC}
+\wordentry{academe}
+\wordentry{academia}
+\wordentry{academic}
+\wordentry{academician}
+\wordentry{academy}
+\wordentry{Acadia}
+\wordentry{acanthus}
+\wordentry{Acapulco}
+\wordentry{accede}
+\wordentry{accelerate}
+\wordentry{accelerometer}
+\wordentry{accent}
+\wordentry{accentual}
+\wordentry{accentuate}
+\wordentry{accept}
+\wordentry{acceptant}
+\wordentry{acceptor}
+\wordentry{access}
+\wordentry{accessible}
+\wordentry{accession}
+\wordentry{accessory}
+\wordentry{accident}
+\wordentry{accidental}
+\wordentry{accipiter}
+\wordentry{acclaim}
+\wordentry{acclamation}
+\wordentry{acclimate}
+\wordentry{accolade}
+\wordentry{accommodate}
+\wordentry{accompaniment}
+\wordentry{accompanist}
+\wordentry{accompany}
+\wordentry{accomplice}
+\wordentry{accomplish}
+\wordentry{accord}
+\wordentry{accordant}
+\wordentry{accordion}
+\wordentry{accost}
+\wordentry{account}
+\wordentry{accountant}
+\wordentry{Accra}
+\wordentry{accredit}
+\wordentry{accreditate}
+\wordentry{accreditation}
+\wordentry{accretion}
+\wordentry{accrual}
+\wordentry{accrue}
+\wordentry{acculturate}
+
+\end{document}
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Nelson H.F. Beebe
+Center for Scientific Computing
+Department of Mathematics
+220 South Physics Building
+University of Utah
+Salt Lake City, UT 84112
+USA
+ Tel: (801) 581-5254
+ FAX: (801) 581-4148
+ Internet: beebe@math.utah.edu
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+
+------_=_NextPart_001_01C19443.ABECDD3C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     LaTeX twocolumn mode and \firstmark: a problem and its =
+solution</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>I've spent the day trying to convert a glossary file =
+from one-column</FONT>
+
+<BR><FONT SIZE=3D2>mode to two-column mode.&nbsp; I want to have running =
+headers that show the</FONT>
+
+<BR><FONT SIZE=3D2>first and last word on each page, like a dictionary =
+does.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In one-column mode, I can easily do this.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>In two-column mode, \firstmark always is set to the =
+first word in the</FONT>
+
+<BR><FONT SIZE=3D2>{\em second} column, rather than the first, and =
+\topmark is set to the</FONT>
+
+<BR><FONT SIZE=3D2>last word in the {\em first} column.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>After many hours of failure, while composing a letter =
+to this list</FONT>
+
+<BR><FONT SIZE=3D2>about the problem, the exercise of semiliterate =
+programming provided</FONT>
+
+<BR><FONT SIZE=3D2>the solution.&nbsp; Because that solution needs a =
+(simple, and useful)</FONT>
+
+<BR><FONT SIZE=3D2>change to LaTeX's output routine, it seems worthwhile =
+to request that</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX 3.0 provide the facility I need, unless the =
+problem has already</FONT>
+
+<BR><FONT SIZE=3D2>been seen and solved in another way.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The experiments suggested that \box255 is created =
+twice per page, but</FONT>
+
+<BR><FONT SIZE=3D2>the LaTeX output routine only invokes the page header =
+and footer</FONT>
+
+<BR><FONT SIZE=3D2>macros on the second column.&nbsp; This in turn =
+suggested that a trap in</FONT>
+
+<BR><FONT SIZE=3D2>the LaTeX output routine might be able to save =
+\firstmark and \topmark</FONT>
+
+<BR><FONT SIZE=3D2>in the first column.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>That was the vital clue.&nbsp; A study of the output =
+routine code in</FONT>
+
+<BR><FONT SIZE=3D2>latex.tex revealed that \@outputdblcol was the place =
+where the trap</FONT>
+
+<BR><FONT SIZE=3D2>was needed, and when I installed it, my problem was =
+solved.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A more general solution would be to have =
+\@outputdblcol call a</FONT>
+
+<BR><FONT SIZE=3D2>user-defined hook; for this example, I've just =
+written the hook code</FONT>
+
+<BR><FONT SIZE=3D2>inline.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Leslie Lamport has previously remarked that the LaTeX =
+output routine</FONT>
+
+<BR><FONT SIZE=3D2>is an exceedingly delicate piece of code, so I'd like =
+to ask this list</FONT>
+
+<BR><FONT SIZE=3D2>if they see a flaw in my solution.&nbsp; The =
+perturbation on the output</FONT>
+
+<BR><FONT SIZE=3D2>routine seems quite innocuous, but perhaps I'm =
+overlooking something</FONT>
+
+<BR><FONT SIZE=3D2>that sharper eyes will spot.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To illustate, the following file with an extract of =
+the UNIX spelling</FONT>
+
+<BR><FONT SIZE=3D2>dictionary is provided, together with a preamble of =
+necessary macros.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% -*-latex-*-</FONT>
+
+<BR><FONT SIZE=3D2>% Document name: =
+/usr/local/plot79/tex/foo3.ltx</FONT>
+
+<BR><FONT SIZE=3D2>% Creator: Nelson H. F. Beebe =
+[beebe@solitude.math.utah.edu]</FONT>
+
+<BR><FONT SIZE=3D2>% Creation Date: Fri May 22 19:23:19 1992</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[twocolumn]{article}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatletter</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\let\firstcolumnfirstmark=3D\relax</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%% Modify function from LaTeX output routine to =
+preserve</FONT>
+
+<BR><FONT SIZE=3D2>%% \firstmark in first column in =
+\firstcolumnfirstmark</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\@outputdblcol{\if@firstcolumn =
+\global\@firstcolumnfalse</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\global\setbox\@leftcolumn\box\@outputbox</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\xdef\firstcolumnfirstmark{\firstmark}% [22-May-1992] NEW CODE =
+HERE</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \message{[FIRST =3D \firstmark; =
+TOP =3D \topmark; BOT =3D \botmark]}%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \else \global\@firstcolumntrue</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \setbox\@outputbox\vbox{\hbox =
+to\textwidth{\hbox to\columnwidth</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\box\@leftcolumn =
+\hss}\hfil \vrule width\columnseprule\hfil</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \hbox =
+to\columnwidth{\box\@outputbox \hss}}}\@combinedblfloats</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \@outputpage =
+\begingroup \@dblfloatplacement \@startdblcolumn</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\@whilesw\if@fcolmade \fi{\@outputpage\@startdblcolumn}\endgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\wordentry}[1]%</FONT>
+
+<BR><FONT SIZE=3D2>{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \subsection*{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \ifx\firstcolumnfirstmark\relax% =
+Capture and save very first mark;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\xdef\firstcolumnfirstmark{#1}% TeX doesn't set it on first page</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fi</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \mark{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \index{#1}%</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\renewcommand{\@evenhead}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\underline{\makebox[\textwidth]{{\large\firstcolumnfirstmark} \hfill =
+{\large</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \botmark}}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\renewcommand{\@oddhead}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\underline{\makebox[\textwidth]{{\large\firstcolumnfirstmark}\hfill{\larg=
+e\b</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; otmark}}}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\renewcommand{\@evenfoot}{\hfill \rm \thepage =
+\hfill}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\renewcommand{\@oddfoot}{\hfill \rm \thepage =
+\hfill}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\makeatother</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Title page goes here</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\cleardoublepage</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\wordentry{AAA}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{AAAS}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Aarhus}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Aaron}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{AAU}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{ABA}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Ababa}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aback}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abacus}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abalone}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abandon}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abase}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abash}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abater}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abbas}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abbe}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abbey}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abbot}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abbott}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abbreviate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abc}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abdicate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abdomen}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abdominal}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abduct}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abe}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abed}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abel}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abelian}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abelson}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Aberdeen}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abernathy}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aberrant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aberrate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abet}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abetted}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abetting}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abeyance}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abeyant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abhorred}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abhorrent}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abide}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abidjan}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abigail}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abject}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{ablate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{ablaze}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{able}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{ablution}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abner}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abnormal}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abo}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aboard}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abode}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abolish}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abolition}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abominable}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abominate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aboriginal}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aborigine}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aborning}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abort}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abound}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{about}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{above}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aboveboard}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{aboveground}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abovementioned}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abrade}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abraham}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abram}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abramson}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abrasion}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abrasive}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abreact}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abreast}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abridge}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abridgment}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abroad}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abrogate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abrupt}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abscess}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abscissa}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abscissae}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absence}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absent}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absentee}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absenteeism}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absentia}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absentminded}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absinthe}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absolute}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absolution}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absolve}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absorb}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absorbent}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absorption}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absorptive}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstain}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstention}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstinent}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstract}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstracter}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstractor}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abstruse}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{absurd}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abuilding}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abundant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abusable}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abuse}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abusive}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abut}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abutted}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abutting}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abysmal}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{abyss}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Abyssinia}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{AC}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{academe}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{academia}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{academic}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{academician}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{academy}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Acadia}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acanthus}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Acapulco}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accede}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accelerate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accelerometer}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accent}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accentual}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accentuate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accept}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acceptant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acceptor}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{access}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accessible}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accession}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accessory}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accident}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accidental}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accipiter}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acclaim}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acclamation}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acclimate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accolade}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accommodate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accompaniment}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accompanist}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accompany}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accomplice}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accomplish}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accord}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accordant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accordion}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accost}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{account}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accountant}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{Accra}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accredit}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accreditate}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accreditation}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accretion}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accrual}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{accrue}</FONT>
+
+<BR><FONT SIZE=3D2>\wordentry{acculturate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+<BR>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+
+<BR><FONT SIZE=3D2>Nelson H.F. Beebe</FONT>
+
+<BR><FONT SIZE=3D2>Center for Scientific Computing</FONT>
+
+<BR><FONT SIZE=3D2>Department of Mathematics</FONT>
+
+<BR><FONT SIZE=3D2>220 South Physics Building</FONT>
+
+<BR><FONT SIZE=3D2>University of Utah</FONT>
+
+<BR><FONT SIZE=3D2>Salt Lake City, UT 84112</FONT>
+
+<BR><FONT SIZE=3D2>USA</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Tel: (801) 581-5254</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;FAX: (801) 581-4148</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Internet: beebe@math.utah.edu</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.ABECDD3C--
+

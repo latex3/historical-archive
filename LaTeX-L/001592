@@ -1,0 +1,88 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["2154" "Sat" "12" "March" "1994" "19:44:49" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" nil "56" "Re: amslatex and T1 encoding" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09045; Sat, 12 Mar 94 19:46:59 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA01685; Sat, 12 Mar 94 19:46:54 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA12139
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Sat, 12 Mar 1994 19:46:51 +0100
+Message-Id: <199403121846.AA12139@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 2172; Sat, 12 Mar 94 19:46:16 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 2171; Sat,
+ 12 Mar 1994 19:46:16 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5108; Sat,
+ 12 Mar 1994 19:45:21 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Sat, 12 Mar 1994 19:44:49 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: amslatex and T1 encoding
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1592
+
+Barbara said in anser to Peter:
+
+> peter dalgaard:
+>     What annoys me is that people seem to believe that it is necessary to have
+>     256-char math fonts before DC fonts can be used for anything except plain
+>     text. This simply isn't true,
+>
+> this is correct, strictly speaking.  however, in my message i mentioned
+> two important facts that are relevant to ams interests:
+>  - we have a production environment in which we invite authors of
+>    our publications to submit electronic manuscripts prepared
+>    according to specific conventions, i.e. ams-latex
+>  - we are using high-resolution imagesetters to prepare camera-ready
+>    copy of our publications to send to the printer, and we do *not*
+>    have dc-compatible fonts (yet) for this equipment
+
+pardon me, but i think you are mixing here two issues that can and
+should be separated:
+
+ a) there is a production environment at the ams for setting math
+papers in house style. you can't accept any odd format here.
+
+ b) there are parts of ams-latex which are of general interest to the
+latex community far beyond the production issue, for example amstex.sty.
+
+you certainly can't process or want to process any document using any
+kind of special feature font or whatever. if i would submit something like
+
+\documentclass{ltxdoc}
+\usepackage{pandora}
+
+it would not be surprising you tel me please use amsart or some other
+house class file and forgett about using local fonts.
+
+However, when i send somebody else a paper in, say, German with a lot
+of math in it i might as well have
+
+\documentclass[german]{article}
+
+\usepackage{babel,varioref}
+\usepackage{t1enc}
+\usepackage{amstex}
+
+and expect that to work.
+
+In other words, while your house styles can and should enforce
+whatever fonts and encodings you can or want to handle the all purpose
+files like amstex.sty should try to be generally useful.
+
+I don't think this would produce conflicts and if done with a bit
+of care it would not be an implicit promise. The house classes could
+very simply check if the encoding is appropriate at the beginning of
+the document and print out a bold warning or even an error message if
+not.
+
+frank
+

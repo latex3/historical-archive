@@ -1,0 +1,4067 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4DC497E4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:13 +0100
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4DC497E4"
+x-vm-v5-data: ([nil nil nil nil nil nil t t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      References and citations (2)
+Date: Sat, 9 Nov 1991 22:34:49 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5E2@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead%VME.NOTT.AC.UK@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 453
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4DC497E4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+%  \documentstyle[11pt,ccc_opt_501]{report}
+\documentstyle[11pt]{report}
+
+\newcommand{\itlatex}
+      {L\kern-.30em\raise.3ex\hbox{\footnotesize\it A}\kern-.15em
+      T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}       %  For italic =
+in refs
+\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+      T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Some suggestions about how TEI Guidelines\\
+might treat references and citations}
+\author{David Rhead\\
+University of Nottingham\\
+{\footnotesize\tt JANET: d.rhead@uk.ac.nottingham.ccc.vme}
+}
+\date{November 1991}
+\maketitle
+
+\sloppy
+
+\pagenumbering{roman}
+
+\begin{abstract}
+These notes are an attempt to re-draft those sections of the October
+\marginpar{\footnotesize\it Written about TEI and SGML by someone who
+knows little about either}
+1990 draft Guidelines that deal with references and citations.
+\end{abstract}
+
+\tableofcontents
+
+\clearpage
+\pagenumbering{arabic}
+
+\setcounter{chapter}{4}
+\chapter{Features common to many text types}
+
+
+\setcounter{section}{4}
+\section{Bibliographic references and citations}
+
+\subsection{Terminology}
+
+For the purpose of these Guidelines, the following definitions apply:
+\begin{description}
+\item[reference] --- a set of data describing a document, or part of a
+      document.  The data must be
+      sufficiently precise and detailed to enable someone to identify =
+and
+      locate the document (or part).
+\item[citation] --- a brief form of reference inserted parenthetically
+      within the running text or appended as a note at the foot of
+      the page, at the end of a chapter, or at the end of the complete =
+text.
+\end{description}
+This terminology is based on that used in BS 1629 \cite{bs-1629} and ISO
+690 \cite{iso-690}.  It differs from that used by some other =
+authorities,
+e.g., Butcher \cite{butcher} and the {\it Chicago Manual of Style}
+\cite{chicago}, who use \lq\lq full reference'' and \lq\lq text =
+reference''
+instead of \lq\lq reference'' and \lq\lq citation'' respectively.
+
+The citation schemes in general use can be classified as
+reference-by-number, author-date and short-form.  They are described, =
+for
+example, in ISO 690 \cite[section 9]{iso-690}.
+
+\subsection{Overall requirements}
+\label{overall}
+
+Users of the Guidelines will certainly need to be able to:
+\begin{itemize}
+\item produce a document using a standard citation scheme
+\item tag a document for archiving that uses a standard citation scheme.
+\end{itemize}
+The potential re-usability of tagged text will be increased if, in
+addition, the tagging scheme permits information to be supplied so that
+software can derive versions of a document that are identical except =
+that
+they use different citation schemes.
+
+Hence, the TEI tagging scheme (as described in the following =
+subsections)
+can be used:
+\begin{description}
+\item[either] to tag a document \lq\lq as written'', or for \lq\lq one
+      off'' production, with just the information needed for the single =
+citation
+      scheme chosen by the document's author
+\item[or] to tag a document with the information needed to produce =
+versions
+      that use different citation schemes.
+\end{description}
+
+\subsection{Background to tagging scheme for references}
+
+References may be found gathered together in a bibliography or \lq\lq =
+list
+of references'', possibly with embedded narrative or discussion.  They =
+may
+also appear within running text or footnotes.  See \cite[chapter
+10]{butcher} and \cite[chapters 16--18]{chicago}.
+
+It is clearly desirable that references should have their internal
+structure tagged where possible (e.g., to distinguish \lq\lq London'' as =
+an
+author's name from \lq\lq London'' as a place-of-publication).  Such
+tagging will facilitate:
+\begin{itemize}
+\item analysis of encoded texts
+\item production of a physical document that conforms to a house-style.
+\end{itemize}
+
+Although there is a degree of consensus about the details needed for a
+\marginpar{\footnotesize\it If you put something like these notes into =
+the
+Guidelines, you'll probably prune this subsection first}
+straightforward reference (e.g., to a book or journal-article), =
+different
+authorities give different analyses of \lq\lq the structure of a
+reference'', and the different analyses lead to different forms of
+presentation in less straightforward cases.  There are confusing
+differences in terminology between \lq\lq instructions for authors'' (as
+issued by journals and publishing houses) and the cataloguing rules used =
+by
+librarians, even though \lq\lq an author'' may well have found a cited =
+work
+in a library, and must provide \lq\lq the reader'' with the information =
+needed
+to locate the work in a library.%
+\footnote{For example, an author might think in terms of \lq\lq books''
+and \lq\lq journals'', while a cataloguer might use the terms
+\lq\lq monographs'' and \lq\lq serials''.}
+Although standards bodies have attempted to provide suitable analyses of
+the information that should be provided (together with recommendations
+about the order of presentation, etc.), there are divergences between
+the analyses given by different bodies: it is not always easy to see =
+whether
+different standards are describing different schemes or are just giving
+different descriptions of a single scheme.%
+\footnote{For instance, there seems little difference between ISO 690's
+\lq\lq primary responsibility'', BS 1629's  \lq\lq originator'' and the
+{\it Chicago Manual of Style\/}'s \lq\lq author'' \cite[chapter =
+16]{chicago}.
+However, BS 6371 \cite[section 10]{bs-6371}
+suggests that a thesis should be treated like a published book,
+whereas the {\it Chicago Manual of Style\/} suggests that a thesis
+should be treated like an unpublished journal-article \cite[p.\ =
+467]{chicago}.}
+And the people who produce computer programs \lq\lq to help authors deal =
+with
+references and citations'' seem to have added to the confusion by
+inventing their own analyses rather than using a pre-existing analysis.%
+\footnote{Examples:  ISO 690 has a single \lq\lq articles, etc., in
+serials'' category, but {\sf EndNote}'s default scheme \cite{endnote}
+has separate \lq\lq
+journal article'' and \lq\lq magazine article'' categories; BS^6371 =
+treats all
+theses the same \cite[section 10]{bs-6371}, but \BibTeX's
+standard styles \cite[appendix^B]{lamport-86}
+have separate \lq\lq Master's thesis'' and \lq\lq Ph.D.
+thesis'' categories.}
+
+Overall, except for straightforward cases, there seems little consensus
+about:
+\begin{itemize}
+\item the categories into which references can be divided
+\item the internal structure of references in a particular category.
+\end{itemize}
+
+\subsection{Tagging scheme for references}
+\label{reference-tags}
+
+It would probably be counter-productive (as well as very time-consuming)
+for TEI to attempt to clarify matters by producing its own analysis of
+\lq\lq categories'' and \lq\lq elements within each category''.  Any new
+analysis would probably be seen as just \lq\lq yet another
+not-quite-compatible scheme''.
+
+The TEI tagging scheme for references is therefore based on a =
+combination
+of two existing analyses,%
+\footnote{If, in due course, a \lq\lq standard'' appears that provides a
+more appropriate analysis than the combination of ISO 690:1987 with BS
+6371:1983, the techniques described in Chapter 8 can be used to modify =
+the
+Guidelines to support the new standard.  Users of the current Guidelines
+may wish to lobby ISO about the features they would like in some future =
+ISO
+standard!  (There are, of course, plenty of alternatives to the analysis
+given by combining ISO 690 and BS 6371.  For example, TEI could choose =
+one
+of the \lq\lq programs that help authors with references and =
+citations'',
+adopt that program's analysis, and hence give some compatibility between
+that program and TEI tagging.)}
+namely:
+\begin{itemize}
+\item for published works, that given by ISO 690 \cite{iso-690}
+\item for unpublished works, that given by BS 6371 \cite{bs-6371}.%
+\footnote{There does not seem to be an ISO standard for references to
+unpublished works.  The BS 6371 analysis is used because (a) in the =
+absence
+of an ISO standard, {\it some} analysis has to be used (b) BS 6371 =
+happens
+to make conversion to a concise DTD fairly straightforward.}
+\end{itemize}
+In addition, the scheme supports a \lq\lq black box'' category for use =
+in
+the following 2 situations:
+\begin{itemize}
+\item when neither ISO 690 nor BS 6371 seems appropriate
+\item when an author chooses not to tag the internal structure of =
+his/her
+      reference.
+\end{itemize}
+The scheme gives each category of reference a tag of the form
+\verb+<ref. +{\it \dots\ }\verb+>+.  The formal DTD is listed in =
+Appendix
+\ref{DTDs}.
+
+Ideally, you should proceed as follows:
+\begin{enumerate}
+\item for a published work, consult ISO 690 \cite{iso-690}.  If the work
+      belongs to one of the categories listed in section 4 of ISO 690, =
+tag it as
+      \verb+<ref.mono>+, \verb+<ref.serial>+, \verb+<ref.mono.part>+,
+      \verb+<ref.mono.contrib>+, \verb+<ref.article>+ or =
+\verb+<ref.patent>+.
+\item for an unpublished work, consult BS 6371 \cite{bs-6371}.
+      If the BS 6371 analysis seems appropriate, tag the work
+      as \verb+<ref.unpub>+ or \verb+<ref.resem.pub>+.
+\item if none of the categories defined in ISO 690 or BS 6371 seems
+      appropriate, use the \verb+<ref.black.box>+ tag.
+\end{enumerate}
+
+If you have insufficient time to tag the internal structure of your
+references, you can tag them all as \verb+<ref.black.box>+.  However,
+archive-users will then lose some options for analysis, and
+{\em you will lose some options for automatic conversion of the =
+electronic text
+to human-readable form}, e.g.,
+\begin{itemize}
+\item layout of references in accordance with a house-style
+\item automatic derivation of the {\it (author, date)} citations
+      needed for the author-date scheme.
+\end{itemize}
+
+The reference \lq\lq crystals'' that are given \verb+<ref. +{\it \dots\
+}\verb+>+ tags may appear in isolation, e.g., in running text or in
+\marginpar{\footnotesize\it What happens about the things described
+in \cite[p.\ 425]{chicago}?}
+footnotes.  However, in many works, such \lq\lq crystals'' will be =
+gathered
+together into a reference-list.  You should use a \verb+<list.refs>+ tag =
+to
+identify such a list.
+
+\subsubsection*{Example}
+
+There follows an example of a tagged reference-list.%
+\footnote{The example reference-list glosses over problems such as the
+ following:
+(1)  {\tt<prop.name code=3Dperson>} seems a cumbersome way to specify
+     people's names.
+(2)  Do we assume that some \BibTeX-like code processes names and =
+combinations
+     of names, so that internal tagging of names can usually be omitted?
+(3)  In titles, etc., what happens about \lq\lq up-and-down-style versus
+     down-style'', as when some house-styles require most words to start
+     with a capital letter, but some house-styles have the same =
+capitalization
+     in titles as in normal text?
+(4)  How is {\tt<edition>} to be specified, e.g., 1, 1st, first, First,
+     revised, preliminary, Canadian?
+(5)  Does further tagging need defining within {\tt<place>}, to cope =
+with
+     places like Cambridge (Massachusetts)?
+(6)  If {\tt<notes>} is of the form \lq\lq Translation of: \lq\lq\ =
+\dots\ '',
+     how does one indicate that \dots\ is a title (so that it may be
+     typeset like other titles)?
+(7)  How is {\tt<numeration>} within {\tt<ref.mono.part>} to be =
+specified,
+     if it may, e.g., have to represent \lq\lq volume 5, part^3''?
+(8)  What might appear in {\tt<location.within>} within
+     {\tt<ref.mono.part>}, and how can one allow for the encoding
+     of all possibilities?
+(9)  In \verb+<location.within>+, page-ranges will usually require an
+     em-dash.  Does this always need specifying explicitly?
+(10) In \lq\lq serials'': what combinations of \lq\lq dates and/or
+     numbers'' may need tagging: what is the relationship between
+     \lq\lq edition/issue-designation'' and \lq\lq year''?
+(11) Might {\tt<rest.of.date>} be required in different forms for
+     serials, patents, unpublished documents.  If so, does it matter?
+(12) Should the scheme allow people to associate more than one {\tt id} =
+(or
+     equivalent) with a particular reference?  For example: an {\tt id}
+     such as {\tt lominadze1981} is easy to remember, but is not =
+guaranteed
+     to stay unique if reference \lq\lq crystals'' are collected into a
+     database; ISBN-based {\tt id}s such as {\tt isbn0080216803} are
+     difficult to remember, but will stay unique no matter what other =
+reference
+     \lq\lq crystals'' are added later.
+(13) How does one indicate a \lq\lq missing value'', as when the =
+publisher
+     is unknown?
+}
+To help show the correspondence between the tagging scheme and the =
+combined
+ISO 690/BS 6371 analysis, the references in the list are mostly taken =
+from
+the two standards documents \cite{iso-690,bs-6371}.  The
+\verb+<ref.black.box>+ reference shows how an example given in BS 1629
+\cite{bs-1629} can be tagged.
+
+\begin{footnotesize}\begin{verbatim}
+<list.refs>
+  -- Monograph --
+  <ref.mono id=3DLominadze1981>
+     <primary> D. G. Lominadze
+     -- When <primary> is as given above, it is assumed that:
+        * a person is primarily responsible (i.e., by default, <primary>
+          is assumed to be a <prop.name type=3Dperson>).  If a corporate =
+body
+          is responsible, <primary> can be given as, for example,
+          <primary><org>Imperial Chemical Industries.  Paint =
+Division</org>
+          The distinction only matters if <primary> is processed
+          automatically (e.g., to convert first names to initials, or
+          to reverse surname and first name).
+        * the primary responsibility is that of "author".  If desired, =
+roles
+          can be specified thus:
+          <primary>
+            <role> author <name> D. G. Lominadze
+          </primary>
+          By using <role> in both <primary> and <subordinate>, you can =
+clarify
+          the relationship between the "primary" and "subordinate"
+          responsibilities.  See sections 7.1 and 7.3 of ISO 690.  --
+    <title> Cyclotron waves in plasma
+    <subordinate>
+      <role> translator <name> A. N. Dellis
+    </subordinate>
+    <edition> 1st
+    <place> Oxford
+    <publisher> Pergamon Press
+    <year> 1981
+    <extent> 206 pages
+    <series> International series in natural philosophy
+    <notes> Translation of: Ciklotronnye volny v plazme
+    <standard.number> ISBN 0-08-021680-3
+    -- If the citation scheme is author-date, the surname and year
+       required for an in-text citation can be derived automatically =
+from
+       the <primary> and <year> fields above --
+    -- If the citation scheme is "short form", the first citation will
+       use at least the <primary> and <title> elements above.  =
+Subsequent
+       citations will use the "short form" specified below.  (The "short
+       form" may be introduced in the first citation.)  Declaring the
+       "short form" here is analogous to Butcher's suggestion
+       ("Copy-editing", page 178). --
+    <short.form>
+      -- Tagging within <short.form> will permit the pattern of
+         typography to be the same in "first citation", "subsequent
+         citations" and "full reference" --
+      <primary> Lominadze
+      <title> Cyclotron waves
+    </short.form>
+  </ref.mono>
+  -- Serial --
+  <ref.serial id=3Dcommsmanuf}
+    <title> Communications equipment manufacturers
+    <responsibility> Manufacturing and Primary Industries Division,
+                     Statistics Canada
+    <edition> Preliminary
+    <issue.desig> 1970&mdash;
+    <place> Ottawa
+    <publisher> Statistics Canada
+    <year> 1971&mdash;
+    <series> Annual census of manufacturers
+    <notes> Text in English and French
+    <standard.number> ISSN 0700-0758
+  </ref.serial>
+  -- Part of monograph --
+  <ref.mono.part id=3DParker1930>
+    -- Software can make an intelligent guess that the following
+       entry is of the form "personal-name and personal-name".
+       When the structure is less obvious, more detailed markup
+       will be required. --
+    <primary> T. J. Parker and W. D. Haswell
+    <host> A text-book of zoology
+    <edition> 5th
+    <numeration> volume 1
+    <subordinate>
+      <role> revisor <name> W. D. Lang
+    </subordinate>
+    <place> London
+    <publisher> Macmillan
+    <year> 1930
+    <location.within>
+      <unit.type> section
+      <unit.number> 12
+      <unit.title> Phylum Mollusca
+      <pages> 663&mdash;782
+    </location.within>
+    <short.form>
+      <primary> Parker and Haswell
+      <title> Zoology
+    </short.form>
+  </ref.mono.part>
+  -- Contribution to monograph --
+  <ref.mono.contrib id=3DWrigley1968>
+    <contrib.primary> E. A. Wrigley
+    <contrib.title> Parish registers and the historian
+    <host.primary> D. J. Steel
+    <host.title> National index of parish registers
+    <place> London
+    <publisher> Society of Genealogists
+    <year> 1968
+    <location.within>
+      <unit.type> volume
+      <unit.number> 1
+      <pages> 155&mdash;167
+    </location.within>
+    <short.form>
+      <primary> Wrigley
+      <title> Registers
+    </short.form>
+  </ref.mono.contrib>
+  -- Article in serial --
+  <ref.article id=3DWeaver1985>
+    <primary> William Weaver
+    <title> The collectors: command performances
+    <subordinate>
+      <role> photographer <name> Robert Emmett Bright
+    </subordinate>
+    <host> Architectural digest
+    <location.within>
+      <year> 1985
+      -- People usually refer to weekly/monthly magazines by "date of
+         issue", but to academic journals by "year, volume and =
+(optionally)
+         issue-number".  The former style is supported by <year> and
+         <rest.of.date>, the latter by <year>, <volume> and (if desired)
+         <number>.  --
+      <rest.of.date> December
+      <volume> 42
+      <number> 12
+      <pages> 126&mdash;133
+    </location.within>
+    <short.form>
+      <primary> Weaver
+      <title> Collectors
+    </short.form>
+  </ref.article>
+  -- Patent --
+  <ref.patent id=3Dpatent608626>
+    <primary>
+      <role> applicant <name><org> Carl Zeiss Jena, VEB </org>
+    </primary>
+    <invention.title> <foreign lang=3Dgerman> Anordnung zur =
+lichtelektrischen
+            Erfassung der Mitte eines Lichtfeldes </foreign>
+    <subordinate>
+      -- Can software make an intelligent guess that this is
+         "personal-name and personal-name and personal-name",
+         or is more detailed markup essential? --
+      <role> inventor
+        <name><foreign lang=3Dgerman>
+                W. Feist und C. Wahnert und E. Feistauer
+              </foreign>
+    </subordinate>
+    <notes>
+      -- The following means "according to the 3rd edition of the
+         International Patent Classification, the classification number
+         is G02 B 27/14" --
+      <int.class>
+        <edition> 3
+        <classification> G02 B 27/14
+      </int.class>
+    </notes>
+    <identifier>
+      <office> Schweiz
+      <kind> Patentschrift
+      <number> 608626
+    </identifier>
+    <year> 1979
+    <rest.of.date> 01-15
+  </ref.patent>
+  -- Unpublished document --
+  <ref.unpub id=3DTraquair1638>
+    -- Descriptive element --
+      <name> Earl of Traquair
+      <title> letter to Marquess of Hamilton
+      <year> 1638
+      <rest.of.date> 28 Aug
+      -- If there was a "material designation", it would be tagged with
+         <mat.desig> --
+    -- Location element --
+      <place> Lennoxlove (E. Lothian)
+      <repository> Muniments of Duke of Hamilton and Brandon
+      <call.number> C.1
+      -- If different citations of an unpublished work required =
+different
+         "locations within the piece", it would be better to omit
+         <location.within> from the <ref. ... > and to use partic
+         attributes in the <cite. ... > tags --
+      <location.within> no. 963
+    -- If there was "other information", it would be tagged with
+       <other.info> --
+    -- Although the surname and year required for author-date citation =
+of a
+       published work can usually be derived automatically, some human
+       judgement is needed about the "first significant word or words"
+       for an unpublished item.  The elements to be used are specified =
+as
+       shown below. --
+    <author.date>
+      <author> Traquair
+      <date> 1638
+    </author.date>
+    <short.form>
+      <title> Traquair's letter to Hamilton
+    </short.form>
+  </ref.unpub>
+  -- Document resembling a published work --
+  <ref.resem.pub id=3Dmarkham1877>
+    -- Descriptive element compiled as if the document were published
+       (but in line with ISO 690, even though BS 6371 suggests BS 5605) =
+--
+      <primary> C. R. Markham
+      <title> Report on the Geographical Department of the India Office,
+              1867&mdash;1877
+      <year> 1877
+    -- Location element --
+      <place> London
+      <repository> India Office Library
+    <short.form>
+      <primary> Markham
+      <title> Geographical Department
+    </short.form>
+  </ref.resem.pub>
+  -- Black box --
+  <ref.black.box id=3DThatcher1986>
+    Margaret Thatcher. Interview.
+    -- Structure is not specified in <ref.black.box>, but presentational
+       markup is possible (so as to get appropriate typography) --
+    <highlighted rendition=3Ditalic>In: Six O'clock News.</highlighted>
+    TV, BBC 1, 1986, Jan 29, 1823 hrs.
+    -- Software will be unable to deduce the "author" and "date" to be
+       used in citations of <ref.black.box> references --
+    <author.date>
+      <author> Thatcher
+      <date> 1986
+    </author.date>
+    <short.form>
+      Thatcher. Interview. 29 Jan 1986
+    </short.form>
+  </ref.black.box>
+</list.refs>
+\end{verbatim}\end{footnotesize}
+
+
+\subsection{Background to tagging scheme for citations}
+\label{citation-background}
+
+Although there are elements of consensus among the diverse groups who
+\marginpar{\footnotesize\it If you put something like these notes into =
+the
+Guidelines, you'll probably prune this subsection first}
+specify the conventions to which authors should adhere when citing, =
+there
+are also differences of approach that make it difficult to isolate the
+structures that are to be encoded.  For example:
+\begin{enumerate}
+\item
+     The American Chemical Society \cite{acs} gives
+\begin{quotation}
+\noindent
+Marshall and Levitt's approach {\it cite\/}
+\end{quotation}
+     as an example of how to cite at a
+     logical place.  However, if the author-date scheme is used, and the
+     intructions given in ISO 690 \cite{iso-690} are followed, the =
+citation
+     will  be of the form
+\begin{quotation}
+\noindent
+Marshall and Lewitt's ({\it date\/}) approach
+\end{quotation}
+     It seems that the ACS example shows the \lq\lq
+     logical place'' for reference-by-number, and that the most =
+appropriate
+     position for the citation changes if the citation scheme changes.
+\item A similar problem arises if the scheme changes from \lq\lq =
+short-forms
+     in footnotes'' to author-date.  The {\it Chicago Manual of Style}
+     recommends that footnote numbers should,
+     wherever possible, come at the end of a sentence or at least at the
+     end of a clause, as in \cite[p.\ 406]{chicago}
+\begin{quotation}
+\noindent
+\lq\lq This,'' George Templeton Strong wrote approvingly, \lq\lq is what
+our tailors can do.''$^1$
+\end{quotation}
+     where the superscript $^1$ indicates the footnote that contains the
+     citation.  However, when the author-date scheme is used,
+     the ISO 690 recommendations lead to the citation being placed thus:
+\begin{quotation}
+\noindent
+\lq\lq This,'' George Templeton Strong ({\it date\/}) wrote approvingly,
+\lq\lq is what our tailors can do.''
+\end{quotation}
+\item When two citations are adjacent, care is needed when converting =
+from
+      reference-by-number to \lq\lq short-forms in footnotes''.  For =
+example,
+      BS 1629 \cite{bs-1629} converts the reference-by-number citation
+\begin{quotation}
+\dots\ reluctant to delegate$^{27,28}$ \dots
+\end{quotation}
+to
+\begin{quotation}
+\dots\ reluctant to delegate$^{35}$ \dots
+\end{quotation}
+where footnote 35 contains two citations.
+\item
+\label{punc}
+      The position of a reference-by-number citation may be affected
+      by whether the numbers are given in brackets (when they appear =
+before
+      punctuation) or as superscripts (when they appear after =
+punctuation).
+      For example, the American Chemical Society suggests \cite{acs},
+\begin{quotation}
+      \dots\ was reported previously.$^3$
+\end{quotation}
+      but
+\begin{quotation}
+      \dots\ was reported previously(3).
+\end{quotation}
+      House-style may also decree \lq\lq no space'', as above,%
+\footnote{\cite{acs} doesn't make it clear whether or not ACS =
+house-style
+puts a space between the bracket and the preceding word.}
+      or \lq\lq a space'' as in ISO 690's
+\begin{quotation}
+      \dots\ explored in the sciences (24).
+\end{quotation}
+\item Although most publishers put short-form citations in
+      footnotes, the MLA \cite{mla}
+      advocates short-form citations in running text.%
+\footnote{Is this because the MLA thinks such citations are ideal, or
+because, when \cite{mla} was written, the technology that makes =
+citations
+in footnotes easy was scarce?  If the MLA is now ready to =
+advocate/accept
+citations in footnotes, some simplification of the treatment given in
+subsection \ref{citation-tags} may be possible.}
+\item
+\label{multiple}
+      Where more than one work is cited at a particular point,
+      the multiple citation needs appropriate ordering and punctuation.
+      A reference-by-number house-style may require numbers to be
+      given in ascending order, with dashes used for number-ranges =
+\cite{acs}.
+      In an author-date style, it should be possible for the typeset
+      result of 3 adjacent citations to be \cite[p.\ 403]{chicago}
+      \begin{quotation}
+      (Light 1972; Light and Wong 1975; Kingston 1976)
+      \end{quotation}
+      or, if page-numbers are specified, \cite[p.\ 404]{chicago}
+      \begin{quotation}
+      (Kelley 1896a, 10; Kelley 1896b; Kelley 1907, 3)
+      \end{quotation}
+      When multiple short-form citations occur in a footnote, the style =
+will
+      probably require semicolons between the citations and a full stop
+      after the last citation \cite[p.\ 407]{chicago}.
+\item
+     In the past, {\it op.\ cit.}, {\it loc.\ cit.}, {\it ibid.}\ and =
+{\it
+     idem.}\ \cite[p.\ 489]{chicago} may have been labour-saving devices
+     but, since computers can now do the \lq\lq labour'', it is not =
+clear
+     that {\it op.\ cit.}, etc., need supporting for \lq\lq new work''.  =
+It
+     used to be considered \lq\lq good practice'' for a printer to =
+convert
+     the first {\it ibid.}\ on a left-hand page to the corresponding
+     short-form \cite[p.\ 178]{butcher}.  Given that software can insert =
+the
+     short-form automatically, might it be \lq\lq even better practice''
+     for new documents to {\em always} use the appropriate short-form
+     rather {\it ibid\/}?
+\item Some publications use different schemes in parallel.  For example,
+      a \lq\lq conference proceedings'' might have one contribution
+      that uses author-date and another that uses \lq\lq short-forms in
+      footnotes''.  Some software houses seem to use \lq\lq short form''
+      for their own publications, and a different scheme for other =
+people's
+      publications (see, for example, \cite{spss}).
+\end{enumerate}
+
+\subsection{Tagging scheme for citations}
+\label{citation-tags}
+
+To take account of the points mentioned in sections \ref{overall} and
+\marginpar{\footnotesize\it In response to some similar stuff, Nico =
+Poppelier
+ remarked
+that I'm making a mistake that SGML novices often make:  failure to
+distinguish between syntax and semantics}
+\ref{citation-background}, the Guidelines support the tagging of
+different schemes (i.e., reference-by-number, author-date or short-form) =
+in
+parallel via \verb+<cite. +{\it \dots\ }\verb+>+ tags as follows:
+\begin{description}
+\item[for the reference-by-number scheme] ---
+      \verb+<cite.number>+, to give numbers \lq\lq in order of first =
+citation''
+\item[for the author-date scheme] ---
+      \verb+<cite.ad>+, to give citations of the form {\it (author, =
+date)\/},
+      and (for when the author's name occurs naturally in the text)
+      \verb+<cite.date>+ to just give {\it (date)}
+\item[for the short-form scheme] ---
+     \verb+<cite.first>+, to give at least name(s) of author(s) and full =
+title
+\marginpar{\footnotesize\it If software can work out whether a citation
+is a \lq\lq first citation'', {\tt <cite.first>} may not be needed =
+(unless
+needed for a \lq\lq table of abbreviations'')}
+     for use in the first citation,%
+\footnote{In most cases, when document A cites document B:
+A will have a reference-list that contains a {\tt <ref.\ }{\it
+\dots\ }{\tt >} for B;
+a {\tt <cite.first\ }{\it \dots\ }{\tt >} of B will contain a
+selection of the information from the {\tt <ref.\ }{\it \dots\ }{\tt >};
+a {\tt <cite.short\ }{\it \dots\ }{\tt >} of B will contain a
+selection of the information from the {\tt <cite.first\ }{\it \dots\ =
+}{\tt
+>}.
+However, if A has no reference-list, the {\tt <ref.\ }{\it
+\dots\ }{\tt >} for B will be placed where the {\tt <cite.first\
+}{\it \dots\ }{\tt >} would have been if A had had a reference-list.
+}
+     and {\tt <cite.short>} to give the
+     \lq\lq short form'' required for subsequent citations.
+\end{description}
+
+If several citations occur together, you should nest the corresponding
+\verb+<cite. +{\it \dots\ }\verb+>+ elements inside
+\verb+<multicite.number>+, \verb+<multicite.ad>+ or
+\verb+<multicite.short>+, as appropriate.  Such tagging gives scope
+for software that can take account of details such as those mentioned
+in item \ref{multiple} of section \ref{citation-background}.
+
+Thus:
+\begin{itemize}
+\item If you are tagging an existing work, you will use the
+      \verb+<ref. +{\it \dots\ }\verb+>+, \verb+<cite. +{\it \dots\ =
+}\verb+>+
+      and \verb+<multicite. +{\it \dots\ }\verb+>+ tags that are
+      appropriate for the citation scheme used by the work's author.
+      This will usually imply supplying tags for just one scheme
+      (although there may be exceptions in the case of conference
+      proceedings, etc., if different contributors use different =
+schemes).
+\item If you are writing a new work and are only interested in producing
+      one version (with a single citation scheme), you will use the
+      \verb+<ref. +{\it \dots\ }\verb+>+, \verb+<cite. +{\it \dots\ =
+}\verb+>+
+      and \verb+<multicite. +{\it \dots\ }\verb+>+ tags that are
+      appropriate for whichever citation scheme you choose.
+\item If you wish to tag a new work in such a way as to maximize its
+      potential re-usability, you may wish to supply tags for more than
+      one citation scheme in parallel.
+\end{itemize}
+
+Obviously, such tagging will have to be used in conjunction with
+appropriate DTDs.  For example, if tags are supplied for more than one
+citation scheme in parallel, a typeset document will need to have \lq\lq
+all citation schemes visible'' in a conference proceedings, but \lq\lq
+only one citation scheme visible'' in a document that is intended to =
+just
+use one scheme at once.
+
+When taken in conjunction with the \verb+<ref. +{\it \dots\ }\verb+>+ =
+tags
+introduced in section \ref{reference-tags}, the \verb+<cite. +{\it =
+\dots\
+}{\tt>} tags provide support for software that (when converting an
+electronic text into a human-readable document):
+\begin{description}
+\item[for reference-by-number] generates numbers \lq\lq in order of =
+first
+      citation'', and makes them available for use in a =
+\verb+<list.refs>+
+\item[for author-date] derives {\it author} and {\it date} from =
+information
+      (usually surname and year) provided in a
+      \verb+<list.refs>+, and makes them available for use by =
+\verb+<cite.ad>+
+ or
+      \verb+<cite.date>+
+\item[for short-form] takes the information provided (once) in a
+      \verb+<ref. +{\it \dots\ }\verb+>+ and makes it available for use =
+by
+      \verb+<cite.first>+ and \verb+<cite.short>+.  (If desired, the
+      \verb+<cite.first>+ can introduce the \lq\lq short form'' to be =
+used by
+      \verb+<cite.short>+.)
+\end{description}
+
+A citation may have to specify not only a publication, but a particular
+page, section, equation, etc., within that publication.  You can specify
+such a subdivision by using the {\tt partic} attribute in any of the
+\verb+<cite. +{\it \dots\ }\verb+>+ tags.%
+\footnote{This glosses over questions such as whether the internal
+structure of {\tt partic} should be tagged, e.g., so as to allow
+for the different treatment of page-ranges by different house-styles.
+The \lq\lq molecules'' and \lq\lq atoms'' of internal structure will
+probably be much the same for {\tt partic} as for {\tt =
+<location.within>}
+in {\tt <ref.\ }{\it \dots\ }{\tt >} elements.}
+
+\subsubsection*{Minor variations}
+
+To take account of certain practical details, there are some minor
+variations between the definitions of the \verb+<cite. +{\it \dots\
+}{\tt>} tags.
+
+Since the position of reference-by-number citations relative to =
+punctuation
+may be affected by whether a house-style uses superscript numbers or
+bracketed numbers (see item \ref{punc} of section
+\ref{citation-background}), \verb+<cite.number>+ and
+\verb+<multicite.number>+ can be used with a {\tt punc} attribute to
+specify punctuation whose position may be house-style dependent.
+Formatting software will generally place punctuation specified via {\tt
+punc} to the left of superscript citations, but to the right of =
+bracketed
+citations.  (If a \verb+<multicite.number>+ is involved, the {\tt punc}
+should be in the \verb+<multicite.number>+ rather than in any of the
+enclosed \verb+<cite.number>+s.)
+
+Short-form citations will generally appear in footnotes rather than in
+running text.%
+\footnote{The MLA conventions \cite{mla} are an exception.}
+Thus, constructions of the form
+\begin{quotation}
+\verb+<note place=3Dfoot><cite.first target=3D +{\it \dots\ }{\tt =
+></note>}
+\end{quotation}
+and
+\begin{quotation}
+\verb+<note place=3Dfoot><cite.short target=3D +{\it \dots\ =
+}\verb+></note>+
+\end{quotation}
+will occur frequently.  You can use
+\verb+<note.cite.first target=3D +{\it \dots\ }\verb+>+ and
+\verb+<note.cite.short target=3D +{\it \dots\ }\verb+>+
+as abbreviations.
+
+If tags are provided in parallel, so that different versions of the
+document can be produced which use different citation schemes, any DTD =
+that
+produces a \lq\lq non short-form'' version must be written in such a way
+that constructions of the form
+\begin{quotation}
+\verb+<note place=3Dfoot><cite.short target=3D +{\it \dots\ =
+}\verb+></note>+
+\end{quotation}
+produce \lq\lq nothing'' rather than \lq\lq an empty footnote''.
+
+\subsubsection*{Examples from ISO 690}
+
+\paragraph{A list of references}
+
+For the examples of citation tagging that start on page
+\pageref{cite-tags-examples}, it is convenient to assume that some
+appropriately tagged references are available.  The following list shows
+how the works cited in section 9 of ISO 690 \cite{iso-690} might be =
+tagged.
+
+\begin{footnotesize}\begin{verbatim}
+<list.refs>
+  <ref.mono.contrib id=3Dburchard1965>
+    <contrib.primary> J. E. Burchard
+    <contrib.title> How humanists use a library
+    <host.title> Intrex: report of a planning conference on information
+                 transfer experiments
+    <place> Cambridge (Massachusetts)
+    <publisher> MIT Press
+    <year> 1965
+    <location.within>
+      <pages> 219
+    </location.within>
+    <short.form>
+      <contrib.primary> Burchard
+      <contrib.title> How humanists use a library
+    </short.form>
+  </ref.mono.contrib>
+  <ref.mono id=3Dcrane1972>
+    <primary> D. Crane
+    <title> Invisible colleges
+    <place> Chicago
+    <publisher> University of Chicago Press
+    <year> 1972
+    <short.form>
+      <primary> Crane
+      <title> Invisible colleges
+    </short.form>
+  </ref.mono>
+  <ref.mono id=3Dmassrecords>
+    <primary>
+      -- Is the ISO 690 example non-authentic?  See Chicago Manual of =
+Style,
+         page 490. --
+      <role> editor <name> B. Shurtleff Nathaniel
+    </primary>
+    <title> Records of the governor and company of the Massachusetts Bay
+            in New England (1628&mdash;86)
+    <place> Boston
+    <publisher> publisher unknown
+    <year> 1853&mdash;4
+    <extent> 5 volumes
+    <short.form>
+      Mass. Records
+    </short.form>
+  </ref.mono>
+  <ref.article id=3Dstieg1981>
+    <primary> M. F. Stieg
+    <title> The information needs of historians
+    <host> College and Research Libraries
+    <location.within>
+      <year> 1981
+      <rest.of.date> November
+      <volume> 42
+      <number> 6
+      <pages> 549&mdash;560
+    </location.within>
+    <short.form>
+      <primary> Stieg
+      <title> Information needs
+    </short.form>
+  </ref.article>
+</list.refs>
+\end{verbatim}\end{footnotesize}
+
+\paragraph*{Reference-by-number citations}
+\label{cite-tags-examples}
+
+Given the \verb+<list.refs>+ shown above, the example shown in section
+9.2 of ISO 690 \cite{iso-690} can be tagged as follows:
+
+\begin{footnotesize}\begin{verbatim}
+The notion of an invisible college has been explored in the sciences
+<cite.number target=3Dcrane1972 punc=3D".">  Its absence among =
+historians is
+noted by Stieg <cite.number target=3Dstieg1981 partic=3D"page 556" =
+punc=3D".">
+It may be, as Burchard <cite.number target=3Dburchard1985> points out =
+...
+\end{verbatim}\end{footnotesize}
+
+\paragraph*{Short-form citations}
+
+The \lq\lq first citation'' examples shown in section 9.3.1 of ISO 690
+\cite{iso-690} can be tagged as follows:
+
+\begin{footnotesize}\begin{verbatim}
+The notion of an invisible college has been explored in the
+sciences.<note.cite.first target=3Dcrane1972> Its absence among =
+historians is
+noted by Stieg.<note.cite.first target=3Dstieg1981 partic=3D"page 556">  =
+It may
+be, as Burchard<note.cite.first target=3Dburchard1985 partic=3D"page =
+219">
+points out ...
+\end{verbatim}\end{footnotesize}
+
+\begin{footnotesize}\begin{verbatim}
+.. <note.cite.first target=3Dmassrecords partic=3D"vol. 1, p. 126"> ...
+\end{verbatim}\end{footnotesize}
+
+The \lq\lq second and subsequent citation'' examples shown in section
+\marginpar{\footnotesize\it Can we assume that software can take care
+of the alternative \lq\lq citation of previous footnote'' method?
+Does it matter?}
+9.3.2 of \cite{iso-690} can be tagged thus:
+
+\begin{footnotesize}\begin{verbatim}
+.. <note.cite.short target=3Dsutton partic=3D"page 246"> ...
+.. <note.cite.short target=3Dmassrecords partic=3D"page 128"> ...
+\end{verbatim}\end{footnotesize}
+
+\paragraph*{Author-date citations}
+
+The example shown in section 9.4 of ISO 690 \cite{iso-690} can be tagged =
+as
+follows:
+
+\begin{footnotesize}\begin{verbatim}
+The notion of an invisible college has been explored in the sciences
+<cite.ad target=3Dcrane1972>.  Its absence among historians is noted by =
+Stieg
+<cite.date target=3Dstieg1981 partic=3D"page 556">.  It may be, as =
+Burchard
+<cite.date target=3Dburchard1985 partic=3D"page 219"> points out ...
+\end{verbatim}\end{footnotesize}
+
+
+\subsubsection*{Further examples}
+
+As further illustrations of how the citation tags are to be used in
+practice, there follow some examples that show how the quotations used =
+in
+section \ref{citation-background} of the present document might be =
+tagged.
+
+\vspace{\baselineskip}
+Tagging so that a document can be produced in a reference-by-number or =
+an
+author-date version:
+
+\begin{footnotesize}\begin{verbatim}
+.. Marshall and Lewitt's <cite.date target=3Dmarshall>
+approach <cite.number target=3Dmarshall> ...
+\end{verbatim}\end{footnotesize}
+
+Tagging so that a document can be produced in a \lq\lq
+short-forms in footnotes'' or an author-date version:
+
+\begin{footnotesize}\begin{verbatim}
+``This,'' George Templeton Strong <cite.date target=3Dstrong> wrote =
+approvingly,
+``is what our tailors can do.''<note.cite.short target=3Dstrong>
+\end{verbatim}\end{footnotesize}
+
+Tagging so that a document can be produced in a reference-by-number or a
+\lq\lq short-forms in footnotes'' version:
+
+\begin{footnotesize}\begin{verbatim}
+.. reluctant to delegate
+<multicite.number>
+  <cite.number target=3Dsmith1980>
+  <cite.number target=3Dchapman1981>
+</multicite.number>
+<note place=3Dfoot>
+  <multicite.short>
+    <cite.short target=3Dsmith1980>
+    <cite.short target=3Dchapman1981>
+  </multicite.short>
+</note>
+..
+\end{verbatim}\end{footnotesize}
+
+Tagging so that, for reference-by-number citations,
+\marginpar{\footnotesize\it What happens about the space?}
+punctuation appears before a superscript number but after
+a bracketed number:
+
+\begin{footnotesize}\begin{verbatim}
+.. was reported previously <cite.number target=3D... punc=3D".">
+\end{verbatim}\end{footnotesize}
+
+Tagging so that a multiple author-date citation appears within a single =
+bracket:
+
+\begin{footnotesize}\begin{verbatim}
+<multicite.ad>
+  <cite.ad  target=3Dlight1972>
+  <cite.ad  target=3Dlightwong>
+  <cite.ad  target=3Dkingston1976>
+</multicite.ad>
+\end{verbatim}\end{footnotesize}
+
+Tagging so that page-references appear within a multiple author-date =
+citation:
+
+\begin{footnotesize}\begin{verbatim}
+<multicite.ad>
+  <cite.ad  target=3Dkelley1896a  partic=3D"page 10">
+  <cite.ad  target=3Dkelley1896b>
+  <cite.ad  target=3Dkelley1907  partic=3D"page 3">
+</multicite.ad>
+\end{verbatim}\end{footnotesize}
+
+\appendix
+
+\setcounter{chapter}{2}
+\chapter{TEI DTDs}
+\label{DTDs}
+
+%  \section{DTD for ISO 690 (1987) references}
+%
+%  The {\it TEIiso690-87} file defines tags for the elements that can =
+appear
+%  in references to other works.
+%
+%  \begin{footnotesize}\begin{verbatim}
+%  <!-- =
+****************************************************************** -->
+%  <!-- * This DTD defines tags for references to other works.  Such     =
+  -->
+%  <!-- * references may be collected together in a bibliography (see    =
+  -->
+%  <!-- * section ??), but may also appear elsewhere (e.g., in footnotes =
+  -->
+%  <!-- * or running text).  The DTD takes its classification scheme =
+from  -->
+%  <!-- * ISO 690.                                                       =
+  -->
+%  <!-- =
+****************************************************************** -->
+%
+%  <!-- * Citn.struct will be one of the classes given in ISO 690.       =
+  -->
+%  <!ENTITY  % full.ref
+%            "(| monograph | part.of.monograph | =
+contribution.to.monograph |
+%            | serial | article.in.serial | patent )"
+%
+%
+%
+%  \end{verbatim}\end{footnotesize}
+
+{\it It seems premature to work on the formal specifications of tags for
+references/citations until there has been some reaction to the
+general ideas given earlier.
+
+However, I envisage that a DTD would have the following
+characteristics:
+\begin{itemize}
+\item for published works, the elements shown in section 4 of ISO 690
+      \cite{iso-690} would be made mandatory or optional, depending on =
+whether
+      ISO 690 shows them in roman or italic
+\item for {\tt<ref.article>}, it would be necessary to supply one or =
+other of
+      {\tt<rest.of.date>} and {\tt<volume>}, but it would not be
+      necessary to supply both
+\item In most situations, someone supplying a reference to \lq\lq a =
+published
+      work'', and wanting to use the author-date system, would be able =
+to rely
+      on \lq\lq author'' and \lq\lq date'' being extracted by software =
+from
+      \verb+<primary>+ (or \verb+<contrib.primary>+) and \verb+<year>+.
+      However, to help deal with awkward situations \cite[p.\ =
+403]{chicago},
+      the DTD would allow \verb+<author.date>+ to be supplied for \lq\lq
+      published works'' in the same way as for \lq\lq unpublished =
+works''.
+      (The consequences for alphabetical ordering within reference-lists =
+would
+      need thinking through.)
+\item for unpublished works, the DTD would require both the \lq\lq
+      descriptive element'' and the \lq\lq location element'' (as =
+defined in BS
+      6371 \cite{bs-6371}) to be non-empty.
+\end{itemize}
+}
+
+
+\begin{thebibliography}{00}
+\bibitem{bs-1629} British Standards Institution.
+        {\it References to published materials.}
+        BS 1629:1989.
+\bibitem{iso-690}
+        International Organization for Standardization.
+        {\it Documentation --- bibliographic references ---
+        content, form and structure.}
+        ISO 690:1987.
+\bibitem{butcher} Judith Butcher.  {\it Copy-editing.}
+        2nd edn.
+        Cambridge: Cambridge University Press,
+        1981.
+        ISBN 0-521-25638-0.
+\bibitem{chicago} {\it The Chicago Manual of Style.}
+        13th edn.
+        Chicago, London: Chicago University Press,
+        1982.
+        ISBN 0-226-10390-0.
+\bibitem{bs-6371} British Standards Institution.
+        {\it Citation of unpublished documents.}
+        BS 6371:1983.
+\bibitem{endnote}  Niles and Associates.
+        {\it EndNote: a reference database and bibliography maker.}
+        3rd edn.
+        Berkeley (CA 94709): Niles and Associates,
+        1989.
+\bibitem{lamport-86} Leslie Lamport.
+        {\it\itlatex: a document preparation system.}
+        Reading (Massachusetts), Wokingham: Addison-Wesley,
+        1986.
+        ISBN 0-201-157-90-X.
+\bibitem{acs} Janet S. Dodd.
+        {\it The ACS Style Guide.}
+        Washington (DC): American Chemical Society,
+        1986.
+        ISBN 0-8412-0917-0.
+\bibitem{mla} Joseph Gibaldi and Walter S. Achert.
+        {\it MLA Handbook for Writers of Research Papers.}
+        3rd edn.
+        New York: Modern Language Association of America,
+        1988.
+        ISBN 0-87352-379-2.
+\bibitem{spss} Marija J. Noru{\v{s}}is.
+        {\it SPSS-X Introductory Statistics Guide for Release^3.}
+        SPSS Inc.,
+        1988.
+        ISBN 0-918469-54-6.
+\end{thebibliography}
+
+\end{document}
+
+
+------_=_NextPart_001_01C19443.4DC497E4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     References and citations (2)</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>%&nbsp; =
+\documentstyle[11pt,ccc_opt_501]{report}</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle[11pt]{report}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newcommand{\itlatex}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{L\kern-.30em\raise.3ex\hbox{\footnotesize\it A}\kern-.15em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.100emX}&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; %&nbsp; For italic in refs</FONT>
+
+<BR><FONT SIZE=3D2>\newcommand{\BibTeX}{{\rm B\kern-.05em{\sc =
+i\kern-.025em b}\kern-.08em</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\title{Some suggestions about how TEI =
+Guidelines\\</FONT>
+
+<BR><FONT SIZE=3D2>might treat references and citations}</FONT>
+
+<BR><FONT SIZE=3D2>\author{David Rhead\\</FONT>
+
+<BR><FONT SIZE=3D2>University of Nottingham\\</FONT>
+
+<BR><FONT SIZE=3D2>{\footnotesize\tt JANET: =
+d.rhead@uk.ac.nottingham.ccc.vme}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>\date{November 1991}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\sloppy</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\pagenumbering{roman}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{abstract}</FONT>
+
+<BR><FONT SIZE=3D2>These notes are an attempt to re-draft those sections =
+of the October</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it Written about TEI and =
+SGML by someone who</FONT>
+
+<BR><FONT SIZE=3D2>knows little about either}</FONT>
+
+<BR><FONT SIZE=3D2>1990 draft Guidelines that deal with references and =
+citations.</FONT>
+
+<BR><FONT SIZE=3D2>\end{abstract}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\tableofcontents</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\clearpage</FONT>
+
+<BR><FONT SIZE=3D2>\pagenumbering{arabic}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{chapter}{4}</FONT>
+
+<BR><FONT SIZE=3D2>\chapter{Features common to many text types}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\setcounter{section}{4}</FONT>
+
+<BR><FONT SIZE=3D2>\section{Bibliographic references and =
+citations}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Terminology}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For the purpose of these Guidelines, the following =
+definitions apply:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[reference] --- a set of data describing a =
+document, or part of a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.&nbsp; The =
+data must be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sufficiently precise =
+and detailed to enable someone to identify and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; locate the document =
+(or part).</FONT>
+
+<BR><FONT SIZE=3D2>\item[citation] --- a brief form of reference =
+inserted parenthetically</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; within the running =
+text or appended as a note at the foot of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the page, at the end =
+of a chapter, or at the end of the complete text.</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+
+<BR><FONT SIZE=3D2>This terminology is based on that used in BS 1629 =
+\cite{bs-1629} and ISO</FONT>
+
+<BR><FONT SIZE=3D2>690 \cite{iso-690}.&nbsp; It differs from that used =
+by some other authorities,</FONT>
+
+<BR><FONT SIZE=3D2>e.g., Butcher \cite{butcher} and the {\it Chicago =
+Manual of Style}</FONT>
+
+<BR><FONT SIZE=3D2>\cite{chicago}, who use \lq\lq full reference'' and =
+\lq\lq text reference''</FONT>
+
+<BR><FONT SIZE=3D2>instead of \lq\lq reference'' and \lq\lq citation'' =
+respectively.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The citation schemes in general use can be classified =
+as</FONT>
+
+<BR><FONT SIZE=3D2>reference-by-number, author-date and =
+short-form.&nbsp; They are described, for</FONT>
+
+<BR><FONT SIZE=3D2>example, in ISO 690 \cite[section 9]{iso-690}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Overall requirements}</FONT>
+
+<BR><FONT SIZE=3D2>\label{overall}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Users of the Guidelines will certainly need to be able =
+to:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item produce a document using a standard citation =
+scheme</FONT>
+
+<BR><FONT SIZE=3D2>\item tag a document for archiving that uses a =
+standard citation scheme.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>The potential re-usability of tagged text will be =
+increased if, in</FONT>
+
+<BR><FONT SIZE=3D2>addition, the tagging scheme permits information to =
+be supplied so that</FONT>
+
+<BR><FONT SIZE=3D2>software can derive versions of a document that are =
+identical except that</FONT>
+
+<BR><FONT SIZE=3D2>they use different citation schemes.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Hence, the TEI tagging scheme (as described in the =
+following subsections)</FONT>
+
+<BR><FONT SIZE=3D2>can be used:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[either] to tag a document \lq\lq as written'', =
+or for \lq\lq one</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; off'' production, with =
+just the information needed for the single citation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scheme chosen by the =
+document's author</FONT>
+
+<BR><FONT SIZE=3D2>\item[or] to tag a document with the information =
+needed to produce versions</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that use different =
+citation schemes.</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Background to tagging scheme for =
+references}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>References may be found gathered together in a =
+bibliography or \lq\lq list</FONT>
+
+<BR><FONT SIZE=3D2>of references'', possibly with embedded narrative or =
+discussion.&nbsp; They may</FONT>
+
+<BR><FONT SIZE=3D2>also appear within running text or footnotes.&nbsp; =
+See \cite[chapter</FONT>
+
+<BR><FONT SIZE=3D2>10]{butcher} and \cite[chapters =
+16--18]{chicago}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It is clearly desirable that references should have =
+their internal</FONT>
+
+<BR><FONT SIZE=3D2>structure tagged where possible (e.g., to distinguish =
+\lq\lq London'' as an</FONT>
+
+<BR><FONT SIZE=3D2>author's name from \lq\lq London'' as a =
+place-of-publication).&nbsp; Such</FONT>
+
+<BR><FONT SIZE=3D2>tagging will facilitate:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item analysis of encoded texts</FONT>
+
+<BR><FONT SIZE=3D2>\item production of a physical document that conforms =
+to a house-style.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although there is a degree of consensus about the =
+details needed for a</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it If you put something like =
+these notes into the</FONT>
+
+<BR><FONT SIZE=3D2>Guidelines, you'll probably prune this subsection =
+first}</FONT>
+
+<BR><FONT SIZE=3D2>straightforward reference (e.g., to a book or =
+journal-article), different</FONT>
+
+<BR><FONT SIZE=3D2>authorities give different analyses of \lq\lq the =
+structure of a</FONT>
+
+<BR><FONT SIZE=3D2>reference'', and the different analyses lead to =
+different forms of</FONT>
+
+<BR><FONT SIZE=3D2>presentation in less straightforward cases.&nbsp; =
+There are confusing</FONT>
+
+<BR><FONT SIZE=3D2>differences in terminology between \lq\lq =
+instructions for authors'' (as</FONT>
+
+<BR><FONT SIZE=3D2>issued by journals and publishing houses) and the =
+cataloguing rules used by</FONT>
+
+<BR><FONT SIZE=3D2>librarians, even though \lq\lq an author'' may well =
+have found a cited work</FONT>
+
+<BR><FONT SIZE=3D2>in a library, and must provide \lq\lq the reader'' =
+with the information needed</FONT>
+
+<BR><FONT SIZE=3D2>to locate the work in a library.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{For example, an author might think in terms =
+of \lq\lq books''</FONT>
+
+<BR><FONT SIZE=3D2>and \lq\lq journals'', while a cataloguer might use =
+the terms</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq monographs'' and \lq\lq serials''.}</FONT>
+
+<BR><FONT SIZE=3D2>Although standards bodies have attempted to provide =
+suitable analyses of</FONT>
+
+<BR><FONT SIZE=3D2>the information that should be provided (together =
+with recommendations</FONT>
+
+<BR><FONT SIZE=3D2>about the order of presentation, etc.), there are =
+divergences between</FONT>
+
+<BR><FONT SIZE=3D2>the analyses given by different bodies: it is not =
+always easy to see whether</FONT>
+
+<BR><FONT SIZE=3D2>different standards are describing different schemes =
+or are just giving</FONT>
+
+<BR><FONT SIZE=3D2>different descriptions of a single scheme.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{For instance, there seems little difference =
+between ISO 690's</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq primary responsibility'', BS 1629's&nbsp; =
+\lq\lq originator'' and the</FONT>
+
+<BR><FONT SIZE=3D2>{\it Chicago Manual of Style\/}'s \lq\lq author'' =
+\cite[chapter 16]{chicago}.</FONT>
+
+<BR><FONT SIZE=3D2>However, BS 6371 \cite[section 10]{bs-6371}</FONT>
+
+<BR><FONT SIZE=3D2>suggests that a thesis should be treated like a =
+published book,</FONT>
+
+<BR><FONT SIZE=3D2>whereas the {\it Chicago Manual of Style\/} suggests =
+that a thesis</FONT>
+
+<BR><FONT SIZE=3D2>should be treated like an unpublished journal-article =
+\cite[p.\ 467]{chicago}.}</FONT>
+
+<BR><FONT SIZE=3D2>And the people who produce computer programs \lq\lq =
+to help authors deal with</FONT>
+
+<BR><FONT SIZE=3D2>references and citations'' seem to have added to the =
+confusion by</FONT>
+
+<BR><FONT SIZE=3D2>inventing their own analyses rather than using a =
+pre-existing analysis.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{Examples:&nbsp; ISO 690 has a single \lq\lq =
+articles, etc., in</FONT>
+
+<BR><FONT SIZE=3D2>serials'' category, but {\sf EndNote}'s default =
+scheme \cite{endnote}</FONT>
+
+<BR><FONT SIZE=3D2>has separate \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>journal article'' and \lq\lq magazine article'' =
+categories; BS^6371 treats all</FONT>
+
+<BR><FONT SIZE=3D2>theses the same \cite[section 10]{bs-6371}, but =
+\BibTeX's</FONT>
+
+<BR><FONT SIZE=3D2>standard styles \cite[appendix^B]{lamport-86}</FONT>
+
+<BR><FONT SIZE=3D2>have separate \lq\lq Master's thesis'' and \lq\lq =
+Ph.D.</FONT>
+
+<BR><FONT SIZE=3D2>thesis'' categories.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Overall, except for straightforward cases, there seems =
+little consensus</FONT>
+
+<BR><FONT SIZE=3D2>about:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item the categories into which references can be =
+divided</FONT>
+
+<BR><FONT SIZE=3D2>\item the internal structure of references in a =
+particular category.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Tagging scheme for references}</FONT>
+
+<BR><FONT SIZE=3D2>\label{reference-tags}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would probably be counter-productive (as well as =
+very time-consuming)</FONT>
+
+<BR><FONT SIZE=3D2>for TEI to attempt to clarify matters by producing =
+its own analysis of</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq categories'' and \lq\lq elements within each =
+category''.&nbsp; Any new</FONT>
+
+<BR><FONT SIZE=3D2>analysis would probably be seen as just \lq\lq yet =
+another</FONT>
+
+<BR><FONT SIZE=3D2>not-quite-compatible scheme''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The TEI tagging scheme for references is therefore =
+based on a combination</FONT>
+
+<BR><FONT SIZE=3D2>of two existing analyses,%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{If, in due course, a \lq\lq standard'' =
+appears that provides a</FONT>
+
+<BR><FONT SIZE=3D2>more appropriate analysis than the combination of ISO =
+690:1987 with BS</FONT>
+
+<BR><FONT SIZE=3D2>6371:1983, the techniques described in Chapter 8 can =
+be used to modify the</FONT>
+
+<BR><FONT SIZE=3D2>Guidelines to support the new standard.&nbsp; Users =
+of the current Guidelines</FONT>
+
+<BR><FONT SIZE=3D2>may wish to lobby ISO about the features they would =
+like in some future ISO</FONT>
+
+<BR><FONT SIZE=3D2>standard!&nbsp; (There are, of course, plenty of =
+alternatives to the analysis</FONT>
+
+<BR><FONT SIZE=3D2>given by combining ISO 690 and BS 6371.&nbsp; For =
+example, TEI could choose one</FONT>
+
+<BR><FONT SIZE=3D2>of the \lq\lq programs that help authors with =
+references and citations'',</FONT>
+
+<BR><FONT SIZE=3D2>adopt that program's analysis, and hence give some =
+compatibility between</FONT>
+
+<BR><FONT SIZE=3D2>that program and TEI tagging.)}</FONT>
+
+<BR><FONT SIZE=3D2>namely:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item for published works, that given by ISO 690 =
+\cite{iso-690}</FONT>
+
+<BR><FONT SIZE=3D2>\item for unpublished works, that given by BS 6371 =
+\cite{bs-6371}.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{There does not seem to be an ISO standard =
+for references to</FONT>
+
+<BR><FONT SIZE=3D2>unpublished works.&nbsp; The BS 6371 analysis is used =
+because (a) in the absence</FONT>
+
+<BR><FONT SIZE=3D2>of an ISO standard, {\it some} analysis has to be =
+used (b) BS 6371 happens</FONT>
+
+<BR><FONT SIZE=3D2>to make conversion to a concise DTD fairly =
+straightforward.}</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>In addition, the scheme supports a \lq\lq black box'' =
+category for use in</FONT>
+
+<BR><FONT SIZE=3D2>the following 2 situations:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item when neither ISO 690 nor BS 6371 seems =
+appropriate</FONT>
+
+<BR><FONT SIZE=3D2>\item when an author chooses not to tag the internal =
+structure of his/her</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>The scheme gives each category of reference a tag of =
+the form</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;ref. +{\it \dots\ }\verb+&gt;+.&nbsp; The =
+formal DTD is listed in Appendix</FONT>
+
+<BR><FONT SIZE=3D2>\ref{DTDs}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Ideally, you should proceed as follows:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item for a published work, consult ISO 690 =
+\cite{iso-690}.&nbsp; If the work</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; belongs to one of the =
+categories listed in section 4 of ISO 690, tag it as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;ref.mono&gt;+, \verb+&lt;ref.serial&gt;+, =
+\verb+&lt;ref.mono.part&gt;+,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;ref.mono.contrib&gt;+, \verb+&lt;ref.article&gt;+ or =
+\verb+&lt;ref.patent&gt;+.</FONT>
+
+<BR><FONT SIZE=3D2>\item for an unpublished work, consult BS 6371 =
+\cite{bs-6371}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; If the BS 6371 =
+analysis seems appropriate, tag the work</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as =
+\verb+&lt;ref.unpub&gt;+ or \verb+&lt;ref.resem.pub&gt;+.</FONT>
+
+<BR><FONT SIZE=3D2>\item if none of the categories defined in ISO 690 or =
+BS 6371 seems</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; appropriate, use the =
+\verb+&lt;ref.black.box&gt;+ tag.</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If you have insufficient time to tag the internal =
+structure of your</FONT>
+
+<BR><FONT SIZE=3D2>references, you can tag them all as =
+\verb+&lt;ref.black.box&gt;+.&nbsp; However,</FONT>
+
+<BR><FONT SIZE=3D2>archive-users will then lose some options for =
+analysis, and</FONT>
+
+<BR><FONT SIZE=3D2>{\em you will lose some options for automatic =
+conversion of the electronic text</FONT>
+
+<BR><FONT SIZE=3D2>to human-readable form}, e.g.,</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item layout of references in accordance with a =
+house-style</FONT>
+
+<BR><FONT SIZE=3D2>\item automatic derivation of the {\it (author, =
+date)} citations</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; needed for the =
+author-date scheme.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The reference \lq\lq crystals'' that are given =
+\verb+&lt;ref. +{\it \dots\</FONT>
+
+<BR><FONT SIZE=3D2>}\verb+&gt;+ tags may appear in isolation, e.g., in =
+running text or in</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it What happens about the =
+things described</FONT>
+
+<BR><FONT SIZE=3D2>in \cite[p.\ 425]{chicago}?}</FONT>
+
+<BR><FONT SIZE=3D2>footnotes.&nbsp; However, in many works, such \lq\lq =
+crystals'' will be gathered</FONT>
+
+<BR><FONT SIZE=3D2>together into a reference-list.&nbsp; You should use =
+a \verb+&lt;list.refs&gt;+ tag to</FONT>
+
+<BR><FONT SIZE=3D2>identify such a list.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection*{Example}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>There follows an example of a tagged =
+reference-list.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{The example reference-list glosses over =
+problems such as the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;following:</FONT>
+
+<BR><FONT SIZE=3D2>(1)&nbsp; {\tt&lt;prop.name code=3Dperson&gt;} seems =
+a cumbersome way to specify</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; people's names.</FONT>
+
+<BR><FONT SIZE=3D2>(2)&nbsp; Do we assume that some \BibTeX-like code =
+processes names and combinations</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of names, so that internal =
+tagging of names can usually be omitted?</FONT>
+
+<BR><FONT SIZE=3D2>(3)&nbsp; In titles, etc., what happens about \lq\lq =
+up-and-down-style versus</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; down-style'', as when some =
+house-styles require most words to start</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; with a capital letter, but =
+some house-styles have the same capitalization</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; in titles as in normal =
+text?</FONT>
+
+<BR><FONT SIZE=3D2>(4)&nbsp; How is {\tt&lt;edition&gt;} to be =
+specified, e.g., 1, 1st, first, First,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; revised, preliminary, =
+Canadian?</FONT>
+
+<BR><FONT SIZE=3D2>(5)&nbsp; Does further tagging need defining within =
+{\tt&lt;place&gt;}, to cope with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; places like Cambridge =
+(Massachusetts)?</FONT>
+
+<BR><FONT SIZE=3D2>(6)&nbsp; If {\tt&lt;notes&gt;} is of the form \lq\lq =
+Translation of: \lq\lq\ \dots\ '',</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; how does one indicate that =
+\dots\ is a title (so that it may be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; typeset like other =
+titles)?</FONT>
+
+<BR><FONT SIZE=3D2>(7)&nbsp; How is {\tt&lt;numeration&gt;} within =
+{\tt&lt;ref.mono.part&gt;} to be specified,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; if it may, e.g., have to =
+represent \lq\lq volume 5, part^3''?</FONT>
+
+<BR><FONT SIZE=3D2>(8)&nbsp; What might appear in =
+{\tt&lt;location.within&gt;} within</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; {\tt&lt;ref.mono.part&gt;}, =
+and how can one allow for the encoding</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; of all possibilities?</FONT>
+
+<BR><FONT SIZE=3D2>(9)&nbsp; In \verb+&lt;location.within&gt;+, =
+page-ranges will usually require an</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; em-dash.&nbsp; Does this =
+always need specifying explicitly?</FONT>
+
+<BR><FONT SIZE=3D2>(10) In \lq\lq serials'': what combinations of \lq\lq =
+dates and/or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; numbers'' may need tagging: =
+what is the relationship between</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq =
+edition/issue-designation'' and \lq\lq year''?</FONT>
+
+<BR><FONT SIZE=3D2>(11) Might {\tt&lt;rest.of.date&gt;} be required in =
+different forms for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; serials, patents, =
+unpublished documents.&nbsp; If so, does it matter?</FONT>
+
+<BR><FONT SIZE=3D2>(12) Should the scheme allow people to associate more =
+than one {\tt id} (or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; equivalent) with a =
+particular reference?&nbsp; For example: an {\tt id}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; such as {\tt lominadze1981} =
+is easy to remember, but is not guaranteed</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; to stay unique if reference =
+\lq\lq crystals'' are collected into a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; database; ISBN-based {\tt =
+id}s such as {\tt isbn0080216803} are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; difficult to remember, but =
+will stay unique no matter what other reference</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq crystals'' are added =
+later.</FONT>
+
+<BR><FONT SIZE=3D2>(13) How does one indicate a \lq\lq missing value'', =
+as when the publisher</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; is unknown?</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>To help show the correspondence between the tagging =
+scheme and the combined</FONT>
+
+<BR><FONT SIZE=3D2>ISO 690/BS 6371 analysis, the references in the list =
+are mostly taken from</FONT>
+
+<BR><FONT SIZE=3D2>the two standards documents =
+\cite{iso-690,bs-6371}.&nbsp; The</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;ref.black.box&gt;+ reference shows how an =
+example given in BS 1629</FONT>
+
+<BR><FONT SIZE=3D2>\cite{bs-1629} can be tagged.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&lt;list.refs&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Monograph --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono id=3DLominadze1981&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; D. G. =
+Lominadze</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; -- When &lt;primary&gt; is =
+as given above, it is assumed that:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * a person =
+is primarily responsible (i.e., by default, &lt;primary&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is =
+assumed to be a &lt;prop.name type=3Dperson&gt;).&nbsp; If a corporate =
+body</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is =
+responsible, &lt;primary&gt; can be given as, for example,</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;primary&gt;&lt;org&gt;Imperial Chemical Industries.&nbsp; Paint =
+Division&lt;/org&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The =
+distinction only matters if &lt;primary&gt; is processed</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+automatically (e.g., to convert first names to initials, or</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; to =
+reverse surname and first name).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * the =
+primary responsibility is that of &quot;author&quot;.&nbsp; If desired, =
+roles</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; can be =
+specified thus:</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;primary&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; &lt;role&gt; author &lt;name&gt; D. G. Lominadze</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;/primary&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; By using =
+&lt;role&gt; in both &lt;primary&gt; and &lt;subordinate&gt;, you can =
+clarify</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the =
+relationship between the &quot;primary&quot; and =
+&quot;subordinate&quot;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+responsibilities.&nbsp; See sections 7.1 and 7.3 of ISO 690.&nbsp; =
+--</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; Cyclotron waves in =
+plasma</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; =
+translator &lt;name&gt; A. N. Dellis</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;edition&gt; 1st</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; Oxford</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; Pergamon =
+Press</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1981</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;extent&gt; 206 pages</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;series&gt; International =
+series in natural philosophy</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;notes&gt; Translation of: =
+Ciklotronnye volny v plazme</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;standard.number&gt; ISBN =
+0-08-021680-3</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- If the citation scheme is =
+author-date, the surname and year</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; required for an =
+in-text citation can be derived automatically from</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the =
+&lt;primary&gt; and &lt;year&gt; fields above --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- If the citation scheme is =
+&quot;short form&quot;, the first citation will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use at least the =
+&lt;primary&gt; and &lt;title&gt; elements above.&nbsp; =
+Subsequent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citations will =
+use the &quot;short form&quot; specified below.&nbsp; (The =
+&quot;short</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form&quot; may =
+be introduced in the first citation.)&nbsp; Declaring the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;short =
+form&quot; here is analogous to Butcher's suggestion</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+(&quot;Copy-editing&quot;, page 178). --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- Tagging within =
+&lt;short.form&gt; will permit the pattern of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+typography to be the same in &quot;first citation&quot;, =
+&quot;subsequent</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+citations&quot; and &quot;full reference&quot; --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Lominadze</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Cyclotron waves</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Serial --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.serial id=3Dcommsmanuf}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; Communications =
+equipment manufacturers</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;responsibility&gt; =
+Manufacturing and Primary Industries Division,</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Statistics =
+Canada</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;edition&gt; Preliminary</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;issue.desig&gt; =
+1970&amp;mdash;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; Ottawa</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; Statistics =
+Canada</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1971&amp;mdash;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;series&gt; Annual census of =
+manufacturers</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;notes&gt; Text in English and =
+French</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;standard.number&gt; ISSN =
+0700-0758</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.serial&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Part of monograph --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono.part id=3DParker1930&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Software can make an =
+intelligent guess that the following</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry is of the =
+form &quot;personal-name and personal-name&quot;.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When the =
+structure is less obvious, more detailed markup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; will be =
+required. --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt; T. J. Parker and =
+W. D. Haswell</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host&gt; A text-book of =
+zoology</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;edition&gt; 5th</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;numeration&gt; volume 1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; revisor =
+&lt;name&gt; W. D. Lang</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; London</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; Macmillan</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1930</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;unit.type&gt; =
+section</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;unit.number&gt; =
+12</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;unit.title&gt; =
+Phylum Mollusca</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pages&gt; =
+663&amp;mdash;782</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; Parker =
+and Haswell</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Zoology</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono.part&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Contribution to monograph --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono.contrib =
+id=3DWrigley1968&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;contrib.primary&gt; E. A. =
+Wrigley</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;contrib.title&gt; Parish =
+registers and the historian</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host.primary&gt; D. J. =
+Steel</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host.title&gt; National index =
+of parish registers</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; London</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; Society of =
+Genealogists</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1968</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;unit.type&gt; =
+volume</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;unit.number&gt; =
+1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pages&gt; =
+155&amp;mdash;167</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Wrigley</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Registers</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono.contrib&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Article in serial --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.article id=3DWeaver1985&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt; William =
+Weaver</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; The collectors: =
+command performances</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; =
+photographer &lt;name&gt; Robert Emmett Bright</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host&gt; Architectural =
+digest</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1985</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- People usually =
+refer to weekly/monthly magazines by &quot;date of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+issue&quot;, but to academic journals by &quot;year, volume and =
+(optionally)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+issue-number&quot;.&nbsp; The former style is supported by &lt;year&gt; =
+and</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;rest.of.date&gt;, the latter by &lt;year&gt;, &lt;volume&gt; and (if =
+desired)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;number&gt;.&nbsp; --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;rest.of.date&gt; =
+December</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;volume&gt; =
+42</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;number&gt; =
+12</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pages&gt; =
+126&amp;mdash;133</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Weaver</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Collectors</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.article&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Patent --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.patent id=3Dpatent608626&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; applicant =
+&lt;name&gt;&lt;org&gt; Carl Zeiss Jena, VEB &lt;/org&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/primary&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;invention.title&gt; =
+&lt;foreign lang=3Dgerman&gt; Anordnung zur lichtelektrischen</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Erfassung der Mitte eines Lichtfeldes &lt;/foreign&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- Can software make =
+an intelligent guess that this is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;personal-name and personal-name and personal-name&quot;,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or =
+is more detailed markup essential? --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; =
+inventor</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;name&gt;&lt;foreign lang=3Dgerman&gt;</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; W. Feist und C. Wahnert und E. =
+Feistauer</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; &lt;/foreign&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/subordinate&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;notes&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- The following means =
+&quot;according to the 3rd edition of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+International Patent Classification, the classification number</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is =
+G02 B 27/14&quot; --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;int.class&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;edition&gt; 3</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;classification&gt; G02 B 27/14</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;/int.class&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/notes&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;identifier&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;office&gt; =
+Schweiz</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;kind&gt; =
+Patentschrift</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;number&gt; =
+608626</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/identifier&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1979</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;rest.of.date&gt; 01-15</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.patent&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Unpublished document --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.unpub id=3DTraquair1638&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Descriptive element --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;name&gt; Earl of =
+Traquair</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; letter =
+to Marquess of Hamilton</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1638</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;rest.of.date&gt; =
+28 Aug</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- If there was a =
+&quot;material designation&quot;, it would be tagged with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;mat.desig&gt; --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Location element --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;place&gt; =
+Lennoxlove (E. Lothian)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;repository&gt; =
+Muniments of Duke of Hamilton and Brandon</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;call.number&gt; =
+C.1</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- If different =
+citations of an unpublished work required different</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;locations within the piece&quot;, it would be better to =
+omit</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;location.within&gt; from the &lt;ref. ... &gt; and to use =
+partic</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+attributes in the &lt;cite. ... &gt; tags --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;location.within&gt; no. 963</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- If there was &quot;other =
+information&quot;, it would be tagged with</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;other.info&gt; --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Although the surname and year =
+required for author-date citation of a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; published work =
+can usually be derived automatically, some human</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; judgement is =
+needed about the &quot;first significant word or words&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for an =
+unpublished item.&nbsp; The elements to be used are specified as</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shown below. =
+--</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;author.date&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;author&gt; =
+Traquair</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;date&gt; =
+1638</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/author.date&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Traquair's letter to Hamilton</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.unpub&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Document resembling a published work =
+--</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.resem.pub id=3Dmarkham1877&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Descriptive element compiled as =
+if the document were published</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (but in line =
+with ISO 690, even though BS 6371 suggests BS 5605) --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; C. R. =
+Markham</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; Report =
+on the Geographical Department of the India Office,</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; 1867&amp;mdash;1877</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1877</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Location element --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;place&gt; =
+London</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;repository&gt; =
+India Office Library</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Markham</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Geographical Department</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.resem.pub&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; -- Black box --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.black.box id=3DThatcher1986&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; Margaret Thatcher. =
+Interview.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Structure is not specified in =
+&lt;ref.black.box&gt;, but presentational</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; markup is =
+possible (so as to get appropriate typography) --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;highlighted =
+rendition=3Ditalic&gt;In: Six O'clock News.&lt;/highlighted&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; TV, BBC 1, 1986, Jan 29, 1823 =
+hrs.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; -- Software will be unable to =
+deduce the &quot;author&quot; and &quot;date&quot; to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; used in =
+citations of &lt;ref.black.box&gt; references --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;author.date&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;author&gt; =
+Thatcher</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;date&gt; =
+1986</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/author.date&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Thatcher. Interview. =
+29 Jan 1986</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.black.box&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/list.refs&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\subsection{Background to tagging scheme for =
+citations}</FONT>
+
+<BR><FONT SIZE=3D2>\label{citation-background}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Although there are elements of consensus among the =
+diverse groups who</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it If you put something like =
+these notes into the</FONT>
+
+<BR><FONT SIZE=3D2>Guidelines, you'll probably prune this subsection =
+first}</FONT>
+
+<BR><FONT SIZE=3D2>specify the conventions to which authors should =
+adhere when citing, there</FONT>
+
+<BR><FONT SIZE=3D2>are also differences of approach that make it =
+difficult to isolate the</FONT>
+
+<BR><FONT SIZE=3D2>structures that are to be encoded.&nbsp; For =
+example:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; The American Chemical =
+Society \cite{acs} gives</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>Marshall and Levitt's approach {\it cite\/}</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; as an example of how to cite =
+at a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; logical place.&nbsp; =
+However, if the author-date scheme is used, and the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; intructions given in ISO 690 =
+\cite{iso-690} are followed, the citation</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; will&nbsp; be of the =
+form</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>Marshall and Lewitt's ({\it date\/}) approach</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; It seems that the ACS =
+example shows the \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; logical place'' for =
+reference-by-number, and that the most appropriate</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; position for the citation =
+changes if the citation scheme changes.</FONT>
+
+<BR><FONT SIZE=3D2>\item A similar problem arises if the scheme changes =
+from \lq\lq short-forms</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; in footnotes'' to =
+author-date.&nbsp; The {\it Chicago Manual of Style}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; recommends that footnote =
+numbers should,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; wherever possible, come at =
+the end of a sentence or at least at the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; end of a clause, as in =
+\cite[p.\ 406]{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq This,'' George Templeton Strong wrote =
+approvingly, \lq\lq is what</FONT>
+
+<BR><FONT SIZE=3D2>our tailors can do.''$^1$</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; where the superscript $^1$ =
+indicates the footnote that contains the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; citation.&nbsp; However, =
+when the author-date scheme is used,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the ISO 690 recommendations =
+lead to the citation being placed thus:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\noindent</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq This,'' George Templeton Strong ({\it date\/}) =
+wrote approvingly,</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq is what our tailors can do.''</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\item When two citations are adjacent, care is needed =
+when converting from</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference-by-number to =
+\lq\lq short-forms in footnotes''.&nbsp; For example,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS 1629 \cite{bs-1629} =
+converts the reference-by-number citation</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ reluctant to delegate$^{27,28}$ \dots</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>to</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ reluctant to delegate$^{35}$ \dots</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>where footnote 35 contains two citations.</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>\label{punc}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The position of a =
+reference-by-number citation may be affected</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; by whether the numbers =
+are given in brackets (when they appear before</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; punctuation) or as =
+superscripts (when they appear after punctuation).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For example, the =
+American Chemical Society suggests \cite{acs},</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \dots\ was reported =
+previously.$^3$</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; but</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \dots\ was reported =
+previously(3).</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; House-style may also =
+decree \lq\lq no space'', as above,%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{\cite{acs} doesn't make it clear whether or =
+not ACS house-style</FONT>
+
+<BR><FONT SIZE=3D2>puts a space between the bracket and the preceding =
+word.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or \lq\lq a space'' as =
+in ISO 690's</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \dots\ explored in the =
+sciences (24).</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\item Although most publishers put short-form =
+citations in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; footnotes, the MLA =
+\cite{mla}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; advocates short-form =
+citations in running text.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{Is this because the MLA thinks such =
+citations are ideal, or</FONT>
+
+<BR><FONT SIZE=3D2>because, when \cite{mla} was written, the technology =
+that makes citations</FONT>
+
+<BR><FONT SIZE=3D2>in footnotes easy was scarce?&nbsp; If the MLA is now =
+ready to advocate/accept</FONT>
+
+<BR><FONT SIZE=3D2>citations in footnotes, some simplification of the =
+treatment given in</FONT>
+
+<BR><FONT SIZE=3D2>subsection \ref{citation-tags} may be =
+possible.}</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>\label{multiple}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Where more than one =
+work is cited at a particular point,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the multiple citation =
+needs appropriate ordering and punctuation.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A reference-by-number =
+house-style may require numbers to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; given in ascending =
+order, with dashes used for number-ranges \cite{acs}.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In an author-date =
+style, it should be possible for the typeset</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result of 3 adjacent =
+citations to be \cite[p.\ 403]{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Light 1972; Light and =
+Wong 1975; Kingston 1976)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or, if page-numbers =
+are specified, \cite[p.\ 404]{chicago}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Kelley 1896a, 10; =
+Kelley 1896b; Kelley 1907, 3)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When multiple =
+short-form citations occur in a footnote, the style will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; probably require =
+semicolons between the citations and a full stop</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; after the last =
+citation \cite[p.\ 407]{chicago}.</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; In the past, {\it op.\ =
+cit.}, {\it loc.\ cit.}, {\it ibid.}\ and {\it</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; idem.}\ \cite[p.\ =
+489]{chicago} may have been labour-saving devices</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; but, since computers can now =
+do the \lq\lq labour'', it is not clear</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; that {\it op.\ cit.}, etc., =
+need supporting for \lq\lq new work''.&nbsp; It</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; used to be considered \lq\lq =
+good practice'' for a printer to convert</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the first {\it ibid.}\ on a =
+left-hand page to the corresponding</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; short-form \cite[p.\ =
+178]{butcher}.&nbsp; Given that software can insert the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; short-form automatically, =
+might it be \lq\lq even better practice''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; for new documents to {\em =
+always} use the appropriate short-form</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; rather {\it ibid\/}?</FONT>
+
+<BR><FONT SIZE=3D2>\item Some publications use different schemes in =
+parallel.&nbsp; For example,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a \lq\lq conference =
+proceedings'' might have one contribution</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that uses author-date =
+and another that uses \lq\lq short-forms in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; footnotes''.&nbsp; =
+Some software houses seem to use \lq\lq short form''</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for their own =
+publications, and a different scheme for other people's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; publications (see, for =
+example, \cite{spss}).</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsection{Tagging scheme for citations}</FONT>
+
+<BR><FONT SIZE=3D2>\label{citation-tags}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To take account of the points mentioned in sections =
+\ref{overall} and</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it In response to some =
+similar stuff, Nico Poppelier</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;remarked</FONT>
+
+<BR><FONT SIZE=3D2>that I'm making a mistake that SGML novices often =
+make:&nbsp; failure to</FONT>
+
+<BR><FONT SIZE=3D2>distinguish between syntax and semantics}</FONT>
+
+<BR><FONT SIZE=3D2>\ref{citation-background}, the Guidelines support the =
+tagging of</FONT>
+
+<BR><FONT SIZE=3D2>different schemes (i.e., reference-by-number, =
+author-date or short-form) in</FONT>
+
+<BR><FONT SIZE=3D2>parallel via \verb+&lt;cite. +{\it \dots\ =
+}\verb+&gt;+ tags as follows:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[for the reference-by-number scheme] ---</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.number&gt;+, to give numbers \lq\lq in order of first =
+citation''</FONT>
+
+<BR><FONT SIZE=3D2>\item[for the author-date scheme] ---</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.ad&gt;+, to give citations of the form {\it (author, =
+date)\/},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and (for when the =
+author's name occurs naturally in the text)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.date&gt;+ to just give {\it (date)}</FONT>
+
+<BR><FONT SIZE=3D2>\item[for the short-form scheme] ---</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \verb+&lt;cite.first&gt;+, =
+to give at least name(s) of author(s) and full title</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it If software can work out =
+whether a citation</FONT>
+
+<BR><FONT SIZE=3D2>is a \lq\lq first citation'', {\tt =
+&lt;cite.first&gt;} may not be needed (unless</FONT>
+
+<BR><FONT SIZE=3D2>needed for a \lq\lq table of abbreviations'')}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; for use in the first =
+citation,%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{In most cases, when document A cites =
+document B:</FONT>
+
+<BR><FONT SIZE=3D2>A will have a reference-list that contains a {\tt =
+&lt;ref.\ }{\it</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ }{\tt &gt;} for B;</FONT>
+
+<BR><FONT SIZE=3D2>a {\tt &lt;cite.first\ }{\it \dots\ }{\tt &gt;} of B =
+will contain a</FONT>
+
+<BR><FONT SIZE=3D2>selection of the information from the {\tt &lt;ref.\ =
+}{\it \dots\ }{\tt &gt;};</FONT>
+
+<BR><FONT SIZE=3D2>a {\tt &lt;cite.short\ }{\it \dots\ }{\tt &gt;} of B =
+will contain a</FONT>
+
+<BR><FONT SIZE=3D2>selection of the information from the {\tt =
+&lt;cite.first\ }{\it \dots\ }{\tt</FONT>
+
+<BR><FONT SIZE=3D2>&gt;}.</FONT>
+
+<BR><FONT SIZE=3D2>However, if A has no reference-list, the {\tt =
+&lt;ref.\ }{\it</FONT>
+
+<BR><FONT SIZE=3D2>\dots\ }{\tt &gt;} for B will be placed where the =
+{\tt &lt;cite.first\</FONT>
+
+<BR><FONT SIZE=3D2>}{\it \dots\ }{\tt &gt;} would have been if A had had =
+a reference-list.</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; and {\tt &lt;cite.short&gt;} =
+to give the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; \lq\lq short form'' required =
+for subsequent citations.</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If several citations occur together, you should nest =
+the corresponding</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;cite. +{\it \dots\ }\verb+&gt;+ elements =
+inside</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;multicite.number&gt;+, =
+\verb+&lt;multicite.ad&gt;+ or</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;multicite.short&gt;+, as appropriate.&nbsp; =
+Such tagging gives scope</FONT>
+
+<BR><FONT SIZE=3D2>for software that can take account of details such as =
+those mentioned</FONT>
+
+<BR><FONT SIZE=3D2>in item \ref{multiple} of section =
+\ref{citation-background}.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Thus:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item If you are tagging an existing work, you will =
+use the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+&lt;ref. +{\it =
+\dots\ }\verb+&gt;+, \verb+&lt;cite. +{\it \dots\ }\verb+&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and =
+\verb+&lt;multicite. +{\it \dots\ }\verb+&gt;+ tags that are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; appropriate for the =
+citation scheme used by the work's author.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This will usually =
+imply supplying tags for just one scheme</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (although there may be =
+exceptions in the case of conference</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; proceedings, etc., if =
+different contributors use different schemes).</FONT>
+
+<BR><FONT SIZE=3D2>\item If you are writing a new work and are only =
+interested in producing</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one version (with a =
+single citation scheme), you will use the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+&lt;ref. +{\it =
+\dots\ }\verb+&gt;+, \verb+&lt;cite. +{\it \dots\ }\verb+&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and =
+\verb+&lt;multicite. +{\it \dots\ }\verb+&gt;+ tags that are</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; appropriate for =
+whichever citation scheme you choose.</FONT>
+
+<BR><FONT SIZE=3D2>\item If you wish to tag a new work in such a way as =
+to maximize its</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; potential =
+re-usability, you may wish to supply tags for more than</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; one citation scheme in =
+parallel.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Obviously, such tagging will have to be used in =
+conjunction with</FONT>
+
+<BR><FONT SIZE=3D2>appropriate DTDs.&nbsp; For example, if tags are =
+supplied for more than one</FONT>
+
+<BR><FONT SIZE=3D2>citation scheme in parallel, a typeset document will =
+need to have \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>all citation schemes visible'' in a conference =
+proceedings, but \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>only one citation scheme visible'' in a document that =
+is intended to just</FONT>
+
+<BR><FONT SIZE=3D2>use one scheme at once.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>When taken in conjunction with the \verb+&lt;ref. =
++{\it \dots\ }\verb+&gt;+ tags</FONT>
+
+<BR><FONT SIZE=3D2>introduced in section \ref{reference-tags}, the =
+\verb+&lt;cite. +{\it \dots\</FONT>
+
+<BR><FONT SIZE=3D2>}{\tt&gt;} tags provide support for software that =
+(when converting an</FONT>
+
+<BR><FONT SIZE=3D2>electronic text into a human-readable =
+document):</FONT>
+
+<BR><FONT SIZE=3D2>\begin{description}</FONT>
+
+<BR><FONT SIZE=3D2>\item[for reference-by-number] generates numbers =
+\lq\lq in order of first</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; citation'', and makes =
+them available for use in a \verb+&lt;list.refs&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>\item[for author-date] derives {\it author} and {\it =
+date} from information</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (usually surname and =
+year) provided in a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;list.refs&gt;+, and makes them available for use by =
+\verb+&lt;cite.ad&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;or</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.date&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>\item[for short-form] takes the information provided =
+(once) in a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+&lt;ref. +{\it =
+\dots\ }\verb+&gt;+ and makes it available for use by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.first&gt;+ and \verb+&lt;cite.short&gt;+.&nbsp; (If =
+desired, the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.first&gt;+ can introduce the \lq\lq short form'' to be =
+used by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\verb+&lt;cite.short&gt;+.)</FONT>
+
+<BR><FONT SIZE=3D2>\end{description}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A citation may have to specify not only a publication, =
+but a particular</FONT>
+
+<BR><FONT SIZE=3D2>page, section, equation, etc., within that =
+publication.&nbsp; You can specify</FONT>
+
+<BR><FONT SIZE=3D2>such a subdivision by using the {\tt partic} =
+attribute in any of the</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;cite. +{\it \dots\ }\verb+&gt;+ =
+tags.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{This glosses over questions such as whether =
+the internal</FONT>
+
+<BR><FONT SIZE=3D2>structure of {\tt partic} should be tagged, e.g., so =
+as to allow</FONT>
+
+<BR><FONT SIZE=3D2>for the different treatment of page-ranges by =
+different house-styles.</FONT>
+
+<BR><FONT SIZE=3D2>The \lq\lq molecules'' and \lq\lq atoms'' of internal =
+structure will</FONT>
+
+<BR><FONT SIZE=3D2>probably be much the same for {\tt partic} as for =
+{\tt &lt;location.within&gt;}</FONT>
+
+<BR><FONT SIZE=3D2>in {\tt &lt;ref.\ }{\it \dots\ }{\tt &gt;} =
+elements.}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection*{Minor variations}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>To take account of certain practical details, there =
+are some minor</FONT>
+
+<BR><FONT SIZE=3D2>variations between the definitions of the =
+\verb+&lt;cite. +{\it \dots\</FONT>
+
+<BR><FONT SIZE=3D2>}{\tt&gt;} tags.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Since the position of reference-by-number citations =
+relative to punctuation</FONT>
+
+<BR><FONT SIZE=3D2>may be affected by whether a house-style uses =
+superscript numbers or</FONT>
+
+<BR><FONT SIZE=3D2>bracketed numbers (see item \ref{punc} of =
+section</FONT>
+
+<BR><FONT SIZE=3D2>\ref{citation-background}), =
+\verb+&lt;cite.number&gt;+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;multicite.number&gt;+ can be used with a =
+{\tt punc} attribute to</FONT>
+
+<BR><FONT SIZE=3D2>specify punctuation whose position may be house-style =
+dependent.</FONT>
+
+<BR><FONT SIZE=3D2>Formatting software will generally place punctuation =
+specified via {\tt</FONT>
+
+<BR><FONT SIZE=3D2>punc} to the left of superscript citations, but to =
+the right of bracketed</FONT>
+
+<BR><FONT SIZE=3D2>citations.&nbsp; (If a =
+\verb+&lt;multicite.number&gt;+ is involved, the {\tt punc}</FONT>
+
+<BR><FONT SIZE=3D2>should be in the \verb+&lt;multicite.number&gt;+ =
+rather than in any of the</FONT>
+
+<BR><FONT SIZE=3D2>enclosed \verb+&lt;cite.number&gt;+s.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Short-form citations will generally appear in =
+footnotes rather than in</FONT>
+
+<BR><FONT SIZE=3D2>running text.%</FONT>
+
+<BR><FONT SIZE=3D2>\footnote{The MLA conventions \cite{mla} are an =
+exception.}</FONT>
+
+<BR><FONT SIZE=3D2>Thus, constructions of the form</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;note place=3Dfoot&gt;&lt;cite.first =
+target=3D +{\it \dots\ }{\tt &gt;&lt;/note&gt;}</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>and</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;note place=3Dfoot&gt;&lt;cite.short =
+target=3D +{\it \dots\ }\verb+&gt;&lt;/note&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>will occur frequently.&nbsp; You can use</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;note.cite.first target=3D +{\it \dots\ =
+}\verb+&gt;+ and</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;note.cite.short target=3D +{\it \dots\ =
+}\verb+&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>as abbreviations.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If tags are provided in parallel, so that different =
+versions of the</FONT>
+
+<BR><FONT SIZE=3D2>document can be produced which use different citation =
+schemes, any DTD that</FONT>
+
+<BR><FONT SIZE=3D2>produces a \lq\lq non short-form'' version must be =
+written in such a way</FONT>
+
+<BR><FONT SIZE=3D2>that constructions of the form</FONT>
+
+<BR><FONT SIZE=3D2>\begin{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>\verb+&lt;note place=3Dfoot&gt;&lt;cite.short =
+target=3D +{\it \dots\ }\verb+&gt;&lt;/note&gt;+</FONT>
+
+<BR><FONT SIZE=3D2>\end{quotation}</FONT>
+
+<BR><FONT SIZE=3D2>produce \lq\lq nothing'' rather than \lq\lq an empty =
+footnote''.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\subsubsection*{Examples from ISO 690}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\paragraph{A list of references}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For the examples of citation tagging that start on =
+page</FONT>
+
+<BR><FONT SIZE=3D2>\pageref{cite-tags-examples}, it is convenient to =
+assume that some</FONT>
+
+<BR><FONT SIZE=3D2>appropriately tagged references are available.&nbsp; =
+The following list shows</FONT>
+
+<BR><FONT SIZE=3D2>how the works cited in section 9 of ISO 690 =
+\cite{iso-690} might be tagged.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&lt;list.refs&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono.contrib =
+id=3Dburchard1965&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;contrib.primary&gt; J. E. =
+Burchard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;contrib.title&gt; How =
+humanists use a library</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host.title&gt; Intrex: report =
+of a planning conference on information</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; transfer experiments</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; Cambridge =
+(Massachusetts)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; MIT Press</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1965</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pages&gt; =
+219</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&lt;contrib.primary&gt; Burchard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;contrib.title&gt; =
+How humanists use a library</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono.contrib&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono id=3Dcrane1972&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt; D. Crane</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; Invisible =
+colleges</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; Chicago</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; University of =
+Chicago Press</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; 1972</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Crane</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Invisible colleges</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.mono id=3Dmassrecords&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- Is the ISO 690 =
+example non-authentic?&nbsp; See Chicago Manual of Style,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page =
+490. --</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;role&gt; editor =
+&lt;name&gt; B. Shurtleff Nathaniel</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/primary&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; Records of the =
+governor and company of the Massachusetts Bay</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; in New England (1628&amp;mdash;86)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;place&gt; Boston</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;publisher&gt; publisher =
+unknown</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1853&amp;mdash;4</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;extent&gt; 5 volumes</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mass. Records</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.mono&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;ref.article id=3Dstieg1981&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;primary&gt; M. F. Stieg</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;title&gt; The information =
+needs of historians</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;host&gt; College and Research =
+Libraries</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;year&gt; =
+1981</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;rest.of.date&gt; =
+November</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;volume&gt; =
+42</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;number&gt; =
+6</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;pages&gt; =
+549&amp;mdash;560</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/location.within&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;primary&gt; =
+Stieg</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;title&gt; =
+Information needs</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;/short.form&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/ref.article&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/list.refs&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\paragraph*{Reference-by-number citations}</FONT>
+
+<BR><FONT SIZE=3D2>\label{cite-tags-examples}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Given the \verb+&lt;list.refs&gt;+ shown above, the =
+example shown in section</FONT>
+
+<BR><FONT SIZE=3D2>9.2 of ISO 690 \cite{iso-690} can be tagged as =
+follows:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The notion of an invisible college has been explored =
+in the sciences</FONT>
+
+<BR><FONT SIZE=3D2>&lt;cite.number target=3Dcrane1972 =
+punc=3D&quot;.&quot;&gt;&nbsp; Its absence among historians is</FONT>
+
+<BR><FONT SIZE=3D2>noted by Stieg &lt;cite.number target=3Dstieg1981 =
+partic=3D&quot;page 556&quot; punc=3D&quot;.&quot;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>It may be, as Burchard &lt;cite.number =
+target=3Dburchard1985&gt; points out ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\paragraph*{Short-form citations}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \lq\lq first citation'' examples shown in section =
+9.3.1 of ISO 690</FONT>
+
+<BR><FONT SIZE=3D2>\cite{iso-690} can be tagged as follows:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The notion of an invisible college has been explored =
+in the</FONT>
+
+<BR><FONT SIZE=3D2>sciences.&lt;note.cite.first target=3Dcrane1972&gt; =
+Its absence among historians is</FONT>
+
+<BR><FONT SIZE=3D2>noted by Stieg.&lt;note.cite.first target=3Dstieg1981 =
+partic=3D&quot;page 556&quot;&gt;&nbsp; It may</FONT>
+
+<BR><FONT SIZE=3D2>be, as Burchard&lt;note.cite.first =
+target=3Dburchard1985 partic=3D&quot;page 219&quot;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>points out ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>.. &lt;note.cite.first target=3Dmassrecords =
+partic=3D&quot;vol. 1, p. 126&quot;&gt; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \lq\lq second and subsequent citation'' examples =
+shown in section</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it Can we assume that =
+software can take care</FONT>
+
+<BR><FONT SIZE=3D2>of the alternative \lq\lq citation of previous =
+footnote'' method?</FONT>
+
+<BR><FONT SIZE=3D2>Does it matter?}</FONT>
+
+<BR><FONT SIZE=3D2>9.3.2 of \cite{iso-690} can be tagged thus:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>.. &lt;note.cite.short target=3Dsutton =
+partic=3D&quot;page 246&quot;&gt; ...</FONT>
+
+<BR><FONT SIZE=3D2>.. &lt;note.cite.short target=3Dmassrecords =
+partic=3D&quot;page 128&quot;&gt; ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\paragraph*{Author-date citations}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The example shown in section 9.4 of ISO 690 =
+\cite{iso-690} can be tagged as</FONT>
+
+<BR><FONT SIZE=3D2>follows:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>The notion of an invisible college has been explored =
+in the sciences</FONT>
+
+<BR><FONT SIZE=3D2>&lt;cite.ad target=3Dcrane1972&gt;.&nbsp; Its absence =
+among historians is noted by Stieg</FONT>
+
+<BR><FONT SIZE=3D2>&lt;cite.date target=3Dstieg1981 partic=3D&quot;page =
+556&quot;&gt;.&nbsp; It may be, as Burchard</FONT>
+
+<BR><FONT SIZE=3D2>&lt;cite.date target=3Dburchard1985 =
+partic=3D&quot;page 219&quot;&gt; points out ...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\subsubsection*{Further examples}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As further illustrations of how the citation tags are =
+to be used in</FONT>
+
+<BR><FONT SIZE=3D2>practice, there follow some examples that show how =
+the quotations used in</FONT>
+
+<BR><FONT SIZE=3D2>section \ref{citation-background} of the present =
+document might be tagged.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\vspace{\baselineskip}</FONT>
+
+<BR><FONT SIZE=3D2>Tagging so that a document can be produced in a =
+reference-by-number or an</FONT>
+
+<BR><FONT SIZE=3D2>author-date version:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>.. Marshall and Lewitt's &lt;cite.date =
+target=3Dmarshall&gt;</FONT>
+
+<BR><FONT SIZE=3D2>approach &lt;cite.number target=3Dmarshall&gt; =
+...</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Tagging so that a document can be produced in a =
+\lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>short-forms in footnotes'' or an author-date =
+version:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>``This,'' George Templeton Strong &lt;cite.date =
+target=3Dstrong&gt; wrote approvingly,</FONT>
+
+<BR><FONT SIZE=3D2>``is what our tailors can do.''&lt;note.cite.short =
+target=3Dstrong&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Tagging so that a document can be produced in a =
+reference-by-number or a</FONT>
+
+<BR><FONT SIZE=3D2>\lq\lq short-forms in footnotes'' version:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>.. reluctant to delegate</FONT>
+
+<BR><FONT SIZE=3D2>&lt;multicite.number&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.number target=3Dsmith1980&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.number =
+target=3Dchapman1981&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/multicite.number&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;note place=3Dfoot&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;multicite.short&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;cite.short =
+target=3Dsmith1980&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;cite.short =
+target=3Dchapman1981&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;/multicite.short&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/note&gt;</FONT>
+
+<BR><FONT SIZE=3D2>..</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Tagging so that, for reference-by-number =
+citations,</FONT>
+
+<BR><FONT SIZE=3D2>\marginpar{\footnotesize\it What happens about the =
+space?}</FONT>
+
+<BR><FONT SIZE=3D2>punctuation appears before a superscript number but =
+after</FONT>
+
+<BR><FONT SIZE=3D2>a bracketed number:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>.. was reported previously &lt;cite.number =
+target=3D... punc=3D&quot;.&quot;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Tagging so that a multiple author-date citation =
+appears within a single bracket:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&lt;multicite.ad&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; =
+target=3Dlight1972&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; =
+target=3Dlightwong&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; =
+target=3Dkingston1976&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/multicite.ad&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Tagging so that page-references appear within a =
+multiple author-date citation:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>&lt;multicite.ad&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; target=3Dkelley1896a&nbsp; =
+partic=3D&quot;page 10&quot;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; =
+target=3Dkelley1896b&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; &lt;cite.ad&nbsp; target=3Dkelley1907&nbsp; =
+partic=3D&quot;page 3&quot;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&lt;/multicite.ad&gt;</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\appendix</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\setcounter{chapter}{2}</FONT>
+
+<BR><FONT SIZE=3D2>\chapter{TEI DTDs}</FONT>
+
+<BR><FONT SIZE=3D2>\label{DTDs}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>%&nbsp; \section{DTD for ISO 690 (1987) =
+references}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; The {\it TEIiso690-87} file defines tags for =
+the elements that can appear</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; in references to other works.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \begin{footnotesize}\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- =
+****************************************************************** =
+--&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * This DTD defines tags for =
+references to other works.&nbsp; =
+Such&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * references may be collected =
+together in a bibliography (see&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+--&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * section ??), but may also appear =
+elsewhere (e.g., in footnotes&nbsp;&nbsp; --&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * or running text).&nbsp; The DTD =
+takes its classification scheme from&nbsp; --&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * ISO =
+690.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- =
+****************************************************************** =
+--&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!-- * Citn.struct will be one of the =
+classes given in ISO =
+690.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&gt;</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; &lt;!ENTITY&nbsp; % full.ref</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;(| monograph | part.of.monograph | contribution.to.monograph =
+|</FONT>
+
+<BR><FONT =
+SIZE=3D2>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; | serial | article.in.serial | patent )&quot;</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>%&nbsp; \end{verbatim}\end{footnotesize}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{\it It seems premature to work on the formal =
+specifications of tags for</FONT>
+
+<BR><FONT SIZE=3D2>references/citations until there has been some =
+reaction to the</FONT>
+
+<BR><FONT SIZE=3D2>general ideas given earlier.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, I envisage that a DTD would have the =
+following</FONT>
+
+<BR><FONT SIZE=3D2>characteristics:</FONT>
+
+<BR><FONT SIZE=3D2>\begin{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>\item for published works, the elements shown in =
+section 4 of ISO 690</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \cite{iso-690} would =
+be made mandatory or optional, depending on whether</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISO 690 shows them in =
+roman or italic</FONT>
+
+<BR><FONT SIZE=3D2>\item for {\tt&lt;ref.article&gt;}, it would be =
+necessary to supply one or other of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\tt&lt;rest.of.date&gt;} and {\tt&lt;volume&gt;}, but it would not =
+be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; necessary to supply =
+both</FONT>
+
+<BR><FONT SIZE=3D2>\item In most situations, someone supplying a =
+reference to \lq\lq a published</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; work'', and wanting to =
+use the author-date system, would be able to rely</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; on \lq\lq author'' and =
+\lq\lq date'' being extracted by software from</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \verb+&lt;primary&gt;+ =
+(or \verb+&lt;contrib.primary&gt;+) and \verb+&lt;year&gt;+.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; However, to help deal =
+with awkward situations \cite[p.\ 403]{chicago},</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; the DTD would allow =
+\verb+&lt;author.date&gt;+ to be supplied for \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; published works'' in =
+the same way as for \lq\lq unpublished works''.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (The consequences for =
+alphabetical ordering within reference-lists would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; need thinking =
+through.)</FONT>
+
+<BR><FONT SIZE=3D2>\item for unpublished works, the DTD would require =
+both the \lq\lq</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; descriptive element'' =
+and the \lq\lq location element'' (as defined in BS</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6371 \cite{bs-6371}) =
+to be non-empty.</FONT>
+
+<BR><FONT SIZE=3D2>\end{itemize}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\begin{thebibliography}{00}</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-1629} British Standards =
+Institution.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+References to published materials.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS =
+1629:1989.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{iso-690}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+International Organization for Standardization.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+Documentation --- bibliographic references ---</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; content, =
+form and structure.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISO =
+690:1987.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{butcher} Judith Butcher.&nbsp; {\it =
+Copy-editing.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2nd =
+edn.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cambridge: =
+Cambridge University Press,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1981.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-521-25638-0.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{chicago} {\it The Chicago Manual of =
+Style.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 13th =
+edn.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Chicago, =
+London: Chicago University Press,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1982.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-226-10390-0.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{bs-6371} British Standards =
+Institution.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+Citation of unpublished documents.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BS =
+6371:1983.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{endnote}&nbsp; Niles and Associates.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+EndNote: a reference database and bibliography maker.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3rd =
+edn.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Berkeley =
+(CA 94709): Niles and Associates,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1989.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{lamport-86} Leslie Lamport.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+{\it\itlatex: a document preparation system.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Reading =
+(Massachusetts), Wokingham: Addison-Wesley,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1986.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-201-157-90-X.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{acs} Janet S. Dodd.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it The =
+ACS Style Guide.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Washington =
+(DC): American Chemical Society,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1986.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-8412-0917-0.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{mla} Joseph Gibaldi and Walter S. =
+Achert.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it MLA =
+Handbook for Writers of Research Papers.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3rd =
+edn.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; New York: =
+Modern Language Association of America,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1988.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-87352-379-2.</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{spss} Marija J. Noru{\v{s}}is.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {\it =
+SPSS-X Introductory Statistics Guide for Release^3.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SPSS =
+Inc.,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+1988.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ISBN =
+0-918469-54-6.</FONT>
+
+<BR><FONT SIZE=3D2>\end{thebibliography}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4DC497E4--
+

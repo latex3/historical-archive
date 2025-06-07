@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1882" "Mon" "24" "August" "92" "11:31:27" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "46" "Re: skips around headings" "^Date:" nil nil "8"])
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/6.5.92 )
+	id AA10868; Mon, 24 Aug 92 12:14:25 +0200
+Received: from mail.cs.tu-berlin.de ([130.149.17.13]) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA10413; Mon, 24 Aug 92 12:14:18 +0200
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA16838
+  (5.65c8/IDA-1.4.4(mail.m4[1.11]) for <Schoepf%SC.ZIB-BERLIN.DE@MAIL.CS.TU-BERLIN.DE>); Mon, 24 Aug 1992 12:14:21 +0200
+Message-Id: <199208241014.AA16838@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP R1.2.2MX) with BSMTP id 9027; Mon, 24 Aug 92 12:14:22 +02
+Received: from DB0TUI11 by TUBVM.CS.TU-BERLIN.DE (Mailer R2.07B) with BSMTP id
+ 9026; Mon, 24 Aug 92 12:14:21 +0200
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Date:         Mon, 24 Aug 92 11:31:27 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: Multiple recipients of <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Subject:      Re: skips around headings
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 740
+
+
+
+> frank asks if, in the case of two consecutive headings, the proper
+> approach is to suppress the preskip of the second one, and keep
+> only the postskip of the first.
+>
+> i think this is not necessarily the right thing to do.
+
+This is something I agree with too, so maybe I have to rephrase my
+question slightly: is it possible to come up with a decent scheme that
+automatically calulates the proper amount of space from the two given
+values (post from the first and pre from the second heading)?
+ Or are there enough practial layouts that warrant the need for
+handling this situation specially, eg introducing a further parameter
+or the posibility to specify the function or whatever. There are
+certainly enough possible special layouts that couldn't be specified
+through a general mechanism, my question is: are they relevant? (Note,
+that this is also not a question of ruling them out, rather making
+them easy)
+
+> posit the case where there are two headings, each on a line or lines
+> by itself, but there is no extra postskip on either heading, the
+> distinction being only in the size or font of the heading text.  (i
+> believe this still qualifies in frank's terms, though the vertical
+> skip between them has a zero dimension.)  to suppress the preskip of
+> the second would mean that there is no additional space between the
+> two, and i don't believe that would ordinarily be what is wanted.
+
+Probably not, but then I guess using the preskip of the second looks
+too large too.
+
+
+If I sumarize we have so far:
+
+ - take the max(preskip second, postskip first) proposed by Barbara
+
+ - just use postskip first (done currently by \@startsection)
+
+ - if I get the OU example right they also use the max of the two
+skips
+
+Barbara's second suggestion is the implementation of an additional
+parameter which gets used instead of the others if headings follow in
+sequence.
+
+Frank
+

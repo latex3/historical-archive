@@ -1,0 +1,137 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3396" "Sun" "21" "June" "1998" "19:36:28" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "97" "l3 function names" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA03927;
+	Sun, 21 Jun 1998 19:38:57 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.B130FD14@listserv.gmd.de>; Sun, 21 Jun 1998 19:38:56 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 366384 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 21 Jun 1998 19:38:49 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA04827 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sun, 21 Jun 1998 19:38:46
+          +0200 (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA150 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Sun, 21 Jun 1998
+          19:38:50 +0200
+Received: from [195.122.199.60] by fclients0.redestb.es (Post.Office MTA v3.1.2
+          release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAA142 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Sun, 21 Jun 1998 19:41:36 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199806211738.TAA04827@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Sun, 21 Jun 1998 19:36:28 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      l3 function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2578
+
+Hello,
+
+I've rewritten some of my own macros -- it's not difficult and...
+they work! That and the Frank's message convinced me that the argument
+specifiers could be sometimes a good thing. But...
+
+From l3basics:
+"\let:NwN
+ \let:NN
+ \let:Nc
+ \let:cN
+ \let:cc"
+
+That looks pretty, but it's misleading because it suggests a symmetry
+which
+in fact does not exist. \let:NwN expands to itself while the remainder
+does
+not. Another example (from "l3expand"):
+"\exp_args:Nx
+ \exp_args:Nc"
+The first one cancels kerning, but the second one does not.
+
+When there are some variants, which is the command with the
+actual definition? More important: How do I remember which
+variants are available? If I write \def_long:cpn and
+then I realize that this command should be global I will
+tempted to write \gdef_long:cpn.   It does not exist!   Personally,
+I don't feel like learning the available variants of the commands.
+I find preferable a set of basic commands and a set of modifying
+commands as explained below.
+
+Renaming commands
+~~~~~~~~~~~~~~~~~
+Suppose someone is determined to study the internal latex code with the
+new naming scheme. He take the TeXbook and... surprise! The latex code is
+absolutely unintelligible. I thing the primitive (and maybe plain)
+command names should be preserved with perhaps some minute changes; eg.
+\_box instead of \box (you may think of that as "no module").
+
+However, I think it's not a good idea to change at all the meaning of
+those well established names. If \box has another meaning it could
+lead to confusion.
+
+Argument specifiers
+~~~~~~~~~~~~~~~~~~~~
+From expl3:
+"N Single token (unlike n, the argument must not be sorrounded by
+braces.)"
+
+In fact N stands for:
+- a token without braces (\def:Npn)
+- a token with (or without) braces (\def_new:Npn)
+- a brace (!) (\tokensi\exp_after:NN{\command})
+
+\let:NN{\arg1}{\arg2} is particularly amusing because the first N is
+\arg1 and the second one is { with an unmatched brace.
+
+I think three ideas are being mixed:
+- How arguments are read:
+  * A single token without braces
+  * A single token with or without braces
+  * A token list (with braces)
+- How argument are expanded:
+  * No expansion
+  * One level expansion
+  * Full expansion
+- Conversion from a string to a token
+(Actually, in my titlesec package I need expand a certain command
+exactly three times, no less, no more.)
+
+If specifiers rules are not very, very, very clear it could be interpreted
+in a wide variety of ways by developpers, making the code even more
+unintelligible. I've devised some other specifier schemes but
+inconsistencies
+seems reluctant to disappear (except if a score of specifiers are used).
+
+Now imagine that there is no : notation and we use the l3expand set
+of tools. The code will no longer be cluttered with specifiers and in the
+few places where something unusual is necessary the code will remain
+readable.
+For instance (from "expl3"):
+  \exp_args_Oc \glet \g_reserved_a_tlp \l_current_font_shape_tlp
+and
+  \exp_args_cO \seq_test_in {sym#3} \l_group_seq
+
+Undescore in names
+~~~~~~~~~~~~~~~~~~~
+Changing the _ catcode prevents from using explicit subscript characters.
+I think there are better candidates: "other" character except =, <, >,
+. (sadly), , (ie, comma), - and +. (Namely /, !, ?, : (already used), ;,
+@, |...)
+
+Regards
+Javier
+
+PS. Frank and Rainer: Thank you for your suggestion, I've sent the command
+to the server.
+

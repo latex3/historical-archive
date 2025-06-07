@@ -1,0 +1,185 @@
+Received:  from mail.proteosys.com ([62.225.9.49]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.5329); Mon, 3 Mar 2003 13:47:19 +0100
+Received:  by mail.proteosys.com (8.12.2/8.12.2) with ESMTP id h23ClG6C011884 for <rainer.schoepf@PROTEOSYS.COM>; Mon, 3 Mar 2003 13:47:17 +0100
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.27]) by relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h23CeKXM023480; Mon, 3 Mar 2003 13:40:21 +0100 (MET)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C2E183.06BFE580"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.100.27]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE Linux 0.6) with ESMTP id h22N02DE028997; Mon, 3 Mar 2003 13:31:22 +0100
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8d) with spool id 8662 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 3 Mar 2003 13:31:22 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.2/8.12.2/SuSE          Linux 0.6) with ESMTP id h23CVM2k000747 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 3 Mar 2003 13:31:22 +0100
+Received:  from spmler2.mail.eds.com (spmler2.mail.eds.com [194.128.225.188]) by          relay.uni-heidelberg.de (8.12.4/8.12.4) with ESMTP id h23CeFXM023436          for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 3 Mar 2003 13:40:15          +0100 (MET)
+Received:  from spmlir2.mail.eds.com (spmlir2-2.mail.eds.com [205.191.69.204])          by spmler2.mail.eds.com (8.11.6/8.11.6) with ESMTP id h23CeAV28603          for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 3 Mar 2003 12:40:10 GMT
+Received:  from spmlir2.mail.eds.com (localhost [127.0.0.1]) by          spmlir2.mail.eds.com (8.11.6/8.11.6) with ESMTP id h23CeAF29719 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 3 Mar 2003 12:40:10 GMT
+Received:  from gbspm001.exemhub.exch.eds.com ([207.37.51.199]) by          spmlir2.mail.eds.com (8.11.6/8.11.6) with ESMTP id h23CeAo29710 for          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 3 Mar 2003 12:40:10 GMT
+Received:  by GBSPM001 with Internet Mail Service (5.5.2655.51) id <FWRV5R15>;          Mon, 3 Mar 2003 12:40:04 -0000
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-Mailer: Internet Mail Service (5.5.2655.51)
+X-OriginalArrivalTime: 03 Mar 2003 12:47:19.0059 (UTC) FILETIME=[06C8E630:01C2E183]
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-Spam-Score: 1 (*) EXCHANGE_SERVER,SPAM_PHRASE_03_05
+Content-class: urn:content-classes:message
+Subject:      Re: Problem with baseline grid and multicol
+Date: Mon, 3 Mar 2003 13:40:04 +0100
+Message-ID: A<630BE70C8320D6118D240002A589ABB204A95102@DERUM201>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:      Re: Problem with baseline grid and multicol
+Thread-Index: AcLhgwbqzb9C2/D4RwKz8g3xGEiwTQ==
+From: "Mittelbach, Frank" <frank.mittelbach@EDS.COM>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4560
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C2E183.06BFE580
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Ulrich,
+
+i don't find it very surprising that at this stage the new OR is not =
+working
+fully with arbitrary packages. I guess however, that David Kastrup would =
+be
+interested in hearing about specific problems with minimal example files
+(involving only one or two such packages).
+
+anyway, i understand the reminder of your mail as follows (correct me if =
+i'm
+wrong): you tried to produce grid based typesetting using std latex2e +
+multicol doing this by setting various spacing parameters so that they =
+fall
+onto an imaginary grid.
+
+well first of all \multicolovershoot/undershoot was a somewhat rubbish =
+idea
+i guess and in fact i finally decided to change the default of one of =
+them
+(overshoot) back to 0pt even though that means an incompatible change.
+
+the problem results from the fact that if you have only normal text (no
+stretching etc) a positive \multicolovershoot can fool multicols into
+thinking that n*\baselinskip-\multicolovershoot is a valid column =
+height. if
+you look through the recent bug reports on latex tools (something 3400+) =
+you
+should find a dicussion on that topic.
+
+there is however another space being incorrectly added by multicols =
+which is
+1pt of \lineskip in certain situations. i will send you a new multicols =
+beta
+fixing all that off-line.
+
+concerning missed parameters to set: in case of problem you might try
+looking at the detailed page result using \showoutput that gives you =
+very
+precise information on the glues and kerns inserted and will help to =
+trace
+some unexpected space
+
+frank
+
+------_=_NextPart_001_01C2E183.06BFE580
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: Problem with baseline grid and multicol</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Ulrich,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>i don't find it very surprising that at this stage the =
+new OR is not working</FONT>
+
+<BR><FONT SIZE=3D2>fully with arbitrary packages. I guess however, that =
+David Kastrup would be</FONT>
+
+<BR><FONT SIZE=3D2>interested in hearing about specific problems with =
+minimal example files</FONT>
+
+<BR><FONT SIZE=3D2>(involving only one or two such packages).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>anyway, i understand the reminder of your mail as =
+follows (correct me if i'm</FONT>
+
+<BR><FONT SIZE=3D2>wrong): you tried to produce grid based typesetting =
+using std latex2e +</FONT>
+
+<BR><FONT SIZE=3D2>multicol doing this by setting various spacing =
+parameters so that they fall</FONT>
+
+<BR><FONT SIZE=3D2>onto an imaginary grid.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>well first of all \multicolovershoot/undershoot was a =
+somewhat rubbish idea</FONT>
+
+<BR><FONT SIZE=3D2>i guess and in fact i finally decided to change the =
+default of one of them</FONT>
+
+<BR><FONT SIZE=3D2>(overshoot) back to 0pt even though that means an =
+incompatible change.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>the problem results from the fact that if you have =
+only normal text (no</FONT>
+
+<BR><FONT SIZE=3D2>stretching etc) a positive \multicolovershoot can =
+fool multicols into</FONT>
+
+<BR><FONT SIZE=3D2>thinking that n*\baselinskip-\multicolovershoot is a =
+valid column height. if</FONT>
+
+<BR><FONT SIZE=3D2>you look through the recent bug reports on latex =
+tools (something 3400+) you</FONT>
+
+<BR><FONT SIZE=3D2>should find a dicussion on that topic.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>there is however another space being incorrectly added =
+by multicols which is</FONT>
+
+<BR><FONT SIZE=3D2>1pt of \lineskip in certain situations. i will send =
+you a new multicols beta</FONT>
+
+<BR><FONT SIZE=3D2>fixing all that off-line.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>concerning missed parameters to set: in case of =
+problem you might try</FONT>
+
+<BR><FONT SIZE=3D2>looking at the detailed page result using \showoutput =
+that gives you very</FONT>
+
+<BR><FONT SIZE=3D2>precise information on the glues and kerns inserted =
+and will help to trace</FONT>
+
+<BR><FONT SIZE=3D2>some unexpected space</FONT>
+</P>
+
+<P><FONT SIZE=3D2>frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C2E183.06BFE580--
+

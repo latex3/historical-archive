@@ -1,0 +1,122 @@
+Return-Path: <owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE>
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 27 Dec 2011 23:17:42 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx018) with SMTP; 28 Dec 2011 00:17:42 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id pBRNEdNX005114
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 28 Dec 2011 00:14:39 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id pBRN1Cs9019146;
+	Wed, 28 Dec 2011 00:14:38 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1924082 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 28 Dec
+          2011 00:14:38 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id pBRNEcYx021118 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 28 Dec 2011 00:14:38 +0100
+Received: from anchor-msapost-1.mail.demon.net (anchor-msapost-1.mail.demon.net
+          [195.173.77.164]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id pBRNESu8001538 for <latex-l@listserv.uni-heidelberg.de>;
+          Wed, 28 Dec 2011 00:14:32 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=palladium.local)
+          by anchor-post-1.mail.demon.net with esmtpsa (AUTH morningstar2)
+          (TLSv1:AES256-SHA:256) (Exim 4.69) id 1RfgE0-0006pm-gb for
+          latex-l@listserv.uni-heidelberg.de; Tue, 27 Dec 2011 23:14:28 +0000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:8.0) Gecko/20111105
+            Thunderbird/8.0
+MIME-Version: 1.0
+X-Enigmail-Version: 1.3.4
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4EFA5153.9090609@morningstar2.co.uk>
+Date:         Tue, 27 Dec 2011 23:14:27 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Active characters
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antivirus: 0 (no virus found)
+X-GMX-Antispam: 0 (Sender is in whitelist: joseph.wright@MORNINGSTAR2.CO.UK);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnBi0P5cROEGjO+pG7NAH/K+tf9SrVFtpLrKONl
+ 2T9EL4W4U4jgzLbnCcGpk1z/zwmKT/K1fv3lD0=V1;
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6974
+
+Hello all,
+
+We currently have a few functions in l3token for creating definitions
+for active characters. These are defined as 'experimental', and I was
+recently asked about them and so though it might be worth raising the
+issues here. (I've also done a little tidying: in the following I'm
+referring to the SVN/GitHub version of the code rather than the last
+CTAN snapshot.)
+
+The current implementation provides \char_(g)set_active:Np(n|x) and
+\char_(g)set_active_eq:NN. The logic to these functions is that they set
+the N argument active (locally) then attach a definition either locally
+or globally as appropriate. Thus \char_set_active:Npn is equivalent to
+the inline code
+
+  \char_set_catcode_active:N <token>
+  \cs_set:Npn <token> <parameters> { <code> }
+
+and so forth.
+
+There are a few questions this raises. To cover all possible cases,
+you'd need ..._nopar..., ...protected... and ...protected_nopar_...
+versions, which looks a bit like overkill. (Well, perhaps only
+protected, as we are de-emphasising nopar, but even then the point
+stands.) Secondly, you often want to set up the definition of an active
+character in advance of making the character active, and may want to
+make the character only 'math active'.
+
+There's also a conceptual issue, in that the LaTeX3 programming approach
+is in general to use well-defined function names for everything,
+including having arg specs and the like. That seems to fit poorly with
+\char_set_active:Npn.
+
+That suggests to me that we should perhaps avoid attaching definitions
+to active characters directly. That leads to a sequence something like
+
+  \cs_new_protected:Npn \mypkg_foo: { <code> }
+  ...
+  \char_set_active_eq:NN <token> \mypkg_foo:
+
+This would then leave the question of whether the later function should
+both make <token> active /and/ assign the definition, or only assign a
+definition to <token> to be used if <token> is later made active (with
+\char_set_catcode_active:N).
+
+The advantage to separating out the 'make active' and 'what to do when
+active' steps seems to me to be that it keeps life simple for math
+active characters. We've not yet addressed math codes in expl3 in any
+serious way, so at present you'd need
+
+  \cs_new_protected:Npn \mypkg_foo: { <code> }
+  \char_set_active_eq:NN <token> \mypkg_foo:
+  ...
+  \char_set_mathcode:nn { `\<token> } { "8000 }
+
+I'd also say the naming is not so bad - \char_set_active_eq:NN for 'sets
+the behaviour of the character /when active/' and
+\char_gset_active_eq:NN for 'globally ...'.
+
+Does this make any sense? It essentially simplifies the current
+experimental code, but also should make it more generally useful.
+--
+Joseph Wright
+

@@ -1,0 +1,80 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1496" "Mon" "22" "June" "1998" "20:53:58" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "40" "Re: l3 function names" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id UAA13312;
+	Mon, 22 Jun 1998 20:56:41 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.B5AF0A52@listserv.gmd.de>; Mon, 22 Jun 1998 20:56:37 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 367889 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 22 Jun 1998 20:56:26 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id UAA06570 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 22 Jun 1998 20:56:21
+          +0200 (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA188 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 22 Jun 1998
+          20:56:23 +0200
+Received: from [195.122.194.98] by fclients0.redestb.es (Post.Office MTA v3.1.2
+          release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAA75 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Mon, 22 Jun 1998 20:59:09 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199806221856.UAA06570@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 22 Jun 1998 20:53:58 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: l3 function names
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2584
+
+Hans Aberg (>) and myself (>>) wrote
+
+>>Undescore in names
+>>~~~~~~~~~~~~~~~~~~~
+>>Changing the _ catcode prevents from using explicit subscript characters.
+>>I think there are better candidates: "other" character except =, <, >,
+>>. (sadly), , (ie, comma), - and +. (Namely /, !, ?, : (already used), ;,
+>>@, |...)
+>
+>  This is something I worried about at first. But it is possible to build a
+>new development level above the fundamental one where _ works as usual:
+[snip]
+
+Yet another level? No, please! ;-) Furtunately, the \lccode / \lowercase
+trick
+allows to introduce explicit subscripts in all of the known levels,
+but it's a mess.
+
+>>Argument specifiers
+>>~~~~~~~~~~~~~~~~~~~~
+>..
+>>\let:NN{\arg1}{\arg2} is particularly amusing because the first N is
+>>\arg1 and the second one is { with an unmatched brace.
+>
+>  One variation could be \<module name>_<command name>:<argument type>:,
+>with a final ":" delimiting the argument type (\let:N: etc).
+[snip]
+
+That is not the problem. The first argument is an actual macro argument
+which
+it's read as usual, removing the braces if present. That expands to
+\let\arg1= which in turn reads the very first token doesn't matter its
+categorie, in this case {. This leaves \arg2} unused, where you can
+see the unmatched brace. A bit tricky but clear when you are using TeX;
+with \let:NN is not so clear what are you doing -- except when you learn
+its TeX equivalence! (Admittedly this example is typical of a warped mind
+:-) )
+
+Regards
+Javier Bezos
+

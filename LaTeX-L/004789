@@ -1,0 +1,188 @@
+Received:  from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713); Sun, 16 May 2004 21:59:52 +0200
+Received:  by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id i4GJxnlo008290 for <rainer.schoepf@PROTEOSYS.COM>; Sun, 16 May 2004 21:59:50 +0200
+Received:  from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176]) by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id i4GJsb1K021123; Sun, 16 May 2004 21:54:37 +0200 (MET DST)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C43B80.59B36C00"
+Received:  from listserv (listserv.uni-heidelberg.de [129.206.119.176]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id i4E1RhPF005625; Sun, 16 May 2004 21:52:58 +0200
+Received:  from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8e) with spool id 210180 for          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 16 May 2004 21:52:57 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE          Linux 0.6) with ESMTP id i4GJgvUZ006071 for          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 16 May 2004 21:42:57 +0200
+Received:  from fencepost.gnu.org (fencepost.gnu.org [199.232.76.164]) by          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id          i4GJi7D6024017 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 16 May          2004 21:44:07 +0200 (MET DST)
+Received:  from localhost ([127.0.0.1] helo=lola.goethe.zz) by fencepost.gnu.org          with esmtp (Exim 4.34) id 1BPRY7-0007X2-Kg for          LATEX-L@listserv.uni-heidelberg.de; Sun, 16 May 2004 15:44:06 -0400
+In-Reply-To:  <16551.47476.13708.161193@istrati.mittelbach-online.de>
+Lines: 36
+References: <16549.4057.399610.750080@istrati.mittelbach-online.de>            <x5sme2vwu3.fsf_-_@lola.goethe.zz>            <16550.4621.526207.509473@istrati.mittelbach-online.de>            <x5brkpvl21.fsf@lola.goethe.zz>            <16551.33482.606374.833460@istrati.mittelbach-online.de>            <x5r7tkp832.fsf@lola.goethe.zz>            <16551.47476.13708.161193@istrati.mittelbach-online.de>
+Return-Path: <owner-latex-l@listserv.uni-heidelberg.de>
+X-OriginalArrivalTime: 16 May 2004 19:59:52.0967 (UTC) FILETIME=[5A46F970:01C43B80]
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3.50
+X-Scanned-By: MIMEDefang 2.28 (www . roaringpenguin . com / mimedefang)
+X-ProteoSys-SPAM-Score: 0 () 
+Content-class: urn:content-classes:message
+Subject: Re: Why don't we do just the following:
+Date: Sun, 16 May 2004 20:43:06 +0100
+Message-ID: A<x565awp391.fsf@lola.goethe.zz>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Why don't we do just the following:
+Thread-Index: AcQ7gFpon9OZavgiRveQCqv//vBSNg==
+From: "David Kastrup" <dak@GNU.ORG>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+To: <LATEX-L@listserv.uni-heidelberg.de>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@listserv.uni-heidelberg.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4789
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C43B80.59B36C00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG> writes:
+
+> David
+>
+>  > > so does yours i think, or how was your proposal meant?
+>  >
+>  > It was supposed to hit at \label time.  But since putting a label
+>
+> i still don't see how that would work without starting to rewrite
+> the code for \label which would be awfully dangerous and error
+> prone. so if i overlook something obvious i would be interested to
+> see how you would go for it. as i understand your code fragment it
+> only hits at \ref time
+
+No, it hits at the \protected@edef in \label, since it contains an
+undefined control sequence name.  But it was a stupid idea, anyway.
+
+>  > >  > > any suggestion for a good text?
+>  > >  >
+>  > >  > \label{whatever} without preceding or enclosing \caption.
+>  > >  > Labels must follow the item they are referencing.
+>  > >
+>  > > well "whatever" is not known when we generate that text, is it?
+>  >
+>  > Probably not.  But doesn't \label use something like
+>  > \protected@edef before \write?  If the label name at that time
+>  > was stored in some macro, it should be possible to have it
+>  > written out as part of the text.
+>
+> but not by the time you see the \ref.
+
+It would be expanded by the \protected@edef, of course.  That is at
+\label time.
+
+--
+David Kastrup, Kriemhildstr. 15, 44793 Bochum
+
+------_=_NextPart_001_01C43B80.59B36C00
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Re: Why don't we do just the following:</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank Mittelbach =
+&lt;frank.mittelbach@LATEX-PROJECT.ORG&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt; David</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; so does yours i think, or how =
+was your proposal meant?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; It was supposed to hit at \label =
+time.&nbsp; But since putting a label</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; i still don't see how that would work without =
+starting to rewrite</FONT>
+
+<BR><FONT SIZE=3D2>&gt; the code for \label which would be awfully =
+dangerous and error</FONT>
+
+<BR><FONT SIZE=3D2>&gt; prone. so if i overlook something obvious i =
+would be interested to</FONT>
+
+<BR><FONT SIZE=3D2>&gt; see how you would go for it. as i understand =
+your code fragment it</FONT>
+
+<BR><FONT SIZE=3D2>&gt; only hits at \ref time</FONT>
+</P>
+
+<P><FONT SIZE=3D2>No, it hits at the \protected@edef in \label, since it =
+contains an</FONT>
+
+<BR><FONT SIZE=3D2>undefined control sequence name.&nbsp; But it was a =
+stupid idea, anyway.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;&nbsp; &gt; &gt; any suggestion =
+for a good text?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;&nbsp; &gt; \label{whatever} =
+without preceding or enclosing \caption.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;&nbsp; &gt; Labels must follow =
+the item they are referencing.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; &gt; well &quot;whatever&quot; is not =
+known when we generate that text, is it?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; Probably not.&nbsp; But doesn't =
+\label use something like</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; \protected@edef before \write?&nbsp; =
+If the label name at that time</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; was stored in some macro, it should =
+be possible to have it</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp; &gt; written out as part of the =
+text.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; but not by the time you see the \ref.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It would be expanded by the \protected@edef, of =
+course.&nbsp; That is at</FONT>
+
+<BR><FONT SIZE=3D2>\label time.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>--</FONT>
+
+<BR><FONT SIZE=3D2>David Kastrup, Kriemhildstr. 15, 44793 Bochum</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C43B80.59B36C00--
+

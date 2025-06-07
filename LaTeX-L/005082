@@ -1,0 +1,110 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 26 Nov 2007 23:33:52 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id lAQMXkOx010051
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 26 Nov 2007 23:33:47 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id lAQMQrv5003142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 26 Nov 2007 23:26:53 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id lAQIrjhj013444;
+	Mon, 26 Nov 2007 23:26:53 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.0) with
+          spool id 203113 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 26 Nov
+          2007 23:26:52 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id lAQMQqQX013146 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 26 Nov 2007 23:26:52 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.186]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id lAQMQlQD003010 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 26 Nov 2007 23:26:51 +0100
+Received: from morse.mittelbach-online.de (p54A9B85C.dip0.t-ipconnect.de
+          [84.169.184.92]) by mrelayeu.kundenserver.de (node=mrelayeu4) with
+          ESMTP (Nemesis) id 0ML21M-1IwmOd10CD-0002S2; Mon, 26 Nov 2007
+          23:26:48 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 7071D61707; Mon, 26 Nov 2007 23:25:42 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX19Huo0VI4Ppk4Qf/XQD2uAgmlK20HoMroSLO/o
+              AXG41mQSxNXrFq4uaKtdfM3BHeqTI7oNxNC8uLeR46MGSiAKRJ
+              u+9k1FZY8cuJrJgzfxqvsEKV/KdWyu1
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18251.18406.62310.939815@morse.mittelbach-online.de>
+Date:         Mon, 26 Nov 2007 23:25:42 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Extending the output routine to allow float placement styles
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.57 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 26 Nov 2007 22:33:52.0150 (UTC) FILETIME=[6BBA2B60:01C8307C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5082
+
+Hi,
+
+some other topic: with running headers and footers you have different
+styles (potentially) depending on different criteria of the current page.
+
+The xor implementation has (since last week) support for the following set
+
+ firstpage        & First page of the document (assumed to be odd-numbered)  \\
+ regularpage-odd  & A regular right-hand text page (potentially with floats) \\
+ regularpage-even & A regular left-hand text page (potentially with floats)  \\
+ floatpage-odd    & A right-hand page with only floats               \\
+ floatpage-even   & A left-hand page with only floats                \\
+
+those are determined by the OR itself. from the document body I'm thinking to
+extend this to support something like
+
+ Aheadpage-odd/even
+
+all of those have suitable defaults, so essentially a minimal  spec is to just
+specify "regularpage-odd"
+
+details can be read at
+http://www.latex-project.org/svnroot/experimental/trunk/xpackages/xor/xo-pagestyle.dtx
+(which hopefully compiles with std LaTeX2e (plus the .sty file in the same
+dir)
+
+but basically what i'm trying to say is that something like "recto/verso"
+"floatpage/not-floatpage" "chapterpage" "firstpage" may require special
+running headings so different layouts can be defined for them and the OR then
+selects the right one behind the scenes  (and all of them may be different in
+frontmatter / mainmatter / backmatter)
+
+in 2e that was done in a limited way by defining \@oddhead \@evenhead within
+\@psheadings and friends.
+
+now what has this to do with float placement?
+
+well, simply that for "different" pages different rules for placing floats may
+apply.
+
+so my question here is
+
+ - what kind of "different" is the right kind of abstraction? (odd and even
+   pages are cleary candidates, what else? same as for running headers? more?
+   others?)
+
+any suggestions?
+
+frank
+

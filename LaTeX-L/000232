@@ -1,0 +1,304 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D404FD7C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:48 +0100
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D404FD7C"
+x-vm-vheader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-bookmark: 1
+Content-class: urn:content-classes:message
+Subject:      RE: LATEX AND CATCODES SECTIONS AND FOOTNOTES
+Date: Mon, 1 Oct 1990 13:33:17 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1F5@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "MITTELBACH FRANK" <PZF5HZ@DRUEDS2.bitnet>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer Schoepf" <BK4@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 232
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D404FD7C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hello everybody,
+
+this is an old message from Victor which I would like to pick up
+again. Since it's long time ago I better repeat the message.
+
+>
+> LaTeX is somewhat careless about catcodes treatment. My favourite
+> way of phrasing this is
+>     ``You can't write a book about LaTeX in LaTeX''
+> Explanation: the section command takes its argument as macro
+> parameter, whence it is not possible to have verbatim text
+> in a section heading. So you can't say
+>     \section{And what \verb=3D\else=3D had you to learn?} =
+%Ni\copyright o
+>
+> Of course only a minority of people writes _about_ TeX, but
+> here at the university the Greek style of mr. Levi (mod sp) is used,
+> and the other day the TeX person from the computing centre asked my =
+why
+> it wasn't possible to have greek text in footnotes. That turned out
+> to be the same problem. Note that the Plain \footnote _can_ handle
+> catcode changes.
+>
+> And after 15 minutes of `ijsbeering' through the house, I knew that
+> I could do verbatim in section headings too: suppose
+>     \def\section#1\par{... \SectionStyle #1 ...}
+> is given, then
+>    \newbox\@verbox
+>    \def\@verbatize#1#2{\setbox\@verbox=3D\hbox\bgroup
+>        \def\par{\egroup#1\unhbox\@verbox\par}#2\ignorespaces}
+>    \let\ssection=3D\section
+>    \def\section{\@verbatize\ssection\SectionStyle}
+> does the job.
+> Extension to LaTeX syntax is trivial (use \aftergroup).
+> It's just that I prefer the \par-delimiting.
+>
+> So. Can anyone think of a reason why LaTeX shouldn't be a bit
+> more permissive of catcode stunts?
+
+Yes, there are some reasons in case of headings although not in case
+of footnotes. The problem with headings is that the information in its
+argument is used both for typesetting purposes but also for
+referencing purposes, e.g., it is written to the toc file and
+placed in a mark etc. Unfortunately the plain TeX footnote solution
+or a box solution like the one above don't help in this respect
+because it is not possible to reconvert the contents into token.
+
+Even the slow ``solution'' which is sometimes proposed, i.e., writing
+the argument to a file and reading it back switching catcode's as
+necessary does not help because of situations like \verb=3D{=3D which
+will spoil the read operation. Anyway it is a pretty slow method
+on many machines.
+
+Well, what can be done about that?
+One could scan the heading token for token looking for \verb but
+again that's slow and might fail sometimes. Beside that it poses
+some interesting questions how to handle hidden \verb commands
+(behind braces or other nasty things).
+
+As Rainer sait in our talk in Cork, we will allow \verb in every
+situation although we will not allow verbatim environments in
+arguments. The most simple way to do so is to redefine verb to
+use \meaning in some way. This will pose problems with blanks inside
+\verb (at least with multible ones) but should otherwise work pretty
+well. I would be very interested in hearing other ideas about how
+to handle this problem. I wonder how Victor solved this in his
+own macro package but perhaps this was before he added toc entries?
+
+Anyway, better solutions or ideas are very welcome, perhaps I missed
+some very basic possibility.
+
+Greetings Frank
+
+
+------_=_NextPart_001_01C19442.D404FD7C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     RE: LATEX AND CATCODES SECTIONS AND FOOTNOTES</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hello everybody,</FONT>
+</P>
+
+<P><FONT SIZE=3D2>this is an old message from Victor which I would like =
+to pick up</FONT>
+
+<BR><FONT SIZE=3D2>again. Since it's long time ago I better repeat the =
+message.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; LaTeX is somewhat careless about catcodes =
+treatment. My favourite</FONT>
+
+<BR><FONT SIZE=3D2>&gt; way of phrasing this is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; ``You can't write a book =
+about LaTeX in LaTeX''</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Explanation: the section command takes its =
+argument as macro</FONT>
+
+<BR><FONT SIZE=3D2>&gt; parameter, whence it is not possible to have =
+verbatim text</FONT>
+
+<BR><FONT SIZE=3D2>&gt; in a section heading. So you can't say</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; \section{And what =
+\verb=3D\else=3D had you to learn?} %Ni\copyright o</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Of course only a minority of people writes =
+_about_ TeX, but</FONT>
+
+<BR><FONT SIZE=3D2>&gt; here at the university the Greek style of mr. =
+Levi (mod sp) is used,</FONT>
+
+<BR><FONT SIZE=3D2>&gt; and the other day the TeX person from the =
+computing centre asked my why</FONT>
+
+<BR><FONT SIZE=3D2>&gt; it wasn't possible to have greek text in =
+footnotes. That turned out</FONT>
+
+<BR><FONT SIZE=3D2>&gt; to be the same problem. Note that the Plain =
+\footnote _can_ handle</FONT>
+
+<BR><FONT SIZE=3D2>&gt; catcode changes.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; And after 15 minutes of `ijsbeering' through the =
+house, I knew that</FONT>
+
+<BR><FONT SIZE=3D2>&gt; I could do verbatim in section headings too: =
+suppose</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp; \def\section#1\par{... =
+\SectionStyle #1 ...}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; is given, then</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; \newbox\@verbox</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; =
+\def\@verbatize#1#2{\setbox\@verbox=3D\hbox\bgroup</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\def\par{\egroup#1\unhbox\@verbox\par}#2\ignorespaces}</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; =
+\let\ssection=3D\section</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; =
+\def\section{\@verbatize\ssection\SectionStyle}</FONT>
+
+<BR><FONT SIZE=3D2>&gt; does the job.</FONT>
+
+<BR><FONT SIZE=3D2>&gt; Extension to LaTeX syntax is trivial (use =
+\aftergroup).</FONT>
+
+<BR><FONT SIZE=3D2>&gt; It's just that I prefer the =
+\par-delimiting.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; So. Can anyone think of a reason why LaTeX =
+shouldn't be a bit</FONT>
+
+<BR><FONT SIZE=3D2>&gt; more permissive of catcode stunts?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Yes, there are some reasons in case of headings =
+although not in case</FONT>
+
+<BR><FONT SIZE=3D2>of footnotes. The problem with headings is that the =
+information in its</FONT>
+
+<BR><FONT SIZE=3D2>argument is used both for typesetting purposes but =
+also for</FONT>
+
+<BR><FONT SIZE=3D2>referencing purposes, e.g., it is written to the toc =
+file and</FONT>
+
+<BR><FONT SIZE=3D2>placed in a mark etc. Unfortunately the plain TeX =
+footnote solution</FONT>
+
+<BR><FONT SIZE=3D2>or a box solution like the one above don't help in =
+this respect</FONT>
+
+<BR><FONT SIZE=3D2>because it is not possible to reconvert the contents =
+into token.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Even the slow ``solution'' which is sometimes =
+proposed, i.e., writing</FONT>
+
+<BR><FONT SIZE=3D2>the argument to a file and reading it back switching =
+catcode's as</FONT>
+
+<BR><FONT SIZE=3D2>necessary does not help because of situations like =
+\verb=3D{=3D which</FONT>
+
+<BR><FONT SIZE=3D2>will spoil the read operation. Anyway it is a pretty =
+slow method</FONT>
+
+<BR><FONT SIZE=3D2>on many machines.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Well, what can be done about that?</FONT>
+
+<BR><FONT SIZE=3D2>One could scan the heading token for token looking =
+for \verb but</FONT>
+
+<BR><FONT SIZE=3D2>again that's slow and might fail sometimes. Beside =
+that it poses</FONT>
+
+<BR><FONT SIZE=3D2>some interesting questions how to handle hidden \verb =
+commands</FONT>
+
+<BR><FONT SIZE=3D2>(behind braces or other nasty things).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>As Rainer sait in our talk in Cork, we will allow =
+\verb in every</FONT>
+
+<BR><FONT SIZE=3D2>situation although we will not allow verbatim =
+environments in</FONT>
+
+<BR><FONT SIZE=3D2>arguments. The most simple way to do so is to =
+redefine verb to</FONT>
+
+<BR><FONT SIZE=3D2>use \meaning in some way. This will pose problems =
+with blanks inside</FONT>
+
+<BR><FONT SIZE=3D2>\verb (at least with multible ones) but should =
+otherwise work pretty</FONT>
+
+<BR><FONT SIZE=3D2>well. I would be very interested in hearing other =
+ideas about how</FONT>
+
+<BR><FONT SIZE=3D2>to handle this problem. I wonder how Victor solved =
+this in his</FONT>
+
+<BR><FONT SIZE=3D2>own macro package but perhaps this was before he =
+added toc entries?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Anyway, better solutions or ideas are very welcome, =
+perhaps I missed</FONT>
+
+<BR><FONT SIZE=3D2>some very basic possibility.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Greetings Frank</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D404FD7C--
+

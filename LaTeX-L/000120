@@ -1,0 +1,94 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 29 May 90 16:06:02 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Michael Downes <MJD@MATH.AMS.COM>
+Subject:      Attributes: type checking
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 120
+
+A couple of ideas about type checking of attributes to avoid doing
+e.g.  \def\topsep{10pt} instead of \topsep=10pt  when processing
+attributes.  One way would be to use a token list \nondefable:
+
+\nondefable={\textheight\textwidth\topsep\itemsep...}
+
+and the utility macro \in@ would be used to check if the current
+attribute from the attribute stack is in the \nondefable list.  If
+it's there, execute \csname<attrib>\endcsname=<value>, otherwise
+execute \@namedef{<attrib>}{<value>}.  Things like \newcount,
+\newdimen, etc.  could be changed to automatically add their arguments
+to the \nondefable list.  Maintaining possibly 200 or 300 tokens in
+main memory could be a drawback; but perhaps it could be avoided
+through some extra processing to use string memory instead as in
+Frank and Rainer's font selection scheme.
+
+This is still a simplification because you have to think about other
+things like \if's that should be set to \iftrue or \iffalse.  But
+extending the basic idea will work, I think---e.g., have a separate
+token list just for \if's, etc.
+
+How about a uniform syntax for all assignments in general, not just in
+attribute lists? It seems that it would be easier for users if they did
+not have to remember the different commands \setlength \setcounter
+\renewcommand \newcommand.  Suppose instead
+
+\reset{\arraystretch}{1.2}
+\reset{\parskip}{3pt}
+\reset{\counter{equation}}{0} (? not sure how this might look)
+
+using type checking to decide internally whether to use = or \def or
+something else.
+
+========================================================================
+It might be possible to use a token list instead of cs names to
+determine what attributes are permissible for a given environment:
+
+\attriblist={%
+\array<attribs for array>\array
+\tabular<attribs for tabular>\tabular
+\section<attribs for section>\section
+\theorem<attribs for theorem>\theorem
+...
+}
+
+When checking to see whether a particular attribute is permitted in
+the current environment, first you take the applicable part out of
+\attriblist, then you look to see if the attribute is there, using
+\in@.  I have a utility macro that takes a token list organized as
+above and copies its contents into three scratch token registers:
+
+\gettoks\tabular\tabular\attriblist
+
+would put <attribs for tabular> in \midtoks, \array...\array in
+\pretoks, and \section... in \posttoks.  \pretoks, \midtoks, \posttoks
+can then be used however necessary.
+
+Checking attributes this way would save hash table space compared to
+Frank's idea of \csname<prefix><attrib>\endcsname but would be more
+expensive in main memory, unless it allows savings in other areas of
+the code.
+
+As a side comment, if \cl@<something> were a token list organized as
+above it would be easy to remove counters from the list as well as
+add them.
+
+=========================================================================
+
+Another possibility for type checking would be to use \meaning
+on an attribute:
+
+attribute           \meaning
+------------------------------------------------
+\topsep             \skip23
+\if@twocolumn       \iffalse
+\c@footnote         \count68
+
+and do \csname<attrib>\endcsname=<value> or whatever depending
+on what the meaning shows.
+-------
+
+

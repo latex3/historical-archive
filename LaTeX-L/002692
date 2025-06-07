@@ -1,0 +1,89 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1541" "Wed" "21" "October" "1998" "21:09:11" "+0200" "Martin Schroeder" "ms@DREAM.KN-BREMEN.DE" nil "49" "Re: Users dropping into TeX" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+X-POP3-Rcpt: schoepf@polly.zdv.Uni-Mainz.DE
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id VAA10515;
+	Wed, 21 Oct 1998 21:23:20 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.7C862B14@listserv.gmd.de>; Wed, 21 Oct 1998 21:23:18 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 402960 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 21 Oct 1998 21:23:13 +0200
+Received: from blaubaer.kn-bremen.de (root@blaubaer.kn-bremen.de
+          [194.94.232.249]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id VAA29955 for <latex-l@relay.urz.uni-heidelberg.de>; Wed, 21
+          Oct 1998 21:23:10 +0200 (MET DST)
+Received: from dream.kn-bremen.de (uucp@localhost) by blaubaer.kn-bremen.de
+          (8.9.1/8.9.1) with UUCP id VAA25097 for
+          latex-l@relay.urz.uni-heidelberg.de; Wed, 21 Oct 1998 21:15:16 +0200
+Received: by dream.kn-bremen.de (1.65/waf) via UUCP; Wed, 21 Oct 98 21:09:11 -2
+          for latex-l@relay.urz.uni-heidelberg.de
+References: <199810211301.JAA11121@hilbert.math.albany.edu>
+X-Mailer: Helldiver 1.08 (Waffle 1.65)
+Lines: 48
+Message-ID:  <3WoL2AgGBh108h@dream.kn-bremen.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Organization: The Dreaming
+Date:         Wed, 21 Oct 1998 21:09:11 +0200
+From: Martin Schroeder <ms@DREAM.KN-BREMEN.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Users dropping into TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2692
+
+In <199810211301.JAA11121@hilbert.math.albany.edu> "William F. Hammond" <hammond@CSC.ALBANY.EDU> writes:
+>But my original question was motivated by several lines from
+>"ltx3info.tex" and my wondering whether these lines were durable
+>for the LaTeX-3 future.
+
+>Here are clips of a "newenvironment" and a "newcommand":
+
+>%%%%% clip
+>\newenvironment{citations}{%
+>   \list{}{%
+>      \renewcommand{\makelabel}[1]{\normalfont\itshape ##1}%
+>   }%
+>}{%
+>   \endlist
+>}
+>%%%%% clip
+>\newcommand{\AmSLaTeX}{$\mathcal A$\lower.4ex\hbox{$\!\mathcal
+>                                              M\!$}$\mathcal S$-\LaTeX}
+>%%%%% endclips
+
+>(I do not see why "citations" could not have been done entirely in
+>Lamport LaTeX.  (I am unclear what "list" and "endlist" are.))
+
+\newenvironment{foo}{start}{end} defines \foo{start} and \endfoo{end}.
+
+But this is an undocumented feature -- which you can use at your own
+risk. So citations really should be
+
+\newenvironment{citations}{%
+   \begin{list}{}{%
+      \renewcommand{\makelabel}[1]{\normalfont\itshape ##1}%
+      }%
+   }{%
+      \end{list}%
+   }
+
+I think the official policy on compatibilty is something like: if it's
+mentionend in the manual or in /doc, it will be provided. Otherwise it
+might be unavailable or hidden somewhere.
+
+Best regards
+        Martin
+
+--
+               Martin Schr"oder, MS@Dream.KN-Bremen.DE
+\line{Final exhortation: G{\sc O} {\sc FORTH} now and create
+{\sl masterpieces of the publishing art!\/}}
+                              Donald E. Knuth, TeXbook.TeX line 18801f
+
+

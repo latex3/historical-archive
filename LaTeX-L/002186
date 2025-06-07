@@ -1,0 +1,128 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4612" "Wed" "25" "June" "1997" "09:56:20" "-0400" "Michael John Downes" "mjd@MATH.AMS.ORG" nil "85" "Frontmatter standardization" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id PAA03548;
+	Wed, 25 Jun 1997 15:56:48 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <5.D985A4E7@listserv.gmd.de>; Wed, 25 Jun 1997 15:56:47 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 159580 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 25 Jun 1997 15:56:37 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id PAA11240 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 25 Jun 1997 15:56:27
+          +0200 (MET DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 25 Jun 1997
+          13:56:23 UT
+Received: from epsilon.ams.org by AXP14.AMS.ORG (PMDF V5.1-8 #16534) with SMTP
+          id <01IKHHLP6J280010O8@AXP14.AMS.ORG> for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 25 Jun 1997 09:56:21 EST
+Received: by epsilon.ams.org; (5.65v3.2/1.1.8.2/12Oct95-1155AM) id AA19898;
+          Wed, 25 Jun 1997 09:56:21 -0400
+X-Mailer: Gnus v5.3/Emacs 19.34
+Lines: 85
+References: <199706242245.PAA11197@math.uci.edu>
+            <199706250955.KAA22635@knott.elsevier.co.uk>
+Message-ID:  <pcradqss57.fsf_-_@epsilon.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  Sebastian Rahtz's message of Wed, 25 Jun 1997 10:55:24 +0100
+Date:         Wed, 25 Jun 1997 09:56:20 -0400
+From: Michael John Downes <mjd@MATH.AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Frontmatter standardization
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2186
+
+[Marcel Oliver:]
+>  > If you look at these classes, they point to some problem which will
+>  > grow in the future: The standard LaTeX classes have a rather
+>  > restricted set of front matter commands.  So every publisher is
+>  > extending them in mutually incompatible ways.
+
+[Sebastian Rahtz:]
+> I agree 110% about this.  Front matter is an area that causes immense
+> pain and suffering for all concerned, and a standard markup would be a
+> huge plus.
+
+Past discussion among the LaTeX team raised the issue that each
+documentclass usually has, in addition to the frontmatter elements that
+are clearly of general applicability, one or two other elements that are
+unlikely to be relevant for any other publisher (or publication) than
+the one to which the documentclass is written. The \commby element in
+amsart is an example, and \subjclass would be as well if it were named
+\MathReviewsClassificationNumbers which is its real semantics in the
+amsart context.
+
+The proposed solution was to have a special frontmatter section where
+elements unknown to the documentclass could be ignored---perhaps with a
+warning---instead of generating a fatal error message. In other words,
+rather like BibTeX, where fields in a .bib entry not recognized by the
+.bst file are simply skipped over silently. Indeed one idea was to
+actually put the frontmatter into BibTeX form, more or less, and I think
+Johannes Braams might have done a prototype at one point. I seem to
+recall that this has also been proposed a time or two by other people on
+comp.text.tex or latex-l.
+
+There is also a resonance here with the standardized file header syntax
+advocated by Nelson Beebe (CTAN: filehdr.el etc), though it's my
+impression that he envisioned those headers mainly as a top-of-file
+_comment_, separate from the real contents of the file; in the
+frontmatter case the file header would be part of a document's content.
+
+In my opinion the principal barrier to a package implementation of
+BibTeX-style or filehdr-style frontmatter handling is resolving certain
+complex data structure issues with the author data. If you want to be
+able to print multiple author names and addresses in different forms
+depending on the documentclass, you need a capable data structure, and
+while the amsart data structure is more abstracted than that of the
+generic article documentclass, I still see room for improvement. At
+least, if one wants to handle publishing requirements like printing the
+address as a footnote with different authors sharing the same footnote
+number if they have the same address (how does the user indicate in the
+frontmatter that an address is shared? probably some sort of label-ref
+mechanism). Or how do you handle special cases like
+
+  former address
+  current address
+  temporary address during 1997 while this author is on sabbatical
+  these authors have the same institution address but different email
+    addresses
+  this author has two addresses, actually, and they both have equal
+    standing
+  this author died since the submission of the article and we want to
+    use a different type of footnote marker on his name for a footnote
+    explaining that the article is being published posthumously
+
+And then you might want to change three or more author names A, B, C,
+... to the form "A et al." in the running head, or for two authors use
+initials instead of first names in the running head, and so on. The only
+way to make this possible across a wide range of documentclasses is for
+the granularity of the data structure to be fine enough to handle even
+the most esoteric rendering requirements of the most esoteric classes.
+Costs include (1) the macros to put all the pieces together must then
+become more complex, for all documentclasses even those that have simple
+rendering needs, and (2) it takes more work for authors (or publishers's
+submission-processing staff) to provide all the required markup.
+
+Next complication: after you have broken down your data in resplendent
+detail, you discover that it has become difficult to conveniently handle
+special exceptions outside the set of special exceptions that you
+already arranged to handle (in your gloriously baroque macros), and
+certain things that are semantically orthogonal to the data structure
+(such as "linebreak here, in the main list of authors, but not in the
+running head of course"). There needs to be some sort of escape
+mechanism.
+
+One of these days when I get a round tuit I'll probably end up writing a
+new frontmatter interface, but if someone else can manage to do it first
+and save me the work, so much the better.
+
+Michael Downes, mjd@ams.org
+

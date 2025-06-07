@@ -1,0 +1,250 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["8147" "Thu" "7" "October" "1999" "10:19:02" "+0200" "Frank Mittelbach" "frank.mittelbach@LATEX-PROJECT.ORG" nil "210" "On template types" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id LAA28602
+	for <schoepf@UNI-MAINZ.DE>; Thu, 7 Oct 1999 11:44:08 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.82012D01@mail.listserv.gmd.de>; Thu, 7 Oct 1999 11:42:33 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 444726 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 7 Oct 1999 11:40:55 +0200
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id LAA13022
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 7 Oct 1999 11:40:51 +0200
+          (MET DST)
+Received: from istrati.zdv.uni-mainz.de (root@dialin372.zdv.Uni-Mainz.DE
+          [134.93.175.72]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id
+          LAA15962 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Thu, 7 Oct 1999
+          11:42:17 +0200 (MET DST)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.9.3/8.9.3) id
+          KAA00542; Thu, 7 Oct 1999 10:19:02 +0200
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199909281004.LAA12492@nag.co.uk>
+            <l03130300b41a50f6a493@[130.239.20.144]>
+Message-ID:  <199910070819.KAA00542@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <l03130300b41a50f6a493@[130.239.20.144]>
+Date:         Thu, 7 Oct 1999 10:19:02 +0200
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      On template types
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3350
+
+Lars,
+
+> Here are some thoughts about templates and font selection. Perhaps I
+> thought about it a bit too long, because the mail got a bit
+> long-winded, but I hope you'll endure it.
+
+long-winded or not your post does contain a lot of interesting
+thoughts which are worth pursuing further. but before looking at fonts
+let me first discuss template types a bit further and explain how i
+understand that concept (this might also answers some of the questions
+James posed in a different message).
+
+you wrote:
+
+> \DeclareTemplateType{noparams}{0}
+> \DeclareTemplate {noparams}{author-fonts}{0}{
+>    medium      =n [m]   \mddefault,
+>    boldface    =n [b]   \bfdefault,
+>    light       =n [m]   \ltdefault,
+>    upright     =n [n]   \urdefault,
+>    italic      =n [it]  \itdefault,
+>    slanted     =n [sl]  \sldefault,
+>    smallcaps   =n [sc]  \scdefault
+> }{\DoParameterAssignments}
+>
+> (Or perhaps author-fonts should be a type and the template should be
+> named default or something. I'm not sure, but it seems odd that all
+> templates without parameters (i.e., having type noparams in the above
+> setting) should always be affected by the same \UseCollection
+> commands.)
+
+if we would have a template type "noparams" what is it supposed to
+mean? As Lars said: "it seems odd that all templates without
+parameters should always be affected by the same \UseCollection
+commands". And indeed, this is not only odd it is against the
+philosophy of template types!
+
+The purpose of the template type is the following:
+
+ loosely speaking it is supposed to ensure that an instance of some
+ template type could be exchanged with another instance of the same
+ template type without making the code produce rubbish or doesn't work
+ any more.
+
+ now the above example template type called "noparams" is setting font
+ defaults which is something completely different than say
+
+\DeclareTemplate{noparams}{TeX}{0}{
+  uchyph                   =c [1]   \uchyph,
+  hyphenpenalty            =c [50]  \hyphenpenalty,
+  exhyphenpenalty          =c [50]  \exhyphenpenalty,
+  lefthyphenmin            =c       \lefthyphenmin,
+  righthyphenmin           =c       \righthyphenmin,
+}
+ {\DoParameterAssignments}
+
+which is also a template that doesn't take mandatory parameter. So if
+one would claim that both such templates are of the same type we would
+claim that a class designer could replace an instance of the first
+template with an instance of the second. we don't mean this do we?
+
+so the template type is more than just the number of parameters and
+their meaning: it is an informal summary of the semantics of the
+code/purpose/action/effect it has. this includes the semantics of its
+mandatory parameters but it also includes its overall effect. Thus a
+template which is setting up the hyphenation mechanism of TeX (like
+the one above) should have a template type with a dedicated name (say
+"hyphenation") which has the following informal description: "templates of
+my type customize the TeX hyphenation algorithm and take no mandatory
+parameter". (it should probably be far more verbose, eg saying
+something about the scope of the customization etc etc)
+
+ And a template which sets up the font defaults should perhaps have a
+type called "fontdefaults" and an informal description ...
+
+This way we would not mistakenly replace an instance which sets up
+fonts with an instance setting up hyphenation and vice versa but only
+with instances that are "compatible in nature".
+
+as a side remark: my experience with templates that are doing
+declaration only (eg do not have mandatory arguments and no code
+section worth mentioning (like those above)) is that you seldom end up
+with more than a single template per type. as a result you may start
+wondering about the whole concept of separating type and
+template. Well the answer is that with template types that encapsulate
+more complex stuff (eg a list template type) you will soon find that
+there are several different templates possible that all fit this type.
+but even with such declaration thingies you sometime want to provide
+more than one template, for example, to offer different styles of
+declaration. So instead of the template TeX (of type hyphenation no
+noparams :-) above which is simply setting the low-level TeX
+parameters one could also offer the following template:
+
+\newcount\@@lefthyphenmin
+
+\DeclareTemplate{hyphenation}{std}{0}{
+  hyphen-disable-boolean   =s  {\ifnum\@@lefthyphenmin<\@M
+                                  \@@lefthyphenmin\lefthyphenmin
+                                  \lefthyphenmin\@M
+                                \fi}
+                               {\ifnum\@@lefthyphenmin>\z@
+                                  \lefthyphenmin\@@lefthyphenmin
+                                \fi},
+  hyphen-uppercase-boolean =s  {\uchyph\@ne}{\uchyph\z@},
+  hyphen-discourage-boolean=s  {\hyphenpenalty\@highpenalty
+                                \exhyphenpenalty\@highpenalty}
+                               {\hyphenpenalty\@lowpenalty
+                                \exhyphenpenalty\@lowpenalty},
+}
+ {\DoParameterAssignments}
+
+with instances like
+
+\DeclareInstance{hyphenation}{off}{std}
+    {hyphen-disable-boolean    = true}
+
+\DeclareInstance{hyphenation}{on}{std}
+    {hyphen-disable-boolean    = false,
+     hyphen-uppercase-boolean  = true,
+     hyphen-discourage-boolean = false}
+
+\DeclareInstance{hyphenation}{discourage}{std}
+    {hyphen-disable-boolean    = false,
+     hyphen-uppercase-boolean  = true,
+     hyphen-discourage-boolean = true}
+
+
+
+=============================
+
+confused everybody enough? hope not :-)
+
+here is another way to look at it via some example: below is a user
+declaration for a description environment.
+
+ \DeclareDocumentEnvironment {description}
+    { }
+    {\UseInstance{list}{description}
+       \NoValue  \NoValue  \BooleanFalse
+     }
+    { \EndThisList }
+
+\DeclareInstance{list}{description}{vertical-std}{ ... }
+
+what do we see here?
+
+a)  An instance of type "list" is called which seems to take three
+    mandatory arguments (all of which have preset values, ie \NoValue
+    \NoValue and \BooleanFalse)
+
+b)  There is this strange \EndThisList
+
+c)  The instance description is declared using a template "vertical-std"
+
+
+In fact this is an example of the list template type as described in
+the Vancouver talk as follows:
+
+    To format list structures such as \texttt{itemize} there might be a
+    template type called \texttt{list} with the following
+    characteristics:
+    \begin{itemize}
+    \item
+      Starts a list structure embedding it into the surrounding formatting
+    \item
+      Sets up a command |\ListItem| (one argument)
+      to start a new `item' of the list
+    \item
+      Sets up a command |\EndThisList| to finish the current list
+      structure properly
+    \item
+      Expects three arguments with the following semantics:
+      \begin{itemize}
+      \item
+        String to calculate width of left indentation, or |\NoValue|
+      \item
+        Symbol/string to be used as item label, or |\NoValue|
+      \item
+        Boolean to denote whether or not numbering continues
+      \end{itemize}
+    \end{itemize}
+
+
+in other words, not only the semantics of the three arguments are part
+of the template type but also the fact that each such template is
+supposed to set up \EndThisList and \ListItem.
+
+And of course this has to be the case if i want to be able to replace
+the instance "description" above with an different declaration  which
+might look like this:
+
+ \DeclareInstance{list}{description}{inline}{ ... }
+
+
+While the template "vertical-std" produces lists which look like
+current LaTeX lists (ie vertically oriented ...) the "inline" template
+would contain code that makes a run-in list ie one that is
+horizontally oriented. All this would only work if both templates take
+the same number of arguments (and interpret them in the same way) and
+in addition also behave otherwise compatible, ie they both have to set
+up \EndThisList etc --- thus the template type is the sum of all such
+characteristics.
+
+hope all this helps a little bit in understanding what we try to
+provide
+
+frank
+
+ps who is long-winded??? :-)
+

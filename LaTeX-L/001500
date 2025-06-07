@@ -1,0 +1,106 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2991" "Wed" " 9" "February" "1994" "20:18:19" "+0000" "Rainer Schoepf" "schoepf@SC" "<199402091925.AA28370@mail.cs.tu-berlin.de>" "70" "Re: Continuation lines" "^Date:" nil nil "2" "1994020920:18:19" "Continuation lines" nil nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA11132; Wed, 9 Feb 94 20:26:00 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA26311; Wed, 9 Feb 94 20:25:58 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA28370
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 9 Feb 1994 20:25:55 +0100
+Message-Id: <199402091925.AA28370@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 7715; Wed, 09 Feb 94 20:25:44 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 7713; Wed,
+ 9 Feb 1994 20:25:44 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 7685; Wed,
+ 9 Feb 1994 20:24:46 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Comments:     Resent-From: schoepf@sc.ZIB-Berlin.DE (Rainer Schoepf)
+Comments:     Originally-From: "RANDOLPH J. HERBER, HERBER@FNALA.FNAL.GOV,
+              +1 708 840 2966 CD/HQ - CDF" <HERBER@FNALV.FNAL.GOV>,
+              BITNET list server at DHDURZ1@dagobert.ZIB-Berlin.DE
+              (1.8a)
+Date:         Wed, 9 Feb 1994 20:18:19 +0000
+From: Rainer Schoepf <schoepf@SC>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Continuation lines
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1500
+
+The appended message was not processed properly. I'm hereby forwading
+it to the list.
+
+------------------------- Message in error (88 lines) -------------------------
+
+> Mike wrote:
+> >
+> > %>> How do you get LaTeX to insert continuation lines saying
+> > %>>
+> > %>>                              Question xx continued on next page
+> > %>
+> > %>Use marks and put them in the footline.
+> >
+> > The footer is already in full use:
+> >
+> > pressmark                  page                        Turn Over
+
+> ``put them in the footline'' is not to take literally if we talk about
+> _implementation_ of some effect. It means use \@footline (or however it
+> is called in LaTeX) to put your bloody sentence there.
+>     Such a sentence should be a bit outside the ``Seitenspiegel''
+> (don't know the English term, perhaps `page area') anyhow.
+
+> > also, that doesn't solve the problem of the question number reappearing on
+> > the next page, followed by (continued)
+
+> Set a flag, utilize the headline to check for that flag.
+
+>         Joachim
+
+> Joachim Schrod                  Email: schrod@iti.informatik.th-darmstadt.de
+> Computer Science Department
+> Technical University of Darmstadt, Germany
+
+When I faced the same problem doing commerical computerized in the middle
+1970's, my solution resembled, for level of the document structure.
+
+        A. Send a tag line to be produced for the bottom of the page if
+           the next text item starts on this page but does not complete.
+        B. Send another tag line to be produced at the top of the next
+           page under the same condition.
+        C. Send the text item.
+
+By default, tag lines were inherited from text item to text item.  Sending
+a A type tag line cleared the B type tag line of the current level and all
+tag lines of deeper level.  A level could be cleared of all tag lines by
+sending a null (empty) tag (I had a special blank line form that could be
+used for the special case of needing a blank tag line).  All outstanding
+tag lines (both footers for the current page and headers for the next page)
+need to be accounted for in the page layout.  If tag lines are not needed,
+they simply are not used.
+
+The form of the file going into page layout resembled:
+
+A.                              Question 1 continued on next page
+B. Question 1 continued from previous page
+T. 1. Describe in 50 words or less a renormalizable quantam physics including
+      gravity.  Do not use any mathematics above high school algebra.
+A.                              Question 2 continued on next page
+B. Question 2 continued from previous page
+T. 1. Do an appendicotomy on your self.  Leave the incision open so that
+      your work can be examined.
+
+and so forth.
+
+Possibly this can be an idea for a future facility to be added?
+
+Randolph J. Herber, herber@fnalv.fnal.gov, +1 708 840 2966, CD/HQ - CDF
+(Speaking for myself and not for US, US DOE, FNAL nor URA.)
+(Product, trade, or service marks herein belong to their respective owners.)
+

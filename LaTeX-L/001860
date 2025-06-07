@@ -1,0 +1,78 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1818" "Tue" "4" "March" "1997" "00:09:19" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "41" "Re: Shortref mechanism" "^Date:" nil nil "3" nil "Shortref mechanism" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id AAA22122; Tue, 4 Mar 1997 00:08:19 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.98723035@listserv.gmd.de>; Tue, 4 Mar 1997 0:08:04 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 108250 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 4 Mar 1997 00:07:57 +0100
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id AAA28413 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 4 Mar 1997 00:07:53 +0100
+          (MET)
+Received: from [130.237.37.145] (sl03.modempool.kth.se [130.237.37.23]) by
+          mail.nada.kth.se (8.8.4/8.8.4) with SMTP id AAA13978 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 4 Mar 1997 00:07:32 +0100
+          (MET)
+X-Sender: su95-hab@mail.nada.kth.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v02130508af41063d308e@[130.237.37.145]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 4 Mar 1997 00:09:19 +0100
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Shortref mechanism
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1860
+
+Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE> writes:
+
+> >   But, continuing this theme of non-deterministic parsing, have you tried
+> > picking up say a whole word in advance, then doing some parsing of it
+> > (expanding all macros in it, and replacing it with a word where TeX might
+> > regonize it.
+> >   More explicitly, one would type say
+> >     <foo\a bar>
+> > Then the "<" would pick up the whole "foo\a bar>", expanding the \a,
+> > finally returning "foobar". Would it be possible to recognize a ligature
+> > "ob" by this method? (The example is otherwise entirely hypothetical.)
+>
+>it would but on the other hand it would not help as you
+>
+> a) need that > character there is not anything you could choose, eg
+>scanning up to the next space or so is no answer as you would run into
+>problems inside arguments etc
+>
+> b) there is this nasty case of \verb which modifies TeXs parsing and
+>you would kill that case as well
+>
+>so again, unless you make everything "letter" and "other" except for
+>"\" and the start of shortref strings and essentially build your own
+>parser for all of the text (with the problem of handling nested groups
+>etc etc) there is no way to make this work
+
+  The discussion concerns a somewhat artifical style of programming, but
+one could think of picking up something bigger, say a sentence or a
+paragraph in advance. The parser would have some knowledge of when to
+abort. Perhaps one could do this by the idea of a "text environment". One
+would then have to write (what semantically corresponds to)
+    \begin{text}...\end{text}\verb...
+and not
+    \begin{text}...\verb...\end{text}
+if one wnat that particular feature (ligatures, or whatever).
+-- Perhaps with an improved syntax.
+
+  I would not experiment with it myself, but for those willing fakires out
+there...
+
+  Hans Aberg
+

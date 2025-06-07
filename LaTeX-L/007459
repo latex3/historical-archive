@@ -1,0 +1,90 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id s4SKkHDj021781
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Wed, 28 May 2014 22:46:17 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id s4SKk5Y9022453;
+	Wed, 28 May 2014 22:46:06 +0200
+Received: from mail-wi0-x22e.google.com (mail-wi0-x22e.google.com
+ [IPv6:2a00:1450:400c:c05::22e])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id s4SKk2xR022444
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT);
+ Wed, 28 May 2014 22:46:03 +0200
+Received: by mail-wi0-f174.google.com with SMTP id r20so4485969wiv.7
+ for <multiple recipients>; Wed, 28 May 2014 13:45:57 -0700 (PDT)
+X-Received: by 10.180.90.234 with SMTP id bz10mr4305409wib.27.1401309957313;
+ Wed, 28 May 2014 13:45:57 -0700 (PDT)
+Received: from palladium.home (host86-178-0-255.range86-178.btcentralplus.com.
+ [86.178.0.255])
+ by mx.google.com with ESMTPSA id di10sm41658467wjb.1.2014.05.28.13.45.56
+ for <multiple recipients>
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Wed, 28 May 2014 13:45:56 -0700 (PDT)
+Message-ID: <53864B04.9030201@morningstar2.co.uk>
+Date: Wed, 28 May 2014 21:45:56 +0100
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9;
+ rv:24.0) Gecko/20100101 Thunderbird/24.5.0
+MIME-Version: 1.0
+To: Bruno Le Floch <blflatex@gmail.com>,
+        Frank Mittelbach <frank.mittelbach@latex-project.org>
+Subject: Re: [l3svn] r4899 - Use \c__msg_coding_error_text_tl in various places
+References: <201405282013.s4SKDqec020361@comedy.dante.de>
+ <53864655.1030802@latex-project.org>
+ <CANQYN6x3V5b42BhoSuCb6oayZKtWB_2RQO5EO6sCenrLwDFEcg@mail.gmail.com>
+In-Reply-To: <CANQYN6x3V5b42BhoSuCb6oayZKtWB_2RQO5EO6sCenrLwDFEcg@mail.gmail.com>
+X-Enigmail-Version: 1.6
+X-DANTE-Spam-Score: -1.8 () BAYES_00, DKIM_SIGNED, DKIM_VALID,
+ FREEMAIL_ENVFROM_END_DIGIT, FREEMAIL_FROM, SPF_PASS
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on IPv6:2a01:488:67:1000:b01c:36b8:0:1
+Cc: "latex-team@latex-project.org" <latex-team@latex-project.org>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7459
+
+On 28/05/2014 21:42, Bruno Le Floch wrote:
+> My understanding is that we're fine to use internal functions within a
+> given bundle, even though it is split into various files/modules.
+> However, all internal functions used in this way should be documented
+> carefully (e.g., we do not reuse some auxiliary functions which happen
+> to be identical in various modules, such as those for the \..._case
+> user functions).
+
+Indeed, that was the plan. There are some things we need to use more
+widely than a single .dtx file but don't want to put down as public. The
+message stuff is by far the most obvious.
+
+> Since we provide no support for localization, the package writer does
+> not lose much by just typing "This is a coding error." in his error
+> message if he so wishes.  To be honest, I've never spent enough time
+> to understand when each of those error tls should be used, so none of
+> the messages I've added to l3kernel over the years use them.
+
+As I said, these are probably a bit of a mess as if we want to allow
+localisation (do we?) then they shouldn't be constants anyway. My aim
+was to avoid actually breaking anything in the short term: as I said in
+the commit message, this probably needs rethinking.
+
+Joseph
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

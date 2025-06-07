@@ -1,0 +1,178 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D3D724EC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:48 +0100
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D3D724EC"
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      Re: environment error recovery
+Date: Wed, 22 Aug 1990 16:30:21 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1F3@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Leslie Lamport" <lamport@SRC.DEC.COM>
+To: "Rainer Schoepf" <BK4@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 230
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D3D724EC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+  4) There is one thing that is left open in the implementation:
+     the question whether we will provide commands that are only
+     allowed at the outer level of environments. Something like
+     the \outer primitive on LaTeX level. The reason for such commands
+     is that they can catch problems of forgotten end tags that will
+     otherwise produce error which are very difficult to track down.
+     Take for example a \begin{figure} without an \end. LaTeX will
+     typeset stuff into the figure until it will run out of space
+     and depending on the TeX version this can be a few chapters later.
+     So making, for example, section command to pop the environment
+     stack would prevent those problems. On the other hand it would
+     make it difficult to allow them in userdefined environments.
+     Any suggestions and proposals?
+
+First of all, "popping the stack" is not necessary.  Producing an error
+message, which lists the current "stack", will suffice.  When such an
+error is encountered, the input is probably too screwed up for popping
+the stack to help much.  Also, the problem might just as easily be a
+misplaced "outer" command as a missing \end command.  (One possibilty
+would be to ask the user whether he wants to pop the stack, but I'm not
+sure that's worth the effort; and I don't know what TeX does when it's
+running a file in "batch mode" that asks for user input.)
+
+Secondly, I propose a \setinner declaration, which causes "outer"
+commands like \section to produce an error message.  If the user
+doesn't want to allow outer commands within an environment he defines,
+then he can begin the definition with a \setinner command.
+
+The \setinner command doesn't need to be restricted to environments.
+For example, one could write
+
+  \newcommand{\foo}[1]{\marginpar{\setinner #1}}
+
+Leslie
+
+
+------_=_NextPart_001_01C19442.D3D724EC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: environment error recovery</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>&nbsp; 4) There is one thing that is left open in the =
+implementation:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the question whether we will =
+provide commands that are only</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; allowed at the outer level =
+of environments. Something like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; the \outer primitive on =
+LaTeX level. The reason for such commands</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; is that they can catch =
+problems of forgotten end tags that will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; otherwise produce error =
+which are very difficult to track down.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Take for example a =
+\begin{figure} without an \end. LaTeX will</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; typeset stuff into the =
+figure until it will run out of space</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; and depending on the TeX =
+version this can be a few chapters later.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; So making, for example, =
+section command to pop the environment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; stack would prevent those =
+problems. On the other hand it would</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; make it difficult to allow =
+them in userdefined environments.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; Any suggestions and =
+proposals?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>First of all, &quot;popping the stack&quot; is not =
+necessary.&nbsp; Producing an error</FONT>
+
+<BR><FONT SIZE=3D2>message, which lists the current &quot;stack&quot;, =
+will suffice.&nbsp; When such an</FONT>
+
+<BR><FONT SIZE=3D2>error is encountered, the input is probably too =
+screwed up for popping</FONT>
+
+<BR><FONT SIZE=3D2>the stack to help much.&nbsp; Also, the problem might =
+just as easily be a</FONT>
+
+<BR><FONT SIZE=3D2>misplaced &quot;outer&quot; command as a missing \end =
+command.&nbsp; (One possibilty</FONT>
+
+<BR><FONT SIZE=3D2>would be to ask the user whether he wants to pop the =
+stack, but I'm not</FONT>
+
+<BR><FONT SIZE=3D2>sure that's worth the effort; and I don't know what =
+TeX does when it's</FONT>
+
+<BR><FONT SIZE=3D2>running a file in &quot;batch mode&quot; that asks =
+for user input.)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Secondly, I propose a \setinner declaration, which =
+causes &quot;outer&quot;</FONT>
+
+<BR><FONT SIZE=3D2>commands like \section to produce an error =
+message.&nbsp; If the user</FONT>
+
+<BR><FONT SIZE=3D2>doesn't want to allow outer commands within an =
+environment he defines,</FONT>
+
+<BR><FONT SIZE=3D2>then he can begin the definition with a \setinner =
+command.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The \setinner command doesn't need to be restricted to =
+environments.</FONT>
+
+<BR><FONT SIZE=3D2>For example, one could write</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \newcommand{\foo}[1]{\marginpar{\setinner =
+#1}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Leslie</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D3D724EC--
+

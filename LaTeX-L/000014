@@ -1,0 +1,77 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 22 Feb 90 02:53:00 PST
+Reply-To: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.bitnet>
+From: DHOSEK@HMCVAX.bitnet
+Subject:      Re: \begin...\end interface
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 14
+
+RS=Rainer Schoepf
+SR=Sebastian Ratz
+
+RS>Up to now the internal commands called by \begin{xyz}...\end{xyz}
+RS>are \xyz and \endxyz.  I propose to change this to something that is
+RS>not user accessible, i.e. has a @ in it.
+
+RS>The idea: anything that the user is not supposed to use should
+RS>be hidden somehow.  I remember that some people use
+RS>  \begin{tt} ... \end{tt}
+RS>instead of {\tt ... }.  After all, an environment is conceptually
+RS>different from a command or a declaration, and I think that the
+RS>implementation should reflect this.
+
+Not a good idea. If you recall, (well actually I guess you won't,
+but Frank will), Leslie Lamport stated as item one on the new
+LaTeX, and this _is_ important, upward compatibility from version
+2.09. To be specific, if it's in the copy of the LaTeX manual
+sitting on your shelf, it should work in version 6000000.09 of
+LaTeX, not to mention 2.10 or 3. I'm quite certain that the LaTeX
+manual states that the macros underlying an environment are
+\<name> and \end<name>. Also the \begin{tt}...\end{tt} type trick
+also appears in that manual. (The latter is quite useful for
+delimiting large blocks of text in another font, and also more
+popular with the consistancy-minded people who type out
+\begin{math}...\end{math} rather than $...$ or \(...\) simply
+because they like to keep all the structure clear.)
+
+[in response to Rainer's comments]
+SR>I think this an excellent idea. I find it distinctly confusing that
+SR>\end{freddy} is just a synonym for \endfreddy.
+
+Oh, but \end{freddy} \neq \endfreddy. \endfreddy \almostequals
+\endfreddy\endgroup, but if you look at the macros for \begin and
+\end, you'll see that there is other behind-the-scenes stuff
+(like insuring that environments are properly nested) going on as
+well. Just thought I'd be a pedant for a bit.
+
+RS>Another (admittedly minor) advantage is the possibility
+RS>to define commands whose names start with `end' without interfering
+RS>with names of environments.
+
+SR>Having tried to do just this on several occasions before I grasped
+SR>what was going on, I can assure you it is not that strange a thing to
+SR>want to do
+
+So you define \Endwhatever instead. It's good for you. It builds
+character.
+
+The only change to \begin and \end that I would recommend is
+fixing the bug which permits
+
+\begin{something}
+\begin{somethingelse}
+\begin{freddy}
+ ...
+\end{freddy}
+\end{something}
+
+to slip through the cracks.
+
+-dh
+
+

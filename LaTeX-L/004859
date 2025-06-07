@@ -1,0 +1,90 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Sun, 17 Apr 2005 18:43:23 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j3HGhKqc024687
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 17 Apr 2005 18:43:21 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j3HGfbfK022090;
+	Sun, 17 Apr 2005 18:41:37 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j3GM1B7g022803;
+	Sun, 17 Apr 2005 18:39:38 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 217079 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 17 Apr 2005 18:39:37 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j3HGdarw016107 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr 2005 18:39:36 +0200
+Received: from smtp07.web.de (smtp07.web.de [217.72.192.225]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j3HGf0tL016271 for <LATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr
+          2005 18:41:00 +0200 (MET DST)
+Received: from [212.144.145.17] by smtp07.web.de with smtp (WEB.DE 4.104 #268)
+          id 1DNCnu-00018p-00 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 17
+          Apr 2005 18:39:27 +0200
+X-Sender: uwe.lueck@pop3.web.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+References: <yfiekd9oea0.fsf@triumf.ca>
+            <5.1.0.14.0.20050417104145.0247e860@pop3.web.de>
+            <yfiekd9oea0.fsf@triumf.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-Sender: uwe.lueck@web.de
+Message-ID:  <5.1.0.14.0.20050417161125.00aba7c0@pop3.web.de>
+Date:         Sun, 17 Apr 2005 17:26:56 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Uwe =?iso-8859-1?Q?L=FCck?= <uwe.lueck@WEB.DE>
+Subject: Re: \output trick; Re: lineno.sty question
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <85hdi5ej28.fsf@gnu.org>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 17 Apr 2005 16:43:23.0572 (UTC) FILETIME=[920C0F40:01C5436C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4859
+
+At 13:31 17.04.05, David Kastrup wrote:
+>Donald Arseneau <asnd@TRIUMF.CA> writes:
+>
+> > Uwe Lueck <uwe.lueck@WEB.DE> writes:
+> >
+> >> This is due to a mistake in revtex's way of changing the output
+> >> routine.
+> >
+> > I agree.
+> >
+> >> After a \newtoks\output,
+> >
+> > And, for the output routine, I think that itself is the mistake!  I
+> > opine that for \output one should "bite the bullet" and do
+> > \output=\expandafter{\expandafter\mymacro\the\output}
+> >
+> > Hoping to silently hook in, without knowledge of what else has
+> > modified the output routine, and without making your own
+> > modification obvious, is insane.
+
+Well, even in general a package writer never can be sure that
+some user won't find a package that is incompatible with the
+own one :) -- though there are strategies to somewhat minimize
+the danger, and it is sane to adopt them, isn't it?
+
+>The problem is that you sometimes need to call the old behavior, and
+>sometimes not.  In particular, if you have inserted a special penalty
+>yourself, then you will deal with it yourself, not passing anything on
+>and not actually calling the original output routine.
+
+Indeed, e.g., this is the case both in revtex.cls and in the lineno.sty
+from which today's discussion arose. The lineno output routine is
+called at least once for each paragraph line, additionally there are
+penalties to trigger processing items from queues, similarly as with
+the \@freelist.
+
+-- Uwe Lueck.
+

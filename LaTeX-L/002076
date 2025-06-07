@@ -1,0 +1,125 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4326" "Tue" "17" "June" "1997" "13:50:33" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "89" "Re: [Bug Report] Problem with INPUTENC package and TOC files." "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id PAA08316; Tue, 17 Jun 1997 15:32:53 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <10.E9975F40@listserv.gmd.de>; Tue, 17 Jun 1997 15:30:56 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 154683 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 17 Jun 1997 15:30:21 +0200
+Received: from punt-2.mail.demon.net (relay-13.mail.demon.net [194.217.242.21])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id PAA15799
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 17 Jun 1997 15:17:53
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id aa1316609; 17 Jun 97 14:05 BST
+Received: by dcarlisle.demon.co.uk id m0wdxiT-000OVnC (Debian Smail-3.2
+          1996-Jul-4 #2); Tue, 17 Jun 1997 13:50:33 +0100 (BST)
+Message-ID:  <m0wdxiT-000OVnC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A58039.13FF48F5@vvv.vsu.ru> (message from Vladimir Volovich on
+              Mon, 16 Jun 1997 22:04:41 +0400)
+Date:         Tue, 17 Jun 1997 13:50:33 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: [Bug Report] Problem with INPUTENC package and TOC files.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2076
+
+> I've got some problem with inputenc package.
+
+Your problem is mainly due to badly set up encoding specific commands.
+
+> We use two ways to translate the input encoding (koi8-r) into TeX's internal encoding
+> (LCY):
+
+The main idea of the inputenc/fontenc system is that you do *not*
+translate directly from the input encoding to the font encoding.
+LaTeX's internal encoding for all such constructs should be a portable
+7-bit form such that it may be read back at some other part of the
+document (perhaps via the .aux file) where a potentially different
+encoding is in force.
+
+So for example in French you may type the latin-1 character <e-acute>
+but that will be translated by inputenc to \'{e} and passed in that
+form to the aux file etc, and finally when typeset converted to the
+convention of the font encoding in force at that time, which may be
+Cork (T1) in which case it will essentially be converted back to the
+original character, or it may be OT1 in which case it will use \accent
+or whatever. Note that the *same* input text may be converted in two
+different ways, a heading might be typeset in T1 in the table of
+contents, but in OT1 in the display heading (perhaps in a special font
+not available with the composite letters needed to encode to T1).
+
+In your case your input has been directly converted to the final
+font encoding. When read back from the .aux file, these codes are
+assumed to be an input encoding and so everything breaks.
+
+> \DeclareInputText{"0E1}{\CYRA}
+
+That is OK but any command used as an input text must be ***robust***
+and in your case you want it to be specific to koi8 (or alt, or LCY,
+or whatever)
+
+so
+
+
+> (because the definitions of russian letters in Babel package
+> have the form \def\CYRV {^^82}).
+
+these are incompatible with inputenc, you want an encoding specific,
+and in particular, robust, definition,
+
+\DeclareTextSymbol{\CYRV}{LCY}{198}
+...
+
+(compare the definitions of \ae \ss and friends in t1enc.def.
+
+
+Note that any mechanism that makes `high' characters of type `letter'
+rather than `active' pays a very high price. It then forces the input
+and font encodings to be the same. This means that any document, or
+package or macro set written by a user of say KOI8 encoded fonts can
+not use any macros written by users of other Cyrillic font encodings,
+so the TeX community is fragmented and portability is destroyed.
+If PC users had insisted on having catcode 11 slots so that they could
+use \ss or \'e in macro names, then any such macros would have been
+unuseable (or unreadable) on Macintosh, unix, Windows, ...
+Fortunately they did not do this and they restriced to a portable
+7bit set for command names. I strongly urge Russian users to do the
+same. I accept that it is easier to do without \ss in German
+than it is to do without the Cyrillic alphabet in Russian. There may
+be possibilities to improve this situation, but I am just trying to
+explain some of the thinking behind the current design, and the
+reasons why the current mechanisms do not support the use of 8bit
+characters in command names.
+
+In an earlier message you suggested the use of emtex style code pages
+for this kind of translation. The main argument against these is not
+that they are emtex specific, but rather than they are bad in
+principle as they totally break document portability. The document is
+designed to run just with one specific input filter, but it carries
+no information about this requirement, so is likely to break, even at
+another emtex site. A similar feature was considered for web2c7 (see
+some messages on this list earlier this year) but fortunately these
+arguments about portability persuaded Karl not to enable the feature.
+The second argument against these is that being essentially external to
+TeX, they force the same encoding to be used throughout a document. As
+inputenc is integrated with the TeX macro layer the input encoding
+may be changed at arbitrary points in the document. Of course inputenc
+pays a price in terms of speed. In the common case where just one
+input encoding, and just one font encoding are used, it may be
+possible to speed up the process by `freezing' the definitions,
+cutting out the internal 7bit form. We have some experiments in that
+direction, but the first thing is to get inputenc *working* then we
+can discuss how to speed it up!
+
+David
+

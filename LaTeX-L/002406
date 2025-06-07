@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1630" "Wed" "8" "October" "1997" "19:15:10" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "33" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id UAA14367;
+	Wed, 8 Oct 1997 20:09:05 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <1.5185E5C2@listserv.gmd.de>; Wed, 8 Oct 1997 20:07:51 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 210803 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 8 Oct 1997 20:03:29 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id UAA09252 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 8 Oct 1997 20:03:26 +0200
+          (MET DST)
+Received: from [130.237.37.74] (sl27.modempool.kth.se [130.237.37.47]) by
+          mail.nada.kth.se (8.8.7/8.8.4) with ESMTP id UAA22380 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Wed, 8 Oct 1997 20:03:25 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <v03110701b061270c6f36@[130.237.37.126]>
+            <v03110700b05fab26a8df@[130.237.37.113]>
+            <199710071753.NAA17629@aleph.swift.xxx>
+            <v03110701b061270c6f36@[130.237.37.126]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b06166310be1@[130.237.37.74]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <5167-Wed08Oct1997160142+0100-s.rahtz@elsevier.co.uk>
+Date:         Wed, 8 Oct 1997 19:15:10 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2406
+
+Sebastian Rahtz <s.rahtz@ELSEVIER.CO.UK>
+>... So I want to
+>keep \include, thanks! In addition, having a single place in the
+>master file with the \includeonly is much less error-prone for the
+>editing than commenting and uncommenting a slew of \input lines.
+
+  My idea is not that one should have to uncomment \input lines, but much
+simpler, if a project \input's files file1.tex,...,fileN.tex, and just want
+to compile fileK.tex, because that is what you are editing, then you first
+compile the main project file once, to get the main aux file computed, and
+then you typeset the file fileK.tex directly: The \project{main} command in
+this file will tell it where to look for project aux information. If you
+want several files to be \input'ed, then you write a special file for that
+combination.
+
+  So it is simpler than having to fiddle around with a \includeonly
+command: You can have sequence of working constellations to work with,
+without altering any file!
+
+  I am not sure this idea contradicts the use of a \include command in a
+similar way (built up around a single main aux file, and one for the
+subcompilation).
+
+  The only difference between \input and \include seems to be that the
+latter have a special version of the \clearpage command that allows for
+exact computation of references and page numbers in a subfile compile.
+Perhaps one could build that onto \clearpage, so that \include becomes
+equivalent to \clearpage\input (with the aux file structure described
+above).
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+

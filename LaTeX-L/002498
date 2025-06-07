@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1576" "Tue" "21" "October" "1997" "22:38:10" "+0100" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "34" "Re: Extended include" "^Date:" nil nil "10" nil "Extended include" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id XAA08356
+	for <schoepf@UNI-MAINZ.DE>; Tue, 21 Oct 1997 23:48:16 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.41C12469@listserv.gmd.de>; Tue, 21 Oct 1997 23:48:12 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 220024 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 21 Oct 1997 23:48:04 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id XAA23486
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 21 Oct 1997 23:48:03
+          +0200 (MET DST)
+Received: (from Ufrank@localhost) by kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) id
+          XAA18168 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 21 Oct 1997
+          23:48:04 +0200 (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to latex3
+                         using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          WAA00423; Tue, 21 Oct 1997 22:38:10 +0100
+References: <971020150418.a6ec@vms.rhbnc.ac.uk>
+            <199710201909.UAA17653@frank.zdv.uni-mainz.de>
+            <pcd8kzc0nz.fsf@epsilon.ams.org>
+Message-ID:  <199710212138.WAA00423@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <pcd8kzc0nz.fsf@epsilon.ams.org>
+Date:         Tue, 21 Oct 1997 22:38:10 +0100
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Extended include
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2498
+
+Michael John Downes writes:
+
+ > How about seeking to avoid the copying altogether? According to a small
+ > experiment I just did it seems it might be possible to do this, with a
+ > slight cost: using three extensions aux, auy, auz instead of just two.
+ > (But in the case of a book with multiple \include statements the
+ > subordinate files never use the .aux extension; only \jobname.au[xyz]
+ > uses all three.)
+
+i think that Michael's idea is most likely working and it certainly
+has the advantage of avoiding a slow copy step (if that step is done
+by TeX).
+
+his mail also reminded me that i forgot to mention that, of course,
+you have compare both aux files before that copy step, line by line up
+to the point where you notice they differ. Again a slow operation if
+done by TeX and again that can be moved to some operating script to
+speed things up.
+
+instead of executing the the aux file at the end (as currently done by
+LaTeX) to write the .toc type files and test for changes in labels a
+full comparison has the advantage that it also detects changes in
+something like the toc or in the index or whatever if you keep
+everything in the same aux file up to that point.
+
+ > another run is necessary). Then external OS scripts that want to test
+ > whether another run is necessary could look only at the first line of
+ > the .aux file instead of diffing .auy and .auz (maybe a bit of a pain
+ > for a multi-\include document).
+
+i don't see much problem checking for changed data at os level as we
+have only two files to compare independent of the number of includes.
+
+frank
+

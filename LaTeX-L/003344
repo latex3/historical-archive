@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1398" "Fri" "1" "October" "1999" "13:46:35" "+0100" "James Kilfiger" "mapdn@CSV.WARWICK.AC.UK" nil "30" "Re: Experimental `template' interface code" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id OAA30228
+	for <schoepf@UNI-MAINZ.DE>; Fri, 1 Oct 1999 14:46:47 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.3DC4973A@mail.listserv.gmd.de>; Fri, 1 Oct 1999 14:46:43 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445101 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 1 Oct 1999 14:45:18 +0200
+Received: from snowdrop.csv.warwick.ac.uk (snowdrop.csv.warwick.ac.uk
+          [137.205.192.31]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with
+          ESMTP id OAA15567 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 1 Oct
+          1999 14:45:16 +0200 (MET DST)
+Received: from mimosa.csv.warwick.ac.uk (mapdn@mimosa [137.205.192.34]) by
+          snowdrop.csv.warwick.ac.uk (8.9.3/8.9.3) with ESMTP id NAA22331 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Fri, 1 Oct 1999 13:46:40 +0100 (BST)
+Received: (from mapdn@localhost) by mimosa.csv.warwick.ac.uk (8.9.3/8.9.3) id
+          NAA04394 for LATEX-L@URZ.UNI-HEIDELBERG.DE; Fri, 1 Oct 1999 13:46:35
+          +0100 (BST)
+X-Mailer: ELM [version 2.4ME+ PL31 (25)]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID:  <199910011246.NAA04394@mimosa.csv.warwick.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199909281004.LAA12492@nag.co.uk> from David Carlisle at "Sep 28,
+              99 11:04:23 am"
+Date:         Fri, 1 Oct 1999 13:46:35 +0100
+From: James Kilfiger <mapdn@CSV.WARWICK.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Experimental `template' interface code
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3344
+
+> I am pleased to announce that the first public test release of [the
+> template] code is now available from the project web site.
+
+Thoughts on template loading.
+
+There seems to me to be a qualitative difference between the
+\DeclareTemplate command and the \DeclareInstance, \UseInstance and
+xparse commands.  FMi mentions that \DeclareTemplate is not for end
+users, not even for class-writers.  This is somewhat similar to nfss
+\DeclareFontShape compared with \fontshape{..} or \itshape. Perhaps a
+similar scheme would be useful.
+
+My idea is that templates could be put into files named <type>.td
+When the class or package writer says
+  \DeclareInstance{<type>}{<name>}{...}
+the system would first check if a template of that type/name is known,
+if not then attempt to load <type>.td.  The analogy is with .fd loading.
+
+This would separate out the low-level Tex from the declaration of
+instances and document commands, and would be easier than loading
+packages containing template definitions by hand.  It would also make
+distribution of templates easier. There would also be a distinction in
+file name between classes and packages -- for loading by end-users, and
+template definition files -- for loading by classes and packages.
+
+Also are there plans to release any experimental template definitions,
+to supplement the two caption templates and the initial example on the
+slides?
+
+        James
+

@@ -1,0 +1,91 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 22 Jan 2009 21:58:05 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0MKvvmk021485
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 22 Jan 2009 21:58:03 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n0MKr1QS022020
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Jan 2009 21:53:01 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0MJhPOw027979;
+	Thu, 22 Jan 2009 21:52:54 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 231867 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 21:52:54 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0MKqsN7005316 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 22 Jan 2009 21:52:54 +0100
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n0MKqexH020800 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 22 Jan 2009 21:52:43 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1LQ6XY-0006jC-gE for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 20:52:40 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <200901210053.n0L0ruB01889@f7.net>
+            <10CECC07-759A-430E-A9C6-79335882801D@gmail.com>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4978DC9B.2080605@morningstar2.co.uk>
+Date:         Thu, 22 Jan 2009 20:52:43 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Key points of LaTex3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <10CECC07-759A-430E-A9C6-79335882801D@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Jan 2009 20:58:05.0690 (UTC) FILETIME=[1F4E35A0:01C97CD4]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5626
+
+Will Robertson wrote:
+> From the way things look to me, that will basically be impossible. The
+> changes between LaTeX3 and LaTeX2e are much greater than between 2e and
+> 2.09. Perhaps a strict subset of LaTeX2e documents will be able to be
+> processed with LaTeX3, but I think we'll end up with two distinct
+> document processing systems. That is, I doubt that LaTeX2e will ever be
+> "replaced" by LaTeX3 -- people who need backwards compatibility will
+> have to use the old code.
+> 
+> On the other hand, it might be possible to detect when a 2e document is
+> being processed and "drop down" into the old code automatically, but
+> it's probably too early to say since we're not even building a separate
+> LaTeX3 format at this stage (well, I'm not, at least).
+
+I'd imagine that LaTeX3 documents will start with something other than
+\documentclass (let's call it \documenttype, for arguments sake).  Given
+the likely size of a LaTeX3 kernel, essentially the entire 2e kernel
+could also be included without making it all that much bigger.  If the
+first line of the file is \documenttype, the 2e stuff is never used.  On
+the other hand, if \documentclass is found, the new kernel "bails out",
+runs the current 2e code and the file is processed as a 2e document.
+
+The down side is that compiling a LaTeX2e document with LaTeX3 gains
+nothing.  The up side is that it works at all :-)
+
+I'd imagine that some of the current kernel would have to be subtly
+altered for this to work (things like the low level definitions for
+toks, skips, etc., perhaps, plus the odd \newcommand might need to be
+replaced by \def).  However, I'd suggest it is the best plan in the long
+term.
+-- 
+Joseph Wright
+

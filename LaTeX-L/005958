@@ -1,0 +1,105 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 21 Aug 2009 06:54:43 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7L4sgRr016150
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 21 Aug 2009 06:54:43 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7L4oZXi014230
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 21 Aug 2009 06:50:35 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7KM1YFO008874;
+	Fri, 21 Aug 2009 06:50:24 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 285269 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 21 Aug
+          2009 06:50:24 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7L4oOId008638 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 21 Aug 2009 06:50:24 +0200
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.248])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          n7L4oI67017934 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 21 Aug
+          2009 06:50:22 +0200
+Received: by rv-out-0708.google.com with SMTP id c5so140578rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 20 Aug 2009 21:50:18 -0700
+          (PDT)
+Received: by 10.140.136.15 with SMTP id j15mr370148rvd.229.1250830218223; Thu,
+          20 Aug 2009 21:50:18 -0700 (PDT)
+Received: from ?129.127.15.244? ([129.127.15.244]) by mx.google.com with ESMTPS
+          id k2sm1785408rvb.43.2009.08.20.21.50.14 (version=TLSv1/SSLv3
+          cipher=RC4-MD5); Thu, 20 Aug 2009 21:50:16 -0700 (PDT)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v935.3)
+X-Mailer: Apple Mail (2.935.3)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <874332F9-007B-4945-87D5-48B28BBC11CC@gmail.com>
+Date:         Thu, 20 Aug 2009 16:55:13 +0930
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: template customising
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -5.607 () BAYES_00,DATE_IN_PAST_12_24,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 21 Aug 2009 04:54:43.0326 (UTC) FILETIME=[7F92A9E0:01CA221B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5958
+
+On 20/08/2009, at 2:32 AM, Joseph Wright wrote:
+
+> Just a first thought, based on a better understanding of the  
+> concept. As
+> you say, this might not be the best idea in the end.   I will probably
+> write myself some (private) notes on the structure now I have a better
+> picture of how things work, and see if anything else strikes me.
+
+I think I see where my model of what's going on (particularly  
+regarding collections) was slightly off-kilter. I agree we should  
+delay discussing the mechanics (names, order of the args) until after  
+we're solid on the fundamentals.
+
+I've now got a new question. Following Joseph's examples, we might  
+have something like \chapter which uses an instance 'chapter' of type  
+'sectioning'.
+
+What should be done at the document design level to customise the look  
+of the chapter headings? I don't think we want to have to redefine  
+\chapter, so there are two options:
+
+1. create a fresh instance called 'chapter' with the desired parameters,
+2. "edit" the current 'chapter' instance.
+
+The first option is what is necessary in, say, titlesec. I've got to  
+admit it's not my favourite, because it requires you to possibly set  
+or re-set a bunch of parameters that you were already happy with. (And  
+you also have to know the name of the template it was produced with.)
+
+Let's say then that I'd like to be able to edit the instance  
+'chapter'; is there any way to be able to do this?
+
+I imagine markup like
+
+     \EditInstance{sectioning}{chapter}% template is implicit!
+         { ...keyvals... }
+
+but I don't know if my desire for this construct illustrates a  
+misunderstanding of mine of the system.
+
+Will
+
+P.S.  I guess that something like the above \EditInstance would  
+require a saved keyval list for the parameters used to generate the  
+instance; however, I don't think that's an unacceptable use of memory.
+

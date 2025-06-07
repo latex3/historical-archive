@@ -1,0 +1,117 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 22 Jan 2009 09:38:37 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n0M8cYCH012027
+	for <rainer.schoepf@PROTEOSYS.COM>; Thu, 22 Jan 2009 09:38:35 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n0M8YjWu002236
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 22 Jan 2009 09:34:45 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n0LN1FiS015910;
+	Thu, 22 Jan 2009 09:34:33 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 218757 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 09:34:33 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n0M8YXuW009429 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Thu, 22 Jan 2009 09:34:33 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n0M8YHFK002945
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Thu, 22 Jan 2009 09:34:20
+          +0100
+Received: from [139.222.131.78] (helo=ueams01.uea.ac.uk) by mailgate5.uea.ac.uk
+          with esmtp (Exim 4.50) id 1LPv0y-0006uf-K7 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan 2009 08:34:16 +0000
+Received: from [139.222.114.191] by ueams01.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1LPv0y-000110-JD for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 22 Jan
+          2009 08:34:16 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <49758499.5080004@morningstar2.co.uk>
+            <150532.45020.qm@web82002.mail.mud.yahoo.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49782F88.9090501@morningstar2.co.uk>
+Date:         Thu, 22 Jan 2009 08:34:16 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Key points of LaTex3
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <150532.45020.qm@web82002.mail.mud.yahoo.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 22 Jan 2009 08:38:37.0415 (UTC) FILETIME=[D1C0B770:01C97C6C]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5619
+
+Hello Paul,
+
+First oof, I'll poitn out that I'm not on the team, and so I posted how
+I see things based on reading the various public pieces of information
+and the code.  I also took a "broad brush" approach: there are some
+things that I did not mention.
+
+> 1) Loosening of the 9-argument restriction on user-written macros: this is 
+>   a thoroughly antequated and very limited restriction.
+
+Two things here.  First, keyval-type methods already do this, and to be
+honest a macro which needs say 15 arguments in a row seems a bit
+daunting to me!  Second, the low level #1, #2, etc. business is from the
+engine (no idea about LuaTeX).
+
+> 2) Arguments to user macros resolved by #1, #2, etc.: See 1) above.  
+> There are many ways of refering to arguments and the
+>  #1 #2 etc is very limiting
+> 
+> 3) Arguments specified positionally only: It should be possible to 
+> specify argument by name=value pairs.
+
+Again, keyval-type methods do this, and allow you to store input as
+named macros (which is pretty close to what you ask).  The template
+module does some of this, although I've made the case for a more general
+keyval module with my "keys3" attempt.
+
+> 4) User macros are local only, not global, not extended: 
+> The full command structure of TeX should be able to be
+> specified by protected LaTeX macros.  There should be a
+> \newgcommand \newxcommand.  For most, this is not
+> important, but there are times that only a gdef will do.
+
+Two things (again).  The xparse module, for creating document commands,
+probably answers some of this.  Second, I get the feeling the the team
+would like *users* to define things only in the preamble, and then only
+simple things.  Once you need things like \edef or \gdef, you are moving
+to programming and I suspect should use either xparse or the internal
+syntax (\def_new:Npn, \def_new:Npx, etc.).
+
+> 
+> 5) Changing page dimensions in the middle of the document: 
+> Middlebach says this can't be done, but I have done it in
+> my newlfm macro, and I say "rubbish" to Frank -
+> it can be done, and it should be possible.
+
+I always thought this was an engine issue.  Shows you what I know!
+
+> 6) Finally, something far more sensible on fonting needs implementation.
+
+Like Will, I wonder what you mean here.  If this is the loading fonts
+business (particularly OTF with pdfTeX), I'm not sure the format can do
+much.  Of course, if LuaTeX was required from the word go, life would be
+very different in that respect.
+-- 
+Joseph Wright
+

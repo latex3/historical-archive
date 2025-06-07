@@ -1,0 +1,111 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 25 Feb 2009 09:22:11 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n1P8OQhe005191
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 25 Feb 2009 09:24:26 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n1P8Gg1S029542
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 25 Feb 2009 09:16:42 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n1P71Xu9015915;
+	Wed, 25 Feb 2009 09:16:39 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 192388 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 09:16:39 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n1P8Gd4b022342 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 25 Feb 2009 09:16:39 +0100
+Received: from mailgate5.uea.ac.uk (mailgate5.uea.ac.uk [139.222.130.185]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n1P8GF2S025635
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Wed, 25 Feb 2009 09:16:18
+          +0100
+Received: from [139.222.131.78] (helo=ueams01.uea.ac.uk) by mailgate5.uea.ac.uk
+          with esmtp (Exim 4.50) id 1LcEwB-0001WQ-0A for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb 2009 08:16:15 +0000
+Received: from [139.222.114.250] by ueams01.uea.ac.uk with esmtp (Exim 4.69)
+          (envelope-from <joseph.wright@morningstar2.co.uk>) id
+          1LcEw8-0006gU-If for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 25 Feb
+          2009 08:16:12 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+References: <49A453A1.9040000@morningstar2.co.uk>           
+            <FB18C832-EA5E-42F0-9BF7-6853DB79B805@gmail.com>
+            <49A4F031.50405@morningstar2.co.uk>
+Content-Type: text/plain; charset=windows-1253
+Content-Transfer-Encoding: 7bit
+Message-ID:  <49A4FE4F.6040304@morningstar2.co.uk>
+Date:         Wed, 25 Feb 2009 08:16:15 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: Missing expl3 primitives
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <49A4F031.50405@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 25 Feb 2009 08:22:11.0886 (UTC) FILETIME=[28606CE0:01C99722]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5681
+
+Joseph Wright wrote:
+> Okay, I'd suggest all in \toks_ (remembering that we'll need to pick up
+> the primitives not the LaTeX2e versions for l3in2e). I guess we will
+> need to do the same as LaTeX2e for the initex version of expl3, and
+> remove direct access to the primitives in user space?
+
+Thinking again, I'm not sure quite what is best.  Possibilities include
+having a dedicated "every" name-space:
+
+\everyeof	\l_every_eof_toks
+\everypar	\l_every_par_toks
+\everymath	\l_every_math_toks
+
+Splitting into different modules:
+
+\everyeof	\l_ior_eof_toks
+\everypar	\l_<some-module>_par_toks
+\everymath	\l_<some-module>_math_toks
+
+(good modules for these are not obvious)
+
+Putting everything in the toks module:
+
+\everyeof	\l_toks_eof_toks
+\everypar	\l_toks_par_toks
+\everymath	\l_toks_math_toks
+
+Over all, I think I prefer the first option, as these do all go
+together. (If we go for _every_, do we have a very short module
+"l3every" for this? If not, where do these things go?)
+
+There is also the question of whether to provide a wrapper for
+assignment to these, something like:
+
+\cs_new:Npn { \ior_eof_set:n } #1 {
+  \toks_set:Nn \l_ior_eof_toks {#1}
+}
+
+or
+
+\cs_new:Npn { \every_eof_set:n } #1 {
+  \toks_set:Nn \l_every_eof_toks {#1}
+}
+
+I'd probably argue that this is unnecessary.  The \every... toks are all
+quite low-level, and I think that it's perfectly logical if they are
+given _toks names that they are then treated like any other toks.
+-- 
+Joseph Wright
+

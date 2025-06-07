@@ -1,0 +1,139 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3632" "Tue" "26" "October" "1999" "18:40:29" "+0200" "Lars =?iso-8859-1?Q?Hellstr=F6m?=" "Lars.Hellstrom@MATH.UMU.SE" nil "91" "Re: footnote templates (was Experimental `template' interface               code)" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id SAA07307
+	for <schoepf@UNI-MAINZ.DE>; Tue, 26 Oct 1999 18:40:37 +0200 (MET DST)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <13.0C078B17@mail.listserv.gmd.de>; Tue, 26 Oct 1999 18:40:32 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445750 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 26 Oct 1999 18:40:33 +0200
+Received: from abel.math.umu.se (abel.math.umu.se [130.239.20.139]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id SAA22317 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 26 Oct 1999 18:40:30 +0200 (MET
+          DST)
+Received: from [130.239.20.144] (mac144.math.umu.se [130.239.20.144]) by
+          abel.math.umu.se (8.9.2/8.9.2) with ESMTP id SAA27992 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 26 Oct 1999 18:37:56 +0200
+          (CEST)
+X-Sender: lars@abel.math.umu.se
+References: <l03130300b42ca80fac07@[130.239.20.144]>
+            <l03130300b423b9fbbac9@[130.239.20.144]>
+            <199910041250.NAA27424@mimosa.csv.warwick.ac.uk>
+            <199910011238.OAA00640@istrati.zdv.uni-mainz.de>
+            <199910070958.LAA00712@istrati.zdv.uni-mainz.de>
+            <199910081840.UAA01185@istrati.zdv.uni-mainz.de>
+            <l03130300b42ca80fac07@[130.239.20.144]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      relay.urz.uni-heidelberg.de id SAA22323
+Message-ID:  <l03130301b43b845de16b@[130.239.20.144]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199910252203.AAA00837@istrati.zdv.uni-mainz.de>
+Date:         Tue, 26 Oct 1999 18:40:29 +0200
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: footnote templates (was Experimental `template' interface
+              code)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3363
+
+Frank,
+> > >well, current latex already has two for \footnotetext (one being the text
+> > >and
+> > >one being the number to use or \NoValue)
+> >
+> > I would rather have thought that the number should be taken from a counter
+> > that was managed by the template itself, i.e., the template has one key for
+> > name of counter to use and some of the keys which control formatting should
+> > (indirectly) refer to this counter. This makes more sense to me, since
+> > there is no point in having footnote numbers assigned in any other way than
+> > in sequence.
+>
+>right, that would be the normal case, but you might want to allow to have via
+>user manipulation offer to manually freeze the counter value. however in most
+>cases the value passed would indeed be \NoValue indicating to use the internal
+>counter.
+
+A technical case where I later realized it might be needed is that of
+footnotes saved for later typesetting by the template. In that case the
+number has already been assigned.
+
+[snip]
+> > On the other hand, I have now managed to come up with something which, if
+> > it is to be handled by footnote templates, definately should become an
+> > additional argument to the template. Consider the situation that a LaTeX
+> > document containing footnotes is to be typeset as some sort of hypertext.
+> > What is then the most convenient (for the reader) thing to do with the
+> > footnotes? I would think it is to make links for them (click on the link,
+> > get the footnote text on screen). The clickable area of a link in hypertext
+> > is, by convention, longer than the one or two characters used for a
+> > footnote number, and hence a footnote template that typesets footnotes this
+> > way would need an additional "text to make the link text" argument.
+>
+>that is an interesting one.
+>
+>let's forget for a second the template side of this, how would you consider
+>providing an interface for that on the LaTeX level?
+>
+>this is a serious \footnote[question]{Like this? which would of course be
+>incompatible with the current interface.}
+
+Perhaps. But I suspect that a more likely setup is that such linkfootnotes
+would be handled by some special command (\lfootnote ?) and the ordinary
+\footnote would make the number the link text.
+
+>----------------------------
+>
+>here are two more which i was wondering if they should get included:
+>
+>- should refid attributes be passed as arguments, eg instead of the current
+> custom in LaTeX which requires something like
+>   \footnote{\label{foo} ...}
+> pass a label  name via one argument to the template (how or if this is
+> implemented on the LaTeX user front end would be a different matter)
+
+Is this a grouping thing in current LaTeX? In general it seems to be
+possible to handle at the user level command level, i.e., \footnote could
+say
+
+   \UseInstance{footnote} ... % Contains \refstepcounter
+   \label{#n}
+
+>- more something to solve a technical problem (because it is rather difficult
+>  in TeX): have one argument that is a boolean and states that the current
+>  footnote is one in a row of footnotes which belong together
+>  example:
+>
+>  text text\footnote{first}\footnote{second}
+>
+>in most case this would be supposed to come out as
+>
+>            1, 2
+>  text text
+>
+>and not as
+>
+>            12
+>  text text
+>
+>as it would in current LaTeX.
+
+This is an interesting one! It touches another difficulty regarding link
+footnotes, namely that there may be punctuation which should be placed
+between the text made a link and the footnote number. Anyway, I think the
+boolean Frank suggests here should definately be an argument of footnote
+templates.
+
+[snip]
+
+Lars Hellström
+

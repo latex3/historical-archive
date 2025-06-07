@@ -1,0 +1,99 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2464" "Thu" "10" "April" "1997" "20:17:34" "+0200" "Frank Mittelbach" "Frank.Mittelbach@UNI-MAINZ.DE" nil "58" "Re: Small caps is not a shape" "^Date:" nil nil "4" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id WAA05156 for <schoepf@UNI-MAINZ.DE>; Thu, 10 Apr 1997 22:50:08 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.FFC4D9E2@listserv.gmd.de>; Thu, 10 Apr 1997 22:50:06 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 123332 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 22:50:02 +0200
+Received: from kralle.zdv.Uni-Mainz.DE (kralle.zdv.Uni-Mainz.DE [134.93.8.158])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with ESMTP id WAA29693
+          for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Thu, 10 Apr 1997 22:50:01
+          +0200 (MET DST)
+Received: from frank.zdv.uni-mainz.de (Ufrank@localhost) by
+          kralle.zdv.Uni-Mainz.DE (8.8.5/8.8.5) with UUCP id WAA31898 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 10 Apr 1997 22:40:23 +0200
+          (MET DST)
+X-Authentication-Warning: kralle.zdv.Uni-Mainz.DE: Ufrank set sender to
+                         frank.zdv.uni-mainz.de!latex3 using -f
+Received: (from latex3@localhost) by frank.zdv.uni-mainz.de (8.6.9/8.6.9) id
+          UAA02611; Thu, 10 Apr 1997 20:17:34 +0200
+References: <Pine.SOL.3.93.970410115619.27446C-100000@sun2>
+            <9704101247.AA08131@sgibulirsch6.mathematik.tu-muenchen.de>
+Message-ID:  <199704101817.UAA02611@frank.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <9704101247.AA08131@sgibulirsch6.mathematik.tu-muenchen.de>
+Date:         Thu, 10 Apr 1997 20:17:34 +0200
+From: Frank Mittelbach <Frank.Mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Small caps is not a shape
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1918
+
+Johannes Kuester writes:
+ > This is to point at a shortcoming of NFSS2: (I don't know whether
+ > this has already been discussed when designed NFSS)
+
+this has been discussed both during and after development of NFSS2
+
+ > There is such a thing as a slanted/italic small caps font
+ > (see Sebastian Carter's "Typographers on Type" for an example:
+ > it contains a page showing different fonts of the Zapf Renaissance (1986)
+ > family, including such a font).
+
+agreed, calling small caps a shape is a simplification. similariy for
+making, say "outline" a shape
+
+ > So it doesn't seem appropriate to classify small caps as a shape,
+ > rather, I think, it should be considered as a case. Thus resulting
+ > in control sequences like
+ >   \textcaps{...} and {\capscase ...}
+ > or the like, analogous to uppercase and lowercase.
+
+again, agreed in principle; having "case" as a further axis to the FSS
+would be a valid possibility
+
+ > Unfortunaly I can't think of any way to incorporate this easily
+ > in NFSS and especially in its current interface.
+
+it would be easy enough to integrate it in the general model, but
+there are downsides of it as well:
+
+ - no way to integrate it into the specification interface without
+   either a horrible syntax or incompatible changes
+
+ - nfss is designed to model major font use faithfully, adding an
+   additional axis that is only sparsly populated would result in a
+   large number of additional cases where font substitution rules need
+   to be applied. that in turn would either blow up substitution rules
+   ro would result in badly rendered documents.
+
+so as far as latex2e is concerned, there will be no modifications
+(Robin sumarised the reasons for that quite well). I do have plans for
+a different fss that deals more intelligently with encoding issues and
+with substitution. for that implementation a fifth "case" axis will be
+considered (and perhaps even be implemented :-) or perhaps even a more
+general scheme with arbitrarily many axis', although the latter i do
+find still questionable.
+
+to answer Robin's question:
+
+  There are many potential axes that NFSS could have incorporated.  I
+  don't remember enough of the original papers to be sure off hand how
+  the present set were arrived at.
+
+they where derived by emulating common usage taking into account
+available fonts (both TeX and commercials) to arrive at a flexible
+scheme that does work in most cases (while still being implementable
+and manageable
+
+frank
+

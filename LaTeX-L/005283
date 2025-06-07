@@ -1,0 +1,127 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 10 Sep 2008 23:10:06 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8ALA03h022200
+	for <rainer.schoepf@PROTEOSYS.COM>; Wed, 10 Sep 2008 23:10:01 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8AL20TF032512
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 10 Sep 2008 23:02:00 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8AI4G96030740;
+	Wed, 10 Sep 2008 23:01:56 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 33529 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Wed, 10 Sep
+          2008 23:01:56 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8AL1ufP011041 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 23:01:56 +0200
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id m8AL1peY032287 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Wed, 10 Sep 2008 23:01:55 +0200
+Received: from morse.mittelbach-online.de (p4FD4416E.dip.t-dialin.net
+          [79.212.65.110]) by mrelayeu.kundenserver.de (node=mrelayeu4) with
+          ESMTP (Nemesis) id 0ML21M-1KdWox0hwK-0007y9; Wed, 10 Sep 2008
+          23:01:51 +0200
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id 566FE65407; Wed, 10 Sep 2008 23:01:48 +0200 (CEST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <48C57767.9030602@morningstar2.co.uk>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: V01U2FsdGVkX19SayF78Z2hzPrhkD5U84lBWpf3D0DS0BSrXO5
+              NFzwxqzodXBBQVxG7W9kFJPQQaNOV3pyGXZt/6yexqVUvAAPus
+              HMuDAEoe/rR9dK9kUobAJnq0/vkbd1+
+X-Spam-Whitelist-Provider: <frank@mittelbach-online.de>
+Message-ID:  <18632.13756.225135.207821@morse.mittelbach-online.de>
+Date:         Wed, 10 Sep 2008 23:01:48 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: Something like \patchcmd
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <48C57767.9030602@morningstar2.co.uk>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -102.464 () BAYES_00,FORGED_RCVD_HELO,USER_IN_WHITELIST
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 10 Sep 2008 21:10:06.0147 (UTC) FILETIME=[9960B930:01C91389]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5283
+
+Joseph,
+
+ > I've been trying to work out if the current expl3 has anything like
+ > \patchcmd from etoolbox.  
+
+the current expl3 doesn't have something comparible to \patchcmd, not on that
+level of complexity / generality
+
+
+ > Will suggested looking at the various \tlp_
+ > ... macros.  However, even a simple two-part test in this way fails:
+ > 
+ > \documentclass{article}
+ > \usepackage{expl3}
+ > \CodeStart
+ > \cs_if_really_exist:cT{thanks}{
+ >   \tlp_if_in:NnT\thanks{\footnotemark}{
+ >     % Do something
+ >   }
+ >   \tlp_if_in:NnT\thanks{\footnotetext}{
+ >     % Also do something
+ >   }
+ > }
+ > \CodeStop
+ > \begin{document}
+ > \end{document}
+ > 
+ > I guess I'm abusing the functions.  So have I missed something obvious?
+
+well, one thing obvious is \thanks is not a "tlp" variable is it?
+
+more seriously, it is a function expecting one argument and therefore the
+\tlp_if_in:NnT dies a horrible death because when trying to look into \thanks
+it gobbles away the stuff it is looking for as it is not expecting that the
+"tlp" sports arguments ...
+
+so ...
+
+a more general function would be
+
+\def:Npn \cs_if_in:NnT #1#2 
+  {\def_long:Npn \tmp:w ##1#2##2\q_stop {\quark_if_no_value:nF {##2}}
+   \exp_after:NN \tmp:w #1 \q_nil \q_nil \q_nil \q_nil \q_nil \q_nil \q_nil
+                           \q_nil \q_nil  #2 \q_no_value \q_stop }
+
+
+stick that in your example and it doesn't die any longer (\q_nil can be
+anything it is just there to be picked up as arguments if necessary (thus the
+9 incarnations) ... and it is therefore the only thing that can't be searched
+for)
+
+but you will notice that \footnotemark is found but \footnotetext is not. The
+reason being that the latter is hidden within a brace group inside the
+replacement text of \thanks. So perhaps not good enough to be useable for a
+patching task
+
+The \patchcmd does detokenization (loosing catcodes) and then rebuilds the
+code using "current" catcodes, so it is kind of dangerous in situations
+
+ >  The ability to patch existing functions is very handy.
+
+probably is.
+
+frank
+

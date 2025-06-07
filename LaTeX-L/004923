@@ -1,0 +1,83 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 24 Feb 2006 15:25:47 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id k1OEPaoE025702
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 24 Feb 2006 15:25:37 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k1OEOvvj017712;
+	Fri, 24 Feb 2006 15:24:57 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k1O9utK5004082;
+	Fri, 24 Feb 2006 15:22:45 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1353331 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 24 Feb
+          2006 15:22:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k1OEMj7L012309 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 24 Feb 2006 15:22:45 +0100
+Received: from moutng.kundenserver.de (moutng.kundenserver.de
+          [212.227.126.171]) by relay.uni-heidelberg.de (8.13.4/8.13.1) with
+          ESMTP id k1OEMIqP028048 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 24 Feb 2006 15:22:21 +0100
+Received: from [84.169.147.119] (helo=morse.mittelbach-online.de) by
+          mrelayeu.kundenserver.de (node=mrelayeu9) with ESMTP (Nemesis),
+          id 0ML2xA-1FCdq71Lo5-0003Kp; Fri, 24 Feb 2006 15:22:35 +0100
+Received: by morse.mittelbach-online.de (Postfix,
+          from userid 501) id C5F284978E; Fri, 24 Feb 2006 15:22:34 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <200602231927.45843.lehman@gmx.net>
+            <17406.56847.567915.709994@morse.mittelbach-online.de>
+            <17407.3292.411102.175224@isostar.informatik.uni-stuttgart.de>
+X-Mailer: VM 7.19 under Emacs 21.3.1
+X-Provags-ID: kundenserver.de abuse@kundenserver.de
+              login:923c546e49b26a7485eda6910e23f403
+Message-ID:  <17407.5802.704111.204260@morse.mittelbach-online.de>
+Date:         Fri, 24 Feb 2006 15:22:34 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Frank Mittelbach <frank.mittelbach@LATEX-PROJECT.ORG>
+Subject: Re: [latex/3844] uc/lccode controls in inputenc?
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17407.3292.411102.175224@isostar.informatik.uni-stuttgart.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 24 Feb 2006 14:25:47.0973 (UTC) FILETIME=[349F5F50:01C6394E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4923
+
+thanks Bernd for adding the details to what I said.
+
+one comment on using eTeX (or friends)
+
+ > What is needed to make this work is add the assignment of this new
+ > e-TeX register when loading hyphenation patterns.  In addition one has
+ > to check the "correct" lccode settings for each language at that time.
+ > 
+ > 
+ > But this will not solve the problem for standard TeX.  For TeX the
+ > current LaTeX approach is fine.
+
+that is correct and would resolve the problem that currently forces T1 as the
+only lc table in LaTeX (but it requires a different code base for language to
+deal with those patterns).
+
+but it wouldn't solve the problem of allowing \uppercase or \lowercase as
+those act on the input encoding which is not being managed by this eTeX
+mechanism and you can't chose one lc table during input encoding conversion
+and a different one during output encoding conversion as there may be no place
+to gain control again is the TeX primitive \lowercase is used directly in
+typesetting
+
+eg font encoding is T1 input encoding is UTF8
+
+  foo \lowercase{BAR} base \par
+
+frank
+

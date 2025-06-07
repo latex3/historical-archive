@@ -1,0 +1,99 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id r6HEIfL6020233
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Wed, 17 Jul 2013 16:18:41 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.4) with ESMTP id r6HEICvW007073;
+	Wed, 17 Jul 2013 16:18:12 +0200
+Received: from mail-wi0-f169.google.com (mail-wi0-f169.google.com
+	[209.85.212.169])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.4) with ESMTP id
+	r6HEI8Np007052
+	(version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+	for <latex-team@latex-project.org>; Wed, 17 Jul 2013 16:18:10 +0200
+Received: by mail-wi0-f169.google.com with SMTP id c10so5503457wiw.0
+	for <latex-team@latex-project.org>;
+	Wed, 17 Jul 2013 07:18:03 -0700 (PDT)
+X-Received: by 10.180.182.228 with SMTP id eh4mr16079634wic.42.1374070683533; 
+	Wed, 17 Jul 2013 07:18:03 -0700 (PDT)
+Received: from [139.222.114.129] (che12-j-wright1.che.uea.ac.uk.
+	[139.222.114.129]) by mx.google.com with ESMTPSA id
+	nb12sm35392358wic.7.2013.07.17.07.18.01
+	for <latex-team@latex-project.org>
+	(version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+	Wed, 17 Jul 2013 07:18:02 -0700 (PDT)
+Message-ID: <51E6A798.3090503@morningstar2.co.uk>
+Date: Wed, 17 Jul 2013 15:18:00 +0100
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64;
+	rv:17.0) Gecko/20130620 Thunderbird/17.0.7
+MIME-Version: 1.0
+To: "latex-team@latex-project.org" <latex-team@latex-project.org>
+Subject: Re: Michiel Helvensteijn's ideas
+References: <51E5AE74.7080503@morningstar2.co.uk>
+	<3FBE1311-1DC2-4869-840B-D4A14F9F1E52@mittelbach-online.de>
+	<51E68CB1.50005@morningstar2.co.uk>
+	<95E8CD96-CD84-407A-9200-40E3B15BD9E5@gmail.com>
+In-Reply-To: <95E8CD96-CD84-407A-9200-40E3B15BD9E5@gmail.com>
+X-DANTE-Spam-Score: -1.649 () BAYES_00, DKIM_SIGNED, DKIM_VALID,
+	FREEMAIL_ENVFROM_END_DIGIT, FREEMAIL_FROM, SPF_PASS,
+	URIBL_BLOCKED
+X-Scanned-By: MIMEDefang 2.69 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.69 on 176.28.54.184
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.13
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: latex-team-bounces@latex-project.org
+Errors-To: latex-team-bounces@latex-project.org
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7258
+
+On 17/07/2013 13:32, Will Robertson wrote:
+> On 17/07/2013, at 9:53 PM, Joseph Wright <joseph.wright@morningstar2.co.uk> wrote:
+> 
+>> No, far too esoteric for me. We worked hard to cut down on the number of
+>> arg types in the refactor, and I'm not sold on the idea of adding any
+>> more back in.
+> 
+> Agreed. 
+> 
+> The one thing I've been keeping in the back of my mind is that as the number of functions that use \romannumeral increases the more justification there would be to reintroduce the "double" expansion arg spec. But I'm not sure if we're at the point yet (or if ever). 
+> 
+> W
+
+The \romannumeral trick is not the same as the old "d" specifier, not
+the triple ("e"?) one. Using \romannumeral ensures expansion in two
+steps provided whatever is after the \romannumeral is
+appropriately-designed. That's f-type expansion if you want to use it
+via \exp_args:N..., but there are places it's handy to build directly
+into code at the kernel level.
+
+The old d-type was an \expandafter chain:
+
+  \cs_new:Npn \exp_args:Nd #1#2
+    {
+      \exp_after:wN \exp_after:wN \exp_after:wN #1
+        \exp_after:wN \exp_after:wN \exp_after:wN {#2}
+    }
+
+which is a very different thing as it only expands the first token in #2
+(and the expansion of #2).
+
+Joseph
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

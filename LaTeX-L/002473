@@ -1,0 +1,119 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2772" "Wed" "15" "October" "1997" "12:51:53" "-0600" "Nelson H. F. Beebe" "beebe@MATH.UTAH.EDU" nil "79" "Possible bug in LaTeX 2e amsmath package" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id UAA18360;
+	Wed, 15 Oct 1997 20:58:52 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.FEF53025@listserv.gmd.de>; Wed, 15 Oct 1997 20:54:30 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 215911 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 15 Oct 1997 20:52:03 +0200
+Received: from csc-sun.math.utah.edu (root@csc-sun.math.utah.edu
+          [128.110.198.2]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id UAA15517 for <latex-l@relay.urz.uni-heidelberg.de>; Wed, 15
+          Oct 1997 20:51:56 +0200 (MET DST)
+Received: from plot79.math.utah.edu (beebe@plot79.math.utah.edu
+          [128.110.198.3]) by csc-sun.math.utah.edu (8.8.5/8.8.5) with ESMTP id
+          MAA01090; Wed, 15 Oct 1997 12:51:54 -0600 (MDT)
+Received: (from beebe@localhost) by plot79.math.utah.edu (8.8.5/8.8.5) id
+          MAA28793; Wed, 15 Oct 1997 12:51:53 -0600 (MDT)
+X-US-Mail: "Center for Scientific Computing, University of Utah,
+           155 S 1400 E RM 233, Salt Lake City, UT 84112-0090, USA"
+X-Telephone: +1 801 581 5254
+X-FAX: +1 801 581 4148
+X-URL: http://www.math.utah.edu/~beebe
+Message-ID:  <CMM.0.91.0.876941513.beebe@plot79.math.utah.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Wed, 15 Oct 1997 12:51:53 -0600
+From: "Nelson H. F. Beebe" <beebe@MATH.UTAH.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Possible bug in LaTeX 2e amsmath package
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2473
+
+Consider the following simple file:
+
+% -*-latex-*-
+% Document name: /tmp/foo.ltx
+% Creator: Nelson H. F. Beebe [beebe@plot79.math.utah.edu]
+% Creation Date: Wed Oct 15 12:13:15 1997
+\documentclass[]{article}
+
+\documentclass[]{article}
+
+\usepackage[]{amsmath}
+
+\newenvironment{fancyequation}
+               {\hrule \begin{equation}}
+               {\end{equation}\hrule}
+
+\begin{document}
+
+  \begin{fancyequation}
+ a = b
+  \end{fancyequation}
+
+\end{document}
+
+When I run it on my local TeX system, or on the TeXlive one, I get an error:
+
+$ /cdrom/texlive/bin/sparc-solaris2.5/latex foo.ltx
+This is TeX, Version 3.14159 (Web2c 7.0)
+(foo.ltx
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for american, english, french, dutch,
+ge
+rman, loaded.
+(/cdrom/texlive/share/texmf/tex/latex/base/article.cls
+Document Class: article 1996/10/31 v1.3u Standard LaTeX document class
+(/cdrom/texlive/share/texmf/tex/latex/base/size10.clo))
+(/cdrom/texlive/share/texmf/tex/latex/amslatex/amsmath.sty
+(/cdrom/texlive/share/texmf/tex/latex/amslatex/amstext.sty
+(/cdrom/texlive/share/texmf/tex/latex/amslatex/amsgen.sty))
+(/cdrom/texlive/share/texmf/tex/latex/amslatex/amsbsy.sty)
+(/cdrom/texlive/share/texmf/tex/latex/amslatex/amsopn.sty)) (foo.aux)
+Runaway argument?
+
+! Paragraph ended before \equation was complete.
+<to be read again>
+                   \par
+l.18
+
+If I comment out the \usepackage command, it works as expected:
+
+$ /cdrom/texlive/bin/sparc-solaris2.5/latex foo.ltx
+This is TeX, Version 3.14159 (Web2c 7.0)
+(foo.ltx
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for american, english, french, dutch,
+ge
+rman, loaded.
+(/cdrom/texlive/share/texmf/tex/latex/base/article.cls
+Document Class: article 1996/10/31 v1.3u Standard LaTeX document class
+(/cdrom/texlive/share/texmf/tex/latex/base/size10.clo)) (foo.aux) [1]
+(foo.aux)
+ )
+Output written on foo.dvi (1 page, 312 bytes).
+Transcript written on foo.log.
+
+Is this exposing a bug in the implementation of \end{equation} in
+the amsmath package?
+
+Ordinarily, there should be no problem in using an \end{environment}
+inside the definition of another macro.
+
+----------------------------------------------------------------------------
+- Nelson H. F. Beebe                  Tel: +1 801 581 5254                 -
+- Center for Scientific Computing     FAX: +1 801 581 4148                 -
+- University of Utah                  Internet e-mail: beebe@math.utah.edu -
+- Department of Mathematics, 105 JWB                   beebe@acm.org       -
+- 155 S 1400 E RM 233                                  beebe@ieee.org      -
+- Salt Lake City, UT 84112-0090, USA  URL: http://www.math.utah.edu/~beebe -
+----------------------------------------------------------------------------
+

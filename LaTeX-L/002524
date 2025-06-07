@@ -1,0 +1,115 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4514" "Tue" "4" "November" "1997" "09:39:52" "+0200" "P.W.Daly, MPAe, Lindau, Germany" "daly@LINPWD.MPAE.GWDG.DE" nil "83" "natbib overview" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id JAA30634;
+	Tue, 4 Nov 1997 09:47:59 +0100 (MET)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.705284EF@listserv.gmd.de>; Tue, 4 Nov 1997 9:42:33 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 228665 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 4 Nov 1997 09:39:56 +0100
+Received: from linpwd (linpwd.mpae.gwdg.de [134.76.28.202]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with SMTP id JAA16851 for
+          <LATEX-L@relay.urz.uni-heidelberg.de>; Tue, 4 Nov 1997 09:39:52 +0100
+          (MET)
+X-VMS-To: SMTP%"LATEX-L@relay.urz.uni-heidelberg.de"
+X-VMS-Cc: DALY
+Message-ID:  <97110409395258@linpwd.mpae.gwdg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 4 Nov 1997 09:39:52 +0200
+From: "P.W.Daly, MPAe, Lindau, Germany" <daly@LINPWD.MPAE.GWDG.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      natbib overview
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2524
+
+In the discussion on standardizing a journal class, my natbib package has
+been frequently mentioned (positively, thank heavens), mainly by
+Sebastian and Phillip. I would like give a brief overview of it for those
+who are unfamiliar to it. Sebastian did ask me some time ago to write a
+TUGboat article on it, and, well, that is still on my todo list.
+
+Natbib.sty was originally made up to handle author-year citations. In
+this sense, it was far from the first such package. There were apalike,
+newapa, chicago, harvard, named, and so on. Each of these had its own bst
+files, which could only be used with that package. New \cite commands
+were necessary in every case, if only to distinguish between citations
+in text like Jones et al. [1995]. and parenthetical ones
+[Jones, et al. 1995]. That is the basic requirement for author-year
+citation (which apalike does not even fulfill). Additional requirements
+are commands for authors only, year only, both citation variants with
+full author list [Jones, Baker, Williams, and Gouge, 1995]. Chicago and
+especially harvard can handle these. But: each one has a different set of
+\cite variants to this. In that sense, natbib is no better, for it uses
+yet another set.
+
+However, natbib has developed further to have two main advantages over
+chicago and harvard: 1: it can read bst files intended for the other
+packages; 2: it can switch between numerical and author-year citation
+mode.
+
+Under point 1: natbib can even read plain.bst and the other numerical
+styles, but then can only produce numerical citations. I provided
+plainnat.bst, unsrtnat.bst, and abbrvnat.bst as natbib replacements for 3
+of the 4 standard bst files that can be used with either numerical or
+author-year citations.
+
+Point 2 means that one can write
+  the argument of Bright [1984] has been refuted [Smith et al. 1995]
+for author-year citation mode, and if one changes to numerical citations
+by selecting a \usepackage option, one gets, without any further change
+in the source text,
+  the argument of Bright [23] has been refuted [54]
+(This requires that one uses an author-year bst, but any one will do,
+even those intended for harvard or chicago.)
+
+It is safe to say that natbib can do anything the other packages can do,
+and more. Some people might object, saying harvard can give citations
+with full author lists on the first citations, and short lists
+afterwards, whereas natbib can do this, but not automatically. I can
+refute this simply by saying that version 6.7, which is about to be
+released, also has this automatic feature.
+
+Phillip has talked about the natbib native format for \bibitem, which
+looks like this:
+ \bibitem[Jones et al.(1995)Jones, Baker, Williams, and Gouge]{key}...
+This can only be used with natbib.sty; none of the others will treat
+this right. However, if natbib were to become quasi-standard, this is no
+problem. The only thing that worries me is that if I were starting from
+scratch today, I would invent \natbibitem with three clearly separated
+arguments for the year, short and full lists. As it is, I rely on the
+parentheses to act as delimiters to separate the three parts of the
+citation information, something that could cause trouble if an author's
+name contains parentheses. I have talked to Oren Patashnik about this,
+and there is a tendency to put square brackets into first names to
+indicate how the name abbreviated. I am toying with the idea of switching
+to \natbibitem once BibTeX 1.00 comes out. But of course, older syntaxes
+would still have to be supported.
+
+My other major contribution to bibliographying is   custom-bib  or
+makebst. This allows one to make up bst files from a gigantic master by
+selectively taking lines of code, governed by a set of options. An
+interactive menu system helps select these options, putting them into a
+docstrip batch job file, for future editing/correcting or rerunning on
+updates to the master file. There are over 100 options available, with
+the number growing.
+
+This will do for an overview. Now I should concentrate on writing the
+TUGboat articles, or getting the latest versions of natbib /makebst
+online.
+
+Patrick
+-----------------------------------------------------------------------------
+   Dr. Patrick W. Daly                    Tel. [+49] 5556-979-279
+   Max-Planck-Institut fuer Aeronomie     Fax. [+49] 5556-979-240
+   Max-Planck-Str. 2
+   D-37191 Katlenburg-Lindau              Internet: daly@linmpi.mpg.de
+   Germany
+-----------------------------------------------------------------------------
+

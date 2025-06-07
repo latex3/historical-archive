@@ -1,0 +1,95 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2273" "Sat" "6" "November" "1999" "14:44:37" "-0500" "William F. Hammond" "hammond@CSC.ALBANY.EDU" nil "60" "math set builder notation" "^Date:" nil nil "11" nil nil nil nil nil]
+	nil)
+Received: from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5])
+	by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id UAA11169
+	for <schoepf@UNI-MAINZ.DE>; Sat, 6 Nov 1999 20:44:44 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.36029407@mail.listserv.gmd.de>; Sat, 6 Nov 1999 20:44:40 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 445429 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sat, 6 Nov 1999 20:44:33 +0100
+Received: from sarah.albany.edu (sarah.albany.edu [169.226.1.103]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id UAA27270 for
+          <LATEX-L@urz.uni-heidelberg.de>; Sat, 6 Nov 1999 20:44:31 +0100 (MET)
+Received: from hilbert.math.albany.edu (hilbert.math.albany.edu
+          [169.226.23.52]) by sarah.albany.edu (8.9.3/8.9.3) with ESMTP id
+          OAA02394 for <LATEX-L@urz.uni-heidelberg.de>; Sat, 6 Nov 1999
+          14:44:35 -0500 (EST)
+Received: (from hammond@localhost) by hilbert.math.albany.edu (8.9.3/8.9.3) id
+          OAA03745 for LATEX-L@urz.uni-heidelberg.de; Sat, 6 Nov 1999 14:44:37
+          -0500 (EST)
+Message-ID:  <199911061944.OAA03745@hilbert.math.albany.edu>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Sat, 6 Nov 1999 14:44:37 -0500
+From: "William F. Hammond" <hammond@CSC.ALBANY.EDU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      math set builder notation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3390
+
+It is difficult for me to write about these things, as I've said
+before, because I have not looked into writing packages.  My point
+of view is that of writing a formatter for an XML application that
+makes humanoid, interceptable LaTeX source.
+
+As I understand it, the goal for LaTeX 3 is to have several layers,
+with well-defined LaTeX specs, including a layer for users to create
+commands with \newcommand, a layer one level down for package writers,
+and further lower layers although I am unclear about just what these
+are.
+
+Case in point: a command for users (only in a math mode)
+
+               \setbuilder{arg1}{arg2}
+
+that produces a notational definition of a mathematical set, where
+arg1 is a parameter expression and arg2 is a defining-condition
+expression.
+
+I would like to explain why this is a bit much to expect at the
+\newcommand level and, therefore, what one might want to have
+available at the package writer's level as a well-defined
+LaTeX method.
+
+With the present "\newcommand" one can do the following *ugly* thing:
+
+    \newcommand{\setbuilder}[2]{\left\{{#1}\mid{#2}\right\}}
+
+This is ugly because the vertical bar provided by \mid does not
+stretch correctly.
+
+For example, a user's invocation of
+
+              \[ \setbuilder{\frac{m}{n}}{n \neq 0} \]
+
+should be equivalent to
+
+      \[ \left\{ \left. \frac{m}{n} \right| n \neq 0 \right\} \]
+
+because, in this example, the box height for the parameter expression
+is greater than that of the defining-condition expression.
+
+Of course, if the larger of the two box heights was that of the
+defining condition, then one would want different arrangements for the
+inner \left,\right pair, i.e.,
+
+  parameter-expression \left| defining-condition-expression \right.
+
+and one wants \setbuilder handle this branching automatically.  My
+impression is that it cannot be done legally with \newcommand.
+
+I am suggesting that one might want to have the package writing layer
+provide a well-defined LaTeX way to make branches based on various
+sizes associated with the arguments of package-provided commands, so
+that it would be easy for a package writer to provide this \setbuilder.
+(I do not know if it actually exists somewhere, and I am not asking
+that question.)
+
+                                   -- Bill
+

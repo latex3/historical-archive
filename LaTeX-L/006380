@@ -1,0 +1,103 @@
+Received: from comedy.dante.de (comedy.dante.de [80.237.159.15])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with ESMTP id o8FJwtL9028559
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Wed, 15 Sep 2010 21:58:57 +0200
+Received: from comedy.dante.de (localhost. [127.0.0.1])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.2) with ESMTP id o8FJwBZT011657;
+	Wed, 15 Sep 2010 21:58:12 +0200
+Received: from lon1-post-1.mail.demon.net (lon1-post-1.mail.demon.net
+	[195.173.77.148])
+	by comedy.dante.de (8.14.3/8.14.3/Debian-9.2) with ESMTP id
+	o8FJw60s011650
+	for <latex-team@latex-project.org>; Wed, 15 Sep 2010 21:58:07 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+	by lon1-post-1.mail.demon.net with esmtp (Exim 4.69)
+	id 1Ovy7K-0002RS-Xl
+	for latex-team@latex-project.org; Wed, 15 Sep 2010 19:58:06 +0000
+Message-ID: <4C91254D.50209@morningstar2.co.uk>
+Date: Wed, 15 Sep 2010 20:58:05 +0100
+From: Joseph Wright <joseph.wright@morningstar2.co.uk>
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB;
+	rv:1.9.2.8) Gecko/20100802 Thunderbird/3.1.2
+MIME-Version: 1.0
+To: LaTeX Team <latex-team@latex-project.org>
+Subject: Re: Allocation of registers
+References: <19109.1284579373@cl.cam.ac.uk>
+	<4C9122A1.4060008@morningstar2.co.uk>
+	<4C91239B.2040301@morningstar2.co.uk>
+In-Reply-To: <4C91239B.2040301@morningstar2.co.uk>
+X-DANTE-Spam-Score: -1.9 () BAYES_00
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.13
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+	<mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+Sender: latex-team-bounces@latex-project.org
+Errors-To: latex-team-bounces@latex-project.org
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6380
+
+On 15/09/2010 20:50, Joseph Wright wrote:
+> On 15/09/2010 20:46, Joseph Wright wrote:
+>> On 15/09/2010 20:36, Robin Fairbairns wrote:
+>>>> I guess for the time being that is a good approach
+>>>
+>>> is there an actual reason that inserts can't start working down from
+>>> 64k?
+>>>
+>>> etex.sty can't do this, because the basic set of inserts has been
+>>> allocated by the time it gets to run, and that plainly isn't a
+>>> constraint on latex 3. but does it matter for expl3?
+>>>
+>>> (i have once spent time on thinking this issue through, but i'm not well
+>>> -- still -- and can't remember what conclusion i came to.)
+>>>
+>>> robin
+>>
+>> At a format level we don't currently have any allocation routine for
+>> inserts at all, as we've not used them :-) On the other hand, expl3 is
+>> 'LaTeX3 on 2e' so has exactly the same requirements as etex. (Indeed,
+>> the whole reason for simply using etex for allocation in expl3 as a
+>> package is that it avoided making errors in the interaction with the
+>> LaTeX2e allocation routine.)
+>
+> I also notice that the e-TeX manual says
+>
+> 'The additional registers, numbered 256=9632767, can be used exactly as
+> the first 256, except that they can not be used for insertion classes.'
+>
+> and also
+>
+> 'The additional registers are realized as sparse arrays built from TEX=92s
+> main memory and are therefore less efficient.'
+>
+> (Not sure if the later means in terms of speed or in terms of memory use.)
+
+This is all a bit disturbing in a LaTeX3 context, as the current =
+
+allocation approach does not take account of this at all! (Of course, =
+
+this is only an issue when building a format, but one day ...) I guess =
+
+it suggests that we should reserve a block for inserts, and on the basis =
+
+that you can never reserve enough space (history warns us) pushing most =
+
+allocations to the extended pool.
+
+Joseph
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

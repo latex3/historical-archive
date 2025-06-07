@@ -1,0 +1,98 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Thu, 24 May 90 13:45:00 GMT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: "Chris Rowley - Open University UK (R01/Maths)" <CA_ROWLEY@VAX.ACS.OPEN.AC.UK>
+Subject:      Parameters/attributes
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 110
+
+A few comments on Leslie's suggestion.  These arise from my having
+used this idea, in a somewhat ad hoc way, for some commands and
+environments (Frank has seen some of these: perhaps that is what put
+him off the idea!).
+
+> Here's an idea I just had about parameters.   How about giving
+> every environment an optional argument, and letting
+>
+>   \begin{foo}[args] ... \end{foo}
+>
+> effectively expand to {\foo args ...  }.
+My interpretaion of this is that \foo would be expanded and "obeyed"
+before  args  is "examined".
+
+I think that args must be stored (probably in a token register)
+so that \foo can "analyse" it and use the "information' it contains.
+
+> The user could put arbitrary declarations,...
+                     ^^^^^^^^
+I hope not!  I understand the point that it would be much more
+flexible: but is that always desirable?
+
+> * It re-uses an existing concept (declarations) rather than introducing
+>   a new one (parameters).
+That was (apart from ease of coding) my reason for using this form.
+
+> * It is more powerful.  For example, one can write
+>
+>       \begin{itemize}[\ifthenelse{\journalversion}{\runin}{\compact}]
+I think this just an example of its flexibility, but maybe that is the
+same as "power".
+
+> * It makes it easy for user-defined environments to employ parameters.
+>   A command \optionalargs in the environment definition would expand
+>   to the contents of the optional argument.
+This seems to agree with my suggestion above.
+
+> * It makes changing ALL parameters for an environment much nicer.  For
+>    example, to change \arraycolsep for a single array, one must now write
+>
+>      {\setlength{\arraycolsep}{...}\begin{array}[t]...
+>
+>   With my proposal, one would write
+>
+>      \begin{array}[\top \setlength...]
+Is this not flexibility yet again?
+
+> * It extends easily to commands--including user-defined commands.
+>   For example:
+>
+>     \section [\nonumber
+>               \renewcommand{\tochead}{Gnats and Gnus Forever}%
+>               \renewcommand{\runninghead}{Gnats and Gnus}]%
+>              {Gnats and Gnus: The Example Goes on Forever}
+This is very similar to one of my uses: but it demonstrates, along
+with the other examples, that there needs to be clear rules for what
+can be put in the [...]s: some things could be disatrous.
+
+>    Of course, \renewcommand{\foo}{...} could probably be replaced
+>    by something nicer, like \set{foo}{...}.
+I agree stongly.
+
+> * It is trivial to implement.  (Hence, less likely to have bugs.)
+I agree, but how trivial depends on exactly what is allowed and how
+careful you need to be that something disatrous is not present.
+
+> In principle, all the advantages of my scheme could be incorporated
+> into parameters.  One should be able to write
+>
+>      \begin{itemize|topsep=12pt|tick=---}
+>
+> However, imagine trying to implement that in TeX!
+Some people I know implement things like this in TeX 20 times before
+breakfast (I gues it beats jogging!).
+
+chris
+
+PS: Having said all that I must now come clean and admit that I am not
+very happy with using an optional argument in this way because:
+
+One of my goals for 3.0 was th elimination of "trailing optional
+arguments": I am very happy with \foo[...]{...}, but think that
+\foo{...}[...] and \begin{foo}[...] should be swept away to produce a
+"leaner, cleaner" user interface.
+
+

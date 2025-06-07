@@ -1,0 +1,190 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6180" "Mon" "16" "June" "1997" "22:04:41" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "150" "[Bug Report] Problem with INPUTENC package and TOC files." "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id UAA12695; Mon, 16 Jun 1997 20:04:52 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <3.039AF278@listserv.gmd.de>; Mon, 16 Jun 1997 20:04:51 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 154383 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 16 Jun 1997 20:04:44 +0200
+Received: from cc.vsu.ru (root@[194.226.29.62]) by relay.urz.uni-heidelberg.de
+          (8.7.6/8.7.4) with ESMTP id UAA17935 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 16 Jun 1997 20:04:20
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.5-MVC-230497/8.8.5) with UUCP
+          id WAA17925 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 16 Jun 1997
+          22:02:30 +0400
+Received: from vvv (vvv@localhost [127.0.0.1]) by vvv.vrn.ru (8.8.5/8.8.5) with
+          SMTP id WAA01726 for <vucnit!RELAY.URZ.UNI-HEIDELBERG.DE!LATEX-L>;
+          Mon, 16 Jun 1997 22:04:42 +0400
+X-Mailer: Mozilla 3.01Gold (X11; I; Linux 2.1.42 i586)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID:  <33A58039.13FF48F5@vvv.vsu.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Mon, 16 Jun 1997 22:04:41 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      [Bug Report] Problem with INPUTENC package and TOC files.
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2060
+
+Hello,
+
+I've got some problem with inputenc package.
+Consider the following LaTeX document:
+
+------- x8 ------- x8 ------- x8 -------
+\documentclass{article}
+
+\usepackage[russian]{babel}
+
+% We use one of the following packages to translate koi8 -> LCY.
+\usepackage[koi8]{inputenc}
+%\usepackage{koi2alt}
+
+\begin{document}
+
+\tableofcontents
+
+\section{ ... } % Here the section name consists of russian letters
+                %    (with codes > 0x80).
+
+....            % The body of the article is also in koi-8 encoding
+
+\section{ ... } % Here we also have russian section name.
+
+....
+
+\end{document}
+------- x8 ------- x8 ------- x8 -------
+
+The document is written whole in Russian, the russian text is in koi-8 encoding.
+We use two ways to translate the input encoding (koi8-r) into TeX's internal encoding
+(LCY): the first one uses inputenc package (which seems to be preferrable),
+and the second one also uses some hacks with active characters (see below).
+The file koi8.def, used for inputenc, has the following structure:
+
+------- x8 ------- x8 ------- x8 -------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesFile{koi8.def}[1996/10/12 koi8-r to cp-866 translation]
+
+\DeclareInputText{"0E1}{\CYRA}
+\DeclareInputText{"0E2}{\CYRB}
+
+...
+
+\DeclareInputText{"0DC}{\CYRerev}
+\DeclareInputText{"0C0}{\CYRyu}
+\DeclareInputText{"0D1}{\CYRya}
+------- x8 ------- x8 ------- x8 -------
+
+The file koi2alt.sty has the following structure:
+
+------- x8 ------- x8 ------- x8 -------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{koi2alt}[1996/10/06 koi8-r to cp-866 translation]
+
+\catcode`^^F7\active\let ^^F7=^^82
+\catcode`^^F0\active\let ^^F7=^^8F
+
+...
+
+------- x8 ------- x8 ------- x8 -------
+
+Now about the problem. When I use the first approach (i.e. inputenc package),
+the first pass goes Ok, but I get an error on the second pass of the document
+due to undefined control sequence (\IeC).
+
+AUX file after the first pass:
+
+------- x8 ------- x8 ------- x8 -------
+\relax
+\select@language{russian}
+\@writefile{toc}{\select@language{russian}}
+\@writefile{lof}{\select@language{russian}}
+\@writefile{lot}{\select@language{russian}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}\IeC {^^8f}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^a0}\IeC {^^ef} \IeC {^^e7}\IeC {^^a0}\IeC {^^e1}\IeC {^^e2}\IeC {^^ec}}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}\IeC {^^8f}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^a0}\IeC {^^ef} \IeC {^^e1}\IeC {^^a5}\IeC {^^aa}\IeC {^^e6}\IeC {^^a8}\IeC {^^ef} \IeC {^^a2}\IeC {^^ad}\IeC {^^e3}\IeC {^^e2}\IeC {^^e0}\IeC {^^a8} \IeC {^^af}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^ae}\IeC {^^a9} \IeC {^^e7}\IeC {^^a0}\IeC {^^e1}\IeC {^^e2}\IeC {^^a8}}{1}}
+------- x8 ------- x8 ------- x8 -------
+
+TOC file after the first pass:
+
+------- x8 ------- x8 ------- x8 -------
+\select@language {russian}
+\contentsline {section}{\numberline {1}\IeC {^^8f}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^a0}\IeC {^^ef} \IeC {^^e7}\IeC {^^a0}\IeC {^^e1}\IeC {^^e2}\IeC {^^ec}}{1}
+\contentsline {section}{\numberline {2}\IeC {^^8f}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^a0}\IeC {^^ef} \IeC {^^e1}\IeC {^^a5}\IeC {^^aa}\IeC {^^e6}\IeC {^^a8}\IeC {^^ef} \IeC {^^a2}\IeC {^^ad}\IeC {^^e3}\IeC {^^e2}\IeC {^^e0}\IeC {^^a8} \IeC {^^af}\IeC {^^a5}\IeC {^^e0}\IeC {^^a2}\IeC {^^ae}\IeC {^^a9} \IeC {^^e7}\IeC {^^a0}\IeC {^^e1}\IeC {^^e2}\IeC {^^a8}}{1}
+------- x8 ------- x8 ------- x8 -------
+
+Transcript file of the second pass:
+
+------- x8 ------- x8 ------- x8 -------
+This is TeX, Version 3.1415N (C version 6.1)
+(istina.tex
+LaTeX2e <1996/12/01> patch level 1
+Babel <v3.6h> and hyphenation patterns for russian, english, loaded.
+(/usr/lib/texmf/tex/latex/latex/article.cls
+Document Class: article 1996/10/31 v1.3u Standard LaTeX document class
+(/usr/lib/texmf/tex/latex/latex/size10.clo))
+(/usr/lib/texmf/tex/latex/babel/babel.sty
+(/usr/lib/texmf/tex/latex/babel/russianb.ldf
+(/usr/lib/texmf/tex/latex/babel/babel.def)
+(/usr/lib/texmf/tex/latex/babel/LCYenc.def)))
+(/usr/lib/texmf/tex/latex/babel/cyrmath.sty)
+(/usr/lib/texmf/tex/latex/latex/inputenc.sty beta test version (koi8.def))
+(istina.aux (/usr/lib/texmf/tex/latex/babel/LCYcmr.fd)) (istina.toc
+! Undefined control sequence.
+<argument> ^^8f
+
+l.2 ...{^^a0}\IeC {^^e1}\IeC {^^e2}\IeC {^^ec}}{1}
+
+? No pages of output.
+Transcript written on istina.log.
+------- x8 ------- x8 ------- x8 -------
+
+[ Bug report finished ]
+However, if I use the second approach (with koi2alt.sty), the results are correct.
+There are no errors detected, and I get correct table of contents.
+
+AUX file after the first pass:
+
+------- x8 ------- x8 ------- x8 -------
+\relax
+\select@language{russian}
+\@writefile{toc}{\select@language{russian}}
+\@writefile{lof}{\select@language{russian}}
+\@writefile{lot}{\select@language{russian}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}^^f0^^c5^^d2^^d7^^c1^^d1 ^^de^^c1^^d3^^d4^^d8}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}^^f0^^c5^^d2^^d7^^c1^^d1 ^^d3^^c5^^cb^^c3^^c9^^d1 ^^d7^^ce^^d5^^d4^^d2^^c9 ^^d0^^c5^^d2^^d7^^cf^^ca ^^de^^c1^^d3^^d4^^c9}{1}}
+------- x8 ------- x8 ------- x8 -------
+
+TOC file after the first pass:
+
+------- x8 ------- x8 ------- x8 -------
+\select@language {russian}
+\contentsline {section}{\numberline {1}^^f0^^c5^^d2^^d7^^c1^^d1 ^^de^^c1^^d3^^d4^^d8}{1}
+\contentsline {section}{\numberline {2}^^f0^^c5^^d2^^d7^^c1^^d1 ^^d3^^c5^^cb^^c3^^c9^^d1 ^^d7^^ce^^d5^^d4^^d2^^c9 ^^d0^^c5^^d2^^d7^^cf^^ca ^^de^^c1^^d3^^d4^^c9}{1}
+------- x8 ------- x8 ------- x8 -------
+
+Note also, that AUX and TOC files in the second approach look better (more readable),
+than in the first approach. I mean, that there are no `foreign' macroses appear in these files.
+And if I use emTeX with apropriate options, then I will have also *readable* russian characters
+(instead of `escape sequences' like ^^f0).
+
+There will be NO errors in the first approach (with inputenc package), if I will not use
+\tableofcontents. So, there is probably an bug in TOC file handling (no definition
+of \IeC macro is given). Also, is it possible to change inputenc similar to
+the second approach (in order to have more readable LOG files)?
+
+--
+With best regards,
+                   Vladimir.
+

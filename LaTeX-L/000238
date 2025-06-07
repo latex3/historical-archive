@@ -1,0 +1,966 @@
+Received: by nummer-3.proteosys 
+	id <01C19442.D449C254@nummer-3.proteosys>; Thu, 3 Jan 2002 11:38:49 +0100
+MIME-Version: 1.0
+x-vm-v5-data: ([nil nil nil nil nil nil nil t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19442.D449C254"
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject:      LaTeX, BibTeX, databases, \bibitem, front matter
+Date: Tue, 9 Oct 1990 11:39:45 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE1F9@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: <David_Rhead@VME.CCC.NOTTINGHAM.AC.UK>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+To: "Rainer Schoepf" <JL2@DHDURZ1.uucp>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@unido.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 238
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19442.D449C254
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Frank forwarded some mail from Nico about BibTeX etc.
+
+
+BIBLIOGRAPHIC DATABASE?
+
+I agree with Nico's comment about BibTeX not being a database management
+system.  I have the impression that some research workers really want a
+system that will not only contain author, date, etc. for a paper/book,
+but also a copy of the abstract and perhaps some reminders to =
+themselves.
+Thus, they want something that will both
+(1) help (by supplying bibliographic details) when they are in the =
+process
+    of writing a paper
+and
+(2) help them to search through all the papers they've ever read
+    until they come to something that is about a particular subject.
+    E.g. "give me all the papers about X", "what was that paper about =
+Y?".
+
+It's unfortunate that Lamport/Patashnik used the term "bibliographic
+database" (although I can't think of anything better offhand).  It leads
+to people thinking that BibTeX will do the things that they associate
+with "database systems" these days.
+
+However, I think that to turn BibTeX into something that did more
+than (1) would be too ambitious.  We're going to have enough problems
+finding someone to make BibTeX do (1) better.
+
+I think it would be better to treat (2) as a separate project, and to =
+ask
+"is (2) best done by adding database management features to BibTeX,
+or would it be better done by adding BibTeX-like features to a
+database management system?"  I don't know what the answer is.
+
+For the time being, I think users will have to be left in an =
+unsatisfactory
+situation.  If the "raw data" is kept in a "real database", the .bib =
+file
+is just yet another intermediate file.  I seem to remember that
+Sebastian Rahtz has set INGRES up so that INGRES can hold bibliographic
+information and write it out in the form of a .bib file.  It sounds as
+though Nico is doing something similar with a different database
+system.
+
+It seems sensible to use a "real database system" for what "real =
+database
+systems" are good at.  Although it is clearly unsatisfactory to have a =
+.bib
+file that merely "shadows" a "real database" I can't think of anything =
+better
+that could be done quickly.  [Perhaps a database expert might have some =
+bright
+ideas.  Could such an expert write software that took an .aux file, =
+generated
+instructions in a "query language" to select the \cite-ed references, =
+and
+then produced a .bbl file (or equivalent) without there ever being a =
+.bib file?
+I don't know:  I'm not a database expert.  Even if they could, it
+would probably still be useful to have a standalone program like BibTeX
+that did task (1) in a database-system-independent way.]
+
+A salesman has sent me a leaflet about a piece of software called
+EndNote which apparently seems to aim to do both (1) and (2) for Mac and =
+PC
+word-processor users.  (It's not public domain, but then neither is =
+INGRES.)
+I see that it can export information for troff's "refer".  He's coming =
+to
+see me at the beginning of November, so I'll ask if EndNote might be =
+tailored
+to read .aux files and produce .bbl files.  I expect the answer will be
+"no" or "only after a lot of work", but it does no harm to ask!
+Perhaps one could have a public-domain BibTeX for task (1) with tailored
+proprietary software for people who want (1)+(2).
+
+Conclusion:  I can't think of an easy way of improving the "3 times
+through LaTeX and once through BibTeX" business at the moment.  I doubt
+whether its worth making BibTeX into a proper database system, although
+it might be worth making "a proper database system" do what BibTeX does.
+
+
+CODING THE LOGICAL STRUCTURE OF EACH \BIBITEM?
+
+I can see the attraction of this.  The list of references could be
+held in the root file or \input or \include-ed from a .tex file
+like everything else.  There wouldn't need to be any special treatment
+of .bbl files.
+
+However, in terms of project-management, it seems very convenient to =
+regard
+determination of the logical structure for bibliographic references
+as a separate task which can be delegated to whoever volunteers
+(if we can find them) to do another iteration on BibTeX.
+It would be up to this person to specify the logical elements
+for a reference, e.g. to agonise about whether ADDRESS is
+the fundamental concept of whether it should be PLACEOFPUBLICATION.
+
+All that needs agreeing between the LaTeX 3.0 people and the
+BibTeX worker (if we find one) is the form of interface, i.e.
+what BibTeX passes back to (a) go where the \cite was and (b) go
+in the list of references.  There might need to be separate
+interfaces for "reference by number", author-date and "short title"
+[I'll have a go at suggesting what these might be in a future message]
+but beyond that, the LaTeX 3.0 people need not be concerned
+about the distinction between e.g. different author-date styles.
+Thus, the BibTeX worker's considerations of matters such as
+ADDRESS versus PLACEOFPUBLICATION can proceed in parallel with
+the LaTeX 3.0 people's work on other matters.  It wouldn't matter
+much whether both projects were complete at the same time.
+
+If the LaTeX 3.0 people attempted to code the logical structure of
+each \bibitem, this would mean that LaTeX 3.0 could not be finished
+until the LaTeX 3.0 people had satisfied themselves about "What are
+the fundamental types of publication (\bibitem{knuth-84}{book} or
+\bibitem{knuth-84}{monograph}?), and what are the fundamental
+items of bibliographic information about them?  Did Lamport/Patashnik
+get it right?  E.g. ADDRESS versus PLACEOFPUBLICATION."  The LaTeX 3.0
+people would presumably have to provide TeX code that sorted =
+bibliographic
+details out into the order required for a particular style e.g. =
+"reference
+by number in ACM style" (and perhaps provide a few style-options to
+show how the details could be changed for a different convention,
+e.g. author-date in APA style).  I think that the LaTeX 3.0 work
+is ambitious enough without taking this analysis on too.  Attempting
+to get the subdivision of \bibitem right could hold the rest of the
+project up.
+
+Continuing to delegate the work on the logical structure of each =
+\bibitem
+to BibTeX might not be as elegant from the user's point-of-view as
+getting LaTeX to do all the work (using structure information from
+subdivisions of \bibitem and bibliography-style information from
+\documentstyle) but I think the result would be available sooner and =
+that
+the user might prefer to have something better than LaTeX 2.09 soon, =
+rather
+than to have perfection not so soon.
+
+The two approaches (1) "put all the BibTeX work into LaTeX" (to take
+account of the logical structure of each \bibitem), and (2) "make
+BibTeX into a proper database management system" seem to be pulling
+in different directions.  I don't think one can do both (otherwise
+you'd end up with LaTeX as a bibliographic database management system),
+although one could do neither.
+
+For LaTeX 3.0, I'd be inclined to leave the contents of each \bibitem
+(or the successor to \bibitem) as a "black box", to be filled in by the
+user or by BibTeX.  If someone does the analysis for BibTeX 2.0 (say),
+the question could be considered again if there is ever a LaTeX 4.0 (!)
+
+[This all assumes that the SGML-ers have not analysed the structure
+of a list of references and hence that someone has to do the analysis.
+If the SGML-ers have done the anlysis (for a DTD, perhaps), could they
+publish it?]
+
+Conclusion:  I'd specify an interface between LaTeX 3.0 and BibTeX
+that would support the "reference by number", author-date and (if
+possible) "short title" schemes, but delegate the task of supplying
+\bibitems (or whatever) to that specification to whoever updates BibTeX
+and its .bst files.
+
+
+FRONT MATTER INFORMATION IN A .BIB RECORD?
+
+The gurus of "how to do a list of references" seem to agree that
+bibliographic details should be as they appear on the title page of
+the article, book, etc.  But there are many caveats:
+*  Several books by the same author in one bibliography should
+   follow the same style (Chicago Manual of Style, p. 441).
+*  There are potential problems with names like Tchaikovsky,
+   which may appear in different forms (Chaikovsky) on different
+   title pages, even though the works are all by the same person.
+   [British Standard BS 1629, p. 5]
+*  The part of the name not on the title page may be enclosed
+   in square brackets (Chicago, p. 441).
+*  If the name on the title page is a pseudonym, the author's
+   real name may be given in the bibliography in square brackets.
+   (Chicago, p. 442).
+*  Capitalization, punctuation, etc. of a title may be differ in a
+   bibliography from the conventions on the title page (Chicago, p. =
+447).
+   Similarly, compulsory line-breaks may be wanted on the title-page
+   but not in the list of references (\\, Lamport's book, p. 164).
+   For another example, consider "LaTeX: A Document Preparation System":
+   that's not how it appears on the title page.
+*  It may be necessary to use discretion about whether to regard
+   a subtitle as part of a title or to abbreviate a long title
+   (ISO standard 690, p. 5).
+*  A bibliography may give "place of publication" in a form that is
+   different to that on the title page, using discretion about:
+   - whether to list all places where the publisher has offices
+     or just one place
+   - whether to give further information (if the place of publication
+     is not widely known or could be ambiguous).
+   (Chicago, p. 456).
+*  A bibliography might give a publisher's name in a form that differs
+   slightly from that shown on the title page (Chicago, p. 458).
+
+I think that having a BibTeX that can produce several bibliographies at
+once would be "a good thing".  For example:
+*  for conference proceedings where each contribution may have its own
+   list of references
+*  for books that may have e.g. "References" and "Further reading"
+*  things like the SPSS manual (and other things produced by software
+   houses), which seem to give the software-house's related publications
+   in a preface, but put "academic references" at the end.
+
+However, I don't necessarily think that the same mechanism should
+be used to "derive a publication's title-page from its .bib entry".
+Traditionally, bibliography entries have been derived from title-pages
+(with some human discretion), rather than the other way round, so its
+probably safer to have software that imitates the tradition.  One might
+think of having things like
+\begin{titlepage}
+   \author[bibliography-version]{titlepage-version}
+   \title[bibliography-version]{titlepage-version}
+   \place[bibliography-version]{titlepage-version}
+   \publisher[bibliography-version]{titlepage-version}
+\end{titlepage}
+\begin{copyrightpage}
+   \copyrightholder{...}
+   \isbn{...}
+\end{copyrightpage}
+in the .tex file (where the optional arguments allow humans to exercise
+the discretion recommended by the gurus) and having LaTeX produce
+perhaps a .bibitem file that the user can append to a suitable .bib file
+(maybe after exercising a bit more discretion).  LaTeX could put
+information that might conceivably be used by a bibliographer in the
+bibitem file, but refrain from putting information that no bibliographer
+would ever want to that file.  TUGboat would get a .bib entry
+with each article (but it would be derived automatically from the
+article-heading, rather than used to automatically produce the
+article-heading).
+
+[Conversely, if the Cork suggestion was adopted, and title-page
+information was produced by some future BibTeX from a .bib file, there
+would have to be some mechanism to allow for minor variations, e.g.
+      TITLE =3D "LaTeX: A Document Preparation System",
+      TITLEPAGETITLE =3D "LaTeX\\A Document Preparation System"]
+
+The problems that I mentioned in the context of "logical structure
+of \bibitem" arise here too.  To write .sty files for (say) book, =
+report,
+conference-proceedings and article, you only need to be clear about =
+those
+categories (as well as being a TeX wizard and having a lot of time,
+perseverance and patience).  To write .bst files with entry-types of =
+book,
+report, conference-proceedings, article, you need to be clear whether
+they are distinct entry-types or not.  [ISO 690 could be interpreted
+as lumping books, reports and conference-proceedings all together
+as "monographs".]   You also need to be clear about the fields:
+e.g. PLACE or ADDRESS.  So the LaTeX 3.0 code for title-pages would
+get held up (and hence LaTeX 3.0 as a whole would get held up)
+while someone analysed "the structure of a \bibitem".
+On the other hand, if LaTeX 3.0 wrote out a .bibitem file that wasn't
+quite what some new BibTeX expected, it wouldn't matter very much,
+and could be corrected once it was clear what was required.
+
+Conclusion:  I'd like BibTeX to support multiple lists-of-references,
+but think that "LaTeX producing .bib info from titlepage info"
+might be better than "BibTeX producing titlepage info from .bib info".
+
+                              --------------
+
+                                                                        =
+David
+
+
+------_=_NextPart_001_01C19442.D449C254
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     LaTeX, BibTeX, databases, \bibitem, front matter</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Frank forwarded some mail from Nico about BibTeX =
+etc.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>BIBLIOGRAPHIC DATABASE?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I agree with Nico's comment about BibTeX not being a =
+database management</FONT>
+
+<BR><FONT SIZE=3D2>system.&nbsp; I have the impression that some =
+research workers really want a</FONT>
+
+<BR><FONT SIZE=3D2>system that will not only contain author, date, etc. =
+for a paper/book,</FONT>
+
+<BR><FONT SIZE=3D2>but also a copy of the abstract and perhaps some =
+reminders to themselves.</FONT>
+
+<BR><FONT SIZE=3D2>Thus, they want something that will both</FONT>
+
+<BR><FONT SIZE=3D2>(1) help (by supplying bibliographic details) when =
+they are in the process</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; of writing a paper</FONT>
+
+<BR><FONT SIZE=3D2>and</FONT>
+
+<BR><FONT SIZE=3D2>(2) help them to search through all the papers =
+they've ever read</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; until they come to something that =
+is about a particular subject.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; E.g. &quot;give me all the papers =
+about X&quot;, &quot;what was that paper about Y?&quot;.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It's unfortunate that Lamport/Patashnik used the term =
+&quot;bibliographic</FONT>
+
+<BR><FONT SIZE=3D2>database&quot; (although I can't think of anything =
+better offhand).&nbsp; It leads</FONT>
+
+<BR><FONT SIZE=3D2>to people thinking that BibTeX will do the things =
+that they associate</FONT>
+
+<BR><FONT SIZE=3D2>with &quot;database systems&quot; these days.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, I think that to turn BibTeX into something =
+that did more</FONT>
+
+<BR><FONT SIZE=3D2>than (1) would be too ambitious.&nbsp; We're going to =
+have enough problems</FONT>
+
+<BR><FONT SIZE=3D2>finding someone to make BibTeX do (1) better.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think it would be better to treat (2) as a separate =
+project, and to ask</FONT>
+
+<BR><FONT SIZE=3D2>&quot;is (2) best done by adding database management =
+features to BibTeX,</FONT>
+
+<BR><FONT SIZE=3D2>or would it be better done by adding BibTeX-like =
+features to a</FONT>
+
+<BR><FONT SIZE=3D2>database management system?&quot;&nbsp; I don't know =
+what the answer is.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For the time being, I think users will have to be left =
+in an unsatisfactory</FONT>
+
+<BR><FONT SIZE=3D2>situation.&nbsp; If the &quot;raw data&quot; is kept =
+in a &quot;real database&quot;, the .bib file</FONT>
+
+<BR><FONT SIZE=3D2>is just yet another intermediate file.&nbsp; I seem =
+to remember that</FONT>
+
+<BR><FONT SIZE=3D2>Sebastian Rahtz has set INGRES up so that INGRES can =
+hold bibliographic</FONT>
+
+<BR><FONT SIZE=3D2>information and write it out in the form of a .bib =
+file.&nbsp; It sounds as</FONT>
+
+<BR><FONT SIZE=3D2>though Nico is doing something similar with a =
+different database</FONT>
+
+<BR><FONT SIZE=3D2>system.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>It seems sensible to use a &quot;real database =
+system&quot; for what &quot;real database</FONT>
+
+<BR><FONT SIZE=3D2>systems&quot; are good at.&nbsp; Although it is =
+clearly unsatisfactory to have a .bib</FONT>
+
+<BR><FONT SIZE=3D2>file that merely &quot;shadows&quot; a &quot;real =
+database&quot; I can't think of anything better</FONT>
+
+<BR><FONT SIZE=3D2>that could be done quickly.&nbsp; [Perhaps a database =
+expert might have some bright</FONT>
+
+<BR><FONT SIZE=3D2>ideas.&nbsp; Could such an expert write software that =
+took an .aux file, generated</FONT>
+
+<BR><FONT SIZE=3D2>instructions in a &quot;query language&quot; to =
+select the \cite-ed references, and</FONT>
+
+<BR><FONT SIZE=3D2>then produced a .bbl file (or equivalent) without =
+there ever being a .bib file?</FONT>
+
+<BR><FONT SIZE=3D2>I don't know:&nbsp; I'm not a database expert.&nbsp; =
+Even if they could, it</FONT>
+
+<BR><FONT SIZE=3D2>would probably still be useful to have a standalone =
+program like BibTeX</FONT>
+
+<BR><FONT SIZE=3D2>that did task (1) in a database-system-independent =
+way.]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>A salesman has sent me a leaflet about a piece of =
+software called</FONT>
+
+<BR><FONT SIZE=3D2>EndNote which apparently seems to aim to do both (1) =
+and (2) for Mac and PC</FONT>
+
+<BR><FONT SIZE=3D2>word-processor users.&nbsp; (It's not public domain, =
+but then neither is INGRES.)</FONT>
+
+<BR><FONT SIZE=3D2>I see that it can export information for troff's =
+&quot;refer&quot;.&nbsp; He's coming to</FONT>
+
+<BR><FONT SIZE=3D2>see me at the beginning of November, so I'll ask if =
+EndNote might be tailored</FONT>
+
+<BR><FONT SIZE=3D2>to read .aux files and produce .bbl files.&nbsp; I =
+expect the answer will be</FONT>
+
+<BR><FONT SIZE=3D2>&quot;no&quot; or &quot;only after a lot of =
+work&quot;, but it does no harm to ask!</FONT>
+
+<BR><FONT SIZE=3D2>Perhaps one could have a public-domain BibTeX for =
+task (1) with tailored</FONT>
+
+<BR><FONT SIZE=3D2>proprietary software for people who want =
+(1)+(2).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Conclusion:&nbsp; I can't think of an easy way of =
+improving the &quot;3 times</FONT>
+
+<BR><FONT SIZE=3D2>through LaTeX and once through BibTeX&quot; business =
+at the moment.&nbsp; I doubt</FONT>
+
+<BR><FONT SIZE=3D2>whether its worth making BibTeX into a proper =
+database system, although</FONT>
+
+<BR><FONT SIZE=3D2>it might be worth making &quot;a proper database =
+system&quot; do what BibTeX does.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>CODING THE LOGICAL STRUCTURE OF EACH \BIBITEM?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I can see the attraction of this.&nbsp; The list of =
+references could be</FONT>
+
+<BR><FONT SIZE=3D2>held in the root file or \input or \include-ed from a =
+.tex file</FONT>
+
+<BR><FONT SIZE=3D2>like everything else.&nbsp; There wouldn't need to be =
+any special treatment</FONT>
+
+<BR><FONT SIZE=3D2>of .bbl files.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, in terms of project-management, it seems very =
+convenient to regard</FONT>
+
+<BR><FONT SIZE=3D2>determination of the logical structure for =
+bibliographic references</FONT>
+
+<BR><FONT SIZE=3D2>as a separate task which can be delegated to whoever =
+volunteers</FONT>
+
+<BR><FONT SIZE=3D2>(if we can find them) to do another iteration on =
+BibTeX.</FONT>
+
+<BR><FONT SIZE=3D2>It would be up to this person to specify the logical =
+elements</FONT>
+
+<BR><FONT SIZE=3D2>for a reference, e.g. to agonise about whether =
+ADDRESS is</FONT>
+
+<BR><FONT SIZE=3D2>the fundamental concept of whether it should be =
+PLACEOFPUBLICATION.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>All that needs agreeing between the LaTeX 3.0 people =
+and the</FONT>
+
+<BR><FONT SIZE=3D2>BibTeX worker (if we find one) is the form of =
+interface, i.e.</FONT>
+
+<BR><FONT SIZE=3D2>what BibTeX passes back to (a) go where the \cite was =
+and (b) go</FONT>
+
+<BR><FONT SIZE=3D2>in the list of references.&nbsp; There might need to =
+be separate</FONT>
+
+<BR><FONT SIZE=3D2>interfaces for &quot;reference by number&quot;, =
+author-date and &quot;short title&quot;</FONT>
+
+<BR><FONT SIZE=3D2>[I'll have a go at suggesting what these might be in =
+a future message]</FONT>
+
+<BR><FONT SIZE=3D2>but beyond that, the LaTeX 3.0 people need not be =
+concerned</FONT>
+
+<BR><FONT SIZE=3D2>about the distinction between e.g. different =
+author-date styles.</FONT>
+
+<BR><FONT SIZE=3D2>Thus, the BibTeX worker's considerations of matters =
+such as</FONT>
+
+<BR><FONT SIZE=3D2>ADDRESS versus PLACEOFPUBLICATION can proceed in =
+parallel with</FONT>
+
+<BR><FONT SIZE=3D2>the LaTeX 3.0 people's work on other matters.&nbsp; =
+It wouldn't matter</FONT>
+
+<BR><FONT SIZE=3D2>much whether both projects were complete at the same =
+time.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>If the LaTeX 3.0 people attempted to code the logical =
+structure of</FONT>
+
+<BR><FONT SIZE=3D2>each \bibitem, this would mean that LaTeX 3.0 could =
+not be finished</FONT>
+
+<BR><FONT SIZE=3D2>until the LaTeX 3.0 people had satisfied themselves =
+about &quot;What are</FONT>
+
+<BR><FONT SIZE=3D2>the fundamental types of publication =
+(\bibitem{knuth-84}{book} or</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{knuth-84}{monograph}?), and what are the =
+fundamental</FONT>
+
+<BR><FONT SIZE=3D2>items of bibliographic information about them?&nbsp; =
+Did Lamport/Patashnik</FONT>
+
+<BR><FONT SIZE=3D2>get it right?&nbsp; E.g. ADDRESS versus =
+PLACEOFPUBLICATION.&quot;&nbsp; The LaTeX 3.0</FONT>
+
+<BR><FONT SIZE=3D2>people would presumably have to provide TeX code that =
+sorted bibliographic</FONT>
+
+<BR><FONT SIZE=3D2>details out into the order required for a particular =
+style e.g. &quot;reference</FONT>
+
+<BR><FONT SIZE=3D2>by number in ACM style&quot; (and perhaps provide a =
+few style-options to</FONT>
+
+<BR><FONT SIZE=3D2>show how the details could be changed for a different =
+convention,</FONT>
+
+<BR><FONT SIZE=3D2>e.g. author-date in APA style).&nbsp; I think that =
+the LaTeX 3.0 work</FONT>
+
+<BR><FONT SIZE=3D2>is ambitious enough without taking this analysis on =
+too.&nbsp; Attempting</FONT>
+
+<BR><FONT SIZE=3D2>to get the subdivision of \bibitem right could hold =
+the rest of the</FONT>
+
+<BR><FONT SIZE=3D2>project up.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Continuing to delegate the work on the logical =
+structure of each \bibitem</FONT>
+
+<BR><FONT SIZE=3D2>to BibTeX might not be as elegant from the user's =
+point-of-view as</FONT>
+
+<BR><FONT SIZE=3D2>getting LaTeX to do all the work (using structure =
+information from</FONT>
+
+<BR><FONT SIZE=3D2>subdivisions of \bibitem and bibliography-style =
+information from</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle) but I think the result would be =
+available sooner and that</FONT>
+
+<BR><FONT SIZE=3D2>the user might prefer to have something better than =
+LaTeX 2.09 soon, rather</FONT>
+
+<BR><FONT SIZE=3D2>than to have perfection not so soon.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The two approaches (1) &quot;put all the BibTeX work =
+into LaTeX&quot; (to take</FONT>
+
+<BR><FONT SIZE=3D2>account of the logical structure of each \bibitem), =
+and (2) &quot;make</FONT>
+
+<BR><FONT SIZE=3D2>BibTeX into a proper database management system&quot; =
+seem to be pulling</FONT>
+
+<BR><FONT SIZE=3D2>in different directions.&nbsp; I don't think one can =
+do both (otherwise</FONT>
+
+<BR><FONT SIZE=3D2>you'd end up with LaTeX as a bibliographic database =
+management system),</FONT>
+
+<BR><FONT SIZE=3D2>although one could do neither.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>For LaTeX 3.0, I'd be inclined to leave the contents =
+of each \bibitem</FONT>
+
+<BR><FONT SIZE=3D2>(or the successor to \bibitem) as a &quot;black =
+box&quot;, to be filled in by the</FONT>
+
+<BR><FONT SIZE=3D2>user or by BibTeX.&nbsp; If someone does the analysis =
+for BibTeX 2.0 (say),</FONT>
+
+<BR><FONT SIZE=3D2>the question could be considered again if there is =
+ever a LaTeX 4.0 (!)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[This all assumes that the SGML-ers have not analysed =
+the structure</FONT>
+
+<BR><FONT SIZE=3D2>of a list of references and hence that someone has to =
+do the analysis.</FONT>
+
+<BR><FONT SIZE=3D2>If the SGML-ers have done the anlysis (for a DTD, =
+perhaps), could they</FONT>
+
+<BR><FONT SIZE=3D2>publish it?]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Conclusion:&nbsp; I'd specify an interface between =
+LaTeX 3.0 and BibTeX</FONT>
+
+<BR><FONT SIZE=3D2>that would support the &quot;reference by =
+number&quot;, author-date and (if</FONT>
+
+<BR><FONT SIZE=3D2>possible) &quot;short title&quot; schemes, but =
+delegate the task of supplying</FONT>
+
+<BR><FONT SIZE=3D2>\bibitems (or whatever) to that specification to =
+whoever updates BibTeX</FONT>
+
+<BR><FONT SIZE=3D2>and its .bst files.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>FRONT MATTER INFORMATION IN A .BIB RECORD?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The gurus of &quot;how to do a list of =
+references&quot; seem to agree that</FONT>
+
+<BR><FONT SIZE=3D2>bibliographic details should be as they appear on the =
+title page of</FONT>
+
+<BR><FONT SIZE=3D2>the article, book, etc.&nbsp; But there are many =
+caveats:</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; Several books by the same author in one =
+bibliography should</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; follow the same style (Chicago Manual of =
+Style, p. 441).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; There are potential problems with names like =
+Tchaikovsky,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; which may appear in different forms =
+(Chaikovsky) on different</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; title pages, even though the works are =
+all by the same person.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; [British Standard BS 1629, p. 5]</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; The part of the name not on the title page =
+may be enclosed</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; in square brackets (Chicago, p. =
+441).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; If the name on the title page is a pseudonym, =
+the author's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; real name may be given in the =
+bibliography in square brackets.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (Chicago, p. 442).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; Capitalization, punctuation, etc. of a title =
+may be differ in a</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; bibliography from the conventions on the =
+title page (Chicago, p. 447).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; Similarly, compulsory line-breaks may be =
+wanted on the title-page</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; but not in the list of references (\\, =
+Lamport's book, p. 164).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; For another example, consider =
+&quot;LaTeX: A Document Preparation System&quot;:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; that's not how it appears on the title =
+page.</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; It may be necessary to use discretion about =
+whether to regard</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; a subtitle as part of a title or to =
+abbreviate a long title</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (ISO standard 690, p. 5).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; A bibliography may give &quot;place of =
+publication&quot; in a form that is</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; different to that on the title page, =
+using discretion about:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - whether to list all places where the =
+publisher has offices</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; or just one place</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; - whether to give further information =
+(if the place of publication</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp; is not widely known or could =
+be ambiguous).</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; (Chicago, p. 456).</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; A bibliography might give a publisher's name =
+in a form that differs</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; slightly from that shown on the title =
+page (Chicago, p. 458).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>I think that having a BibTeX that can produce several =
+bibliographies at</FONT>
+
+<BR><FONT SIZE=3D2>once would be &quot;a good thing&quot;.&nbsp; For =
+example:</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; for conference proceedings where each =
+contribution may have its own</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; list of references</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; for books that may have e.g. =
+&quot;References&quot; and &quot;Further reading&quot;</FONT>
+
+<BR><FONT SIZE=3D2>*&nbsp; things like the SPSS manual (and other things =
+produced by software</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; houses), which seem to give the =
+software-house's related publications</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; in a preface, but put &quot;academic =
+references&quot; at the end.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>However, I don't necessarily think that the same =
+mechanism should</FONT>
+
+<BR><FONT SIZE=3D2>be used to &quot;derive a publication's title-page =
+from its .bib entry&quot;.</FONT>
+
+<BR><FONT SIZE=3D2>Traditionally, bibliography entries have been derived =
+from title-pages</FONT>
+
+<BR><FONT SIZE=3D2>(with some human discretion), rather than the other =
+way round, so its</FONT>
+
+<BR><FONT SIZE=3D2>probably safer to have software that imitates the =
+tradition.&nbsp; One might</FONT>
+
+<BR><FONT SIZE=3D2>think of having things like</FONT>
+
+<BR><FONT SIZE=3D2>\begin{titlepage}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\author[bibliography-version]{titlepage-version}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\title[bibliography-version]{titlepage-version}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\place[bibliography-version]{titlepage-version}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\publisher[bibliography-version]{titlepage-version}</FONT>
+
+<BR><FONT SIZE=3D2>\end{titlepage}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{copyrightpage}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \copyrightholder{...}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; \isbn{...}</FONT>
+
+<BR><FONT SIZE=3D2>\end{copyrightpage}</FONT>
+
+<BR><FONT SIZE=3D2>in the .tex file (where the optional arguments allow =
+humans to exercise</FONT>
+
+<BR><FONT SIZE=3D2>the discretion recommended by the gurus) and having =
+LaTeX produce</FONT>
+
+<BR><FONT SIZE=3D2>perhaps a .bibitem file that the user can append to a =
+suitable .bib file</FONT>
+
+<BR><FONT SIZE=3D2>(maybe after exercising a bit more discretion).&nbsp; =
+LaTeX could put</FONT>
+
+<BR><FONT SIZE=3D2>information that might conceivably be used by a =
+bibliographer in the</FONT>
+
+<BR><FONT SIZE=3D2>bibitem file, but refrain from putting information =
+that no bibliographer</FONT>
+
+<BR><FONT SIZE=3D2>would ever want to that file.&nbsp; TUGboat would get =
+a .bib entry</FONT>
+
+<BR><FONT SIZE=3D2>with each article (but it would be derived =
+automatically from the</FONT>
+
+<BR><FONT SIZE=3D2>article-heading, rather than used to automatically =
+produce the</FONT>
+
+<BR><FONT SIZE=3D2>article-heading).</FONT>
+</P>
+
+<P><FONT SIZE=3D2>[Conversely, if the Cork suggestion was adopted, and =
+title-page</FONT>
+
+<BR><FONT SIZE=3D2>information was produced by some future BibTeX from a =
+.bib file, there</FONT>
+
+<BR><FONT SIZE=3D2>would have to be some mechanism to allow for minor =
+variations, e.g.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TITLE =3D &quot;LaTeX: =
+A Document Preparation System&quot;,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TITLEPAGETITLE =3D =
+&quot;LaTeX\\A Document Preparation System&quot;]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The problems that I mentioned in the context of =
+&quot;logical structure</FONT>
+
+<BR><FONT SIZE=3D2>of \bibitem&quot; arise here too.&nbsp; To write .sty =
+files for (say) book, report,</FONT>
+
+<BR><FONT SIZE=3D2>conference-proceedings and article, you only need to =
+be clear about those</FONT>
+
+<BR><FONT SIZE=3D2>categories (as well as being a TeX wizard and having =
+a lot of time,</FONT>
+
+<BR><FONT SIZE=3D2>perseverance and patience).&nbsp; To write .bst files =
+with entry-types of book,</FONT>
+
+<BR><FONT SIZE=3D2>report, conference-proceedings, article, you need to =
+be clear whether</FONT>
+
+<BR><FONT SIZE=3D2>they are distinct entry-types or not.&nbsp; [ISO 690 =
+could be interpreted</FONT>
+
+<BR><FONT SIZE=3D2>as lumping books, reports and conference-proceedings =
+all together</FONT>
+
+<BR><FONT SIZE=3D2>as &quot;monographs&quot;.]&nbsp;&nbsp; You also need =
+to be clear about the fields:</FONT>
+
+<BR><FONT SIZE=3D2>e.g. PLACE or ADDRESS.&nbsp; So the LaTeX 3.0 code =
+for title-pages would</FONT>
+
+<BR><FONT SIZE=3D2>get held up (and hence LaTeX 3.0 as a whole would get =
+held up)</FONT>
+
+<BR><FONT SIZE=3D2>while someone analysed &quot;the structure of a =
+\bibitem&quot;.</FONT>
+
+<BR><FONT SIZE=3D2>On the other hand, if LaTeX 3.0 wrote out a .bibitem =
+file that wasn't</FONT>
+
+<BR><FONT SIZE=3D2>quite what some new BibTeX expected, it wouldn't =
+matter very much,</FONT>
+
+<BR><FONT SIZE=3D2>and could be corrected once it was clear what was =
+required.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Conclusion:&nbsp; I'd like BibTeX to support multiple =
+lists-of-references,</FONT>
+
+<BR><FONT SIZE=3D2>but think that &quot;LaTeX producing .bib info from =
+titlepage info&quot;</FONT>
+
+<BR><FONT SIZE=3D2>might be better than &quot;BibTeX producing titlepage =
+info from .bib info&quot;.</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --------------</FONT>
+</P>
+
+<P><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+David</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19442.D449C254--
+

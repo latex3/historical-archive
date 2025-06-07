@@ -1,0 +1,180 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 17 Mar 2009 02:30:07 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n2H1U6c2000726
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 17 Mar 2009 02:30:06 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n2H1NQZi007888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 17 Mar 2009 02:23:27 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n2GN1BFt016780;
+	Tue, 17 Mar 2009 02:23:20 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 205993 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 17 Mar
+          2009 02:23:19 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n2H1NJFT026842 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Tue, 17 Mar 2009 02:23:19 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.250])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          n2H1NERo007805 for <LATEX-L@listserv.uni-heidelberg.de>; Tue, 17 Mar
+          2009 02:23:18 +0100
+Received: by rv-out-0708.google.com with SMTP id k29so1730913rvb.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 16 Mar 2009 18:23:13 -0700
+          (PDT)
+Received: by 10.115.58.18 with SMTP id l18mr3774806wak.180.1237252993646; Mon,
+          16 Mar 2009 18:23:13 -0700 (PDT)
+Received: from ?10.0.1.104? (219-90-183-123.ip.adam.com.au [219.90.183.123]) by
+          mx.google.com with ESMTPS id v32sm5533656wah.17.2009.03.16.18.23.11
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Mon, 16 Mar 2009 18:23:12 -0700
+          (PDT)
+Content-Type: multipart/signed; boundary=Apple-Mail-1--899733578; micalg=sha1; protocol="application/pkcs7-signature"
+Mime-Version: 1.0 (Apple Message framework v930.3)
+References: <200903170018.n2H0IvL24074@f7.net>
+X-Mailer: Apple Mail (2.930.3)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <84F2BC6E-255F-4287-8554-66264C9C193F@GMAIL.COM>
+Date:         Tue, 17 Mar 2009 11:53:07 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: inputenc for XeTeX and LuaTeX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <200903170018.n2H0IvL24074@f7.net>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 17 Mar 2009 01:30:07.0320 (UTC) FILETIME=[E7A60D80:01C9A69F]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5713
+
+--Apple-Mail-1--899733578
+Content-Type: text/plain;
+	charset=US-ASCII;
+	format=flowed;
+	delsp=yes
+Content-Transfer-Encoding: 7bit
+
+(Karl replied off-list with some other stuff as well; I'm replying to  
+the pertinent bits on-list)
+
+On 17/03/2009, at 10:48 AM, Karl Berry wrote:
+
+>    reliably detect or branch based on \input
+>
+> I don't understand what this means.  Do we need to extend the  
+> engines in
+> some way?
+
+LuaTeX can handle things just fine, since it can add a callback to the  
+file loading routine. The problem is that XeTeX always writes in UTF8  
+(having discussed with Jonathan the possibility of an output write  
+encoding, always using UTF8 is the more sensible way to do it).
+
+When reading files in LaTeX, there are two possibilities:
+   1. It's an external file, like a section or chapter; this has to  
+follow the input encoding of the main file
+   2. It's an auto-generated file being read in a second compilation;  
+this has to be read in UTF8
+
+The idea of xetex-inputenc is to set up the default encoding for the  
+main file and all subsequent files; it then has to detect when auto- 
+generated files (like .aux) are being read and insert the code to  
+temporarily switch back to UTF8.
+
+This is what I do (and it works well, seemingly) for \@input, which is  
+used by the kernel for reading in auxiliary files that aren't added to  
+the \listfiles list. If only every package used that macro. Many  
+packages use \input instead, which is the problem, because LaTeX  
+redefines \input to *either* behave like the TeX primitive *or* to  
+take a braced argument. So some packages write "\input foo" and others  
+"\input{foo}". From the LaTeX POV, it's impossible to conditionally  
+call code based on the file input, then, because some packages don't  
+use the sane syntax.
+
+However, all of the above is slightly obscure, since most people will  
+be using UTF8 input with XeTeX anyway. The fact that some edge cases  
+aren't covered doesn't worry me, personally, but does mean that this  
+code probably shouldn't become part of LaTeX2e proper. For me, the aim  
+is to fix the problem when users try
+   \usepackage[utf8]{inputenc}
+
+We're just trying to support the other encodings because it's (mostly)  
+possible.
+
+>   Like I said above, I'd like to resolve this for TeXLive 2009,
+>
+> Do you have any idea of whether there will be another LaTeX release in
+> time?  I was kind of expecting that there wouldn't be, although of
+> course it would be great if so.
+
+I hadn't thought that far ahead :)
+I was hoping at the very least it would be easy enough to get a  
+patched inputenc.sty into TL'09, even if it slightly by-passed the  
+normal LaTeX release regime. But perhaps I'm being naive.
+
+Will
+--Apple-Mail-1--899733578
+Content-Disposition: attachment;
+	filename=smime.p7s
+Content-Type: application/pkcs7-signature;
+	name=smime.p7s
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIGITCCAtow
+ggJDoAMCAQICECN4qE5kBXLk2f/jVDfSZPwwDQYJKoZIhvcNAQEFBQAwYjELMAkGA1UEBhMCWkEx
+JTAjBgNVBAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQ
+ZXJzb25hbCBGcmVlbWFpbCBJc3N1aW5nIENBMB4XDTA5MDEyOTA1NDkxNVoXDTEwMDEyOTA1NDkx
+NVowQjEfMB0GA1UEAxMWVGhhd3RlIEZyZWVtYWlsIE1lbWJlcjEfMB0GCSqGSIb3DQEJARYQd3Nw
+cjgxQGdtYWlsLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL0BeSiAbKuqxeRN
+p2qn/m8ZL+xawr/WXyPgEF0FipWgRe9l3sMXcFHokcUu0xOc97R7xkUsGcQ8EyybGHuWey6x7X1Y
+xJZXnoAxqcaG+eREytoYGMIKs6BhEEogLVb2ERw3lQNVnOzanSFeGo8suMAN4zzCtqAjJiA1ph7h
+1pksTgECYK5EiIZbFsB6zSDa8crNk404z1CfIA6YO8ezvjbDda+D0r8NU2tq9WS9F5IaG+bW71Ya
+JegEcSZ+WF6Z+fs2MUMCLLu8n50Er0nuy4dxOmkdMRNfbeaM39dsEwjAAgcQnvPNmlJ215nZWQRH
+49YowtSBOYUYq0ZylWRE6x8CAwEAAaMtMCswGwYDVR0RBBQwEoEQd3NwcjgxQGdtYWlsLmNvbTAM
+BgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBBQUAA4GBABaRP8+PDYpKIRGlFgjs1HvMmJnqu4reSqp+
+ulv0zJZIjIbX/sLbIsnecl9nycHfhubPdc+hDfpCqNZ2+NGQHwwoyuDl7KOdTY0BDPp3eJLio7ob
+EYEr0H8rFwqfx2LWJ0G6nMhNEjLvs7sFKyriSpk++TWJnnsf86xai5m0tlOwMIIDPzCCAqigAwIB
+AgIBDTANBgkqhkiG9w0BAQUFADCB0TELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2Fw
+ZTESMBAGA1UEBxMJQ2FwZSBUb3duMRowGAYDVQQKExFUaGF3dGUgQ29uc3VsdGluZzEoMCYGA1UE
+CxMfQ2VydGlmaWNhdGlvbiBTZXJ2aWNlcyBEaXZpc2lvbjEkMCIGA1UEAxMbVGhhd3RlIFBlcnNv
+bmFsIEZyZWVtYWlsIENBMSswKQYJKoZIhvcNAQkBFhxwZXJzb25hbC1mcmVlbWFpbEB0aGF3dGUu
+Y29tMB4XDTAzMDcxNzAwMDAwMFoXDTEzMDcxNjIzNTk1OVowYjELMAkGA1UEBhMCWkExJTAjBgNV
+BAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJzb25h
+bCBGcmVlbWFpbCBJc3N1aW5nIENBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEpjxVc1X7
+TrnKmVoeaMB1BHCd3+n/ox7svc31W/Iadr1/DDph8r9RzgHU5VAKMNcCY1osiRVwjt3J8CuFWqo/
+cVbLrzwLB+fxH5E2JCoTzyvV84J3PQO+K/67GD4Hv0CAAmTXp6a7n2XRxSpUhQ9IBH+nttE8YQRA
+HmQZcmC3+wIDAQABo4GUMIGRMBIGA1UdEwEB/wQIMAYBAf8CAQAwQwYDVR0fBDwwOjA4oDagNIYy
+aHR0cDovL2NybC50aGF3dGUuY29tL1RoYXd0ZVBlcnNvbmFsRnJlZW1haWxDQS5jcmwwCwYDVR0P
+BAQDAgEGMCkGA1UdEQQiMCCkHjAcMRowGAYDVQQDExFQcml2YXRlTGFiZWwyLTEzODANBgkqhkiG
+9w0BAQUFAAOBgQBIjNFQg+oLLswNo2asZw9/r6y+whehQ5aUnX9MIbj4Nh+qLZ82L8D0HFAgk3A8
+/a3hYWLD2ToZfoSxmRsAxRoLgnSeJVCUYsfbJ3FXJY3dqZw5jowgT2Vfldr394fWxghOrvbqNOUQ
+Gls1TXfjViF4gtwhGTXeJLHTHUb/XV9lTzGCAxAwggMMAgEBMHYwYjELMAkGA1UEBhMCWkExJTAj
+BgNVBAoTHFRoYXd0ZSBDb25zdWx0aW5nIChQdHkpIEx0ZC4xLDAqBgNVBAMTI1RoYXd0ZSBQZXJz
+b25hbCBGcmVlbWFpbCBJc3N1aW5nIENBAhAjeKhOZAVy5Nn/41Q30mT8MAkGBSsOAwIaBQCgggFv
+MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTA5MDMxNzAxMjMwOFow
+IwYJKoZIhvcNAQkEMRYEFP1bkyoWn7GW7cksmeVC20Bcg4pJMIGFBgkrBgEEAYI3EAQxeDB2MGIx
+CzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUgQ29uc3VsdGluZyAoUHR5KSBMdGQuMSwwKgYD
+VQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwgSXNzdWluZyBDQQIQI3ioTmQFcuTZ/+NUN9Jk
+/DCBhwYLKoZIhvcNAQkQAgsxeKB2MGIxCzAJBgNVBAYTAlpBMSUwIwYDVQQKExxUaGF3dGUgQ29u
+c3VsdGluZyAoUHR5KSBMdGQuMSwwKgYDVQQDEyNUaGF3dGUgUGVyc29uYWwgRnJlZW1haWwgSXNz
+dWluZyBDQQIQI3ioTmQFcuTZ/+NUN9Jk/DANBgkqhkiG9w0BAQEFAASCAQC0k6t0plfVD8E0Ynpy
+XJSeHvzmWZleORMa7VUbKFtP9r9sj+JI0g2RigT7VCI5J3owSStmVAu2uH0s1zh4o1wpnKYhmWPm
+UBWMML1nbwG/kqbvJjwduhuTkt71djud2VVgNr4sTTFwk4ZPTvkY1wg9XEEvRPGAlrQRdXNn9vOq
+yrYsGc5QsaFWrHO924VIzLd3Ha47Mw1+hN2laBTIcoRriJetW97S7MsQOos+UgNHGSsjHUSw+6Dk
+13YR6aJnJMQeW+G747sWOTnXXRV3C0yNSTkCX8Yp4NMYFmFcRAdn6hFxMbehULRr7ee3Ahv4DpH8
+57jUICt0BbFKzzMTRpiTAAAAAAAA
+
+--Apple-Mail-1--899733578--
+

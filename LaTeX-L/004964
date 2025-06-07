@@ -1,0 +1,100 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 6 Jun 2006 22:47:51 +0200
+Received: by mail.proteosys.com (8.12.11.20060308/8.12.2) with ESMTP id k56Kljoe010377
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 6 Jun 2006 22:47:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id k56KmDvj009378;
+	Tue, 6 Jun 2006 22:48:13 +0200 (MET DST)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id k56KLAOn015537;
+	Tue, 6 Jun 2006 22:43:59 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 1299262 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 6 Jun
+          2006 22:43:58 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id k56Khww0016727 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 6 Jun 2006 22:43:58 +0200
+Received: from atlas.informatik.uni-freiburg.de
+          (atlas.informatik.uni-freiburg.de [132.230.150.3]) by
+          relay.uni-heidelberg.de (8.13.4/8.13.1) with ESMTP id k56KhoNX024666
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 6 Jun 2006 22:43:53
+          +0200
+Received: from remote218-14.home.uni-freiburg.de ([132.230.218.14]
+          helo=m0A023293.vpn.uni-freiburg.de) by
+          atlas.informatik.uni-freiburg.de with esmtpsa (TLSv1:AES256-SHA:256)
+          (Exim 4.60) (envelope-from <oberdiek@uni-freiburg.de>) id
+          1FniOx-0006BI-4k for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 06 Jun
+          2006 22:43:47 +0200
+Received: by m0A023293.vpn.uni-freiburg.de (Postfix,
+          from userid 500) id 2C4B936AF7; Tue,  6 Jun 2006 22:43:45 +0200 (CEST)
+Mail-Followup-To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+References: <Pine.LNX.4.64.0604270936420.8277@bk-ng-05.proteosys>
+            <20060427182251.GA23586@m0A023293.vpn.uni-freiburg.de>
+            <20060530155648.GA16268@m0A023293.vpn.uni-freiburg.de>
+            <op.tan9tnnpss64je@morten.local>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Message-ID:  <20060606204344.GA7063@m0A023293.vpn.uni-freiburg.de>
+Date:         Tue, 6 Jun 2006 22:43:45 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Heiko Oberdiek <oberdiek@UNI-FREIBURG.DE>
+Subject: Re: LaTeX Release 2005/12/01
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <op.tan9tnnpss64je@morten.local>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 06 Jun 2006 20:47:55.0443 (UTC) FILETIME=[7C982830:01C689AA]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4964
+
+On Mon, Jun 05, 2006 at 02:18:49PM +0200, Morten Høgholm wrote:
+
+> On Tue, 30 May 2006 17:56:49 +0200, Heiko Oberdiek  
+> <oberdiek@UNI-FREIBURG.DE> wrote:
+> 
+> >Hello,
+> >
+> >On Thu, Apr 27, 2006 at 08:22:51PM +0200, Heiko Oberdiek wrote:
+> >
+> >>The result:
+> >>http://www.informatik.uni-freiburg.de/~oberdiek/tmp/latex-tds/index.html
+> >
+> >I have updated it:
+> >* Latest CTAN versions.
+> 
+> The date and version of the following packages in your generated bundle  
+> all say date 2006/02/
+> 12 and v2.24: afterpage, hhline, indentfirst, varioref, and xr. Do you  
+> have any idea why this happens?
+
+| \documentclass{ltxdoc}
+| \usepackage{xr}
+| \GetFileInfo{xr.sty}
+| \begin{document}
+| \title{The \textsf{xr} package\thanks{This file
+|         has version number \fileversion, last
+|         revised \filedate.}}
+
+\GetFileInfo defines \fileversion and \filedate. However I am
+using hyperref that loads nameref:
+
+| \def\filedate{2006/02/12}
+| \def\fileversion{2.24}
+
+I have fixed it in nameref.sty and backref.sty and you can fix
+the tools packages, just move \GetFileInfo{xr.sty} after
+\begin{document} right before \title where the result is used.
+
+Yours sincerely
+  Heiko <oberdiek@uni-freiburg.de>
+

@@ -1,0 +1,105 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Fri, 8 Jun 90 12:10:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      Front matter definitions
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 122
+
+One thing that has always been a thorn in my side when teaching LaTeX has been
+that different journals/publishers/etc. require additional items of frontmatter
+to be defined in the title and elsewhere;
+
+For example, a documentstyle which produces fiction typescripts would require
+the following information:
+\title (optional argument to be used if the title will appear in page headers)
+\author
+\date
+\lastname
+\wordcount
+\copyrightnotice
+\rights
+\address
+\phone
+\ssn
+
+TUGboat calls for
+
+\title
+\author
+\address
+\netaddress
+And optionally \signature
+
+A thesis style might call for
+
+\title
+\author
+\date
+\degree
+\reader
+\begin{acknowledgements}...
+
+How to handle all of these? I propose
+
+\frontm{<name>}[<optional info>]{required}
+
+E.g., in the typescript example above, rather than typing
+\author{J.D. Salinger}
+\lastname{Salinger}
+
+One could simply type
+
+\frontm{author}[Salinger]{J.D. Salinger}
+
+which would call \author[Salinger]{J.D. Salinger} if that command existed (other
+
+styles might
+
+The article style (and most others) would simply ignore the optional argument.
+The typescript style would take the two arguments and deine \@shortauthor to
+be "Salinger" (or it would be "J.D. Salinger" if the optional argument was
+missing) and \@author to be "J.D. Salinger". (The optional argument should
+_always_ be the short form.)
+
+We might also have
+\frontm{netaddress}[Bitnet:]{jds@catcher}
+\frontm{wordcount}{Approx.\ 20,000 words}
+
+The article style would ignore both of these declarations, the typescript style
+would ignore only netaddress, TUGboat would ignore wordcount.
+
+Any document style would set up appropriate defaults for all front matter
+definitions that it needs (the only front matter definitions that should be
+_required_ for the document to run are author and title) and ignore any front
+matter declarations it doesn't need.
+
+We'd also have, using Frank's attribute syntax (which despite the impression
+Frank seemed to have gotten, I _do_ like--assuming some minor adjustments:
+
+\begin{frontmat|shortform="Salinger"}{author}
+J.D. Salinger
+\end{frontmat}
+
+(the only people who would use this would be the ones who also type
+\begin{displaymath} and \begin{bf}bold\end{bf})
+
+And we'd also have
+
+\begin{frontmatter}{acknowledgements}
+blah blah blah.
+\end{frontmatter}
+
+The exact syntax isn't fixed, but the above shouldn't be too difficult to
+implement (I'll probably do it tonight or next week for the style files class).
+
+The other nice part is that it retains a degree of backwards and forwards
+compatibility.
+
+-dh
+
+

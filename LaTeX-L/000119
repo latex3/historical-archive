@@ -1,0 +1,202 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Tue, 29 May 90 12:08:07 CET
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 119
+
+Don Hosek writes:
+
+      I personally am very wary of any great
+      incompatibilities between version 2.09 of LaTeX
+      and 2.10 of LaTeX. In particular, I think that
+      disabling the old way of doing things, even at
+      the style file level, should be avoided.
+
+I agree with him as far as the user interface is concerned.
+Not only because incompatibilities will pose problems
+switching from 2.09 to (whatever) but also because of other
+reasons, see below for details.
+I don't agree as far as the style file (internal)
+interface is concerned. While changes to the user
+interface affect thousends of users style interface
+changes affect only a limited number of people. We
+shouldn't judge from our point of view in this regard.
+Of course style file changes as to be reflected in
+local style files but at the moment most style files
+are only variants of the three standard styles and
+differ only in minor regards.  (except for those styles
+written by the few gurus).
+
+
+      Consider, for example, the reluctance expressed
+      by one presenter at last year's TUG conference to
+      use LaTeX internal macros since they seemed to
+      change their function without warning between
+      versions of LaTeX (and despite what Leslie might
+      think, the dates are really not adequate
+      identifiers for what revision LaTeX is on, and I
+      hope that we can incorporate a simple numeric or
+      alphabetic identifier into the version number
+      beginning with 2.10--say 2.10 is the first
+      version, 2.10a after the first release with bug
+      fixes, then 2.10b etc.).
+
+The version numbering in LaTeX is surely confusing. One
+often see somebody telling he is running TeX 2.8 and
+LaTeX 2.09 and asked what is wrong! With the new LaTeX
+we should definitly switch to a more transparent scheme.
+But I don't agree that LaTeX's internals can't be used because
+they change without warning. They can't be used because nearly
+nobody understand them.
+
+      We keep wandering off on tangents in this discussion,
+      which is not bad in itself, but little progress is
+      being made (I'm kind of glad nobody took me up on the
+      quarter bet now).
+
+We have to keep wandering off in my opinion and I hope I will
+see many more mails on this important topic. And anyway, I
+don't see that we made no progress. I never saw a chance to
+get a definite syntax by the time of the Texas meeting but I
+still see a good chance to get to this point in Cork and I hope
+that a prototype implementation is ready at the end of
+the this year. By the way Don, if I remember correctly Rainer
+took you on your bet.
+
+      People want to know how to do style files in
+      LaTeX, and aside from a specification of Frank's
+      new start section macro, I haven't seen anything
+      concrete towards that end.
+
+To make this point clear, the syntax I proposed at that time
+is *bad* and I hope that we will find something better.
+It was only a test to check certain things and not a final
+proposal.  The advantages and disadvantages of things like
+this can only be tested by trying to use it (and so I used it
+and that's why I don't like it).
+
+      Users undoubtedly are quite put off by the state of
+      things in the LaTeX world.  I've put off installing TeX
+      3.0 until this week partially because I've been waiting
+      for the new version of lplain.tex that includes
+      \newlanguage and the other necessary definitions for
+      TeX 3.0. I'll spend a little time this week putting
+      together one that checks to see if it's running TeX 3.0
+      and if so adds the appropriate definitions and send it
+      to this list. If Leslie can officially adopt it,
+      my postings to comp.text.tex on how to install
+      LaTeX under TeX 3.0 can get considerably shorter
+      and there will doubtless be great rejoicing.
+
+I did the same and we should look at each others ideas to get
+an lplain for both TeX 2 and 3 soon. Even if we intend to
+replace it by something different in the near future.
+
+      There still is no official word on
+      internationalization. This should definitely be
+      considered for LaTeX 2.10 (has it even been
+      touched on in this group?); TUGboat 10#3 and 11#1
+      have adequate proof that there is a desire.
+
+If you think about agreeing on a standard how to access language
+specific strings (as done in german.sty babel.sty ILaTeX etc.)
+it is correct that we haven't discussed this before. I think this
+is a major topic but I don't like to discuss it at the moment,
+partly because I think that it will pose not many problems. There
+has been already so many work at this point so that we need only
+to collect it and integrate it into the style file interface.
+Anyway this is a point where mainly the european users are affected
+so that I would like to defer it until the Cork conference.
+
+
+Back to the attributes:
+
+I still vote for a syntax similar to the one proposed by my last
+message about attributes (please reread it).
+
+Reasons:
+
+1) such a syntax is upward compatible which is (not only in my eyes)
+   an important thing in itself.
+
+2) keeping both attributes and optional arguments would be a kludge
+   only if
+
+   i) the attributes have the same syntax, i.e., look like optional
+      arguments as in Leslies proposals
+      and
+
+  ii) if the attributes will allow to set/reset everything possible
+      (again as in Leslies proposal).
+
+    I don't think they should for several reasons.
+
+3) First of all the current set of optionals and star versions
+   give nice shorthand versions because they represent the major
+   attributes (at least nearly always).
+
+4) We also have the cases where it is simply nonsense to change to
+   to an attribute syntax because it would only mean more to type
+   but wouldn't produce a better structure
+   think of
+
+       \item[gnat]  versus the new one \item[text=gnat]
+
+   or
+
+       \\*[3pt]  versus the new one \item[nobreak|vspace=3pt]
+
+   or think of the position arguments for tabular and the like
+   would it help to force typeing pos=b ?
+
+ 5) Explaining the new syntax by is easy and straight
+    forward for new users and easy for old ones if we
+    divide the manual in three or four parts.
+
+    i) First explain the general structure by telling that
+       every textproducing command in LaTeX is represented by
+       an enviroment like
+       \begin{itemize} ... \end{itemize}
+       \begin{footnote} ...\end{footnote}
+       Explain that these enviroment may take special attributes
+       which will modify slightly the logical meaning of the
+       enviroment, e.g.
+       \begin{section|runninghead=} ... \end{section}
+
+    ii) In a second step tell the user that for the most common
+        (and short) enviroments (like section, footnote etc.)
+        there exists short versions in command form, i.e.,
+        \section{...}, \footnote{...} etc.
+        Also explain that for the most usual  attributes there
+        exists posibilities to express them via optional arguments
+        and star forms both for compatibilty and ease of usage.
+
+    iii) Third, explain how to change certain elements (i.e.,
+         introduce visual formatting) by introducing declarations
+         and the like. Also explain that there exists one attribute
+         decls that will take a string of declarations and
+         execute it after the enviroment has set up its default.
+
+  6) Of course giving only one decls attribute instead of
+     arbitrary attributes for setting layout parameters will result
+     in some extra typing if this is necessary. But if would make
+     a clear distinction between adhoc formatting and style layout
+     and it would provide all necessary function and would be
+     robust while the other method would lead to chaos in my
+     opinion.
+
+  7) One minor point: I pressed on this redesign because I saw the
+     need for something better than the current LaTeX.
+     If the design decisions will be based on `how fast and simple
+     one can make up a new manual out of the old one' and not
+     on what is easier for the user in the final run I think I will
+     stop working on this project.
+
+Frank
+
+

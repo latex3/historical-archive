@@ -1,0 +1,185 @@
+X-VM-VHeader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+X-VM-Bookmark: 1
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: PZF5HZ@RUIPC1E.bitnet
+Sender: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Date:         Thu, 1 Mar 90 12:46:47 CET
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 44
+
+Here is my version of the generic section command, comments are
+welcome but please don't ask me why I sometime used @ sometimes not.
+
+Frank
+
+
+\generic@header{LEVEL}{NAME}{SPECIAL CMDS}{NUMBER LAYOUT}
+                {HEADING LAYOUT}
+
+LEVEL and NAME as in LaTeX
+
+SPECIAL CMDS contains delarations and actions to be executed just
+             before the header and its vertical before space.
+             At the moment I suggest the following cmds (my names
+             are more or less arbitary):
+
+   Switches:
+
+\@afterindenttrue to get indentation of the paragraph following the heading.
+                  (default false)
+\@runintrue       to get a run-in heading. (default false).
+                  Of course this implies \@afterindentfalse.
+
+   Registers:
+
+\headpreskip      should be set, no default at the moment but it could be
+                  provided of course.
+\headpostskip     should be set, no default at the moment but it could be
+                  provided of course.
+                  Its value is used as a horizontal skip in run-in headings.
+                  Seems to be natural.
+\@secpenalty      Penalty for breaking before the heading. In this case I
+                  think we should also provide a setable default.
+
+\headleftindent   A heading has width \textwidth-\headleftindent-
+\headrightindent  \headrightindent and is indented by \headleftindent.
+                  In case of run-in of course only \headleftindent has any
+                  effect. (Default is 0pt for both)
+
+   Other commands:
+
+I can think of \clearpage or something like this but there are perhaps other
+uses aswell. Thinks like rules however should be placed (in my opinion) into
+the argument HEADING LAYOUT.
+This would also be the place where \thispagestyle could be used, of
+course only are something like \clearpage.
+Does anybody think we also need an argument for things after the
+heading?
+
+
+NUMBER LAYOUT  This argument should contain the layout for the object `number'
+               i.e. everything which is attached to it.
+               The kernel will pass it back in \headernumber to the style
+               if a number should be produced. Otherwise \headernumber
+               will be empty.
+
+HEADING LAYOUT This is the playground for the designer
+               where he has to specify the exact layout
+               of the heading. The heading will be a
+               vbox if it is not a run-in heading. The
+               default for \parindent is 0pt probably
+               other things should be reset too. The
+               heading text is accessed by \headertext
+               the number by \headernumber. I provided
+               a few tools, to help with the
+               specification:
+
+\@ifpresent{<Command>}{<yes case>}{<no case>}
+               This test can be used to generate headings
+               which Nico likes, i.e. totally different
+               layout depending whether or not
+               \headernumber is present (for example).
+               I still think that this is the
+               exception, for example in the
+               specification below I never used it.
+
+\@iffitts{<Test text>}{Test dim}{<yes case>}{<no case>}
+               This test allows to make certain actions depending on
+               the length of a trial text (like header + number).
+
+\@hangform     This is already known.
+
+Remarks:
+\par can not be used in the scope of the arguments because of the star
+test etc. but this could be changed if necessary. I don't think that
+using ex dims makes much sense, the size before the heading is used.
+maybe it is a good idea to change \headpreskip etc to something like
+\before@skip. Then the same name could be used in other generic cmds
+for toc etc.
+
+Example usage:
+
+\def\part{\generic@header
+            {part}%
+            \m@ne
+            {\headpreskip 4ex
+             \headpostskip 3ex}%
+            {Part~\thepart}%
+            {\raggedright                   % parindent=0pt default
+             \Large \bf \headernumber \@@par
+             \huge  \bf \@@par}}
+
+\def\partmark#1{\markboth{}{}} % I forgot how \markboth is supposed to work
+                               % so this is probably nonsense.
+
+
+\def\section{\generic@header {section}%
+                            \@ne
+                            {\headpreskip 4.5ex plus 1ex minus .2ex
+                             \headpostskip2.3ex
+                             \@secpenalty-800
+                             \headleftindent-\evensidemargin}%
+                            {Section~\thesection.~}%
+                            {\large\sf\bf
+                             \@iffitts{\headernumber\headertext}%
+                                      {\hsize}%
+                                     {\vbox{\hrule \@height 3pt
+                                            \vskip 4pt
+                                            \hbox{\headernumber
+                                                  \headertext}}}%
+                                     {\hrule \@height 3pt
+                                      \vskip 4pt
+                                      \@hangfrom{\headernumber}%
+                                        \headertext}}}
+
+
+
+
+\def\subsection{\generic@header
+                   {subsection}%
+                   \tw@
+                   {\headpreskip 3.25ex plus 1ex minus .2ex
+                    \headpostskip1.5ex
+                    \headleftindent-\evensidemargin}%
+                   {\thesubsection.~}%
+                   {\large\sf\bf
+                    \hrule
+                    \vskip 2pt
+                    \headernumber\headertext}}
+
+\setcounter{secnumdepth}{1}
+
+\def\subsubsection{\generic@header
+                     {subsubsection}%
+                     \thr@@
+                     {\headpreskip 3.25ex plus 1ex minus .2ex
+                      \headpostskip 1.5ex
+                      \headleftindent-\evensidemargin}%
+                     {\thesubsubsection.~}%
+                     {\normalsize\sf\bf \headernumber\headertext}}
+
+\def\paragraph{\generic@header
+             {paragraph}{4}%
+             {\headpreskip 3.25ex plus 1ex minus .2ex
+              \@runintrue
+%              \@afterindenttrue % this is a consequence of
+                                 % \@runintrue
+              \headpostskip 1em}%
+             {\theparagraph\kern 1em}%
+             {\normalsize\bf \headernumber\headertext}}
+
+\def\subparagraph{\generic@header
+        {subparagraph}{4}%           the four is a LaTeX entry (bug)
+        {\headpreskip 3.25ex plus 1ex minus.2ex
+         \@runintrue
+         \headleftindent\parindent
+         \headpostskip 1em}%
+        {\thesubparagraph\kern 1em}%
+        {\normalsize\bf \headernumber\headertext}}
+
+

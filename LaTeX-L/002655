@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1413" "Tue" "7" "July" "1998" "09:55:23" "+0100" "David Carlisle" "davidc@NAG.CO.UK" nil "40" "L3PL: blank line after \\usepackage" "^Date:" nil nil "7" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id KAA17252;
+	Tue, 7 Jul 1998 10:48:53 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <2.4A6C69C5@listserv.gmd.de>; Tue, 7 Jul 1998 10:48:50 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 381029 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Jul 1998 10:48:43 +0200
+Received: from nag.co.uk (andover.nag.co.uk [192.156.217.113]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id KAA01811 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7 Jul 1998 10:48:41 +0200
+          (MET DST)
+Received: (from davidc@localhost) by nag.co.uk (8.8.7/8.8.7) id JAA23201; Tue,
+          7 Jul 1998 09:55:23 +0100
+References: <199807020724.RAA19706@ricetub.anu.edu.au>
+            <199807021940.VAA01123@frank.zdv.uni-mainz.de>
+Message-ID:  <199807070855.JAA23201@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 7 Jul 1998 09:55:23 +0100
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      L3PL: blank line after \usepackage
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2655
+
+> > \usepackage{l3io,xr2} instead and commented out the \RequirePackage.
+
+> actually it works if there is a blank line after the \RequirePackage
+
+This is just a problem because of the current mix of l3 and 2e code.
+The rules are that after l3names.cls is read, there are no special
+conventions about what comes after \RequirePackage, but before that
+the first non-space token after  the } had better be a token whether
+read with l3 or 2e conventions.
+
+so after \usepackage{l3io,xr2}
+you need a blank line, or \par or [1998/06/01].
+
+The problem is that \usepackage & \RequirePackage look ahead to see if
+there is an optional argument coming up. l3names.sty redefines the
+lookahead to make sure that @_: are all letters at that point but before
+that redefinition has happened, _ is not a letter so if you go
+
+\usepackage{l3io,xr2}
+% no blank line here
+\tex_def:D .....
+
+then \usepackage looks ahead and tokenises \tex.
+The packages run correctly but when they finish, you get an undefined
+command \tex followed by an attempt to typeset _def:D.
+
+Probably the clearest way to avoid this is always to Require l3names
+first, and on its own
+
+\RequirePackage{l3names}
+\RequirePackage{l3io,xr2}
+
+as the second  \RequirePackage is safe to be read under any convention.
+
+There are alternative ways of handling the switching but all the ones I
+tried so far have similar bad effects somewhere.
+
+Suggestions accepted...
+
+David
+

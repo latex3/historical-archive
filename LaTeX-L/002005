@@ -1,0 +1,106 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3277" "Mon" "5" "May" "1997" "11:29:45" "+0200" "Ulrik Vieth" "vieth@THPHY.UNI-DUESSELDORF.DE" nil "66" "subencodings, spltting MX (was: Capital greek letters)" "^Date:" nil nil "5" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id LAA16946; Mon, 5 May 1997 11:41:29 +0200 (MET DST)
+Received: from yoda.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <9.BACFF8C5@listserv.gmd.de>; Mon, 5 May 1997 11:41:27 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 134435 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 5 May 1997 11:41:21 +0200
+Received: from thphy.uni-duesseldorf.de (www.thphy.uni-duesseldorf.de
+          [134.99.64.123]) by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with
+          SMTP id LAA24186 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 5
+          May 1997 11:29:18 +0200 (MET DST)
+Received: from macbeth.uni-duesseldorf.de (macbeth.thphy.uni-duesseldorf.de) by
+          thphy.uni-duesseldorf.de (4.1/SMI-4.1) id AA02251; Mon, 5 May 97
+          11:29:48 +0200
+Received: by macbeth.uni-duesseldorf.de (SMI-8.6/SMI-SVR4) id LAA10581; Mon, 5
+          May 1997 11:29:45 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <199705050929.LAA10581@macbeth.uni-duesseldorf.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <01IHTGAH8D5AFTFBOT@MZDMZA.ZDV.UNI-MAINZ.DE>
+              (KNAPPEN@MZDMZA.ZDV.UNI-MAINZ.DE)
+Date:         Mon, 5 May 1997 11:29:45 +0200
+From: Ulrik Vieth <vieth@THPHY.UNI-DUESSELDORF.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      subencodings, spltting MX (was: Capital greek letters)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2005
+
+Joerg Knappen:
+
+> I am thinking of a new subencoding MA (Math Alphabetic) which is in fact
+> OMA plus lowercase greek letters plus completed uppercase greek letters
+> plus some letterlike symbols (\dbar coming to my mind as an obvious
+> candidate for this, \partial and \Nabla, too. This list not complete.).
+> Then we could have a differently organised group of fonts:
+
+>      Current situation        Justin's Proposal     alternative proposal
+>      OT1 (cmr)                T1 (?)                MC1            *
+>      OML (cmmi)               MC                    MC2
+>      OMS (cmsy)               MSP                   MSP
+>      OMX (cmex)               MX                    MX             **
+>      U (all other)            MS1                   MS1
+>                               MS2                   MS2
+
+> MA is subset of both MC1 and MC2, where MC1 contains math roman and MC2
+> math italic. Further fonts (without symbols, but purely MA encoded) can
+> provide math text italic, math sans serif and math typewriter on demand.
+
+If the MA subencoding would include both sets of greek alphabets
+(upright and italics), you would effectively arrive at the same
+situation as having extra MC-encoded fonts for all math alphabets,
+regardless of whether or not one of them (upright roman) would be
+used in \fam0 as the operator font or not.
+
+> * T1 for math roman is not explicitly stated in Justin's proposal, as far
+> as I can see.
+
+IIRC, it was definitely mentioned somewhere that the operator font
+would be T1 encoded.  It it wasn't in Justin's report, it must have
+been in Alan's workshop summary that was circulated on m-f-d, before
+it was submitted for publication in the Aston proceedings (TB 14#3).
+I don't think there was ever an intention to allow using arbitrary
+characters with diacritics for use in math operators.  Rather, it is
+more likely that T1 was quoted just for convenience, as one would
+have that anyway as the default text font.  If that was indeed the
+reason, any font with ASCII letters in their usual positions would
+do just as well, including OT(n), T(n), 8a, 8r, etc.
+
+> ** MX may need splitting in tow parts. In this case, separating the
+> vertically extensible things from the horizontally extensibles ones looks
+> preferable to me.
+
+I'd agree with that in principle.  However, as for whether or not
+splitting MX, we shouldn't forget the design goal of providing plain
+compatibility with 4 families and AMS compatbilitiy with 6 families.
+To achieve this, I'd suggest a somewhat different strategy, namely:
+
+(a) having only one MX font for compatibility that restricts the
+    big delimiters to the usual range of sizes and the wide accents
+    to perhaps 8 different widths, while also providing big operators
+    (including some new ones).
+
+(b) having an alternate MX1 + MX2 font set that provides additional
+    sizes of big delimiters and wide accents, organized in the most
+    reasonable way without any compatibility constraints, e.g. having
+    big ops + wide accents in one font and delimiters in the other.
+
+    This alternate MX1 + MX2 set would be activated by an optional
+    package if the author or publisher so desires, somewhat along
+    the lines of optionally loading the "exscale" package.
+
+Opinions?
+
+Cheers, Ulrik.
+

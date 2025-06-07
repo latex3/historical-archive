@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2324" "Thu" "4" "November" "93" "18:19:23" "+0100" "Uwe Muench" "muench@PH-CIP.UNI-KOELN.DE" nil "48" "latex2e, nfss2 and internal font selection commands" "^Date:" nil nil "11"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA20257; Thu, 4 Nov 93 18:46:57 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA27892; Thu, 4 Nov 93 18:46:55 +0100
+Message-Id: <9311041746.AA27892@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 4656; Thu, 04 Nov 93 18:45:40 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5309;
+ Thu, 04 Nov 93 18:45:29 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 5307;
+ Thu, 04 Nov 93 18:45:27 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Thu, 4 Nov 93 18:19:23 +0100
+From: Uwe Muench <muench@PH-CIP.UNI-KOELN.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      latex2e, nfss2 and internal font selection commands
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1090
+
+
+
+Hallo!
+
+Rainer Schoepf explained:
+ > Just to make this clear: LaTeX2e will deal with this problem in a
+ > rather simple manner: if the document uses \documentstyle, the system
+ > will fall back to LaTeX2.09 compatibility mode. The only thing that
+ > will not work are style files which use internal font selection
+ > commands of the old lfonts.tex, like \tenrm.
+
+Our users often use pictex.tex and the pictex-exports of the program 'xfig'.
+The pictex.tex-macro only uses the internal font selection command \fiverm,
+but 'xfig' exports code, which contains many commands as \tenrm, \sevenrm,
+etc (mostly of no need, but it does). I see, that it is possible to write
+such things as
+\newcommand{\fiverm}{\fontfamily{cmr}\fontseries{m}\fontshape{n}%
+\fontsize{5}{7}\selectfont}
+in pictex.tex (though there should be no changes in the original file),
+but I do not know, how to change 'xfig', so that it does not export
+these internal font selection commands. So I would have to provide
+a style-file, which defines these commands (in the way like in the exmple
+above) or dump them in the format-file. But as I understand, the latter
+is not a possibility, when all formats of latex2e should be the same (we
+want to decrease the number of different formats, don't we?).
+
+Frank explained, that the internal commands are different at various sites, so
+it is understandable, that latex2e will not support them.
+So the question remains: What is the recommended way to get rid of such
+internal commands, when they are produced by some software (or: who updates
+the styles (such as pictex.tex) to be nfss2-compatible). Global definiton or
+style-files do not seem to be a good solution, do they?
+
+What do you think about this problem? I think in the compability-mode
+latex2e will not be fully compatible with latex209 :-). So I fear that
+some people will not upgrade to latex2e because of this. I hope I am
+wrong. Maybe, when a good solution is provided.
+
+Ciao,
+           Uwe
+
+------------------------------------------------------------------------------
+Uwe M\"unch, Schmittgasse 92, D-51143 K\"oln, email: muench@ph-cip.uni-koeln.de
+im Moment : Universit\"at zu K\"oln (Physikal.Institut) / cip-lab
+ "For a successful technology, reality must take precedence over public
+ relations, for nature cannot be fooled." - Richard Feynman
+
+
+

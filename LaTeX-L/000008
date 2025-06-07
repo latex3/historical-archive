@@ -1,0 +1,76 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 19 Feb 90 09:21:01 MET
+Reply-To: Victor Eijkhout <U641000@HNYKUN11.uucp>
+Sender: LaTeX-L Mailing list <LATEX-L@DHDURZ1.uucp>
+From: Victor Eijkhout <U641000@HNYKUN11.bitnet>
+Subject:      Startsection proposal
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 8
+
+
+Proposal for \@startsection layout:
+(non run-in only)
+
+\def\@startsection#1% vertical list above heading
+                  #2% commands to be executed left of heading
+                  #3% commands to be executed with heading
+                  #4% vertical list below heading
+                  #5% heading
+  {#1\relax
+   {\noindent\setbox0=\hbox{#2}\dimen0=\wd0\relax
+    \box0 \vtop{\advance\hsize-\dimen0\noindent#3#5}\@@par}
+   #4\relax}
+
+
+
+Examples:
+
+Standard LaTeX style
+\@startsection{\Aboveskip}%
+      {\Big\thesection.\hskip1em}%
+      {}%
+      {\Belowskip}%
+
+Ntg style
+\@startsection{\Aboveskip}%
+      {\hbox to \unitindent{\notquitesoBig\thesection.\hfil}}%
+      {\raggedright}
+      {\Belowskip}%
+
+Innocent variation
+\@startsection{\Aboveskip\hrule}%
+      {}%
+      {\big\thesection.\hskip.5em\relax}%
+      {\hrule\Belowskip}%
+
+Unnumbered appendices
+\@startsection{\hbox{\Big Appendix}\smallskip}%
+      {}%
+      {\medskip}%
+
+Et cetera. I think this is reasonably flexible, and not too
+taxing on the abilities of a style designer.
+
+Oh, and while I have the stage: would it be possible to
+(meaning: could we pleeeeease) have
+in the next LaTeX a file structure where LaTeX.tex
+inputs both Lplain and Lfonts? It is so unnatural having that
+strange name 'lplain' for the format.
+But of course that's only one man's opinion.
+
+
+Victor Eijkhout                     Department of Mathematics
+                                    University of Nijmegen
+                                    Toernooiveld 5
+  "Far out in the uncharted         6525 ED Nijmegen, the Netherlands
+   backwaters of the unfash-
+   ionable end of the               +31 80  61 3169
+   western spiral arm               (switchboard: 61 1111)
+   of the galaxy"
+                                    u641000@HNYKUN11.BITNET
+
+

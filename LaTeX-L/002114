@@ -1,0 +1,74 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["812" "Thu" "19" "June" "1997" "15:23:41" "+0100" "David Carlisle" "david@DCARLISLE.DEMON.CO.UK" nil "38" "Re: Multilingual TeX --- and a successor to TeX" "^Date:" nil nil "6" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id XAA07239; Thu, 19 Jun 1997 23:49:07 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.D565C42A@listserv.gmd.de>; Thu, 19 Jun 1997 23:49:04 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 156137 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Thu, 19 Jun 1997 23:48:06 +0200
+Received: from punt-2.mail.demon.net (relay-13.mail.demon.net [194.217.242.21])
+          by relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id XAA16971
+          for <LATEX-L@relay.urz.uni-heidelberg.de>; Thu, 19 Jun 1997 23:48:00
+          +0200 (MET DST)
+Received: from dcarlisle.demon.co.uk ([194.222.187.145]) by
+          punt-2.mail.demon.net  id aa1223668; 19 Jun 97 19:16 BST
+Received: by dcarlisle.demon.co.uk id m0wei7h-000OVpC (Debian Smail-3.2
+          1996-Jul-4 #2); Thu, 19 Jun 1997 15:23:41 +0100 (BST)
+Message-ID:  <m0wei7h-000OVpC@dcarlisle.demon.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <33A84856.4C60C211@vvv.vsu.ru> (message from Vladimir Volovich on
+              Thu, 19 Jun 1997 00:43:02 +0400)
+Date:         Thu, 19 Jun 1997 15:23:41 +0100
+From: David Carlisle <david@DCARLISLE.DEMON.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Multilingual TeX --- and a successor to TeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2114
+
+> I expected to get the same results for these two \showbox commands.
+
+Yes you should.
+
+Consider the following (as long as the 8bit lines of latin-1 get
+through the mail)
+
+It produces four identical results, each looking like:
+> \box0=
+\hbox(8.56377+0.0)x27.21558
+.\T1/cmr/m/n/10 ^^c1
+.\kern-0.83313
+.\T1/cmr/m/n/10 ^^dd
+.\kern-0.83313
+.\T1/cmr/m/n/10 ^^c1
+.\kern-1.11084
+.\T1/cmr/m/n/10 V
+
+
+
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\showoutput
+
+\setbox0=\hbox{\'A\'Y\'AV}                  \showbox0
+\setbox0=\hbox{\MakeUppercase{\'a\'y\'av}}  \showbox0
+\setbox0=\hbox{V}                        \showbox0
+\setbox0=\hbox{\MakeUppercase{v}}        \showbox0
+
+
+\stop
+
+
+So somewhere you must have a definition that is inserting extra tokens
+that are breaking the kerns.
+
+David
+

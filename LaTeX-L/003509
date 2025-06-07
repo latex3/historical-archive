@@ -1,0 +1,235 @@
+Received:  via tmail-4.1(11) (invoked by user schoepf) for schoepf; Tue, 25 Jan 2000 18:31:32 +0100 (MET)
+Received:  from mailgate2.zdv.Uni-Mainz.DE (mailgate2.zdv.Uni-Mainz.DE [134.93.8.57]) by mail.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id SAA28435 for <schoepf@mail.uni-mainz.de>; Tue, 25 Jan 2000 18:31:32 +0100 (MET)
+MIME-Version: 1.0
+Received:  from mail.listserv.gmd.de (mail.listserv.gmd.de [192.88.97.5]) by mailgate2.zdv.Uni-Mainz.DE (8.9.3/8.9.3) with ESMTP id SAA12424 for <schoepf@UNI-MAINZ.DE>; Tue, 25 Jan 2000 18:31:30 +0100 (MET)
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01BF675A.051A7200"
+Received:  from mail.listserv.gmd.de (192.88.97.5) by mail.listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <12.D3A7F88F@mail.listserv.gmd.de>; Tue, 25 Jan 2000 18:31:15 +0100
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received:  from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE          (LISTSERV-TCP/IP release 1.8b) with spool id 449604 for          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 25 Jan 2000 18:30:03 +0100
+Received:  from relay.uni-heidelberg.de (relay.uni-heidelberg.de          [129.206.100.212]) by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with          ESMTP id SAA21115 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 25 Jan          2000 18:30:01 +0100 (MET)
+Received:  from knatte.tninet.se (knatte.tninet.se [195.100.94.10]) by          relay.uni-heidelberg.de (8.9.3+Sun/8.9.3) with SMTP id SAA25928 for          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 25 Jan 2000 18:30:01 +0100 (MET)
+Received:  (qmail 12305 invoked from network); 25 Jan 2000 18:31:24 +0100
+Received:  from garibaldi.tninet.se (195.100.94.103) by knatte.tninet.se with          SMTP; 25 Jan 2000 18:31:24 +0100
+Received:  from  [195.100.226.135] (du135-226.ppp.su-anst.tninet.se          [195.100.226.135]) by tninet.se (BLUETAIL Mail Robustifier1.1.7) with          ESMTP id s1643151t163408-bmr-garibaldi for          <LATEX-L@URZ.UNI-HEIDELBERG.DE> ; Tue, 25 Jan 2000 18:31:22 +0100
+In-Reply-To:  <200001251342.OAA01742@istrati.zdv.uni-mainz.de>
+References: <f91f17e9@corona.oche.de> <f91f17e9@corona.oche.de>
+Return-Path: <owner-latex-l@URZ.UNI-HEIDELBERG.DE>
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil]["1925" "Tue" "25" "January" "2000" "18:30:02" "+0100" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "47" "Re: template interfaces and what they mean" "^Date:" nil nil "1" nil nil nil nil nil]nil)
+X-Sender: haberg@pop.matematik.su.se
+Content-class: urn:content-classes:message
+Subject:      Re: template interfaces and what they mean
+Date: Tue, 25 Jan 2000 18:30:02 +0100
+Message-ID:  <v03110700b4b38b004405@[195.100.226.140]>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Hans Aberg" <haberg@MATEMATIK.SU.SE>
+Sender: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: "Multiple recipients of list LATEX-L" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Reply-To: "Mailing list for the LaTeX3 project" <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3509
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01BF675A.051A7200
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+At 14:42 +0100 2000/01/25, Frank Mittelbach wrote:
+>to formulate those a bit more abstractly:
+>
+> 1) how much freedom has a template to interpret its arguments (ie data =
+passed
+>    to it from the document)?
+>
+> 2) what is the scope a template instance apply itself? is it =
+well-defined?
+>
+>let's tackle 1) first. Achim suggests that the pshape type should get =
+two
+>arguments those meaning should depend on the template. in my opinion =
+this is
+>likely to result in chaos.
+>
+>the main idea behind the template types is that logical structure of =
+the
+>document, i.e., the commands and environments therein, are transformed =
+into
+>instance calls of templates of certain types. this is defined via, say, =
+an
+>xpare interface and does define the document class (no formatting yet)
+>structure.
+
+-- Perhaps this input can be used for the template discussion:
+
+One idea that comes to my mind in connection with the "environments with
+hooks" is to build up two layers, one which takes care of the semantics,
+and one which takes of the syntax by which the environments are called.
+
+The semantics for environments with hooks is (where <name> is the
+environment name)
+  \<name>/before
+    \begingroup
+      \<name>/begin
+        ...   % User code within the environment
+      \<name>/end
+    \endgroup
+  \<name>/after
+
+Here, some arguments should (when required by the environment =
+definition)
+be passed to the commands \<name>/before, \<name>/begin, \<name>/end,
+\<name>/after. This one might do with simplified arguments, say
+  \<name>/before#1[#2]#3{...}
+etc, if one semantically wants to allow for optional arguments.
+
+This provides an underlying semantic layer for the environments.
+On top of this, one should call the environment by some syntax, which =
+could
+be the old LaTeX2 \begin{<name>} ... \end{<name>}, but which again could =
+be
+something different, say a HTML look-alike, or one a syntax which
+simplifies math typing.
+
+  Hans Aberg
+
+------_=_NextPart_001_01BF675A.051A7200
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: template interfaces and what they mean</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>At 14:42 +0100 2000/01/25, Frank Mittelbach =
+wrote:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;to formulate those a bit more abstractly:</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 1) how much freedom has a template to interpret =
+its arguments (ie data passed</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&nbsp;&nbsp;&nbsp; to it from the =
+document)?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt; 2) what is the scope a template instance apply =
+itself? is it well-defined?</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;let's tackle 1) first. Achim suggests that the =
+pshape type should get two</FONT>
+
+<BR><FONT SIZE=3D2>&gt;arguments those meaning should depend on the =
+template. in my opinion this is</FONT>
+
+<BR><FONT SIZE=3D2>&gt;likely to result in chaos.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;the main idea behind the template types is that =
+logical structure of the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;document, i.e., the commands and environments =
+therein, are transformed into</FONT>
+
+<BR><FONT SIZE=3D2>&gt;instance calls of templates of certain types. =
+this is defined via, say, an</FONT>
+
+<BR><FONT SIZE=3D2>&gt;xpare interface and does define the document =
+class (no formatting yet)</FONT>
+
+<BR><FONT SIZE=3D2>&gt;structure.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>-- Perhaps this input can be used for the template =
+discussion:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>One idea that comes to my mind in connection with the =
+&quot;environments with</FONT>
+
+<BR><FONT SIZE=3D2>hooks&quot; is to build up two layers, one which =
+takes care of the semantics,</FONT>
+
+<BR><FONT SIZE=3D2>and one which takes of the syntax by which the =
+environments are called.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The semantics for environments with hooks is (where =
+&lt;name&gt; is the</FONT>
+
+<BR><FONT SIZE=3D2>environment name)</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \&lt;name&gt;/before</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \begingroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\&lt;name&gt;/begin</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+...&nbsp;&nbsp; % User code within the environment</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+\&lt;name&gt;/end</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \endgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \&lt;name&gt;/after</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here, some arguments should (when required by the =
+environment definition)</FONT>
+
+<BR><FONT SIZE=3D2>be passed to the commands \&lt;name&gt;/before, =
+\&lt;name&gt;/begin, \&lt;name&gt;/end,</FONT>
+
+<BR><FONT SIZE=3D2>\&lt;name&gt;/after. This one might do with =
+simplified arguments, say</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \&lt;name&gt;/before#1[#2]#3{...}</FONT>
+
+<BR><FONT SIZE=3D2>etc, if one semantically wants to allow for optional =
+arguments.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>This provides an underlying semantic layer for the =
+environments.</FONT>
+
+<BR><FONT SIZE=3D2>On top of this, one should call the environment by =
+some syntax, which could</FONT>
+
+<BR><FONT SIZE=3D2>be the old LaTeX2 \begin{&lt;name&gt;} ... =
+\end{&lt;name&gt;}, but which again could be</FONT>
+
+<BR><FONT SIZE=3D2>something different, say a HTML look-alike, or one a =
+syntax which</FONT>
+
+<BR><FONT SIZE=3D2>simplifies math typing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; Hans Aberg</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01BF675A.051A7200--
+

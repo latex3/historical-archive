@@ -1,0 +1,95 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 20 Mar 2009 12:24:37 +0100
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n2KBObAI030919
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 20 Mar 2009 12:24:37 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n2KBIcrU014797
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 20 Mar 2009 12:18:38 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n2JN2KwZ007187;
+	Fri, 20 Mar 2009 12:18:28 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 224817 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 20 Mar
+          2009 12:18:28 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n2KB8S4R001742 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 20 Mar 2009 12:08:28 +0100
+Received: from asmtpout013.mac.com (asmtpout013.mac.com [17.148.16.88]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n2KB8HkF021307
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 20 Mar 2009 12:08:17
+          +0100
+MIME-version: 1.0
+Content-transfer-encoding: 7BIT
+Content-type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Received: from [10.0.1.3] (host-201-151-105-56.block.alestra.net.mx
+          [201.151.105.56]) by asmtp013.mac.com (Sun Java(tm) System Messaging
+          Server 6.3-8.01 (built Dec 16 2008; 32bit)) with ESMTPSA id
+          <0KGS001E2XKHCX00@asmtp013.mac.com> for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 20 Mar 2009 04:07:31 -0700
+          (PDT)
+X-Mailer: Apple Mail (2.930.3)
+Message-ID:  <14F52B78-1CA0-4C95-BCD6-E67F4647458B@mac.com>
+Date:         Fri, 20 Mar 2009 05:07:29 -0600
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: "Axel E. Retif" <axel.retif@MAC.COM>
+Subject: fixltx2e and fnsymbol
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -4 () RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 20 Mar 2009 11:24:38.0102 (UTC) FILETIME=[7454AF60:01C9A94E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5721
+
+Dear developers,
+
+I think there is an aesthetic problem with the redefinition of  
+fnsymbol in fixltx2e, as exemplified with the use the manyfoot  
+package: say, with
+
+\newcounter{footnoteS}
+\newcommand{\footnoteS}{%
+...
+\renewcommand{\thefootnoteS}{\fnsymbol{footnoteS}}
+
+you get, with fixltx2e active, \textsuperscript{\textasteriskcentered}  
+for the first footnote mark, which looks unpleasant; but with fixltx2e  
+commented out, you get \textsuperscript{$\ast$}, because then, as I  
+see it, latex.ltx definition is taken:
+
+\def\@fnsymbol#1{\ensuremath{\ifcase#1\or * ...
+
+instead of the one in fixltx2e:
+
+\def\@fnsymbol#1{%
+    \ifcase#1\or \TextOrMath\textasteriskcentered * ...
+
+Of course there is a quick and *very* dirty "solution" ---after  
+calling fixltx2e:
+
+\makeatletter
+\def\@fnsymbol#1{%
+%% \ifcase#1\or \TextOrMath\textasteriskcentered *\or% original line
+    \ifcase#1\or $*$\or ...
+
+With the other symbols there is no problem, of course, as  
+\textsuperscript{\textdagger} and \textsuperscript{$\dagger$} produce  
+the same result.
+
+Thanks for your kind attention.
+
+Axel
+

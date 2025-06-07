@@ -1,0 +1,116 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5141" "Fri" " 7" "April" "1995" "13:55:31" "-0500" "Matthew Swift" "swift@ACS.BU.EDU" nil "84" "modularity" "^Date:" nil nil "4" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzj.zdv.Uni-Mainz.DE [134.93.8.16]) by trudi.zdv.Uni-Mainz.DE (8.6.11/8.6.11) with ESMTP id UAA17208 for <schoepf@goofy.zdv.uni-mainz.de>; Fri, 7 Apr 1995 20:08:01 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP2IWSWAR49KN5SF@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 20:07:38 +0100
+Received: from degate.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-7 #4432)
+ id <01HP2IWJD3FK9TDFEV@MZDMZA.ZDV.UNI-MAINZ.DE>; Fri, 7 Apr 1995 20:07:27 +0100
+Received: from vm.gmd.de by degate.gmd.de (SF for OpenVMS v1.0-a)
+ with SMTP id AB36FE6B ; Fri, 7 Apr 1995 20:07:27 +0100
+Received: from VM.GMD.DE by vm.gmd.de (IBM VM SMTP V2R2)
+ with BSMTP id 8878; Fri, 07 Apr 95 20:01:56 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2a/1.8a) with BSMTP id 2961; Fri,
+ 7 Apr 1995 20:01:54 +0200
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Message-id: <01HP2IWJLEFM9TDFEV@MZDMZA.ZDV.UNI-MAINZ.DE>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Fri, 07 Apr 1995 13:55:31 -0500
+From: Matthew Swift <swift@ACS.BU.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: Multiple recipients of list LATEX-L <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Subject: modularity
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1637
+
+I think that the two articles the TUGboat 15 #3 on an Object Oriented (TeX)
+Processor show us how far LaTeX is from being modular as a programming
+language.  Mr Bennett's Camel parser is to my mind a step toward that kind of
+modularity.  But there is the question whether too many steps in this direction
+will lead to something that we wouldn't call LaTeX any more.
+
+There are two related kinds of modularity I have been thinking about.  Commands
+like \documentclass and \usepackage ideally set up a (programming) environment
+to interpret a "program" of text plus pure markup containing no explicit
+definitions.  The convention in a LaTeX source file is that the preamble sets
+up the (programming) environment for interpretation of whatever is inside the
+(LaTeX) document environment, which is often in the same file.  This is great
+in theory, but the convenience is often abused in practice.  For instance, the
+text "\title{Moby-Dick}" is markup and ought to be in the document environment;
+it is not saying how to typeset the data ("interpret the text program") in the
+document environment, it is part of the program or data.  Likewise, you can put
+top-level redefinitions into a text program; this really of course should be
+hidden in a markup command, or fixed in the preamble.
+
+Why does this come up?  Because this sloppiness throws a wrench into exporting
+text.  Now I am speaking of a kind of file modularity.  The probably reason
+that this has not come up before is that you are presently limited in LaTeX to
+\input'ing auxiliary files of text that do not themselves contain a preamble.
+There are times when you would like extract ("import") the contents of the
+document environement (or other sub-environments) from a file that stands on
+its own (i.e., is compilable, has a preamble).  With a little hacking, this is
+not hard.  But the whole thing begins to break down when either commands like
+\title appear outside of the environment, or redefinitions occur in the text
+program itself, that is, when the program text (text program) and library
+interface are intermixed.
+
+There is another problem with the further difference between those preamble
+commands that are going to define totally new markup commands, and those that
+are going to simply adjust the environment.  Examples: (a) I load a package
+which defines \sumer{} to typeset words in Sumerian.  (b) I adjust the global
+margins.  (a) should most likely be done whenever the text is imported, since
+it is probably necessary in order to interpret the text (b) should most likely
+not be done when the text is imported, since this is probably not relevant to
+how the text should be set by the other toplevel file.  But I can always think
+of an exception.
+
+This is quite a bear of a distinction, and I haven't thought it out yet; I'm
+just pointing it out at the moment.  At this point, recognizing case (a) seems
+more trouble than its worth.  The reasonable thing to do seems to be to ignore
+the whole preamble and require that every top-level file define all markup
+commands (i.e., load all necessary packages) at top level.  This would require
+(at least) two changes in convention: (1) (mentioned above) that no markup
+(e.g., \title) ever occur in preambles; (2) that packages never redefine
+environments in a way that alters the user syntax of the markup commads inside
+them.  That is, no new commands, just redefinitions.  Number (2) is a pain in
+the neck.  Specifically, it prohibits things like tabularx, which add new
+placement specifiers.  I do not say I have solved these problems, I have just
+begun to think about them.  In interactive preamble parser would be an
+interesting compromise; and so would a name-convention on packages that alter
+kernel syntax (it looks like *x is already such a convention; is it?).  But now
+I am getting pretty far off track.
+
+If you need motivation for the kind of file modularity I'm talking about, think
+of bits of text that are members of a group of like items and would be
+naturally included into documents in different orders and with different
+typeset appearance.  Poems and recipes, say.  Or tables of data that occur in a
+lab report, that now need to go into a grant proposal.  A collection of
+letters, or daily reports, or weekly schedules.
+
+I am fully aware that I can do whatever I want with Unix filters, but it seems
+to me worthwhile to solve these problems in LaTeX.
+
+Two final notes:
+
+Dependence and collision management is easy to implement, if you know what you
+want.  That is the hard part.  I use a macro \requirecommand (and its brother
+\RequireNewName) that does either a \newcommand or a \CheckCommand on its
+arguments.  I am not a big fan of \renewcommand; if you are going to redefine
+something, what does it matter whether it's been defined before?  It might help
+debugging, but it seems to hinder more than help, by possibly raising an error
+in benign situations.
+
+Fast execution speed is nice, but not as important in my mind as the
+portability and functionality issues under discussion.  Processor speeds will
+continue to increase, so I think worries about overhead should be low on the
+list.
+
+
+Matt Swift
+

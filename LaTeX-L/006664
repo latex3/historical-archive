@@ -1,0 +1,257 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id p2A1jC6C019956
+	for <rainer@rainer-schoepf.de>; Thu, 10 Mar 2011 02:45:13 +0100
+Received: (qmail 2867 invoked by alias); 10 Mar 2011 01:45:07 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 10 Mar 2011 01:45:06 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx081) with SMTP; 10 Mar 2011 02:45:06 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id p2A1g8Il021035
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 10 Mar 2011 02:42:08 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id p29N14mf022495;
+	Thu, 10 Mar 2011 02:41:57 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 1274137 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 10 Mar
+          2011 02:41:57 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id p2A1fuLx000731 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 10 Mar 2011 02:41:56 +0100
+Received: from mail-iy0-f177.google.com (mail-iy0-f177.google.com
+          [209.85.210.177]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id p2A1foSZ020951 (version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 10 Mar
+          2011 02:41:55 +0100
+Received: by iyf40 with SMTP id 40so1785049iyf.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Wed, 09 Mar 2011 17:41:50 -0800
+          (PST)
+Received: by 10.42.152.3 with SMTP id g3mr9367118icw.149.1299721310395; Wed, 09
+          Mar 2011 17:41:50 -0800 (PST)
+Received: from staff-248-161.wireless.adelaide.edu.au
+          (staff-248-161.wireless.adelaide.edu.au [129.127.248.161]) by
+          mx.google.com with ESMTPS id g4sm1796632ick.11.2011.03.09.17.41.47
+          (version=TLSv1/SSLv3 cipher=OTHER); Wed, 09 Mar 2011 17:41:49 -0800
+          (PST)
+Content-Type: multipart/mixed; boundary=Apple-Mail-51--708443081
+Mime-Version: 1.0 (Apple Message framework v1081)
+X-Mailer: Apple Mail (2.1081)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Message-ID:  <905C5ED0-6639-4DEB-95AC-A2FCB2C4491D@gmail.com>
+Date:         Thu, 10 Mar 2011 12:11:43 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: expl3's seq_pop_right etc.
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p6i75npGen84eVAEFK/syJmiNoEBJhgjYKpglu1TZLLw7xMZnJMXwBFy+Sxe
+ D/AUQGQOurK3ezVJqUBFH0uN5pjmWoMfpyHp50EZ60/Y6hM43eiKLTaE/W0dI7nIn8+pr4SzneyH
+ Jeytg==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6664
+
+--Apple-Mail-51--708443081
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+Dear all,
+
+Quite some time ago Morten and I were discussing improvements to the =
+functions offered by the "seq" module in expl3, namely to make symmetric =
+the push and pop commands so you could access them on both sides if you =
+wished. (Obviously, perhaps, it's more efficient to do things on the =
+left, however.)
+
+The idea is that where the seq module currently offers
+
+PUT LEFT   \seq_put_left, \seq_push (synonyms)
+PUT RIGHT  \seq_put_right
+POP LEFT   \seq_pop:NN
+POP RIGHT  <none>
+GET LEFT   \seq_get:NN, \seq_top:NN (synonyms)
+GET RIGHT  <none>
+
+we would augment/rename these functions as follows:
+
+PUT LEFT   \seq_put_left, \seq_push
+PUT RIGHT  \seq_put_right
+POP LEFT   \seq_pop_left:NN, \seq_pop:NN
+POP RIGHT  \seq_pop_right:NN
+GET LEFT   \seq_get_left:NN, \seq_get:NN
+GET RIGHT  \seq_get_right:NN
+
+I've finally taken some minutes to write out some functions that fill in =
+these gaps.
+
+There are a few design decisions that I've chosen to delay -- e.g., =
+should we be aiming for more expandable functions for dealing with =
+sequences? My thoughts are that it's probable that expandable functions =
+are faster for shorter lists and slower for longer ones, although I =
+haven't done any benchmarking. So my first reaction is to do everything =
+expandably with comma lists but un-expandably with sequences. However, =
+my implementation actually does use the mapping approach since we've got =
+that conveniently set up with quarks already. Happy to discuss.
+
+With all this in mind, I'd like to invite comments on the functions =
+offered (perhaps an f-expandable \seq_get_(left/right):N would also be a =
+good idea? Contributions welcome.) and the particular implementation =
+I've chosen below. After any discussion here I'll add the functions =
+(with tests) to expl3.
+
+In lieu of code comments, a rough description: sequences are mapped two =
+elements at a time until the end of the sequence is reached. For the =
+pop_right:NN operations, a new sequence is put_right into until the =
+final element is found and omitted but stored in a token list. For the =
+get_right operations, we simply save the final element in a token list. =
+There is also a pop_right:N function offered that does not store the =
+popped element.
+
+Best regards,
+-- Will
+
+
+--Apple-Mail-51--708443081
+Content-Disposition: attachment;
+	filename=seqright.tex
+Content-Type: application/octet-stream;
+	name="seqright.tex"
+Content-Transfer-Encoding: 7bit
+
+\documentclass{article}
+\usepackage{expl3}
+\begin{document}
+\ExplSyntaxOn
+
+%% POP (no assignment)
+
+\cs_new:Npn \seq_pop_right:N #1 {
+  \seq_pop_right_aux:NNNN #1 \l_seq_tmpa_tl \seq_set_eq:NN \use_none:nn
+}
+\cs_new:Npn \seq_gpop_right:N #1 {
+  \seq_pop_right_aux:NNNN #1 \l_seq_tmpa_tl \seq_gset_eq:NN \use_none:nn
+}
+
+%% POP (assignment)
+
+\cs_new:Npn \seq_pop_right:NN #1#2 {
+  \seq_pop_right_aux:NNNN #1 #2 \seq_set_eq:NN \tl_set_eq:NN
+}
+\cs_new:Npn \seq_gpop_right:NN #1#2 {
+  \seq_pop_right_aux:NNNN #1 #2 \seq_gset_eq:NN \tl_set_eq:NN
+}
+
+\cs_new:Npn \seq_pop_right_aux:NNNN #1#2#3#4 {
+  \seq_clear:N \l_seq_tmpa_seq
+  \exp_after:wN \seq_pop_right_aux:w #1
+  \seq_elt:w \q_recursion_tail \seq_elt_end:
+  \seq_elt:w \q_recursion_tail \seq_elt_end:
+  \seq_elt:w \q_recursion_stop \seq_elt_end:
+  #3 #1 \l_seq_tmpa_seq
+  #4 #2 \l_seq_tmpa_tl
+}
+
+\cs_set:Npn \seq_pop_right_aux:w
+    \seq_elt:w #1 \seq_elt_end: \seq_elt:w #2 \seq_elt_end:
+{
+  \quark_if_recursion_tail_stop_do:nn {#1}
+  { \tl_clear:N \l_seq_tmpa_tl     \use_none:n }
+  \quark_if_recursion_tail_stop_do:nn {#2}
+  { \tl_set:Nn \l_seq_tmpa_tl {#1} \use_none:n }
+  \seq_put_right:Nn \l_seq_tmpa_seq {#1}
+  \seq_pop_right_aux:w \seq_elt:w #2 \seq_elt_end:
+}
+
+%% GET
+
+\cs_new:Npn \seq_get_right:NN #1#2 {
+  \seq_get_right_aux:NNN #1 #2 \tl_set_eq:NN
+}
+\cs_new:Npn \seq_gget_right:NN #1#2 {
+  \seq_get_right_aux:NNN #1 #2 \tl_gset_eq:NN
+}
+
+\cs_new:Npn \seq_get_right_aux:NNN #1#2#3 {
+  \exp_after:wN \seq_get_right_aux:w #1
+  \seq_elt:w \q_recursion_tail \seq_elt_end:
+  \seq_elt:w \q_recursion_tail \seq_elt_end:
+  \seq_elt:w \q_recursion_stop \seq_elt_end:
+  #3 #2 \l_seq_tmpa_tl
+}
+
+\cs_set:Npn \seq_get_right_aux:w
+    \seq_elt:w #1 \seq_elt_end: \seq_elt:w #2 \seq_elt_end:
+{
+  \quark_if_recursion_tail_stop_do:nn {#1}
+  { \tl_clear:N \l_seq_tmpa_tl \use_none:n }
+  \quark_if_recursion_tail_stop_do:nn {#2}
+  { \tl_set:Nn \l_seq_tmpa_tl {#1} \use_none:n }
+  \seq_get_right_aux:w \seq_elt:w #2 \seq_elt_end:
+}
+
+%% TESTING
+
+\seq_new:N \foo
+\seq_push:Nn \foo {a}
+\seq_push:Nn \foo {b}
+\seq_push:Nn \foo {c}
+\seq_push:Nn \foo {d}
+\seq_push:Nn \foo {e}
+\seq_display:N \foo
+
+\seq_get_right:NN \foo \baz
+\tl_show:N \baz
+
+\seq_pop_right:N \foo
+\seq_display:N \foo
+\seq_pop_right:N \foo
+\seq_display:N \foo
+\seq_pop_right:N \foo
+\seq_display:N \foo
+\seq_pop_right:N \foo
+\seq_display:N \foo
+\seq_pop_right:N \foo
+\seq_display:N \foo
+\seq_pop_right:N \foo
+\seq_display:N \foo
+
+\seq_push:Nn \foo {a}
+\seq_push:Nn \foo {b}
+\seq_push:Nn \foo {c}
+\seq_push:Nn \foo {d}
+\seq_push:Nn \foo {e}
+
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+\seq_pop_right:NN \foo \baz
+\tl_show:N \baz
+
+\ExplSyntaxOff
+\end{document}
+
+--Apple-Mail-51--708443081--
+

@@ -1,0 +1,143 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id o2FAsRfo021565
+	for <rainer@rainer-schoepf.de>; Mon, 15 Mar 2010 11:54:28 +0100
+Received: (qmail 21289 invoked by alias); 15 Mar 2010 10:54:22 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 15 Mar 2010 10:54:16 -0000
+Received: from relay.uni-heidelberg.de (EHLO relay.uni-heidelberg.de) [129.206.100.212]
+  by mx0.gmx.net (mx084) with SMTP; 15 Mar 2010 11:54:16 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id o2FApmBt018118
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 15 Mar 2010 11:51:48 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id o2EN18Pe009955;
+	Mon, 15 Mar 2010 11:51:45 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 388102 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 15 Mar
+          2010 11:51:45 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id o2FApj8k009788 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 15 Mar 2010 11:51:45 +0100
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id o2FApTCb017840 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 15 Mar 2010 11:51:32 +0100
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=palladium.local)
+          by lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id
+          1Nr7tV-0007kX-a1 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 15 Mar
+          2010 10:51:33 +0000
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-GB; rv:1.9.1.8)
+            Gecko/20100227 Thunderbird/3.0.3
+MIME-Version: 1.0
+References: <DFD2243D-9F4C-406A-9218-FA648D7E675A@gmail.com>
+            <BD2CE23B-4B27-4399-88F4-1DC385351A3B@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Message-ID:  <4B9E1134.7080508@morningstar2.co.uk>
+Date:         Mon, 15 Mar 2010 10:51:32 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: expl3 global vs local assignments
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <BD2CE23B-4B27-4399-88F4-1DC385351A3B@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (Mail was not recognized as spam);
+ Detail=5D7Q89H36p4U4jfdfC5HDevlx1X2sAZgP9e9F2VTUYI/FLDAh5vXTUdJ3cb8VrMsthL0D
+ 3Bm5FvGPWoCdLJEm9HLQdq2oZJ1+efgJyyH9QG358RthiowY/MzVegunMsABYaLhWP05TgiSjDS3
+ ZQZ9Q==V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6323
+
+On 14/03/2010 23:22, Will Robertson wrote:
+> On 14/03/2010, at 11:36 PM, Will Robertson wrote:
+>
+>> The code is somewhat tentative but I think it shows this approach is valid. Any comments or suggestions?
+>
+> Well, I do notice that etex.sty does a lot of this stuff as well, so I really should be working off that package rather than re-inventing the relevant parts of it... in fact, it almost replaces entirely the need for the expl3 stuff; just need to say (I think)
+>
+> \let \int_new:N       \globcount
+> \let \int_new_local:N \loccount
+>
+> etc. etc.
+>
+> Should have looked in there first :) I didn't realise it provided support for local registers already.
+
+So the question "is this okay on LaTeX2e" is not a problem (as expl3 
+loads etex anyway). One thing I'd be tempted to do would be:
+
+   \int_new:N  \l_scratch_int % Local
+   \int_gnew:N \l_some_int    % Global
+
+where \int_new:N checks \currentgrouplevel, and allocates from the 
+global pool (low to high numbers) if it's used outside of any group, and 
+from the local pool (high to low numbers) otherwise. (This is pretty 
+easy to do, and I'd hope is not too "costly".)
+
+My reasoning for this is that we have set/gset, and so are (in the main) 
+favouring local unless specified.
+
+---
+
+I had a look at what the original example was for local declarations.
+The lead off was the C++ model:
+
+   for (...) {
+     int j = ...
+   }
+
+which is considered better than:
+
+   int j;
+   for (...) {
+     j = ...
+   }
+
+(I know very little C++, so I'm going to assume that this is correct!)
+
+The LaTeX2e analogy was then:
+
+   \whiledo{...}{
+     \newcount\j
+   }
+
+But the allocations here are all at the same group level, so I'm not 
+sure that the example quite works. I guess better is
+
+\cs_set:Npn \some_function:<args> #1... {
+   \group_begin:
+     \int_new:N \l_some_int % Assuming my new/gnew approach => local.
+     % Do stuff
+   \group_end:
+}
+
+Now that's okay provided there is no nesting of \some_function:<args>, 
+as local in a TeX sense is not the same as local in an OO sense. 
+Assignments aren't expandable and so we are safe from some kind of 
+recursive, expansion-based nesting. However, are we safe from all 
+nesting? I can't currently think of a realistic example where we might 
+run into trouble, but perhaps I'm lacking imagination.
+
+---
+
+My conclusion from the above is I'm quite happy to go for local 
+assignments and a C++-like model for where variables should be created, 
+unless there is a good reason to think that some kind of nested _new 
+situation is likely to occur. Even then, I guess you can just warn about it.
+-- 
+Joseph Wright
+

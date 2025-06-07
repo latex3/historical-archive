@@ -1,0 +1,98 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 15 Nov 2005 01:27:05 +0100
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id jAF0Qw5f013291
+	for <rainer.schoepf@PROTEOSYS.COM>; Tue, 15 Nov 2005 01:27:02 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id jAF0MTM0009313;
+	Tue, 15 Nov 2005 01:22:30 +0100 (MET)
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id jAE4fs7m008135;
+	Tue, 15 Nov 2005 01:22:01 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 14.3) with
+          spool id 840025 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Tue, 15 Nov
+          2005 01:22:00 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id jAF0M0Xr026346 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 15 Nov 2005 01:22:00 +0100
+Received: from dogmatix.mecheng.adelaide.edu.au
+          (dogmatix.mecheng.adelaide.edu.au [129.127.14.1]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          jAF0LwM0009216 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Tue, 15 Nov
+          2005 01:22:01 +0100 (MET)
+Received: (from uucp@localhost) by dogmatix.mecheng.adelaide.edu.au
+          (8.8.7/8.8.7) id KAA12277 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Tue, 15 Nov 2005 10:54:49 +1030
+Received: from UNKNOWN(129.127.14.10),
+          claiming to be "watt.mecheng.adelaide.edu.au" via SMTP by
+          dogmatix.mecheng.adelaide.edu.au,
+          id smtpda12275; Tue Nov 15 10:54:44 2005
+Received: from WATT/SpoolDir by watt.mecheng.adelaide.edu.au (Mercury 1.44); 15
+          Nov 05 10:51:41 -9:30
+Received: from SpoolDir by WATT (Mercury 1.44); 15 Nov 05 10:51:38 -9:30
+Received: from [10.0.1.2] (129.127.14.244) by watt.mecheng.adelaide.edu.au
+          (Mercury 1.44) with ESMTP; 15 Nov 05 10:51:32 -9:30
+Mime-Version: 1.0 (Apple Message framework v746.2)
+References: <88ED1D30-FF25-423D-B73B-485982A3CB69@guerilla.net.au>
+            <5.1.0.14.0.20051110085835.024b6700@pop3.web.de>
+            <20051110100945.GA3265@m0A023274.vpn.uni-freiburg.de>
+            <17267.14888.849329.473348@isostar.informatik.uni-stuttgart.de>
+            <8BDE465E-4169-40F3-A
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.746.2)
+Message-ID:  <A1771F68-3D03-4F78-99DF-66773C796A3D@guerilla.net.au>
+Date:         Tue, 15 Nov 2005 10:51:30 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <will@GUERILLA.NET.AU>
+Subject: Re: LaTeX3 access, pdfTeX extensions, &c.
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <17272.53237.920872.634154@pussy.r.npc.de>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 15 Nov 2005 00:27:09.0828 (UTC) FILETIME=[50F30440:01C5E97B]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4895
+
+On 15/11/2005, at 4am, Joachim Schrod wrote:
+
+>>>>>> "WR" == Will Robertson <will@GUERILLA.NET.AU> writes:
+>
+> WR> The token stream won't change retrospectively, so in theory it
+> WR> should be able to be examined.
+>
+> But it does change. That's the whole point of macros, to change the
+> token stream.
+
+It sounds like my understanding of macro expansion is wrong, but I am  
+still not seeing the argument properly, I'm afraid. Since we're  
+looking *backward*, won't whatever being expanded (ignore for now  
+\expandafter...) already BE expanded?
+
+Then, with
+   \def\a#1{f1\b{#1}}
+   \def\b#1#2{\par #2 #1}
+   \a12\previouslet\test
+
+Am I wrong in thinking that by the time \previouslet is activated,  
+\a12 will have expanded into  (char "f")  (other "1") (cseq "par")  
+(other "2") (space " ") (other "1")  ?
+
+So we get ... (other "1") (cseq "\previouslet") (cseq "\test")
+and end up with the equivalent of \let\test=1 .
+
+Ohhh, but I think I get it now. This is no more useful than actually  
+looking at nodes, since anything that survives to be \previouslet  
+will be turned into a node anyway.
+
+(Ignoring whatever you might happen to be able to do with \noexpand /  
+\expandafter ...)
+
+Will
+

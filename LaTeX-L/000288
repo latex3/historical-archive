@@ -1,0 +1,253 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.3D5D1AC4@nummer-3.proteosys>; Thu, 3 Jan 2002 11:41:45 +0100
+Return-Path: <LATEX-L@DHDURZ1.bitnet>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.3D5D1AC4"
+x-vm-v5-data: ([nil nil nil nil nil nil t t nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+Subject: Thoughts on LaTeX 2.10
+Date: Sat, 2 Feb 1991 08:12:10 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE53E@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Sender: "Don Hosek" <DHOSEK@HMCVAX.CLAREMONT.edu>
+To: "Rainer M. Schoepf" <Schoepf@sc.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L@DHDURZ1.bitnet>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 288
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.3D5D1AC4
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+What needs to be done for LaTeX 2.10 (spec 0.0):
+
+- Modifed \document and \enddocument commands to prevent need
+  for redefinition in style files. In particular:
+  * Add \@auxstart to definition of \document as first line of
+    .aux file; for most documentstyles it will be defined to be
+    \relax. letter will use instead,
+    "\string\startlabels\string\@startlabels"
+  * Add \every@begindocument and \every@enddocument hooks for
+    adding other code. For the enddocument, there may need to be
+    hooks for pre- and post- aux file reading. (I'll have to look
+    over my design notes to check on that).
+- Switch meanings of \rm and \normalshape in the new font
+  selection scheme. Actually, it might be best to leave
+  \normalshape alone, make \rm do the same thing and have another
+  command (\normalstyle, perhaps?) for
+  \series\default@series\family\default@family\shape\default@shape.
+  In practice the need for this command would not be terribly
+  common.
+- Update \footnote (any others?) so that it selects roman type by
+  default. Actually, I would suggest replacing \footnotesize in
+  the definition with \footnoteformatting which could be defined
+  to be \footnotesize\normalstyle. I'd like to have
+  \marginparformatting as well, possibly others.
+- Catch a few bugs here and there including the missing \relax's
+  in \@startsection, incorrect treatment of page 0 in twoside
+  mode, missing \interlinepenalty10000 in \part, etc.
+- Restore \@currsize definition in \@setsize. (PLEASE?)
+
+Things that might be nice:
+
+- I'd like to see LaTeX 3.0 use different extensions for style
+  files and options. My recommendations would be style files have
+  extensions of .dst and options .dop (.opt is too commonly used
+  for other purposes). Perhaps 2.10 could accept both. Then
+  again, maybe this would best be put off for later--part of the
+  advantage gained by the new extensions would be the emphasis that
+  style files will probably need mods to work under the new
+  LaTeX.
+- I have a practice of creating style files with the following
+  outline:
+    <PRELIMINARY DEFINITIONS-INCLUDING STYLE OPTIONS>
+    \input{<TEMPLATE STYLE>}
+    <FINAL DEFINITIONS-PARTICULARLY REDEFS OF MAIN STYLE DEFS>
+  It would be nice if this approach to style writing were better
+  supported. It really is an excellant way to create derivative
+  styles. For example, a book style might look like
+    \def\ds@oneside{\@onesidetrue}
+    \input{book.sty}
+    \let\save@section=3D\section
+    \def\section{\if@nobreak\clearpage\fi\save@section}
+  (admittedly not too exciting).
+
+
+
+
+------_=_NextPart_001_01C19443.3D5D1AC4
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>Thoughts on LaTeX 2.10</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>What needs to be done for LaTeX 2.10 (spec =
+0.0):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- Modifed \document and \enddocument commands to =
+prevent need</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; for redefinition in style files. In =
+particular:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; * Add \@auxstart to definition of \document as =
+first line of</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; .aux file; for most documentstyles =
+it will be defined to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \relax. letter will use =
+instead,</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+&quot;\string\startlabels\string\@startlabels&quot;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; * Add \every@begindocument and =
+\every@enddocument hooks for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; adding other code. For the =
+enddocument, there may need to be</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; hooks for pre- and post- aux file =
+reading. (I'll have to look</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; over my design notes to check on =
+that).</FONT>
+
+<BR><FONT SIZE=3D2>- Switch meanings of \rm and \normalshape in the new =
+font</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; selection scheme. Actually, it might be best =
+to leave</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \normalshape alone, make \rm do the same thing =
+and have another</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; command (\normalstyle, perhaps?) for</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; =
+\series\default@series\family\default@family\shape\default@shape.</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; In practice the need for this command would =
+not be terribly</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; common.</FONT>
+
+<BR><FONT SIZE=3D2>- Update \footnote (any others?) so that it selects =
+roman type by</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; default. Actually, I would suggest replacing =
+\footnotesize in</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; the definition with \footnoteformatting which =
+could be defined</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; to be \footnotesize\normalstyle. I'd like to =
+have</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \marginparformatting as well, possibly =
+others.</FONT>
+
+<BR><FONT SIZE=3D2>- Catch a few bugs here and there including the =
+missing \relax's</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; in \@startsection, incorrect treatment of page =
+0 in twoside</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; mode, missing \interlinepenalty10000 in \part, =
+etc.</FONT>
+
+<BR><FONT SIZE=3D2>- Restore \@currsize definition in \@setsize. =
+(PLEASE?)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Things that might be nice:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>- I'd like to see LaTeX 3.0 use different extensions =
+for style</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; files and options. My recommendations would be =
+style files have</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; extensions of .dst and options .dop (.opt is =
+too commonly used</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; for other purposes). Perhaps 2.10 could accept =
+both. Then</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; again, maybe this would best be put off for =
+later--part of the</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; advantage gained by the new extensions would =
+be the emphasis that</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; style files will probably need mods to work =
+under the new</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; LaTeX.</FONT>
+
+<BR><FONT SIZE=3D2>- I have a practice of creating style files with the =
+following</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; outline:</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;PRELIMINARY =
+DEFINITIONS-INCLUDING STYLE OPTIONS&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \input{&lt;TEMPLATE =
+STYLE&gt;}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; &lt;FINAL DEFINITIONS-PARTICULARLY =
+REDEFS OF MAIN STYLE DEFS&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; It would be nice if this approach to style =
+writing were better</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; supported. It really is an excellant way to =
+create derivative</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; styles. For example, a book style might look =
+like</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\def\ds@oneside{\@onesidetrue}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \input{book.sty}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\let\save@section=3D\section</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\def\section{\if@nobreak\clearpage\fi\save@section}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; (admittedly not too exciting).</FONT>
+</P>
+<BR>
+<BR>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.3D5D1AC4--
+

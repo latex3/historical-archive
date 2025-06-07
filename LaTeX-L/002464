@@ -1,0 +1,73 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1257" "Tue" "14" "October" "1997" "15:48:03" "+0400" "Vladimir Volovich" "TeX@VVV.VSU.RU" nil "34" "Re: LaTeX Syntax" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id NAA27830;
+	Tue, 14 Oct 1997 13:59:47 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <8.E43DCE30@listserv.gmd.de>; Tue, 14 Oct 1997 13:59:45 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 214870 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997 13:59:38 +0200
+Received: from cc.vsu.ru (root@VSU-Relarn.Relarn.ru [194.226.29.62]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id NAA26634 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 14 Oct 1997 13:59:29
+          +0200 (MET DST)
+Received: (from uucp@localhost) by cc.vsu.ru (8.8.7-vsu/8.8.7/ai) with UUCP id
+          PAA01924 for LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 14 Oct 1997
+          15:53:35 +0400
+Received: (from vvv@localhost) by vvv.vrn.ru (8.8.6/8.8.5) id PAA04233; Tue, 14
+          Oct 1997 15:48:03 +0400
+References: <v03110700b068eabe3311@[130.237.37.63]>
+Lines: 34
+X-Mailer: Gnus v5.5/Emacs 20.1
+Message-ID:  <m2zpocr2fg.fsf@vvv.vrn.ru>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  Hans Aberg's message of Tue, 14 Oct 1997 12:05:57 +0200
+Date:         Tue, 14 Oct 1997 15:48:03 +0400
+From: Vladimir Volovich <TeX@VVV.VSU.RU>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX Syntax
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2464
+
+"HA" == Hans Aberg writes:
+
+ HA>   Let me illustrate the problem: I use to write
+ HA> \newcommand\foo{...}  but the LaTeX syntax is (I think)
+ HA> \newcommand{\foo}{...}  A spellchecker I use would expect the
+ HA> latter, and stop spellchecking entirely if it encounters the
+ HA> former. Now, if the syntax is official, this is correct behavior,
+ HA> but if it is unofficial (that is, something just used internally
+ HA> by the LaTeX design team), it is incorrect.
+
+ HA>   In other words, the problem shows up in the interface between
+ HA> LaTeX and other programs.
+
+There is a possibility to make TeX itself to `force' the users
+to insert `{' before the first argument of a macro:
+if the macro definition contains a `#' sign as a last character
+of parameter list, then TeX will insert `{' after a substitution list.
+E.g., the following (simplified) definition of \newcommand:
+
+\def\newcommand#{\@tempnewcommand}
+\def\@tempnewcommand#1{\def#1}
+
+will force to use the following syntax:
+\newcommand{\foo}{...}
+
+and will generate an error message if one writes
+\newcommand\foo{...}
+
+It should be possible to control the presence of {} brackets
+for other macro arguments as well (not only for the first one).
+
+--
+With best regards,
+                   Vladimir.
+

@@ -1,0 +1,203 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 28 Mar 2005 20:49:18 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j2SInFNi029765
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 28 Mar 2005 20:49:16 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j2SIgktL002041;
+	Mon, 28 Mar 2005 20:42:46 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j2RM21ml000433;
+	Mon, 28 Mar 2005 20:40:29 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 188488 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 28 Mar 2005 20:40:28 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j2SIeRYd026711 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Mon, 28 Mar 2005 20:40:27 +0200
+Received: from smtp110.tiscali.dk (smtp110.tiscali.dk [62.79.79.110]) by
+          relay.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j2SIgBfK027872 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 28 Mar
+          2005 20:42:12 +0200 (MET DST)
+Received: from [192.168.0.103] (h25n3c1o1022.bredband.skanova.com
+          [217.208.178.25]) by smtp110.tiscali.dk (8.12.10/8.12.10) with ESMTP
+          id j2SIfD35069980 for <LATEX-L@listserv.uni-heidelberg.de>; Mon, 28
+          Mar 2005 20:41:13 +0200 (CEST) (envelope-from
+          Lars.Hellstrom@math.umu.se)
+X-Sender: lars@abel.math.umu.se
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j2SIeRYd026712
+Message-ID:  <l03102803be6ca1a6b9eb@[192.168.0.103]>
+Date:         Mon, 28 Mar 2005 20:41:01 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Lars =?iso-8859-1?Q?Hellstr=F6m?= <Lars.Hellstrom@MATH.UMU.SE>
+Subject: Re: Draft encoding for baltic and nordic languages
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <Pine.LNX.4.58.0503252133330.31138@linux1.zdv.Uni-Mainz.DE>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 28 Mar 2005 18:49:18.0354 (UTC) FILETIME=[D8C94F20:01C533C6]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4844
+
+At 22.36 +0200 2005-03-25, Jörg Knappen wrote:
+>Since there are problems with typesetting lithuanian, latvian, sami and
+>greenlandic with the T1 encoding, I have drafted another encoding for the
+>baltic languages. Please look at the attached latex source file for
+>details.
+
+Very interesting!
+
+Comments on things, as they appear in the file:
+
+
+   \item[Swedish] \"A\"a \r{A}\r{a} \'E\'e \"O\"o
+
+Yes, that's a reasonable set of characters (although anyone Swedish would
+reorder them as \r{A}\r{a} \"A\"a ...). \'E\'e isn't a distinct letter, but
+there are a couple of words where one usually makes use of it to clarify
+the pronounciation ("ide" and "idé" have different meanings).
+
+
+   {\notefont Note: According to my information, finnish has
+   recently added \v{S}\v{s} and \v{Z}\v{z} to its alphabet.
+
+Wikipedia at least seem to confirm that they should be available:
+http://en.wikipedia.org/wiki/Finnish_alphabet
+
+
+   \item[German] \"A\"a \"O\"o \SS\ss\ \"U\"u
+
+Is an \SS character necessary? I don't mind having an \SS command, but
+cannot its implementation just as well be to expand to a pair of `S's?
+(It's worth noticing that neither Unicode nor the Adobe Glyph List has any
+uppercase equivalent of \ss, so apparently most of the world gets by
+perfectly well without such a character.)
+
+
+   The characters \OE\ and \oe\ are part of the standard OT1
+   encoding, they should be here, too. The same goes for the spanish
+   inverted marks ?` and !`.
+
+I disagree. Syntactic ligatures such as ?` and !` are generally a poor
+solution, and since the characters are very periferal in this encoding it
+is better to leave them out. Quoting TLC2 p. 443:
+
+   While most fonts also implement !` and ?` to generate ¡ and ¿,
+   this feature is not universally available in all fonts.
+
+
+   There should be more ligatures, ...
+
+Yes. In fact, the optimal set-up is probably that all slots not needed to
+support the various languages are made available for ligatures.
+
+   ... names an fh ligature, the fj ligature (\emph{fjord}), and
+   the fk ligature (also present in the \textsf{QX} encoding
+   supported by the Latin Modern fonts).
+
+Not only such "collision" ligatures are valuable, but also "fancy"
+ligatures such as st, ct, and end-of-word swashes. By leaving a healthy
+fraction of the slots without mandated contents, the font designers are
+given a chance to implement such features, if they wish to do so.
+
+
+   If one disposes the perthousandzero
+
+Yes, there is no need to include that bastard character.
+
+
+   \section{More languages supported by the core encoding}
+   This sections lists some languages which are supported by the
+   core encoding without any additional characters needed.
+
+I don't quite see the reason e.g. Northern Sami is listed as a core
+language whereas Lule Sami is not; if the criterium for inclusion is
+primarily geography, then I fail to see why one should be included but not
+the other.
+
+
+   {\notefont Note: \~N and \'N are considered variants of
+   the same letter, allthough they are different in standard
+   character sets.
+
+   Since they are variants one can choose \'N as the representative
+   for the T1B encoding.}
+
+Additional support for this can be found in
+
+  http://www.statskontoret.se/upload/2619/TN36.pdf
+
+(a technical standard published by the Swedish Agency for Public
+Management). It also states that \"\I and \"\i are not needed for Southern
+Sami.
+
+
+   \item The Unicode Standard \cite{Unicode40} has \v{H}\v{h}
+   on positions U+021E and U+021F with the annotation
+   ``Finnish Romany''. Additional information on this language
+   and its alphabet is needed.
+
+http://www.kotus.fi/kielet/romani/ind_inenglish.shtml  might be a good
+place to start with this.
+
+
+   \item Are there more ligatures to be considered --
+   ffh (probably not), ffj (don't know, if someone needs this
+   one), ffk (maybe yes)?
+
+Beyond the matter of making sure that slots are available, this is not an
+issue that needs to be codified in an encoding spec, as it can be different
+from font to font. The same goes for
+
+   \item Shall the ligatures be ``ON'' by default?
+
+An issue though that it might be worth to think about is what character
+should be the default \hyphenchar. I haven't ever seen the T1 hyphenchar in
+slot 127 activated.
+
+
+   What about \Gbar, \Tbar, and \Ezh? The \textsf{T4}
+   encoding has established shorthands \verb+\B+ meaning ``with
+   crossbar'' and \verb+\m+ meaning ``modified''. Adopt them
+   for \textsf{T1B}?
+
+I haven't any particular opinion about this, but whatever is done, it
+should be done so that the commands can work "as expected" even when used
+at times where the current encoding isn't T1B. A "modified" accent that is
+only a shorthand sounds as though this could be a bit troublesome.
+
+----
+
+On more the more general issue of _how_ to specify encodings, your T1B
+draft has arrived at an interesting point in time.
+
+(As I have previously posted notices about on this list,) I have written a
+paper (standard proposal) on this subject, which can currently be found in
+CTAN as the file fonts/utilities/fontinst/doc/encspecs/encspecs.tex. Some
+drafts for formal specifications can be found in the same directory. Your
+t1b.tex is interestingly enough quite close to what would be in such a
+formal specification if the actual encoding layout was removed, so you
+should find it rather straightforward to make use of this format when you
+advance on this subject. It would also be interesting (at least for me) to
+see how the process might work in cases where one is not just trying to
+write down some established practices, but actually creating something new.
+
+Starting in February, there has also on the tex-fonts@math.utah.edu mailing
+list been a discussion on the creation of an encoding repository; the
+consensus now is that this should reside in the CTAN fonts/encodings
+directory. Hence the general issue might finally have started to gain some
+momentum.
+
+Lars Hellström
+

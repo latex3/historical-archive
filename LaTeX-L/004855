@@ -1,0 +1,80 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(5.0.2195.6713);
+	 Sun, 17 Apr 2005 11:21:23 +0200
+Received: by mail.proteosys.com (8.12.10/8.12.2) with ESMTP id j3H9LKqc021465
+	for <rainer.schoepf@PROTEOSYS.COM>; Sun, 17 Apr 2005 11:21:21 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.119.176])
+	by relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id j3H9IMtL013997;
+	Sun, 17 Apr 2005 11:18:23 +0200 (MET DST)
+Received: from listserv (listserv.uni-heidelberg.de [129.206.119.176])
+	by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE Linux 0.6) with ESMTP id j3GM1B0k022803;
+	Sun, 17 Apr 2005 11:16:11 +0200
+Received: from LISTSERV.UNI-HEIDELBERG.DE by LISTSERV.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8e) with spool id 210808 for
+          LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sun, 17 Apr 2005 11:16:10 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.12.7/8.12.7/SuSE
+          Linux 0.6) with ESMTP id j3H9G9rw004994 for
+          <lATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr 2005 11:16:09 +0200
+Received: from smtp08.web.de (smtp08.web.de [217.72.192.226]) by
+          relay2.uni-heidelberg.de (8.12.10/8.12.10) with ESMTP id
+          j3H9HbtL013836 for <lATEX-L@listserv.uni-heidelberg.de>; Sun, 17 Apr
+          2005 11:17:37 +0200 (MET DST)
+Received: from [212.144.146.12] by smtp08.web.de with smtp (WEB.DE 4.104 #268)
+          id 1DN5sn-0007Tj-00; Sun, 17 Apr 2005 11:16:02 +0200
+X-Sender: uwe.lueck@pop3.web.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+X-Sender: uwe.lueck@web.de
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id j3H9G9rw004995
+Message-ID:  <5.1.0.14.0.20050417104145.0247e860@pop3.web.de>
+Date:         Sun, 17 Apr 2005 11:14:47 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+From: Uwe =?iso-8859-1?Q?L=FCck?= <uwe.lueck@WEB.DE>
+Subject: \output trick; Re: lineno.sty question
+To: LATEX-L@listserv.uni-heidelberg.de
+In-Reply-To:  <42604798.2090406@uiuc.edu>
+Precedence: list
+X-ProteoSys-SPAM-Score: 0 () 
+X-Scanned-By: MIMEDefang at proteosys.com
+Return-Path: owner-latex-l@listserv.uni-heidelberg.de
+X-OriginalArrivalTime: 17 Apr 2005 09:21:23.0252 (UTC) FILETIME=[D2B45F40:01C5432E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4855
+
+Dear Erik Luijten,
+
+At 01:00 16.04.05, Erik Luijten wrote:
+>2. As a physicist, I frequently use the widely-used package "revtex". I
+>found that this breaks lineno completely (both version 3 and version 4). I
+>was wondering whether there is a chance that lineno.sty can be made
+>compatible with revtex?
+
+This is due to a mistake in revtex's way of changing the output routine.
+After a \newtoks\output, the new output routine invokes \the\output,
+it should use a private string instead (\let\rev@output\output ...).
+lineno.sty tries the same trick, but due to revtex's \the\output,
+lineno's output routine is entirely ignored.
+
+This was pointed out by David Kastrup recently. I had made the
+mistake myself, and so has lineno.sty done up to now. David Kastrup
+called it a "standard mistake", I wondered who made it else, now
+I find it funny to see another instance.
+
+"Mistake" may be inappropriate, but David Kastrup's proposal is
+a helpful convention.
+
+With the next version of lineno.sty, you will be able to load it
+before the class by \RequirePackage, revtex and lineno will then
+cooperate, regardless of if revtex has been changed (I think).
+
+Best Regards,
+Uwe Lück.
+

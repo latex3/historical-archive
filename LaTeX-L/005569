@@ -1,0 +1,80 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 3 Jan 2009 17:11:18 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id n03GBGnZ025856
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 3 Jan 2009 17:11:17 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n03G7WFV031852
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 3 Jan 2009 17:07:33 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n02N1E68027281;
+	Sat, 3 Jan 2009 17:07:21 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 173338 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 3 Jan
+          2009 17:07:21 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n03G7L8e012326 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 3 Jan 2009 17:07:21 +0100
+Received: from anchor-post-1.mail.demon.net (anchor-post-1.mail.demon.net
+          [195.173.77.132]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n03G7DoR023120 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 3 Jan 2009 17:07:16 +0100
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.4]) by
+          anchor-post-1.mail.demon.net with esmtp (Exim 4.69) id
+          1LJ91t-0004rW-gK for latex-l@listserv.uni-heidelberg.de; Sat, 03 Jan
+          2009 16:07:13 +0000
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <495F8D32.3080703@morningstar2.co.uk>
+Date:         Sat, 3 Jan 2009 16:07:14 +0000
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: \begin{<env>} ... \end{<env>}
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 03 Jan 2009 16:11:18.0354 (UTC) FILETIME=[E915DB20:01C96DBD]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5569
+
+Hello all,
+
+The recent question about macro names got me thinking about how
+environments should be implemented in LaTeX3.  I think I've seen this
+mentioned briefly somewhere, but not really worked through.
+
+My thinking is that, although using \<env> ... \end<env> is convenient,
+it is probably not the best way to (1) keep user and internal macros
+separate and (2) to show what is going on.  I'd therefore imagine a
+"virtual" module begin used for all of the \begin/\end names, something
+like:
+
+\envs_<env>_begin:w % Seems easiest here to use :w
+\envs_<env>_end:
+
+That means that the business with \end... is removed from command
+creation much clearer) and that there is no possibility of accidentally
+using an environment-starting command without \begin.
+
+Of course, this is still "some way off", but it seems worth thinking
+about in the wider context of refactoring expl3 and discussing keeping
+user function names under control.
+-- 
+Joseph Wright
+

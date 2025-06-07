@@ -1,0 +1,82 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 13 Sep 2008 23:38:33 +0200
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id m8DLcSuj008826
+	for <rainer.schoepf@PROTEOSYS.COM>; Sat, 13 Sep 2008 23:38:29 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id m8DLUaLq020151
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 13 Sep 2008 23:30:36 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id m8CM1J28006892;
+	Sat, 13 Sep 2008 23:30:28 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 31420 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Sat, 13 Sep
+          2008 23:30:28 +0200
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id m8DLUSAW029000 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 13 Sep 2008 23:30:28 +0200
+Received: from anchor-post-35.mail.demon.net (anchor-post-35.mail.demon.net
+          [194.217.242.85]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id m8DLUDPf010707 for <latex-l@listserv.uni-heidelberg.de>;
+          Sat, 13 Sep 2008 23:30:18 +0200
+Received: from morningstar2.demon.co.uk ([80.176.134.7] helo=[192.168.0.3]) by
+          anchor-post-35.mail.demon.net with esmtp (Exim 4.67) id
+          1Kech2-00097a-GD for latex-l@listserv.uni-heidelberg.de; Sat, 13 Sep
+          2008 21:30:12 +0000
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+MIME-Version: 1.0
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Message-ID:  <48CC30E3.9020308@morningstar2.co.uk>
+Date:         Sat, 13 Sep 2008 22:30:11 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Suggestions sought
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 13 Sep 2008 21:38:33.0903 (UTC) FILETIME=[1284DBF0:01C915E9]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5312
+
+Hello all,
+
+I wonder if anyone can make a suggestion on how to solve a problem I'm
+finding rather tricky with my "keys" efforts.  The issue is adding code
+to an existing macro.  There are a number of scenarios, but I control
+the initial definition, and so I have three possibilities:
+
+1) Definitions with a known argument pattern (one parameter #1).  Here,
+I can "recover" the code out of the macro definition, add to in and
+re-cast the macro.  This works for \def:Npn and \def:Npx
+
+2) \def:Npn macros with unknown "p".  Here, I can save the argument
+pattern to a toks, and the body to a second toks. The macro can then be
+redefined using the information in the two toks as needed.
+
+3) \def:Npx macros with unknown "p".  This is the problem.  I can of
+course save the argument and body *as given*, but can't find a method to
+get the body toks expanded, nor a reliable way of recovering the data
+from the macro definition itself.
+
+Any ideas for (3) would be welcome.  One extra point is that ideally I
+don't want to using \meaning + \scantokens, etc., as this looses catcode
+information.  I'm hoping for a trick at the initial point of definition
+based on the fact that I can hold onto the various bits and pieces.
+-- 
+Joseph Wright
+

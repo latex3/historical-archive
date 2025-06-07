@@ -1,0 +1,123 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4138" "Wed" "26" "January" "1994" "16:51:15" "GMT" "Charles Wells" "cfw2@PO.CWRU.EDU" "<199401261653.AA10292@mail.cs.tu-berlin.de>" "91" "Re: Mapping a structure onto a design" "^Date:" nil nil "1" "1994012616:51:15" "Mapping a structure onto a design" (number " " mark "     Charles Wells     Jan 26   91/4138  " thread-indent "\"Re: Mapping a structure onto a design\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA09982; Wed, 26 Jan 94 17:54:18 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA28137; Wed, 26 Jan 94 17:53:46 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA10292
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Wed, 26 Jan 1994 17:53:42 +0100
+Message-Id: <199401261653.AA10292@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3695; Wed, 26 Jan 94 17:53:43 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3694; Wed,
+ 26 Jan 1994 17:53:43 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 0859; Wed,
+ 26 Jan 1994 17:53:10 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  David_Rhead@VME.CCC.NOTTINGHAM.AC.UK Wed, 26 Jan 1994 15:20:11 GMT
+Date:         Wed, 26 Jan 1994 16:51:15 GMT
+From: Charles Wells <cfw2@PO.CWRU.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Mapping a structure onto a design
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1312
+
+> I assume that with Sebastian's
+>      i think my colleagues in the US should suffer too by saying
+>      \documentclass[lettersize]{...} in every job.
+> we've now moved on to questions about LaTeX3 (since LaTeX2e was a
+> consilidation exercise, and I don't expect that Frank and Co. will
+> want to mess around with "the standard styles" prior to LaTeX3).
+>
+> My understanding was that, for LaTeX3, we could go back to the drawing
+> board for such things (although there might be an obligation to provide a
+> backwards compatibility module, so that 2.09 \documentstyle and 2e
+> \documentclass still work).
+>
+> If we are going back to the drawing board, I think that it would be nice to
+> get rid of as much as possible of the current confusion between structure
+> and design in the current \document...  things.  (What's "report"?  Is it a
+> structure?  Is it a design?  What is different between "book" and "report"?
+> [Structure: only absence of "abstract", I think.  Design: quite a bit.] )
+> E.g., could we have
+>      \mapping{structure}{design}
+> In the article case, we'd have to decide what structure an article has
+> (DTD, if you like).  In general, this would be mapped to an "article
+> design" for a particular publisher.  E.g., (ignoring MS-DOS filename
+> limits) could we have
+>      \mapping{article}{espart}
+> and
+>      \mapping{article}{amspreprint}
+> for "map the article structure onto the Elsevier Science Publishers article
+> design" or "map the article structure onto the AMS preprint design",
+> perhaps?
+>
+> How would "analogues of the 2.09/2e standard styles" fit into this?
+> Could one have things like
+>      \mapping{article}{default-article}
+>      \mapping{article}{US-default-article}
+>      \mapping{article}{A4-default-article}
+> for example?  Here default-article could
+> either be a design that will fit onto both US and A4 laserprinter paper.
+>        "Too short for A4, too narrow for US, but never mind, it's only
+>        intended for pre-prints."
+> or     could be installation-dependent.  It could be set at installation
+>        to either US-default-article or A4-default-article.
+> Either way
+>      \mapping{article}{default-article}
+> would
+> *  be OK for stuff that is to be e-mailed.  It could cross the Atlantic,
+>    and still give something that will fit on a laserprinter at the other
+>    end.  (Neither Barbara nor Sebastian would have to change a
+>      \mapping{article}{default-article}
+>    file that the other one sent to them.)
+> *  keep people's expectations of "the design" down.  It's only "the default".
+>    It's not the only thing that LaTeX3 can do.  LaTeX3 needn't be "badly
+>    regarded" just because people don't like "the default design".
+> *  anyone who receives such stuff and doesn't like the default design can
+>    change it to
+>      \mapping{article}{my-favourite-article}
+>    before LaTeX3-ing it (since they will be clear that the structure is
+>    article).
+>
+>                                                                 David Rhead
+
+
+David Rhead's suggestion that we separate structure and design
+and have commands such as
+
+      \mapping{structure}{design}
+
+for example
+
+     \mapping{article}{default-article}
+     \mapping{article}{US-default-article}
+     \mapping{article}{A4-default-article}
+
+in Latex3 strikes me as exactly the right thing to do.  However,
+one problem that someone else in this discussion mentioned will
+still occur:  What happens if you fine-tune the article for the
+A4 style if someone else maps the article structure
+to the US default in printing out a copy that was emailed or
+retrieved by FTP.  One kind of fine-tuning is to insert a
+pagebreak at a certain spot.  That could cause a page with only
+a few lines in another design.
+
+One answer is: So what?  you should expect that with emailed
+papers.  Another answer is:  introduce a command \ifA4 that you
+guard a pagebreak with.  The latter puts a considerable demand
+on the author.  In any case, this problem should be pondered.
+
+--
+Charles Wells
+Department of Mathematics, Case Western Reserve University
+10900 Euclid Avenue, Cleveland, OH 44106-7058, USA
+216 368 2893
+

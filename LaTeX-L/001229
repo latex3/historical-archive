@@ -1,0 +1,165 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["5077" "Wed" "22" "December" "93" "17:17:54" "GMT" "David Carlisle" "carlisle@cs.man.ac.uk" nil "134" "LaTeX2e installation" "^Date:" nil nil "12" nil nil])
+Return-Path: <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA19922; Thu, 23 Dec 93 11:10:38 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA12717; Thu, 23 Dec 93 11:10:27 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA19419
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Thu, 23 Dec 1993 11:10:18 +0100
+Message-Id: <199312231010.AA19419@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 8577; Thu, 23 Dec 93 11:10:47 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 8575; Thu,
+ 23 Dec 1993 11:10:47 +0200
+Received: from DHDURZ1 (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 8110; Wed,
+ 22 Dec 1993 18:19:02 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Wed, 22 Dec 93 17:17:54 GMT
+From: David Carlisle <carlisle@cs.man.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple Recipients of <LATEX-L@DHDURZ1.BITNET>
+Subject:      LaTeX2e installation
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1229
+
+
+
+Some (hopefully) final comments on LaTeX2e before I disappear for
+Christmas.
+
+1) If you want more details about LaTeX2e you can ftp the file
+   /tex-archive/macros/latex/distribs/latex2e-test/features.tex
+   from a ctan host. This has 30+ pages and may be processed with
+   original LaTeX (and NFSS1, NFSS2, and LaTeX2e).
+
+2) The installation guide that is with the distributed system says at
+   one point
+
+*** DIRCHECK STUFF HERE *** David, could you write something about the
+   errors that dircheck.dtx can produce?
+
+  As I have already had some mail asking me about this, I thought that
+  I would post some information here, this was basically some ideas
+  of mine for including in the file that got lost somewhere in the
+  (large amount) of mail as we were making the final preparations.
+  The following were my suggested additions to install.l2e
+
+
+David
+
+*************************************************************************
+
+ideas for the install guide
+
+New text marked with >
+
+
+==============================================
+To install LaTeX, you should:
+
+ * run iniTeX on latex2e.ins, which produces the files that LaTeX needs,
+  including latex2e.ltx.
+
+ * run iniTeX on latex2e.ltx, which produces the LaTeX format.
+
+ * put the files where LaTeX can read them.
+
+> * Copy the file ltxcheck.tex to a directory which is *not* the
+>   standard TeX input directory, and then check the LaTeX2e format
+>   by running LaTeX2e on ltxcheck.tex.
+>   If ltxcheck.tex reports problems with the LaTeX2e format,
+>   see the PROBLEMS section below.
+
+==============================================
+
+
+If your TeX has the `feature' that it can't find out if a file exists
+anywhere other than the current directory then you unfortunately have
+to write (or rather update in this case) the file texsys.cfg. Look
+carefully at the documentation in this file. It should give you
+examples how to deal with this situation.
+
+> You will be informed if you need to edit texsys.cfg when you
+> process the file ltxcheck with latex2e as the last stage of the
+> installation procedure above.
+
+==============================================
+
+PROBLEMS
+
+> delete
+> *** DIRCHECK STUFF HERE *** David, could you write something about the
+>   errors that dircheck.dtx can produce?
+
+Then add a subsection
+
+>
+> to end of file, all new.
+
+Running ltxcheck.tex
+
+Because of the `feature' described above it is possible that the
+latex2e format made by the distributed files can not find any files on
+your system, except those in the current directory.
+
+After some of the tests made by ltxcheck you may be asked to edit
+texsys.cfg. Once the file has been edited you just need to re-make the
+format by running `initex' on latex2e.ltx. You do not need to `unpack'
+all the distribution again. Note that texsys.cfg is read very early in
+the process of making LateX, before the usual LaTeX commands such as
+\newcommand have been defined. You must only use primitive commands in
+this file.
+
+Checks run by ltxcheck:
+
+1) It is useful for LaTeX to know the `current directory syntax' if
+   the current operating system has such a concept.
+   so the file abc.tex in the current directory may be specifed by
+   ./abc.tex   on unix and most DOS TeX's,
+   []abc.tex   on VMS
+   :abc.tex    on OzTeX on a Mac.
+   The above possibilities will be found automatically during the
+   installation, however if non of these syntaxes works on your
+   system, the interal macro \@currdir will be set to be empty.
+
+   ltxcheck will report this. If your system does have a notion of a
+   current directory, you can define \@currdir in texsys.tex.
+   You could also report this to the latex-bug address, so that
+   later releases can automatically cope with your system.
+
+2) The \input@path.
+   On some systems TeX can not check whether a file exists before
+   trying to input it, unless the filename is expressed as a full path
+   name, including the directory. On these systems LaTeX needs to be
+   given a list of directories in which to look for files.
+   ltxcheck will try to locate article.cls. If it fails to find it
+   (and you have placed it in the standard TeX input directory) then
+   you must define \input@path in texsys.cfg. The comments in the
+   distributed texsys.cfg contain examples, but only you know the
+   directories and syntax that apply to your installation.
+   We hope to build up a better collection of examples in future
+   releases of LaTeX2e, as it is tested on more Operating Systems.
+
+3) The final checks test that you are running a recent version of TeX.
+   If ltxcheck reports that you have TeX2, then you should try to
+   upgrade TeX (and rebuild LaTeX) as soon as possible. LaTeX2e may be
+   used with TeX2, but certain features will be missing, and you will
+   not be able to use the new (8-bit) font families that are being
+   produced.
+
+   If ltxcheck reports that your TeX is older than 3.141, you will see
+   some strange messages during the installation, as earlier TeX's had
+   a bug which meant that certain line breaks were printed on the
+   terminal as ^^J rather than as a new line.
+
+
+
+
+
+

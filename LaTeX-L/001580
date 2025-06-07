@@ -1,0 +1,234 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4615" "Tue" " 1" "March" "1994" "17:54:45" "+0100" "Tim Van Zandt" "tvz@core.ucl.ac.be" nil "202" "Vertical space after a list that begins an item" "^Date:" nil nil "3" nil nil nil nil]
+	nil)
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06927; Tue, 1 Mar 94 18:13:06 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA03130; Tue, 1 Mar 94 18:11:34 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA22657
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 1 Mar 1994 18:11:32 +0100
+Message-Id: <199403011711.AA22657@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3178; Tue, 01 Mar 94 18:11:05 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3176; Tue,
+ 1 Mar 1994 18:11:05 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 4029; Tue,
+ 1 Mar 1994 18:10:05 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 1 Mar 1994 17:54:45 +0100
+From: Tim Van Zandt <tvz@core.ucl.ac.be>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Vertical space after a list that begins an item
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1580
+
+Hello!
+
+Maybe this is a well-known anomaly, or maybe I am just confused.
+
+When a list is the first thing after an \item command,
+\@endparenv is not executed at the end of the list. This
+means that the vertical space and penalty that
+usually follow a list are not inserted.
+
+Is there any reason for this?
+
+I am appending a file which illustrates the effect
+(and contains other junk for comparison).
+
+It comes out the same with LaTeX and LaTeX2e.
+
+Tim
+
+%% An example showing the consequences of not
+%% executing \@endparenv after a list that begins
+%% an item of another list.
+
+\documentstyle{article}
+
+
+\makeatletter
+
+% Exaggerate some of the spacing:
+\def\@listi{%
+  \leftmargin\leftmargini \parsep 4\p@ plus2\p@ minus\p@
+  \topsep 20\p@ plus2\p@ minus4\p@
+  \itemsep 20\p@ plus2\p@ minus\p@}
+  \@listi
+  \let\@listI\@listi
+
+\def\@listii{\leftmargin\leftmarginii
+   \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+   \topsep 15\p@ plus2\p@ minus\p@
+   \parsep 2\p@ plus\p@ minus\p@
+   \itemsep \parsep}
+
+%
+
+\begin{document}
+
+\begin{quote}\bf
+Some nested lists the way \LaTeX\ normally works, when
+\verb+\@endparenv+ is not executed after a list that begins an item.
+Note the difference in spacing following the two lists under item 3.
+\end{quote}
+
+\def\example{%
+An important property of the resource allocation An important
+property of the resource allocation An important property of the
+resource allocation An important property of the resource
+allocation
+\begin{enumerate}
+
+\item Bar
+
+\item
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+  \end{enumerate}
+An important property of the resource allocation An important property
+of the resource allocation
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+  \end{enumerate}
+An important property of the resource allocation An important property
+of the resource allocation
+
+\item
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+\end{enumerate}
+
+\item Bar
+
+\end{enumerate}
+An important property of the resource allocation An important
+property of the resource allocation An important property of the
+resource allocation}
+
+\example
+
+%% An example showing the consequences of not
+%% executing \@endparenv after a list that begins
+%% an item of another list.
+
+\documentstyle{article}
+
+
+\makeatletter
+
+% Exaggerate some of the spacing:
+\def\@listi{%
+  \leftmargin\leftmargini \parsep 4\p@ plus2\p@ minus\p@
+  \topsep 20\p@ plus2\p@ minus4\p@
+  \itemsep 20\p@ plus2\p@ minus\p@}
+  \@listi
+  \let\@listI\@listi
+
+\def\@listii{\leftmargin\leftmarginii
+   \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+   \topsep 15\p@ plus2\p@ minus\p@
+   \parsep 2\p@ plus\p@ minus\p@
+   \itemsep \parsep}
+
+%
+
+\begin{document}
+
+\begin{quote}\bf
+Some nested lists the way \LaTeX\ normally works, when
+\verb+\@endparenv+ is not executed after a list that begins an item.
+Note the difference in spacing following the two lists under item 3.
+\end{quote}
+
+\def\example{%
+An important property of the resource allocation An important
+property of the resource allocation An important property of the
+resource allocation An important property of the resource
+allocation
+\begin{enumerate}
+
+\item Bar
+
+\item
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+  \end{enumerate}
+An important property of the resource allocation An important property
+of the resource allocation
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+  \end{enumerate}
+An important property of the resource allocation An important property
+of the resource allocation
+
+\item
+  \begin{enumerate}
+    \item
+      \begin{itemize}
+        \item bar
+        \item foo
+      \end{itemize}
+    \item bar
+\end{enumerate}
+
+\item Bar
+
+\end{enumerate}
+An important property of the resource allocation An important
+property of the resource allocation An important property of the
+resource allocation}
+
+\example
+
+\newpage
+
+\def\endtrivlist{\if@newlist\@noitemerr\fi
+   \if@inlabel\indent\fi
+   \ifhmode\unskip \par\fi
+   \if@noparlist \else
+      \ifdim\lastskip >\z@ \@tempskipa\lastskip \vskip -\lastskip
+         \advance\@tempskipa\parskip \advance\@tempskipa -\@outerparskip
+         \vskip\@tempskipa
+   \fi\fi\@endparenv}
+
+\begin{quote}\bf
+Now the same example, but with \verb+\@endparenv+ executed after all lists.
+\end{quote}
+
+\example
+
+\end{document}
+

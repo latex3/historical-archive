@@ -1,0 +1,120 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3802" "Tue" "2" "March" "1999" "23:42:46" "+0100" "Frank Mittelbach" "frank.mittelbach@UNI-MAINZ.DE" nil "80" "Re: Axis in nfss" "^Date:" nil nil "3" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id AAA16492;
+	Wed, 3 Mar 1999 00:11:47 +0100 (MET)
+Received: from mail.listserv.gmd.de (192.88.97.5) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.B0DB0622@listserv.gmd.de>; Wed, 3 Mar 1999 0:10:21 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 426676 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Wed, 3 Mar 1999 00:10:12 +0100
+Received: from mail.Uni-Mainz.DE (root@trudi.zdv.Uni-Mainz.DE [134.93.8.159])
+          by relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id AAA05146
+          for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Mar 1999 00:10:10 +0100
+          (MET)
+Received: from istrati.zdv.uni-mainz.de (dialin341.zdv.Uni-Mainz.DE
+          [134.93.175.41]) by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id
+          AAA15873 for <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Wed, 3 Mar 1999
+          00:10:07 +0100 (MET)
+Received: (from design@localhost) by istrati.zdv.uni-mainz.de (8.8.8/8.8.8) id
+          XAA01052; Tue, 2 Mar 1999 23:42:46 +0100
+X-Authentication-Warning: istrati.zdv.uni-mainz.de: design set sender to
+                         design@istrati.zdv.uni-mainz.de using -f
+References: <199902281535.QAA14126@mozart.ujf-grenoble.fr>
+Message-ID:  <199903022242.XAA01052@istrati.zdv.uni-mainz.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199902281535.QAA14126@mozart.ujf-grenoble.fr>
+Date:         Tue, 2 Mar 1999 23:42:46 +0100
+From: Frank Mittelbach <frank.mittelbach@UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Axis in nfss
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3256
+
+Thierry,
+
+ > Quite a long time ago, it was said that "the good way to implement
+ > MakeUppercase & friends would be to add a "case" axis to NFSS".
+ >
+ > I'd like to know if some activity has been undertaken to address this.
+
+other than talking about it, no, as it involves mainly work done by people who
+produce vf files. I still think that a "case" axis is probably the best way to
+think about that stuff
+
+what i mean is that it is not that difficult to add code implementing
+additional dimensions in a successor of NFSS2 but it would need involvement on
+several fronts.
+
+
+ > It seems obvious to me that current nfss misses 2 axis, namely _width_
+ > ("series" should be broken into weight and width, this bx as
+ > \bfdefault reflects TeX + CM history but has the notoriously bad
+ > consequence of seeing bold extended used inside text, not restricted
+ > to titling material) and _case_.
+
+i'm not sure i agree on the split for the series attribute. and it doesn't
+really origins in the CM history --- it does origin in "Methods of Book
+design" by Hugh Wiliamson.
+
+one idea with the axis' or attributes was that it should be desirable (and
+sensible) to change individual attributes while retaining al others. Now i
+claim that there is not much argument for changing individually width but
+retaining weight or the other way around, eg you would say: "i want my section
+headings in bold extended series" and the emph2 in normal text in bold-medium"
+---i doubt that a design specifying titles as "extended with whatever weight
+comes along in the markup" or as "bold with whatever width comes along" is
+very likely though i would not absolutely say such a design can't exist.
+
+so my claim for the bad results is not really the deficiency of the of that
+decision but the non-existent design of class files in the first place (as
+well as not enough flexibility in the fonts available to the average user who
+doesn't want to or can't affort to buy good commercial fonts)
+
+ > The current situation as regards "series" is not too bad because the
+ > translation from markup to layout should be done in a class file, it
+ > is however bad that such classes must be dependant on the font system
+ > used.
+
+i'm not sure i understand this remark (but it is getting rather late for me so
+...) --- in what respect do they depend on the font system used?
+
+i mean proper classes (not a generic one like article et al) can't cater for
+more than a single font set anyway, can it? but even if you think about a more
+generic class: that could easily ask for bold extended in titles but normal
+bold in text --- whether this would be honoured would be a question of which
+font family you use.
+
+okay right now with the .fd files containing substitutions that are geared
+towards latex always asking for bx the results might not be as good as they
+could be and granted that the substitution mechansim for selecting a font when
+the requested one is not available is too simple-minded (but then this *is* an
+error situation in a production environment) again you might not get the best
+possible, but i'm not convinced that splitting the series axis would improve
+that situation.
+
+in fact my guess is that such a split would make things worse as the number of
+combinations without a real font behind it, ie which would result in the
+system to decide on an alternative, would grow and any such error situation is
+likely to be resolved incorrectly (even with smarter algorithms like the one
+in NFSS2)
+
+improvement would come through better class design imho
+
+
+ > the "case" axis is really needed, and will be ever, since unicode
+
+i agree with that (even though i don't go with the unicode argument (with all
+the flaws that has by trying to be several incompatible things in parallel)
+
+but it is getting too late for me
+
+good night
+frank
+

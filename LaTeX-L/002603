@@ -1,0 +1,83 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2329" "Sun" "28" "June" "1998" "12:38:45" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "45" "Re: l3 function names (Really: Modules)" "^Date:" nil nil "6" nil "l3 function names (Really: Modules)" nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id MAA17112;
+	Sun, 28 Jun 1998 12:39:47 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.4E820F17@listserv.gmd.de>; Sun, 28 Jun 1998 12:39:51 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 372827 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Sun, 28 Jun 1998 12:39:46 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id MAA00507 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 12:39:45
+          +0200 (MET DST)
+Received: from [130.237.37.112] (sl86.modempool.kth.se [130.237.37.112]) by
+          mail.nada.kth.se (8.8.7/8.8.7) with ESMTP id MAA18258 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Sun, 28 Jun 1998 12:39:38
+          +0200 (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se (Unverified)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110700b1bbc7ee6f30@[130.237.37.105]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199806271239.OAA09658@relay.urz.uni-heidelberg.de>
+Date:         Sun, 28 Jun 1998 12:38:45 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: l3 function names (Really: Modules)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2603
+
+Frank Mittelbach wrote:
+>first of all the basic commands are unchanged availabale all starting
+>\tex_... (with the idea that perhaps \etex_... or \pdftex_... thingies
+>exist one day.
+
+Javier Bezos wrote:
+>In this case using \tex_ makes sense, but I presume that tex, etex,
+>pdftex... names will not overlap. For this reason I think removing
+>the "tex" is not a serious problem and this way we avoid the
+>cluttering with "tex"s.
+
+  The idea with modules is not only to ensure that names do not clash, but
+to communicate information about the uses of those names. For example, if
+we have two modules "real" and "complex", then several names overlap, like
++, * etc, but some do not, like max, min, Re, Im. It is possible to let the
+context (in general) sort out if say "+" refers to the real or complex
+numbers, but even if we were able to do that, it would be preferable to
+keep the real and complex names in different modules.
+
+  So names tex, etex, pdftex could be put in the same module, but if one
+wants to communicate the information that say the tex module only deals
+with basic primitives and nothing else, it should be left uncluttered with
+other names.
+
+  For the names etex, pdftex one could experiment with different ideas: One
+would be let them be new modules named etex, pdftex, another would be to
+view them as submodule of \tex, in which case they would get the names
+tex/e and tex/pdf. In the latter case, one could also think of a module
+called pdf: Then the tex/pdf module would only deal with basic tex commands
+that the pdf module uses for building more advance pdf features.
+
+  Using different module names like this will in fact help developers, if
+done correctly: For example, two different pdf packages may use the same
+low level tex/pdf commands. Then the developer of a new pdf package will
+know that it is not necessary to worry about the pdf module. (This is just
+an example of ideas, which does not have anything with developing pdftex
+itself.)
+
+  So one can use nodules to split the code into chunks that enables the
+developer to focus only on the parts needed for the task at hand.
+
+  Hans Aberg
+                  * Email: Hans Aberg <mailto:haberg@member.ams.org>
+                  * Home Page: <http://www.matematik.su.se/~haberg/>
+                  * AMS member listing: <http://www.ams.org/cml/>
+

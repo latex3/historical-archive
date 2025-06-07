@@ -1,0 +1,108 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3323" "Wed" "3" "February" "93" "06:30:37" "CET" "Don Hosek" "DHOSEK@HMCVAX.CLAREMONT.EDU" nil "81" "Re: document classes & numbering systems" "^Date:" nil nil "2"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA14494; Wed, 3 Feb 93 06:29:51 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA20980; Wed, 3 Feb 93 06:29:48 +0100
+Message-Id: <9302030529.AA20980@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 3905; Wed, 03 Feb 93 06:30:52 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9026;
+ Wed, 03 Feb 93 06:30:50 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9024;
+ Wed, 03 Feb 93 06:30:48 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Wed, 3 Feb 93 06:30:37 CET
+From: Don Hosek <DHOSEK@HMCVAX.CLAREMONT.EDU>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: document classes & numbering systems
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 917
+
+
+-There has been some past discussion about the organization of
+-documentstyles into classes: all members of a class should be
+-interchangeable in the argument of \documentstyle without requiring
+-any changes in the document.
+
+-Which leads to my question: Suppose one book-class documentstyle has
+
+-  \def\thechapter{\Roman{chapter}}
+
+-and another has
+
+-  \def\thechapter{\arabic{chapter}}
+
+-Are these documentstyles interchangeable? Theoretically---supposing
+-that the author has carefully used labels and refs---a document will
+-produce `equivalent' output under each documentstyle, with only 1 and I,
+-2 and II, 3 and III, ... interchanged. But I hesitate to consider
+-this true equivalence; the number forms used in a document are, I
+-would argue, part of the logical structure of the document, rather
+-than part of the superficial presentation details.
+
+The key question is why is numbering style part of the logical
+structure? Any hard-coded references to numbers are asking for
+trouble regardless of style changes (I had a nasty problem with
+some poorly trained typists who hard-coded equation references
+causing some serious proofreading problems when those sections
+were later edited to delete some equations and move others). It
+took me a while, but I found a document which will back me up on
+this: I have Bibles which have different numbering styles for
+chapters: some use arabic, some roman, same text.
+
+-If so, then
+-documents of the same class are interchangeable only if:
+
+-(1) All documentstyles in a given class conform to a single numbering
+-system for all predefined environments, sectioning commands, and other
+-numbered elements.
+
+Absolutely untenable. You'll have a near-infinite number of book
+sub-classes, to say the least.
+
+-(2) Any numbering changes are done in the individual documents.
+
+To be discouraged at best. Numbering is to be handled by the
+document style. The only excuse for changing it is when using a
+generic document style.
+
+-On the other hand, it seems wrong to forbid a documentstyle from ever
+-changing the default numbering of any element. Or at least, current
+-practice among publishers fairly often includes specifying a
+-normal numbering style for numbered lists and other numbered elements.
+-What should a LaTeX documentstyle writer do if faced with this
+-dilemma? Change the numbering and say that the document is a different
+-class? Or put all the numbering changes into a documentstyle option
+-and require that option to be specified in the individual documents?
+-Or?
+
+Put it in the document style.
+
+-Although it may not have theoretical significance, there seems to be a
+-fairly important practical problem for publishers, if they receive an
+-electronic document containing the declaration \documentstyle{xxxbook}
+-and they want to change the documentstyle to their own book-class
+-style `yyybook'. If there are any numbering differences, then it's
+-quite likely that the entire book will have to be proofread word by
+-word to catch any instances where the author neglected to use \ref
+-properly, e.g. by writing "in item~(iii)" instead of "in
+-item~\ref{abc}".
+
+Hard references should be checked in any event because of
+problems with text being edited and numbers changing. See above.
+
+
+-dh
+Don Hosek
+dhosek@ymir.claremont.edu
+Quixote Digital Typography
+714-621-1291
+
+
+

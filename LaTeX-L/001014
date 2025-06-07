@@ -1,0 +1,105 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3400" "Tue" "9" "March" "93" "18:51:38" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "78" "resend re fonts and LaTeX3" "^Date:" nil nil "3"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA15210; Tue, 9 Mar 93 18:52:05 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/19.6.92)
+	id AA07312; Tue, 9 Mar 93 18:52:01 +0100
+Message-Id: <9303091752.AA07312@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 5519; Tue, 09 Mar 93 18:52:09 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3092;
+ Tue, 09 Mar 93 18:51:56 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 3089;
+ Tue, 09 Mar 93 18:51:53 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Tue, 9 Mar 93 18:51:38 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      resend re fonts and LaTeX3
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1014
+
+
+From:	MZDMZA::MITTELBACH   "Frank Mittelbach"  8-MAR-1993 14:57:07.18
+To:	TOLTX
+CC:	MITTELBACH
+Subj:	re: Fonts and LaTeX3
+
+
+> Subj:	Fonts and LaTeX 3
+
+Roffe said:
+
+> First, just substituting one font for another (as with D. M. Jones' PS
+> font package) isn't really good enough, because different x heights reqire
+> different baselines. My point is, simply saying
+> \family{somefont}\selectfont isn't good enough because the leading is
+> still prepared for cmr.
+
+this is certainly true, the flexibility of NFSS wasn't meant to stop
+at this point, but in LaTeX209 the setting of baselineskip is
+unfortunately quite hardwired into a style.
+
+This certainly needs parameterizing, however I think that it would be
+a wrong approach to bound values for leading to a font family. Whilere
+there is probably something like a suggested leading for every family
+it is nevertheless up to the designer to decide on the actual leading
+for a given font and size. Also, it is difficult to imagine what
+algorithm to use if two fonts are used on the same line (I really
+can't believe that one would like to see the leading change there).
+
+In other words I vote for settable leading in a more modular way, eg
+without having to copy all such definitions for \large etc.
+
+> Sometimes I'd like to keep cmtt (or, indeed, cmsf) and only replace cmr
+> with a PS font. But this requires some work because font encoding between
+> MF fonts and PS fonts normally differ slightly. So I'd like commands to
+> switch between different font encodings.
+
+NFSS release 2 which will go within the next weeks into beta testing
+has the encoding scheme as one of its font attributes. However, the
+correct solution here is to use standard encodings for all fonts in
+the future, ie Cork encoding for latin based text fonts and other
+encodings (which have to be agreed on, soon) for math, non-latin
+languages etc.
+
+> I'd like to be able to turn _off_ ligatures at large point sizes because
+> ligatures look to cramped. But this can't be done from a macro
+> unfortunately, you'd have to have to build tfm's for different point
+> sizes.
+
+yes this is an unfortunate optimization in the TeX program. But for
+this very reason it *is not* an issue of LaTeX3. The only part which
+concerns LaTeX3 is "can it be used within it?". Having such tfm files
+you can use them with any macro package in TeX. And with NFSS (2) it
+is fairly easy to use them in LaTeX.
+
+> ....
+> The command \AdobeGaramond would set appropriate baselines, correct
+> mapping between input and output character encoding (to do this, it might
+> have to read tfm files as well ... sigh).
+
+as I said above I neither believe in global "correct" values for
+leading nor in the idea that internal TeX macros are supposed to
+correct deficiencies in the encoding of fonts. NFSS2 contains some
+support for this, but in fact the encoding attribute is more or less
+intended to be used only for change of scripts, eg if you think of
+mixing cmr with wncyr fonts (latin and cyrillic fonts).
+
+> Such a beast should be able to read not only PS fonts, but also HP
+> softfonts I suppose, and be able to recognize Mac and Latin1 input
+> encoding as well as the IBM codepages.
+>
+> Does this sound too far-fetched?
+
+maybe nice to have, but I think much more important would be
+additional encoding standards beside Cork and the use of the Cork
+encoding as "the only encoding" for latin based fonts.
+
+Frank
+

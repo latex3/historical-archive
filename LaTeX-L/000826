@@ -1,0 +1,160 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["6290" "Fri" "2" "October" "92" "11:46:20" "CET" "Frank Mittelbach" "MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE" nil "133" "Re: picture mode in LaTeX3/additional fonts in distribution" "^Date:" nil nil "10"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (serv01) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/1.9.92 )
+	id AA07112; Fri, 2 Oct 92 11:48:45 +0100
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.0/SMI-4.0-sc/19.6.92)
+	id AA25965; Fri, 2 Oct 92 11:46:35 +0100
+Message-Id: <9210021046.AA25965@sc.zib-berlin.dbp.de>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 2900; Fri, 02 Oct 92 11:46:59 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2890;
+ Fri, 02 Oct 92 11:46:54 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 2882;
+ Fri, 02 Oct 92 11:46:48 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Date:         Fri, 2 Oct 92 11:46:20 CET
+From: Frank Mittelbach <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: picture mode in LaTeX3/additional fonts in distribution
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 826
+
+
+Subj:	RE: picture mode in LaTeX3/additional fonts in distribution
+
+Perhaps my last mail was too short to be understandable so I will try
+to answer some of the concerns and remarks made.
+
+Don said:
+
+> The \special-driven graphics primitives should be developed with
+> the DVI drivers committee.
+
+I agree, and I would even go further and say they should do it alone
+if possible (I have enough other things to worry about). But: if
+nothing has happened when we come to the point in the latex3 project
+where we need those \special's we are probably force them.
+
+
+> From: "Kristoffer H. Rose" <kris@DIKU.DK>
+
+>      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>      * The LaTeX 3 REFERENCE VERSION should be in STANDARD TeX *
+>      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>
+
+Let me first make a few things clear which I haven't stated explicitly in
+the last mail:
+
+  - there will be a set of graphic primitives (say the set X)
+
+  - there will be a set modules (say M) where each m\in M implements X
+for a particular class of drivers.
+
+  - the modules in M will be interchangeable but one will have to
+choose the one that can speak to your printer.
+
+This is what we like to have in the standard LaTeX3. Hopefully M is
+small, if for example the driver committee is able to come up with a
+reasonable set of specials and the major driver implementors would
+accept them then one could probably use one m\in M for nearly all
+printers.
+
+Implementations of the graphics primitives for output devices with
+limited capabilities have to be done in a way that they flag errors or
+warnings if they can't deal with a particular primitive.
+
+> The reason for this is simple: any `standard extension' to LaTeX3
+> should run on any `standard LaTeX3' without compromising the quality
+> of the output.  Any other principle is opening a can of worms---as an
+> author I would HATE if a diagram that was pretty in my draft got
+> "slightly distorted" in a book because the publisher's STANDARD TeX
+> installation is not based on PostScript!  Thus I disagree strongly
+> with Frank's last "but this is better then nothing"---in my opinion
+> this is worse than nothing.
+
+Given the above explanation something like this couldn't happen. If
+the manuscript is received by the publisher he would need to alter
+your chosen psgraphic style option into the one that is used at his
+site. If that site, for example, doesn't have a color printer but you
+produced code involving changes of colors then this will be noticed.
+In any case, we have always the problem that on the output device
+level sophisticated tagged manuscripts may not produce the same
+results, eg if fonts are used that are not available at the other end.
+(If I used down-loadable HP fonts in a document then I can't expect
+that this document will run at an installation with a dot-matrix
+output device). To solve this problem one has to agree beforehand on a
+subset of structures, fonts, etc. But this does not mean that it makes
+sense to limit ourselves from the beginning to the subset which is
+common to all TeX installations and don't provide a standard interface
+for more sophisticated operations.
+
+What is important, however, is that we clearly say which subset of
+graphic primitives will run on *all* installations and which aren't.
+I guess that wasn't so clear in my last mail.
+
+> If the LaTeX 3 designers are planning something substantially more
+> powerful than XY-pic as the `LaTeX 3 picture mode' then I have no
+> objections.  But if the intentions are similar in spirit to those of
+> XY-pic then I suggest to base it on this package that already has a
+> user base in the thousands.
+
+We will certainly check whether basing the graphic primitives on
+XY-pic is a good choice and perhaps for things that the current
+picture environment does it actually is the appropriate choice. But,
+as Kristoffer already assumed above, the graphic stuff will be
+implemented as an extension module (although an important one), and
+this means that at the moment it is not in the focus of interest for
+the latex3 implementation.
+
+
+ From Rolf:
+
+> Any good graphics environment for LaTeX 3 that requires PostScript should
+> be welcomed, desired and wanted, but _not_ as part of the standard LaTeX
+> distribution. If a user sets up LaTeX, tries to run a few files through
+> it, and his printer bombs because he doesn't use a PostScript printer,
+> then he will not look in the manual and find that he should have used the
+> no-PostScript option. What he will do, is get mad and tell all his friends
+> that LaTeX 3 requires PostScript.
+>
+> Prove me wrong.
+
+We feel that it important to _have it_ as part of the standard
+distribution because otherwise you'll end up with a similar situation
+like we have now: several style options that are incompatible trying
+to achieve the same thing with a different syntax. Perhaps it is just a
+misunderstanding about what is a standard distribution. It is not
+enough to fix the interface for things that can be done with Computer
+Modern and 5 additional distributed fonts. We also have to provide
+clear interfaces for those things that are only usable by a subclass
+of users at the moment to ensure portability for the future.
+
+So please forget about the idea of directly tieing LaTeX3 to
+PostScript; between LaTeX3 and any output device there will be a clean
+interface and a sort of ``driver module'' that has to translate the
+LaTeX3 graphic primitives in whatever is appropriate.
+
+>
+> From: Adrian F Clark <alien@SX.AC.UK>
+>
+> At the same time, could we please have LaTeX specials that (a) insert
+> grey-scale images onto the printed page; and (b) specify the color of
+> the text?  (People may remember that I raised this about 3 months
+> ago.)  These are probably the two major features that stop LaTeX
+> competing successfully with those dreadful DTP packages; and they are
+> certainly causing me pain in typesetting my image processing textbook!
+
+Adrian is giving here just a number of examples which are important
+enough to be included in a standard interface even if they will not be
+reproduceable on all output devices. By having such an interface we
+have will achieve portability over a much wider class of output
+devices (namely all that can deal with the feature) than we have now.
+
+Frank
+

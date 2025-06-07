@@ -1,0 +1,79 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1627" "Wed" "15" "September" "93" "15:12:18" "+0200" "Rainer Schoepf" "schoepf@SC" nil "51" "Re: when is a bug a bug? or is it? (fwd)" "^Date:" nil nil "9"])
+Return-Path: <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06541; Wed, 15 Sep 93 15:14:15 +0200
+Received: from vm.urz.Uni-Heidelberg.de (vm.hd-net.uni-heidelberg.de) by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA23185; Wed, 15 Sep 93 15:14:13 +0200
+Message-Id: <9309151314.AA23185@sc.ZIB-Berlin.DE>
+Received: from DHDURZ1 by vm.urz.Uni-Heidelberg.de (IBM VM SMTP V2R2)
+   with BSMTP id 8562; Wed, 15 Sep 93 15:13:20 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9664;
+ Wed, 15 Sep 93 15:13:14 CET
+Received: from DHDURZ1 by DHDURZ1 (Mailer R2.08 R208004) with BSMTP id 9662;
+ Wed, 15 Sep 93 15:13:12 CET
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+In-Reply-To:  <9309151250.AA23123@sc.ZIB-Berlin.DE>
+Date:         Wed, 15 Sep 93 15:12:18 +0200
+From: Rainer Schoepf <schoepf@SC>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@vm.urz.Uni-Heidelberg.de>
+To: Multiple Recipients of <LATEX-L@vm.urz.Uni-Heidelberg.de>
+Subject:      Re: when is a bug a bug? or is it? (fwd)
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1058
+
+
+"Erik-Jan Vens" writes:
+
+ >   some time ago I provided Barbara Beeton with an example where LaTeX seemed
+ > to be getting in an infinite loop. I suspected it had to do with TeX the
+ > program, but yesterday I found the answer, and Barbara asked me to pass it on
+ > to you:
+ >
+ > dixit bbeeton:
+ >
+ > > well, that's a good one!
+ > > shows the dangers of redefining primitives.
+ > > this should definitely be passed on to the latex3 folks -- would
+ > > you do that, please?  (cc me, though -- i'd like to hear the
+ > > answer.)
+ > > i'm going to hand this over to my reliable bug-checker for his
+ > > opinion.  it may be desirable to report this to knuth even though
+ > > it's a bad thing in latex and a possible "misuse" of the facilities.
+
+Oh, Barbara, here you are on the wrong track. LaTeX goes a very long
+way to ensure that such an infinite loop cannot happen, *unless* you
+use primitive TeX commands. In that respect it doesn't go far enough:
+it doesn't prevent people from using these primitive commands.
+
+
+ > This was what I did:
+ >
+ > \documentstyle{article}
+ >
+ > \begin{document}
+ >
+ > \begin{tabular}{rl}
+ > \ &$\vbox to 2\ht\strutbox{\ \vfill}$\\
+ > \end{tabular}
+ >
+ > \end{document}
+
+If the box would have been produced by \makebox or \parbox, there
+would have been no infinite loop. (the other possibility would be to
+insert \@parboxrestore at the beginning of the box construction.)
+
+Rainer
+
+
+   Rainer Schoepf
+   Konrad-Zuse-Zentrum
+    fuer Informationstechnik Berlin
+   Heilbronner Strasse 10
+   D-10711 Berlin
+   Federal Republic of Germany
+   <Schoepf@sc.ZIB-Berlin.de> or <Schoepf@sc.ZIB-Berlin.d400.de>
+

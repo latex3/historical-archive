@@ -1,0 +1,102 @@
+Received: from mx0.gmx.net (mx0.gmx.net [213.165.64.100])
+	by h1439878.stratoserver.net (8.14.2/8.14.2/Debian-2build1) with SMTP id q12JVmrG018258
+	for <rainer@rainer-schoepf.de>; Thu, 2 Feb 2012 20:31:49 +0100
+Received: (qmail 24878 invoked by alias); 2 Feb 2012 19:31:43 -0000
+Delivered-To: GMX delivery to rainer.schoepf@gmx.net
+Received: (qmail invoked by alias); 02 Feb 2012 19:31:42 -0000
+Received: from relay2.uni-heidelberg.de (EHLO relay2.uni-heidelberg.de) [129.206.210.211]
+  by mx0.gmx.net (mx009) with SMTP; 02 Feb 2012 20:31:42 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id q12IOBsP026317
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 2 Feb 2012 19:24:11 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id q12I7Z95005897;
+	Thu, 2 Feb 2012 19:24:10 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 16.0) with
+          spool id 2066973 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Thu, 2 Feb
+          2012 19:24:10 +0100
+Received: from relay2.uni-heidelberg.de (relay2.uni-heidelberg.de
+          [129.206.210.211]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id q12IOA9u032054 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Thu, 2 Feb 2012 19:24:10 +0100
+Received: from mail-lpp01m010-f49.google.com (mail-lpp01m010-f49.google.com
+          [209.85.215.49]) by relay2.uni-heidelberg.de (8.13.8/8.13.8) with
+          ESMTP id q12IO5oo026271 (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128
+          verify=FAIL) for <LATEX-L@listserv.uni-heidelberg.de>; Thu, 2 Feb
+          2012 19:24:09 +0100
+Received: by laam7 with SMTP id m7so1993610laa.22 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 02 Feb 2012 10:24:05 -0800
+          (PST)
+MIME-Version: 1.0
+Received: by 10.152.128.133 with SMTP id no5mr1664002lab.31.1328207045677; Thu,
+          02 Feb 2012 10:24:05 -0800 (PST)
+Received: by 10.152.13.106 with HTTP; Thu, 2 Feb 2012 10:24:05 -0800 (PST)
+Content-Type: text/plain; charset=ISO-8859-1
+X-Spam-Whitelist: <blflatex@gmail.com>
+Message-ID:  <CANQYN6y1=9vQAK-oe3w1JH87ziwWP1mPkhb0Q3bDzdKRdZ7gRw@mail.gmail.com>
+Date:         Thu, 2 Feb 2012 13:24:05 -0500
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@listserv.uni-heidelberg.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@listserv.uni-heidelberg.de>
+From: Bruno Le Floch <blflatex@GMAIL.COM>
+Subject: Trees, was Re: Mapping Functions Versions for All and Some
+To: LATEX-L@listserv.uni-heidelberg.de
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-GMX-Antispam: 0 (BackTrace mail analyze);
+ Detail=5D7Q89H36p4L00VTXC6D4q0N+AH0PUCnGL2vqOgpaBYL16oitsMrgDt/NQNpSCZFFjDOy
+ 97xb7Zpf+wZnd5ZXNcvLDXR3Wg3wRjdQbwEMh8=V1;
+X-Resent-By: Forwarder <forwarder@gmx.net>
+X-Resent-For: rainer.schoepf@gmx.net
+X-Resent-To: rainer@rainer-schoepf.de
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7009
+
+Hello Lars,
+
+The Church Boolean discussion is not forgotten, just on the
+back-burner with so many things at the same time. It seemed to bring
+some performance improvements, but there were some awkward parts to it
+in the way I initially tried to implement them. In your last email on
+the topic a few months back, you had a better approach some working
+code, which I didn't get to benchmark carefully. I definitely need to
+get back to boolean expressions, since at the moment
+(...)&&(...)||(...)&&(...) treats && and || with the same priority,
+which is wrong. Perhaps that will mean switching to Church booleans,
+perhaps not: there are a lot of issues to consider, including
+bootstrapping expl3, having a nice interaction with (future) fp
+expression, no breaking change, etc.
+
+> PS: Since I'm posting anyway, I suppose I should mention this too in case
+> anyone is interested: After my autumn experiments with Church booleans, I
+> went on to implement a fully expandable package for <integer> to <balanced
+> text> mappings using 2-3-trees. I didn't quite finish it before getting
+> sidetracked by other projects (in this case, actual research), but insertion
+> of entries is there and works. Next would have been popping off entries;
+> together the two would suffice for making a prioriqueue, which I would
+> imagine can be useful in places.
+
+I'm interested in what you have to say about 2-3 trees. I implemented
+sorting based on splay trees, which I think I will also use for
+Unicode character property lookup in l3regex eventually. None of that
+code is in the svn yet.
+
+What do you mean by converting one <integer> to a <balanced text>?
+Could you give a couple of examples if you have time?
+
+Sorry I didn't get back to you earlier: writing the ~4000 lines of
+l3str+l3regex, plus some combined work with Joseph on xparse took me
+most of the past 4 months.
+
+-- 
+Regards,
+Bruno
+

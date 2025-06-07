@@ -1,0 +1,309 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.4BC4A59C@nummer-3.proteosys>; Thu, 3 Jan 2002 11:42:09 +0100
+In-Reply-To:  Your message of Tue, 29 Oct 91 17:11:48 -0600
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.4BC4A59C"
+Return-Path: <@vm.gmd.de:LATEX-L@DHDURZ1.BITNET>
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+x-to:         LaTeX-L Mailing list <LATEX-L%DHDURZ1.BITNET@uga.cc.uga.edu>
+Content-class: urn:content-classes:message
+Subject:      Re: indented material
+Date: Wed, 30 Oct 1991 01:14:58 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE5CB@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Nelson H. F. Beebe" <beebe%MATH.UTAH.EDU@vm.gmd.de>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+To: "Rainer M. Schoepf" <Schoepf@SC.ZIB-Berlin.DE>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1.BITNET@vm.gmd.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 429
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.4BC4A59C
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Victor Eijkhout <eijkhout%CSRD.UIUC.EDU@uga.cc.uga.edu> writes:
+
+>> ...
+>>
+>> The plain TeX \item macro works with \hangindent, implying for =
+instance
+>> that it will only work for one paragraph, so you have to say \item{} =
+if
+>> you want a second paragraph in a logical item.
+>>
+>> It would seem then that the LaTeX approach, which relies on shifting =
+the
+>> \leftskip is an improvement: indentation will stay the same, no =
+matter
+>> how many paragraphs you put in an item.
+>>
+>> However, there is an important difference: in the first case the =
+\hsize
+>> is decreased by the amount of the indentation; inthe second case the
+>> \hsize stays the same. The difference becomes apparent when you try =
+to
+>> include a \vbox somewhere in a list environment with the second
+>> approach.
+>>
+>> Not only will it be too wide, it will also have a shifted left =
+margin.
+>> ...
+
+LaTeX sets \textwidth =3D=3D \hsize at startup, then makes \linewidth
+track the current width in nested indented environments, or in
+multiple column printing.
+
+The correct approach to your example is to box things up to \linewidth
+instead of \textwidth.  Here is an example from an upcoming TUGboat
+article, where I wanted to frame figures (which themselves contained
+verbatim text):
+
+% figbox draws a box around its contents, which
+% can even contain verbatim text!
+\newbox\thefigbox
+\newenvironment{figbox}{%
+    \setbox\thefigbox\hbox\bgroup
+    \advance\linewidth by -2\fboxsep %make outer box dimension =3D=3D =
+linewidth
+    \advance\linewidth by -2\fboxrule
+    \hss
+    \begin{minipage}{\linewidth}%
+}{%
+    \end{minipage}%
+    \hss
+    \egroup
+    \fbox{\box\thefigbox}
+}
+
+Here is an example of its use:
+
+  \begin{figure}[p]
+  \begin{figbox}
+    \begin{small}
+\begin{verbatim}
+LaTeX Mode: Major editing mode for LaTeX and
+SLiTeX, with tex-mode underneath.
+..
+    \end{small}
+  \end{figbox}
+  \caption{Online summary of \LaTeX{} mode.}
+  \end{figure}
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Nelson H.F. Beebe
+Center for Scientific Computing
+Department of Mathematics
+220 South Physics Building
+University of Utah
+Salt Lake City, UT 84112
+USA
+ Tel: (801) 581-5254
+ FAX: (801) 581-4148
+ Internet: beebe@math.utah.edu
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+
+------_=_NextPart_001_01C19443.4BC4A59C
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     Re: indented material</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Victor Eijkhout =
+&lt;eijkhout%CSRD.UIUC.EDU@uga.cc.uga.edu&gt; writes:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&gt;&gt; ...</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; The plain TeX \item macro works with =
+\hangindent, implying for instance</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; that it will only work for one paragraph, so =
+you have to say \item{} if</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; you want a second paragraph in a logical =
+item.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; It would seem then that the LaTeX approach, =
+which relies on shifting the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; \leftskip is an improvement: indentation =
+will stay the same, no matter</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; how many paragraphs you put in an =
+item.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; However, there is an important difference: =
+in the first case the \hsize</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; is decreased by the amount of the =
+indentation; inthe second case the</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; \hsize stays the same. The difference =
+becomes apparent when you try to</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; include a \vbox somewhere in a list =
+environment with the second</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; approach.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt;</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; Not only will it be too wide, it will also =
+have a shifted left margin.</FONT>
+
+<BR><FONT SIZE=3D2>&gt;&gt; ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2>LaTeX sets \textwidth =3D=3D \hsize at startup, then =
+makes \linewidth</FONT>
+
+<BR><FONT SIZE=3D2>track the current width in nested indented =
+environments, or in</FONT>
+
+<BR><FONT SIZE=3D2>multiple column printing.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>The correct approach to your example is to box things =
+up to \linewidth</FONT>
+
+<BR><FONT SIZE=3D2>instead of \textwidth.&nbsp; Here is an example from =
+an upcoming TUGboat</FONT>
+
+<BR><FONT SIZE=3D2>article, where I wanted to frame figures (which =
+themselves contained</FONT>
+
+<BR><FONT SIZE=3D2>verbatim text):</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% figbox draws a box around its contents, which</FONT>
+
+<BR><FONT SIZE=3D2>% can even contain verbatim text!</FONT>
+
+<BR><FONT SIZE=3D2>\newbox\thefigbox</FONT>
+
+<BR><FONT SIZE=3D2>\newenvironment{figbox}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\setbox\thefigbox\hbox\bgroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \advance\linewidth by -2\fboxsep =
+%make outer box dimension =3D=3D linewidth</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \advance\linewidth by =
+-2\fboxrule</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; =
+\begin{minipage}{\linewidth}%</FONT>
+
+<BR><FONT SIZE=3D2>}{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \end{minipage}%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \hss</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \egroup</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \fbox{\box\thefigbox}</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Here is an example of its use:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>&nbsp; \begin{figure}[p]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \begin{figbox}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \begin{small}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>LaTeX Mode: Major editing mode for LaTeX and</FONT>
+
+<BR><FONT SIZE=3D2>SLiTeX, with tex-mode underneath.</FONT>
+
+<BR><FONT SIZE=3D2>..</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp;&nbsp; \end{small}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \end{figbox}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \caption{Online summary of \LaTeX{} =
+mode.}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; \end{figure}</FONT>
+</P>
+<BR>
+
+<P><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+
+<BR><FONT SIZE=3D2>Nelson H.F. Beebe</FONT>
+
+<BR><FONT SIZE=3D2>Center for Scientific Computing</FONT>
+
+<BR><FONT SIZE=3D2>Department of Mathematics</FONT>
+
+<BR><FONT SIZE=3D2>220 South Physics Building</FONT>
+
+<BR><FONT SIZE=3D2>University of Utah</FONT>
+
+<BR><FONT SIZE=3D2>Salt Lake City, UT 84112</FONT>
+
+<BR><FONT SIZE=3D2>USA</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Tel: (801) 581-5254</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;FAX: (801) 581-4148</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Internet: beebe@math.utah.edu</FONT>
+
+<BR><FONT =
+SIZE=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.4BC4A59C--
+

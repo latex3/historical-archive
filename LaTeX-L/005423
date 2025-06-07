@@ -1,0 +1,128 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 7 Nov 2008 01:21:46 +0100
+Received: by mail.proteosys.com (8.13.8/8.13.8) with ESMTP id mA70Ldxi004100
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 7 Nov 2008 01:21:39 +0100
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id mA70Hq0B007990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 7 Nov 2008 01:17:53 +0100
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id mA6N1KPX010773;
+	Fri, 7 Nov 2008 01:17:48 +0100
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 104082 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 7 Nov
+          2008 01:17:48 +0100
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id mA70Hm9Y016581 for <LATEX-L@listserv.uni-heidelberg.de>;
+          Fri, 7 Nov 2008 01:17:48 +0100
+Received: from rv-out-0708.google.com (rv-out-0708.google.com [209.85.198.242])
+          by relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id
+          mA70HhNA007871 for <LATEX-L@listserv.uni-heidelberg.de>; Fri, 7 Nov
+          2008 01:17:47 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so928406rvf.10 for
+          <LATEX-L@listserv.uni-heidelberg.de>; Thu, 06 Nov 2008 16:17:42 -0800
+          (PST)
+Received: by 10.141.211.13 with SMTP id n13mr1550834rvq.217.1226017062761; Thu,
+          06 Nov 2008 16:17:42 -0800 (PST)
+Received: from ?10.0.1.100? (122-49-140-231.ip.adam.com.au [122.49.140.231]) by
+          mx.google.com with ESMTPS id k2sm6214937rvb.1.2008.11.06.16.17.40
+          (version=TLSv1/SSLv3 cipher=RC4-MD5); Thu, 06 Nov 2008 16:17:41 -0800
+          (PST)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
+Mime-Version: 1.0 (Apple Message framework v929.2)
+References: <FCD36D2B-F401-4704-9FDD-80204B5FA03D@gmail.com>
+            <859ec5630811060730t6d8689t43ec0af09a23b911@mail.gmail.com>
+X-Mailer: Apple Mail (2.929.2)
+X-Spam-Whitelist: <wspr81@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id mA70Hm9Y016582
+Message-ID:  <FFB1D3D5-78FA-4002-AD1D-8807959C2DAD@gmail.com>
+Date:         Fri, 7 Nov 2008 10:47:17 +1030
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Will Robertson <wspr81@GMAIL.COM>
+Subject: Re: Some implementation details of \let:XX
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <859ec5630811060730t6d8689t43ec0af09a23b911@mail.gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -2.599 () BAYES_00
+X-Scanned-By: MIMEDefang 2.64 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 07 Nov 2008 00:21:46.0434 (UTC) FILETIME=[D1A10220:01C9406E]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 5423
+
+Hi Morten,
+
+Thanks for the thoughtful and detailed reply! I now believe that  
+everything you do is well-considered and always correct :)
+
+On 07/11/2008, at 2:00 AM, Morten Høgholm wrote:
+
+> General remark: Almost all of the kernel ought to be "long".
+
+I guess this was the philosophy in LaTeX's \newcommand, and your  
+argument is hard to disagree with. Let's come back to this at a later  
+date.
+
+> It doesn't need it, it's just the matter of how early on the expansion
+> module is defined and utilized.
+
+Ah, yes. So you an only use \exp_args:Nc IFF the code that uses it is  
+not expanded in any context before the l3expand module is loaded. I  
+guess we need to be careful of that in general, but in this particular  
+case I think we're okay.
+
+> If the functions are non-protected, they will perform argument  
+> expansion
+> as usual and then stop once \let:NN is met.
+
+That also sounds very sensible. In fact, this sounds like it should be  
+a general rule.
+
+***
+
+With the above discussion in mind, I think, then, that it makes sense  
+that \let_new:NN and its variants are only defined with \def_new --  
+you don't want the protection so that \chk_if_new_cs:N kicks in at the  
+right time, and the \par issue won't be a problem because that will  
+never not be new. Only the other hand, you never know what you're  
+going to get so maybe they should be long "just in case". What do you  
+think?
+
+***
+
+I think \glet:NN and its variants now need some attention. I propose  
+changing
+
+-\def_protected_new:Npn \glet:NN {\pref_global:D \let:NN}
+-\def_protected_new:Npn \glet:Nc {\exp_args:NNc \glet:NN}
+-\def_protected_new:Npn \glet:cN {\exp_args:Nc \glet:NN}
+-\def_new:Npn \glet:cc {\exp_args:Ncc \glet:NN}
+
+to
+
++\def_protected_long_new:Npn \glet:NN { \pref_global:D  \let:NN }
++\def_new:Npn                \glet:Nc { \exp_args:NNc  \glet:NN }
++\def_new:Npn                \glet:cN { \exp_args:Nc   \glet:NN }
++\def_new:Npn                \glet:cc { \exp_args:Ncc  \glet:NN }
+
+for the same reasons as you've outlined above for plain old \let:NN. I  
+haven't missed something again, have I?
+
+***
+
+Many thanks,
+Will
+

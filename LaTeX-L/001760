@@ -1,0 +1,152 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["4813" "Tue" "9" "July" "1996" "00:21:29" "+0200" "Werner Lemberg" "a7971428@UNET.UNIVIE.AC.AT" nil "117" "Re: latex/2192: \\DeclareFont{Family,Shape} behave unexpectedly" "^Date:" nil nil "7" nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1]) by trudi.zdv.Uni-Mainz.DE (8.7.5/8.7.3) with ESMTP id AAA23242; Tue, 9 Jul 1996 00:24:42 +0200 (MET DST)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.7BC51D20@listserv.gmd.de>; Tue, 9 Jul 1996 0:24:40 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 103993 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 9 Jul 1996 00:22:20 +0200
+Received: from email.univie.ac.at (email.univie.ac.at [131.130.1.19]) by
+          relay.urz.uni-heidelberg.de (8.7.5/8.7.4) with SMTP id AAA12442 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 9 Jul 1996 00:22:00 +0200
+          (MET DST)
+Received: from unet.univie.ac.at by email.univie.ac.at with SMTP (PP); Tue, 9
+          Jul 1996 00:21:31 +0200
+Received: (from a7971428@localhost) by unet.univie.ac.at (8.7.1/8.7.1) id
+          AAA48296; Tue, 9 Jul 1996 00:21:29 +0200
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Message-ID:  <Pine.A32.3.91.960709002047.35586A-100000@unet.univie.ac.at>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199607081724.TAA00623@frank.zdv.uni-mainz.de>
+Date:         Tue, 9 Jul 1996 00:21:29 +0200
+From: Werner Lemberg <a7971428@UNET.UNIVIE.AC.AT>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: latex/2192: \DeclareFont{Family,Shape} behave unexpectedly
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1760
+
+Frank,
+
+>  > An example: the character code 0xC5C5 used in GB (simplified Chinese) leads
+>  > to a different glyph than the character 0xC5C5 in JIS (Japanese). This is a
+>  > criterion of different font encodings, isn't it?
+>
+> well, no (imho). that sounds like an input encoding difference to me:
+>
+> eg if i press
+>                  GB
+> <char 0xC5C5>   --->   <char foo wanted on printed page>
+>
+>                  JIS
+> <char 0xC5C5>   --->   <char bar wanted on printed page>
+>
+>
+> now the LaTeX concept is the following:
+>
+>            inp enc                outp enc
+> <key baz>  ------->  <glyph foo>   ------->  <slot x>
+
+I was again imprecise. Perhaps I should replace the term `fontencoding' with
+`character set' which is in actual use if people talk about CJK characters.
+
+I will now substitute our hypothetical character 0xC5C5 with real values
+(considering only Unicode, GB, and JIS):
+
+    the simplest CJK character (with the meaning `one') has the following
+    code points:
+
+        U+4E00 = GB 5027 = JIS 1676
+
+    this character exists in both GB and JIS.
+
+    the next character (with the meaning `east') is a simplified form
+    used only in Mainland China:
+
+        U+4E1C = GB 2211 (not in JIS)
+
+    the traditional form of the above character with the same meaning has
+    the following code points:
+
+        U+6771 = JIS 3776 (not in GB)
+
+> so GB and JIS are input encodings and the output encoding can be
+> arbitrary as long as you have an abstract internal name
+
+I understand the concept, but there will never be any abstract internal name
+for CJK characters due to the huge amount of glyphs. The largest collection
+used by the Taiwanese government (CNS planes 1-7, an 8th is currently under
+development) contains about 55000 characters; about 50% are not in Unicode;
+here even the subtlest glyph differences are covered.
+
+> eg what we do for currently is
+>
+> <somekey> ------->  \"a --------> \char xyz
+>                         --------> \char abc
+>                         --------> \accent ...
+>
+> thus \"a is not a typesetting instruction but an abstract concept
+
+CJK characters can't be composed generally. Thus a CJK character can be only
+represented by itself.
+
+If you theoretically consider Unicode as a fontencoding, than you can say
+that GB is only an input encoding picking out certain characters. But it
+neither makes great sense to have a Unicode TeX font for CJK nor is such a
+font freely available with a resolution greater than 24x24 pixels. The
+reason for the first argument is that the number of Unicode subfonts needed
+to write a, say, Chinese text is on average three to four times greater as
+if you used GB encoded subfonts only since the 7000 GB characters are
+scattered over the whole 23000 Unicode character range due to different
+ordering principles.
+
+> (btw, this is by the way the reason why i don't want the OT5 encoding
+> file the way it is now but want to develop a sound "internal
+> representation for glyphs with two diacritals but this is a different
+> issue---anyway you will get a separate mail on that i implemented
+> something for a dicsussion but need to write it up first)
+
+[OT5, I call it now ET5, is a fontencoding proposal for Vietnamese; see
+ fonts/vietnamese/vncmr/texinput on the CTAN hosts for details. You will
+ need the June 1996 release (patchlevel 1) of LaTeX2e to use the Vietnamese
+ input encodings---patchlevel 1 has not been released yet :-) ]
+
+This is good news! I think that ancient Greek will also benefit.
+
+> conceptually it should be possible to change the position of <glyph
+> foo> (or even the generation) to an arbitrary slot. in practice we do
+> a little less as we say that most of the lower 7bit plane is passed
+> through this interface without change, eg if you type `a' then the
+> internal representation is `a' and you also get that slot (ie the
+> ascii number of `a')
+
+Again, different CJK character sets like GB, JIS, Big 5 etc. are disjunct!
+Some of them could be unified using Unicode, but not all (eg. CNS can't).
+
+> anyway, it looks to me as if you have moved what is the inputencoding
+> question actually to the fontencoding and there making more or less
+> the same mistake Don made originally when he designed TeX and had this
+> pass through ascii concept idea
+>
+> maybe i'm wrong but this is sooooo difficult a subject, it took us
+> literally months to just understand at what points we made basic
+> assumptions that were not true in general ....
+
+I suggest the following excellent article written by Ken Lunde for further
+information on CJK character sets and encodings:
+
+    ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf
+
+Nevertheless, handling thousands of characters per CJK font with standard
+TeX is very special, and I think that the solutions I've found will always
+be a hack.
+
+
+    Werner
+

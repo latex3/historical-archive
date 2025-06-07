@@ -1,0 +1,87 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 31 Aug 2009 21:31:12 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n7VJVB6c032438
+	for <rainer.schoepf@PROTEOSYS.COM>; Mon, 31 Aug 2009 21:31:11 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n7VJRO2P028862
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 31 Aug 2009 21:27:25 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n7VEc4bH004620;
+	Mon, 31 Aug 2009 21:27:05 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 292131 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Aug
+          2009 21:27:04 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n7VJR47F020853 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 31 Aug 2009 21:27:04 +0200
+Received: from lon1-post-2.mail.demon.net (lon1-post-2.mail.demon.net
+          [195.173.77.149]) by relay.uni-heidelberg.de (8.14.1/8.14.1) with
+          ESMTP id n7VJQhi6012451 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Mon, 31 Aug 2009 21:26:50 +0200
+Received: from cremornelane.demon.co.uk ([80.177.25.195] helo=[192.168.0.2]) by
+          lon1-post-2.mail.demon.net with esmtp (Exim 4.69) id 1MiCWZ-0001kC-b7
+          for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Mon, 31 Aug 2009 19:26:43
+          +0000
+User-Agent: Thunderbird 2.0.0.22 (Windows/20090605)
+MIME-Version: 1.0
+References: <4A99195D.4060605@elzevir.fr>
+X-Enigmail-Version: 0.96.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID:  <4A9C23F3.8060800@morningstar2.co.uk>
+Date:         Mon, 31 Aug 2009 20:26:43 +0100
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: Joseph Wright <joseph.wright@MORNINGSTAR2.CO.UK>
+Subject: Re: l3 keyval and 2e \usepackage
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <4A99195D.4060605@elzevir.fr>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 31 Aug 2009 19:31:12.0516 (UTC) FILETIME=[994DBC40:01CA2A71]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6045
+
+Manuel Pégourié-Gonnard wrote:
+> Hi all,
+> 
+> Is their a practical way to create key=value options for a 2e packages using the
+> new material from expl3, or should I stick to xkeyval for this atm? After
+> quickly reading the doc of l3keyval and l3keys, I think I'll have to stick to
+> xkeyval, but I prefer asking in case I missed something.
+> 
+> Thanks,
+> Manuel (about to start his first package in expl3).
+> 
+
+Hello Manuel,
+
+I've put together a package which does what you want. For the moment
+it's called "l3keys2e" and is now on the SVN, but before I send the code
+to CTAN a better name might be nice :-)
+
+It provides one function, which again might need a better name. For the
+moment, it is called \ProcessKeysOptions, and takes one argument:
+
+\keys_define:nn { module } { <keys> }
+\ProcessKeysOptions { module }
+
+In the LaTeX3 "spirit", I've stuck with a fixed number of mandatory
+arguments here (i.e. there is no star version, unlike pgfopts which is
+the pgfkeys version I wrote a while ago).
+-- 
+Joseph Wright
+

@@ -1,0 +1,82 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1659" "Tue" "7" "October" "1997" "09:01:57" "+0200" "Bernd Raichle" "raichle@INFORMATIK.UNI-STUTTGART.DE" nil "44" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id JAA16290;
+	Tue, 7 Oct 1997 09:02:24 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.2DC697C1@listserv.gmd.de>; Tue, 7 Oct 1997 9:02:19 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 209397 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 7 Oct 1997 09:02:07 +0200
+Received: from ifi.informatik.uni-stuttgart.de (ifi.informatik.uni-stuttgart.de
+          [129.69.211.1]) by relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with
+          ESMTP id JAA01549 for <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Tue, 7
+          Oct 1997 09:02:01 +0200 (MET DST)
+Received: by isidor.informatik.uni-stuttgart.de; Tue, 7 Oct 1997 09:01:57 +0200
+          (MET DST)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+References: <971006184117.8c92@vms.rhbnc.ac.uk>
+X-Mailer: VM 6.33 under Emacs 19.34.1
+Message-ID:  <199710070701.JAA12026@isidor.informatik.uni-stuttgart.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <971006184117.8c92@vms.rhbnc.ac.uk>
+Date:         Tue, 7 Oct 1997 09:01:57 +0200
+From: Bernd Raichle <raichle@INFORMATIK.UNI-STUTTGART.DE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2368
+
+On Mon, 6 October 1997 18:41:17 +0100,
+Philip Taylor (RHBNC) <CHAA006@VMS.RHBNC.AC.UK> writes:
+[...]
+ > %   \mathcode`\"=8000
+ > %   \begingroup
+ > %   \catcode`\"=\active
+ > %   \gdef"{^{\prime\prime}}
+ > %   \endgroup
+ >
+ > >> will make trouble even if each article is enclosed in its own group and
+ > >> there are many ways for this kind of trouble to come up.
+ >
+ > Isn't this the sort of construct that LaTeX implicitly proscribes?
+ > If there were a clean LaTeX method (there probably is!) for achieving
+ > the effect without the need for \global hacks, then all would be well.
+
+In a lot of these cases \global hacks aren't necessary!
+
+If you are using some group matching hacks using explicit braces and
+implicit braces/begingroup/endgroup tokens which are nested as in the
+following code
+
+\mathcode`\"=8000
+\begingroup
+  \catcode`\"=\active
+  \toks0={\endgroup
+    \def "{^\prime\prime}%
+}
+\the\toks0\relax
+
+you are able to control which assignments/definitions will be active
+at the end of the code without using global assignments.
+
+I have used this technique for `german.sty' since years, thus you can
+load this macro file inside a group and if this group is closed _all_
+changes are gone (except of all register allocations which are always
+done globally).  Additionally I have tried to spread this technique,
+but have missed the best way: to publish it in TUGboat :-(
+
+-bernd
+____________________________________________________________________
+Bernd Raichle                                 "Le langage est source
+DANTE e.V., Koordinator `german.sty'           de malentendus"
+email: german@dante.de                         (A. de Saint-Exupery)
+

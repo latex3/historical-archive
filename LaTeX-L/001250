@@ -1,0 +1,109 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["3380" "Thu" "6" "January" "1994" "20:13:22" "+0100" "Frank Mittelbach" "MITTELBACH@mzdmza.zdv.uni-mainz.de" "<199401071106.AA21327@mail.cs.tu-berlin.de>" "78" "Re: Modification of LaTeX2e distributed files" "^Date:" nil nil "1" "1994010619:13:22" "Modification of LaTeX2e distributed files" (number " " mark "     Frank Mittelbach  Jan  6   78/3380  " thread-indent "\"Re: Modification of LaTeX2e distributed files\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA06716; Fri, 7 Jan 94 12:06:53 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA17109; Fri, 7 Jan 94 12:06:26 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA21327
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Fri, 7 Jan 1994 12:06:20 +0100
+Message-Id: <199401071106.AA21327@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 9256; Fri, 07 Jan 94 11:54:07 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 9255; Fri,
+ 7 Jan 1994 11:54:08 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 8437; Thu,
+ 6 Jan 1994 20:26:25 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Thu, 6 Jan 1994 20:13:22 +0100
+From: Frank Mittelbach <MITTELBACH@mzdmza.zdv.uni-mainz.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: Modification of LaTeX2e distributed files
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1250
+
+Subj:   RE: Modification of LaTeX2e distributed files
+
+> On Tuesday, January 4 dean.ayres@aea.orgn.uk wrote:
+>
+> > I maintain style files for producing letters on a variety of letterhead
+> > formats.
+> > Under LaTeX2.09, each letter style was produced by using a different
+> > variation of letter.sty.
+> >
+> > What is the preferred way of changing the behaviour of LaTeX2e class files
+> > such as letter.cls? Should produce edited copies (under a different name, of
+> > course, or is there a preferred method?  The changes I want to make are
+> > to change \topmargin, \textwidth etc, and to predefine some commands such as
+> > \address.
+>   I think the best way to do it is to build upon the letter class,
+>   especially if you have modifications that are not too large. An
+>   example of how to do this can be found in ltxdoc.dtx, the document
+>   class that is used in the driver files for the LaTeX2e code.
+
+this concept is supported by \LoadClass \PassOptionsToClass and a few
+other commands. You can even built a tree of classes starting with a
+generic one and making more special ones on top (that is you can once
+we have a slightly better implementation of docclass.dtx in the
+official-non-test-release: at the moment too much recursion can give
+you stack problems)
+
+by the way, you may notice that the documentation in ltxdoc.dtx might
+need improvement, sorry, must have slipped through the fingers
+:-). Actually, it is quite possible the this special class will change
+a lot during the next weeks.
+
+> > Will a full package writers guide be available in time (or will it be in the
+> > companion when available?)
+>   It is.
+
+i suppose Johannes meant the Companion. in that case, yes the
+Companion contains documentation and examples for this kind of
+extensions and the Companion is printed---at least i got a printed
+copy from the states just after Christmas. The new addition of
+Leslie's book may also contain something about this topic although
+this might be too special for a beginners guide. I don't think that we
+will provide additional documentation in the distribution in the near
+future.
+
+here is an example i use in the companion. It uses the new ifthen
+coming with the distribution.
+
+hope that helps a bit
+
+Frank
+
+
+\begin{verbatim}
+% -------------------------------- identification ---------------------------
+\NeedsTeXformat{LaTeX2e}
+\ProvidesClass{myart}[1994/01/01]
+% --------------------------------  initial code ----------------------------
+\RequirePackage{ifthen}
+\newboolean{cropmarks}
+% ---------------------------  declaration of options --
+\DeclareOption{cropmarks}{\setboolean{cropmarks}{true}}
+\DeclareOption{bind}
+    {\AtEndOfClass{\addtolength\oddsidemargin{.5in}%
+                   \addtolength\evensidemargin{-.5in}}%
+                  }
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+% ----------------------------  execution of options ------------------------
+\ProcessOptions
+% --------------------------------package loading ---------------------------
+\LoadClass{article}                                  % the real code
+% --------------------------------  main code -------------------------------
+\newenvironment{Notes}{...}{...}                     % the new environment
+\ifthenelse{\boolean{cropmarks}}                     % support for cropmarks
+   {%
+    \renewcommand{\ps@plain}{....}%
+    ....
+   }{}
+\end{verbatim}
+

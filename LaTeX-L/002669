@@ -1,0 +1,87 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1839" "Fri" "7" "August" "1998" "19:38:31" "+0100" "Javier Bezos" "jbezos@MX3.REDESTB.ES" nil "47" "Re: expl3: parameter access letters" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id TAA09235;
+	Fri, 7 Aug 1998 19:41:49 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <7.E08C0E36@listserv.gmd.de>; Fri, 7 Aug 1998 19:41:47 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 394220 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Fri, 7 Aug 1998 19:41:40 +0200
+Received: from tinet0.redestb.es (tinet0.redestb.es [194.179.106.117]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id TAA14358 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Fri, 7 Aug 1998 19:41:39 +0200
+          (MET DST)
+Received: from fclients0.redestb.es ([194.179.106.116]) by tinet0.redestb.es
+          (Post.Office MTA v3.1 release PO203a ID# 0-0U10L2S100) with ESMTP id
+          AAA148 for <LaTeX-L@relay.urz.uni-heidelberg.de>; Fri, 7 Aug 1998
+          19:41:45 +0200
+Received: from [62.81.65.120] by fclients0.redestb.es (Post.Office MTA v3.1.2
+          release (PO205-101c) ID# 0-0U10L2S100) with SMTP id AAA244 for
+          <LaTeX-L@relay.urz.uni-heidelberg.de>; Fri, 7 Aug 1998 19:45:46 +0200
+x-mailer: Claris Emailer 1.1
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Message-ID:  <199808071741.TAA14358@relay.urz.uni-heidelberg.de>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Date:         Fri, 7 Aug 1998 19:38:31 +0100
+From: Javier Bezos <jbezos@MX3.REDESTB.ES>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: expl3: parameter access letters
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2669
+
+Michael John Downes wrote
+
+>[...] I have a
+>variable, let us pretend that it is called \g_parindent, that is
+>supposed to have a "global" value that prevails throughout an entire
+>document. But it is not "constant" because it is OK for the
+>documentclass to change this variable, or it might be changed
+>"globally" for some subdocument context such as a footnote, a float,
+>or an appendix.
+>
+>And there is a companion variable \l_parindent that is the
+>current value of this parameter for the current local context.
+>However---and here is the problem---because of the way that this
+>variable is used, \l_parindent must sometimes be assigned globally.
+>So the "l" access specifier appears to be wrong.
+
+In fact, both g and l specifiers are wrong, because TeX lacks
+the concept of variable scope. Only *assignments* are local
+or global and a certain macro is assigned globally or locally
+depending on the context. (That makes \global different to \outer
+and \long, as you can see in the p 210 of the TeXbook.)
+
+>I guess the best approach would be to use "g" for both forms of the
+>variable and use the description part of the name to indicate their
+>relative meaning:
+
+The best approach is not to believe that TeX is ModulaX or Java -- just
+let's TeX be TeX. \parindent is always the current \parindent, except
+you may reassign its value locally. Simple and efficient, isn't it?
+(Interestingly l3 "functions", regardless that could mean, have no
+scope specifiers. Perhaps because functions are not nested in C or
+Java?)
+
+>
+>  \g_master_parindent
+>  \g_cur_parindent
+>
+>or something along those lines.
+
+And don't forget the intermediate levels when you write a footnote in
+a minipage in a float in an appendix in a document! ;-)
+
+>So I think the "C" should be discarded, leaving c l g R L G.
+
+I think all of them should be discarded.
+
+Javier
+

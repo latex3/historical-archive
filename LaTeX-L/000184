@@ -1,0 +1,72 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 16 Jul 90 14:29:00 PDT
+Reply-To: LaTeX-L Mailing list <LATEX-L%DHDURZ1@unido.bitnet>
+From: Don Hosek <DHOSEK@HMCVAX.bitnet>
+Subject:      Table of contents stuff
+To: Rainer Schoepf <BK4@DHDURZ1.uucp>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 184
+
+A few points regarding Nico's scheme for partial tables of
+contents etc.
+
+(1) He seems to be adding a lot of unnecessary commands. I think
+something along the lines of
+
+\contentsentry{NAME}{NUMBER}{ENTRY}{PAGE}
+
+should be enough for most applications (in fact most document
+styles come moderately close, doing instead,
+
+\contentsline{NAME}{\numberline{NUMBER}ENTRY}{PAGE}
+
+in most cases.
+
+If we wanted to produce a table of contents entry for chapter six,
+we would keep reading the TOC file until we found
+
+\contentsentry{chapter}{6}{...}{...}
+
+We would then interpret each \contentsentry command until we hit
+the end of file or
+
+\contentsentry{chapter}{...}{...}{...}
+
+whichever comes first.
+
+PROBLEMS
+
+We would need to read in a lot of irrelevant information,
+especially for, say, chapter 243 of Professor Prolix's magnum
+opus.
+
+What if a book has two chapter 2's?
+
+ANSWERS TO OBJECTIONS
+
+It seems, looking over Nico's macros, that the LaTeX source needs
+to be broken into files to correspond to the hierarchy of the
+tables of contents. Bad plan. The more files one has for a
+document, the more difficult it is to maintain; (I speak from
+personal experience on this). Also, this can lead to people
+mistakenly believing that the \include is what causes the chapter
+tables of contents to be created. The above approach obviates that
+need; a little work can also allow faster scanning of the toc
+file(s) if we _do_ break them down into pieces with \include.
+A similar approach in parsing the bib file might be useful for
+BibTeX.
+
+As for the two chapter 2 point, the only case where this sort of
+thing could be a problem would be when we start from chapter 1 at
+the beginning of each part; in that case, a slightly more
+complicated algorithm would be needed to make sure that we have
+passed the appropriate \contentsentry{part}&c command.
+
+Comments?
+
+-dh
+
+

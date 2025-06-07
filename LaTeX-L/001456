@@ -1,0 +1,91 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2046" "Tue" " 8" "February" "1994" "10:00:30" "+0100" "Bernd Raichle" "Raichle@informatik.uni-stuttgart.de" "<199402080858.AA08809@mail.cs.tu-berlin.de>" "57" "Re: register usage" "^Date:" nil nil "2" "1994020809:00:30" "register usage" nil "<9402071757.AA14870@ifi.informatik.uni-stuttgart.de>"])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA07964; Tue, 8 Feb 94 09:58:16 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA16606; Tue, 8 Feb 94 09:58:10 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA08809
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 8 Feb 1994 09:58:08 +0100
+Message-Id: <199402080858.AA08809@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 4934; Tue, 08 Feb 94 09:57:51 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 4932; Tue,
+ 8 Feb 1994 09:57:50 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 1660; Tue,
+ 8 Feb 1994 09:57:11 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+In-Reply-To:  David Carlisle's message of Mon,
+              7 Feb 1994 17:55:32 GMT
+              <9402071757.AA14870@ifi.informatik.uni-stuttgart.de>
+Date:         Tue, 8 Feb 1994 10:00:30 +0100
+From: Bernd Raichle <Raichle@informatik.uni-stuttgart.de>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      Re: register usage
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1456
+
+David Carlisle <carlisle@CS.MAN.AC.UK> said on Mon, 7 Feb 1994 17:55:32 GMT:
+>>>>> "Mike" == Mike Piff <M.Piff@shef.ac.uk> writes:
+Mike> From: Philip TAYLOR <CHAA006@vax.rhbnc.ac.uk>
+Phil>       ... Would it not be better to use pseudo-registers for the
+Phil>       register allocation mechanism, rather than real count registers?
+Phil>       ...
+Mike> I think I understand what you mean. You keep the fact that
+Mike> \dimen88 is the next to be allocated in a macro defined to
+Mike> expand to 88. You then get \newdimen to use this 88, which is
+Mike> assigned to \count5, say, incremented, and then put back instead
+Mike> of 88 ready for next time. Is this right?
+DC> ...
+DC> I'd use \countdef rather than a macro, but that is the basic idea (I
+DC> assume:-)
+
+Some time ago I have written some macros which implement local
+versions of the \new... commands.  These macros allow the allocation
+and usage of _real_ registers within a group (e.g. LaTeX environment)
+and re-allocation after the group is left.
+
+E.g. instead of
+
+\newbox\@arstrutbox
+\def\array{ ...
+   \setbox\@arstrutbox\hbox...
+   ...
+}
+
+you can allocate the box for the strut within the array environment
+using
+
+\def\array{ ...
+   \lnewbox\@arstrutbox
+   \setbox\@arstrutbox\hbox...
+   ...
+}
+
+and after leaving the group of the environment the used box register
+is free for reuse.
+
+This scheme can be used for a lot of similar constructs, where
+globally allocated registers are now in use to save/communicate
+_local_ values.
+
+
+The implementation, I have done, is simple:
+  * global allocation with \new... is done beginning from the bottom
+    of the register numbers (no differences with the current scheme
+    here)
+  * local allocation with \lnew... is done beginning from the top of
+    the register numbers to the bottom, beginning with 254, 253, ...
+  * to allow \newinsert commands, which are also allocated from the
+    top to the bottom a `used' list is needed to avoid collisions
+    between insertion registers and the other locally allocated
+    registers
+
+Bernd Raichle
+

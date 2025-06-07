@@ -1,0 +1,75 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1584" "Mon" "6" "October" "1997" "19:40:20" "+0200" "Hans Aberg" "haberg@MATEMATIK.SU.SE" nil "35" "Re: LaTeX journal and publisher macros" "^Date:" nil nil "10" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.5/8.8.5) with ESMTP id TAA24834;
+	Mon, 6 Oct 1997 19:40:49 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <0.23005746@listserv.gmd.de>; Mon, 6 Oct 1997 19:40:17 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 208982 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Mon, 6 Oct 1997 19:40:07 +0200
+Received: from mail.nada.kth.se (root@mail.nada.kth.se [130.237.222.92]) by
+          relay.urz.uni-heidelberg.de (8.8.7/8.8.7) with ESMTP id TAA21488 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Oct 1997 19:40:04 +0200
+          (MET DST)
+Received: from [130.237.37.113] (sl106.modempool.kth.se [130.237.37.132]) by
+          mail.nada.kth.se (8.8.7/8.8.4) with ESMTP id TAA00553 for
+          <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>; Mon, 6 Oct 1997 19:40:02 +0200
+          (MET DST)
+X-Sender: su95-hab@mail.nada.kth.se
+References: <E0xIDEl-0004al-00@heaton.cl.cam.ac.uk> (message from Robin
+            Fairbairns on Mon, 6 Oct 1997 14:30:10 +0100)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Message-ID:  <v03110713b05ed065d97f@[130.237.37.113]>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <m0xIEGL-000OWEC@dcarlisle.demon.co.uk>
+Date:         Mon, 6 Oct 1997 19:40:20 +0200
+From: Hans Aberg <haberg@MATEMATIK.SU.SE>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: LaTeX journal and publisher macros
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2359
+
+>> an \include-like system that allows you to
+>> include stuff at arbitrary positions on the page, which is what
+>> TUGboat actually needs.
+>
+>Why do you need an \include? or in particular why do you need an
+>\includeonly ? Tugboat isn't so long is it?
+>
+>There seem to be two issues
+>1) making a `master class' that can pull a series of separate articles
+>   each from a separate file. Each of these `article files' should be a
+>   self contained document that may be processed independantly
+>   (although of necessity with a different class and perhaps a
+>   slightly different look to the output when processed independantly).
+>
+>2) A generalised \include/\includeonly system that does not force the
+>   \clearpage as in the current implementation.
+>
+>
+>It seems you can have 1) without 2).
+
+  I think the problem here is the way LaTeX produces aux-files: If the main
+file foo.tex \include's subfile bar.tex, then there will be a file named
+bar.aux with bar's references, which forces the \clearpage stuff, otherwise
+the page references cannot be computed properly.
+
+  I suggested this should be changed, so that all those references are put
+in foo.aux. Then one can also have features such as using \bar.tex as a
+main file for subfile compilation while writing on a manuscript. (The idea
+was to have a LaTeX command \project{foo} to put in the file bar.tex.)
+
+  So, unless this is changed, I think 1 and 2 above are somewhat intertwined.
+
+  Hans Aberg
+                  * AMS member: Listing <http://www.ams.org/cml/>
+                  * Email: Hans Aberg <haberg@member.ams.org>
+

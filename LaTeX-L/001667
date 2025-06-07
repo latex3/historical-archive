@@ -1,0 +1,95 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1932" "Thu" "29" "June" "1995" "13:10:29" "+0200" "Joachim Schrod" "schrod@ITI.INFORMATIK.TH-DARMSTADT.DE" nil "45" "Re: (La)TeX is SGML?" "^Date:" nil nil "6" nil nil nil nil]
+	nil)
+Received: from MZDMZA.ZDV.UNI-MAINZ.DE (vzdmzg.zdv.Uni-Mainz.DE [134.93.178.7]) by trudi.zdv.Uni-Mainz.DE (8.6.12/8.6.12) with ESMTP id NAA23866 for <schoepf@goofy.zdv.uni-mainz.de>; Thu, 29 Jun 1995 13:13:01 +0200
+Received: from DIRECTORY-DAEMON by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-12 #4432)
+ id <01HSA2M9O8GW8ZEANF@MZDMZA.ZDV.UNI-MAINZ.DE>; Thu,
+ 29 Jun 1995 13:12:54 +0100
+Received: from mxrelay.gmd.de by MZDMZA.ZDV.UNI-MAINZ.DE (PMDF V4.3-12 #4432)
+ id <01HSA2M8ZDG09AMJC8@MZDMZA.ZDV.UNI-MAINZ.DE>; Thu,
+ 29 Jun 1995 13:12:54 +0100
+Received: from vm.gmd.de by mxrelay.gmd.de (LSMTP for OpenVMS v0.1a)
+ with SMTP id 4D01FF30 ; Thu, 29 Jun 1995 13:11:25 +0200
+Received: from VM.GMD.DE (NJE origin LISTSERV@DEARN)
+ by VM.GMD.DE (LMail V1.2b/1.8b) with BSMTP id 1309; Thu,
+ 29 Jun 1995 13:11:00 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE by VM.URZ.UNI-HEIDELBERG.DE
+ (LISTSERV release 1.8b) with NJE id 2453 for LATEX-L@VM.URZ.UNI-HEIDELBERG.DE;
+ Thu, 29 Jun 1995 13:08:51 +0000
+Received: from DHDURZ1 (NJE origin SMTP@DHDURZ1) by VM.URZ.UNI-HEIDELBERG.DE
+ (LMail V1.2a/1.8a) with BSMTP id 3774; Thu, 29 Jun 1995 13:08:24 +0000
+Received: from rs2.hrz.th-darmstadt.de by vm.urz.Uni-Heidelberg.de
+ (IBM VM SMTP V2R2) with TCP; Thu, 29 Jun 95 13:08:22 CET
+Received: from hp5.iti.informatik.th-darmstadt.de by rs2.hrz.th-darmstadt.de
+ with SMTP id AA23246 (5.65c/IDA-1.4.4 for <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>)
+ ; Thu, 29 Jun 1995 13:10:31 +0200
+Received: from spice.iti.informatik.th-darmstadt.de by
+ hp5.iti.informatik.th-darmstadt.de (8.6.10/Server-1.5/HRZ-THD/8.6.9u-ITI)
+ id NAA16960; Thu, 29 Jun 1995 13:10:29 +0200
+Received: by spice.iti.informatik.th-darmstadt.de
+ (8.6.10/Client-1.5+iti/HRZ-THD) id NAA22560; Thu, 29 Jun 1995 13:10:30 +0200
+In-reply-to: <"swan.cl.cam.:292430:950628184454"@cl.cam.ac.uk> from
+ "Sebastian Rahtz" at Jun 28, 95 07:44:48 pm
+Reply-to: Mailing list for the LaTeX3 project <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Message-id: <199506291110.NAA22560@spice.iti.informatik.th-darmstadt.de>
+X-Envelope-to: schoepf@goofy.zdv.uni-mainz.de
+MIME-version: 1.0
+X-Mailer: ELM [version 2.4 PL24]
+Content-type: text/PLAIN; CHARSET=US-ASCII
+Content-transfer-encoding: 7BIT
+Date: Thu, 29 Jun 1995 13:10:29 +0200
+From: Joachim Schrod <schrod@ITI.INFORMATIK.TH-DARMSTADT.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L <LATEX-L@VM.URZ.UNI-HEIDELBERG.DE>
+Subject: Re: (La)TeX is SGML?
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1667
+
+sebastian wrote:
+>
+> > >> (e.g. <H1 ID="Sec:Commands" ALIGN=CENTER/Title/ )
+> > >> or it will be necessary to /translate/ it to LaTeX?
+> >
+> > I don't think your example is pure SGML: it looks more like HTML to me.
+> >
+> HTML *is* SGML!
+>
+> though the align=center/title/ bothers me a bit. is that really legal?
+ 
+Yes, that's legal SGML. Often used, for example for stuff like
+<emph/emphasis/. It's called ``NET-enabling Start-tag'' and ``Null
+End-tag'' (SGML Handbook 7.4.1.3 & 7.5.1.3). You might want to read
+the whole sections 7.4 and 7.5 to get a shock what else _is_
+conforming SGML. Not only the well known and often used empty end-tag
+(`<emph>emphasis</>'), but also missing TAGCs: `<para<itemize<item>'
+or </para</header>' is perfectly legal SGML. And, did you know that
+`<>' repeats the previous element?
+ 
+If you add the pecularities of RS/RE & shortref handling I'm quite
+sure that one *can* not write a full compliant SGML parser in TeX and
+still typeset the result of the parser. (Of course, one can write a
+parser, but the result would be useless as one gets a token list that
+is not useful for typesetting any more. One has to change the whole
+space parsing of TeX, but one needs space tokens to use TeX's
+paragraph breaking algorithms.)
+ 
+Everybody who thinks otherwise should first try to typeset TEI
+documents with his parser. If he or she succeeds _and_ if that is
+done in a reasonable time frame -- there exists more material which
+is even more nasty concerning the handling of RS/RE. ;)
+ 
+Oh yeah, all the comments above concern SGML. I don't know what
+typical HTML browsers would do if you really throw documents at them
+that conform to the HTML DTD. :)
+ 
+Cheers,
+        Joachim
+ 
+--
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+Joachim Schrod                  Email: schrod@iti.informatik.th-darmstadt.de
+Computer Science Department
+Technical University of Darmstadt, Germany
+

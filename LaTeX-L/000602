@@ -1,0 +1,864 @@
+Received: by nummer-3.proteosys 
+	id <01C19443.9D5F1DEC@nummer-3.proteosys>; Thu, 3 Jan 2002 11:44:26 +0100
+Return-Path: <LATEX-L%DHDURZ1.BITNET@tubvm.cs.tu-berlin.de>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C19443.9D5F1DEC"
+x-vm-v5-data: ([nil nil nil nil nil nil nil nil nil][nil nil nil nil nil nil nil nil nil nil nil nil "^From:" nil nil nil])
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+x-vm-vheader: ("From:" "Sender:" "Resent-From" "To:" "Apparently-To:" "Cc:" "Subject:" "Date:" "Resent-Date:") nil
+x-vm-bookmark: 1
+Content-class: urn:content-classes:message
+Subject:      {1} example validation file
+Date: Mon, 2 Mar 1992 17:57:45 +0100
+Message-ID: <D44B88C96CF9EA44AACAC6DF5F34AC8F0BE944@nummer-3.proteosys>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+From: "Frank Mittelbach" <MITTELBACH@MZDMZA.ZDV.UNI-MAINZ.DE>
+Sender: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+To: "Multiple recipients of" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Reply-To: "LaTeX-L Mailing list" <LATEX-L%DHDURZ1@tubvm.cs.tu-berlin.de>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 602
+
+This is a multi-part message in MIME format.
+
+------_=_NextPart_001_01C19443.9D5F1DEC
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+Here is a file that tests some of the last bugs corrected (or not =
+corrected)
+in latex.tex. This is more or less the way I hope to get test files from
+you. (Only additional with the log file checked already by you :-)
+
+Frank
+
+
+----------
+
+\def\dotrace{{\globaldefs1\tracingall}}
+%
+% test files for latex.tex testing bugs:
+%
+% 207-205
+% 200-199
+% 195-193
+% 191-190
+% 184
+% 181
+% 179
+% 177
+% 174
+% 170
+
+\typeout{OMIT}
+\documentstyle{article}
+\typeout{TIMO}
+
+
+\setlength{\textheight}{.5\textheight}
+
+\scrollmode
+
+% 176. \maketitle or other commands that internally invoke a list
+% environment would not be detected before \begin{document}. (Corrected
+% 26 Aug 91.) NOTE: THIS CHANGE AFFECTS ALL STYLES AND STYLE OPTIONS
+% THAT CHANGE THE \begin{document} COMMAND! IT IS NECESSARY TO ADD
+% \@noskipsecfalse.
+%
+
+\author{FMi}
+\title{\LaTeX{} bug fix test}
+\maketitle
+
+\begin{center}
+ Still found?
+\end{center}
+
+% 174. Extra blank space between the second and third mandatory argument
+% of \newenvironment and \renewenvironment would lead to an
+% unintelligible error message. (Long known. Change made 26 Aug 91.)
+%
+
+\newenvironment{messy}
+               {start messy}
+               {stop messy}
+
+
+% 205. Use of a nonexisting theorem environment in the first optional
+% argument to \newtheorem led to an incomprehensible error message.
+% (Reported by Luzia Dietsche. Fixed 10 Jan 92.)
+%
+% bug (205) this is not a fix but a bug!
+
+\newtheorem{foo}[xyzbar]{FOO}
+\newtheorem{xyzbar}{BAR}
+
+\begin{document}
+
+\maktitle
+
+% 200. Corrected an obscure bug in the output routine that could cause a
+% division by zero when \twocolumn[] was used. (Suggested by Chris
+% Rowley. Corrected 22 Nov 91.)
+%
+% bug (200) not sure if this really tests 200!
+
+\twocolumn[]
+
+% 181. \protect'ed the \LaTeX and \SLiTeX logos, as a consequence of
+% change 178. (Change made 17 Oct 91.)
+%
+% 177. Moved the \SLiTeX logo to latex.tex so that it can be used in
+% LaTeX as well. (Change made 29 Sep 91.)
+%
+% bug (181) + (177)
+
+\section{A \LaTeX{} logo}
+\subsection{A \SliTeX{} logo}
+
+% bug (205) cont.
+
+\begin{foo}
+ A test
+\end{foo}
+
+% bug (174) cont.
+
+jo, \begin{messy} jo \end{messy} jo
+
+% 199. Changed definition of \item to call \makelabel only once instead
+% of twice. This solves a number of problems with side effects in
+% \makelabel, and is even more efficient. (Change made 22 Nov 91.)
+%
+% bug (199)
+
+\begin{enumerate}
+\item[\stepcounter{enumi}\theenumi.]
+  should start with 1 not 2!
+\item
+\end{enumerate}
+
+
+% 195. \cite will now ignore leading blanks in a citation key. (Change
+% made 6 Nov 91.)
+%
+% bug (195) not fully corrected so far!
+
+\cite{ abc} and \cite{abc, abc}
+
+
+
+% 163.  When a double-column figure or table that is too large to fit on
+% a page is encountered when producing two-column output, that figure =
+and
+% all subsequent ones are never printed.  (Reported 13 Mar 91 by David
+% Long. Corrected 15 Mar 91.)
+%
+% 194. Added warning message when height of single column float exceeds
+% \textheight. (Change made 6 Nov 91.)
+%
+% bug (163) + (194)
+
+\begin{figure}
+\framebox[\linewidth]{%
+   \parbox{\textwidth}{\vspace{1.2\textheight}}}
+\caption{Too long}
+\end{figure}
+
+\begin{figure}
+\tiny tiny
+\caption{Real small}
+\end{figure}
+
+
+% 170. A \samepage declaration would not prevent a verbatim environment
+% from being broken across pages. (Corrected 27 Jul 91.)
+%
+% bug (170)
+
+\begin{samepage}
+\begin{verbatim}
+q
+w
+e
+r
+t
+y
+u
+i
+o
+p
+a
+s
+d
+f
+g
+h
+j
+k
+l
+enough?
+\end{verbatim}
+\end{samepage}
+
+
+
+
+% 193. Added a lot of missing \m@th (mathsurround=3D0pt) assignments.
+% (Changes made 4 Nov 91.)
+%
+% bug (193)
+% not tested \@dottedtocline
+
+\onecolumn
+
+{
+\setlength{\mathsurround}{27pt}
+
+\{ \}
+\frame{\parbox{1cm}{A}}
+\frame{\begin{minipage}{1cm}B\end{minipage}}
+\underline{C}
+E \begin{tabular}{|c|}D\end{tabular} E  % shows ignore bug!
+\[
+   F\begin{array}{|r|}G\end{array}H
+\]
+I\footnote{J} K$x$L
+
+\showoutput
+\scrollmode           % who added \errorstopmode inti \showoutput?
+
+\newpage
+
+}
+
+% 191. Added default definition of \makelabel, so that an \item command
+% outside a list environment gives a sensible error message instead of
+% messing up the whole job. (Change made 4 Nov 91.)
+%
+% bug (191)
+
+\item
+
+% 190. Fragile commands in the definition of \thefootnote led to an
+% error, even with the use of \protect. (Found by Chris Hamlin.
+% Corrected 1 Nov 91.)
+%
+% bug (190) not okay!
+%
+%\renewcommand{\thefootnote}{\protect\framebox{\arabic{footnote}}}
+%A\footnote{B}
+
+% 184. Added \reset@font in \ref, \pageref, and \@citex. (Suggested by
+% Bernd Raichle. Change made 25 Oct 91.)
+%
+% bug (184) only NFSS
+
+{\sc A \ref{notfound} to \pageref{notfound} in \cite{notfound}.}
+
+
+% 179. Changed \output to reset \par to its default value. This avoids
+% problems when the output routine is called within a list where \par
+% may be a no-op. (Reported by Eberhard Mattes. Fix suggested by Chris
+% Rowley. Change made 29 Sep 91.)
+%
+% bug (179)
+% we need \def here!
+
+{\def\def{\typeout{Go to jail}}
+
+\newpage
+}
+
+% bug (195) cont.
+
+\begin{thebibliography}{ABCDEFG}
+\bibitem{abc} the entry abc
+
+% 206. As a consequence of change 66 in the styles (see below) labels in
+% the bibliography environment would now come out left aligned.
+% (Reported by Andy Fyfe. Corrected 14 Jan 92.)
+%
+% bug (206) I question this being a bug. It's rather a style change, but
+% anyway.
+
+\bibitem[ABC]{x1} check align
+\bibitem[ABCDE]{x2} check align
+\end{thebibliography}
+
+final text!
+
+% 207. A \tableoffigures at the end of the document would sometimes not
+% typeset the table. (Reported by Friedrich Haubensak. Corrected 14 Jan
+% 92.)
+%
+% bug (207) I hope I got it right:
+
+\newpage
+\def\section*#1{}
+\listoffigures
+
+\end{document}
+
+
+------_=_NextPart_001_01C19443.9D5F1DEC
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Diso-8859-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7654.12">
+<TITLE>     {1} example validation file</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/plain format -->
+<BR>
+
+<P><FONT SIZE=3D2>Here is a file that tests some of the last bugs =
+corrected (or not corrected)</FONT>
+
+<BR><FONT SIZE=3D2>in latex.tex. This is more or less the way I hope to =
+get test files from</FONT>
+
+<BR><FONT SIZE=3D2>you. (Only additional with the log file checked =
+already by you :-)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>Frank</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>----------</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\def\dotrace{{\globaldefs1\tracingall}}</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% test files for latex.tex testing bugs:</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% 207-205</FONT>
+
+<BR><FONT SIZE=3D2>% 200-199</FONT>
+
+<BR><FONT SIZE=3D2>% 195-193</FONT>
+
+<BR><FONT SIZE=3D2>% 191-190</FONT>
+
+<BR><FONT SIZE=3D2>% 184</FONT>
+
+<BR><FONT SIZE=3D2>% 181</FONT>
+
+<BR><FONT SIZE=3D2>% 179</FONT>
+
+<BR><FONT SIZE=3D2>% 177</FONT>
+
+<BR><FONT SIZE=3D2>% 174</FONT>
+
+<BR><FONT SIZE=3D2>% 170</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\typeout{OMIT}</FONT>
+
+<BR><FONT SIZE=3D2>\documentstyle{article}</FONT>
+
+<BR><FONT SIZE=3D2>\typeout{TIMO}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>\setlength{\textheight}{.5\textheight}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\scrollmode</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 176. \maketitle or other commands that internally =
+invoke a list</FONT>
+
+<BR><FONT SIZE=3D2>% environment would not be detected before =
+\begin{document}. (Corrected</FONT>
+
+<BR><FONT SIZE=3D2>% 26 Aug 91.) NOTE: THIS CHANGE AFFECTS ALL STYLES =
+AND STYLE OPTIONS</FONT>
+
+<BR><FONT SIZE=3D2>% THAT CHANGE THE \begin{document} COMMAND! IT IS =
+NECESSARY TO ADD</FONT>
+
+<BR><FONT SIZE=3D2>% \@noskipsecfalse.</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\author{FMi}</FONT>
+
+<BR><FONT SIZE=3D2>\title{\LaTeX{} bug fix test}</FONT>
+
+<BR><FONT SIZE=3D2>\maketitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{center}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;Still found?</FONT>
+
+<BR><FONT SIZE=3D2>\end{center}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 174. Extra blank space between the second and third =
+mandatory argument</FONT>
+
+<BR><FONT SIZE=3D2>% of \newenvironment and \renewenvironment would lead =
+to an</FONT>
+
+<BR><FONT SIZE=3D2>% unintelligible error message. (Long known. Change =
+made 26 Aug 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newenvironment{messy}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; {start messy}</FONT>
+
+<BR><FONT =
+SIZE=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; {stop messy}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% 205. Use of a nonexisting theorem environment in the =
+first optional</FONT>
+
+<BR><FONT SIZE=3D2>% argument to \newtheorem led to an incomprehensible =
+error message.</FONT>
+
+<BR><FONT SIZE=3D2>% (Reported by Luzia Dietsche. Fixed 10 Jan =
+92.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (205) this is not a fix but a bug!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newtheorem{foo}[xyzbar]{FOO}</FONT>
+
+<BR><FONT SIZE=3D2>\newtheorem{xyzbar}{BAR}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{document}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\maktitle</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 200. Corrected an obscure bug in the output routine =
+that could cause a</FONT>
+
+<BR><FONT SIZE=3D2>% division by zero when \twocolumn[] was used. =
+(Suggested by Chris</FONT>
+
+<BR><FONT SIZE=3D2>% Rowley. Corrected 22 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (200) not sure if this really tests 200!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\twocolumn[]</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 181. \protect'ed the \LaTeX and \SLiTeX logos, as a =
+consequence of</FONT>
+
+<BR><FONT SIZE=3D2>% change 178. (Change made 17 Oct 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% 177. Moved the \SLiTeX logo to latex.tex so that it =
+can be used in</FONT>
+
+<BR><FONT SIZE=3D2>% LaTeX as well. (Change made 29 Sep 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (181) + (177)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\section{A \LaTeX{} logo}</FONT>
+
+<BR><FONT SIZE=3D2>\subsection{A \SliTeX{} logo}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% bug (205) cont.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{foo}</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;A test</FONT>
+
+<BR><FONT SIZE=3D2>\end{foo}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% bug (174) cont.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>jo, \begin{messy} jo \end{messy} jo</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 199. Changed definition of \item to call \makelabel =
+only once instead</FONT>
+
+<BR><FONT SIZE=3D2>% of twice. This solves a number of problems with =
+side effects in</FONT>
+
+<BR><FONT SIZE=3D2>% \makelabel, and is even more efficient. (Change =
+made 22 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (199)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{enumerate}</FONT>
+
+<BR><FONT SIZE=3D2>\item[\stepcounter{enumi}\theenumi.]</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp; should start with 1 not 2!</FONT>
+
+<BR><FONT SIZE=3D2>\item</FONT>
+
+<BR><FONT SIZE=3D2>\end{enumerate}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% 195. \cite will now ignore leading blanks in a =
+citation key. (Change</FONT>
+
+<BR><FONT SIZE=3D2>% made 6 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (195) not fully corrected so far!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\cite{ abc} and \cite{abc, abc}</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>% 163.&nbsp; When a double-column figure or table that =
+is too large to fit on</FONT>
+
+<BR><FONT SIZE=3D2>% a page is encountered when producing two-column =
+output, that figure and</FONT>
+
+<BR><FONT SIZE=3D2>% all subsequent ones are never printed.&nbsp; =
+(Reported 13 Mar 91 by David</FONT>
+
+<BR><FONT SIZE=3D2>% Long. Corrected 15 Mar 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% 194. Added warning message when height of single =
+column float exceeds</FONT>
+
+<BR><FONT SIZE=3D2>% \textheight. (Change made 6 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (163) + (194)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{figure}</FONT>
+
+<BR><FONT SIZE=3D2>\framebox[\linewidth]{%</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; =
+\parbox{\textwidth}{\vspace{1.2\textheight}}}</FONT>
+
+<BR><FONT SIZE=3D2>\caption{Too long}</FONT>
+
+<BR><FONT SIZE=3D2>\end{figure}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{figure}</FONT>
+
+<BR><FONT SIZE=3D2>\tiny tiny</FONT>
+
+<BR><FONT SIZE=3D2>\caption{Real small}</FONT>
+
+<BR><FONT SIZE=3D2>\end{figure}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% 170. A \samepage declaration would not prevent a =
+verbatim environment</FONT>
+
+<BR><FONT SIZE=3D2>% from being broken across pages. (Corrected 27 Jul =
+91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (170)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{samepage}</FONT>
+
+<BR><FONT SIZE=3D2>\begin{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>q</FONT>
+
+<BR><FONT SIZE=3D2>w</FONT>
+
+<BR><FONT SIZE=3D2>e</FONT>
+
+<BR><FONT SIZE=3D2>r</FONT>
+
+<BR><FONT SIZE=3D2>t</FONT>
+
+<BR><FONT SIZE=3D2>y</FONT>
+
+<BR><FONT SIZE=3D2>u</FONT>
+
+<BR><FONT SIZE=3D2>i</FONT>
+
+<BR><FONT SIZE=3D2>o</FONT>
+
+<BR><FONT SIZE=3D2>p</FONT>
+
+<BR><FONT SIZE=3D2>a</FONT>
+
+<BR><FONT SIZE=3D2>s</FONT>
+
+<BR><FONT SIZE=3D2>d</FONT>
+
+<BR><FONT SIZE=3D2>f</FONT>
+
+<BR><FONT SIZE=3D2>g</FONT>
+
+<BR><FONT SIZE=3D2>h</FONT>
+
+<BR><FONT SIZE=3D2>j</FONT>
+
+<BR><FONT SIZE=3D2>k</FONT>
+
+<BR><FONT SIZE=3D2>l</FONT>
+
+<BR><FONT SIZE=3D2>enough?</FONT>
+
+<BR><FONT SIZE=3D2>\end{verbatim}</FONT>
+
+<BR><FONT SIZE=3D2>\end{samepage}</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2>% 193. Added a lot of missing \m@th =
+(mathsurround=3D0pt) assignments.</FONT>
+
+<BR><FONT SIZE=3D2>% (Changes made 4 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (193)</FONT>
+
+<BR><FONT SIZE=3D2>% not tested \@dottedtocline</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\onecolumn</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{</FONT>
+
+<BR><FONT SIZE=3D2>\setlength{\mathsurround}{27pt}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\{ \}</FONT>
+
+<BR><FONT SIZE=3D2>\frame{\parbox{1cm}{A}}</FONT>
+
+<BR><FONT SIZE=3D2>\frame{\begin{minipage}{1cm}B\end{minipage}}</FONT>
+
+<BR><FONT SIZE=3D2>\underline{C}</FONT>
+
+<BR><FONT SIZE=3D2>E \begin{tabular}{|c|}D\end{tabular} E&nbsp; % shows =
+ignore bug!</FONT>
+
+<BR><FONT SIZE=3D2>\[</FONT>
+
+<BR><FONT SIZE=3D2>&nbsp;&nbsp; F\begin{array}{|r|}G\end{array}H</FONT>
+
+<BR><FONT SIZE=3D2>\]</FONT>
+
+<BR><FONT SIZE=3D2>I\footnote{J} K$x$L</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\showoutput</FONT>
+
+<BR><FONT =
+SIZE=3D2>\scrollmode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; % who added \errorstopmode inti \showoutput?</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newpage</FONT>
+</P>
+
+<P><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 191. Added default definition of \makelabel, so that =
+an \item command</FONT>
+
+<BR><FONT SIZE=3D2>% outside a list environment gives a sensible error =
+message instead of</FONT>
+
+<BR><FONT SIZE=3D2>% messing up the whole job. (Change made 4 Nov =
+91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (191)</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\item</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 190. Fragile commands in the definition of =
+\thefootnote led to an</FONT>
+
+<BR><FONT SIZE=3D2>% error, even with the use of \protect. (Found by =
+Chris Hamlin.</FONT>
+
+<BR><FONT SIZE=3D2>% Corrected 1 Nov 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (190) not okay!</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT =
+SIZE=3D2>%\renewcommand{\thefootnote}{\protect\framebox{\arabic{footnote}=
+}}</FONT>
+
+<BR><FONT SIZE=3D2>%A\footnote{B}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 184. Added \reset@font in \ref, \pageref, and =
+\@citex. (Suggested by</FONT>
+
+<BR><FONT SIZE=3D2>% Bernd Raichle. Change made 25 Oct 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (184) only NFSS</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{\sc A \ref{notfound} to \pageref{notfound} in =
+\cite{notfound}.}</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2>% 179. Changed \output to reset \par to its default =
+value. This avoids</FONT>
+
+<BR><FONT SIZE=3D2>% problems when the output routine is called within a =
+list where \par</FONT>
+
+<BR><FONT SIZE=3D2>% may be a no-op. (Reported by Eberhard Mattes. Fix =
+suggested by Chris</FONT>
+
+<BR><FONT SIZE=3D2>% Rowley. Change made 29 Sep 91.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (179)</FONT>
+
+<BR><FONT SIZE=3D2>% we need \def here!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>{\def\def{\typeout{Go to jail}}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newpage</FONT>
+
+<BR><FONT SIZE=3D2>}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% bug (195) cont.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\begin{thebibliography}{ABCDEFG}</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem{abc} the entry abc</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 206. As a consequence of change 66 in the styles =
+(see below) labels in</FONT>
+
+<BR><FONT SIZE=3D2>% the bibliography environment would now come out =
+left aligned.</FONT>
+
+<BR><FONT SIZE=3D2>% (Reported by Andy Fyfe. Corrected 14 Jan =
+92.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (206) I question this being a bug. It's rather =
+a style change, but</FONT>
+
+<BR><FONT SIZE=3D2>% anyway.</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\bibitem[ABC]{x1} check align</FONT>
+
+<BR><FONT SIZE=3D2>\bibitem[ABCDE]{x2} check align</FONT>
+
+<BR><FONT SIZE=3D2>\end{thebibliography}</FONT>
+</P>
+
+<P><FONT SIZE=3D2>final text!</FONT>
+</P>
+
+<P><FONT SIZE=3D2>% 207. A \tableoffigures at the end of the document =
+would sometimes not</FONT>
+
+<BR><FONT SIZE=3D2>% typeset the table. (Reported by Friedrich =
+Haubensak. Corrected 14 Jan</FONT>
+
+<BR><FONT SIZE=3D2>% 92.)</FONT>
+
+<BR><FONT SIZE=3D2>%</FONT>
+
+<BR><FONT SIZE=3D2>% bug (207) I hope I got it right:</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\newpage</FONT>
+
+<BR><FONT SIZE=3D2>\def\section*#1{}</FONT>
+
+<BR><FONT SIZE=3D2>\listoffigures</FONT>
+</P>
+
+<P><FONT SIZE=3D2>\end{document}</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C19443.9D5F1DEC--
+

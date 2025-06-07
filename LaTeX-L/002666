@@ -1,0 +1,85 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1915" "Tue" "4" "August" "1998" "14:27:49" "-0400" "Michael John Downes" "mjd@AMS.ORG" nil "45" "Converting a LaTeX2e package to LaTeX3 naming conventions" "^Date:" nil nil "8" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id UAA05508;
+	Tue, 4 Aug 1998 20:28:05 +0200 (MET DST)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <4.D816509D@listserv.gmd.de>; Tue, 4 Aug 1998 20:28:03 +0200
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 393648 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 4 Aug 1998 20:27:58 +0200
+Received: from math.ams.org (math.ams.org [130.44.210.14]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with SMTP id UAA00491 for
+          <latex-l@urz.uni-heidelberg.de>; Tue, 4 Aug 1998 20:27:56 +0200 (MET
+          DST)
+Received: from axp14.ams.org by math.ams.org via smtpd (for
+          relay.urz.uni-heidelberg.de [129.206.119.201]) with SMTP; 4 Aug 1998
+          18:27:55 UT
+Received: from sun06.pvd (SUN06.AMS.ORG) by AXP14.AMS.ORG (PMDF V5.1-8 #30286)
+          with SMTP id <01J07J48DBK0000N70@AXP14.AMS.ORG> for
+          latex-l@urz.uni-heidelberg.de; Tue, 4 Aug 1998 14:27:54 EDT
+Received: by sun06.pvd (SMI-8.6/SMI-SVR4) id OAA22268; Tue, 04 Aug 1998
+          14:27:49 -0400
+X-Mailer: Gnus v5.5/Emacs 20.2
+Lines: 45
+Message-ID:  <r0lnp438m2.fsf@sun06.ams.org>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 4 Aug 1998 14:27:49 -0400
+From: Michael John Downes <mjd@AMS.ORG>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      Converting a LaTeX2e package to LaTeX3 naming conventions
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 2666
+
+I began putting together a script to facilitate the process of
+converting an LaTeX2e package to LaTeX3. (Since, in fact, there is a
+largish package that I want to try converting.) Then it occurred to me
+I ought to check with the readers of this list to guard against
+reinventing a wheel that someone else has done already.
+
+Consider this (slightly simplified) fragment from ltdefns.dtx:
+
+  % \begin{macro}{\CheckCommand}
+  %    |\CheckCommand| takes the same arguments as |\newcommand|. If
+  %    the command already exists, with the same definition, then
+  %    nothing happens, otherwise a warning is issued. Useful for
+  %    checking the current state befor a macro package starts
+  %    redefining things.  Currently two macros are considered to have
+  %    the same definition if they are the same except for different
+  %    default arguments.  That is, if the old definition was:
+  %    |\newcommand\xxx[2][a]{(#1)(#2)}| then
+  %    |\CheckCommand\xxx[2][b]{(#1)(#2)}| would \emph{not} generate a
+  %    warning, but, for instance |\CheckCommand\xxx[2]{(#1)(#2)}|
+  %    would.
+  %    \begin{macrocode}
+  \def\CheckCommand{\@star@or@long\check@command}
+  %    \end{macrocode}
+  % \end{macro}
+
+Naturally we want to convert control sequences in the macrocode
+blocks to LaTeX3 equivalents. We also want to convert the argument
+of \begin{macro}, as well as references in the commentary to LaTeX2e
+internal control sequences. But the mention of \newcommand should
+probably be left alone, not to mention the \xxx, and the \emph also
+should not be converted.
+
+Macro name references usually take one of the following forms:
+
+  |\foo|
+  \verb|\foo|
+  \verb'\foo'
+  \cs{foo}
+
+I will probably write the script in Emacs Lisp with the idea of
+reusing some fragments later in setting up a LaTeX3 programmer's mode
+for Emacs. The largest part of the work would seem to be setting up a
+table of name pairs.
+
+Michael Downes
+

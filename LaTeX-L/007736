@@ -1,0 +1,176 @@
+Received: from comedy.dante.de (comedy.dante.de [176.28.54.184])
+	by h1439878.stratoserver.net (8.14.4/8.14.4/Debian-2ubuntu2.1) with ESMTP id t62F9JFl011673
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <rainer@rainer-schoepf.de>; Thu, 2 Jul 2015 17:09:19 +0200
+Received: from comedy.dante.de (localhost [127.0.0.1])
+	by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62F9F5w031268;
+	Thu, 2 Jul 2015 17:09:15 +0200
+Received: from mail-wi0-x234.google.com (mail-wi0-x234.google.com
+ [IPv6:2a00:1450:400c:c05::234])
+ by comedy.dante.de (8.14.4/8.14.4/Debian-4) with ESMTP id t62F9BHd031257
+ (version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <latex-team@latex-project.org>; Thu, 2 Jul 2015 17:09:12 +0200
+Received: by wibdq8 with SMTP id dq8so76590810wib.1
+ for <latex-team@latex-project.org>; Thu, 02 Jul 2015 08:09:06 -0700 (PDT)
+X-Received: by 10.180.90.241 with SMTP id bz17mr51213649wib.95.1435849746339; 
+ Thu, 02 Jul 2015 08:09:06 -0700 (PDT)
+Received: from [192.168.1.15] (ABordeaux-253-1-33-109.w82-125.abo.wanadoo.fr.
+ [82.125.240.109])
+ by mx.google.com with ESMTPSA id p2sm9107251wix.11.2015.07.02.08.09.04
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 02 Jul 2015 08:09:05 -0700 (PDT)
+Message-ID: <5595540F.9080605@telecom-bretagne.eu>
+Date: Thu, 02 Jul 2015 17:09:03 +0200
+From: =?windows-1252?Q?=C9lie_Roux?= <elie.roux@telecom-bretagne.eu>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64;
+ rv:31.0) Gecko/20100101 Icedove/31.0
+MIME-Version: 1.0
+To: Joseph Wright <joseph.wright@morningstar2.co.uk>,
+        heiko.oberdiek@googlemail.com, mpg@elzevir.fr,
+        Philipp Maximilian Stephani <p.stephani2@gmail.com>
+Subject: Re: LuaTeX support in the LaTeX kernel
+References: <559534D0.2060001@morningstar2.co.uk>
+In-Reply-To: <559534D0.2060001@morningstar2.co.uk>
+X-DANTE-Spam-Score: -1.9 () BAYES_00, DKIM_SIGNED, DKIM_VALID, FREEMAIL_FROM,
+ SPF_PASS
+X-Scanned-By: MIMEDefang 2.71 on 85.214.41.38
+X-Scanned-By: MIMEDefang 2.71 on 176.28.54.184
+X-Scanned-By: MIMEDefang 2.71 on IPv6:2a01:488:67:1000:b01c:36b8:0:1
+Cc: Philipp Gesang <Philipp.Gesang@alumni.uni-heidelberg.de>,
+        "latex-team@latex-project.org" <latex-team@latex-project.org>,
+        Lars Madsen <daleif@imf.au.dk>
+X-BeenThere: latex-team@latex-project.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: <latex-team.latex-project.org>
+List-Unsubscribe: <https://lists.dante.de/mailman/options/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=unsubscribe>
+List-Archive: <https://lists.dante.de/mailman/private/latex-team/>
+List-Post: <mailto:latex-team@latex-project.org>
+List-Help: <mailto:latex-team-request@latex-project.org?subject=help>
+List-Subscribe: <https://lists.dante.de/mailman/listinfo/latex-team>,
+ <mailto:latex-team-request@latex-project.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: latex-team-bounces@latex-project.org
+Sender: "Latex-team" <latex-team-bounces@latex-project.org>
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 7736
+
+CCing Philipp Gesang, who is an important author of luatexbase and
+luaotfload.
+
+> Attached is a proposed addition to the kernel (ltluatex) along with 
+> various tests/demos. The demos are potentially the basis for the
+> package level support I mention.
+> 
+> *Allocators in general*
+> 
+> As this code is kernel-level it can make assumptions packages cannot.
+> In particular, from TL'15 we've reserved a set of \count registers in
+> the extended pool for team use. The allocators here therefore use
+> hard-coded positions, as is done for the TeX90 allocation routine.
+> 
+> We have provided the basic allocators but not \set... commands:
+> these seem to be comfortably handled in package code.
+
+ok
+
+> *Attribute allocation*
+> 
+> This seems straight forward: note that we've done it from the TeX
+> end. David has written luaregisternames to demonstrate that Lua
+> access to the allocated number is straight-forward (and this could be
+> covered by a package).
+
+ok
+
+> *Catcode allocation*
+> 
+> We have just covered the core idea of allocation. In contrast to 
+> luatex/luatexbase we have gone for a simple allocator as for other 
+> registers. We think that a stack mechanism belongs at the package
+> level (catcode tables seem more useful from Lua than from TeX in any
+> case). David has sketched out a pool-based approach to a stack in the
+> attached catcodestack document.
+> 
+> We have not at this stage pre-defined any tables. We suspect a core
+> set (IniTeX/string/document) may well be useful: thoughts welcome.
+
+This would be helpful indeed, or most package using catcodetables will
+define their document, string and makeatother tables...
+
+> *Lua functions*
+> 
+> These are not currently covered by package code but seem trivial to 
+> handle and so are included.
+
+ok
+
+> *Callbacks*
+> 
+> We have significantly minimised the callback allocator from
+> luatexbase to cover just the idea of registering multiple callbacks
+> but not resetting/removing/...
+
+I think removing a callback is quite useful: for instance in Gregorio
+(https://github.com/gregorio-project/gregorio, soon to be integrated
+into TeXLive) I make quite convoluted treatment in postlinebreak_filter,
+but only in the context of a score, so I register the callback at the
+beginning of a score and remove it at the end.. Well, I could find other
+means to check if I need to run the callback or not, but I admit I liked
+this way of using callbacks.
+
+> We are also not currently convinced by the 'priority' idea: it seems
+> to be only partly solving a problem.
+
+Sure
+
+> We have kept a public interface to the built-in callback.register 
+> function with the idea being that a more sophisticated package
+> interface could be introduced and replace the kernel version.
+
+That seems like a terrible idea: some packages would register callbacks
+in the LaTeX core interface, and if another registers a callback in the
+more sophisticated interface, the first callback will be overwritten...
+Maybe a solution to this and the removal could be to make the callback
+function lists public?
+
+> *Module management*
+> 
+> We have not added this: arguments for inclusion at the kernel level
+> are welcome.
+
+Ok
+
+> We are therefore considering switching the kernel approach to use
+> the 'raw' names
+
+Great!
+
+> The key aim here to address long-term maintainablity whilst aiming
+> to keep things stable and usable for end-users. Thus it's important
+> to get agreement on what is and is not appropriate.
+> Feedback/thoughts/... on any or all of the above most welcome.
+
+A few remarks/questions:
+
+Why not include the code adding kpse to package.searchers ? Or would it
+be better to add it when building the format (so that LaTeX doesn't
+depend on kpse)?
+
+Why not include a whatsit allocator (like the one in
+https://github.com/lualatex/luatexbase/blob/master/luatexbase-attr.dtx#L484)?
+This was a request from users and could have its place alongside the
+other allocators.
+
+Thank you,
+-- 
+Elie
+_______________________________________________
+Latex-team mailing list
+Latex-team@latex-project.org
+https://lists.dante.de/mailman/listinfo/latex-team
+

@@ -1,0 +1,227 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:    4 Jul 90 , 16:44:00
+To: BK4@DHDURZ1.BITNET
+From: N.POPPELIER@ELSEVIER.NL
+Subject:  .toc file hierarchy (proto version0
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 4192
+
+___: macro code
+...: lines of text in a file
+
+LaTeX declares (section 'FILE HANDLING') two registers for file
+manipulations
+
+_____________________________________________________________________
+\newwrite\@mainaux \newwrite\@partaux
+______________________________________________________________________
+
+The file \@mainaux is opened and written by \document (see same
+section)
+
+______________________________________________________________________
+\if@filesw \immediate\openout\@mainaux=\jobname.aux
+  \immediate\write\@mainaux{\relax} \fi
+______________________________________________________________________
+
+From that moment on there is a file JOB.aux, which corresponds to
+the variable \@mainaux. This file contains at least the following
+line
+
+......................................................................
+\relax
+......................................................................
+
+Most of the instructions that refer to the .aux file use the the
+variable \@auxout, which initially is identical to \@mainaux (see
+same section)
+
+______________________________________________________________________
+\let\@auxout=\@mainaux
+______________________________________________________________________
+
+and is changed by \@include
+
+______________________________________________________________________
+\def\@include#1 {\clearpage
+\if@filesw
+  \immediate\write\@mainaux{\string\@input{#1.aux}}
+\fi
+...
+\if@tempswa
+  \if@filesw
+    \let\@auxout=\@partaux \immediate\openout\@partaux #1.aux
+    \immediate\write\@partaux{\relax}
+  \fi
+  \@input{#1.tex} \clearpage \@writeckpt{#1}
+  \if@filesw
+    \immediate\closeout\@partaux
+  \fi
+  \let\@auxout=\@mainaux
+\else
+  \@nameuse{cp@#1}\
+\fi}
+______________________________________________________________________
+
+If JOB.tex does not contain any \include instructions, all
+instructions to write to the .aux file will be written
+to JOB.aux. If there are \include instructions, however, a line
+
+......................................................................
+\@input{DEEL.aux}
+......................................................................
+
+is written to JOB.aux and all subsequent instructions will be written
+to a file PART.aux. Just before the \include instruction finishes the
+original situation is restored.
+
+The instructions \addtocontents and \addcontentsline -- and only
+these -- write a line of the form
+
+______________________________________________________________________
+\@writefile{#1}{\string\contentsline{TYPE}{ENTRY}{PAGE}}
+______________________________________________________________________
+
+to an .aux file; which .aux file it is depends on the structure of
+the document (see above).
+When the .aux file is read -- at the beginning of the document --
+we are in one of the following two cases
+
+1. the document does not contain \include instructions and the
+   primary .aux file is therefore the only .aux file;
+2. the document does contain \include instructions and for every
+   instruction \include{NAAM} there is a corresponding line
+
+______________________________________________________________________
+\@input{NAAM.aux}
+______________________________________________________________________
+
+   in the primary .aux file.
+
+The \@writefile instructions result in output on the primary -- and
+only -- .toc file.
+
+To transplant the 2-layer hierarchical system of .aux files to, e.g.,
+.toc files, the following must be done.
+
+______________________________________________________________________
+% \newwrite\@mainaux \newwrite\@partaux
+\newwrite\@maintoc \newwrite\@parttoc
+\let\@tocout=\@maintoc
+\def\@lofout{\tf@lof} \def\@lotout{\tf@lot} % for proto version
+______________________________________________________________________
+
+In \document:
+______________________________________________________________________
+  \begingroup\@floatplacement\@dblfloatplacement
+   \makeatletter \let\@writefile\@gobbletwo \let\@auxinput\@yauxinput
+   \@input{\jobname.aux}\endgroup
+   \if@filesw \immediate\openout\@mainaux=\jobname.aux
+     \immediate\write\@mainaux{\relax} \fi
+______________________________________________________________________
+
+The instructions that write to the .toc file must use the variabele
+\@tocout, that initially is identical to \@maintoc
+
+______________________________________________________________________
+\let\@tocout=\@maintoc
+______________________________________________________________________
+
+and is changed whenever a \@input{FOO.aux} occurs.
+
+\@include should be changed as follows:
+
+______________________________________________________________________
+\def\@include#1 {\clearpage \def\@includename{#1}
+\if@filesw \immediate\write\@mainaux{\string\@auxinput{#1}}
+           \immediate\write\@maintoc{\string\@tocinput{#1}}\fi
+\@tempswatrue\if@partsw \@tempswafalse\edef\@tempb{#1}\@for
+\@tempa:=\@partlist\do{\ifx\@tempa\@tempb\@tempswatrue\fi}\fi
+\if@tempswa \if@filesw
+   \let\@auxout=\@partaux
+   \immediate\openout\@partaux #1.aux
+   \immediate\write\@partaux{\relax}
+\fi\@input{#1.tex}\clearpage \@writeckpt{#1}
+\if@filesw  \immediate\closeout\@partaux \fi
+ \let\@auxout=\@mainaux\else\@nameuse{cp@#1}\fi}
+______________________________________________________________________
+
+Watch the \@auxinput{#1} instead of \@input{#1.aux}!, and the fact
+that the name of the included file is saved as \@includename so that
+the partial table of contents can be obtained by means of
+
+______________________________________________________________________
+\@input{\@includename.toc}
+______________________________________________________________________
+
+
+The macros \@auxinput and \@tocinput are defined as follows (in the
+document style if you want to include .lof and .lot files as well --
+the document-style designer should be able to specify precisely which
+types of auxiliary file are needed:
+
+  \@useauxfiles{toc,lof}
+
+where .aux is always implied)
+
+______________________________________________________________________
+\def\@xauxinput#1{\let\@tocout=\@parttoc
+\immediate\openout\@parttoc=#1.toc
+  \immediate\write\@parttoc{\relax} \@input{#1.aux}
+  \let\@tocout=\@maintoc \immediate\closeout\@parttoc}
+
+\def\@yauxinput#1{\@input{#1.aux}}
+
+\let\@auxinput=\@xauxinput
+
+\def\@tocinput#1{\@input{#1.toc}}
+______________________________________________________________________
+
+Two new macros, \@startmaintoc and \@startparttoc, replace
+\@starttoc; in the proto version only for the table of contents.
+
+______________________________________________________________________
+\def\@startmaintoc#1{\begingroup
+  \makeatletter \@input{\jobname.#1}
+  \if@filesw
+    \immediate\openout\@maintoc=\jobname.#1
+    \immediate\write\@maintoc{\relax}\relax
+  \fi \global\@nobreakfalse \endgroup}
+
+\let\@starttoc=\@startmaintoc
+
+\def\@startparttoc#1{\begingroup
+  \makeatletter \@input{\@includename.#1}
+  \if@filesw \immediate\openout\@parttoc=\@includename.#1
+    \immediate\write\@parttoc{\relax}\relax
+  \fi \global\@nobreakfalse \endgroup}
+
+\def\chaptertableofcontents{\section*{Chapter contents}
+  \@startparttoc{toc}}
+______________________________________________________________________
+
+Now there are only two things left:
+- \enddocument must also close \@maintoc
+
+______________________________________________________________________
+\def\enddocument{\@checkend{document}\clearpage\begingroup
+\if@filesw \immediate\closeout\@mainaux
+           \immediate\closeout\@maintoc
+\def\global\@namedef##1##2{}\def\newlabel{\@testdef r}%
+\def\bibcite{\@testdef b}\@tempswafalse
+\makeatletter \input \jobname.aux
+\if@tempswa \@warning{Label(s) may have changed.  Rerun to get
+cross-references right}\fi\fi\endgroup\deadcycles\z@\@@end}
+______________________________________________________________________
+
+- and \@writefile{FOO} should write to \@FOOout
+
+______________________________________________________________________
+\def\@writefile#1#2{
+  \expandafter\immediate\write\csname @#1out\endcsname{#2}}
+______________________________________________________________________
+
+

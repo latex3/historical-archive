@@ -1,0 +1,114 @@
+Received: from mail.proteosys.com ([213.139.130.197]) by nummer-3.proteosys with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 23 Oct 2009 12:44:47 +0200
+Received: by mail.proteosys.com (8.14.3/8.14.3) with ESMTP id n9NAikmv005588
+	for <rainer.schoepf@PROTEOSYS.COM>; Fri, 23 Oct 2009 12:44:46 +0200
+Received: from listserv.uni-heidelberg.de (listserv.uni-heidelberg.de [129.206.100.94])
+	by relay2.uni-heidelberg.de (8.13.8/8.13.8) with ESMTP id n9NAepi7020399
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 23 Oct 2009 12:40:51 +0200
+Received: from listserv.uni-heidelberg.de (localhost.localdomain [127.0.0.1])
+	by listserv.uni-heidelberg.de (8.13.1/8.13.1) with ESMTP id n9NAeWan000756;
+	Fri, 23 Oct 2009 12:40:35 +0200
+Received: by LISTSERV.UNI-HEIDELBERG.DE (LISTSERV-TCP/IP release 15.5) with
+          spool id 342581 for LATEX-L@LISTSERV.UNI-HEIDELBERG.DE; Fri, 23 Oct
+          2009 12:40:34 +0200
+Received: from relay.uni-heidelberg.de (relay.uni-heidelberg.de
+          [129.206.100.212]) by listserv.uni-heidelberg.de (8.13.1/8.13.1) with
+          ESMTP id n9NAeYmp032405 for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>;
+          Fri, 23 Oct 2009 12:40:34 +0200
+Received: from csep02.cliche.se (csep02.cliche.se [195.249.40.184]) by
+          relay.uni-heidelberg.de (8.14.1/8.14.1) with ESMTP id n9NAeFAk016590
+          (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+          for <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 23 Oct 2009 12:40:19
+          +0200
+Received: from hexley.local (unknown [213.21.117.168]) by csep02.cliche.se
+          (Postfix) with ESMTP id 748641865E6 for
+          <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>; Fri, 23 Oct 2009 12:40:02 +0200
+          (CEST)
+User-Agent: Thunderbird 2.0.0.23 (Macintosh/20090812)
+MIME-Version: 1.0
+References: <4AE0BFB3.7080905@morningstar2.co.uk>
+            <8A015AE0-022B-4462-B8D5-CC1010E49205@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by
+                      listserv.uni-heidelberg.de id n9NAeYmp032406
+Message-ID:  <4AE18854.7080704@residenset.net>
+Date:         Fri, 23 Oct 2009 12:41:24 +0200
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@LISTSERV.UNI-HEIDELBERG.DE>
+From: =?ISO-8859-1?Q?Lars_Hellstr=F6m?= <Lars.Hellstrom@RESIDENSET.NET>
+Subject: Re: xparse processors
+To: LATEX-L@LISTSERV.UNI-HEIDELBERG.DE
+In-Reply-To:  <8A015AE0-022B-4462-B8D5-CC1010E49205@gmail.com>
+Precedence: list
+List-Help: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>,
+           <mailto:LISTSERV@LISTSERV.UNI-HEIDELBERG.DE?body=INFO%20LATEX-L>
+List-Unsubscribe: <mailto:LATEX-L-unsubscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Subscribe: <mailto:LATEX-L-subscribe-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Owner: <mailto:LATEX-L-request@LISTSERV.UNI-HEIDELBERG.DE>
+List-Archive: <http://listserv.uni-heidelberg.de/cgi-bin/wa?LIST=LATEX-L>
+X-ProteoSys-SPAM-Score: -6.599 () BAYES_00,RCVD_IN_DNSWL_MED
+X-Scanned-By: MIMEDefang 2.65 on 213.139.130.197
+Return-Path: owner-latex-l@LISTSERV.UNI-HEIDELBERG.DE
+X-OriginalArrivalTime: 23 Oct 2009 10:44:47.0367 (UTC) FILETIME=[D6FB3970:01CA53CD]
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 6111
+
+Will Robertson skrev:
+> On 23/10/2009, at 6:55 AM, Joseph Wright wrote:
+> 
+>> This would allow things like:
+>>
+>> > \ReturnVariable { \MakeHarmless\ReturnVariable }
+>>  % Will absorb one more argument, as required
+>>
+>> (using \MakeHarmless from xdoc). That doesn't work at present as the 
+>> return has to be in a toks.
+>>
+>> As Lars points out, that is quite a bit more flexible at the cost of a 
+>> little complexity in the syntax.
+> 
+> 
+> I'm not sure that I see how this is any more flexible?
+> Oh, simply that your argument processor doesn't have to be hard-coded to 
+> use \l_xparse_arg_toks.
+> But hang on, can't you do the same thing at present by just writing
+> 
+>     > { \MakeHarmless\l_xparse_arg_toks }
+> 
+> ?
+
+ From my point of view, there were two issues.
+
+The first issue is that the given "return value register" 
+\l_xparse_arg_toks is a toks when (in my experience) values (at least 
+non-numeric values) are more commonly returned by defining a macro. 
+This thus has to do with the ability to reuse existing code (in 
+packages and such).
+
+The second issue is that the name \l_xparse_arg_toks would not fit in 
+at all if using \DeclareDocumentCommand in e.g. the preamble of a 
+document; one would have to fiddle around with the catcodes just to be 
+able to type it, and the name is unintuitive.
+
+I suppose a compromise could be to use a fixed command name in the same 
+class as \DeclareDocumentCommand -- e.g. \XparseResult or 
+\XparseProcessorResult -- and do
+
+   \let\XparseResult=\l_xparse_arg_toks
+
+just before each processor; then the user can use this high-level name 
+and not have to worry about the low-level LaTeX3 name. Furthermore this 
+provides support for mixing macro- and toks-setting processors, as code 
+that ends up doing \XparseResult={...} will access the toks register, 
+whereas code that ends up doing \def\XparseResult{...} just breaks the 
+association of \XparseResult to \l_xparse_arg_toks (as opposed to 
+breaking xparse as a whole). Either way, V-expanding \XparseResult will 
+recover what had been stored.
+
+Lars Hellström
+

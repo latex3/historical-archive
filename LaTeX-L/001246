@@ -1,0 +1,58 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["1240" "Tue" "4" "January" "1994" "12:31:43" "+0000" "Robin Fairbairns" "Robin.Fairbairns@cl.cam.ac.uk" "<199401042235.AA12254@mail.cs.tu-berlin.de>" "27" "\\clearpage and \\AtEndDocument hooks" "^Date:" nil nil "1" "1994010412:31:43" "\\clearpage and \\AtEndDocument hooks" (number " " mark "     Robin Fairbairns  Jan  4   27/1240  " thread-indent "\"\\clearpage and \\AtEndDocument hooks\"\n") nil])
+Return-Path: <owner-latex-l@VM.URZ.UNI-HEIDELBERG.DE>
+Received: from sc.ZIB-Berlin.DE (mailserv) 
+        by dagobert.ZIB-Berlin.DE (4.1/SMI-4.0/24.6.93)
+	id AA01331; Tue, 4 Jan 94 23:36:25 +0100
+Received: from mail.cs.tu-berlin.de by sc.ZIB-Berlin.DE (4.1/SMI-4.0-sc/03.06.93)
+	id AA05599; Tue, 4 Jan 94 23:35:47 +0100
+Received: from tubvm.cs.tu-berlin.de by mail.cs.tu-berlin.de with SMTP id AA12254
+  (5.65c8/IDA-1.4.4(mail.m4[1.12]) for <@MAIL.CS.TU-BERLIN.DE:Schoepf@SC.ZIB-BERLIN.DE>); Tue, 4 Jan 1994 23:35:39 +0100
+Message-Id: <199401042235.AA12254@mail.cs.tu-berlin.de>
+Received: from TUBVM.CS.TU-BERLIN.DE by tubvm.cs.tu-berlin.de (IBM VM SMTP V2R2)
+   with BSMTP id 3618; Tue, 04 Jan 94 23:35:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin MAILER@DHDURZ1) by
+ TUBVM.CS.TU-BERLIN.DE (LMail V1.2a/1.8a) with BSMTP id 3617; Tue,
+ 4 Jan 1994 23:35:58 +0200
+Received: from VM.URZ.UNI-HEIDELBERG.DE (NJE origin LISTSERV@DHDURZ1) by
+ VM.URZ.UNI-HEIDELBERG.DE (LMail V1.2a/1.8a) with BSMTP id 5987; Tue,
+ 4 Jan 1994 13:47:10 +0000
+Reply-To: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+Date:         Tue, 4 Jan 1994 12:31:43 +0000
+From: Robin Fairbairns <Robin.Fairbairns@cl.cam.ac.uk>
+Sender: Mailing list for the LaTeX3 project <LATEX-L@DHDURZ1.BITNET>
+To: Multiple recipients of list LATEX-L <LATEX-L@DHDURZ1.BITNET>
+Subject:      \clearpage and \AtEndDocument hooks
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1246
+
+There is commented-out code in latex.dtx that would issue a \clearpage
+before executing end-document hooks if there are dangling floats.  The
+text says that such clearing is controversial.
+
+I have written some code for an end document hook (changebar), and
+considered code for another (labelling the last page for `n of m' page
+numbering).  In both cases, the hook would need the final \clearpage to
+have been executed, so that the hook code itself needs to execute it
+itself (in present circumstances).
+
+If this is the case, and if executing \clearpage in latex itself is indeed
+controversial (i.e., there are cases when you _don't_ want the \clearpage
+before executing the hook), it seems to me that there's an argument for
+two sets of end document hook, one executed before and one after the final
+\clearpage.
+
+As things stand at present, a hook that requires to be executed before the
+final \clearpage needs to guarantee that it's in the correct place in the
+hook, which leads us back to <= 2.09 hackery, imho...
+
+So what's wrong with my reasoning?  What _is_ the controversy about the
+\clearpage?
+
+R
+--
+Robin (Campaign for Real Radio 3) Fairbairns       rf@cl.cam.ac.uk
+U of Cambridge Computer Lab, Pembroke St, Cambridge  CB2 3QG, UK
+

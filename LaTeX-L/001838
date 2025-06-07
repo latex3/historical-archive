@@ -1,0 +1,110 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["2860" "Tue" "25" "February" "1997" "11:34:15" "GMT" "David Carlisle" "carlisle@MA.MAN.AC.UK" nil "79" "LaTeX update" "^Date:" nil nil "2" nil "LaTeX update" nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+          by mail.Uni-Mainz.DE (8.8.5/8.8.4) with ESMTP
+	  id MAA15969; Tue, 25 Feb 1997 12:34:50 +0100 (MET)
+Received: from listserv.gmd.de by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <11.C13C0C9E@listserv.gmd.de>; Tue, 25 Feb 1997 12:34:49 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 105948 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 25 Feb 1997 12:34:41 +0100
+Received: from vummath.ma.man.ac.uk (vummath.ma.man.ac.uk [130.88.16.53]) by
+          relay.urz.uni-heidelberg.de (8.7.6/8.7.4) with SMTP id MAA10191 for
+          <latex-l@urz.uni-heidelberg.de>; Tue, 25 Feb 1997 12:34:32 +0100 (MET)
+Received: by vummath.ma.man.ac.uk (SMI-8.6/SMI-SVR4) id LAA06821; Tue, 25 Feb
+          1997 11:34:15 GMT
+Message-ID:  <199702251134.LAA06821@vummath.ma.man.ac.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Date:         Tue, 25 Feb 1997 11:34:15 GMT
+From: David Carlisle <carlisle@MA.MAN.AC.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE>
+Subject:      LaTeX update
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 1838
+
+Sorry to interrupt the language discussion, but the code for
+`patch level 1' of the 1996/12/01 release has just been placed on
+ctan.
+
+If you have the December release then you just need obtain the
+following files.
+
+
+macros/latex/packages/graphics/graphics.ins
+macros/latex/packages/tools/tabularx.dtx
+macros/latex/base/doc.dtx
+macros/latex/base/patches.txt
+macros/latex/base/ltpatch.ltx
+macros/latex/unpacked/doc.sty
+
+The relevant details from patches.txt are contained below.
+
+David
+
+
+
+Changes to the kernel in LaTeX2e <1996/06/01> patch level 1
+-----------------------------------------------------------
+(1997/02/21)
+
+%%% internal/2402
+%%% Missing % in \g@addto@macro
+
+%%% latex/2404
+%%% Reset space factor codes in the output routine.
+%%% The default settings are based on the values set at \begin{document}
+%%% unless they are set by defining \normalsfcodes in a class file
+%%% or package.
+%%% This bug was inherited from LaTeX2.09 (in fact from plain TeX).
+
+%%% latex/2414
+%%% Prior to the 1996/12/01 release a \noindent immediately after an
+%%% \item would `remove' a horizontal space of length \parindent.
+%%% This could have surprising effects in cases where \itemindent
+%%% was not equal to \parindent.
+%%%
+%%% In the December release this code was rationalised to use
+%%% the `\lastbox' mechanism as used after section headings.
+%%% A result of this was that \noindent had no effect at all
+%%% after \item.
+%%%
+%%% This was probably reasonable in explicit lists but it also
+%%% meant \noindent had no effect in contexts such as
+%%% \begin{abstract}\noindent...
+%%% in the standard classes that use the list environment `internally'.
+%%%
+%%% This patch restores the behaviour of \noindent in abstract, and
+%%% more generally always removes the \itemindent spacing from the
+%%% current item if used after \item, thus it should work as expected
+%%% even if \parindent and \itemindent are not equal.
+%%%
+%%% This area is still under investigation, and this may not be the
+%%% `final' version that will be incorporated in the next full release.
+
+
+
+Changes to non-kernel files in LaTeX <1996/06/01>
+--------------------------------------------------
+
+This section details files that have changed in the
+`base', `tools', `graphics' and `mfnfss' distributions.
+Updates to the `babel' `psnfss' and `amslatex'
+distributions will be announced separately, if necessary.
+
+To activate the non-kernel updates you have to retrieve the
+.dtx files and unpack them with their corresponding .ins files
+or alternatively (for the files in `base') you may obtain the unpacked
+files from ctan archives.
+
+
+base/doc.dtx          Missing % in \GetFileInfo (latex 2404)
+tools/tabularx.dtx    Improved documentation and message in case table
+                      is too large to fit to the requested width.
+graphics/graphics.ins Add generation of dvipdf.def file. graphics/240
+

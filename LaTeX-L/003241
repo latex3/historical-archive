@@ -1,0 +1,67 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil nil nil]
+	["931" "Tue" "5" "January" "1999" "19:01:51" "GMT" "David Carlisle" "davidc@NAG.CO.UK" nil "32" "Re: Layout parameters in LaTeX" "^Date:" nil nil "1" nil nil nil nil nil]
+	nil)
+Received: from listserv.gmd.de (listserv.gmd.de [192.88.97.1])
+	by mail.Uni-Mainz.DE (8.8.8/8.8.8) with ESMTP id UAA00970;
+	Tue, 5 Jan 1999 20:02:32 +0100 (MET)
+Received: from lsv1.listserv.gmd.de (192.88.97.2) by listserv.gmd.de (LSMTP for OpenVMS v1.1a) with SMTP id <6.CB641BC8@listserv.gmd.de>; Tue, 5 Jan 1999 20:02:32 +0100
+Received: from RELAY.URZ.UNI-HEIDELBERG.DE by RELAY.URZ.UNI-HEIDELBERG.DE
+          (LISTSERV-TCP/IP release 1.8b) with spool id 414438 for
+          LATEX-L@RELAY.URZ.UNI-HEIDELBERG.DE; Tue, 5 Jan 1999 20:02:28 +0100
+Received: from nag.co.uk (openmath.nag.co.uk [192.156.217.16]) by
+          relay.urz.uni-heidelberg.de (8.8.8/8.8.8) with ESMTP id UAA00692 for
+          <LATEX-L@URZ.UNI-HEIDELBERG.DE>; Tue, 5 Jan 1999 20:02:26 +0100 (MET)
+Received: (from davidc@localhost) by nag.co.uk (AIX4.2/UCB 8.7/8.7) id
+          TAA19392; Tue, 5 Jan 1999 19:01:51 GMT
+References: <199812141041.LAA13591@mozart.ujf-grenoble.fr>
+            <199901051451.PAA16364@relay.urz.uni-heidelberg.de>
+            <199901051739.SAA16408@mozart.ujf-grenoble.fr>
+Message-ID:  <199901051901.TAA19392@nag.co.uk>
+Reply-To: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+In-Reply-To:  <199901051739.SAA16408@mozart.ujf-grenoble.fr> (message from
+              Thierry Bouche on Tue, 5 Jan 1999 18:39:57 +0100)
+Date:         Tue, 5 Jan 1999 19:01:51 GMT
+From: David Carlisle <davidc@NAG.CO.UK>
+Sender: Mailing list for the LaTeX3 project
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+To: Multiple recipients of list LATEX-L
+              <LATEX-L@URZ.UNI-HEIDELBERG.DE>
+Subject:      Re: Layout parameters in LaTeX
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 3241
+
+> What is very bad is TeX's behaviour of linespacing the lines with
+> overhanging material (like integrals, badly formatted inline
+> fractions...)
+
+If you want to keep lines on the grid even in the presence of such stuff
+you can ask tex to work a bit harder, eg:
+
+\everymath{%
+  \global\setbox1\hbox\bgroup\everymath{}$\aftergroup\foo}
+\def\foo{\egroup$\smash{\box1}}
+
+\def\x{aaaa aaaa aaaa aaaa aaaa aaaa aaaa  }
+
+\x\x\x\x\x\x
+${\displaystyle{a\over b}\over {c \over d}}\over
+{\displaystyle{a\over b}\over {c \over d}}$
+\x\x\x\x\x\x\x
+
+\bye
+
+
+You could make this a bit smarter, eg to snap the size of the box to
+an integral number of baselineskips (rather than to zero as here)
+and to unbox smaller examples to re-allow linebreaking, and to worry
+about mathsurround etc...
+
+Although as Michael said, it's not clear whether if you have a lot of
+such things you are ever going to get it to fit the grid in a reasonable
+way.
+
+David
+

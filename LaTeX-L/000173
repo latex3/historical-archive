@@ -1,0 +1,43 @@
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	[nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil])
+Date:         Mon, 09 Jul 90 14:19:24 CET
+From: Rainer Schoepf <BK4@DHDURZ1.bitnet>
+Organization: Inst. f. Theor. Physik d. Univ. Heidelberg
+Subject:      Re: startsection; table of contents
+To: POPPELIE@HUTRUU53.uucp
+In-Reply-To:  Your message of Fri, 6 Jul 90 15:57 N
+Status: R
+X-Status: 
+X-Keywords:                  
+X-UID: 173
+
+Nico,
+
+I am thinking of two commands \pushlevel and \poplevel that are written
+to the .aux or .toc file whenever a new level of sectioning is entered.
+They could be implemented to increment/decrement a counter so that a
+simple numerical comparison is sufficient to decide whether a .toc
+entry should go into the table a contents currently set.  I would then
+read the .toc file every time I want to generate a table of contents
+but with the appropriate settings so that I get the right lines.
+
+Perhaps this is also a good idea for all counters: instead of writing,
+say `A-1' to the .aux file (for equation 1 in appendix A) we could
+write
+
+\pushlevel   % \appendix generates this
+\currentsection{1}  % first appendix
+\newlabel{xyz}{1}
+...
+
+Probably this would make it easier to implement hierarchical references,
+i.e. writing (1) inside of appendix A, and (A-1) everywhere else.
+
+All this is only an idea, and has to be worked out further, especially
+in connection with Frank's idea to read the .aux file piecewise.
+
+What do you think about it?
+
+Rainer
+
+
